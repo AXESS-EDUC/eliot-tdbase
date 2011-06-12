@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+   <changeSet id="1" author="fsil" >
+        <comment>
+            Création des schémas initiaux  par import de dump natif
+        </comment>
+
+       <!--<sqlFile path="eliot-scolarite-2.4.9-SNAPHOT-20110609.sql" splitStatements="false" stripComments="true" encoding="UTF-8"/>-->
+    </changeSet>
+
+</databaseChangeLog>
