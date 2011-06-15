@@ -39,7 +39,7 @@ class Matiere {
   Etablissement etablissement
 
   static belongsTo = [
-          etablissement: org.lilie.services.eliot.scolarite.Etablissement
+          etablissement: Etablissement
   ]
   
   static constraints = {

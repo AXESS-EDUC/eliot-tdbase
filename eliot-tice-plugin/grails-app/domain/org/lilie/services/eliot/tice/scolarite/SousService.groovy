@@ -44,8 +44,8 @@ class SousService {
   Boolean evaluable = Boolean.FALSE
 
   static belongsTo = [
-          service: org.lilie.services.eliot.scolarite.Service,
-          modaliteMatiere: org.lilie.services.eliot.scolarite.ModaliteMatiere
+          service: Service,
+          modaliteMatiere: ModaliteMatiere
   ]
 
   static constraints = {
