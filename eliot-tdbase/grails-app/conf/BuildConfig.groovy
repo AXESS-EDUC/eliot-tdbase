@@ -72,6 +72,8 @@ grails.project.dependency.resolution = {
     compile ":resources:1.0"
     compile ":database-migration:0.2.1"
 
+    compile ":codenarc:0.12"
+
     build ":tomcat:$grailsVersion"
   }
 }

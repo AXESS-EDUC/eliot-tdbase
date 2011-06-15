@@ -1,46 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
-  <component name="FacetManager">
-    <facet type="Spring" name="Spring">
-      <configuration>
-        <fileset id="Grails" name="Grails" removed="false">
-          <file>file://$MODULE_DIR$/web-app/WEB-INF/applicationContext.xml</file>
-        </fileset>
-      </configuration>
-    </facet>
-    <facet type="web" name="GrailsWeb">
-      <configuration>
-        <webroots>
-          <root url="file://$MODULE_DIR$/web-app" relative="/" />
-          <root url="file://$MODULE_DIR$/grails-app/views" relative="/" />
-        </webroots>
-        <sourceRoots />
-      </configuration>
-    </facet>
-  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/grails-app/utils" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/grails-app/controllers" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/grails-app/domain" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/grails-app/services" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/grails-app/taglib" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test/unit" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/test/integration" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
-      <excludeFolder url="file://$MODULE_DIR$/web-app/plugins" />
+    <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/codenarc-0.12">
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/codenarc-0.12/target/classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/codenarc-0.12/target/test-classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/codenarc-0.12/web-app/plugins" />
+    </content>
+    <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2">
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2/src/java" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2/src/groovy" isTestSource="false" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2/target/classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2/target/test-classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2/web-app/plugins" />
+    </content>
+    <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/tomcat-1.4.0.M1">
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/tomcat-1.4.0.M1/target/classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/tomcat-1.4.0.M1/target/test-classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/tomcat-1.4.0.M1/web-app/plugins" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="grails-1.4.0.M1" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="grails-1.4.0.M1" level="application" />
     <orderEntry type="module-library" exported="">
-      <library name="Grails User Library (eliot-tice-plugin)">
+      <library name="Grails User Library (eliot-tice-plugin-grailsPlugins)">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/lib" />
+          <root url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/codenarc-0.12/lib" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.codenarc/CodeNarc/jars/CodeNarc-0.13.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/xml-resolver/xml-resolver/jars/xml-resolver-1.2.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/xerces/xercesImpl/jars/xercesImpl-2.8.1.jar!/" />
@@ -75,10 +60,9 @@
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
+        <jarDirectory url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/codenarc-0.12/lib" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="eliot-tice-plugin-grailsPlugins" />
   </component>
 </module>
 

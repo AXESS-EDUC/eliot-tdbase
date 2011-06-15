@@ -32,5 +32,9 @@ grails.project.dependency.resolution = {
                ":release:1.0.0.M2") {
             export = false
         }
+
+      compile (":codenarc:0.12") {
+        export = false
+      }
     }
 }

@@ -13,6 +13,11 @@
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
+    <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12">
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12/target/classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12/target/test-classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12/web-app/plugins" />
+    </content>
     <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tdbase/plugins/database-migration-0.2.1">
       <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tdbase/plugins/database-migration-0.2.1/src/groovy" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tdbase/plugins/database-migration-0.2.1/grails-app/controllers" isTestSource="false" />
@@ -53,27 +58,14 @@
     <orderEntry type="module-library" exported="">
       <library name="Grails User Library (eliot-tdbase-grailsPlugins)">
         <CLASSES>
+          <root url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12/lib" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.liquibase/liquibase-core/jars/liquibase-core-2.0.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.8.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.ant/ant/jars/ant-1.8.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/com.thoughtworks.qdox/qdox/jars/qdox-1.10.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.plexus/plexus-utils/jars/plexus-utils-2.0.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.sonatype.gshell/gshell-io/jars/gshell-io-2.0.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.gmaven.runtime/gmaven-runtime-api/jars/gmaven-runtime-api-1.3.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.gmaven.runtime/gmaven-runtime-support/jars/gmaven-runtime-support-1.3.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.gmaven.feature/gmaven-feature-api/jars/gmaven-feature-api-1.3.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.gmaven.feature/gmaven-feature-support/jars/gmaven-feature-support-1.3.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.gmaven.runtime/gmaven-runtime-1.7/jars/gmaven-runtime-1.7-1.3.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.lilie.services.eliot/eliot-annuaire-commons/jars/eliot-annuaire-commons-2.4.9-SNAPSHOT.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.lilie.services.eliot/eliot-scolarite-commons/jars/eliot-scolarite-commons-2.4.9-SNAPSHOT.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.slf4j/slf4j-log4j12/jars/slf4j-log4j12-1.5.8.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/commons-logging/commons-logging/jars/commons-logging-1.0.4.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/postgresql/postgresql/jars/postgresql-8.3-603.jdbc4.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.lilie.services.eliot/eliot-securite-commons/jars/eliot-securite-commons-2.4.9-SNAPSHOT.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/postgresql/postgresql/jars/postgresql-8.4-702.jdbc4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.codenarc/CodeNarc/jars/CodeNarc-0.13.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+        <jarDirectory url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12/lib" recursive="false" />
       </library>
     </orderEntry>
   </component>
