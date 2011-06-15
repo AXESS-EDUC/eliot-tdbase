@@ -36,5 +36,10 @@ grails.project.dependency.resolution = {
       compile (":codenarc:0.12") {
         export = false
       }
+
+      compile (":gmetrics:0.3.1") {
+        excludes "groovy-all"
+        export = false
+      }
     }
 }

@@ -73,6 +73,9 @@ grails.project.dependency.resolution = {
     compile ":database-migration:0.2.1"
 
     compile ":codenarc:0.12"
+    compile(":gmetrics:0.3.1") {
+      excludes "groovy-all"
+    }
 
     build ":tomcat:$grailsVersion"
   }
