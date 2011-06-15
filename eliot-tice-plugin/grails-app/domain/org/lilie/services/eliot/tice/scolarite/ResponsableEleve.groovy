@@ -26,29 +26,36 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.scolarite
 
+import org.lilie.services.eliot.tice.annuaire.Personne
+
+/**
+ * table ent.responsable_eleve
+ * @author othe
+ */
+class ResponsableEleve {
+
+  Integer responsableLegal
+  Boolean parent = true
+  Personne personne
+  Personne eleve
+  Boolean estActive = true
+  Long importId
+  Date dateDesactivation
+
+  static constraints = {
+    eleve(nullable: false)
+    personne(nullable: false)
+    responsableLegal(nullable: false)
+    importId(nullable: true)
+    dateDesactivation(nullable: true)
+  }
+
+  static mapping = {
+    table('ent.responsable_eleve')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.responsable_eleve_id_seq']
+    version false
+  }
 
 }

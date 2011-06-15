@@ -26,29 +26,35 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.annuaire
 
+/**
+ * Représente les différents sources des imports de données en base
+ * @author bahj
+ */
 
+class SourceImport {
+
+  String code
+  String libelle
+
+  // Codes des différents imports
+  public static final String AAF = 'AAF'
+  public static final String STS = 'STS'
+
+  static constraints = {
+    libelle(nullable: false, blank: false)
+    code(
+            blank: false,
+            inList: [
+                    AAF,
+                    STS
+            ]
+    )
+  }
+
+  static mapping = {
+    table 'ent.source_import'
+    version false
+  }
 }

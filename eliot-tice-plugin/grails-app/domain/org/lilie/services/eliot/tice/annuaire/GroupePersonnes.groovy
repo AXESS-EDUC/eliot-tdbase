@@ -26,29 +26,33 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.annuaire
 
+import org.lilie.services.eliot.tice.securite.DomainAutorite
+import org.lilie.services.eliot.tice.securite.DomainItem
+import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
+
+/**
+ * Classe de domaine pour les groupes de personne
+ * @author othe
+ */
+class GroupePersonnes {
+  String nom
+  boolean virtuel
+  DomainAutorite autorite
+  DomainItem item
+  ProprietesScolarite proprietesScolarite
+  
+  static constraints = {
+  }
+
+  static mapping = {
+    table('ent.groupe_personnes')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.groupe_personnes_id_seq']
+    version false
+    autorite column: 'autorite_id'
+    item column: 'item_id'
+    proprietesScolarite joinTable: [name: 'ent.propriete_scolarite', key: 'propriete_scolarite_id']
+  }
 
 }

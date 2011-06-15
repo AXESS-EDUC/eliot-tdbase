@@ -26,29 +26,21 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.annuaire
+/**
+ * @author jbui
+ */
 
+public class Civilite {
+  String libelle
 
+  static mapping = {
+    table('ent.civilite')
+    version false
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.civilite_id_seq']
+  }
+
+  static constraints = {
+    libelle(unique: true)
+  }
 }

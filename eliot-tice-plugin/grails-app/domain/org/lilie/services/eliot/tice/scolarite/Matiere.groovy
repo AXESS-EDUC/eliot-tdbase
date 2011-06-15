@@ -26,29 +26,37 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.scolarite
 
+class Matiere {
+  Long id
+  String idExterne
+  String libelleLong
+  String libelleCourt
+  String codeGestion
+  String libelleEdition
+  String codeSts
+  Etablissement etablissement
+
+  static belongsTo = [
+          etablissement: org.lilie.services.eliot.scolarite.Etablissement
+  ]
+  
+  static constraints = {
+    idExterne(nullable:true, maxSize:128)
+    codeSts nullable: true
+    libelleCourt(nullable : true)
+    libelleEdition(nullable : true)
+    codeGestion(nullable : false, blank:false)
+    etablissement(nullable: false)
+    libelleLong(nullable: false, blank:false)
+    etablissement(nullable:false)
+  }
+
+  static mapping = {
+    table('ent.matiere')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.matiere_id_seq']
+    etablissement column: 'etablissement_id'
+  }
 
 }

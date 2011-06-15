@@ -26,29 +26,19 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.securite;
 
+/**
+ * Interface décrivant le service gérant les contrôles d'accès
+ * @author franck silvestre
+ */
+public interface Permission {
 
+  public static final int PEUT_CONSULTER_CONTENU = 1;
+  public static final int PEUT_MODIFIER_CONTENU = 2;
+  public static final int PEUT_CONSULTER_PERMISSIONS = 4;
+  public static final int PEUT_MODIFIER_PERMISSIONS = 8;
+  public static final int PEUT_SUPPRIMER = 16;
+
+  public static final int MAX_VALUE = 31;
 }

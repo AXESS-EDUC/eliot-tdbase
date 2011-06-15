@@ -26,29 +26,37 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.annuaire
 
+import org.lilie.services.eliot.tice.securite.Perimetre
+
+/**
+ * table ent.porteur_ent
+ * @author othe
+ */
+class PorteurEnt {
+  String code
+  Perimetre perimetre
+  String nom
+  String nomCourt
+  String emailProjet
+  String urlRetourLogout
+  String urlAccesEnt
+
+  static constraints = {
+    code(nullable: false)
+    perimetre(nullable: false)
+    nom(nullable: true)
+    nomCourt(nullable: true)
+    emailProjet(nullable: true)
+    urlRetourLogout(nullable: true)
+    urlAccesEnt(nullable: true)
+  }
+
+  static mapping = {
+    table('ent.porteur_ent')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.porteur_ent_id_seq']
+    version false
+  }
 
 }

@@ -26,29 +26,27 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.annuaire
 
+
+
+/**
+ * Classe de domaine faisant le lien entre personne et groupe de personnes
+ * @author othe
+ */
+class AppartenancePersonneGroupe {
+  Personne personne
+  GroupePersonnes groupePersonnes
+
+  static constraints = {
+    personne(nullable: false)
+    groupePersonnes(nullable: false)
+  }
+
+  static mapping = {
+    table('ent.appartenance_personne_groupe')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.appartenance_personne_groupe_id_seq']
+    version false
+  }
 
 }

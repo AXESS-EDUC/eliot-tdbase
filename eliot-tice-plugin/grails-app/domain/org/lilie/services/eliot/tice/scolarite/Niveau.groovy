@@ -26,29 +26,29 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.scolarite
 
+/**
+ * table ent.niveau
+ * @author othe
+ */
+class Niveau {
+  String codeMefstat4
+  String libelleCourt
+  String libelleLong
+  String libelleEdition
+
+  static constraints = {
+    codeMefstat4(nullable: false)
+    libelleCourt(nullable: true)
+    libelleLong(nullable: true)
+    libelleEdition(nullable: true)
+  }
+
+  static mapping = {
+    table('ent.niveau')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.niveau_id_seq']
+    version false
+  }
 
 }

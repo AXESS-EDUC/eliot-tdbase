@@ -26,29 +26,46 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.scolarite
 
+import org.lilie.services.eliot.tice.annuaire.SourceImport
+import org.lilie.services.eliot.tice.annuaire.PorteurEnt
+
+/**
+ * Table des propriétés des groupes virtuels
+ * @author othe
+ */
+class ProprietesScolarite {
+
+  Etablissement etablissement
+  StructureEnseignement structureEnseignement
+  AnneeScolaire anneeScolaire
+  Niveau niveau
+  Matiere matiere
+  Mef mef
+  Fonction fonction
+  Boolean responsableStructureEnseignement
+  PorteurEnt porteurEnt
+  SourceImport source
+
+
+  static constraints = {
+    etablissement(nullable: true)
+    structureEnseignement(nullable: true)
+    anneeScolaire(nullable: true)
+    fonction(nullable: true)
+    niveau(nullable: true)
+    matiere(nullable: true)
+    mef(nullable: true)
+    porteurEnt(nullable: true)
+    responsableStructureEnseignement(nullable: true)
+  }
+
+  static mapping = {
+    table('ent.proprietes_scolarite')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.proprietes_scolarite_id_seq']
+    version false
+    mef column: 'mef_id'
+  }
 
 }

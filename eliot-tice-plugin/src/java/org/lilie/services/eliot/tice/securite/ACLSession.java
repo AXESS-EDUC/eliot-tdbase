@@ -26,29 +26,43 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.securite;
 
+import java.util.List;
+
+
+/**
+ * Session ACL d'un utilisateur
+ * Fournit les Autorite associées à l'utilisateur (type groupe & acteur)
+ * @author franck silvestre
+ * @author jtra
+ */
+public interface ACLSession {
+  
+  /**
+   * Méthode retournant la liste des autorités (groupe, acteur) attachée à
+   * la session
+   *
+   * @return la liste des autorités
+   */
+  public List<Autorite> getAutorites();
+
+  /**
+   * Méthode retournant l'autorité par défaut de la session courante
+   * Permet de récupérer directement l'acteur correspondant à la session par
+   * exemple
+   *
+   * @return l'autorité
+   */
+  public Autorite getDefaultAutorite();
+
+  /**
+   * Méthode retournant la liste des autorisations de la session sur l'item
+   * donné
+   *
+   * @param item l'item
+   * @return la liste des autorisations
+   */
+  public List<Autorisation> findAutorisationsOnItem(Item item);  
 
 }

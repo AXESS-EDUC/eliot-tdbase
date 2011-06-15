@@ -26,29 +26,37 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.securite;
 
+/**
+ * Interface pour désigner toute entité pouvant disposer de permissions sur des
+ * objets à accès controlés
+ * @author franck silvestre
+ */
+public interface Autorite {
+
+  public static final String TYPE_ACTEUR = "acteur";
+  public static final String TYPE_GROUPE = "groupe";
+  public static final String TYPE_ELIOT = "eliot";         
+  public static final String ENT ="ENT";
+
+  /**
+   * Méthode retournant le type de l'autorite
+   *
+   * @return le type
+   */
+  public String getType();
+
+  /**
+   * Méthode retournant l'identifiant unique sur le réseau
+   *
+   * @return l'identifiant unique sur le réseau
+   */
+  public String getIdExterne();
+
+  /**
+   * @return une chaine de caractère qui encode cette autorité
+   */
+  public String encodeAsString();
 
 }

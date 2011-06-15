@@ -26,29 +26,29 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.securite
 
+
+
+/**
+ * table securite.perimetre_securite
+ * @author othe
+ * @author franck silvestre
+ */
+class PerimetreSecurite {
+
+  DomainItem item
+  Perimetre perimetre
+
+  static constraints = {
+    item(nullable: false)
+    perimetre(nullable: false)
+  }
+
+  static mapping = {
+    table('securite.perimetre_securite')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.seq_perimetre_securite']
+    version false
+  }
 
 }

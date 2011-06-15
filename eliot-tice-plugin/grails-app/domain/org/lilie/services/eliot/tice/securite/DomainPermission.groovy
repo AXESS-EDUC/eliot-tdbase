@@ -26,29 +26,21 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.securite
 
+class DomainPermission {
+  String nom
+  int valeur
 
+  static constraints = {
+  }
+
+  String toString() {
+    "${nom} (code ${valeur})"
+  }
+
+  static mapping = {
+    table ('securite.permission')
+    id column:'id', generator: 'sequence', params: [sequence: 'securite.seq_permission']
+  }
 }

@@ -26,29 +26,39 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.scolarite
 
+/**
+ * Modalité de matiére (sous-matière).
+ * E.g. Ecrit, Oral
+ * 
+ * @author msan
+ */
+class ModaliteMatiere {
 
+  Long id
+  String code
+  String libelle
+  Etablissement etablissement
+
+  static constraints = {
+    code (nullable:false, maxSize:6)
+    libelle (nullable:false, maxSize:1024)
+    etablissement (nullable:false)
+  }
+
+  static mapping = {
+    table('ent.modalite_matiere')
+    id column: 'id',
+            generator: 'sequence',
+            params: [sequence: 'ent.modalite_matiere_id_seq']
+
+    code column: 'code'
+    libelle column: 'libelle'
+    etablissement column: 'etablissement_id'
+  }
+
+  public String toString() {
+    return "id: $id code: $code"
+  }
 }

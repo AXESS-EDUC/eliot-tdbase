@@ -26,29 +26,54 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.scolarite
 
+import org.lilie.services.eliot.tice.securite.Perimetre
+import org.lilie.services.eliot.tice.annuaire.PorteurEnt
+
+/**
+ * Représente un établissement
+ * @author msan
+ * @author jtra
+ */
+class Etablissement {
+
+  Long id
+  String nomAffichage
+  String idExterne
+  String uai
+  String codePorteurENT
+
+  Perimetre perimetre
+  PorteurEnt porteurEnt
+
+  /**
+   * Numéro de version du dernier import STS pour cet établissement
+   * 0 lorsqu'aucun import n'a été effectué pour cet établissement
+   */
+  int versionImportSts = 0
+
+  /**
+   * Date du dernier import Sts effectué pour cet établissement
+   */
+  Date dateImportSts = null
+
+  static mapping = {
+    table 'ent.etablissement'
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.etablissement_id_seq']
+    codePorteurENT column: 'code_porteur_ent'
+    cache usage: 'read-write'
+  }
+
+  static constraints = {
+    idExterne(nullable: false, maxSize: 128, unique: true)
+    uai(nullable: true)
+    nomAffichage(maxSize: 1024)
+    dateImportSts(nullable: true)
+
+    perimetre(nullable: true)
+    porteurEnt(nullable: true)
+
+  }
 
 }

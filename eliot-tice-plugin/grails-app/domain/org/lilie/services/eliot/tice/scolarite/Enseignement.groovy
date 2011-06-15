@@ -26,29 +26,54 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.scolarite
+
+import org.lilie.services.eliot.tice.securite.DomainAutorite
+
+
+
+class Enseignement implements Serializable {
+
+  DomainAutorite enseignant
+  Service service
+  Double nbHeures
+
+  /**
+   * Numéro de version de l'import STS qui a engendré la création ou la
+   * modification de cet enseignement
+   * -1 si cet enseignement n'a pas été créée durant un import STS
+   */
+  int versionImportSts = -1
+
+  /**
+   * Indique si cet enseignement existe dans les données du
+   * dernier import STS
+   * Lorsqu'un enseignement existe en base, mais pas dans les données
+   * d'un import STS, la propriété actif passe à false
+   */
+  boolean actif = true
+
+  static belongsTo = [enseignant: DomainAutorite, service: Service]
+
+  static constraints = {
+    nbHeures(nullable: true)
+    enseignant(nullable: false)
+    service(nullable: false)
+  }
+//  static hasMany = [
+//          evenements: Evenement
+//  ]
+
+  static mapping = {
+    table 'ent.rel_enseignant_service'
+    enseignant column: 'id_enseignant', fetch:'join'
+    service column: 'id_service', fetch:'join'
+    id composite: ['enseignant', 'service']
+  }
+
+  def String toString() {
+    return "Enseignant : ${enseignant?.id}, Service : ${service?.id}";
+  }
 
 
 }

@@ -26,29 +26,50 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.scolarite
+
+/**
+ * Relation service - modalité matière (sous-matière) - type période
+ * @author msan
+ */
+class SousService {
+
+  Long id
+  BigDecimal coeff
+  ModaliteMatiere modaliteMatiere
+  Service service
 
 
+  Integer ordre
+  Boolean evaluable = Boolean.FALSE
+
+  static belongsTo = [
+          service: org.lilie.services.eliot.scolarite.Service,
+          modaliteMatiere: org.lilie.services.eliot.scolarite.ModaliteMatiere
+  ]
+
+  static constraints = {
+    coeff (nullable:false)
+    modaliteMatiere (nullable:false)
+    service (nullable:false)
+    ordre (nullable:true)
+    evaluable (nullable:false)
+  }
+
+  static mapping = {
+    table('ent.sous_service')
+    id column: 'id',
+            generator: 'sequence',
+            params: [sequence: 'ent.sous_service_id_seq']
+
+    coeff column: 'coeff'
+    modaliteMatiere column: 'modalite_matiere_id'
+    service column: 'service_id'
+    ordre column:'ordre'
+    evaluable column:'evaluable'
+  }
+
+  public String toString() {
+    return "id: $id Service: $service  ModaliteMatiere: $modaliteMatiere"
+  }
 }

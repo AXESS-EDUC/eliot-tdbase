@@ -26,29 +26,24 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+package org.lilie.services.eliot.tice.securite;
 
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * @author jbui
+ */
+public class PermissionUtils {
+
+  public static List<Integer> getValeursCorrespondantes(int permission){
+    List<Integer> result = new ArrayList<Integer>();
+    for(Integer value = 1; value <= Permission.MAX_VALUE; value++){
+      if((permission & value) == permission){
+        result.add(value);
+      }
+    }
+    return result;
+  }
+  
 }
