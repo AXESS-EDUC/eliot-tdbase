@@ -117,8 +117,8 @@ public class DefaultPermissionsManager extends PermissionsManager {
     }
     // on considère que l'ajout de modification induit l'ajout de consultation
     autorisation.valeurPermissionsExplicite = autorisation.valeurPermissionsExplicite |
-            org.lilie.services.eliot.securite.Permission.PEUT_CONSULTER_CONTENU |
-            org.lilie.services.eliot.securite.Permission.PEUT_MODIFIER_CONTENU
+            Permission.PEUT_CONSULTER_CONTENU |
+            Permission.PEUT_MODIFIER_CONTENU
     autorisation.save(flush:true)
   }
 
