@@ -26,24 +26,54 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.securite;
 
-import java.util.ArrayList;
-import java.util.List;
+
+package org.lilie.services.eliot.tice.securite
 
 /**
- * @author jbui
+ * Interface pour désigner toute entité pouvant disposer de permissions sur des
+ * objets à accès controlés
+ * @author franck silvestre
  */
-public class PermissionUtils {
+public interface Autorite {
 
-  public static List<Integer> getValeursCorrespondantes(int permission){
-    List<Integer> result = new ArrayList<Integer>();
-    for(Integer value = 1; value <= Permission.MAX_VALUE; value++){
-      if((permission & value) == permission){
-        result.add(value);
-      }
-    }
-    return result;
+  /**
+   * Méthode retournant le type de l'autoritePers1
+   *
+   * @return le type
+   */
+  public String getType()
+
+
+
+  /**
+   * Méthode retournant la chaine de caractère représentant l'autorité
+   *
+   * @return la chaine de caractère représentant l'autorité
+   */
+  public String getIdentifiant()
+
+
+}
+
+/**
+ * Les types d'autorité supportés par Eliot
+ */
+enum TypeAutorite {
+
+  PERSONNE("acteur"),
+  GROUPE_PERSONNE("groupe"),
+  ELIOT("eliot"),
+  ENT("ENT")
+
+  private TypeAutorite(String libelle) {
+    this.libelle = libelle
   }
-  
+
+  private String libelle
+
+  public getLibelle() {
+    return libelle
+  }
+
 }

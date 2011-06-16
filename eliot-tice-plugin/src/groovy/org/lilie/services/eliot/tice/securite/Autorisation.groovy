@@ -26,10 +26,12 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+
 package org.lilie.services.eliot.tice.securite;
 
 /**
- * Classe représentant une autorisation : lien entre une autorite un item et les permissions de l'un
+ * Classe représentant une autorisation : lien entre une autoritePers1 un item et les permissions de l'un
  * sur l'autre
  * @author franck silvestre
  */

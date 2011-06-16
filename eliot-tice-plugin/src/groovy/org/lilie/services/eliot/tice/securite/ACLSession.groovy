@@ -26,33 +26,44 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+
 package org.lilie.services.eliot.tice.securite;
 
 import java.util.List;
 
+
 /**
- * Interface "marqueur" pour designe les objets dont l'accès est soumis à permissions
+ * Session ACL d'un utilisateur
+ * Fournit les Autorite associées à l'utilisateur (type groupe & personnes)
  * @author franck silvestre
- *
+ * @author jtra
  */
-public interface Item {
+public interface ACLSession {
+  
+  /**
+   * Méthode retournant la liste des autorités (groupe, personne) attachée à
+   * la session
+   *
+   * @return la liste des autorités
+   */
+  public List<Autorite> getAutorites()
 
-    /**
-     * L'item parent est l'Item qui fournit les autorisations par héritage
-     * à l'item courant.
-     * @return  l'item parent
-     */
-    public Item getParentItem();
+  /**
+   * Méthode retournant l'autorité par défaut de la session courante
+   * Correspond en général à l'autorité personne de l'utilisateur connecté
+   *
+   * @return l'autorité
+   */
+  public Autorite getDefaultAutorite()
 
-    /**
-     * Méthode retournant la liste de toutes les autorisations sur l'item
-     * @return la liste de toutes les autorisations sur l'item
-     */
-    public List<Autorisation> findAllAutorisations();
+  /**
+   * Méthode retournant la liste des autorisations de la session sur l'item
+   * donné
+   *
+   * @param item l'item
+   * @return la liste des autorisations
+   */
+  public List<Autorisation> findAutorisationsOnItem(Item item)
 
-    /**
-     * Méthode retournant l'identifiant de l'item
-     * @return  l'identifiant de l'item
-     */
-    public String getIdAsString();
 }

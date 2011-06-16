@@ -26,39 +26,30 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+
 package org.lilie.services.eliot.tice.securite
 
 
-import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
  * Implémentation de l'interface ACLSession utilisant l'annuaire local
  * @author jtra
  * @author franck silvestre
  */
-class DefaultACLSession  implements ACLSession {
+class DefaultACLSession implements ACLSession {
 
-  // Liste des toutes les autorités (acteur & groupe) associées à cette session
-  List<Autorite> autorites
+  // Liste des toutes les autorités (personne & groupe) associées à cette session
+  List<DomainAutorite> autorites
   DomainAutorite defaultAutorite
-  /**
-   * Construit la session ACL à partir des informations extraites de la requête & la session HTTP
-   * @param lilieHttpInfo
-   * @return
-   * @author jtra
-   */
-  DefaultACLSession(Personne personne) {
-    defaultAutorite = personne.autorite
-  }
+
 
   Autorite getDefaultAutorite() {
     return defaultAutorite
   }
 
   List<Autorite> getAutorites() {
-    throw new IllegalStateException(
-            "Cette méthode n'est pas encore supportée par l'annuaire local"
-    )
+    return autorites
   }
 
 
@@ -68,7 +59,7 @@ class DefaultACLSession  implements ACLSession {
   * @param item l'item
   * @return la liste des autorisations
   */
-  public List<Autorisation> findAutorisationsOnItem(Item item) {
+  List<Autorisation> findAutorisationsOnItem(Item item) {
     item = (DomainItem)item
     if (item.itemParent) {
       return findAutorisationsOnItem(item.itemParent)

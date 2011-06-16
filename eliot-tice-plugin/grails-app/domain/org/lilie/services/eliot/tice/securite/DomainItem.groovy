@@ -45,13 +45,13 @@ class DomainItem implements Item {
 
   static mappedBy = [itemsFils: 'itemParent']
 
-  static transients = ['idAsString', 'parentItem']
+  static transients = ['identifiant', 'parentItem']
 
 
   /**
    * @return l'id de l'item sous forme de String
    */
-  public String getIdAsString() {
+  public String getIdentifiant() {
     return id as String;
   }
 
@@ -78,38 +78,38 @@ class DomainItem implements Item {
    * Méthode retournant toutes les autorisations des groupes
    * @return la liste des autorisations
    */
-  public List<Autorisation> findAllGroupeAutorisations() {
+  public List<Autorisation> findAllGroupePersonnesAutorisations() {
      if (itemParent) {
-      return itemParent.findAllGroupeAutorisations()
+      return itemParent.findAllGroupePersonnesAutorisations()
     }
-    return findAllAutorisationsPourType(Autorite.TYPE_GROUPE)
+    return findAllAutorisationsPourType(TypeAutorite.GROUPE_PERSONNE.libelle)
   }
 
   /**
-   * Méthode retournant toutes les autorisations des acteurs
+   * Méthode retournant toutes les autorisations des personnes
    * @return la liste des autorisations
    */
-  public List<Autorisation> findAllActeurAutorisations() {
+  public List<Autorisation> findAllPersonneAutorisations() {
     if (itemParent) {
-      return itemParent.findAllActeurAutorisations()
+      return itemParent.findAllPersonneAutorisations()
     }
-    return findAllAutorisationsPourType(Autorite.TYPE_ACTEUR)
+    return findAllAutorisationsPourType(TypeAutorite.PERSONNE.libelle)
   }
 
   /**
-   * Méthode retournant toutes les autorisations des acteurs
+   * Méthode retournant toutes les autorisations des personnes propriétaires
    * @return la liste des autorisations
    */
-  public List<Autorisation> findAllActeurProprietaireAutorisations() {
+  public List<Autorisation> findAllPersonneProprietaireAutorisations() {
     if (itemParent) {
-      return itemParent.findAllActeurProprietaireAutorisations()
+      return itemParent.findAllPersonneProprietaireAutorisations()
     }
     return DomainAutorisation.withCriteria {
       and {
         eq("item", this)
         eq("proprietaire",true)
         autorite {
-          eq("type", Autorite.TYPE_ACTEUR)
+          eq("type", TypeAutorite.PERSONNE.libelle)
         }
       }
     }
@@ -121,7 +121,7 @@ class DomainItem implements Item {
    * @return la liste des autorisations
    */
 
-  private List<Autorisation> findAllAutorisationsPourType(String autoriteType) {
+  private List<Autorisation> findAllAutorisationsPourType(String autoriteType = null) {
     return DomainAutorisation.withCriteria {
       and {
         eq("item", this)

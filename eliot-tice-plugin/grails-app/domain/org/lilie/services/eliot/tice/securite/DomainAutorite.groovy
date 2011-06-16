@@ -35,7 +35,7 @@ class DomainAutorite implements Autorite {
 
   Long id
   String type
-  String idExterne
+  String identifiant
   String idSts
 
   Boolean estActive = false
@@ -45,12 +45,7 @@ class DomainAutorite implements Autorite {
   Long idEnregistrementCible
 
   static constraints = {
-    type(inList: [
-            Autorite.TYPE_ACTEUR,
-            Autorite.TYPE_GROUPE,
-            Autorite.TYPE_ELIOT
-    ]
-    )
+    type(inList: TypeAutorite.values().collect { it.libelle })
     idSts nullable: true
     dateDesactivation nullable: true
     importId nullable: true
@@ -62,6 +57,7 @@ class DomainAutorite implements Autorite {
     table('securite.autorite')
     cache true
     id column: 'id', generator: 'sequence', params: [sequence: 'securite.seq_autorite']
+    identifiant column: 'id_externe'
   }
 
 
@@ -78,7 +74,7 @@ class DomainAutorite implements Autorite {
    * Le format d'encodage est : #type,#idExterne
    */
   public String encodeAsString() {
-    return "T$type-ID$idExterne"
+    return "T$type-ID$identifiant"
   }
 
 
@@ -93,7 +89,7 @@ class DomainAutorite implements Autorite {
 
     DomainAutorite autorite = (DomainAutorite) o;
 
-    if (idExterne != autorite.idExterne) {
+    if (identifiant != autorite.identifiant) {
       return false;
     }
     if (type != autorite.type) {
@@ -107,7 +103,7 @@ class DomainAutorite implements Autorite {
     int result;
 
     result = type.hashCode();
-    result = 31 * result + idExterne.hashCode();
+    result = 31 * result + identifiant.hashCode();
     return result;
   }
 
@@ -116,7 +112,7 @@ class DomainAutorite implements Autorite {
     return "DomainAutorite{" +
             "id='" + id + '\'' +
             ", type='" + type + '\'' +
-            ", idExterne='" + idExterne + '\'' +
+            ", identifiant ='" + identifiant + '\'' +
             '}';
   }
 }

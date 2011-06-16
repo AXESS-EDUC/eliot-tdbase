@@ -57,6 +57,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="eliot-tdbase-grailsPlugins" />
+    <orderEntry type="module" module-name="eliot-tice-plugin" exported="" />
   </component>
 </module>
 

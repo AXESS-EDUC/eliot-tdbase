@@ -42,7 +42,7 @@ public class DefaultPermissionsManager extends PermissionsManager {
   private DomainAutorisation autorisation
 
   /**
-   * Créer un permissions manager pour l'item et l'autorite passés en paramètres.
+   * Créer un permissions manager pour l'item et l'autoritePers1 passés en paramètres.
    * Les permissions sont gérees par la session passée en paramètre.
    * Il faut donc que la session passée en paramètre dispose de l'autorisation de
    * modifier les permissions sur l'item
@@ -94,7 +94,7 @@ public class DefaultPermissionsManager extends PermissionsManager {
       autorisation = new DomainAutorisation(autorite: autorite, item: item)
     }
     autorisation.valeurPermissionsExplicite |= 
-            org.lilie.services.eliot.securite.Permission.PEUT_CONSULTER_CONTENU
+           Permission.PEUT_CONSULTER_CONTENU
     if(!autorisation.save(flush:true)) {
       throw new IllegalStateException(
               "L'autorisation n'a pas pu être enregistrée : ${autorisation.errors}"

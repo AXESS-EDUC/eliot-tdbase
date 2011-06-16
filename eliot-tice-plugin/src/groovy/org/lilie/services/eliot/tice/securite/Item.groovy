@@ -26,19 +26,35 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+
 package org.lilie.services.eliot.tice.securite;
 
+
+
 /**
- * Interface décrivant le service gérant les contrôles d'accès
+ * Interface "marqueur" pour designe les objets dont l'accès est soumis à permissions
  * @author franck silvestre
+ *
  */
-public interface Permission {
+public interface Item {
 
-  public static final int PEUT_CONSULTER_CONTENU = 1;
-  public static final int PEUT_MODIFIER_CONTENU = 2;
-  public static final int PEUT_CONSULTER_PERMISSIONS = 4;
-  public static final int PEUT_MODIFIER_PERMISSIONS = 8;
-  public static final int PEUT_SUPPRIMER = 16;
+    /**
+     * L'item parent est l'Item qui fournit les autorisations par héritage
+     * à l'item courant.
+     * @return  l'item parent
+     */
+    public Item getParentItem()
 
-  public static final int MAX_VALUE = 31;
+    /**
+     * Méthode retournant la liste de toutes les autorisations sur l'item
+     * @return la liste de toutes les autorisations sur l'item
+     */
+    public List<Autorisation> findAllAutorisations()
+
+    /**
+     * Méthode retournant l'identifiant de l'item
+     * @return  l'identifiant de l'item
+     */
+    public String getIdentifiant()
 }

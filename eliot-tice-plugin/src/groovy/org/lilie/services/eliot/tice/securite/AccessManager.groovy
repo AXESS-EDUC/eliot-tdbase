@@ -26,9 +26,11 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+
 package org.lilie.services.eliot.tice.securite;
 
-import java.util.List;
+
 
 /**
  * Classe permettant la gestion des accès à un item à partir d'une session
@@ -142,7 +144,7 @@ public class AccessManager {
   private boolean sessionEstTypeEliot() {
     if (sessionEstTypeEliot == null) {
       sessionEstTypeEliot = session.getDefaultAutorite().getType().equals(
-              Autorite.TYPE_ELIOT
+              TypeAutorite.ELIOT.libelle
       );
     }
     return sessionEstTypeEliot;

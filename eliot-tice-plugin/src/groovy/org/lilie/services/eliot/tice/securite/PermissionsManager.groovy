@@ -26,6 +26,8 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+
 package org.lilie.services.eliot.tice.securite;
 
 /**
@@ -124,7 +126,7 @@ public abstract class PermissionsManager {
 
     /**
      * Getter pour l'autorité
-     * @return l'autorite
+     * @return l'autoritePers1
      */
     public Autorite getAutorite() {
         return autorite;

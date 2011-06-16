@@ -34,7 +34,7 @@ package org.lilie.services.eliot.tice.securite
  *  Test la classe Item
  * @author franck silvestre
  */
-class ItemIntegrationTests extends GroovyTestCase  {
+class AutorisationIntegrationTests extends GroovyTestCase  {
 
 
   ACLSession session
@@ -42,17 +42,19 @@ class ItemIntegrationTests extends GroovyTestCase  {
   DomainAutorite autProp
   DomainAutorite aut
 
-  DomainAutorisation autOnProjetB2IForActeur1
-  DomainAutorisation autOnProjetB2IForActeur2
+  DomainAutorisation autOnProjetB2I1
+  DomainAutorisation autOnProjetB2I2
 
 
   protected void setUp() {
     super.setUp()
 
+    session = new DefaultACLSession()
 
+    autProp =  new DomainAutorite(identifiant: "autProp", type: TypeAutorite.PERSONNE.libelle).save()
+    aut =  new DomainAutorite(identifiant: "aut", type: TypeAutorite.PERSONNE.libelle).save()
 
-    autProp =  new DomainAutorite(idExterne: "autProp", type: Autorite.TYPE_ACTEUR).save()
-    aut =  new DomainAutorite(idExterne: "aut", type: Autorite.TYPE_ACTEUR).save()
+    session = new DefaultACLSession(defaultAutorite: autProp, autorites: [autProp])
 
     // initialise l'item
     projetB2I = new DomainItem(type: "PROJET")
@@ -64,8 +66,8 @@ class ItemIntegrationTests extends GroovyTestCase  {
     super.tearDown()
   }
 
-  void testFindAllActeurProprietaireAutorisations() {
-    // on créé l'autorisation pour acteur 1 , en le mettant proprietaire
+  void testFindAllPersonneProprietaireAutorisations() {
+    // on créé l'autorisation pour autoritePers1 1 , en le mettant proprietaire
     DomainAutorisation autorisationDefault = new DomainAutorisation (
             autorite: autProp,
             item: projetB2I,
@@ -79,9 +81,9 @@ class ItemIntegrationTests extends GroovyTestCase  {
     permManager2.addPermissionConsultation()
     
     DomainItem item = DomainItem.get(projetB2I.id)
-    List<Autorisation> autsProps = item.findAllActeurProprietaireAutorisations()
+    List<Autorisation> autsProps = item.findAllPersonneProprietaireAutorisations()
     assertEquals autsProps.size(),1
-    DomainAutorisation autPropFetched = autsProps.last()
+    Autorisation autPropFetched = autsProps.last()
     assertTrue autPropFetched.autoriteEstProprietaire()
   }
 

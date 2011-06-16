@@ -29,19 +29,18 @@
 package org.lilie.services.eliot.tice.securite
 
 
-import grails.test.GrailsUnitTestCase
-
 class AccessManagerTests extends GroovyTestCase {
 
   ACLSession session
   DomainItem projetB2I
-  DomainAutorisation autOnProjetB2IForActeur1
+  DomainAutorisation autorisationOnProjetB2I
+  DomainAutorite autoritePers1
 
   protected void setUp() {
     super.setUp()
 
-
-
+    autoritePers1 = new DomainAutorite(type: TypeAutorite.PERSONNE.libelle, identifiant: "PERS 1").save()
+    session = new DefaultACLSession(defaultAutorite: autoritePers1, autorites: [autoritePers1] )
     // initialise l'item
     projetB2I = new DomainItem(type: "PROJET")
     projetB2I.save()
@@ -53,15 +52,15 @@ class AccessManagerTests extends GroovyTestCase {
   }
 
   void testPeutModifierLeContenu() {
-    // on créé l'autorisation pour acteur 1
-    int val = org.lilie.services.eliot.securite.Permission.PEUT_CONSULTER_CONTENU | org.lilie.services.eliot.securite.Permission.PEUT_MODIFIER_CONTENU
-    autOnProjetB2IForActeur1 = new DomainAutorisation(
+    // on créé l'autorisation pour l'autoritePers1
+    int val = Permission.PEUT_CONSULTER_CONTENU | Permission.PEUT_MODIFIER_CONTENU
+    autorisationOnProjetB2I = new DomainAutorisation(
             autorite: session.getDefaultAutorite(),
             item: projetB2I,
             valeurPermissionsExplicite: val
     )
-    autOnProjetB2IForActeur1.save()
-    if (autOnProjetB2IForActeur1.hasErrors()) log.error autOnProjetB2IForActeur1.errors
+    autorisationOnProjetB2I.save()
+    if (autorisationOnProjetB2I.hasErrors()) log.error autorisationOnProjetB2I.errors
 
     // création de l'access manager
     AccessManager accessManager = new AccessManager(projetB2I, session)
@@ -73,14 +72,14 @@ class AccessManagerTests extends GroovyTestCase {
   }
 
   void testPeutModifierLesPermissions() {
-    // on créé l'autorisation pour acteur 1 , en le mettant proprietaire
-    autOnProjetB2IForActeur1 = new DomainAutorisation(
+    // on créé l'autorisation pour l'autorité , en le mettant proprietaire
+    autorisationOnProjetB2I = new DomainAutorisation(
             autorite: session.getDefaultAutorite(),
             item: projetB2I,
             proprietaire: true
     )
-    autOnProjetB2IForActeur1.save()
-    if (autOnProjetB2IForActeur1.hasErrors()) log.error autOnProjetB2IForActeur1.errors
+    autorisationOnProjetB2I.save()
+    if (autorisationOnProjetB2I.hasErrors()) log.error autorisationOnProjetB2I.errors
 
     // création de l'access manager
     AccessManager accessManager = new AccessManager(projetB2I, session)

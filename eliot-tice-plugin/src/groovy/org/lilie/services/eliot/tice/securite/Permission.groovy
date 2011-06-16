@@ -26,43 +26,21 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+
 package org.lilie.services.eliot.tice.securite;
 
-import java.util.List;
-
-
 /**
- * Session ACL d'un utilisateur
- * Fournit les Autorite associées à l'utilisateur (type groupe & acteur)
+ * Interface décrivant le service gérant les contrôles d'accès
  * @author franck silvestre
- * @author jtra
  */
-public interface ACLSession {
-  
-  /**
-   * Méthode retournant la liste des autorités (groupe, acteur) attachée à
-   * la session
-   *
-   * @return la liste des autorités
-   */
-  public List<Autorite> getAutorites();
+public interface Permission {
 
-  /**
-   * Méthode retournant l'autorité par défaut de la session courante
-   * Permet de récupérer directement l'acteur correspondant à la session par
-   * exemple
-   *
-   * @return l'autorité
-   */
-  public Autorite getDefaultAutorite();
+  public static final int PEUT_CONSULTER_CONTENU = 1;
+  public static final int PEUT_MODIFIER_CONTENU = 2;
+  public static final int PEUT_CONSULTER_PERMISSIONS = 4;
+  public static final int PEUT_MODIFIER_PERMISSIONS = 8;
+  public static final int PEUT_SUPPRIMER = 16;
 
-  /**
-   * Méthode retournant la liste des autorisations de la session sur l'item
-   * donné
-   *
-   * @param item l'item
-   * @return la liste des autorisations
-   */
-  public List<Autorisation> findAutorisationsOnItem(Item item);  
-
+  public static final int MAX_VALUE = 31;
 }
