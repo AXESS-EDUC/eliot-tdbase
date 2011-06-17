@@ -40,7 +40,7 @@ package org.lilie.services.eliot.tice.securite;
 public class AccessManager {
 
   private Item item;
-  private ACLSession session;
+  private AclSecuritySession session;
   private Integer permissionsOnItem;
   private Boolean sessionEstProprietaireItem;
   private Boolean sessionEstTypeEliot;
@@ -52,7 +52,7 @@ public class AccessManager {
    * @param item
    * @param session
    */
-  public AccessManager(Item item, ACLSession session) {
+  public AccessManager(Item item, AclSecuritySession session) {
     this.item = item;
     this.session = session;
   }

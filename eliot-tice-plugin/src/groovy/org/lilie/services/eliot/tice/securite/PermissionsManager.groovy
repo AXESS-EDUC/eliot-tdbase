@@ -40,7 +40,7 @@ public abstract class PermissionsManager {
 
     private Item item;
     private Autorite autorite;
-    private ACLSession session;
+    private AclSecuritySession session;
 
     /**
      * Construit un Permission Manager sur un item en contrôlant que la session
@@ -50,7 +50,7 @@ public abstract class PermissionsManager {
      * @param session
      * @throws AutorisationException
      */
-    public PermissionsManager(Item item, Autorite autorite, ACLSession session)
+    public PermissionsManager(Item item, Autorite autorite, AclSecuritySession session)
             throws AutorisationException {
         this.item = item;
         this.session = session;

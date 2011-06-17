@@ -38,14 +38,6 @@ import org.lilie.services.eliot.tice.scolarite.Regime
 
 public class Personne  {
 
-  final static def TYPES = [
-          'ELEVE',
-          'ENSEIGNANT',
-          'PERSONNEL_NON_ENSEIGNANT',
-          'PERSONNE_REL_ELEVE',
-          'INVITE',
-          'UTILISATEUR_ADMINISTRATEUR'
-  ]
 
   DomainAutorite autorite
   String nom
@@ -99,8 +91,6 @@ public class Personne  {
     regime(nullable: true)
   }
 
-  String nomAffichage() {
-    return localPersonneService.getNomAffichage(this)
-  }
+
 
 }

@@ -28,16 +28,18 @@
 
 
 
+
+
 package org.lilie.services.eliot.tice.securite
 
 
 
 /**
- * Implémentation de l'interface ACLSession utilisant l'annuaire local
+ * Implémentation de l'interface AclSecuritySession utilisant l'annuaire local
  * @author jtra
  * @author franck silvestre
  */
-class DefaultACLSession implements ACLSession {
+class DefaultAclSecuritySession implements AclSecuritySession {
 
   // Liste des toutes les autorités (personne & groupe) associées à cette session
   List<DomainAutorite> autorites

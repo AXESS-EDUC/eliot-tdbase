@@ -1,7 +1,7 @@
 package org.lilie.services.eliot.tice.scolarite
 
 /**
- * Table type_role
+ * Table fonction
  * @author othe
  */
 class Fonction {

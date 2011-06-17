@@ -52,7 +52,7 @@ public class DefaultPermissionsManager extends PermissionsManager {
    */
   DefaultPermissionsManager(Item item,
                             Autorite autorite,
-                            ACLSession session)
+                            AclSecuritySession session)
   throws AutorisationException {
     super(item, autorite, session)
     autorisation = DomainAutorisation.findByAutoriteAndItem(autorite, item)

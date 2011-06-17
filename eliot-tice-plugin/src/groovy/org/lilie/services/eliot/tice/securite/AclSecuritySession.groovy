@@ -28,6 +28,8 @@
 
 
 
+
+
 package org.lilie.services.eliot.tice.securite;
 
 import java.util.List;
@@ -39,7 +41,7 @@ import java.util.List;
  * @author franck silvestre
  * @author jtra
  */
-public interface ACLSession {
+public interface AclSecuritySession {
   
   /**
    * Méthode retournant la liste des autorités (groupe, personne) attachée à

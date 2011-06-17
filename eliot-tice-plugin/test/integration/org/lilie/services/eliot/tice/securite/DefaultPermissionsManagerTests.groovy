@@ -31,7 +31,7 @@ package org.lilie.services.eliot.tice.securite
 
 class DefaultPermissionsManagerTests extends GroovyTestCase {
 
-  ACLSession session
+  AclSecuritySession session
   DomainAutorite tousLesProfs
   DomainAutorite autorite1
   DomainItem projetB2I
@@ -45,7 +45,7 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
     // initialise la session
 
     autorite1 = new DomainAutorite(identifiant:"TEST_prof1", type: TypeAutorite.GROUPE_PERSONNE.libelle).save()
-    session = new DefaultACLSession(defaultAutorite: autorite1, autorites: [autorite1, tousLesProfs])
+    session = new DefaultAclSecuritySession(defaultAutorite: autorite1, autorites: [autorite1, tousLesProfs])
     // intialise l'autorite
     tousLesProfs = new DomainAutorite(identifiant:"TEST_tousLesProfs", type: TypeAutorite.GROUPE_PERSONNE.libelle).save()
     
