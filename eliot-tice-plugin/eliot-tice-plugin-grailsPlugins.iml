@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="web" name="GrailsWeb">
+      <configuration>
+        <webroots>
+          <root url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/jquery-1.6.1.1/web-app" relative="/" />
+          <root url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/database-migration-0.2.1/grails-app/views" relative="/" />
+        </webroots>
+        <sourceRoots />
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/codenarc-0.12">
@@ -7,17 +18,39 @@
       <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/codenarc-0.12/target/test-classes" />
       <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/codenarc-0.12/web-app/plugins" />
     </content>
+    <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/database-migration-0.2.1">
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/database-migration-0.2.1/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/database-migration-0.2.1/grails-app/controllers" isTestSource="false" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/database-migration-0.2.1/target/classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/database-migration-0.2.1/target/test-classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/database-migration-0.2.1/web-app/plugins" />
+    </content>
     <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/gmetrics-0.3.1">
       <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/gmetrics-0.3.1/target/classes" />
       <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/gmetrics-0.3.1/target/test-classes" />
       <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/gmetrics-0.3.1/web-app/plugins" />
     </content>
-    <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2">
-      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2/src/java" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2/src/groovy" isTestSource="false" />
-      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2/target/classes" />
-      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2/target/test-classes" />
-      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/release-1.0.0.M2/web-app/plugins" />
+    <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/hibernate-1.4.0.M1">
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/hibernate-1.4.0.M1/target/classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/hibernate-1.4.0.M1/target/test-classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/hibernate-1.4.0.M1/web-app/plugins" />
+    </content>
+    <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/jquery-1.6.1.1">
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/jquery-1.6.1.1/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/jquery-1.6.1.1/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/jquery-1.6.1.1/grails-app/taglib" isTestSource="false" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/jquery-1.6.1.1/target/classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/jquery-1.6.1.1/target/test-classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/jquery-1.6.1.1/web-app/plugins" />
+    </content>
+    <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/resources-1.0">
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/resources-1.0/src/java" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/resources-1.0/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/resources-1.0/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/resources-1.0/grails-app/taglib" isTestSource="false" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/resources-1.0/target/classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/resources-1.0/target/test-classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/resources-1.0/web-app/plugins" />
     </content>
     <content url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/tomcat-1.4.0.M1">
       <excludeFolder url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/tomcat-1.4.0.M1/target/classes" />
@@ -32,36 +65,7 @@
         <CLASSES>
           <root url="file://$USER_HOME$/.grails/1.4.0.M1/projects/eliot-tice-plugin/plugins/codenarc-0.12/lib" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.codenarc/CodeNarc/jars/CodeNarc-0.13.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/xml-resolver/xml-resolver/jars/xml-resolver-1.2.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/xerces/xercesImpl/jars/xercesImpl-2.8.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/net.sourceforge.nekohtml/nekohtml/jars/nekohtml-1.9.9.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/net.sf.ezmorph/ezmorph/jars/ezmorph-1.0.6.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/net.sf.json-lib/json-lib/jars/json-lib-2.3-jdk15.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.3.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.0.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.0.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.groovy.modules.http-builder/http-builder/jars/http-builder-0.5.0.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/nekohtml/nekohtml/jars/nekohtml-1.9.6.2.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/nekohtml/xercesMinimal/jars/xercesMinimal-1.9.6.2.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven.wagon/wagon-http-shared/jars/wagon-http-shared-1.0-beta-6.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven.wagon/wagon-http-lightweight/jars/wagon-http-lightweight-1.0-beta-6.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven.wagon/wagon-file/jars/wagon-file-1.0-beta-6.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven/maven-error-diagnostics/jars/maven-error-diagnostics-2.2.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven/maven-plugin-registry/jars/maven-plugin-registry-2.2.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven/maven-profile/jars/maven-profile-2.2.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven/maven-settings/jars/maven-settings-2.2.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven/maven-project/jars/maven-project-2.2.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven/maven-model/jars/maven-model-2.2.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven.wagon/wagon-provider-api/jars/wagon-provider-api-1.0-beta-6.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven/maven-repository-metadata/jars/maven-repository-metadata-2.2.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven/maven-artifact-manager/jars/maven-artifact-manager-2.2.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven/maven-artifact/jars/maven-artifact-2.2.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.plexus/plexus-interpolation/jars/plexus-interpolation-1.11.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.plexus/plexus-utils/jars/plexus-utils-1.5.15.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.plexus/plexus-container-default/jars/plexus-container-default-1.0-alpha-9-stable-1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/classworlds/classworlds/jars/classworlds-1.1-alpha-2.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/ant/ant/jars/ant-1.6.5.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.maven/maven-ant-tasks/jars/maven-ant-tasks-2.1.0.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/log4j/log4j/jars/log4j-1.2.13.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.7.1.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.ant/ant/jars/ant-1.7.1.jar!/" />

@@ -22,3 +22,16 @@ log4j = {
 
     warn   'org.mortbay.log'
 }
+
+// cas is not activated by default
+//grails.plugins.springsecurity.cas.active = false
+//grails.plugins.springsecurity.cas.loginUri = '/login'
+//grails.plugins.springsecurity.cas.serviceUrl = 'http://localhost:8080/your-app-name/j_spring_cas_security_check'
+//grails.plugins.springsecurity.cas.serverUrlPrefix = 'https://your-cas-server/cas'
+//grails.plugins.springsecurity.cas.proxyCallbackUrl = 'http://localhost:8080/your-app-name/secure/receptor'
+//grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
+
+// Added by the Spring Security Core plugin:
+//grails.plugins.springsecurity.userLookup.userDomainClassName = 'org.lilie.services.eliot.tice.temp.User'
+//grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'org.lilie.services.eliot.tice.temp.UserRole'
+//grails.plugins.springsecurity.authority.className = 'org.lilie.services.eliot.tice.temp.Role'

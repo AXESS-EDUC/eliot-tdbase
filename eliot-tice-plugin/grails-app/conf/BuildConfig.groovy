@@ -30,7 +30,6 @@ grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 
-
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 grails.project.dependency.resolution = {
@@ -64,6 +63,8 @@ grails.project.dependency.resolution = {
       export = false
     }
 
+    compile(":spring-security-core:1.1.3")
+    //compile(":spring-security-cas:1.0.2")
 
     compile(":codenarc:0.12") {
       export = false

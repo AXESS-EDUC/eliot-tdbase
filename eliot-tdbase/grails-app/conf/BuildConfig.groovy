@@ -74,6 +74,8 @@ grails.project.dependency.resolution = {
     compile ":resources:1.0"
     compile ":database-migration:0.2.1"
 
+    compile(":spring-security-core:1.1.3")
+
     compile ":codenarc:0.12"
     compile(":gmetrics:0.3.1") {
       excludes "groovy-all"

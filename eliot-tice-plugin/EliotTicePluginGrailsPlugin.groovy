@@ -38,7 +38,7 @@ class EliotTicePluginGrailsPlugin {
           "grails-app/views/error.gsp"
   ]
 
-  def title = "Eliot Tice Plugin" // Headline display name of the plugin
+  def title = "Eliot Tice Plugin"
   def author = "Franck Silvestre"
   def authorEmail = ""
   def description = '''\
@@ -46,7 +46,7 @@ Plugin pour la création d'applications Eliot
 '''
 
   // URL to the plugin's documentation
-  def documentation = "http://grails.org/plugin/eliot-tice-plugin"
+  //def documentation = "http://grails.org/plugin/eliot-tice-plugin"
 
   // Extra (optional) plugin metadata
   //
