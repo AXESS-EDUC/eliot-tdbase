@@ -28,7 +28,11 @@
 
 package org.lilie.services.eliot.tice.securite
 
-
+import org.lilie.services.eliot.tice.securite.acl.DefaultPermissionsManager
+import org.lilie.services.eliot.tice.securite.acl.DefaultAclSecuritySession
+import org.lilie.services.eliot.tice.securite.acl.Autorisation
+import org.lilie.services.eliot.tice.securite.acl.AclSecuritySession
+import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
 
 /**
  *  Test la classe Item

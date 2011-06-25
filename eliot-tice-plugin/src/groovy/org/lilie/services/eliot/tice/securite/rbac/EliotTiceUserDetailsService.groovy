@@ -26,53 +26,35 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+package org.lilie.services.eliot.tice.securite.rbac
 
-
-
-
-package org.lilie.services.eliot.tice.securite
-
-
+import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUserDetailsService
+import org.springframework.security.core.authority.GrantedAuthorityImpl
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 
 /**
- * Implémentation de l'interface AclSecuritySession utilisant l'annuaire local
- * @author jtra
- * @author franck silvestre
+ * 
+ * @author franck Silvestre
  */
-class DefaultAclSecuritySession implements AclSecuritySession {
+class EliotTiceUserDetailsService implements GrailsUserDetailsService {
 
-  // Liste des toutes les autorités (personne & groupe) associées à cette session
-  List<DomainAutorite> autorites
-  DomainAutorite defaultAutorite
+/**
+    * Some Spring Security classes (e.g. RoleHierarchyVoter) expect at least one role, so
+    * we give a user with no granted roles this one which gets past that restriction but
+    * doesn't grant anything.
+    */
+   static final List NO_ROLES = [new GrantedAuthorityImpl(SpringSecurityUtils.NO_ROLE)]
 
+   UserDetails loadUserByUsername(String username, boolean loadRoles)
+            throws UsernameNotFoundException {
+      return loadUserByUsername(username)
+   }
 
-  Autorite getDefaultAutorite() {
-    return defaultAutorite
-  }
-
-  List<Autorite> getAutorites() {
-    return autorites
-  }
-
-
-  /**
-  * Méthode retournant la liste des autorisations de la session sur l'item donné
-  *
-  * @param item l'item
-  * @return la liste des autorisations
-  */
-  List<Autorisation> findAutorisationsOnItem(Item item) {
-    item = (DomainItem)item
-    if (item.itemParent) {
-      return findAutorisationsOnItem(item.itemParent)
-    }
-    def autorisations = DomainAutorisation.withCriteria {
-      eq("item", item)
-      and {
-        'in'("autorite", autorites)
-      }
-    }
-    return (List<Autorisation>) autorisations
-  }
+   UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+     // todo à implémenter
+      return null
+   }
 
 }

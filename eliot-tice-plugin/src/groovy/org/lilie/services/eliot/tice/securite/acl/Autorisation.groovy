@@ -28,7 +28,7 @@
 
 
 
-package org.lilie.services.eliot.tice.securite;
+package org.lilie.services.eliot.tice.securite.acl;
 
 /**
  * Classe représentant une autorisation : lien entre une autoritePers1 un item et les permissions de l'un

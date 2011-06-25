@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/eliot-tdbase/eliot-tdbase.iml" filepath="$PROJECT_DIR$/eliot-tdbase/eliot-tdbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eliot-tdbase/eliot-tdbase-grailsPlugins.iml" filepath="$PROJECT_DIR$/eliot-tdbase/eliot-tdbase-grailsPlugins.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eliot-tice-plugin/eliot-tice-plugin.iml" filepath="$PROJECT_DIR$/eliot-tice-plugin/eliot-tice-plugin.iml" />
+    </modules>
+  </component>
+</project>
+

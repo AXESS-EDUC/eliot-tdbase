@@ -26,8 +26,9 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.securite
+package org.lilie.services.eliot.tice.securite.acl
 
+import org.lilie.services.eliot.tice.securite.DomainAutorisation
 
 /**
  *  Classe fournissant la gestion des permissions pour un item donné par une

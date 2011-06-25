@@ -30,10 +30,7 @@
 
 
 
-package org.lilie.services.eliot.tice.securite;
-
-import java.util.List;
-
+package org.lilie.services.eliot.tice.securite.acl;
 
 /**
  * Session ACL d'un utilisateur

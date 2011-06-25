@@ -26,35 +26,35 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.securite.springsecurity
 
-import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUserDetailsService
-import org.springframework.security.core.authority.GrantedAuthorityImpl
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+
+package org.lilie.services.eliot.tice.securite.acl;
+
+
 
 /**
- * 
- * @author franck Silvestre
+ * Interface "marqueur" pour designe les objets dont l'accès est soumis à permissions
+ * @author franck silvestre
+ *
  */
-class EliotTiceUserDetailsService implements GrailsUserDetailsService {
+public interface Item {
 
-/**
-    * Some Spring Security classes (e.g. RoleHierarchyVoter) expect at least one role, so
-    * we give a user with no granted roles this one which gets past that restriction but
-    * doesn't grant anything.
-    */
-   static final List NO_ROLES = [new GrantedAuthorityImpl(SpringSecurityUtils.NO_ROLE)]
+    /**
+     * L'item parent est l'Item qui fournit les autorisations par héritage
+     * à l'item courant.
+     * @return  l'item parent
+     */
+    public Item getParentItem()
 
-   UserDetails loadUserByUsername(String username, boolean loadRoles)
-            throws UsernameNotFoundException {
-      return loadUserByUsername(username)
-   }
+    /**
+     * Méthode retournant la liste de toutes les autorisations sur l'item
+     * @return la liste de toutes les autorisations sur l'item
+     */
+    public List<Autorisation> findAllAutorisations()
 
-   UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-     // todo à implémenter
-      return null
-   }
-
+    /**
+     * Méthode retournant l'identifiant de l'item
+     * @return  l'identifiant de l'item
+     */
+    public String getIdentifiant()
 }

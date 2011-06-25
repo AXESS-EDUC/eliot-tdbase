@@ -28,6 +28,12 @@
 
 package org.lilie.services.eliot.tice.securite
 
+import org.lilie.services.eliot.tice.securite.acl.AccessManager
+import org.lilie.services.eliot.tice.securite.acl.DefaultAclSecuritySession
+import org.lilie.services.eliot.tice.securite.acl.AclSecuritySession
+import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
+import org.lilie.services.eliot.tice.securite.acl.Permission
+
 
 class AccessManagerTests extends GroovyTestCase {
 

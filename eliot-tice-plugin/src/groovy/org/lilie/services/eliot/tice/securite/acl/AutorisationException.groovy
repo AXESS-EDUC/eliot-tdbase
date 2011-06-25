@@ -28,7 +28,7 @@
 
 
 
-package org.lilie.services.eliot.tice.securite;
+package org.lilie.services.eliot.tice.securite.acl;
 
 /**
  * Classe représantant une erreur due à un manque d'autorisation

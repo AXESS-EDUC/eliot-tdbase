@@ -28,19 +28,53 @@
 
 
 
-package org.lilie.services.eliot.tice.securite;
+
+
+package org.lilie.services.eliot.tice.securite.acl
+
+import org.lilie.services.eliot.tice.securite.DomainAutorite
+import org.lilie.services.eliot.tice.securite.DomainItem
+import org.lilie.services.eliot.tice.securite.DomainAutorisation
 
 /**
- * Interface décrivant le service gérant les contrôles d'accès
+ * Implémentation de l'interface AclSecuritySession utilisant l'annuaire local
+ * @author jtra
  * @author franck silvestre
  */
-public interface Permission {
+class DefaultAclSecuritySession implements AclSecuritySession {
 
-  public static final int PEUT_CONSULTER_CONTENU = 1;
-  public static final int PEUT_MODIFIER_CONTENU = 2;
-  public static final int PEUT_CONSULTER_PERMISSIONS = 4;
-  public static final int PEUT_MODIFIER_PERMISSIONS = 8;
-  public static final int PEUT_SUPPRIMER = 16;
+  // Liste des toutes les autorités (personne & groupe) associées à cette session
+  List<DomainAutorite> autorites
+  DomainAutorite defaultAutorite
 
-  public static final int MAX_VALUE = 31;
+
+  Autorite getDefaultAutorite() {
+    return defaultAutorite
+  }
+
+  List<Autorite> getAutorites() {
+    return autorites
+  }
+
+
+  /**
+  * Méthode retournant la liste des autorisations de la session sur l'item donné
+  *
+  * @param item l'item
+  * @return la liste des autorisations
+  */
+  List<Autorisation> findAutorisationsOnItem(Item item) {
+    item = (DomainItem)item
+    if (item.itemParent) {
+      return findAutorisationsOnItem(item.itemParent)
+    }
+    def autorisations = DomainAutorisation.withCriteria {
+      eq("item", item)
+      and {
+        'in'("autorite", autorites)
+      }
+    }
+    return (List<Autorisation>) autorisations
+  }
+
 }

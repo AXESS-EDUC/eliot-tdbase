@@ -28,6 +28,9 @@
 
 package org.lilie.services.eliot.tice.securite
 
+import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
+import org.lilie.services.eliot.tice.securite.acl.Autorite
+
 
 class DomainAutorite implements Autorite {
 

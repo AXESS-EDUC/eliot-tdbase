@@ -27,6 +27,12 @@
  */
 
 package org.lilie.services.eliot.tice.securite
+
+import org.lilie.services.eliot.tice.securite.acl.Permission
+import org.lilie.services.eliot.tice.securite.acl.Autorisation
+import org.lilie.services.eliot.tice.securite.acl.Item
+import org.lilie.services.eliot.tice.securite.acl.Autorite
+
 class DomainAutorisation implements Autorisation {
 
   DomainItem item

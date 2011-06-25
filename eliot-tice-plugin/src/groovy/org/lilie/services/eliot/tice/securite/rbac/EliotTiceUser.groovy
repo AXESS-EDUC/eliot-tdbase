@@ -26,7 +26,7 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.securite.springsecurity
+package org.lilie.services.eliot.tice.securite.rbac
 
 import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
 import org.springframework.security.core.GrantedAuthority

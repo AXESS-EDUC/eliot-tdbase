@@ -23,6 +23,10 @@ log4j = {
     warn   'org.mortbay.log'
 }
 
+grails.plugin.databasemigration.changelogFileName =  "changelog.xml"
+grails.plugin.databasemigration.updateOnStart = false
+grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.xml']
+
 // cas is not activated by default
 //grails.plugins.springsecurity.cas.active = false
 //grails.plugins.springsecurity.cas.loginUri = '/login'

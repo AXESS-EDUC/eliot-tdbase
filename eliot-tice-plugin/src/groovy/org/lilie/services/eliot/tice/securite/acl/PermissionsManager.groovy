@@ -28,7 +28,7 @@
 
 
 
-package org.lilie.services.eliot.tice.securite;
+package org.lilie.services.eliot.tice.securite.acl;
 
 /**
  * Classe permettant la gestion des permissions sur un item
