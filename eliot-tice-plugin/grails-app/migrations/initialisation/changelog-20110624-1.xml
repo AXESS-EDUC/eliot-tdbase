@@ -32,6 +32,11 @@
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-    <include file="initialisation/changelog-20110624-1.xml"/>
+    <changeSet id="0" author="fsil">
+        <comment>
+            Initialisation du schéma
+        </comment>
+        <sqlFile path="initialisation/eliot-scolarite-2.5.0-SNAPHOT-20110625.sql" stripComments="true"/>
+    </changeSet>
 
 </databaseChangeLog>
