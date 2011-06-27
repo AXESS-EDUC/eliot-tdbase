@@ -58,6 +58,20 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
 
   UtilisateurService defaultUtilisateurService
 
+  void testCacheAndGet() {
+     Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
+            UTILISATEUR_1_LOGIN,
+            UTILISATEUR_1_PASSWORD,
+            UTILISATEUR_1_NOM,
+            UTILISATEUR_1_PRENOM
+    )
+
+    Personne personne1 = Personne.get(utilisateur1.personneId)
+
+    assertEquals(utilisateur1.autoriteId, personne1.autorite.id)
+
+  }
+
   void testCreateUtilisateur() {
 
     Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
@@ -300,6 +314,8 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
     assertEquals(utilisateur2, allUtilisateurs.first())
 
   }
+
+
 
 
 }
