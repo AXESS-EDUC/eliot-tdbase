@@ -64,6 +64,20 @@ public interface UtilisateurService {
    */
   Utilisateur findUtilisateur(String loginOrLoginAlias)
 
+  /**
+   * Retourne la liste des utilisateurs correspondants aux critères spécifiés
+   * @param patternNom
+   * @param patternPrenom
+   * @param dateAvantNaissance
+   * @param dateApresNaissance
+   * @param paginationAndSortingSpec une map spécifiant la pagination et l'ordre
+   * de tri. exemple : [sort: "nom", order:"asc", offset:10, max:20]
+   * @return
+   */
+  List<Utilisateur> findUtilisateurs(String patternNom, String patternPrenom,
+                                     Date dateAvantNaissance, Date dateApresNaissance,
+                                     Map paginationAndSortingSpec
+  )
 
   /**
    * Met à jour l'alias de login de l'utilisateur caractérisé par le login passé

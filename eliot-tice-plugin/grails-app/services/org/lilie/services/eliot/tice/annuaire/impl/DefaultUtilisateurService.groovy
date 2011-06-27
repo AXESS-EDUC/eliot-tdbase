@@ -105,7 +105,7 @@ class DefaultUtilisateurService implements UtilisateurService {
             personne: personne
     ).save(failOnError: true, flush: true)
 
-    return UtilisateurForCompteUtilisateur(compteUtilisateur)
+    return utilisateurForCompteUtilisateur(compteUtilisateur)
 
   }
 
@@ -131,7 +131,7 @@ class DefaultUtilisateurService implements UtilisateurService {
       return null
     }
 
-    return UtilisateurForCompteUtilisateur(compteUtilisateur)
+    return utilisateurForCompteUtilisateur(compteUtilisateur)
   }
 
   /**
@@ -205,7 +205,7 @@ class DefaultUtilisateurService implements UtilisateurService {
     compteUtilisateur.compteActive = false
     compteUtilisateur.save(failOnError: true)
 
-    return UtilisateurForCompteUtilisateur(compteUtilisateur)
+    return utilisateurForCompteUtilisateur(compteUtilisateur)
 
   }
 
@@ -238,7 +238,7 @@ class DefaultUtilisateurService implements UtilisateurService {
       compteUtilisateur.save(failOnError: true)
     }
 
-    return UtilisateurForCompteUtilisateur(compteUtilisateur)
+    return utilisateurForCompteUtilisateur(compteUtilisateur)
   }
 
   /**
@@ -285,9 +285,59 @@ class DefaultUtilisateurService implements UtilisateurService {
     if (personne.dateNaissance != utilisateur.dateNaissance) {
       personne.dateNaissance = utilisateur.dateNaissance
     }
-    personne.save(failOnError:true)
+    personne.save(failOnError: true)
 
-    return UtilisateurForCompteUtilisateur(compteUtilisateur)
+    return utilisateurForCompteUtilisateur(compteUtilisateur)
+  }
+
+  /**
+   *
+   * @see UtilisateurService
+   */
+  List<Utilisateur> findUtilisateurs(String patternNom,
+                                     String patternPrenom,
+                                     Date dateAvantNaissance,
+                                     Date dateApresNaissance,
+                                     Map paginationAndSortingSpec = null) {
+    def criteria = CompteUtilisateur.createCriteria()
+    List<CompteUtilisateur> compteUtilisateurs = criteria.list {
+      personne {
+        if (patternNom) {
+          like "nomNormalise", "%${StringUtils.normalise(patternNom)}%"
+        }
+        if (patternPrenom) {
+          like "prenomNormalise", "%${StringUtils.normalise(patternPrenom)}%"
+        }
+        if (dateAvantNaissance) {
+          ge "dateNaissance", dateAvantNaissance
+        }
+        if (dateApresNaissance) {
+          le "dateNaissance", dateApresNaissance
+        }
+        if (paginationAndSortingSpec) {
+          def sortArg = paginationAndSortingSpec['sort'] ?: 'nom'
+          def orderArg = paginationAndSortingSpec['order'] ?: 'asc'
+          if (sortArg) {
+            order "${sortArg}", orderArg
+          }
+        }
+      }
+      if (paginationAndSortingSpec) {
+        def maxArg = paginationAndSortingSpec['max']
+        if (maxArg) {
+          maxResults maxArg
+        }
+        def offsetArg = paginationAndSortingSpec['offset']
+        if (offsetArg) {
+          firstResult offsetArg
+        }
+      }
+    }
+    def utilisateurs = []
+    for (CompteUtilisateur compteUtilisateur: compteUtilisateurs) {
+      utilisateurs << utilisateurForCompteUtilisateur(compteUtilisateur)
+    }
+    return utilisateurs
   }
 
   // -------------- private methods --------------------------------------------
@@ -306,7 +356,7 @@ class DefaultUtilisateurService implements UtilisateurService {
    * @param compteUtilisateur le compte utilisateur
    * @return l'utilisateur
    */
-  private Utilisateur UtilisateurForCompteUtilisateur(CompteUtilisateur compteUtilisateur) {
+  private Utilisateur utilisateurForCompteUtilisateur(CompteUtilisateur compteUtilisateur) {
     // creer l'utilisateur à retourner
 
     Personne personne = compteUtilisateur.personne

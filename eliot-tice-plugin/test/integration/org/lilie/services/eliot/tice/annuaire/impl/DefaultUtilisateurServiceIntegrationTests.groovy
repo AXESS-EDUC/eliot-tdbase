@@ -189,7 +189,7 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
   }
 
   void testUpdateUtilisateur() {
-     Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
+    Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
             UTILISATEUR_1_LOGIN,
             UTILISATEUR_1_PASSWORD,
             UTILISATEUR_1_NOM,
@@ -201,11 +201,103 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
     utilisateur1.dateNaissance = new Date().parse("d/M/yyyy", "21/3/1972")
 
     Utilisateur copieUtilisateur1 = defaultUtilisateurService.updateUtilisateur(
-            UTILISATEUR_1_LOGIN,utilisateur1)
+            UTILISATEUR_1_LOGIN, utilisateur1)
 
     assertNotNull(copieUtilisateur1.email)
     assertNotNull(copieUtilisateur1.dateNaissance)
     assertEquals(UTILISATEUR_2_NOM, copieUtilisateur1.nom)
+
+  }
+
+  void testFindUtilisateurs() {
+    Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
+            "log1",
+            "password1",
+            "a_Aeàè",
+            "Zoé",
+            null,
+            new Date().parse("d/M/yyyy", "21/3/1972")
+    )
+    Utilisateur utilisateur2 = defaultUtilisateurService.createUtilisateur(
+            "log2",
+            "password2",
+            "b_Aebb",
+            "Zou",
+            null,
+            new Date().parse("d/M/yyyy", "21/3/1982")
+    )
+    Utilisateur utilisateur3 = defaultUtilisateurService.createUtilisateur(
+            "log3",
+            "password3",
+            "c_Ëolien",
+            "VENTOUX",
+            null,
+            new Date().parse("d/M/yyyy", "21/3/1992")
+    )
+    Utilisateur utilisateur4 = defaultUtilisateurService.createUtilisateur(
+            "log4",
+            "password4",
+            "d_Cîrconflêxe",
+            "ÀGRAVE",
+            null,
+            new Date().parse("d/M/yyyy", "21/3/2002")
+    )
+
+    // test récup complète
+    def allUtilisateurs = defaultUtilisateurService.findUtilisateurs(
+            null, null, null, null)
+
+    assertEquals(4, allUtilisateurs.size())
+
+    // test pagination et sort ordering
+    allUtilisateurs = defaultUtilisateurService.findUtilisateurs(
+            null, null, null, null, [max: 2, offset: 2, sort: 'nom', order: 'desc'])
+
+
+    assertEquals(2, allUtilisateurs.size())
+    assertEquals utilisateur2, allUtilisateurs.get(0)
+    assertEquals utilisateur1, allUtilisateurs.get(1)
+
+    // test la normalisation
+    allUtilisateurs = defaultUtilisateurService.findUtilisateurs(
+            "eol", null, null, null)
+    // log.info(allUtilisateurs.toListString())
+    assertEquals(1, allUtilisateurs.size())
+    assertEquals(utilisateur3, allUtilisateurs.last())
+
+    allUtilisateurs = defaultUtilisateurService.findUtilisateurs(
+            "ae", null, null, null)
+    //log.info(allUtilisateurs.toListString())
+    assertEquals(2, allUtilisateurs.size())
+    assertEquals(utilisateur2, allUtilisateurs.last())
+
+    allUtilisateurs = defaultUtilisateurService.findUtilisateurs(
+            "cir", "ag", null, null)
+    // log.info(allUtilisateurs.toListString())
+    assertEquals(1, allUtilisateurs.size())
+    assertEquals(utilisateur4, allUtilisateurs.last())
+
+    // test dates
+    allUtilisateurs = defaultUtilisateurService.findUtilisateurs(
+            null, null, new Date().parse("d/M/yyyy", "21/3/1973"), null)
+    // log.info(allUtilisateurs.toListString())
+    assertEquals(3, allUtilisateurs.size())
+    assertEquals(utilisateur4, allUtilisateurs.last())
+
+    // test dates
+    allUtilisateurs = defaultUtilisateurService.findUtilisateurs(
+            null, null, null, new Date().parse("d/M/yyyy", "21/3/2001"))
+    // log.info(allUtilisateurs.toListString())
+    assertEquals(3, allUtilisateurs.size())
+    assertEquals(utilisateur3, allUtilisateurs.last())
+
+    allUtilisateurs = defaultUtilisateurService.findUtilisateurs(
+            null, null,
+            new Date().parse("d/M/yyyy", "21/3/1973"),
+            new Date().parse("d/M/yyyy", "21/3/2001"))
+    // log.info(allUtilisateurs.toListString())
+    assertEquals(2, allUtilisateurs.size())
+    assertEquals(utilisateur2, allUtilisateurs.first())
 
   }
 

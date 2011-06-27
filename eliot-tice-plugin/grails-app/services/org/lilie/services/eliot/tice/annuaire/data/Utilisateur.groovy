@@ -28,10 +28,15 @@
 
 package org.lilie.services.eliot.tice.annuaire.data
 
+import groovy.transform.ToString
+import groovy.transform.EqualsAndHashCode
+
 /**
  * Classe représentant un utilisateur
  * @author franck Silvestre
  */
+@ToString(includeNames = true, includeFields=true)
+@EqualsAndHashCode(excludes = 'dateDerniereConnexion compteActive compteExpire compteVerrouille passwordExpire' )
 class Utilisateur {
 
   // information compte utilisateur
