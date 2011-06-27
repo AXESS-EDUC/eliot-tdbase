@@ -123,6 +123,75 @@ class DefaultUtilisateurService implements UtilisateurService{
 
   }
 
+  /**
+   * @see UtilisateurService
+   */
+  Utilisateur findUtilisateur(String login) {
+    // cherche le compte utilisateur avec personne et autorite associée
+    def criteria = CompteUtilisateur.createCriteria()
+    CompteUtilisateur compteUtilisateur = criteria.get {
+      or {
+        eq 'login', login
+        eq 'loginAlias', login
+      }
+      join 'personne'
+      join 'personne.autorite'
+    }
+    if (!compteUtilisateur) {
+      return null
+    }
+
+    // creer l'utilisateur à retourner
+
+    Personne personne = compteUtilisateur.personne
+    DomainAutorite autorite = personne.autorite
+
+    Utilisateur utilisateur = new Utilisateur (
+            login: compteUtilisateur.login,
+            loginAlias: compteUtilisateur.loginAlias,
+            password: compteUtilisateur.password,
+            dateDerniereConnexion: compteUtilisateur.dateDerniereConnexion,
+            compteActive: compteUtilisateur.compteActive,
+            compteExpire: compteUtilisateur.compteExpire,
+            compteVerrouille: compteUtilisateur.compteVerrouille,
+            passwordExpire: compteUtilisateur.passwordExpire,
+            compteUtilisateurId: compteUtilisateur.id,
+            nom: personne.nom,
+            prenom: personne.prenom,
+            dateNaissance: personne.dateNaissance,
+            email: personne.email,
+            sexe: personne.sexe,
+            personneId: personne.id,
+            autoriteId: autorite.id
+    )
+
+    return utilisateur
+  }
+
+  /**
+   *
+   * @see UtilisateurService
+   */
+  @Transactional
+  void setAliasLogin(String login, String aliasLogin) {
+     // cherche le compte utilisateur avec personne et autorite associée
+    CompteUtilisateur compteUtilisateur = CompteUtilisateur.findByLoginOrLoginAlias(
+            login,
+            login)
+    if (compteUtilisateur == null) {
+      throw new IllegalStateException(
+              "Pas d'utilisateur ayant pour login ou alias de login : ${login}")
+    }
+    compteUtilisateur.loginAlias = aliasLogin
+    compteUtilisateur.save(failOnError:true)
+  }
+
+  // -------------- private methods --------------------------------------------
+
+  /**
+   * Retourne le nom de l'entitité personne
+   * @return le nom de l'entité personne
+   */
   private getPersonneNomEntite() {
     ClassMetadata metaData = sessionFactory.getClassMetadata(Personne.class)
     metaData.tableName

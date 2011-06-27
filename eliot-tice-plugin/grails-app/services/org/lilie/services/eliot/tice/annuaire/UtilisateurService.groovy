@@ -53,4 +53,23 @@ public interface UtilisateurService {
           String prenom,
           String email,
           Date dateNaissance)
+
+  /**
+   * Recherche l'utilisateur correspondant au  login ou alias de login passé
+   * en paramètre
+   *
+   * @param loginOrLoginAlias le login ou l'alias de login de l'utilisateur
+   * recherché
+   * @return  l'utilisateur trouvé ou null
+   */
+  Utilisateur findUtilisateur(String loginOrLoginAlias)
+
+  /**
+   * Met à jour l'alias de login de l'utilisateur caractérisé par le login passé
+   * en paramètre
+   * @param loginOrLoginAlias le login ou l'alias de login de l'utilisateur
+   * @param aliasLogin  l'alias du login de l'utilisateur concerné
+   */
+  void setAliasLogin(String loginOrLoginAlias, String loginAlias)
+
 }

@@ -42,16 +42,24 @@ import org.lilie.services.eliot.tice.securite.CompteUtilisateur
  */
 class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase  {
 
+  private static final String UTILISATEUR_1_LOGIN = "mary.dupond"
+  private static final String UTILISATEUR_1_PASSWORD = "password"
+  private static final String UTILISATEUR_1_NOM = "dupond"
+  private static final String UTILISATEUR_1_PRENOM = "mary"
+  private static final String NO_USER_LOGIN = "NO_USER_LOGIN"
+  private static final String UTILISATEUR_1_LOGIN_ALIAS = "mary.d"
+
+
   UtilisateurService defaultUtilisateurService
 
   void testCreateUtilisateur() {
 
     Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
-           "mary.dupond",
-           "pwdww1",
-            "dupond",
-            "mary",
-            "mary.dupont@ticetime.com",
+           UTILISATEUR_1_LOGIN,
+           UTILISATEUR_1_PASSWORD,
+           UTILISATEUR_1_NOM,
+           UTILISATEUR_1_PRENOM,
+            null,
             new Date().parse("d/M/yyyy","21/3/1972")
     )
 
@@ -74,5 +82,35 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase  {
   }
 
 
+  void testFindUtilisateur() {
+    Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
+            UTILISATEUR_1_LOGIN,
+            UTILISATEUR_1_PASSWORD,
+            UTILISATEUR_1_NOM,
+            UTILISATEUR_1_PRENOM
+    )
+
+    def utilisateurNotFind = defaultUtilisateurService.findUtilisateur(NO_USER_LOGIN)
+    assertNull(utilisateurNotFind)
+
+    def utilisateur1Copie = defaultUtilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
+    assertNotNull(utilisateur1Copie)
+
+    assertEquals(UTILISATEUR_1_NOM, utilisateur1Copie.nom)
+    assertNotNull(utilisateur1Copie.autoriteId)
+    assertEquals(UTILISATEUR_1_LOGIN, utilisateur1Copie.login)
+    assertNull(utilisateur1Copie.loginAlias)
+
+    defaultUtilisateurService.setAliasLogin(UTILISATEUR_1_LOGIN, UTILISATEUR_1_LOGIN_ALIAS)
+
+    def utilisateur1Copie2 = defaultUtilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN_ALIAS)
+    assertNotNull(utilisateur1Copie2)
+
+    assertEquals(UTILISATEUR_1_NOM, utilisateur1Copie2.nom)
+    assertNotNull(utilisateur1Copie2.autoriteId)
+    assertEquals(UTILISATEUR_1_LOGIN, utilisateur1Copie2.login)
+    assertEquals(UTILISATEUR_1_LOGIN_ALIAS,utilisateur1Copie2.loginAlias)
+
+  }
 
 }
