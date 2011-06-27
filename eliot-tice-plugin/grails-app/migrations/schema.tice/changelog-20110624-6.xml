@@ -120,4 +120,15 @@
                         startValue="100"/>
     </changeSet>
 
+    <changeSet id="4" author="fsil">
+        <comment>
+            Ajout de l'index sur la clé étrangère personne_id
+        </comment>
+        <createIndex tableName="compte_utilisateur"
+                     schemaName="tice"
+                     indexName="idx_compte_utilisateur_personne_id">
+            <column name="personne_id"/>
+        </createIndex>
+    </changeSet>
+
 </databaseChangeLog>
