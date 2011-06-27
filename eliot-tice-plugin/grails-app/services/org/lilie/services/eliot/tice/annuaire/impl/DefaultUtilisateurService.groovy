@@ -206,6 +206,38 @@ class DefaultUtilisateurService implements UtilisateurService {
 
   }
 
+  /**
+   *
+   * @see UtilisateurService
+   */
+  Utilisateur reactiveUtilisateur(String login) {
+    if (!login) {
+      throw new IllegalStateException(
+              "annuaire.login_null_ou_vide")
+    }
+
+    // cherche le compte utilisateur avec personne et autorite associée
+    def criteria = CompteUtilisateur.createCriteria()
+    CompteUtilisateur compteUtilisateur = criteria.get {
+      or {
+        eq 'login', login
+      }
+      join 'personne'
+      join 'personne.autorite'
+    }
+    if (compteUtilisateur == null) {
+      throw new IllegalStateException(
+              "annuaire.no_user_avec_login : ${login}")
+    }
+
+    if (compteUtilisateur.compteActive == false) {
+      compteUtilisateur.compteActive = true
+      compteUtilisateur.save(failOnError: true)
+    }
+
+    return UtilisateurForCompteUtilisateur(compteUtilisateur)
+  }
+
   // -------------- private methods --------------------------------------------
 
   /**
@@ -219,8 +251,8 @@ class DefaultUtilisateurService implements UtilisateurService {
 
   /**
    * Retourne l'utilisateur correspondant à un compte utilisateur
-   * @param compteUtilisateur  le compte utilisateur
-   * @return  l'utilisateur
+   * @param compteUtilisateur le compte utilisateur
+   * @return l'utilisateur
    */
   private Utilisateur UtilisateurForCompteUtilisateur(CompteUtilisateur compteUtilisateur) {
     // creer l'utilisateur à retourner

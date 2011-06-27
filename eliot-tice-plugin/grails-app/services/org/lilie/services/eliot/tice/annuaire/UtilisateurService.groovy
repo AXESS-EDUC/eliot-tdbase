@@ -73,10 +73,17 @@ public interface UtilisateurService {
   void setAliasLogin(String login, String loginAlias)
 
   /**
-   * Desactive le compte un utilisateur
+   * Desactive le compte d'un utilisateur
    * @param login le login de l'utilisateur
    * @return  l'utilisateur suspendu
    */
   Utilisateur desactiveUtilisateur(String login)
+
+  /**
+   * Reactive le compte d'un utilisateur
+   * @param login le login de l'utilisateur
+   * @return  l'utilisateur suspendu
+   */
+  Utilisateur reactiveUtilisateur(String login)
 
 }

@@ -166,10 +166,27 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
     assertFalse(utilisateur1.compteActive)
 
     def copieUtilisateur1 = defaultUtilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
-    assertFalse(utilisateur1.compteActive)
-
-
-
+    assertFalse(copieUtilisateur1.compteActive)
   }
+
+  void testReactiveUtilisateur() {
+      Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
+                  UTILISATEUR_1_LOGIN,
+                  UTILISATEUR_1_PASSWORD,
+                  UTILISATEUR_1_NOM,
+                  UTILISATEUR_1_PRENOM
+      )
+      assertTrue(utilisateur1.compteActive)
+
+      utilisateur1 = defaultUtilisateurService.desactiveUtilisateur(UTILISATEUR_1_LOGIN)
+      assertFalse(utilisateur1.compteActive)
+
+      utilisateur1 = defaultUtilisateurService.reactiveUtilisateur(UTILISATEUR_1_LOGIN)
+      assertTrue(utilisateur1.compteActive)
+
+      def copieUtilisateur1 = defaultUtilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
+      assertTrue(copieUtilisateur1.compteActive)
+    }
+
 
 }
