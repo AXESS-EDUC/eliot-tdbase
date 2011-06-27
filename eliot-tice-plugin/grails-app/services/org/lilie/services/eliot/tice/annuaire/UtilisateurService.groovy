@@ -67,10 +67,16 @@ public interface UtilisateurService {
   /**
    * Met à jour l'alias de login de l'utilisateur caractérisé par le login passé
    * en paramètre
-   * @param loginOrLoginAlias le login ou l'alias de login de l'utilisateur
+   * @param login le login de l'utilisateur
    * @param aliasLogin  l'alias du login de l'utilisateur concerné
    */
-  void setAliasLogin(String loginOrLoginAlias, String loginAlias)
+  void setAliasLogin(String login, String loginAlias)
 
+  /**
+   * Desactive le compte un utilisateur
+   * @param login le login de l'utilisateur
+   * @return  l'utilisateur suspendu
+   */
+  Utilisateur desactiveUtilisateur(String login)
 
 }

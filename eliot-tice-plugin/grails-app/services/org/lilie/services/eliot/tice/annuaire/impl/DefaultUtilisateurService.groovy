@@ -32,19 +32,19 @@
 package org.lilie.services.eliot.tice.annuaire.impl
 
 import org.hibernate.SessionFactory
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.securite.DomainAutorite
-import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
-import org.springframework.transaction.annotation.Transactional
 import org.hibernate.metadata.ClassMetadata
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.UtilisateurService
+import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
+import org.lilie.services.eliot.tice.securite.DomainAutorite
+import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Classe de service pour gestion les utilisateurs
  */
-class DefaultUtilisateurService implements UtilisateurService{
+class DefaultUtilisateurService implements UtilisateurService {
 
   static transactional = false
 
@@ -100,26 +100,9 @@ class DefaultUtilisateurService implements UtilisateurService{
             passwordExpire: false,
             compteExpire: false,
             personne: personne
-    ).save(failOnError:true, flush:true)
+    ).save(failOnError: true, flush: true)
 
-
-    // cree l'utilisateur retourné
-    Utilisateur utilisateur = new Utilisateur(
-            login: login,
-            compteActive: true,
-            compteVerrouille: false,
-            compteExpire: false,
-            passwordExpire: false,
-            nom: nom,
-            prenom: prenom,
-            email: email,
-            dateNaissance: dateNaissance,
-            compteUtilisateurId: compteUtilisateur.id,
-            personneId: personne.id,
-            autoriteId: domainAutorite.id
-    )
-
-    return utilisateur
+    return UtilisateurForCompteUtilisateur(compteUtilisateur)
 
   }
 
@@ -128,7 +111,7 @@ class DefaultUtilisateurService implements UtilisateurService{
    */
   Utilisateur findUtilisateur(String login) {
     if (!login) {
-       throw new IllegalStateException(
+      throw new IllegalStateException(
               "annuaire.login_null_ou_vide")
     }
     // cherche le compte utilisateur avec personne et autorite associée
@@ -145,31 +128,7 @@ class DefaultUtilisateurService implements UtilisateurService{
       return null
     }
 
-    // creer l'utilisateur à retourner
-
-    Personne personne = compteUtilisateur.personne
-    DomainAutorite autorite = personne.autorite
-
-    Utilisateur utilisateur = new Utilisateur (
-            login: compteUtilisateur.login,
-            loginAlias: compteUtilisateur.loginAlias,
-            password: compteUtilisateur.password,
-            dateDerniereConnexion: compteUtilisateur.dateDerniereConnexion,
-            compteActive: compteUtilisateur.compteActive,
-            compteExpire: compteUtilisateur.compteExpire,
-            compteVerrouille: compteUtilisateur.compteVerrouille,
-            passwordExpire: compteUtilisateur.passwordExpire,
-            compteUtilisateurId: compteUtilisateur.id,
-            nom: personne.nom,
-            prenom: personne.prenom,
-            dateNaissance: personne.dateNaissance,
-            email: personne.email,
-            sexe: personne.sexe,
-            personneId: personne.id,
-            autoriteId: autorite.id
-    )
-
-    return utilisateur
+    return UtilisateurForCompteUtilisateur(compteUtilisateur)
   }
 
   /**
@@ -177,14 +136,12 @@ class DefaultUtilisateurService implements UtilisateurService{
    * @see UtilisateurService
    */
   void setAliasLogin(String login, String aliasLogin) {
-     if (!login) {
-       throw new IllegalStateException(
+    if (!login) {
+      throw new IllegalStateException(
               "annuaire.login_null_ou_vide")
     }
-     // cherche le compte utilisateur avec personne et autorite associée
-    CompteUtilisateur compteUtilisateur = CompteUtilisateur.findByLoginOrLoginAlias(
-            login,
-            login)
+    // cherche le compte utilisateur
+    CompteUtilisateur compteUtilisateur = CompteUtilisateur.findByLogin(login)
     if (compteUtilisateur == null) {
       throw new IllegalStateException(
               "annuaire.no_user_avec_login : ${login}")
@@ -202,7 +159,7 @@ class DefaultUtilisateurService implements UtilisateurService{
     }
 
     compteUtilisateur.loginAlias = aliasLogin
-    compteUtilisateur.save(failOnError:true)
+    compteUtilisateur.save(failOnError: true)
 
     // reverifie unicité login/loginAlias correspondant à l'alias
     List<CompteUtilisateur> comptes = CompteUtilisateur.findAllByLoginOrLoginAlias(
@@ -211,13 +168,43 @@ class DefaultUtilisateurService implements UtilisateurService{
 
     if (comptes.size() > 1) {
       compteUtilisateur.loginAlias = oldLoginAlias
-      compteUtilisateur.save(failOnError:true)
+      compteUtilisateur.save(failOnError: true)
       throw new IllegalStateException(
               "annuaire.alias_login_deja_utilise : ${aliasLogin}")
     }
 
   }
 
+  /**
+   *
+   * @see UtilisateurService
+   */
+  Utilisateur desactiveUtilisateur(String login) {
+    if (!login) {
+      throw new IllegalStateException(
+              "annuaire.login_null_ou_vide")
+    }
+
+    // cherche le compte utilisateur avec personne et autorite associée
+    def criteria = CompteUtilisateur.createCriteria()
+    CompteUtilisateur compteUtilisateur = criteria.get {
+      or {
+        eq 'login', login
+      }
+      join 'personne'
+      join 'personne.autorite'
+    }
+    if (compteUtilisateur == null) {
+      throw new IllegalStateException(
+              "annuaire.no_user_avec_login : ${login}")
+    }
+
+    compteUtilisateur.compteActive = false
+    compteUtilisateur.save(failOnError: true)
+
+    return UtilisateurForCompteUtilisateur(compteUtilisateur)
+
+  }
 
   // -------------- private methods --------------------------------------------
 
@@ -228,5 +215,37 @@ class DefaultUtilisateurService implements UtilisateurService{
   private getPersonneNomEntite() {
     ClassMetadata metaData = sessionFactory.getClassMetadata(Personne.class)
     metaData.tableName
+  }
+
+  /**
+   * Retourne l'utilisateur correspondant à un compte utilisateur
+   * @param compteUtilisateur  le compte utilisateur
+   * @return  l'utilisateur
+   */
+  private Utilisateur UtilisateurForCompteUtilisateur(CompteUtilisateur compteUtilisateur) {
+    // creer l'utilisateur à retourner
+
+    Personne personne = compteUtilisateur.personne
+    DomainAutorite autorite = personne.autorite
+
+    Utilisateur utilisateur = new Utilisateur(
+            login: compteUtilisateur.login,
+            loginAlias: compteUtilisateur.loginAlias,
+            password: compteUtilisateur.password,
+            dateDerniereConnexion: compteUtilisateur.dateDerniereConnexion,
+            compteActive: compteUtilisateur.compteActive,
+            compteExpire: compteUtilisateur.compteExpire,
+            compteVerrouille: compteUtilisateur.compteVerrouille,
+            passwordExpire: compteUtilisateur.passwordExpire,
+            compteUtilisateurId: compteUtilisateur.id,
+            nom: personne.nom,
+            prenom: personne.prenom,
+            dateNaissance: personne.dateNaissance,
+            email: personne.email,
+            sexe: personne.sexe,
+            personneId: personne.id,
+            autoriteId: autorite.id
+    )
+    return utilisateur
   }
 }

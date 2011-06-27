@@ -151,6 +151,22 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
     shouldFail {
        defaultUtilisateurService.setAliasLogin(UTILISATEUR_2_LOGIN, UTILISATEUR_1_LOGIN)
     }
+  }
+
+  void testDesactiveUtilisateur() {
+    Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
+                UTILISATEUR_1_LOGIN,
+                UTILISATEUR_1_PASSWORD,
+                UTILISATEUR_1_NOM,
+                UTILISATEUR_1_PRENOM
+    )
+    assertTrue(utilisateur1.compteActive)
+
+    utilisateur1 = defaultUtilisateurService.desactiveUtilisateur(UTILISATEUR_1_LOGIN)
+    assertFalse(utilisateur1.compteActive)
+
+    def copieUtilisateur1 = defaultUtilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
+    assertFalse(utilisateur1.compteActive)
 
 
 
