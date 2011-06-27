@@ -49,7 +49,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testFindAllPersonneProprietaireAutorisations</b>
 </p>
-<p class="summary">Executed in 0.209 seconds.</p>
+<p class="summary">Executed in 0.1 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -58,6 +58,120 @@
 <div class="sysout">
 <h2>Standard output</h2>
 <pre class="stdout">--Output from testFindAllPersonneProprietaireAutorisations--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_autorite=? 
+        and this_.id_item=?
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_1_,
+        this_.version as version14_1_,
+        this_.id_autorisation_heritee as id3_14_1_,
+        this_.id_autorite as id4_14_1_,
+        this_.id_item as id5_14_1_,
+        this_.proprietaire as propriet6_14_1_,
+        this_.valeur_permissions_explicite as valeur7_14_1_,
+        autorite_a1_.id as id26_0_,
+        autorite_a1_.version as version26_0_,
+        autorite_a1_.date_desactivation as date3_26_0_,
+        autorite_a1_.est_active as est4_26_0_,
+        autorite_a1_.id_enregistrement_cible as id5_26_0_,
+        autorite_a1_.id_sts as id6_26_0_,
+        autorite_a1_.id_externe as id7_26_0_,
+        autorite_a1_.import_id as import8_26_0_,
+        autorite_a1_.nom_entite_cible as nom9_26_0_,
+        autorite_a1_.type as type26_0_ 
+    from
+        securite.autorisation this_ 
+    inner join
+        securite.autorite autorite_a1_ 
+            on this_.id_autorite=autorite_a1_.id 
+    where
+        (
+            this_.id_item=? 
+            and this_.proprietaire=? 
+            and (
+                autorite_a1_.type=?
+            )
+        )
 </pre>
 </div>
 <div class="syserr">

@@ -15,7 +15,7 @@
      - All tests </h1>
 <p class="intro">
                         Executed
-                        8
+                        13
                         tests
                     
                         without a single error or failure!
@@ -57,7 +57,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testPeutModifierLeContenu</b>
 </p>
-<p class="summary">Executed in 0.198 seconds.</p>
+<p class="summary">Executed in 0.152 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -67,7 +67,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testPeutModifierLesPermissions</b>
 </p>
-<p class="summary">Executed in 0.029 seconds.</p>
+<p class="summary">Executed in 0.03 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -76,7 +76,103 @@
 <div class="sysout">
 <h2>Standard output</h2>
 <pre class="stdout">--Output from testPeutModifierLeContenu--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?
+            )
+        )
 --Output from testPeutModifierLesPermissions--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?
+            )
+        )
 </pre>
 </div>
 <div class="syserr">
@@ -102,7 +198,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testFindAllPersonneProprietaireAutorisations</b>
 </p>
-<p class="summary">Executed in 0.209 seconds.</p>
+<p class="summary">Executed in 0.1 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -111,6 +207,120 @@
 <div class="sysout">
 <h2>Standard output</h2>
 <pre class="stdout">--Output from testFindAllPersonneProprietaireAutorisations--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_autorite=? 
+        and this_.id_item=?
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_1_,
+        this_.version as version14_1_,
+        this_.id_autorisation_heritee as id3_14_1_,
+        this_.id_autorite as id4_14_1_,
+        this_.id_item as id5_14_1_,
+        this_.proprietaire as propriet6_14_1_,
+        this_.valeur_permissions_explicite as valeur7_14_1_,
+        autorite_a1_.id as id26_0_,
+        autorite_a1_.version as version26_0_,
+        autorite_a1_.date_desactivation as date3_26_0_,
+        autorite_a1_.est_active as est4_26_0_,
+        autorite_a1_.id_enregistrement_cible as id5_26_0_,
+        autorite_a1_.id_sts as id6_26_0_,
+        autorite_a1_.id_externe as id7_26_0_,
+        autorite_a1_.import_id as import8_26_0_,
+        autorite_a1_.nom_entite_cible as nom9_26_0_,
+        autorite_a1_.type as type26_0_ 
+    from
+        securite.autorisation this_ 
+    inner join
+        securite.autorite autorite_a1_ 
+            on this_.id_autorite=autorite_a1_.id 
+    where
+        (
+            this_.id_item=? 
+            and this_.proprietaire=? 
+            and (
+                autorite_a1_.type=?
+            )
+        )
 </pre>
 </div>
 <div class="syserr">
@@ -137,7 +347,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testCreateDefaultPermissionsManager</b>
 </p>
-<p class="summary">Executed in 0.079 seconds.</p>
+<p class="summary">Executed in 0.094 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -147,7 +357,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testAddPermissionModificationSansPermInitiales</b>
 </p>
-<p class="summary">Executed in 0.065 seconds.</p>
+<p class="summary">Executed in 0.045 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -157,7 +367,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testAddPermissionModificationAvecPermInitiales</b>
 </p>
-<p class="summary">Executed in 0.072 seconds.</p>
+<p class="summary">Executed in 0.054 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -167,7 +377,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testDeletePermissionConsultation</b>
 </p>
-<p class="summary">Executed in 0.086 seconds.</p>
+<p class="summary">Executed in 0.06 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -176,14 +386,515 @@
 <div class="sysout">
 <h2>Standard output</h2>
 <pre class="stdout">--Output from testCreateDefaultPermissionsManager--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
 org.lilie.services.eliot.tice.securite.acl.AutorisationException: Pas l'autorisation de modifier les permissions
-liste des autorisations (type class java.util.ArrayList : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 71]
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+liste des autorisations (type class java.util.ArrayList : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 192]
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_autorite=? 
+        and this_.id_item=?
 --Output from testAddPermissionModificationSansPermInitiales--
-liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 72]
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 193]
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_autorite=? 
+        and this_.id_item=?
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and this_.id_autorite=?
 --Output from testAddPermissionModificationAvecPermInitiales--
-liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 75]
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 196]
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_autorite=? 
+        and this_.id_item=?
+Hibernate: 
+    update
+        securite.autorisation 
+    set
+        version=?,
+        id_autorisation_heritee=?,
+        id_autorite=?,
+        id_item=?,
+        proprietaire=?,
+        valeur_permissions_explicite=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    update
+        securite.autorisation 
+    set
+        version=?,
+        id_autorisation_heritee=?,
+        id_autorite=?,
+        id_item=?,
+        proprietaire=?,
+        valeur_permissions_explicite=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and this_.id_autorite=?
 --Output from testDeletePermissionConsultation--
-liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 77]
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 198]
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_autorite=? 
+        and this_.id_item=?
+Hibernate: 
+    delete 
+    from
+        securite.autorisation 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and this_.id_autorite=?
 </pre>
 </div>
 <div class="syserr">
@@ -201,7 +912,9 @@ liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisa
 <div class="header">
 <h2>DefaultUtilisateurServiceIntegrationTests</h2>
 <h3>
-                        A single test executed
+                        Executed
+                        6
+                        tests
                     
                         without a single error or failure!
                     </h3>
@@ -211,7 +924,57 @@ liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisa
 <p>
 <span class="icon success"></span><b class="testname message success">testCreateUtilisateur</b>
 </p>
-<p class="summary">Executed in 1.148 seconds.</p>
+<p class="summary">Executed in 1.133 seconds.</p>
+</div>
+<div class="grid_5 omega outputinfo"></div>
+<div class="clear"></div>
+</div>
+<div class="testcase clearfix success grid_8 alpha omega" data-name="testFindUtilisateur">
+<div class="grid_3 alpha">
+<p>
+<span class="icon success"></span><b class="testname message success">testFindUtilisateur</b>
+</p>
+<p class="summary">Executed in 0.349 seconds.</p>
+</div>
+<div class="grid_5 omega outputinfo"></div>
+<div class="clear"></div>
+</div>
+<div class="testcase clearfix success grid_8 alpha omega" data-name="testSetLoginAlias">
+<div class="grid_3 alpha">
+<p>
+<span class="icon success"></span><b class="testname message success">testSetLoginAlias</b>
+</p>
+<p class="summary">Executed in 0.239 seconds.</p>
+</div>
+<div class="grid_5 omega outputinfo"></div>
+<div class="clear"></div>
+</div>
+<div class="testcase clearfix success grid_8 alpha omega" data-name="testDesactiveUtilisateur">
+<div class="grid_3 alpha">
+<p>
+<span class="icon success"></span><b class="testname message success">testDesactiveUtilisateur</b>
+</p>
+<p class="summary">Executed in 0.089 seconds.</p>
+</div>
+<div class="grid_5 omega outputinfo"></div>
+<div class="clear"></div>
+</div>
+<div class="testcase clearfix success grid_8 alpha omega" data-name="testReactiveUtilisateur">
+<div class="grid_3 alpha">
+<p>
+<span class="icon success"></span><b class="testname message success">testReactiveUtilisateur</b>
+</p>
+<p class="summary">Executed in 0.196 seconds.</p>
+</div>
+<div class="grid_5 omega outputinfo"></div>
+<div class="clear"></div>
+</div>
+<div class="testcase clearfix success grid_8 alpha omega" data-name="testUpdateUtilisateur">
+<div class="grid_3 alpha">
+<p>
+<span class="icon success"></span><b class="testname message success">testUpdateUtilisateur</b>
+</p>
+<p class="summary">Executed in 0.067 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -220,11 +983,2583 @@ liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisa
 <div class="sysout">
 <h2>Standard output</h2>
 <pre class="stdout">--Output from testCreateUtilisateur--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    select
+        nextval ('ent.personne_id_seq')
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        nextval ('tice.compte_utilisateur_id_seq')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    insert 
+    into
+        ent.personne
+        (adresse, autorite_id, civilite_id, code_postal, date_naissance, email, etablissement_rattachement_id, fax, nom, nom_normalise, pays, photo, prenom, prenom_normalise, regime_id, sexe, telephone_perso, telephone_portable, telephone_pro, ville, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    insert 
+    into
+        tice.compte_utilisateur
+        (version, compte_active, compte_expire, compte_verrouille, date_derniere_connexion, "login", login_alias, "password", password_expire, personne_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    update
+        securite.autorite 
+    set
+        version=?,
+        date_desactivation=?,
+        est_active=?,
+        id_enregistrement_cible=?,
+        id_sts=?,
+        id_externe=?,
+        import_id=?,
+        nom_entite_cible=?,
+        type=? 
+    where
+        id=? 
+        and version=?
+--Output from testFindUtilisateur--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    select
+        nextval ('ent.personne_id_seq')
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        nextval ('tice.compte_utilisateur_id_seq')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    insert 
+    into
+        ent.personne
+        (adresse, autorite_id, civilite_id, code_postal, date_naissance, email, etablissement_rattachement_id, fax, nom, nom_normalise, pays, photo, prenom, prenom_normalise, regime_id, sexe, telephone_perso, telephone_portable, telephone_pro, ville, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    insert 
+    into
+        tice.compte_utilisateur
+        (version, compte_active, compte_expire, compte_verrouille, date_derniere_connexion, "login", login_alias, "password", password_expire, personne_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    update
+        securite.autorite 
+    set
+        version=?,
+        date_desactivation=?,
+        est_active=?,
+        id_enregistrement_cible=?,
+        id_sts=?,
+        id_externe=?,
+        import_id=?,
+        nom_entite_cible=?,
+        type=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id30_3_,
+        this_.version as version30_3_,
+        this_.compte_active as compte3_30_3_,
+        this_.compte_expire as compte4_30_3_,
+        this_.compte_verrouille as compte5_30_3_,
+        this_.date_derniere_connexion as date6_30_3_,
+        this_."login" as login7_30_3_,
+        this_.login_alias as login8_30_3_,
+        this_."password" as password9_30_3_,
+        this_.password_expire as password10_30_3_,
+        this_.personne_id as personne11_30_3_,
+        personne2_.id as id13_0_,
+        personne2_.adresse as adresse13_0_,
+        personne2_.autorite_id as autorite3_13_0_,
+        personne2_.civilite_id as civilite4_13_0_,
+        personne2_.code_postal as code5_13_0_,
+        personne2_.date_naissance as date6_13_0_,
+        personne2_.email as email13_0_,
+        personne2_.etablissement_rattachement_id as etabliss8_13_0_,
+        personne2_.fax as fax13_0_,
+        personne2_.nom as nom13_0_,
+        personne2_.nom_normalise as nom11_13_0_,
+        personne2_.pays as pays13_0_,
+        personne2_.photo as photo13_0_,
+        personne2_.prenom as prenom13_0_,
+        personne2_.prenom_normalise as prenom15_13_0_,
+        personne2_.regime_id as regime16_13_0_,
+        personne2_.sexe as sexe13_0_,
+        personne2_.telephone_perso as telephone18_13_0_,
+        personne2_.telephone_portable as telephone19_13_0_,
+        personne2_.telephone_pro as telephone20_13_0_,
+        personne2_.ville as ville13_0_,
+        domainauto3_.id as id26_1_,
+        domainauto3_.version as version26_1_,
+        domainauto3_.date_desactivation as date3_26_1_,
+        domainauto3_.est_active as est4_26_1_,
+        domainauto3_.id_enregistrement_cible as id5_26_1_,
+        domainauto3_.id_sts as id6_26_1_,
+        domainauto3_.id_externe as id7_26_1_,
+        domainauto3_.import_id as import8_26_1_,
+        domainauto3_.nom_entite_cible as nom9_26_1_,
+        domainauto3_.type as type26_1_,
+        etablissem4_.id as id2_2_,
+        etablissem4_.version as version2_2_,
+        etablissem4_.code_porteur_ent as code3_2_2_,
+        etablissem4_.date_import_sts as date4_2_2_,
+        etablissem4_.id_externe as id5_2_2_,
+        etablissem4_.nom_affichage as nom6_2_2_,
+        etablissem4_.perimetre_id as perimetre7_2_2_,
+        etablissem4_.porteur_ent_id as porteur8_2_2_,
+        etablissem4_.uai as uai2_2_,
+        etablissem4_.version_import_sts as version10_2_2_ 
+    from
+        tice.compte_utilisateur this_ 
+    inner join
+        ent.personne personne2_ 
+            on this_.personne_id=personne2_.id 
+    left outer join
+        securite.autorite domainauto3_ 
+            on personne2_.autorite_id=domainauto3_.id 
+    left outer join
+        ent.etablissement etablissem4_ 
+            on personne2_.etablissement_rattachement_id=etablissem4_.id 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_3_,
+        this_.version as version30_3_,
+        this_.compte_active as compte3_30_3_,
+        this_.compte_expire as compte4_30_3_,
+        this_.compte_verrouille as compte5_30_3_,
+        this_.date_derniere_connexion as date6_30_3_,
+        this_."login" as login7_30_3_,
+        this_.login_alias as login8_30_3_,
+        this_."password" as password9_30_3_,
+        this_.password_expire as password10_30_3_,
+        this_.personne_id as personne11_30_3_,
+        personne2_.id as id13_0_,
+        personne2_.adresse as adresse13_0_,
+        personne2_.autorite_id as autorite3_13_0_,
+        personne2_.civilite_id as civilite4_13_0_,
+        personne2_.code_postal as code5_13_0_,
+        personne2_.date_naissance as date6_13_0_,
+        personne2_.email as email13_0_,
+        personne2_.etablissement_rattachement_id as etabliss8_13_0_,
+        personne2_.fax as fax13_0_,
+        personne2_.nom as nom13_0_,
+        personne2_.nom_normalise as nom11_13_0_,
+        personne2_.pays as pays13_0_,
+        personne2_.photo as photo13_0_,
+        personne2_.prenom as prenom13_0_,
+        personne2_.prenom_normalise as prenom15_13_0_,
+        personne2_.regime_id as regime16_13_0_,
+        personne2_.sexe as sexe13_0_,
+        personne2_.telephone_perso as telephone18_13_0_,
+        personne2_.telephone_portable as telephone19_13_0_,
+        personne2_.telephone_pro as telephone20_13_0_,
+        personne2_.ville as ville13_0_,
+        domainauto3_.id as id26_1_,
+        domainauto3_.version as version26_1_,
+        domainauto3_.date_desactivation as date3_26_1_,
+        domainauto3_.est_active as est4_26_1_,
+        domainauto3_.id_enregistrement_cible as id5_26_1_,
+        domainauto3_.id_sts as id6_26_1_,
+        domainauto3_.id_externe as id7_26_1_,
+        domainauto3_.import_id as import8_26_1_,
+        domainauto3_.nom_entite_cible as nom9_26_1_,
+        domainauto3_.type as type26_1_,
+        etablissem4_.id as id2_2_,
+        etablissem4_.version as version2_2_,
+        etablissem4_.code_porteur_ent as code3_2_2_,
+        etablissem4_.date_import_sts as date4_2_2_,
+        etablissem4_.id_externe as id5_2_2_,
+        etablissem4_.nom_affichage as nom6_2_2_,
+        etablissem4_.perimetre_id as perimetre7_2_2_,
+        etablissem4_.porteur_ent_id as porteur8_2_2_,
+        etablissem4_.uai as uai2_2_,
+        etablissem4_.version_import_sts as version10_2_2_ 
+    from
+        tice.compte_utilisateur this_ 
+    inner join
+        ent.personne personne2_ 
+            on this_.personne_id=personne2_.id 
+    left outer join
+        securite.autorite domainauto3_ 
+            on personne2_.autorite_id=domainauto3_.id 
+    left outer join
+        ent.etablissement etablissem4_ 
+            on personne2_.etablissement_rattachement_id=etablissem4_.id 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_.login_alias=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_.login_alias=?
+Hibernate: 
+    update
+        tice.compte_utilisateur 
+    set
+        version=?,
+        compte_active=?,
+        compte_expire=?,
+        compte_verrouille=?,
+        date_derniere_connexion=?,
+        "login"=?,
+        login_alias=?,
+        "password"=?,
+        password_expire=?,
+        personne_id=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_3_,
+        this_.version as version30_3_,
+        this_.compte_active as compte3_30_3_,
+        this_.compte_expire as compte4_30_3_,
+        this_.compte_verrouille as compte5_30_3_,
+        this_.date_derniere_connexion as date6_30_3_,
+        this_."login" as login7_30_3_,
+        this_.login_alias as login8_30_3_,
+        this_."password" as password9_30_3_,
+        this_.password_expire as password10_30_3_,
+        this_.personne_id as personne11_30_3_,
+        personne2_.id as id13_0_,
+        personne2_.adresse as adresse13_0_,
+        personne2_.autorite_id as autorite3_13_0_,
+        personne2_.civilite_id as civilite4_13_0_,
+        personne2_.code_postal as code5_13_0_,
+        personne2_.date_naissance as date6_13_0_,
+        personne2_.email as email13_0_,
+        personne2_.etablissement_rattachement_id as etabliss8_13_0_,
+        personne2_.fax as fax13_0_,
+        personne2_.nom as nom13_0_,
+        personne2_.nom_normalise as nom11_13_0_,
+        personne2_.pays as pays13_0_,
+        personne2_.photo as photo13_0_,
+        personne2_.prenom as prenom13_0_,
+        personne2_.prenom_normalise as prenom15_13_0_,
+        personne2_.regime_id as regime16_13_0_,
+        personne2_.sexe as sexe13_0_,
+        personne2_.telephone_perso as telephone18_13_0_,
+        personne2_.telephone_portable as telephone19_13_0_,
+        personne2_.telephone_pro as telephone20_13_0_,
+        personne2_.ville as ville13_0_,
+        domainauto3_.id as id26_1_,
+        domainauto3_.version as version26_1_,
+        domainauto3_.date_desactivation as date3_26_1_,
+        domainauto3_.est_active as est4_26_1_,
+        domainauto3_.id_enregistrement_cible as id5_26_1_,
+        domainauto3_.id_sts as id6_26_1_,
+        domainauto3_.id_externe as id7_26_1_,
+        domainauto3_.import_id as import8_26_1_,
+        domainauto3_.nom_entite_cible as nom9_26_1_,
+        domainauto3_.type as type26_1_,
+        etablissem4_.id as id2_2_,
+        etablissem4_.version as version2_2_,
+        etablissem4_.code_porteur_ent as code3_2_2_,
+        etablissem4_.date_import_sts as date4_2_2_,
+        etablissem4_.id_externe as id5_2_2_,
+        etablissem4_.nom_affichage as nom6_2_2_,
+        etablissem4_.perimetre_id as perimetre7_2_2_,
+        etablissem4_.porteur_ent_id as porteur8_2_2_,
+        etablissem4_.uai as uai2_2_,
+        etablissem4_.version_import_sts as version10_2_2_ 
+    from
+        tice.compte_utilisateur this_ 
+    inner join
+        ent.personne personne2_ 
+            on this_.personne_id=personne2_.id 
+    left outer join
+        securite.autorite domainauto3_ 
+            on personne2_.autorite_id=domainauto3_.id 
+    left outer join
+        ent.etablissement etablissem4_ 
+            on personne2_.etablissement_rattachement_id=etablissem4_.id 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+--Output from testSetLoginAlias--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    select
+        nextval ('ent.personne_id_seq')
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        nextval ('tice.compte_utilisateur_id_seq')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    insert 
+    into
+        ent.personne
+        (adresse, autorite_id, civilite_id, code_postal, date_naissance, email, etablissement_rattachement_id, fax, nom, nom_normalise, pays, photo, prenom, prenom_normalise, regime_id, sexe, telephone_perso, telephone_portable, telephone_pro, ville, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    insert 
+    into
+        tice.compte_utilisateur
+        (version, compte_active, compte_expire, compte_verrouille, date_derniere_connexion, "login", login_alias, "password", password_expire, personne_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    update
+        securite.autorite 
+    set
+        version=?,
+        date_desactivation=?,
+        est_active=?,
+        id_enregistrement_cible=?,
+        id_sts=?,
+        id_externe=?,
+        import_id=?,
+        nom_entite_cible=?,
+        type=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    select
+        nextval ('ent.personne_id_seq')
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        nextval ('tice.compte_utilisateur_id_seq')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    insert 
+    into
+        ent.personne
+        (adresse, autorite_id, civilite_id, code_postal, date_naissance, email, etablissement_rattachement_id, fax, nom, nom_normalise, pays, photo, prenom, prenom_normalise, regime_id, sexe, telephone_perso, telephone_portable, telephone_pro, ville, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    insert 
+    into
+        tice.compte_utilisateur
+        (version, compte_active, compte_expire, compte_verrouille, date_derniere_connexion, "login", login_alias, "password", password_expire, personne_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    update
+        securite.autorite 
+    set
+        version=?,
+        date_desactivation=?,
+        est_active=?,
+        id_enregistrement_cible=?,
+        id_sts=?,
+        id_externe=?,
+        import_id=?,
+        nom_entite_cible=?,
+        type=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_.login_alias=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_.login_alias=?
+Hibernate: 
+    update
+        tice.compte_utilisateur 
+    set
+        version=?,
+        compte_active=?,
+        compte_expire=?,
+        compte_verrouille=?,
+        date_derniere_connexion=?,
+        "login"=?,
+        login_alias=?,
+        "password"=?,
+        password_expire=?,
+        personne_id=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_3_,
+        this_.version as version30_3_,
+        this_.compte_active as compte3_30_3_,
+        this_.compte_expire as compte4_30_3_,
+        this_.compte_verrouille as compte5_30_3_,
+        this_.date_derniere_connexion as date6_30_3_,
+        this_."login" as login7_30_3_,
+        this_.login_alias as login8_30_3_,
+        this_."password" as password9_30_3_,
+        this_.password_expire as password10_30_3_,
+        this_.personne_id as personne11_30_3_,
+        personne2_.id as id13_0_,
+        personne2_.adresse as adresse13_0_,
+        personne2_.autorite_id as autorite3_13_0_,
+        personne2_.civilite_id as civilite4_13_0_,
+        personne2_.code_postal as code5_13_0_,
+        personne2_.date_naissance as date6_13_0_,
+        personne2_.email as email13_0_,
+        personne2_.etablissement_rattachement_id as etabliss8_13_0_,
+        personne2_.fax as fax13_0_,
+        personne2_.nom as nom13_0_,
+        personne2_.nom_normalise as nom11_13_0_,
+        personne2_.pays as pays13_0_,
+        personne2_.photo as photo13_0_,
+        personne2_.prenom as prenom13_0_,
+        personne2_.prenom_normalise as prenom15_13_0_,
+        personne2_.regime_id as regime16_13_0_,
+        personne2_.sexe as sexe13_0_,
+        personne2_.telephone_perso as telephone18_13_0_,
+        personne2_.telephone_portable as telephone19_13_0_,
+        personne2_.telephone_pro as telephone20_13_0_,
+        personne2_.ville as ville13_0_,
+        domainauto3_.id as id26_1_,
+        domainauto3_.version as version26_1_,
+        domainauto3_.date_desactivation as date3_26_1_,
+        domainauto3_.est_active as est4_26_1_,
+        domainauto3_.id_enregistrement_cible as id5_26_1_,
+        domainauto3_.id_sts as id6_26_1_,
+        domainauto3_.id_externe as id7_26_1_,
+        domainauto3_.import_id as import8_26_1_,
+        domainauto3_.nom_entite_cible as nom9_26_1_,
+        domainauto3_.type as type26_1_,
+        etablissem4_.id as id2_2_,
+        etablissem4_.version as version2_2_,
+        etablissem4_.code_porteur_ent as code3_2_2_,
+        etablissem4_.date_import_sts as date4_2_2_,
+        etablissem4_.id_externe as id5_2_2_,
+        etablissem4_.nom_affichage as nom6_2_2_,
+        etablissem4_.perimetre_id as perimetre7_2_2_,
+        etablissem4_.porteur_ent_id as porteur8_2_2_,
+        etablissem4_.uai as uai2_2_,
+        etablissem4_.version_import_sts as version10_2_2_ 
+    from
+        tice.compte_utilisateur this_ 
+    inner join
+        ent.personne personne2_ 
+            on this_.personne_id=personne2_.id 
+    left outer join
+        securite.autorite domainauto3_ 
+            on personne2_.autorite_id=domainauto3_.id 
+    left outer join
+        ent.etablissement etablissem4_ 
+            on personne2_.etablissement_rattachement_id=etablissem4_.id 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+--Output from testDesactiveUtilisateur--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    select
+        nextval ('ent.personne_id_seq')
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        nextval ('tice.compte_utilisateur_id_seq')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    insert 
+    into
+        ent.personne
+        (adresse, autorite_id, civilite_id, code_postal, date_naissance, email, etablissement_rattachement_id, fax, nom, nom_normalise, pays, photo, prenom, prenom_normalise, regime_id, sexe, telephone_perso, telephone_portable, telephone_pro, ville, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    insert 
+    into
+        tice.compte_utilisateur
+        (version, compte_active, compte_expire, compte_verrouille, date_derniere_connexion, "login", login_alias, "password", password_expire, personne_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    update
+        securite.autorite 
+    set
+        version=?,
+        date_desactivation=?,
+        est_active=?,
+        id_enregistrement_cible=?,
+        id_sts=?,
+        id_externe=?,
+        import_id=?,
+        nom_entite_cible=?,
+        type=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id30_3_,
+        this_.version as version30_3_,
+        this_.compte_active as compte3_30_3_,
+        this_.compte_expire as compte4_30_3_,
+        this_.compte_verrouille as compte5_30_3_,
+        this_.date_derniere_connexion as date6_30_3_,
+        this_."login" as login7_30_3_,
+        this_.login_alias as login8_30_3_,
+        this_."password" as password9_30_3_,
+        this_.password_expire as password10_30_3_,
+        this_.personne_id as personne11_30_3_,
+        personne2_.id as id13_0_,
+        personne2_.adresse as adresse13_0_,
+        personne2_.autorite_id as autorite3_13_0_,
+        personne2_.civilite_id as civilite4_13_0_,
+        personne2_.code_postal as code5_13_0_,
+        personne2_.date_naissance as date6_13_0_,
+        personne2_.email as email13_0_,
+        personne2_.etablissement_rattachement_id as etabliss8_13_0_,
+        personne2_.fax as fax13_0_,
+        personne2_.nom as nom13_0_,
+        personne2_.nom_normalise as nom11_13_0_,
+        personne2_.pays as pays13_0_,
+        personne2_.photo as photo13_0_,
+        personne2_.prenom as prenom13_0_,
+        personne2_.prenom_normalise as prenom15_13_0_,
+        personne2_.regime_id as regime16_13_0_,
+        personne2_.sexe as sexe13_0_,
+        personne2_.telephone_perso as telephone18_13_0_,
+        personne2_.telephone_portable as telephone19_13_0_,
+        personne2_.telephone_pro as telephone20_13_0_,
+        personne2_.ville as ville13_0_,
+        domainauto3_.id as id26_1_,
+        domainauto3_.version as version26_1_,
+        domainauto3_.date_desactivation as date3_26_1_,
+        domainauto3_.est_active as est4_26_1_,
+        domainauto3_.id_enregistrement_cible as id5_26_1_,
+        domainauto3_.id_sts as id6_26_1_,
+        domainauto3_.id_externe as id7_26_1_,
+        domainauto3_.import_id as import8_26_1_,
+        domainauto3_.nom_entite_cible as nom9_26_1_,
+        domainauto3_.type as type26_1_,
+        etablissem4_.id as id2_2_,
+        etablissem4_.version as version2_2_,
+        etablissem4_.code_porteur_ent as code3_2_2_,
+        etablissem4_.date_import_sts as date4_2_2_,
+        etablissem4_.id_externe as id5_2_2_,
+        etablissem4_.nom_affichage as nom6_2_2_,
+        etablissem4_.perimetre_id as perimetre7_2_2_,
+        etablissem4_.porteur_ent_id as porteur8_2_2_,
+        etablissem4_.uai as uai2_2_,
+        etablissem4_.version_import_sts as version10_2_2_ 
+    from
+        tice.compte_utilisateur this_ 
+    inner join
+        ent.personne personne2_ 
+            on this_.personne_id=personne2_.id 
+    left outer join
+        securite.autorite domainauto3_ 
+            on personne2_.autorite_id=domainauto3_.id 
+    left outer join
+        ent.etablissement etablissem4_ 
+            on personne2_.etablissement_rattachement_id=etablissem4_.id 
+    where
+        (
+            this_."login"=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    update
+        tice.compte_utilisateur 
+    set
+        version=?,
+        compte_active=?,
+        compte_expire=?,
+        compte_verrouille=?,
+        date_derniere_connexion=?,
+        "login"=?,
+        login_alias=?,
+        "password"=?,
+        password_expire=?,
+        personne_id=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id30_3_,
+        this_.version as version30_3_,
+        this_.compte_active as compte3_30_3_,
+        this_.compte_expire as compte4_30_3_,
+        this_.compte_verrouille as compte5_30_3_,
+        this_.date_derniere_connexion as date6_30_3_,
+        this_."login" as login7_30_3_,
+        this_.login_alias as login8_30_3_,
+        this_."password" as password9_30_3_,
+        this_.password_expire as password10_30_3_,
+        this_.personne_id as personne11_30_3_,
+        personne2_.id as id13_0_,
+        personne2_.adresse as adresse13_0_,
+        personne2_.autorite_id as autorite3_13_0_,
+        personne2_.civilite_id as civilite4_13_0_,
+        personne2_.code_postal as code5_13_0_,
+        personne2_.date_naissance as date6_13_0_,
+        personne2_.email as email13_0_,
+        personne2_.etablissement_rattachement_id as etabliss8_13_0_,
+        personne2_.fax as fax13_0_,
+        personne2_.nom as nom13_0_,
+        personne2_.nom_normalise as nom11_13_0_,
+        personne2_.pays as pays13_0_,
+        personne2_.photo as photo13_0_,
+        personne2_.prenom as prenom13_0_,
+        personne2_.prenom_normalise as prenom15_13_0_,
+        personne2_.regime_id as regime16_13_0_,
+        personne2_.sexe as sexe13_0_,
+        personne2_.telephone_perso as telephone18_13_0_,
+        personne2_.telephone_portable as telephone19_13_0_,
+        personne2_.telephone_pro as telephone20_13_0_,
+        personne2_.ville as ville13_0_,
+        domainauto3_.id as id26_1_,
+        domainauto3_.version as version26_1_,
+        domainauto3_.date_desactivation as date3_26_1_,
+        domainauto3_.est_active as est4_26_1_,
+        domainauto3_.id_enregistrement_cible as id5_26_1_,
+        domainauto3_.id_sts as id6_26_1_,
+        domainauto3_.id_externe as id7_26_1_,
+        domainauto3_.import_id as import8_26_1_,
+        domainauto3_.nom_entite_cible as nom9_26_1_,
+        domainauto3_.type as type26_1_,
+        etablissem4_.id as id2_2_,
+        etablissem4_.version as version2_2_,
+        etablissem4_.code_porteur_ent as code3_2_2_,
+        etablissem4_.date_import_sts as date4_2_2_,
+        etablissem4_.id_externe as id5_2_2_,
+        etablissem4_.nom_affichage as nom6_2_2_,
+        etablissem4_.perimetre_id as perimetre7_2_2_,
+        etablissem4_.porteur_ent_id as porteur8_2_2_,
+        etablissem4_.uai as uai2_2_,
+        etablissem4_.version_import_sts as version10_2_2_ 
+    from
+        tice.compte_utilisateur this_ 
+    inner join
+        ent.personne personne2_ 
+            on this_.personne_id=personne2_.id 
+    left outer join
+        securite.autorite domainauto3_ 
+            on personne2_.autorite_id=domainauto3_.id 
+    left outer join
+        ent.etablissement etablissem4_ 
+            on personne2_.etablissement_rattachement_id=etablissem4_.id 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+--Output from testReactiveUtilisateur--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    select
+        nextval ('ent.personne_id_seq')
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        nextval ('tice.compte_utilisateur_id_seq')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    insert 
+    into
+        ent.personne
+        (adresse, autorite_id, civilite_id, code_postal, date_naissance, email, etablissement_rattachement_id, fax, nom, nom_normalise, pays, photo, prenom, prenom_normalise, regime_id, sexe, telephone_perso, telephone_portable, telephone_pro, ville, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    insert 
+    into
+        tice.compte_utilisateur
+        (version, compte_active, compte_expire, compte_verrouille, date_derniere_connexion, "login", login_alias, "password", password_expire, personne_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    update
+        securite.autorite 
+    set
+        version=?,
+        date_desactivation=?,
+        est_active=?,
+        id_enregistrement_cible=?,
+        id_sts=?,
+        id_externe=?,
+        import_id=?,
+        nom_entite_cible=?,
+        type=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id30_3_,
+        this_.version as version30_3_,
+        this_.compte_active as compte3_30_3_,
+        this_.compte_expire as compte4_30_3_,
+        this_.compte_verrouille as compte5_30_3_,
+        this_.date_derniere_connexion as date6_30_3_,
+        this_."login" as login7_30_3_,
+        this_.login_alias as login8_30_3_,
+        this_."password" as password9_30_3_,
+        this_.password_expire as password10_30_3_,
+        this_.personne_id as personne11_30_3_,
+        personne2_.id as id13_0_,
+        personne2_.adresse as adresse13_0_,
+        personne2_.autorite_id as autorite3_13_0_,
+        personne2_.civilite_id as civilite4_13_0_,
+        personne2_.code_postal as code5_13_0_,
+        personne2_.date_naissance as date6_13_0_,
+        personne2_.email as email13_0_,
+        personne2_.etablissement_rattachement_id as etabliss8_13_0_,
+        personne2_.fax as fax13_0_,
+        personne2_.nom as nom13_0_,
+        personne2_.nom_normalise as nom11_13_0_,
+        personne2_.pays as pays13_0_,
+        personne2_.photo as photo13_0_,
+        personne2_.prenom as prenom13_0_,
+        personne2_.prenom_normalise as prenom15_13_0_,
+        personne2_.regime_id as regime16_13_0_,
+        personne2_.sexe as sexe13_0_,
+        personne2_.telephone_perso as telephone18_13_0_,
+        personne2_.telephone_portable as telephone19_13_0_,
+        personne2_.telephone_pro as telephone20_13_0_,
+        personne2_.ville as ville13_0_,
+        domainauto3_.id as id26_1_,
+        domainauto3_.version as version26_1_,
+        domainauto3_.date_desactivation as date3_26_1_,
+        domainauto3_.est_active as est4_26_1_,
+        domainauto3_.id_enregistrement_cible as id5_26_1_,
+        domainauto3_.id_sts as id6_26_1_,
+        domainauto3_.id_externe as id7_26_1_,
+        domainauto3_.import_id as import8_26_1_,
+        domainauto3_.nom_entite_cible as nom9_26_1_,
+        domainauto3_.type as type26_1_,
+        etablissem4_.id as id2_2_,
+        etablissem4_.version as version2_2_,
+        etablissem4_.code_porteur_ent as code3_2_2_,
+        etablissem4_.date_import_sts as date4_2_2_,
+        etablissem4_.id_externe as id5_2_2_,
+        etablissem4_.nom_affichage as nom6_2_2_,
+        etablissem4_.perimetre_id as perimetre7_2_2_,
+        etablissem4_.porteur_ent_id as porteur8_2_2_,
+        etablissem4_.uai as uai2_2_,
+        etablissem4_.version_import_sts as version10_2_2_ 
+    from
+        tice.compte_utilisateur this_ 
+    inner join
+        ent.personne personne2_ 
+            on this_.personne_id=personne2_.id 
+    left outer join
+        securite.autorite domainauto3_ 
+            on personne2_.autorite_id=domainauto3_.id 
+    left outer join
+        ent.etablissement etablissem4_ 
+            on personne2_.etablissement_rattachement_id=etablissem4_.id 
+    where
+        (
+            this_."login"=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    update
+        tice.compte_utilisateur 
+    set
+        version=?,
+        compte_active=?,
+        compte_expire=?,
+        compte_verrouille=?,
+        date_derniere_connexion=?,
+        "login"=?,
+        login_alias=?,
+        "password"=?,
+        password_expire=?,
+        personne_id=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id30_3_,
+        this_.version as version30_3_,
+        this_.compte_active as compte3_30_3_,
+        this_.compte_expire as compte4_30_3_,
+        this_.compte_verrouille as compte5_30_3_,
+        this_.date_derniere_connexion as date6_30_3_,
+        this_."login" as login7_30_3_,
+        this_.login_alias as login8_30_3_,
+        this_."password" as password9_30_3_,
+        this_.password_expire as password10_30_3_,
+        this_.personne_id as personne11_30_3_,
+        personne2_.id as id13_0_,
+        personne2_.adresse as adresse13_0_,
+        personne2_.autorite_id as autorite3_13_0_,
+        personne2_.civilite_id as civilite4_13_0_,
+        personne2_.code_postal as code5_13_0_,
+        personne2_.date_naissance as date6_13_0_,
+        personne2_.email as email13_0_,
+        personne2_.etablissement_rattachement_id as etabliss8_13_0_,
+        personne2_.fax as fax13_0_,
+        personne2_.nom as nom13_0_,
+        personne2_.nom_normalise as nom11_13_0_,
+        personne2_.pays as pays13_0_,
+        personne2_.photo as photo13_0_,
+        personne2_.prenom as prenom13_0_,
+        personne2_.prenom_normalise as prenom15_13_0_,
+        personne2_.regime_id as regime16_13_0_,
+        personne2_.sexe as sexe13_0_,
+        personne2_.telephone_perso as telephone18_13_0_,
+        personne2_.telephone_portable as telephone19_13_0_,
+        personne2_.telephone_pro as telephone20_13_0_,
+        personne2_.ville as ville13_0_,
+        domainauto3_.id as id26_1_,
+        domainauto3_.version as version26_1_,
+        domainauto3_.date_desactivation as date3_26_1_,
+        domainauto3_.est_active as est4_26_1_,
+        domainauto3_.id_enregistrement_cible as id5_26_1_,
+        domainauto3_.id_sts as id6_26_1_,
+        domainauto3_.id_externe as id7_26_1_,
+        domainauto3_.import_id as import8_26_1_,
+        domainauto3_.nom_entite_cible as nom9_26_1_,
+        domainauto3_.type as type26_1_,
+        etablissem4_.id as id2_2_,
+        etablissem4_.version as version2_2_,
+        etablissem4_.code_porteur_ent as code3_2_2_,
+        etablissem4_.date_import_sts as date4_2_2_,
+        etablissem4_.id_externe as id5_2_2_,
+        etablissem4_.nom_affichage as nom6_2_2_,
+        etablissem4_.perimetre_id as perimetre7_2_2_,
+        etablissem4_.porteur_ent_id as porteur8_2_2_,
+        etablissem4_.uai as uai2_2_,
+        etablissem4_.version_import_sts as version10_2_2_ 
+    from
+        tice.compte_utilisateur this_ 
+    inner join
+        ent.personne personne2_ 
+            on this_.personne_id=personne2_.id 
+    left outer join
+        securite.autorite domainauto3_ 
+            on personne2_.autorite_id=domainauto3_.id 
+    left outer join
+        ent.etablissement etablissem4_ 
+            on personne2_.etablissement_rattachement_id=etablissem4_.id 
+    where
+        (
+            this_."login"=?
+        )
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    update
+        tice.compte_utilisateur 
+    set
+        version=?,
+        compte_active=?,
+        compte_expire=?,
+        compte_verrouille=?,
+        date_derniere_connexion=?,
+        "login"=?,
+        login_alias=?,
+        "password"=?,
+        password_expire=?,
+        personne_id=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id30_3_,
+        this_.version as version30_3_,
+        this_.compte_active as compte3_30_3_,
+        this_.compte_expire as compte4_30_3_,
+        this_.compte_verrouille as compte5_30_3_,
+        this_.date_derniere_connexion as date6_30_3_,
+        this_."login" as login7_30_3_,
+        this_.login_alias as login8_30_3_,
+        this_."password" as password9_30_3_,
+        this_.password_expire as password10_30_3_,
+        this_.personne_id as personne11_30_3_,
+        personne2_.id as id13_0_,
+        personne2_.adresse as adresse13_0_,
+        personne2_.autorite_id as autorite3_13_0_,
+        personne2_.civilite_id as civilite4_13_0_,
+        personne2_.code_postal as code5_13_0_,
+        personne2_.date_naissance as date6_13_0_,
+        personne2_.email as email13_0_,
+        personne2_.etablissement_rattachement_id as etabliss8_13_0_,
+        personne2_.fax as fax13_0_,
+        personne2_.nom as nom13_0_,
+        personne2_.nom_normalise as nom11_13_0_,
+        personne2_.pays as pays13_0_,
+        personne2_.photo as photo13_0_,
+        personne2_.prenom as prenom13_0_,
+        personne2_.prenom_normalise as prenom15_13_0_,
+        personne2_.regime_id as regime16_13_0_,
+        personne2_.sexe as sexe13_0_,
+        personne2_.telephone_perso as telephone18_13_0_,
+        personne2_.telephone_portable as telephone19_13_0_,
+        personne2_.telephone_pro as telephone20_13_0_,
+        personne2_.ville as ville13_0_,
+        domainauto3_.id as id26_1_,
+        domainauto3_.version as version26_1_,
+        domainauto3_.date_desactivation as date3_26_1_,
+        domainauto3_.est_active as est4_26_1_,
+        domainauto3_.id_enregistrement_cible as id5_26_1_,
+        domainauto3_.id_sts as id6_26_1_,
+        domainauto3_.id_externe as id7_26_1_,
+        domainauto3_.import_id as import8_26_1_,
+        domainauto3_.nom_entite_cible as nom9_26_1_,
+        domainauto3_.type as type26_1_,
+        etablissem4_.id as id2_2_,
+        etablissem4_.version as version2_2_,
+        etablissem4_.code_porteur_ent as code3_2_2_,
+        etablissem4_.date_import_sts as date4_2_2_,
+        etablissem4_.id_externe as id5_2_2_,
+        etablissem4_.nom_affichage as nom6_2_2_,
+        etablissem4_.perimetre_id as perimetre7_2_2_,
+        etablissem4_.porteur_ent_id as porteur8_2_2_,
+        etablissem4_.uai as uai2_2_,
+        etablissem4_.version_import_sts as version10_2_2_ 
+    from
+        tice.compte_utilisateur this_ 
+    inner join
+        ent.personne personne2_ 
+            on this_.personne_id=personne2_.id 
+    left outer join
+        securite.autorite domainauto3_ 
+            on personne2_.autorite_id=domainauto3_.id 
+    left outer join
+        ent.etablissement etablissem4_ 
+            on personne2_.etablissement_rattachement_id=etablissem4_.id 
+    where
+        (
+            this_."login"=? 
+            or this_.login_alias=?
+        )
+--Output from testUpdateUtilisateur--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    select
+        nextval ('ent.personne_id_seq')
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    select
+        nextval ('tice.compte_utilisateur_id_seq')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
+Hibernate: 
+    insert 
+    into
+        ent.personne
+        (adresse, autorite_id, civilite_id, code_postal, date_naissance, email, etablissement_rattachement_id, fax, nom, nom_normalise, pays, photo, prenom, prenom_normalise, regime_id, sexe, telephone_perso, telephone_portable, telephone_pro, ville, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id30_0_,
+        this_.version as version30_0_,
+        this_.compte_active as compte3_30_0_,
+        this_.compte_expire as compte4_30_0_,
+        this_.compte_verrouille as compte5_30_0_,
+        this_.date_derniere_connexion as date6_30_0_,
+        this_."login" as login7_30_0_,
+        this_.login_alias as login8_30_0_,
+        this_."password" as password9_30_0_,
+        this_.password_expire as password10_30_0_,
+        this_.personne_id as personne11_30_0_ 
+    from
+        tice.compte_utilisateur this_ 
+    where
+        this_."login"=?
+Hibernate: 
+    insert 
+    into
+        tice.compte_utilisateur
+        (version, compte_active, compte_expire, compte_verrouille, date_derniere_connexion, "login", login_alias, "password", password_expire, personne_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    update
+        securite.autorite 
+    set
+        version=?,
+        date_desactivation=?,
+        est_active=?,
+        id_enregistrement_cible=?,
+        id_sts=?,
+        id_externe=?,
+        import_id=?,
+        nom_entite_cible=?,
+        type=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id30_3_,
+        this_.version as version30_3_,
+        this_.compte_active as compte3_30_3_,
+        this_.compte_expire as compte4_30_3_,
+        this_.compte_verrouille as compte5_30_3_,
+        this_.date_derniere_connexion as date6_30_3_,
+        this_."login" as login7_30_3_,
+        this_.login_alias as login8_30_3_,
+        this_."password" as password9_30_3_,
+        this_.password_expire as password10_30_3_,
+        this_.personne_id as personne11_30_3_,
+        personne2_.id as id13_0_,
+        personne2_.adresse as adresse13_0_,
+        personne2_.autorite_id as autorite3_13_0_,
+        personne2_.civilite_id as civilite4_13_0_,
+        personne2_.code_postal as code5_13_0_,
+        personne2_.date_naissance as date6_13_0_,
+        personne2_.email as email13_0_,
+        personne2_.etablissement_rattachement_id as etabliss8_13_0_,
+        personne2_.fax as fax13_0_,
+        personne2_.nom as nom13_0_,
+        personne2_.nom_normalise as nom11_13_0_,
+        personne2_.pays as pays13_0_,
+        personne2_.photo as photo13_0_,
+        personne2_.prenom as prenom13_0_,
+        personne2_.prenom_normalise as prenom15_13_0_,
+        personne2_.regime_id as regime16_13_0_,
+        personne2_.sexe as sexe13_0_,
+        personne2_.telephone_perso as telephone18_13_0_,
+        personne2_.telephone_portable as telephone19_13_0_,
+        personne2_.telephone_pro as telephone20_13_0_,
+        personne2_.ville as ville13_0_,
+        domainauto3_.id as id26_1_,
+        domainauto3_.version as version26_1_,
+        domainauto3_.date_desactivation as date3_26_1_,
+        domainauto3_.est_active as est4_26_1_,
+        domainauto3_.id_enregistrement_cible as id5_26_1_,
+        domainauto3_.id_sts as id6_26_1_,
+        domainauto3_.id_externe as id7_26_1_,
+        domainauto3_.import_id as import8_26_1_,
+        domainauto3_.nom_entite_cible as nom9_26_1_,
+        domainauto3_.type as type26_1_,
+        etablissem4_.id as id2_2_,
+        etablissem4_.version as version2_2_,
+        etablissem4_.code_porteur_ent as code3_2_2_,
+        etablissem4_.date_import_sts as date4_2_2_,
+        etablissem4_.id_externe as id5_2_2_,
+        etablissem4_.nom_affichage as nom6_2_2_,
+        etablissem4_.perimetre_id as perimetre7_2_2_,
+        etablissem4_.porteur_ent_id as porteur8_2_2_,
+        etablissem4_.uai as uai2_2_,
+        etablissem4_.version_import_sts as version10_2_2_ 
+    from
+        tice.compte_utilisateur this_ 
+    inner join
+        ent.personne personne2_ 
+            on this_.personne_id=personne2_.id 
+    left outer join
+        securite.autorite domainauto3_ 
+            on personne2_.autorite_id=domainauto3_.id 
+    left outer join
+        ent.etablissement etablissem4_ 
+            on personne2_.etablissement_rattachement_id=etablissem4_.id 
+    where
+        (
+            this_."login"=?
+        )
+Hibernate: 
+    select
+        this_.id as id13_2_,
+        this_.adresse as adresse13_2_,
+        this_.autorite_id as autorite3_13_2_,
+        this_.civilite_id as civilite4_13_2_,
+        this_.code_postal as code5_13_2_,
+        this_.date_naissance as date6_13_2_,
+        this_.email as email13_2_,
+        this_.etablissement_rattachement_id as etabliss8_13_2_,
+        this_.fax as fax13_2_,
+        this_.nom as nom13_2_,
+        this_.nom_normalise as nom11_13_2_,
+        this_.pays as pays13_2_,
+        this_.photo as photo13_2_,
+        this_.prenom as prenom13_2_,
+        this_.prenom_normalise as prenom15_13_2_,
+        this_.regime_id as regime16_13_2_,
+        this_.sexe as sexe13_2_,
+        this_.telephone_perso as telephone18_13_2_,
+        this_.telephone_portable as telephone19_13_2_,
+        this_.telephone_pro as telephone20_13_2_,
+        this_.ville as ville13_2_,
+        domainauto2_.id as id26_0_,
+        domainauto2_.version as version26_0_,
+        domainauto2_.date_desactivation as date3_26_0_,
+        domainauto2_.est_active as est4_26_0_,
+        domainauto2_.id_enregistrement_cible as id5_26_0_,
+        domainauto2_.id_sts as id6_26_0_,
+        domainauto2_.id_externe as id7_26_0_,
+        domainauto2_.import_id as import8_26_0_,
+        domainauto2_.nom_entite_cible as nom9_26_0_,
+        domainauto2_.type as type26_0_,
+        etablissem3_.id as id2_1_,
+        etablissem3_.version as version2_1_,
+        etablissem3_.code_porteur_ent as code3_2_1_,
+        etablissem3_.date_import_sts as date4_2_1_,
+        etablissem3_.id_externe as id5_2_1_,
+        etablissem3_.nom_affichage as nom6_2_1_,
+        etablissem3_.perimetre_id as perimetre7_2_1_,
+        etablissem3_.porteur_ent_id as porteur8_2_1_,
+        etablissem3_.uai as uai2_1_,
+        etablissem3_.version_import_sts as version10_2_1_ 
+    from
+        ent.personne this_ 
+    inner join
+        securite.autorite domainauto2_ 
+            on this_.autorite_id=domainauto2_.id 
+    left outer join
+        ent.etablissement etablissem3_ 
+            on this_.etablissement_rattachement_id=etablissem3_.id 
+    where
+        this_.autorite_id=?
 </pre>
 </div>
 <div class="syserr">
 <h2>System error</h2>
 <pre class="syserr">--Output from testCreateUtilisateur--
+--Output from testFindUtilisateur--
+--Output from testSetLoginAlias--
+--Output from testDesactiveUtilisateur--
+--Output from testReactiveUtilisateur--
+--Output from testUpdateUtilisateur--
 </pre>
 </div>
 </div>

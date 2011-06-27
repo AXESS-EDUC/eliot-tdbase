@@ -51,7 +51,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testCreateDefaultPermissionsManager</b>
 </p>
-<p class="summary">Executed in 0.079 seconds.</p>
+<p class="summary">Executed in 0.094 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -61,7 +61,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testAddPermissionModificationSansPermInitiales</b>
 </p>
-<p class="summary">Executed in 0.065 seconds.</p>
+<p class="summary">Executed in 0.045 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -71,7 +71,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testAddPermissionModificationAvecPermInitiales</b>
 </p>
-<p class="summary">Executed in 0.072 seconds.</p>
+<p class="summary">Executed in 0.054 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -81,7 +81,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testDeletePermissionConsultation</b>
 </p>
-<p class="summary">Executed in 0.086 seconds.</p>
+<p class="summary">Executed in 0.06 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -90,14 +90,515 @@
 <div class="sysout">
 <h2>Standard output</h2>
 <pre class="stdout">--Output from testCreateDefaultPermissionsManager--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
 org.lilie.services.eliot.tice.securite.acl.AutorisationException: Pas l'autorisation de modifier les permissions
-liste des autorisations (type class java.util.ArrayList : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 71]
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+liste des autorisations (type class java.util.ArrayList : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 192]
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_autorite=? 
+        and this_.id_item=?
 --Output from testAddPermissionModificationSansPermInitiales--
-liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 72]
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 193]
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_autorite=? 
+        and this_.id_item=?
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and this_.id_autorite=?
 --Output from testAddPermissionModificationAvecPermInitiales--
-liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 75]
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 196]
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_autorite=? 
+        and this_.id_item=?
+Hibernate: 
+    update
+        securite.autorisation 
+    set
+        version=?,
+        id_autorisation_heritee=?,
+        id_autorite=?,
+        id_item=?,
+        proprietaire=?,
+        valeur_permissions_explicite=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    update
+        securite.autorisation 
+    set
+        version=?,
+        id_autorisation_heritee=?,
+        id_autorite=?,
+        id_item=?,
+        proprietaire=?,
+        valeur_permissions_explicite=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and this_.id_autorite=?
 --Output from testDeletePermissionConsultation--
-liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 77]
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+liste des autorisations : [org.lilie.services.eliot.tice.securite.DomainAutorisation : 198]
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?, ?
+            )
+        )
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_autorite=? 
+        and this_.id_item=?
+Hibernate: 
+    delete 
+    from
+        securite.autorisation 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and this_.id_autorite=?
 </pre>
 </div>
 <div class="syserr">

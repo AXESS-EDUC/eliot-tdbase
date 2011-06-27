@@ -51,7 +51,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testPeutModifierLeContenu</b>
 </p>
-<p class="summary">Executed in 0.198 seconds.</p>
+<p class="summary">Executed in 0.152 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -61,7 +61,7 @@
 <p>
 <span class="icon success"></span><b class="testname message success">testPeutModifierLesPermissions</b>
 </p>
-<p class="summary">Executed in 0.029 seconds.</p>
+<p class="summary">Executed in 0.03 seconds.</p>
 </div>
 <div class="grid_5 omega outputinfo"></div>
 <div class="clear"></div>
@@ -70,7 +70,103 @@
 <div class="sysout">
 <h2>Standard output</h2>
 <pre class="stdout">--Output from testPeutModifierLeContenu--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?
+            )
+        )
 --Output from testPeutModifierLesPermissions--
+Hibernate: 
+    select
+        nextval ('securite.seq_autorite')
+Hibernate: 
+    select
+        nextval ('securite.seq_item')
+Hibernate: 
+    select
+        nextval ('securite.seq_autorisation')
+Hibernate: 
+    insert 
+    into
+        securite.autorite
+        (version, date_desactivation, est_active, id_enregistrement_cible, id_sts, id_externe, import_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.item
+        (version, date_desactivation, est_active, id_enregistrement_cible, import_id, item_parent_id, nom_entite_cible, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        securite.autorisation
+        (version, id_autorisation_heritee, id_autorite, id_item, proprietaire, valeur_permissions_explicite, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        this_.id as id14_0_,
+        this_.version as version14_0_,
+        this_.id_autorisation_heritee as id3_14_0_,
+        this_.id_autorite as id4_14_0_,
+        this_.id_item as id5_14_0_,
+        this_.proprietaire as propriet6_14_0_,
+        this_.valeur_permissions_explicite as valeur7_14_0_ 
+    from
+        securite.autorisation this_ 
+    where
+        this_.id_item=? 
+        and (
+            this_.id_autorite in (
+                ?
+            )
+        )
 </pre>
 </div>
 <div class="syserr">
