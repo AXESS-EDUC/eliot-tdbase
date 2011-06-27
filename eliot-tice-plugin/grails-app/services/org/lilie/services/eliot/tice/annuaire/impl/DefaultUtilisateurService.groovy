@@ -39,6 +39,7 @@ import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
 import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
+import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
 
 /**
@@ -83,7 +84,9 @@ class DefaultUtilisateurService implements UtilisateurService {
             prenom: prenom,
             email: email,
             dateNaissance: dateNaissance,
-            autorite: domainAutorite
+            autorite: domainAutorite,
+            nomNormalise: StringUtils.normalise(nom),
+            prenomNormalise: StringUtils.normalise(prenom)
     ).save(failOnError: true)
 
     // finit la mise à jour de l'autorite
@@ -234,6 +237,55 @@ class DefaultUtilisateurService implements UtilisateurService {
       compteUtilisateur.compteActive = true
       compteUtilisateur.save(failOnError: true)
     }
+
+    return UtilisateurForCompteUtilisateur(compteUtilisateur)
+  }
+
+  /**
+   *
+   * @see UtilisateurService
+   */
+  @Transactional
+  Utilisateur updateUtilisateur(String login, Utilisateur utilisateur) {
+    if (!login) {
+      throw new IllegalStateException(
+              "annuaire.login_null_ou_vide")
+    }
+
+    // cherche le compte utilisateur avec personne et autorite associée
+    def criteria = CompteUtilisateur.createCriteria()
+    CompteUtilisateur compteUtilisateur = criteria.get {
+      or {
+        eq 'login', login
+      }
+      join 'personne'
+      join 'personne.autorite'
+    }
+    if (compteUtilisateur == null) {
+      throw new IllegalStateException(
+              "annuaire.no_user_avec_login : ${login}")
+    }
+
+    if (compteUtilisateur.password != utilisateur.password) {
+      compteUtilisateur.password = utilisateur.password
+      compteUtilisateur.save(failOnError: true)
+    }
+    Personne personne = compteUtilisateur.personne
+    if (personne.nom != utilisateur.nom) {
+      personne.nom = utilisateur.nom
+      personne.nomNormalise = StringUtils.normalise(utilisateur.nom)
+    }
+    if (personne.prenom != utilisateur.prenom) {
+      personne.prenom = utilisateur.prenom
+      personne.prenomNormalise = StringUtils.normalise(utilisateur.prenom)
+    }
+    if (personne.email != utilisateur.email) {
+      personne.email = utilisateur.email
+    }
+    if (personne.dateNaissance != utilisateur.dateNaissance) {
+      personne.dateNaissance = utilisateur.dateNaissance
+    }
+    personne.save(failOnError:true)
 
     return UtilisateurForCompteUtilisateur(compteUtilisateur)
   }

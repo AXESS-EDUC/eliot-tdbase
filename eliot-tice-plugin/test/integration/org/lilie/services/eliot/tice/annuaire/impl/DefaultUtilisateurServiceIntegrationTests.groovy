@@ -142,23 +142,23 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
     defaultUtilisateurService.setAliasLogin(UTILISATEUR_1_LOGIN, UTILISATEUR_1_LOGIN_ALIAS)
     def utilisateur1Copie = defaultUtilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
     assertNotNull(utilisateur1Copie)
-    assertEquals(UTILISATEUR_1_LOGIN_ALIAS,utilisateur1Copie.loginAlias )
+    assertEquals(UTILISATEUR_1_LOGIN_ALIAS, utilisateur1Copie.loginAlias)
 
     shouldFail {
-       defaultUtilisateurService.setAliasLogin(UTILISATEUR_2_LOGIN, UTILISATEUR_1_LOGIN_ALIAS)
+      defaultUtilisateurService.setAliasLogin(UTILISATEUR_2_LOGIN, UTILISATEUR_1_LOGIN_ALIAS)
     }
 
     shouldFail {
-       defaultUtilisateurService.setAliasLogin(UTILISATEUR_2_LOGIN, UTILISATEUR_1_LOGIN)
+      defaultUtilisateurService.setAliasLogin(UTILISATEUR_2_LOGIN, UTILISATEUR_1_LOGIN)
     }
   }
 
   void testDesactiveUtilisateur() {
     Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
-                UTILISATEUR_1_LOGIN,
-                UTILISATEUR_1_PASSWORD,
-                UTILISATEUR_1_NOM,
-                UTILISATEUR_1_PRENOM
+            UTILISATEUR_1_LOGIN,
+            UTILISATEUR_1_PASSWORD,
+            UTILISATEUR_1_NOM,
+            UTILISATEUR_1_PRENOM
     )
     assertTrue(utilisateur1.compteActive)
 
@@ -170,23 +170,44 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
   }
 
   void testReactiveUtilisateur() {
-      Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
-                  UTILISATEUR_1_LOGIN,
-                  UTILISATEUR_1_PASSWORD,
-                  UTILISATEUR_1_NOM,
-                  UTILISATEUR_1_PRENOM
-      )
-      assertTrue(utilisateur1.compteActive)
+    Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
+            UTILISATEUR_1_LOGIN,
+            UTILISATEUR_1_PASSWORD,
+            UTILISATEUR_1_NOM,
+            UTILISATEUR_1_PRENOM
+    )
+    assertTrue(utilisateur1.compteActive)
 
-      utilisateur1 = defaultUtilisateurService.desactiveUtilisateur(UTILISATEUR_1_LOGIN)
-      assertFalse(utilisateur1.compteActive)
+    utilisateur1 = defaultUtilisateurService.desactiveUtilisateur(UTILISATEUR_1_LOGIN)
+    assertFalse(utilisateur1.compteActive)
 
-      utilisateur1 = defaultUtilisateurService.reactiveUtilisateur(UTILISATEUR_1_LOGIN)
-      assertTrue(utilisateur1.compteActive)
+    utilisateur1 = defaultUtilisateurService.reactiveUtilisateur(UTILISATEUR_1_LOGIN)
+    assertTrue(utilisateur1.compteActive)
 
-      def copieUtilisateur1 = defaultUtilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
-      assertTrue(copieUtilisateur1.compteActive)
-    }
+    def copieUtilisateur1 = defaultUtilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
+    assertTrue(copieUtilisateur1.compteActive)
+  }
+
+  void testUpdateUtilisateur() {
+     Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
+            UTILISATEUR_1_LOGIN,
+            UTILISATEUR_1_PASSWORD,
+            UTILISATEUR_1_NOM,
+            UTILISATEUR_1_PRENOM
+    )
+
+    utilisateur1.nom = UTILISATEUR_2_NOM
+    utilisateur1.email = "aaa@bbb.com"
+    utilisateur1.dateNaissance = new Date().parse("d/M/yyyy", "21/3/1972")
+
+    Utilisateur copieUtilisateur1 = defaultUtilisateurService.updateUtilisateur(
+            UTILISATEUR_1_LOGIN,utilisateur1)
+
+    assertNotNull(copieUtilisateur1.email)
+    assertNotNull(copieUtilisateur1.dateNaissance)
+    assertEquals(UTILISATEUR_2_NOM, copieUtilisateur1.nom)
+
+  }
 
 
 }

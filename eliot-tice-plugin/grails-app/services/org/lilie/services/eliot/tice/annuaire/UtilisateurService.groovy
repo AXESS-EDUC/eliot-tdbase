@@ -64,6 +64,7 @@ public interface UtilisateurService {
    */
   Utilisateur findUtilisateur(String loginOrLoginAlias)
 
+
   /**
    * Met à jour l'alias de login de l'utilisateur caractérisé par le login passé
    * en paramètre
@@ -85,5 +86,18 @@ public interface UtilisateurService {
    * @return  l'utilisateur suspendu
    */
   Utilisateur reactiveUtilisateur(String login)
+
+  /**
+   * Met à jour les données d'un utilisateur.
+   * Le cas d'utilisation standard : récupération d'un objet de type Utilisateur,
+   * modification de l'objet récupérer et soumettre l'objet modifié à la présente
+   * méthode.
+   * Seules les propriétés password,nom,prenom,email,dateNaissance sont modifiables
+   * Le login et le login alias ne sont pas modifiable via cette méthode
+   * @param login le login de l'utilisateur à mettre à jour
+   * @param utilisateurModel l'utilisateur contenant les nouvelles valeurs
+   * @return l'utilisateur avec ses nouvelles valeurs
+   */
+  Utilisateur updateUtilisateur(String login, Utilisateur utilisateur)
 
 }
