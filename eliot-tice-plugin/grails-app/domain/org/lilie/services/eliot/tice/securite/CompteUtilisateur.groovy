@@ -48,9 +48,9 @@ class CompteUtilisateur {
   Personne personne
 
   static constraints = {
-    login blank: false, unique: true
-    loginAlias nullable: true, unique:true
-    password blank: false
+    login size:4..255, blank: false, unique: true
+    loginAlias size:4..255, nullable: true, unique:true
+    password size:5..15, blank: false
     dateDerniereConnexion nullable: true
   }
 

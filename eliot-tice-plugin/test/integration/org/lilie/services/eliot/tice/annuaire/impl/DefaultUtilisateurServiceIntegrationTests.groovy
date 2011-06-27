@@ -30,17 +30,17 @@
 
 package org.lilie.services.eliot.tice.annuaire.impl
 
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.annuaire.UtilisateurService
-import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.UtilisateurService
+import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
+import org.lilie.services.eliot.tice.securite.DomainAutorite
 
 /**
  *  Test la classe DefaultUtilisateurService
  * @author franck silvestre
  */
-class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase  {
+class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
 
   private static final String UTILISATEUR_1_LOGIN = "mary.dupond"
   private static final String UTILISATEUR_1_PASSWORD = "password"
@@ -49,40 +49,51 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase  {
   private static final String NO_USER_LOGIN = "NO_USER_LOGIN"
   private static final String UTILISATEUR_1_LOGIN_ALIAS = "mary.d"
 
+  private static final String UTILISATEUR_2_LOGIN = "paul.dupond"
+  private static final String UTILISATEUR_2_PASSWORD = "password2"
+  private static final String UTILISATEUR_2_NOM = "dupond"
+  private static final String UTILISATEUR_2_PRENOM = "paul"
+
+
 
   UtilisateurService defaultUtilisateurService
 
   void testCreateUtilisateur() {
 
     Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
-           UTILISATEUR_1_LOGIN,
-           UTILISATEUR_1_PASSWORD,
-           UTILISATEUR_1_NOM,
-           UTILISATEUR_1_PRENOM,
+            UTILISATEUR_1_LOGIN,
+            UTILISATEUR_1_PASSWORD,
+            UTILISATEUR_1_NOM,
+            UTILISATEUR_1_PRENOM,
             null,
-            new Date().parse("d/M/yyyy","21/3/1972")
+            new Date().parse("d/M/yyyy", "21/3/1972")
     )
 
-    assertNotNull("Création de l'utilisateur a échouée",utilisateur1)
+    assertNotNull("Création de l'utilisateur a échouée", utilisateur1)
     DomainAutorite domainAutorite = DomainAutorite.get(utilisateur1.autoriteId)
-    assertNotNull("La création de l'autorité a échouée",domainAutorite)
+    assertNotNull("La création de l'autorité a échouée", domainAutorite)
     assertEquals("Le nom de l'entité n'est pas bon", "ent.personne", domainAutorite.nomEntiteCible)
 
     Personne personne = Personne.get(utilisateur1.personneId)
-    assertNotNull("Personne non créée",personne)
-    assertEquals("nom incorrect","dupond", personne.nom)
+    assertNotNull("Personne non créée", personne)
+    assertEquals("nom incorrect", "dupond", personne.nom)
 
     CompteUtilisateur compteUtilisateur = CompteUtilisateur.get(utilisateur1.compteUtilisateurId)
-    assertEquals("login incorrect", "mary.dupond",compteUtilisateur.login)
-    assertTrue("compte non active",compteUtilisateur.compteActive)
+    assertEquals("login incorrect", "mary.dupond", compteUtilisateur.login)
+    assertTrue("compte non active", compteUtilisateur.compteActive)
     assertFalse("compte expire", compteUtilisateur.compteExpire)
     assertFalse("compte verrouille", compteUtilisateur.compteVerrouille)
-    assertFalse("password expire",compteUtilisateur.passwordExpire)
+    assertFalse("password expire", compteUtilisateur.passwordExpire)
 
   }
 
 
   void testFindUtilisateur() {
+
+    shouldFail {
+      defaultUtilisateurService.findUtilisateur("")
+    }
+
     Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
             UTILISATEUR_1_LOGIN,
             UTILISATEUR_1_PASSWORD,
@@ -109,7 +120,39 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase  {
     assertEquals(UTILISATEUR_1_NOM, utilisateur1Copie2.nom)
     assertNotNull(utilisateur1Copie2.autoriteId)
     assertEquals(UTILISATEUR_1_LOGIN, utilisateur1Copie2.login)
-    assertEquals(UTILISATEUR_1_LOGIN_ALIAS,utilisateur1Copie2.loginAlias)
+    assertEquals(UTILISATEUR_1_LOGIN_ALIAS, utilisateur1Copie2.loginAlias)
+
+  }
+
+  void testSetLoginAlias() {
+    Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
+            UTILISATEUR_1_LOGIN,
+            UTILISATEUR_1_PASSWORD,
+            UTILISATEUR_1_NOM,
+            UTILISATEUR_1_PRENOM
+    )
+
+    Utilisateur utilisateur2 = defaultUtilisateurService.createUtilisateur(
+            UTILISATEUR_2_LOGIN,
+            UTILISATEUR_2_PASSWORD,
+            UTILISATEUR_2_NOM,
+            UTILISATEUR_2_PRENOM
+    )
+
+    defaultUtilisateurService.setAliasLogin(UTILISATEUR_1_LOGIN, UTILISATEUR_1_LOGIN_ALIAS)
+    def utilisateur1Copie = defaultUtilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
+    assertNotNull(utilisateur1Copie)
+    assertEquals(UTILISATEUR_1_LOGIN_ALIAS,utilisateur1Copie.loginAlias )
+
+    shouldFail {
+       defaultUtilisateurService.setAliasLogin(UTILISATEUR_2_LOGIN, UTILISATEUR_1_LOGIN_ALIAS)
+    }
+
+    shouldFail {
+       defaultUtilisateurService.setAliasLogin(UTILISATEUR_2_LOGIN, UTILISATEUR_1_LOGIN)
+    }
+
+
 
   }
 

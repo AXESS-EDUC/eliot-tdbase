@@ -72,7 +72,7 @@ class DefaultUtilisateurService implements UtilisateurService{
     // cree l'autorite
     String nomEntiteCible = personneNomEntite
     DomainAutorite domainAutorite = new DomainAutorite(
-            identifiant: "${nomEntiteCible}.login",
+            identifiant: "${nomEntiteCible}.${login}",
             estActive: true,
             type: TypeAutorite.PERSONNE.libelle
     ).save(failOnError: true)
@@ -127,6 +127,10 @@ class DefaultUtilisateurService implements UtilisateurService{
    * @see UtilisateurService
    */
   Utilisateur findUtilisateur(String login) {
+    if (!login) {
+       throw new IllegalStateException(
+              "annuaire.login_null_ou_vide")
+    }
     // cherche le compte utilisateur avec personne et autorite associée
     def criteria = CompteUtilisateur.createCriteria()
     CompteUtilisateur compteUtilisateur = criteria.get {
@@ -172,19 +176,48 @@ class DefaultUtilisateurService implements UtilisateurService{
    *
    * @see UtilisateurService
    */
-  @Transactional
   void setAliasLogin(String login, String aliasLogin) {
+     if (!login) {
+       throw new IllegalStateException(
+              "annuaire.login_null_ou_vide")
+    }
      // cherche le compte utilisateur avec personne et autorite associée
     CompteUtilisateur compteUtilisateur = CompteUtilisateur.findByLoginOrLoginAlias(
             login,
             login)
     if (compteUtilisateur == null) {
       throw new IllegalStateException(
-              "Pas d'utilisateur ayant pour login ou alias de login : ${login}")
+              "annuaire.no_user_avec_login : ${login}")
     }
+
+    String oldLoginAlias = compteUtilisateur.loginAlias
+
+    // un login ou un alias correspondant à l'alias
+    CompteUtilisateur compteUtilisateur2 = CompteUtilisateur.findByLoginOrLoginAlias(
+            aliasLogin,
+            aliasLogin)
+    if (compteUtilisateur2) {
+      throw new IllegalStateException(
+              "annuaire.alias_login_deja_utilise : ${aliasLogin}")
+    }
+
     compteUtilisateur.loginAlias = aliasLogin
     compteUtilisateur.save(failOnError:true)
+
+    // reverifie unicité login/loginAlias correspondant à l'alias
+    List<CompteUtilisateur> comptes = CompteUtilisateur.findAllByLoginOrLoginAlias(
+            aliasLogin,
+            aliasLogin)
+
+    if (comptes.size() > 1) {
+      compteUtilisateur.loginAlias = oldLoginAlias
+      compteUtilisateur.save(failOnError:true)
+      throw new IllegalStateException(
+              "annuaire.alias_login_deja_utilise : ${aliasLogin}")
+    }
+
   }
+
 
   // -------------- private methods --------------------------------------------
 

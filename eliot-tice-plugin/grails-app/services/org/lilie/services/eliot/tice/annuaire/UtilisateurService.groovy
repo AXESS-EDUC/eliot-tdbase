@@ -72,4 +72,5 @@ public interface UtilisateurService {
    */
   void setAliasLogin(String loginOrLoginAlias, String loginAlias)
 
+
 }
