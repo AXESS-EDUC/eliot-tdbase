@@ -582,8 +582,35 @@
 
     </changeSet>
 
-    <!-- todo mettre les contraintes uniques sur ce qui pourrait etre des -->
-    <!-- todo contraintes de cles primaires (rel many to many)-->
-    <!-- todo gerer les copyrigts et la publication, l'initialisation du référentiel-->
+    <changeSet id="4" author="fsil">
+        <comment>
+            Ajout de quelques clés uniques manquantes sur les tables 
+            de jointures
+        </comment>
+        <addUniqueConstraint tableName="question_arborescence"
+                             columnNames="question_id, question_fille_id"
+                             constraintName="uk_question_arborescence_question_id_question_fille_id"
+                             schemaName="td"/>
+
+        <addUniqueConstraint tableName="question_attachement"
+                             columnNames="question_id, attachement_id"
+                             constraintName="uk_question_attachement_question_id_attachement_id"
+                             schemaName="td"/>
+
+        <addUniqueConstraint tableName="sujet_sequence_questions"
+                             columnNames="question_id, sujet_id"
+                             constraintName="uk_sujet_sequence_questions_question_id_sujet_id"
+                             schemaName="td"/>
+
+
+    </changeSet>
+
+    <changeSet id="5" author="fsil">
+        <comment>
+            Gestion des séances
+        </comment>
+    </changeSet>
+
+    <!-- todo l'initialisation du référentiel-->
 
 </databaseChangeLog>
