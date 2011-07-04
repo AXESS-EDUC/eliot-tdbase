@@ -34,5 +34,6 @@
 
     <include file="initialisation/changelog-20110624-1.xml"/>
     <include file="schema.tice/changelog-20110624-6.xml"/>
+    <include file="schema.tdbase/changelog-20110704-4.xml"/>
 
 </databaseChangeLog>

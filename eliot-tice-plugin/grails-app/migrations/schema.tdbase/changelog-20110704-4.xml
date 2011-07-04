@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
+  ~ This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
+  ~
+  ~ Lilie is free software. You can redistribute it and/or modify since
+  ~ you respect the terms of either (at least one of the both license) :
+  ~ - under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~ - the CeCILL-C as published by CeCILL-C; either version 1 of the
+  ~ License, or any later version
+  ~
+  ~ There are special exceptions to the terms and conditions of the
+  ~ licenses as they are applied to this software. View the full text of
+  ~ the exception in file LICENSE.txt in the directory of this software
+  ~ distribution.
+  ~
+  ~ Lilie is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ Licenses for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ and the CeCILL-C along with Lilie. If not, see :
+  ~  <http://www.gnu.org/licenses/> and
+  ~  <http://www.cecill.info/licences.fr.html>.
+  -->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="0" author="fsil">
+        <comment>
+            Entitées d'abord utiles a tdbase mais pouvant être utiles à d'autre
+            modules
+        </comment>
+
+        <createTable tableName="export_format" schemaName="tice">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="nom" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="export_format_id_seq" schemaName="tice"
+                        startValue="100"/>
+
+        <createTable tableName="attachement" schemaName="tice">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="chemin" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nom" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="taille_en_ko" type="bigint"/>
+            <column name="type_mime" type="varchar(255)"/>
+        </createTable>
+
+        <createSequence
+                sequenceName="attachement_id_seq"
+                schemaName="tice"
+                startValue="100"/>
+
+    </changeSet>
+
+    <changeSet id="1" author="fsil">
+        <comment>
+            Création du schéma pour tdbase (td) puis de la table question
+            avec relations associées
+        </comment>
+
+        <sql>create schema td;</sql>
+
+        <createTable tableName="question_type" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="nom" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nom_anglais" type="varchar(255)"/>
+        </createTable>
+
+        <createSequence sequenceName="question_type_id_seq"
+                        schemaName="td" startValue="100"/>
+
+        <createTable tableName="question" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="titre" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="est_autonome" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specification" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version_question" type="int" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="proprietaire_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="matiere_id" type="bigint"/>
+            <column name="etablissement_id" type="bigint"/>
+            <column name="niveau_id" type="bigint"/>
+
+        </createTable>
+
+        <createSequence sequenceName="question_id_seq"
+                        schemaName="td"
+                        startValue="100"/>
+
+        <addForeignKeyConstraint baseTableName="question"
+                                 baseColumnNames="niveau_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_niveau_id"
+                                 referencedTableName="niveau"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="question"
+                     indexName="idx_question_niveau_id"
+                     schemaName="td">
+            <column name="niveau_id"/>
+        </createIndex>
+
+         <addForeignKeyConstraint baseTableName="question"
+                                 baseColumnNames="etablissement_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_etablissement_id"
+                                 referencedTableName="etablissement"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="question"
+                     indexName="idx_question_etablissement_id"
+                     schemaName="td">
+            <column name="etablissement_id"/>
+        </createIndex>
+
+         <addForeignKeyConstraint baseTableName="question"
+                                 baseColumnNames="matiere_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_matiere_id"
+                                 referencedTableName="matiere"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="question"
+                     indexName="idx_question_matiere_id"
+                     schemaName="td">
+            <column name="matiere_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="question"
+                                 baseColumnNames="type_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_type_id"
+                                 referencedTableName="question_type"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"
+                />
+        <createIndex tableName="question"
+                     indexName="idx_question_type_id"
+                     schemaName="td">
+            <column name="type_id"/>
+        </createIndex>
+
+
+        <addForeignKeyConstraint baseTableName="question"
+                                 baseColumnNames="proprietaire_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_proprietaire_id"
+                                 referencedTableName="personne"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="question"
+                     indexName="idx_question_proprietaire_id"
+                     schemaName="td">
+            <column name="proprietaire_id"/>
+        </createIndex>
+
+
+        <createTable tableName="question_export" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="format_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="export" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="question_export_id_seq"
+                        schemaName="td"
+                        startValue="100"/>
+
+        <addForeignKeyConstraint baseTableName="question_export"
+                                 baseColumnNames="format_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_export_format_id"
+                                 referencedTableName="export_format"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="tice"/>
+
+        <createIndex tableName="question_export"
+                     indexName="idx_question_export_format_id"
+                     schemaName="td">
+            <column name="format_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="question_export"
+                                 baseColumnNames="question_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_export_question_id"
+                                 referencedTableName="question"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="question_export"
+                     indexName="idx_question_export_question_id"
+                     schemaName="td">
+            <column name="question_id"/>
+        </createIndex>
+
+        <createTable tableName="question_attachement" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="question_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attachement_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rang" type="int" defaultValue="1"/>
+        </createTable>
+
+        <createSequence sequenceName="question_attachement_id_seq"
+                        schemaName="td"
+                        startValue="100"/>
+
+         <addForeignKeyConstraint baseTableName="question_attachement"
+                                 baseColumnNames="attachement_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_attachement_attachement_id"
+                                 referencedTableName="attachement"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="tice"/>
+
+        <createIndex tableName="question_attachement"
+                     indexName="idx_question_attachement_attachement_id"
+                     schemaName="td">
+            <column name="attachement_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="question_attachement"
+                                 baseColumnNames="question_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_attachement_question_id"
+                                 referencedTableName="question"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="question_attachement"
+                     indexName="idx_question_attachement_question_id"
+                     schemaName="td">
+            <column name="question_id"/>
+        </createIndex>
+
+
+        <createTable tableName="question_arborescence" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="question_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_fille_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rang" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="question_arborescence_id_seq"
+                        schemaName="td"
+                        startValue="100"/>
+
+        <addForeignKeyConstraint baseTableName="question_arborescence"
+                                 baseColumnNames="question_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_arboresence_question_id"
+                                 referencedTableName="question"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="question_arborescence"
+                     indexName="idx_question_arborescence_question_id"
+                     schemaName="td">
+            <column name="question_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="question_arborescence"
+                                 baseColumnNames="question_fille_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_arboresence_question_fille_id"
+                                 referencedTableName="question"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="question_arborescence"
+                     indexName="idx_question_arborescence_question_fille_id"
+                     schemaName="td">
+            <column name="question_fille_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2" author="fsil">
+        <comment>
+            Ajout des tables autour de la notion de sujet avec relations
+            associées
+        </comment>
+
+        <createTable tableName="sujet" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="titre" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version_sujet" type="int" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="proprietaire_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="matiere_id" type="bigint"/>
+            <column name="etablissement_id" type="bigint"/>
+            <column name="niveau_id" type="bigint"/>
+            <column name="duree_minutes" type="int"/>
+            <column name="presentation" type="text"/>
+            <column name="note_max" type="float"/>
+            <column name="note_auto_max" type="float"/>
+            <column name="note_enseignant_max" type="float"/>
+            <column name="nb_questions" type="int"/>
+
+        </createTable>
+
+        <createSequence sequenceName="sujet_id_seq"
+                        schemaName="td"
+                        startValue="100"/>
+
+        <addForeignKeyConstraint baseTableName="sujet"
+                                 baseColumnNames="niveau_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_sujet_niveau_id"
+                                 referencedTableName="niveau"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="sujet"
+                     indexName="idx_sujet_niveau_id"
+                     schemaName="td">
+            <column name="niveau_id"/>
+        </createIndex>
+
+         <addForeignKeyConstraint baseTableName="sujet"
+                                 baseColumnNames="etablissement_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_sujet_etablissement_id"
+                                 referencedTableName="etablissement"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="sujet"
+                     indexName="idx_sujet_etablissement_id"
+                     schemaName="td">
+            <column name="etablissement_id"/>
+        </createIndex>
+
+         <addForeignKeyConstraint baseTableName="sujet"
+                                 baseColumnNames="matiere_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_sujet_matiere_id"
+                                 referencedTableName="matiere"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="sujet"
+                     indexName="idx_sujet_matiere_id"
+                     schemaName="td">
+            <column name="matiere_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="sujet"
+                                 baseColumnNames="proprietaire_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_sujet_proprietaire_id"
+                                 referencedTableName="personne"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="sujet"
+                     indexName="idx_sujet_proprietaire_id"
+                     schemaName="td">
+            <column name="proprietaire_id"/>
+        </createIndex>
+
+        <createTable tableName="sujet_sequence_questions" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="sujet_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rang" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="note_seuil_poursuite" type="float"/>
+        </createTable>
+
+        <createSequence sequenceName="sujet_sequence_questions_id_seq"
+                        schemaName="td"
+                        startValue="100"/>
+
+        <addForeignKeyConstraint baseTableName="sujet_sequence_questions"
+                                 baseColumnNames="sujet_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_sujet_sequence_questions_sujet_id"
+                                 referencedTableName="sujet"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="sujet_sequence_questions"
+                     indexName="idx_sujet_sequence_questions_sujet_id"
+                     schemaName="td">
+            <column name="sujet_id"/>
+        </createIndex>
+
+         <addForeignKeyConstraint baseTableName="sujet_sequence_questions"
+                                 baseColumnNames="question_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_sujet_sequence_questions_question_id"
+                                 referencedTableName="question"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="sujet_sequence_questions"
+                     indexName="idx_sujet_sequence_questions_question_id"
+                     schemaName="td">
+            <column name="question_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="3" author="fsil">
+        <comment>
+            Gestion des copyrigths
+        </comment>
+
+        <createTable tableName="copyrigths_type" schemaName="tice">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="code" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="presentation" type="text"/>
+            <column name="lien" type="text"/>
+            <column name="logo" type="bytea"/>
+            
+            <!--reprise des options creative commons-->
+            <column name="option_cc_paternite"
+                    type="boolean" defaultValue="true"/>
+            <column name="option_cc_pas_utilisation_commerciale"
+                    type="boolean" defaultValue="true"/>
+            <column name="option_cc_pas_modification"
+                    type="boolean" defaultValue="false"/>
+            <column name="option_cc_partage_viral"
+                    type="boolean" defaultValue="true"/>
+
+            <!-- dans ce cas, droits d'auteur par défaut, c'est privé -->
+            <column name="option_tous_droits_reserves"
+                    type="boolean" defaultValue="false"/>
+
+        </createTable>
+
+        <createSequence sequenceName="copyrigths_type_id_seq"
+                        schemaName="tice" startValue="100"/>
+
+        <createTable tableName="publication" schemaName="tice">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="copyrigths_type_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_debut" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_fin" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="publication_id_seq"
+                        schemaName="tice" startValue="100"/>
+
+        <addForeignKeyConstraint baseTableName="publication"
+                                 baseColumnNames="copyrigths_type_id"
+                                 baseTableSchemaName="tice"
+                                 constraintName="fk_publication_copyrights_type_id"
+                                 referencedTableName="copyrigths_type"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="tice"/>
+
+        <createIndex tableName="publication"
+                     indexName="idx_publication_copyrights_type_id"
+                     schemaName="tice">
+            <column name="copyrigths_type_id"/>
+        </createIndex>
+
+        <addColumn tableName="question" schemaName="td">
+            <column name="publication_id" type="bigint"/>
+        </addColumn>
+
+        <addColumn tableName="sujet" schemaName="td">
+            <column name="publication_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="question"
+                                 baseColumnNames="publication_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_publication_id"
+                                 referencedTableName="publication"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="tice"/>
+
+        <createIndex tableName="question"
+                     indexName="idx_question_publication_id"
+                     schemaName="td">
+            <column name="publication_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="sujet"
+                                 baseColumnNames="publication_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_sujet_publication_id"
+                                 referencedTableName="publication"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="tice"/>
+
+        <createIndex tableName="sujet"
+                     indexName="idx_sujet_publication_id"
+                     schemaName="td">
+            <column name="publication_id"/>
+        </createIndex>
+
+    </changeSet>
+
+    <!-- todo mettre les contraintes uniques sur ce qui pourrait etre des -->
+    <!-- todo contraintes de cles primaires (rel many to many)-->
+    <!-- todo gerer les copyrigts et la publication, l'initialisation du référentiel-->
+
+</databaseChangeLog>
