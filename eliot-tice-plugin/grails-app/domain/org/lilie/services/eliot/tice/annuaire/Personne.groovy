@@ -62,12 +62,10 @@ public class Personne  {
 
   static mapping = {
     table('ent.personne')
+    cache usage:'read-write'
     version false
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.personne_id_seq']
-    autorite column: 'autorite_id', fetch:'join'
-    civilite column: 'civilite_id'
-    etablissementRattachement fetch:'join'
-    regime column: 'regime_id'
+    autorite fetch:'join'
   }
 
   static constraints = {
@@ -83,7 +81,7 @@ public class Personne  {
     dateNaissance(nullable: true)
     sexe(nullable: true)
     photo(nullable: true)
-    autorite nullable: false //,unique: true géré en base
+    //autorite nullable: false //,unique: true géré en base
     etablissementRattachement(nullable: true)
     email(nullable: true)
     nomNormalise(nullable: true)

@@ -35,6 +35,8 @@ import org.lilie.services.eliot.tice.annuaire.UtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
 import org.lilie.services.eliot.tice.securite.DomainAutorite
+import org.hibernate.SessionFactory
+import org.hibernate.stat.Statistics
 
 /**
  *  Test la classe DefaultUtilisateurService
@@ -57,20 +59,9 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
 
 
   UtilisateurService defaultUtilisateurService
+  SessionFactory sessionFactory
+  Statistics statistics
 
-  void testCacheAndGet() {
-     Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
-            UTILISATEUR_1_LOGIN,
-            UTILISATEUR_1_PASSWORD,
-            UTILISATEUR_1_NOM,
-            UTILISATEUR_1_PRENOM
-    )
-
-    Personne personne1 = Personne.get(utilisateur1.personneId)
-
-    assertEquals(utilisateur1.autoriteId, personne1.autorite.id)
-
-  }
 
   void testCreateUtilisateur() {
 

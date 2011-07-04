@@ -36,7 +36,6 @@ class DomainAutorite implements Autorite {
 
   public static final String ID_EXTERNE_DEFAULT_AUTORITE = "AUTORITE_PAR_DEFAUT"
 
-  Long id
   String type
   String identifiant
   String idSts
@@ -58,7 +57,7 @@ class DomainAutorite implements Autorite {
 
   static mapping = {
     table('securite.autorite')
-    cache true
+    cache usage:'read-write'
     id column: 'id', generator: 'sequence', params: [sequence: 'securite.seq_autorite']
     identifiant column: 'id_externe'
   }

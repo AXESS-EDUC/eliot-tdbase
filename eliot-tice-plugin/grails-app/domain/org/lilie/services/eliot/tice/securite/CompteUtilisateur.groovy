@@ -56,6 +56,7 @@ class CompteUtilisateur {
 
   static mapping = {
     table('tice.compte_utilisateur')
+    cache true
     id column: 'id', generator: 'sequence', params: [sequence: 'tice.compte_utilisateur_id_seq']
     login column: '`login`'
     password column: '`password`'
