@@ -876,7 +876,30 @@
 
     </changeSet>
 
-    <!-- todo l'initialisation du référentiel-->
-    <!-- todo gestion de la colonne version hibernate -->
+    <changeSet id="6" author="fsil">
+        <comment>Ajout colonne code dans table export_format</comment>
+        <addColumn tableName="export_format" schemaName="tice">
+            <column name="code" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="7" author="fsil">
+        <comment>
+            Modification table copyrights_type
+        </comment>
+        <modifyDataType tableName="copyrigths_type" schemaName="tice"
+                        columnName="logo"
+                        newDataType="text"/>
+    </changeSet>
+
+    <changeSet id="8" author="fsil">
+        <comment>
+            Modification non table copyrights_type
+        </comment>
+        <renameTable oldTableName="copyrigths_type" newTableName="copyrights_type"
+                     schemaName="tice"/>
+    </changeSet>
 
 </databaseChangeLog>
