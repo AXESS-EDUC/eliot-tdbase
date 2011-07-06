@@ -138,7 +138,7 @@
             <column name="niveau_id"/>
         </createIndex>
 
-         <addForeignKeyConstraint baseTableName="question"
+        <addForeignKeyConstraint baseTableName="question"
                                  baseColumnNames="etablissement_id"
                                  baseTableSchemaName="td"
                                  constraintName="fk_question_etablissement_id"
@@ -152,7 +152,7 @@
             <column name="etablissement_id"/>
         </createIndex>
 
-         <addForeignKeyConstraint baseTableName="question"
+        <addForeignKeyConstraint baseTableName="question"
                                  baseColumnNames="matiere_id"
                                  baseTableSchemaName="td"
                                  constraintName="fk_question_matiere_id"
@@ -260,7 +260,7 @@
                         schemaName="td"
                         startValue="100"/>
 
-         <addForeignKeyConstraint baseTableName="question_attachement"
+        <addForeignKeyConstraint baseTableName="question_attachement"
                                  baseColumnNames="attachement_id"
                                  baseTableSchemaName="td"
                                  constraintName="fk_question_attachement_attachement_id"
@@ -386,7 +386,7 @@
             <column name="niveau_id"/>
         </createIndex>
 
-         <addForeignKeyConstraint baseTableName="sujet"
+        <addForeignKeyConstraint baseTableName="sujet"
                                  baseColumnNames="etablissement_id"
                                  baseTableSchemaName="td"
                                  constraintName="fk_sujet_etablissement_id"
@@ -400,7 +400,7 @@
             <column name="etablissement_id"/>
         </createIndex>
 
-         <addForeignKeyConstraint baseTableName="sujet"
+        <addForeignKeyConstraint baseTableName="sujet"
                                  baseColumnNames="matiere_id"
                                  baseTableSchemaName="td"
                                  constraintName="fk_sujet_matiere_id"
@@ -462,7 +462,7 @@
             <column name="sujet_id"/>
         </createIndex>
 
-         <addForeignKeyConstraint baseTableName="sujet_sequence_questions"
+        <addForeignKeyConstraint baseTableName="sujet_sequence_questions"
                                  baseColumnNames="question_id"
                                  baseTableSchemaName="td"
                                  constraintName="fk_sujet_sequence_questions_question_id"
@@ -492,7 +492,7 @@
             <column name="presentation" type="text"/>
             <column name="lien" type="text"/>
             <column name="logo" type="bytea"/>
-            
+
             <!--reprise des options creative commons-->
             <column name="option_cc_paternite"
                     type="boolean" defaultValue="true"/>
@@ -584,7 +584,7 @@
 
     <changeSet id="4" author="fsil">
         <comment>
-            Ajout de quelques clés uniques manquantes sur les tables 
+            Ajout de quelques clés uniques manquantes sur les tables
             de jointures
         </comment>
         <addUniqueConstraint tableName="question_arborescence"
@@ -607,10 +607,276 @@
 
     <changeSet id="5" author="fsil">
         <comment>
-            Gestion des séances
+            Gestion des séances, copies, réponses, corrections...
         </comment>
+
+        <createSequence sequenceName="copie_id_seq"
+                        schemaName="td" startValue="100"/>
+
+        <createTable tableName="copie" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date_remise" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sujet_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="eleve_id" type="bigint"/>
+            <column name="correcteur_id" type="bigint"/>
+            <column name="correction_date" type="timestamp without time zone"/>
+            <column name="correction_annotation" type="text"/>
+            <column name="correction_note_automatique" type="float"/>
+            <column name="correction_note_finale" type="float"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="copie"
+                                 baseColumnNames="sujet_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_copie_sujet_id"
+                                 referencedTableName="sujet"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="copie"
+                     indexName="idx_copie_sujet_id"
+                     schemaName="td">
+            <column name="sujet_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="copie"
+                                 baseColumnNames="eleve_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_copie_eleve_id"
+                                 referencedTableName="personne"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="copie"
+                     indexName="idx_copie_eleve_id"
+                     schemaName="td">
+            <column name="eleve_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="copie"
+                                 baseColumnNames="correcteur_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_copie_correcteur_id"
+                                 referencedTableName="personne"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="copie"
+                     indexName="idx_copie_correcteur_id"
+                     schemaName="td">
+            <column name="correcteur_id"/>
+        </createIndex>
+
+        <createSequence sequenceName="reponse_id_seq"
+                        schemaName="td" startValue="100"/>
+
+        <createTable tableName="reponse" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="specification" type="text"/>
+            <column name="copie_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="correcteur_id" type="bigint"/>
+            <column name="correction_date" type="timestamp without time zone"/>
+            <column name="correction_annotation" type="text"/>
+            <column name="correction_note_automatique" type="float"/>
+            <column name="correction_note_finale" type="float"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="reponse"
+                                 baseColumnNames="copie_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_reponse_copie_id"
+                                 referencedTableName="copie"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="reponse"
+                     indexName="idx_reponse_copie_id"
+                     schemaName="td">
+            <column name="copie_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="reponse"
+                                 baseColumnNames="question_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_reponse_question_id"
+                                 referencedTableName="question"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="reponse"
+                     indexName="idx_reponse_question_id"
+                     schemaName="td">
+            <column name="question_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="reponse"
+                                 baseColumnNames="correcteur_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_reponse_correcteur_id"
+                                 referencedTableName="personne"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="reponse"
+                     indexName="idx_reponse_correcteur_id"
+                     schemaName="td">
+            <column name="correcteur_id"/>
+        </createIndex>
+
+        <createSequence sequenceName="seance_id_seq"
+                        schemaName="td" startValue="100"/>
+
+        <createTable tableName="modalite_activite" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date_echeance_remises" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_debut" type="timestamp without time zone"/>
+            <column name="date_fin" type="timestamp without time zone"/>
+            <column name="etablissement_id" type="bigint"/>
+            <column name="responsable_id" type="bigint"/>
+            <column name="groupe_id" type="bigint"/>
+            <column name="enseignant_id" type="bigint"/>
+            <column name="service_id" type="bigint"/>
+            <column name="activite_id" type="bigint"/>
+            <column name="evaluation_id" type="bigint"/>
+
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="modalite_activite"
+                                 baseColumnNames="evaluation_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_modalite_activite_evaluation_id"
+                                 referencedTableName="evaluation"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="entnotes"/>
+
+        <createIndex tableName="modalite_activite"
+                     indexName="idx_modalite_activite_evaluation_id"
+                     schemaName="td">
+            <column name="evaluation_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="modalite_activite"
+                                 baseColumnNames="activite_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_modalite_activite_activite_id"
+                                 referencedTableName="activite"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="entcdt"/>
+
+        <createIndex tableName="modalite_activite"
+                     indexName="idx_modalite_activite_activite_id"
+                     schemaName="td">
+            <column name="activite_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="modalite_activite"
+                                 baseColumnNames="service_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_modalite_activite_service_id"
+                                 referencedTableName="service"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="modalite_activite"
+                     indexName="idx_modalite_activite_service_id"
+                     schemaName="td">
+            <column name="service_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="modalite_activite"
+                                 baseColumnNames="enseignant_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_modalite_activite_enseignant_id"
+                                 referencedTableName="personne"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="modalite_activite"
+                     indexName="idx_modalite_activite_enseignant_id"
+                     schemaName="td">
+            <column name="enseignant_id"/>
+        </createIndex>
+
+         <addForeignKeyConstraint baseTableName="modalite_activite"
+                                 baseColumnNames="etablissement_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_modalite_activite_etablissement_id"
+                                 referencedTableName="etablissement"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="modalite_activite"
+                     indexName="idx_modalite_activite_etablissement_id"
+                     schemaName="td">
+            <column name="etablissement_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="modalite_activite"
+                                 baseColumnNames="responsable_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_modalite_activite_responsable_id"
+                                 referencedTableName="personne"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="modalite_activite"
+                     indexName="idx_modalite_activite_responsable_id"
+                     schemaName="td">
+            <column name="responsable_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="modalite_activite"
+                                 baseColumnNames="groupe_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_modalite_activite_groupe_id"
+                                 referencedTableName="groupe_personnes"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="modalite_activite"
+                     indexName="idx_modalite_activite_groupe_id"
+                     schemaName="td">
+            <column name="groupe_id"/>
+        </createIndex>
+
+        <addColumn tableName="copie" schemaName="td">
+            <column name="modalite_activite_id" type="bigint"/>
+        </addColumn>
+
+         <addForeignKeyConstraint baseTableName="copie"
+                                 baseColumnNames="modalite_activite_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_copie_modalite_activite_id"
+                                 referencedTableName="modalite_activite"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="copie"
+                     indexName="idx_copie_modalite_activite_id"
+                     schemaName="td">
+            <column name="modalite_activite_id"/>
+        </createIndex>
+
     </changeSet>
 
     <!-- todo l'initialisation du référentiel-->
+    <!-- todo gestion de la colonne version hibernate -->
 
 </databaseChangeLog>
