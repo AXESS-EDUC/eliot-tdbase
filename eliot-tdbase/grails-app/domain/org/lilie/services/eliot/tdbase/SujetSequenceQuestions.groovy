@@ -47,9 +47,9 @@ class SujetSequenceQuestions {
    }
 
    static mapping = {
-     table('td.sujet')
+     table('td.sujet_sequence_questions')
      version(false)
-     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
+     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_sequence_questions_id_seq'])
      cache(true)
      question(fetch: 'join')
    }
