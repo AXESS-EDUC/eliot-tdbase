@@ -33,6 +33,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.lilie.services.eliot.tice.Attachement
 
 /**
  * Classe représentant une question
@@ -52,9 +53,19 @@ class Question {
   Matiere matiere
   Niveau niveau
   Publication publication
+  List<QuestionArborescence>  questionArborescenceFilles
+  List<QuestionAttachement>  questionAttachements
 
-  static hasMany = [questionArborescences : QuestionArborescence]
-  static mappedBy = [questionArborescences : 'question']
+  static hasMany = [
+          questionArborescenceFilles : QuestionArborescence,
+          questionArborescenceParentes : QuestionArborescence,
+          questionAttachements : QuestionAttachement
+  ]
+
+  static mappedBy = [
+          questionArborescenceFilles : 'question',
+          questionArborescenceParentes : 'questionFille'
+  ]
 
   static constraints = {
     etablissement(nullable: true)
@@ -68,9 +79,24 @@ class Question {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
     cache(true)
-    questionArborescences(lazy: 'false', sort: 'rang',order: 'asc')
+    questionArborescenceFilles(lazy: 'false', sort: 'rang',order: 'asc')
+    questionAttachements(lazy: 'false', sort: 'rang',order: 'asc')
   }
 
+  /**
+   *
+   * @return la liste des questions filles de la question courante
+   */
+  List<Question> questionsFilles() {
+    return questionArborescenceFilles*.questionFille
+  }
 
+  /**
+   *
+   * @return la liste des attachements de la question courante
+   */
+  List<Attachement> attachements() {
+    return questionAttachements*.attachement
+  }
 
 }
