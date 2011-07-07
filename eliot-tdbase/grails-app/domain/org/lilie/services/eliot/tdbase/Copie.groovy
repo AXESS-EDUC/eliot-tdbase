@@ -28,58 +28,25 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.Publication
-import org.lilie.services.eliot.tice.annuaire.Personne
-
 /**
- * Classe représentant un sujet
+ * Classe représentant la copie d'un élève
  * @author franck Silvestre
- * todo ajouter le champ blurb (annotation_privee)
+ * todo ajouter champ note_correcteur
  */
-class Sujet {
+class Copie {
 
-  String titre
-  int versionSujet
+  Date dateRemise
 
-  String presentation
-  Integer nbQuestions
-  Integer dureeMinutes
-  Float noteMax
-  Float noteAutoMax
-  Float noteEnseignantMax
-
-  Personne proprietaire
-
-  Etablissement etablissement
-  Matiere matiere
-  Niveau niveau
-  Publication publication
-
-  List<SujetSequenceQuestions> questionsSequencees
-  static hasMany = [questionsSequencees : SujetSequenceQuestions]
-
-  static constraints = {
-    etablissement(nullable: true)
-    matiere(nullable: true)
-    niveau(nullable: true)
-    publication(nullable: true)
-    presentation(nullable: true)
-    nbQuestions(nullable: true)
-    dureeMinutes(nullable: true)
-    noteMax(nullable: true)
-    noteAutoMax(nullable: true)
-    noteEnseignantMax(nullable: true)
-  }
+  String correctionAnnotation
+  Date correctionDate
+  Float correctionNoteAutomatique
+  Float correctionNoteFinale
 
   static mapping = {
-    table('td.sujet')
+    table('td.copie')
     version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
+    id(column: 'id', generator: 'sequence', params: [sequence: 'td.copie_id_seq'])
     cache(true)
-    questionsSequencees(lazy: false, sort: 'rang' ,order: 'asc')
   }
 
 }

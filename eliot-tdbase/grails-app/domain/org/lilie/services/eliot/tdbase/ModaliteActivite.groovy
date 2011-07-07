@@ -28,58 +28,49 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.GroupePersonnes
+import org.lilie.services.eliot.tice.scolarite.Service
+import org.lilie.services.eliot.tice.scolarite.Etablissement
+import org.lilie.services.eliot.tice.textes.Activite
+import org.lilie.services.eliot.tice.notes.Evaluation
 
 /**
- * Classe représentant un sujet
+ * Classe représentant les modalités de l'activité d'un groupe d'élèves pour traiter
+ * un sujet en ligne
  * @author franck Silvestre
- * todo ajouter le champ blurb (annotation_privee)
  */
-class Sujet {
+class ModaliteActivite {
 
-  String titre
-  int versionSujet
+  Date dateEcheanceRemises
 
-  String presentation
-  Integer nbQuestions
-  Integer dureeMinutes
-  Float noteMax
-  Float noteAutoMax
-  Float noteEnseignantMax
+  Date dateDebut
+  Date dateFin
 
-  Personne proprietaire
-
+  Personne responsable
+  GroupePersonnes groupe
   Etablissement etablissement
-  Matiere matiere
-  Niveau niveau
-  Publication publication
 
-  List<SujetSequenceQuestions> questionsSequencees
-  static hasMany = [questionsSequencees : SujetSequenceQuestions]
+  Personne enseignant
+  Service service
+
+  Activite activite
+  Evaluation evaluation
 
   static constraints = {
-    etablissement(nullable: true)
-    matiere(nullable: true)
-    niveau(nullable: true)
-    publication(nullable: true)
-    presentation(nullable: true)
-    nbQuestions(nullable: true)
-    dureeMinutes(nullable: true)
-    noteMax(nullable: true)
-    noteAutoMax(nullable: true)
-    noteEnseignantMax(nullable: true)
+    dateDebut(nullable: true)
+    dateFin(nullable: true)
+    responsable(nullable: true)
+    groupe(nullable: true)
+    enseignant(nullable: true)
+    service(nullable: true)
   }
 
   static mapping = {
-    table('td.sujet')
+    table('td.modalite_activite')
     version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
+    id(column: 'id', generator: 'sequence', params: [sequence: 'td.modalite_activite_id_seq'])
     cache(true)
-    questionsSequencees(lazy: false, sort: 'rang' ,order: 'asc')
   }
 
 }
