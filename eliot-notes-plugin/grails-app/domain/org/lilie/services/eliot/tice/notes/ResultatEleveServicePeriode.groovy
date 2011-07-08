@@ -52,7 +52,7 @@ class ResultatEleveServicePeriode implements Serializable {
   Set<ResultatEleveSousServicePeriode> resultatsEleveSousServicePeriode
 
   static hasMany = [
-          resultatsEleveSousServicePeriode: org.lilie.services.eliot.notes.ResultatEleveSousServicePeriode
+          resultatsEleveSousServicePeriode: ResultatEleveSousServicePeriode
   ]
 
   static belongsTo = [

@@ -53,7 +53,7 @@ class Ressource {
   Date datePublication
   Activite activite
 
-  static belongsTo = [activite: org.lilie.services.eliot.textes.Activite]
+  static belongsTo = [activite: Activite]
 
   static constraints = {
     id(max: 9999999999L)

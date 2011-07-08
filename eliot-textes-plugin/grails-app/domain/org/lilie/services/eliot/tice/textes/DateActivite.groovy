@@ -48,7 +48,7 @@ class DateActivite {
   Date dateEcheance
   Long duree
 
-  static belongsTo = [activite: org.lilie.services.eliot.textes.Activite]
+  static belongsTo = [activite: Activite]
 
   static constraints = {
     id(max: 9999999999L)
