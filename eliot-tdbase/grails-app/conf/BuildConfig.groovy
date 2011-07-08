@@ -31,7 +31,8 @@ grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 
 grails.plugin.location.'eliot-tice-plugin' = "../eliot-tice-plugin"
-
+grails.plugin.location.'eliot-textes-plugin' = "../eliot-textes-plugin"
+grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
 
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
@@ -46,12 +47,6 @@ grails.project.dependency.resolution = {
     grailsPlugins()
     grailsHome()
     grailsCentral()
-
-    mavenRepo "http://dev.axess-education.com:8080/nexus/content/groups/public-snapshots"
-    mavenRepo "http://dev.axess-education.com:8080/nexus/content/groups/public"
-    mavenRepo "http://dev.axess-education.com:8080/nexus/content/repositories/logica-snapshots"
-    mavenRepo "http://dev.axess-education.com:8080/nexus/content/repositories/logica-releases"
-
     // uncomment the below to enable remote dependency resolution
     // from public Maven repositories
     //mavenCentral()

@@ -60,6 +60,8 @@
     </orderEntry>
     <orderEntry type="module" module-name="eliot-tdbase-grailsPlugins" />
     <orderEntry type="module" module-name="eliot-tice-plugin" exported="" />
+    <orderEntry type="module" module-name="eliot-textes-plugin" exported="" />
+    <orderEntry type="module" module-name="eliot-notes-plugin" exported="" />
   </component>
 </module>
 
