@@ -1,0 +1,74 @@
+<style type="text/css">
+
+/*******************************************************************************
+
+Style for the graphic match interaction :
+
+********************************************************************************/
+
+	div.gmactive {
+		width:inherit;
+		height:inherit;
+		background-color: #ff8000;
+	}
+	div.gmdropArea {
+		background-color:#FFF4D8;
+		width:inherit;
+		height:inherit;
+		font-size: xx-small;
+	}
+	span.gmdroppableItem {
+		background-color:white;
+		margin-right: 10px;
+		margin-left: 10px;
+		padding-top: 2px;
+		padding-bottom: 2px;
+		padding-left : 2px;
+		padding-right: 2px;
+		font-size: xx-small;
+	}
+	
+/*******************************************************************************
+
+Style for the  :
+
+
+********************************************************************************/
+	
+	div.droparea {
+  		clear:both;
+  		border:1px solid #E8A400;
+  		background-color:white;
+  		height:30px;
+  		width:200px;
+  		margin-top:5px;
+  		text-align: center;
+	}			
+	div.active { background-color: #FFF4D8;}
+	div.filledArea  {
+  		clear:both;
+  		border:1px solid #E8A400;
+  		background-color:white;
+  		width:200px;
+  		margin-top:5px;
+  		padding-top:7px;
+  		padding-bottom:7px;
+  		text-align:center;
+	}
+	
+	span.droppableItem {
+		margin-right: 10px;
+		margin-left: 10px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-left : 10px;
+		padding-right: 10px;
+		line-height: 2.0em;
+	}
+	
+	div.centered {
+     	margin-left: auto;
+     	margin-right: auto;
+     	width: 600px;
+     }
+</style>

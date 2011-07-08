@@ -1,0 +1,107 @@
+/*******************************************************************************
+
+Style for the  menus :
+
+********************************************************************************/
+
+.portal-menu {
+    position: relative;
+    height: 27px;
+    background: repeat-x left url('../../images/eliot/menu/menubg.gif');
+    z-index: 30;
+    text-align: left;
+}
+
+.portal-menu ul{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+/*Top level list items*/
+.portal-menu ul li{
+	position: relative;
+	display: inline;
+	float: left;
+	margin:0;
+}
+
+/*Top level menu link items style*/
+.portal-menu ul li a{
+	display: block;
+	width: 140px; /*Width of top level menu link items*/
+	height:23px;
+	padding-left: 1em;
+	padding-top: 4px;
+	border-right: 1px solid #fff;
+	border-left-width: 0;
+	text-decoration: none;
+	color: #fff;
+	font-size:0.9em;
+	font-weight: bold;
+}
+
+.portal-menu .actif {
+	background-color: #244A92;	
+}
+
+/*Sub level menu*/
+.portal-menu ul li ul{
+	left: 0;
+	top: 0;
+	border: 1px solid #A1ADD2;
+	background-color:#fff;
+	padding-left:2px;
+	padding-right:2px;
+	position: absolute;
+	display: block;
+	visibility: hidden;
+	z-index: 100;
+}
+
+/*Sub level menu list items*/
+.portal-menu ul li ul li{
+	display: inline;
+	float: none;
+}
+
+
+/* Sub level menu links style */
+.portal-menu ul li ul li a{
+	width: 140px; /*width of sub menu levels*/
+	height:18px;
+	font-weight: normal;
+	padding-top:2px;
+	background-color: #fff;
+	border-top: 1px solid #ECECEC;
+	color:#244a92;
+}
+
+.portal-menu ul li a:hover{
+	background-color: #244A92;
+	color:#fff;
+	text-decoration: none;
+}
+
+.portal-menu ul li ul li a:hover{
+	background: #F2F3F7;
+	color:#244a92;
+	text-decoration: none;
+}
+
+.portal-menu .arrowdiv{
+	position: absolute;
+	right: 4px;
+	top: 5px;
+	width:16px;
+	background: transparent url(../../images/eliot/menu/menuarrow.gif) no-repeat;
+}
+
+* html p#iepara{ /*For a paragraph (if any) that immediately follows menu, add 1em top spacing between the two in IE*/
+	padding-top: 1em;
+}
+	
+/* Holly Hack for IE \*/
+* html .portal-menu ul li { float: left; height: 1%; }
+* html .portal-menu ul li a { height: 23px; }
+/* End */
