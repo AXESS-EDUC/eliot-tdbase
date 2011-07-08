@@ -78,15 +78,16 @@
           <a title="Sujets">Sujets</a>
           <ul>
             <li title="Nouveau">
-              <a title="Pour créer un nouveau sujet"
-                 href="#">Nouveau</a>
+              <g:link controller="sujet" action="nouveau"
+                      title="Pour créer un nouveau sujet">Nouveau</g:link>
             </li>
             <li title="Rechercher">
-              <a href="#">Rechercher</a>
+              <g:link controller="sujet" action="recherche"
+                      title="Pour rechercher des sujets">Rechercher</g:link>
             </li>
             <li title="Mes sujets">
-              <a title="Lister mes sujets"
-                 href="#">Mes sujets</a>
+              <g:link controller="sujet" action="mesSujets"
+                      title="Mes sujets">Mes sujets</g:link>
             </li>
           </ul>
         </li>

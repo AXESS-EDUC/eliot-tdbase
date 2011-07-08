@@ -27,7 +27,7 @@
   --}%
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="layout" content="eliot"/>
+  <meta name="layout" content="eliot-tdbase"/>
   <r:require modules="jquery"/>
   <r:script>
     $(function() {
@@ -39,77 +39,233 @@
 
 <body>
 <div class="column span-22 last middle">
-  <h1>Recherche et consultation des sujets de TD</h1>
+<h1>${titrePage}</h1>
 
-  <form name="f_3_30_3" method="post"
-        action="#">
-    <div class="portal-form_container">
-      <table>
-        <tr>
-          <td class="label">
-            titre :
-          </td>
-          <td>
-            <input size="30" type="text" name="3.30.3.1"/>
-          </td>
-          <td width="20"/>
-          <td class="label">type :
-          </td>
-          <td>
-            <select name="3.30.3.3"><option
-                    value="WONoSelectionString">Tous</option><option
-                    value="0">Exercice</option><option
-                    value="1">Sujet</option></select>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">
-            en bref :
-          </td>
-          <td>
-            <input size="30" type="text" name="3.30.3.5"/>
-          </td>
-          <td width="20"/>
-          <td class="label">discipline :
-          </td>
-          <td>
-            <select name="3.30.3.7"><option
-                    value="WONoSelectionString">Toutes</option><option
-                    value="0">SES</option><option
-                    value="1">SES Spécialité</option><option
-                    value="2">Histoire</option><option
-                    value="3">Géographie</option><option
-                    value="4">Communication</option><option
-                    value="5">Anglais</option></select>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">auteur :
-          </td>
-          <td>
-            <input size="30" type="text" name="3.30.3.9"/>
-          </td>
-          <td width="20"/>
-          <td class="label">niveau :
-          </td>
-          <td>
-            <select name="3.30.3.11"><option
-                    value="WONoSelectionString">Tous</option><option
-                    value="0">Seconde</option><option
-                    value="1">Première</option><option
-                    value="2">Terminale</option><option
-                    value="3">IUT 1ère année</option><option
-                    value="4">IUT 2ème année</option></select>
-          </td>
-        </tr>
+<g:if test="${afficheFormulaire}">
+<form name="f_3_30_3" method="post"
+      action="#">
+  <div class="portal-form_container">
+    <table>
+      <tr>
+        <td class="label">
+          titre :
+        </td>
+        <td>
+          <input size="30" type="text" name="3.30.3.1"/>
+        </td>
+        <td width="20"/>
+        <td class="label">type :
+        </td>
+        <td>
+          <select name="3.30.3.3"><option
+                  value="WONoSelectionString">Tous</option><option
+                  value="0">Exercice</option><option
+                  value="1">Sujet</option></select>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">
+          en bref :
+        </td>
+        <td>
+          <input size="30" type="text" name="3.30.3.5"/>
+        </td>
+        <td width="20"/>
+        <td class="label">discipline :
+        </td>
+        <td>
+          <select name="3.30.3.7"><option
+                  value="WONoSelectionString">Toutes</option><option
+                  value="0">SES</option><option
+                  value="1">SES Spécialité</option><option
+                  value="2">Histoire</option><option
+                  value="3">Géographie</option><option
+                  value="4">Communication</option><option
+                  value="5">Anglais</option></select>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">auteur :
+        </td>
+        <td>
+          <input size="30" type="text" name="3.30.3.9"/>
+        </td>
+        <td width="20"/>
+        <td class="label">niveau :
+        </td>
+        <td>
+          <select name="3.30.3.11"><option
+                  value="WONoSelectionString">Tous</option><option
+                  value="0">Seconde</option><option
+                  value="1">Première</option><option
+                  value="2">Terminale</option><option
+                  value="3">IUT 1ère année</option><option
+                  value="4">IUT 2ème année</option></select>
+        </td>
+      </tr>
 
-      </table>
-    </div>
+    </table>
+  </div>
 
-    <div class="form_actions">
-      <input type="submit" value="Rechercher" name="3.30.3.13"/>
-    </div>
-  </form>
+  <div class="form_actions">
+    <input type="submit" value="Rechercher" name="3.30.3.13"/>
+  </div>
+</form>
+</g:if>
+<div id="ResultsContainer"
+     updateUrl="#">
+<div class="paginatorContainer">
+  <div class="paginatorResults">(3&nbsp;sujets)</div>
+
+  <div class="paginator">
+
+    <img src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/prev.gif"
+         width="16" height="16"/>
+
+    <span class="paginatorCurrentPage">1</span>
+
+    <a href="javascript:void(0);"
+       onclick="AUL.update('ResultsContainer', {}, '15.3.30.7.1.1.3.5.1.3.1.1');">2</a>
+
+    <a href="javascript:void(0);"
+       onclick="AUL.update('ResultsContainer', {}, '15.3.30.7.1.1.3.7.1');"
+       class="paginatorNext">
+      <span><img
+              src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/next.gif"
+              width="16" height="16"/></span>
+    </a>
+
+  </div>
+
+</div>
+
+<div class="portal-default_table">
+<table>
+<thead>
+<tr>
+  <th>Titre</th>
+  <th>Niveau</th>
+  <th>Dur&eacute;e</th>
+  <th>Auteur</th>
+  <th>Publiable</th>
+  <th>Tester</th>
+  <th>Séance</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr class="even">
+  <td>
+    <a href="#">Les ménages (fonctions économiques)</a>
+  </td>
+  <td>
+    Première
+  </td>
+  <td align="CENTER">
+    60
+  </td>
+  <td></td>
+  <td>
+    oui
+
+  </td>
+  <td align="CENTER">
+
+    <a href="#">
+      <img border="0"
+           src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/write-btn.gif"
+           width="18" height="16"/>
+    </a>
+
+  </td>
+  <td align="CENTER">
+
+    <a href="#">
+      <img border="0"
+           src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconAdd.gif"
+           width="20" height="19"/>
+    </a>
+
+  </td>
+</tr>
+
+<tr class="odd">
+  <td>
+    <a href="#">Demande et élasticités</a>
+  </td>
+  <td>
+    Première
+  </td>
+  <td align="CENTER">
+    60
+  </td>
+  <td></td>
+  <td>
+    oui
+
+  </td>
+  <td align="CENTER">
+
+    <a href="#">
+      <img border="0"
+           src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/write-btn.gif"
+           width="18" height="16"/>
+    </a>
+
+  </td>
+  <td align="CENTER">
+
+    <a href="#">
+      <img border="0"
+           src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconAdd.gif"
+           width="20" height="19"/>
+    </a>
+
+  </td>
+</tr>
+
+<tr class="even">
+  <td>
+    <a href="#">Evolutions de la population active</a>
+  </td>
+  <td>
+    Seconde
+  </td>
+  <td align="CENTER">
+    60
+  </td>
+  <td></td>
+  <td>
+    oui
+
+  </td>
+  <td align="CENTER">
+
+    <a href="#">
+      <img border="0"
+           src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/write-btn.gif"
+           width="18" height="16"/>
+    </a>
+
+  </td>
+  <td align="CENTER">
+
+    <a href="#">
+      <img border="0"
+           src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconAdd.gif"
+           width="20" height="19"/>
+    </a>
+
+  </td>
+</tr>
+
+</tbody>
+</table>
+</div>
+</div><script>AUC.register('ResultsContainer');</script>
+
+</div>
 
 </div>
 
