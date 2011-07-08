@@ -28,15 +28,17 @@
 
 package org.lilie.services.eliot.tice.discussion
 
-import org.lilie.services.eliot.securite.impl.Autorite
+import org.lilie.services.eliot.tice.securite.DomainAutorite
+
+
 
 class Commentaire {
 
-  org.lilie.services.eliot.forum.Discussion discussion
-  org.lilie.services.eliot.securite.impl.Autorite auteur
+  Discussion discussion
+  DomainAutorite auteur
   String contenu
   Date dateCreation = new Date()
-  org.lilie.services.eliot.forum.EtatCommentaire etat
+  EtatCommentaire etat
   String libelleAuteur
 
   String getAffichageAuteur() {
@@ -44,15 +46,15 @@ class Commentaire {
   }
 
   boolean getEstRefuse() {
-    etat.code == org.lilie.services.eliot.forum.EtatCommentaire.CODE_REFUSE
+    etat.code == EtatCommentaire.CODE_REFUSE
   }
 
   boolean getEstEnAttenteDePublication() {
-    etat.code == org.lilie.services.eliot.forum.EtatCommentaire.CODE_PROPOSE_A_LA_PUBLICATION
+    etat.code == EtatCommentaire.CODE_PROPOSE_A_LA_PUBLICATION
   }
 
   boolean getEstPublie() {
-    etat.code == org.lilie.services.eliot.forum.EtatCommentaire.CODE_PUBLIE
+    etat.code == EtatCommentaire.CODE_PUBLIE
   }
 
   static constraints = {
