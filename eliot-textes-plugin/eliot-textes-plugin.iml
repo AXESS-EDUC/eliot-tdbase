@@ -36,10 +36,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="eliot-tdbase-grailsPlugins" />
-    <orderEntry type="library" scope="PROVIDED" name="grails-1.4.0.M1" level="application" />
+    <orderEntry type="library" name="grails-1.4.0.M1" level="application" />
     <orderEntry type="module-library" exported="">
-      <library name="Grails User Library (eliot-tice-plugin)">
+      <library name="Grails User Library (eliot-textes-plugin)">
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib" />
           <root url="jar://$USER_HOME$/.ivy2/cache/postgresql/postgresql/jars/postgresql-8.4-702.jdbc4.jar!/" />
@@ -49,6 +48,7 @@
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="eliot-tice-plugin" exported="" />
   </component>
 </module>
 

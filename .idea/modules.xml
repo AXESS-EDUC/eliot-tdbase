@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/eliot-tdbase/eliot-tdbase.iml" filepath="$PROJECT_DIR$/eliot-tdbase/eliot-tdbase.iml" />
       <module fileurl="file://$PROJECT_DIR$/eliot-tdbase/eliot-tdbase-grailsPlugins.iml" filepath="$PROJECT_DIR$/eliot-tdbase/eliot-tdbase-grailsPlugins.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eliot-textes-plugin/eliot-textes-plugin.iml" filepath="$PROJECT_DIR$/eliot-textes-plugin/eliot-textes-plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/eliot-tice-plugin/eliot-tice-plugin.iml" filepath="$PROJECT_DIR$/eliot-tice-plugin/eliot-tice-plugin.iml" />
     </modules>
   </component>
