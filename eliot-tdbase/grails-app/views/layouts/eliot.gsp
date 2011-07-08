@@ -37,12 +37,8 @@
   <title><g:layoutTitle default="TDbase"/></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon"
-        href="${resource(dir: 'images', file: 'favicon.ico')}"
+        href="${resource(dir: 'images', file: 'eliot/tdbasefavicon.ico')}"
         type="image/x-icon">
-  <link rel="apple-touch-icon"
-        href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
-  <link rel="apple-touch-icon" sizes="114x114"
-        href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
   <link rel="stylesheet" type="text/css"
         href="${resource(dir: 'css/eliot/blueprint/compressed', file: 'screen.css')}"/>
   <link rel="stylesheet" type="text/css"
@@ -54,6 +50,10 @@
   <link rel="stylesheet" type="text/css"
         href="${resource(dir: 'css/eliot', file: 'tdbase.css')}"/>
   <g:layoutHead/>
+  <r:layoutResources/>
+  <g:javascript src="eliot/overlib.js"/>
+  <g:javascript src="eliot/portal-menu.js"/>
+  <g:javascript src="eliot/NoBacktrack.js"/>
 </head>
 
 <body>
@@ -61,7 +61,7 @@
   <div class="column span-22 last middle">
     <div class="portal-menu" style="margin-bottom:15px;">
       <ul id="portal-hz-menu">
-        <li>
+        <li id="menu-item-seances">
           <a title="Séances">Séances</a>
           <ul>
             <li title="Liste des séances">
@@ -74,7 +74,7 @@
             </li>
           </ul>
         </li>
-        <li class="actif">
+        <li id="menu-item-sujets">
           <a title="Sujets">Sujets</a>
           <ul>
             <li title="Nouveau">
@@ -90,7 +90,7 @@
             </li>
           </ul>
         </li>
-        <li>
+        <li id="menu-item-contributions">
           <a title="Mes contributions">Mes contributions</a>
           <ul>
             <li title="Questions">
@@ -115,9 +115,7 @@
     %{--footer à compléter--}%
   </div>
 </div>
-<g:javascript src="eliot/overlib.js"/>
-<g:javascript src="eliot/portal-menu.js"/>
-<g:javascript src="eliot/NoBacktrack.js"/>
+<r:layoutResources/>
 
 </body>
 </html>

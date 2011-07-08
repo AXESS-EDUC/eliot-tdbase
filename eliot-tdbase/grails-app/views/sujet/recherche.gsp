@@ -28,8 +28,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot"/>
+  <r:require modules="jquery"/>
+  <r:script>
+    $(function() {
+      $('#menu-item-sujets').addClass('actif');
+    });
+  </r:script>
   <title>TDBase - Recherche de sujets</title>
 </head>
+
 <body>
 <div class="column span-22 last middle">
   <h1>Recherche et consultation des sujets de TD</h1>
@@ -105,5 +112,6 @@
   </form>
 
 </div>
+
 </body>
 </html>
