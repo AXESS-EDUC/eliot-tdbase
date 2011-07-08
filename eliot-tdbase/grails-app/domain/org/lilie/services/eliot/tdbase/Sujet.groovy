@@ -37,7 +37,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 /**
  * Classe représentant un sujet
  * @author franck Silvestre
- * todo ajouter le champ blurb (annotation_privee)
+ * todofsil ajouter le champ blurb (annotation_privee)
  */
 class Sujet {
 

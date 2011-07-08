@@ -31,41 +31,38 @@ package org.lilie.services.eliot.tdbase
 import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
- * Classe représentant la copie d'un élève
+ * Classe représentant une réponse à une question
  * @author franck Silvestre
+ * todofsil ajouter eleve_id pouvant etre null
  * todofsil ajouter champ note_correcteur
- * todofsil la date de remise doit etre nullable mais une date de creation semble utile
  */
-class Copie {
+class Reponse {
 
-  Date dateRemise
+  String specification
+
   String correctionAnnotation
   Date correctionDate
   Float correctionNoteAutomatique
   Float correctionNoteFinale
 
-  Sujet sujet
-  Personne eleve
+  Copie copie
+  Question question
 
   Personne correcteur
-  ModaliteActivite modaliteActivite
 
   static constraints = {
-    dateRemise(nullable: true)
+    specification(nullable: true)
     correctionAnnotation(nullable: true)
     correctionDate(nullable: true)
     correctionNoteAutomatique(nullable: true)
     correctionNoteFinale(nullable: true)
-    eleve(nullable: true) // necessaire pour copie anonyme, test d'un sujet
     correcteur(nullable: true)
-    modaliteActivite(nullable: true)
   }
 
   static mapping = {
-    table('td.copie')
+    table('td.reponse')
     version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.copie_id_seq'])
+    id(column: 'id', generator: 'sequence', params: [sequence: 'td.reponse_id_seq'])
     cache(true)
   }
-
 }
