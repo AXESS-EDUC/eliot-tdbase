@@ -910,4 +910,49 @@
                                columnName="date_fin" schemaName="tice"/>
     </changeSet>
 
+    <changeSet id="10" author="fsil">
+        <comment>
+            Ajout champ note_correcteur dans td.copie et td.reponse
+            Suppression not null contrainte sur td.copie.date_remise
+            Ajout champ eleve_id sur td.reponse
+            Ajout champ annotation_privee sur td.sujet
+        </comment>
+
+        <addColumn tableName="copie" schemaName="td">
+            <column name="correction_note_correcteur" type="float"/>
+            <column name="correction_note_non_numerique" type="varchar(255)"/>
+        </addColumn>
+        <dropNotNullConstraint tableName="copie" schemaName="td"
+                               columnName="date_remise"/>
+
+        <addColumn tableName="reponse" schemaName="td">
+            <column name="correction_note_correcteur" type="float"/>
+            <column name="correction_note_non_numerique" type="varchar(255)"/>
+            <column name="eleve_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="reponse"
+                                 baseColumnNames="eleve_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_reponse_eleve_id"
+                                 referencedTableName="personne"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="ent"/>
+
+        <createIndex tableName="reponse"
+                     indexName="idx_reponse_eleve_id"
+                     schemaName="td">
+            <column name="eleve_id"/>
+        </createIndex>
+
+        <addUniqueConstraint tableName="reponse" columnNames="copie_id, question_id"
+                             schemaName="td"
+                             constraintName="uk_reponse_copie_id_question_id"/>
+
+        <addColumn tableName="sujet" schemaName="td">
+            <column name="annotation_privee" type="text"/>
+        </addColumn>
+
+    </changeSet>
+
 </databaseChangeLog>
