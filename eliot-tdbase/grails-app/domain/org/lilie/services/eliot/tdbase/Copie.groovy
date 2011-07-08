@@ -33,8 +33,6 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 /**
  * Classe représentant la copie d'un élève
  * @author franck Silvestre
- * todofsil ajouter champ note_correcteur
- * todofsil la date de remise doit etre nullable mais une date de creation semble utile
  */
 class Copie {
 
@@ -43,6 +41,8 @@ class Copie {
   Date correctionDate
   Float correctionNoteAutomatique
   Float correctionNoteFinale
+  Float correctionNoteCorrecteur
+  String correctionNoteNonNumerique
 
   Sujet sujet
   Personne eleve
@@ -56,7 +56,9 @@ class Copie {
     correctionDate(nullable: true)
     correctionNoteAutomatique(nullable: true)
     correctionNoteFinale(nullable: true)
-    eleve(nullable: true) // necessaire pour copie anonyme, test d'un sujet
+    correctionNoteCorrecteur(nullable: true)
+    correctionNoteNonNumerique(nullable: true)
+    eleve(nullable: true)
     correcteur(nullable: true)
     modaliteActivite(nullable: true)
   }

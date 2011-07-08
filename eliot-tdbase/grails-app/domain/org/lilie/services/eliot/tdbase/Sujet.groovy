@@ -37,7 +37,6 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 /**
  * Classe représentant un sujet
  * @author franck Silvestre
- * todofsil ajouter le champ blurb (annotation_privee)
  */
 class Sujet {
 
@@ -45,6 +44,7 @@ class Sujet {
   int versionSujet
 
   String presentation
+  String annotationPrivee
   Integer nbQuestions
   Integer dureeMinutes
   Float noteMax
@@ -67,6 +67,7 @@ class Sujet {
     niveau(nullable: true)
     publication(nullable: true)
     presentation(nullable: true)
+    annotationPrivee(nullable: true)
     nbQuestions(nullable: true)
     dureeMinutes(nullable: true)
     noteMax(nullable: true)

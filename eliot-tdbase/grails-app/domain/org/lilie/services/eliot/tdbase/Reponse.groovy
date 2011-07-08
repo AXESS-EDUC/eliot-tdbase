@@ -33,8 +33,6 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 /**
  * Classe représentant une réponse à une question
  * @author franck Silvestre
- * todofsil ajouter eleve_id pouvant etre null
- * todofsil ajouter champ note_correcteur
  */
 class Reponse {
 
@@ -44,11 +42,14 @@ class Reponse {
   Date correctionDate
   Float correctionNoteAutomatique
   Float correctionNoteFinale
+  Float correctionNoteCorrecteur
+  String correctionNoteNonNumerique
 
   Copie copie
   Question question
 
   Personne correcteur
+  Personne eleve
 
   static constraints = {
     specification(nullable: true)
@@ -56,7 +57,10 @@ class Reponse {
     correctionDate(nullable: true)
     correctionNoteAutomatique(nullable: true)
     correctionNoteFinale(nullable: true)
+    correctionNoteCorrecteur(nullable: true)
+    correctionNoteNonNumerique(nullable: true)
     correcteur(nullable: true)
+    eleve(nullable: true)
   }
 
   static mapping = {
