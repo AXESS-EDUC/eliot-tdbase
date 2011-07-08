@@ -53,9 +53,10 @@ public class Service {
   Double nbHeures
   Boolean coEns
   String libelleMatiere
-
+  OrigineEnum origine = OrigineEnum.AUTO
 
   Set<Enseignement> enseignements
+  Set<RelPeriodeService> relPeriodeServices
   Set<SousService> sousServices
 
   /*
@@ -80,10 +81,14 @@ public class Service {
    */
   boolean actif = true
 
-
+  static belongsTo = [
+          Periode // identifiant du proprietaire dans la relation N:N
+          // Service ne peut pas exister sans une période où il est enseigné
+  ]
 
   static hasMany = [
           enseignements: Enseignement,
+          relPeriodeServices: RelPeriodeService,
           sousServices: SousService
   ]
 
@@ -94,12 +99,16 @@ public class Service {
     nbHeures(nullable: true)
     coEns(nullable: true)
     libelleMatiere(nullable: true)
+    origine(nullable: true)
     servicePrincipal(nullable: false)
   }
 
   static transients = [
           'libelle',
-          'anneeScolaire'
+          'anneeScolaire',
+          'periodes',
+          'evaluable',
+          'coeffPourPeriode'
   ]
 
   String toString() {
@@ -124,7 +133,7 @@ public class Service {
   }
 
   /**
-   * Année scolaire du service 
+   * Année scolaire du service
    * @return AnneeScolaire
    * @author bper
    */
@@ -132,5 +141,71 @@ public class Service {
     return this.structureEnseignement?.anneeScolaire
   }
 
+  /**
+   * Retourne la liste des périodes rattachée au service
+   * @return List < Periode >
+   * @author bper
+   */
+  List<Periode> getPeriodes() {
+    return this.relPeriodeServices.collect {it.periode}
+  }
+
+  /**
+   * Coeff du service pour une période données
+   * @param periode
+   * @return
+   * @author msan
+   */
+  BigDecimal getCoeffPourPeriode(Periode periode) {
+    RelPeriodeService rel = this.relPeriodeServices.find {it.periode.id == periode.id}
+    return rel ? rel.coeff : RelPeriodeService.COEFF_PAR_DEFAUT
+  }
+
+  /**
+   * Evaluabilité du service pour une période données
+   * @param periode
+   * @return true si le service est evaluable pour la période donnée, sinon false
+   * @author msan
+   */
+  Boolean isEvaluable(Periode periode) {
+    RelPeriodeService rel = this.relPeriodeServices.find {it.periode.id == periode.id}
+    return rel ? rel.evaluable : RelPeriodeService.EVALUABILITE_PAR_DEFAUT
+  }
+
+  /**
+   * Evaluabilité du service pour un type de période
+   * @param typePeriode
+   * @return true si le service est evaluable au moins pour une des périodes
+   * du type donné, sinon false
+   * @author bper
+   */
+  Boolean isEvaluable(TypePeriode typePeriode) {
+    return !this.relPeriodeServices.isEmpty() ?
+            this.relPeriodeServices.any{it.evaluable} :
+            RelPeriodeService.EVALUABILITE_PAR_DEFAUT
+  }
+
+  /**
+   * Service optionel
+   * @param periode
+   * @return true si le service est optionnel pour la période donnée, sinon false
+   * @author bper
+   */
+  Boolean isOption(Periode periode) {
+    RelPeriodeService rel = this.relPeriodeServices.find {it.periode.id == periode.id}
+    return rel ? rel.option : RelPeriodeService.OPTION_PAR_DEFAUT
+  }
+
+  /**
+   * Retourne les sous-services correspondant à un type de période
+   * @param typePeriode
+   * @return List<SousService>
+   * @author bper
+   */
+  List<SousService> getSousServices(TypePeriode typePeriode) {
+    return (this.sousServices.findAll{it.typePeriode.id == typePeriode.id} as List).sort {it.ordre}
+  }
 
 }
+
+
