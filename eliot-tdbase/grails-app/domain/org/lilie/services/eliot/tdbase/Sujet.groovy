@@ -67,6 +67,7 @@ class Sujet {
   static hasMany = [questionsSequences : SujetSequenceQuestions]
 
   static constraints = {
+    titre(blank: false, nullable: false)
     etablissement(nullable: true)
     matiere(nullable: true)
     niveau(nullable: true)
