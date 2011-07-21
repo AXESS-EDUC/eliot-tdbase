@@ -64,7 +64,7 @@ class SujetController {
     if (id) {
        sujet = Sujet.get(id)
     } else {
-      Personne personne = Personne.get(springSecurityService.currentUser.personneId)
+      Personne personne = Personne.get(springSecurityService.principal.personneId)
       sujet = sujetService.createSujet(personne,titre)
       titrePage = message(code:"sujet.nouveau.titre")
     }
