@@ -41,6 +41,7 @@ import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
+import grails.plugins.springsecurity.SpringSecurityService
 
 /**
  * Classe de service pour gestion les utilisateurs
@@ -48,6 +49,8 @@ import org.springframework.transaction.annotation.Transactional
 class DefaultUtilisateurService implements UtilisateurService {
 
   static transactional = false
+
+  SpringSecurityService springSecurityService
 
   SessionFactory sessionFactory
 
@@ -95,9 +98,11 @@ class DefaultUtilisateurService implements UtilisateurService {
     domainAutorite.save(failOnError: true)
 
     // cree le compte utilisateur
+    String encodedPassword = springSecurityService.encodePassword(
+                    password, login)
     CompteUtilisateur compteUtilisateur = new CompteUtilisateur(
             login: login,
-            password: password,
+            password: encodedPassword,
             compteActive: true,
             compteVerrouille: false,
             passwordExpire: false,
@@ -112,6 +117,7 @@ class DefaultUtilisateurService implements UtilisateurService {
   /**
    * @see UtilisateurService
    */
+  @Transactional
   Utilisateur findUtilisateur(String login) {
     if (!login) {
       throw new IllegalStateException(

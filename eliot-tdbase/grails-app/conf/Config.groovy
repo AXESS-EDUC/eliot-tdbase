@@ -1,4 +1,4 @@
-
+import grails.plugins.springsecurity.SecurityConfigType
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
  * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -121,3 +121,11 @@ log4j = {
 grails.plugin.databasemigration.changelogFileName =  "changelog.xml"
 grails.plugin.databasemigration.updateOnStart = false
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.xml']
+
+grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
+grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
+
+grails.plugins.springsecurity.interceptUrlMap = [
+    '/sujet/**':   ['IS_AUTHENTICATED_FULLY'],
+    '/':   ['IS_AUTHENTICATED_FULLY']
+]

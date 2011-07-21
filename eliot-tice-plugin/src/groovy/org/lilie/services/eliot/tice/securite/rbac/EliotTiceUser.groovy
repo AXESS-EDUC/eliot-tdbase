@@ -30,6 +30,8 @@ package org.lilie.services.eliot.tice.securite.rbac
 
 import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
 import org.springframework.security.core.GrantedAuthority
+import org.lilie.services.eliot.tice.securite.CompteUtilisateur
+import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 
 /**
  * Classe représentant l'objet de type UserDetail nécessaire à SpringSecurity
@@ -38,36 +40,30 @@ import org.springframework.security.core.GrantedAuthority
  */
 class EliotTiceUser extends GrailsUser {
 
+  Long personneId
+  Long compteUtilisateurId
+  Long autoriteId
+
   /**
    *
-   * @param username l'identifiant unique (chaine de caractère)
-   * @param password le mot de passe
-   * @param enabled flag indiquant si l'utilisateur est activé
-   * @param accountNonExpired  flag indiquant si
-   * @param credentialsNonExpired  flag indiquant si
-   * @param accountNonLocked  flag indiquant si
+   * @param compteUtilisateur le compte utilisateur
    * @param authorities liste des objets de type GrantedAuthorities correspondant
    *        aux fonctions de l'utilisateur connecté
-   * @param id l'id de l'utilisateur
    */
-  EliotTiceUser(
-          String username,
-          String password,
-          boolean enabled,
-          boolean accountNonExpired,
-          boolean credentialsNonExpired,
-          boolean accountNonLocked,
-          Collection<GrantedAuthority> authorities,
-          Object id
-  ) {
+  EliotTiceUser(Utilisateur utilisateur,
+                Collection<GrantedAuthority> authorities) {
     super(
-            username,
-            password,
-            enabled,
-            accountNonExpired,
-            credentialsNonExpired,
-            accountNonLocked,
+            utilisateur.login,
+            utilisateur.password,
+            utilisateur.compteActive,
+            !utilisateur.compteExpire,
+            !utilisateur.passwordExpire,
+            !utilisateur.compteVerrouille,
             authorities,
-            id)
+            utilisateur.compteUtilisateurId
+    )
+    personneId = utilisateur.personneId
+    autoriteId = utilisateur.autoriteId
+    compteUtilisateurId = utilisateur.compteUtilisateurId
   }
 }
