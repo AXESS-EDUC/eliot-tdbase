@@ -43,8 +43,13 @@
 
 <div class="column span-22 last middle">
   <h1>${titrePage}</h1>
-
-  <form name="f_1_30_1" method="post" action="#">
+  <g:hasErrors bean="${sujet}">
+    <g:eachError>
+      <li><g:message error="${it}" /></li></p>
+    </g:eachError>
+  </g:hasErrors>
+  <g:message code="${flash.message}"/>
+  <form>
     <div class="portal-form_container">
       <table>
         <tr>
@@ -52,8 +57,7 @@
             titre :
           </td>
           <td>
-            <input size="80" type="text" value="Nouveau sujet"
-                   name="1.30.1.1"/>
+            <g:textField name="sujetTitre" value="${sujet?.titre}" size="80"/>
           </td>
         </tr>
       </table>
@@ -63,10 +67,11 @@
 
     </div>
     <div class="form_actions">
+        <g:hiddenField name="sujetId" value="${sujet?.id}"/>
         <input type="submit" value="Exporter" name="1.30.1.5"/>
         <g:actionSubmit action="editeProprietes" value="Editer les propriétés du sujet"/>
         <input type="submit" value="Ajouter un élément" name="1.30.1.9"/>
-        <input type="submit" value="Enregistrer" name="1.30.1.11"/>
+        <g:actionSubmit action="enregistre" value="Enregistrer"/>
       </div>
   </form>
 </div>

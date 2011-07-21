@@ -24,7 +24,8 @@ class SujetService {
             ordreQuestionsAleatoire: false,
             versionSujet: 1,
             copyrightsType: CopyrightsType.getDefault()
-    ).save(failOnError:true, flush:true)
+    )
+    sujet.save()
     return sujet
   }
 
