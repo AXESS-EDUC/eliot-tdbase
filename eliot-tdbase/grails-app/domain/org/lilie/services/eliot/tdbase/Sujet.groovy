@@ -33,6 +33,7 @@ import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.CopyrightsType
 
 /**
  * Classe représentant un sujet
@@ -50,6 +51,9 @@ class Sujet {
   Float noteMax
   Float noteAutoMax
   Float noteEnseignantMax
+  Boolean accesPublic
+  Boolean accesSequentiel
+  Boolean ordreQuestionsAleatoire
 
   Personne proprietaire
 
@@ -57,9 +61,10 @@ class Sujet {
   Matiere matiere
   Niveau niveau
   Publication publication
+  CopyrightsType copyrightsType
 
-  List<SujetSequenceQuestions> questionsSequencees
-  static hasMany = [questionsSequencees : SujetSequenceQuestions]
+  List<SujetSequenceQuestions> questionsSequences
+  static hasMany = [questionsSequences : SujetSequenceQuestions]
 
   static constraints = {
     etablissement(nullable: true)
@@ -80,7 +85,7 @@ class Sujet {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
     cache(true)
-    questionsSequencees(lazy: false, sort: 'rang' ,order: 'asc')
+    questionsSequences(lazy: false, sort: 'rang' ,order: 'asc')
   }
 
 }

@@ -955,4 +955,50 @@
 
     </changeSet>
 
+    <changeSet id="11" author="fsil">
+        <comment>
+            Correction sur orthographe copyrights
+        </comment>
+        <dropSequence sequenceName="copyrigths_type_id_seq" schemaName="tice"/>
+        <createSequence sequenceName="copyrights_type_id_seq" schemaName="tice"
+                        startValue="100"/>
+
+         <renameColumn tableName="publication" oldColumnName="copyrigths_type_id"
+                      newColumnName="copyrights_type_id" schemaName="tice"/>
+
+    </changeSet>
+
+
+    <changeSet id="12" author="fsil">
+        <comment>Complément table sujet</comment>
+        <addColumn tableName="sujet" schemaName="td">
+            <column name="copyrights_type_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="acces_public" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="acces_sequentiel" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ordre_questions_aleatoire" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <createIndex tableName="sujet" indexName="idx_sujet_copyrights_id"
+                     schemaName="td">
+            <column name="copyrights_type_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="sujet"
+                                 baseColumnNames="copyrights_type_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_sujet_copyrights_id"
+                                 referencedTableName="copyrights_type"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="tice"/>
+
+    </changeSet>
+
 </databaseChangeLog>
