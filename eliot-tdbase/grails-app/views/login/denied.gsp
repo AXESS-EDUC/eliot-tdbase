@@ -28,11 +28,11 @@
 
 <head>
   <meta name='layout' content='eliot-tdbase-pub'/>
-  <title>Denied</title>
+  <title>Accès refusé</title>
 </head>
 
 <body>
 <div class='body'>
-  <div class='errors'>Sorry, you're not authorized to view this page.</div>
+  <div class='errors'>Désolé, vous n'êtes pas autorisé à consulter cette page</div>
 </div>
 </body>
