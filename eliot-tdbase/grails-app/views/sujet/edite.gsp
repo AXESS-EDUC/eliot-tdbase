@@ -56,7 +56,7 @@
                      class="portal-messages success"/></li>
     </div>
   </g:if>
-  <form>
+  <form method="post">
     <div class="portal-form_container">
       <table>
         <tr>

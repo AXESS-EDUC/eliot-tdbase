@@ -64,7 +64,7 @@ class SujetController {
       sujet = Sujet.get(sujetCmd.sujetId)
       sujetEnEdition = true
     } else {
-      Personne personne = Personne.get(springSecurityService.principal.personneId)
+      Personne personne = authenticatedPersonne
       sujet = sujetService.createSujet(personne, sujetCmd.sujetTitre)
     }
     if (!sujet.hasErrors()) {
