@@ -1,6 +1,6 @@
-import org.springframework.context.ApplicationContext
-import org.lilie.services.eliot.tice.annuaire.UtilisateurService
-import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
+import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.securite.CompteUtilisateur
+import org.lilie.services.eliot.tice.securite.DomainAutorite
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -49,4 +49,39 @@ class EliotTicePluginGrailsPlugin {
       Plugin pour la création d'applications Eliot
       '''
 
+  def doWithDynamicMethods = { ctx ->
+    for (controllerClass in application.controllerClasses) {
+      addControllerMethods controllerClass.metaClass, ctx
+    }
+  }
+
+  private void addControllerMethods(MetaClass mc, ctx) {
+    if (!mc.respondsTo(null, 'getAuthenticatedUser')) {
+      mc.getAuthenticatedUser = {->
+        if (!ctx.springSecurityService.isLoggedIn()) return null
+        Personne.get(ctx.springSecurityService.principal.personneId)
+      }
+    }
+
+    if (!mc.respondsTo(null, 'getAuthenticatedPersonne')) {
+      mc.getAuthenticatedPersonne = {->
+        if (!ctx.springSecurityService.isLoggedIn()) return null
+        Personne.get(ctx.springSecurityService.principal.personneId)
+      }
+    }
+
+    if (!mc.respondsTo(null, 'getAuthenticatedCompteUtilisateur')) {
+      mc.getAuthenticatedCompteUtilisateur = {->
+        if (!ctx.springSecurityService.isLoggedIn()) return null
+        CompteUtilisateur.get(ctx.springSecurityService.principal.compteUtilisateurId)
+      }
+    }
+
+    if (!mc.respondsTo(null, 'getAuthenticatedAutorite')) {
+      mc.getAuthenticatedAutorite = {->
+        if (!ctx.springSecurityService.isLoggedIn()) return null
+        DomainAutorite.get(ctx.springSecurityService.principal.autoriteId)
+      }
+    }
+  }
 }
