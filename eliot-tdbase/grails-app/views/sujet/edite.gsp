@@ -75,7 +75,7 @@
     </div>
 
     <div class="form_actions">
-      <g:if test="${sujet}">
+      <g:if test="${sujetEnEdition}">
         <g:hiddenField name="sujetId" value="${sujet.id}"/>
         <input type="submit" value="Exporter" name="1.30.1.5"/>
         <g:actionSubmit action="editeProprietes"

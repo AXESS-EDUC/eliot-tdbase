@@ -16,8 +16,8 @@ class SujetController {
    */
   def recherche() {
     [
-      titrePage:message(code: "sujet.recherche.titre"),
-      afficheFormulaire:true
+            titrePage: message(code: "sujet.recherche.titre"),
+            afficheFormulaire: true
     ]
   }
 
@@ -27,10 +27,10 @@ class SujetController {
    */
   def mesSujets() {
     def model = [
-      titrePage:message(code: "sujet.messujets.titre"),
-      afficheFormulaire:false
+            titrePage: message(code: "sujet.messujets.titre"),
+            afficheFormulaire: false
     ]
-    render(view:"recherche", model: model)
+    render(view: "recherche", model: model)
   }
 
   /**
@@ -38,9 +38,9 @@ class SujetController {
    * Action "nouveau"
    */
   def nouveau() {
-    render(view:"edite", model: [
-           titrePage:message(code:"sujet.nouveau.titre"),
-           titreSujet:message(code:"sujet.nouveau.titre")
+    render(view: "edite", model: [
+           titrePage: message(code: "sujet.nouveau.titre"),
+           titreSujet: message(code: "sujet.nouveau.titre")
            ])
   }
 
@@ -49,7 +49,7 @@ class SujetController {
    * Action "editeProprietes"
    */
   def editeProprietes() {
-    render(view:"edite-proprietes")
+    render(view: "edite-proprietes")
   }
 
   /**
@@ -58,22 +58,26 @@ class SujetController {
    */
   def enregistre(NouveauSujetCommand sujetCmd) {
     Sujet sujet
-    String titrePage = message(code:"sujet.edite.titre")
+    String titrePage = message(code: "sujet.edite.titre")
+    boolean sujetEnEdition = false
     if (sujetCmd.sujetId) {
-       sujet = Sujet.get(sujetCmd.sujetId)
+      sujet = Sujet.get(sujetCmd.sujetId)
+      sujetEnEdition = true
     } else {
       Personne personne = Personne.get(springSecurityService.principal.personneId)
-      sujet = sujetService.createSujet(personne,sujetCmd.sujetTitre)
+      sujet = sujetService.createSujet(personne, sujetCmd.sujetTitre)
     }
     if (!sujet.hasErrors()) {
       request.messageCode = "sujet.enregistre.succes"
+      sujetEnEdition = true
     } else {
-      titrePage = message(code:"sujet.nouveau.titre")
+      titrePage = message(code: "sujet.nouveau.titre")
     }
-    render(view:"edite",  model: [
-           titrePage:titrePage,
-           titreSujet:message(code:sujet.titre),
-           sujet: sujet
+    render(view: "edite", model: [
+           titrePage: titrePage,
+           titreSujet: message(code: sujet.titre),
+           sujet: sujet,
+           sujetEnEdition: sujetEnEdition
            ])
   }
 }
