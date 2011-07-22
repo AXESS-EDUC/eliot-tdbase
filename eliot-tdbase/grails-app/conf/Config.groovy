@@ -118,6 +118,8 @@ log4j = {
     warn   'org.mortbay.log'
 }
 
+grails.controllers.defaultScope = "singleton"
+
 grails.plugin.databasemigration.changelogFileName =  "changelog.xml"
 grails.plugin.databasemigration.updateOnStart = false
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.xml']

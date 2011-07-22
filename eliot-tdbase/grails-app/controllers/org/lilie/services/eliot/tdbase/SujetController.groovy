@@ -56,20 +56,19 @@ class SujetController {
    *
    * Action "enregistrer"
    */
-  def enregistre() {
-    String titre = params.sujetTitre
-    def id = params.sujetId
+  def enregistre(NouveauSujetCommand sujetCmd) {
     Sujet sujet
-    String titrePage
-    if (id) {
-       sujet = Sujet.get(id)
+    String titrePage = message(code:"sujet.edite.titre")
+    if (sujetCmd.sujetId) {
+       sujet = Sujet.get(sujetCmd.sujetId)
     } else {
       Personne personne = Personne.get(springSecurityService.principal.personneId)
-      sujet = sujetService.createSujet(personne,titre)
-      titrePage = message(code:"sujet.nouveau.titre")
+      sujet = sujetService.createSujet(personne,sujetCmd.sujetTitre)
     }
     if (!sujet.hasErrors()) {
-      flash.message = "sujet.enregistre.succes"
+      request.messageCode = "sujet.enregistre.succes"
+    } else {
+      titrePage = message(code:"sujet.nouveau.titre")
     }
     render(view:"edite",  model: [
            titrePage:titrePage,
@@ -77,4 +76,9 @@ class SujetController {
            sujet: sujet
            ])
   }
+}
+
+class NouveauSujetCommand {
+  String sujetTitre
+  Long sujetId
 }

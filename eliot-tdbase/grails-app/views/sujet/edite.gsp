@@ -44,11 +44,18 @@
 <div class="column span-22 last middle">
   <h1>${titrePage}</h1>
   <g:hasErrors bean="${sujet}">
-    <g:eachError>
-      <li><g:message error="${it}" /></li></p>
-    </g:eachError>
+    <div class="portal-messages error">
+      <g:eachError>
+        <li><g:message error="${it}"/></li>
+      </g:eachError>
+    </div>
   </g:hasErrors>
-  <g:message code="${flash.message}"/>
+  <g:if test="${request.messageCode}">
+    <div class="portal-messages success">
+      <li><g:message code="${request.messageCode}"
+                     class="portal-messages success"/></li>
+    </div>
+  </g:if>
   <form>
     <div class="portal-form_container">
       <table>
@@ -57,7 +64,7 @@
             titre :
           </td>
           <td>
-            <g:textField name="sujetTitre" value="${sujet?.titre}" size="80"/>
+            <g:textField name="sujetTitre" value="${titreSujet}" size="80"/>
           </td>
         </tr>
       </table>
@@ -66,13 +73,17 @@
       </div><script>AUC.register('allItemsContainer');</script>
 
     </div>
+
     <div class="form_actions">
-        <g:hiddenField name="sujetId" value="${sujet?.id}"/>
+      <g:if test="${sujet}">
+        <g:hiddenField name="sujetId" value="${sujet.id}"/>
         <input type="submit" value="Exporter" name="1.30.1.5"/>
-        <g:actionSubmit action="editeProprietes" value="Editer les propriétés du sujet"/>
+        <g:actionSubmit action="editeProprietes"
+                        value="Editer les propriétés du sujet"/>
         <input type="submit" value="Ajouter un élément" name="1.30.1.9"/>
-        <g:actionSubmit action="enregistre" value="Enregistrer"/>
-      </div>
+      </g:if>
+      <g:actionSubmit action="enregistre" value="Enregistrer"/>
+    </div>
   </form>
 </div>
 
