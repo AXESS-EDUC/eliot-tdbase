@@ -34,7 +34,7 @@ package org.lilie.services.eliot.tdbase
  */
 class SujetSequenceQuestions {
 
-  int rang
+  Integer rang
   Float noteSeuilPoursuite
 
   Question question
@@ -43,16 +43,26 @@ class SujetSequenceQuestions {
   static belongsTo = [sujet: Sujet]
 
   static constraints = {
-     noteSeuilPoursuite(nullable: true)
-   }
+    noteSeuilPoursuite(nullable: true)
+  }
 
-   static mapping = {
-     table('td.sujet_sequence_questions')
-     version(false)
-     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_sequence_questions_id_seq'])
-     cache(true)
-     question(fetch: 'join')
-   }
+  /**
+   * Permet l'ordonnancement des questions par le rang de la
+   * question dans le sujet
+   * @param obj l'objet de comparaison
+   * @return
+   */
+  int compareTo(obj) {
+    rang.compareTo(obj.rang)
+  }
+
+  static mapping = {
+    table('td.sujet_sequence_questions')
+    version(false)
+    id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_sequence_questions_id_seq'])
+    cache(true)
+    question(fetch: 'join')
+  }
 
 
 }

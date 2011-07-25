@@ -43,6 +43,18 @@
 
 <div class="column span-22 last middle">
   <h1>${titrePage}</h1>
+    <g:if test="${sujetEnEdition}">
+    <div class="portal-tabs">
+      <g:link action="editeProprietes" id="${sujet.id}">Éditer les propriété du sujet</g:link> |
+      <g:link action="exporter" id="${sujet.id}">Exporter</g:link> |
+      <g:link action="ajouterElement" id="${sujet.id}">Ajouter un élément</g:link>
+    </div>
+    </g:if>
+  <g:else>
+     <div class="portal-tabs">
+      Éditer les propriétés | Exporter | Ajouter un élément
+    </div>
+  </g:else>
   <g:hasErrors bean="${sujet}">
     <div class="portal-messages error">
       <g:eachError>
@@ -77,10 +89,6 @@
     <div class="form_actions">
       <g:if test="${sujetEnEdition}">
         <g:hiddenField name="sujetId" value="${sujet.id}"/>
-        <input type="submit" value="Exporter" name="1.30.1.5"/>
-        <g:actionSubmit action="editeProprietes"
-                        value="Editer les propriétés du sujet"/>
-        <input type="submit" value="Ajouter un élément" name="1.30.1.9"/>
       </g:if>
       <g:actionSubmit action="enregistre" value="Enregistrer"/>
     </div>

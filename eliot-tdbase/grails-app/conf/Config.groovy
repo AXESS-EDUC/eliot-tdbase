@@ -128,6 +128,6 @@ grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 
 grails.plugins.springsecurity.interceptUrlMap = [
-    '/sujet/**':   ['IS_AUTHENTICATED_FULLY'],
-    '/':   ['IS_AUTHENTICATED_FULLY']
+    '/sujet/**':   ['IS_AUTHENTICATED_REMEMBERED'],
+    '/':   ['IS_AUTHENTICATED_REMEMBERED']
 ]

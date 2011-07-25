@@ -115,8 +115,6 @@ Portal Messages styles
 
 ********************************************************************************/
 .portal-messages {
-    margin-left: 15px;
-    margin-right: 15px;
     margin-bottom: 4px;
     margin-top: 4px;
     padding:0;
@@ -598,9 +596,15 @@ Style for the edition of a document or category
 .portal-tabs {
     background-color:#E0E4EB;
     border:1px solid #728CBD;
-    color:#3F61A0;
+    color: #999999;
     padding:0.5em;
     text-align:right;
+    margin-bottom: 4px;
+    margin-top: 4px;
+}
+
+.portal-tabs a {
+    color:#3F61A0;
 }
 
 .portal-tab_content {

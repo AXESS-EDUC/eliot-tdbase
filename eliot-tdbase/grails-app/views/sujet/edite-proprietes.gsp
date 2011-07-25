@@ -46,14 +46,14 @@
 <div class="column span-22 last middle">
   <h1>Propriétés du sujet</h1>
 
-  <form name="f_3_30_3" method="post"
+  <form method="post"
         action="#">
     <div class="portal-form_container">
       <table>
         <tr>
           <td class="label">Titre:</td>
           <td>
-            <input size="80" type="text" value="Mon sujet 1" name="3.30.3.1"/>
+            <input size="80" type="text" value="${sujet.titre}" name="titre"/>
           </td>
         </tr>
         <tr>

@@ -63,7 +63,7 @@ class Sujet {
   Publication publication
   CopyrightsType copyrightsType
 
-  List<SujetSequenceQuestions> questionsSequences
+  SortedSet<SujetSequenceQuestions> questionsSequences
   static hasMany = [questionsSequences : SujetSequenceQuestions]
 
   static constraints = {
@@ -86,7 +86,7 @@ class Sujet {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
     cache(true)
-    questionsSequences(lazy: false, sort: 'rang' ,order: 'asc')
+    questionsSequences(lazy: false)
   }
 
 }

@@ -49,7 +49,8 @@ class SujetController {
    * Action "editeProprietes"
    */
   def editeProprietes() {
-    render(view: "edite-proprietes")
+    Sujet sujet = Sujet.get(params.id)
+    render(view: "edite-proprietes", model: [sujet:sujet])
   }
 
   /**
