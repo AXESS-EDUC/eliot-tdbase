@@ -35,6 +35,7 @@ import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.AnneeScolaire
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
+import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 
 class BootstrapService {
 
@@ -49,14 +50,15 @@ class BootstrapService {
   private static final String UTILISATEUR_1_PRENOM = "mary"
 
   private static final String DEFAULT_CODE_PORTEUR_ENT = "ENT"
-  private static final String UAI_LYCEE = '*********L'
-  private static final String UAI_COLLEGE = '*********C'
-  private static final String UAI_PREFIXE = '*********'
+  private static final String UAI_LYCEE = '****L'
+  private static final String UAI_COLLEGE = '****C'
+  private static final String UAI_PREFIXE = '****'
 
-  private static final String CODE_GESTION_PREFIXE = '*********'
+  private static final String CODE_GESTION_PREFIXE = '****'
   private static final String CODE_MEFSTAT4_PREFIXE = '**'
 
   private static final String CODE_ANNEE_SCOLAIRE_PREFIXE = '****'
+   private static final String CODE_STRUCTURE_PREFIXE = '****'
 
 
 
@@ -69,6 +71,7 @@ class BootstrapService {
       initialiseMatieresEnvDevelopment()
       initialiseNiveauxEnvDevelopment()
       initialiseAnneeScolaireEnvDevelopment()
+      initialiseStructuresEnseignementsEnvDevelopment()
       //initialiseProprietesScolaritesEnvDevelopment()
       initialiseUtilisateuEnvDevelopment()
     }
@@ -87,8 +90,49 @@ class BootstrapService {
     }
   }
 
+  private def initialiseStructuresEnseignementsEnvDevelopment() {
+    if (!StructureEnseignement.findAllByCodeLike("${CODE_STRUCTURE_PREFIXE}%")) {
+      Etablissement lycee =  Etablissement.findByUai(UAI_LYCEE)
+      Etablissement college =  Etablissement.findByUai(UAI_COLLEGE)
+      AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
+      new StructureEnseignement(
+              etablissement: college,
+              anneeScolaire: anneeScolaire,
+              code: "${CODE_STRUCTURE_PREFIXE}_6ème1",
+              idExterne: "${college.uai}.${CODE_STRUCTURE_PREFIXE}_6ème1",
+              type: StructureEnseignement.TYPE_CLASSE,
+              actif: true
+      ).save()
+      new StructureEnseignement(
+              etablissement: lycee,
+              anneeScolaire: anneeScolaire,
+              code: "${CODE_STRUCTURE_PREFIXE}_1ereA",
+              idExterne: "${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA",
+              type: StructureEnseignement.TYPE_CLASSE,
+              actif: true
+      ).save()
+      new StructureEnseignement(
+              etablissement: lycee,
+              anneeScolaire: anneeScolaire,
+              code: "${CODE_STRUCTURE_PREFIXE}_1ereA_G1",
+              idExterne: "${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA_G1",
+              type: StructureEnseignement.TYPE_GROUPE,
+              actif: true
+      ).save()
+      new StructureEnseignement(
+              etablissement: lycee,
+              anneeScolaire: anneeScolaire,
+              code: "${CODE_STRUCTURE_PREFIXE}_Terminale_D",
+              idExterne: "${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_Terminale_D",
+              type: StructureEnseignement.TYPE_CLASSE,
+              actif: true
+      ).save(flush:true)
+
+    }
+  }
+
   private def initialiseEtablissementsEnvDevelopment() {
-    if (!Etablissement.findByUaiLike("${UAI_PREFIXE}%")) {
+    if (!Etablissement.findAllByUaiLike("${UAI_PREFIXE}%")) {
       new Etablissement(
               codePorteurENT: DEFAULT_CODE_PORTEUR_ENT,
               uai: UAI_LYCEE,
@@ -116,47 +160,49 @@ class BootstrapService {
 
 
   private def initialiseMatieresEnvDevelopment() {
-    if (!Matiere.findByCodeGestionLike("${CODE_GESTION_PREFIXE}%")) {
+    if (!Matiere.findAllByCodeGestionLike("${CODE_GESTION_PREFIXE}%")) {
+      Etablissement lycee =  Etablissement.findByUai(UAI_LYCEE)
+      Etablissement college =  Etablissement.findByUai(UAI_COLLEGE)
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_1",
-              etablissement: Etablissement.findByUai(UAI_LYCEE),
+              etablissement: lycee,
               libelleLong: "Mathématiques"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_2",
-              etablissement: Etablissement.findByUai(UAI_LYCEE),
+              etablissement: lycee,
               libelleLong: "SES"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_3",
-              etablissement: Etablissement.findByUai(UAI_LYCEE),
+              etablissement: lycee,
               libelleLong: "SES Spécialité"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_4",
-              etablissement: Etablissement.findByUai(UAI_COLLEGE),
+              etablissement: college,
               libelleLong: "Histoire"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_5",
-              etablissement: Etablissement.findByUai(UAI_COLLEGE),
+              etablissement: college,
               libelleLong: "Géographie"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_6",
-              etablissement: Etablissement.findByUai(UAI_LYCEE),
+              etablissement: lycee,
               libelleLong: "Communication"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_7",
-              etablissement: Etablissement.findByUai(UAI_LYCEE),
+              etablissement: lycee,
               libelleLong: "Anglais"
       ).save(flush:true)
     }
   }
 
   private def initialiseNiveauxEnvDevelopment() {
-    if (!Niveau.findByCodeMefstat4Like("${CODE_MEFSTAT4_PREFIXE}%")) {
+    if (!Niveau.findAllByCodeMefstat4Like("${CODE_MEFSTAT4_PREFIXE}%")) {
       new Niveau(
               codeMefstat4: "${CODE_MEFSTAT4_PREFIXE}_1",
               libelleLong: "Première"
