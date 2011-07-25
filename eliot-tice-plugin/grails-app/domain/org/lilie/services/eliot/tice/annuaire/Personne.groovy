@@ -39,6 +39,8 @@ import org.lilie.services.eliot.tice.scolarite.Regime
 public class Personne  {
 
 
+  static final String NOM_TABLE = 'ent.personne'
+
   DomainAutorite autorite
   String nom
   String prenom
@@ -61,7 +63,7 @@ public class Personne  {
   Regime regime
 
   static mapping = {
-    table('ent.personne')
+    table(Personne.NOM_TABLE)
     cache usage:'read-write'
     version false
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.personne_id_seq']

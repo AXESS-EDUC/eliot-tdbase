@@ -4,6 +4,8 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tice.CopyrightsType
+import org.lilie.services.eliot.tdbase.InitialisationTestService
+import org.hibernate.SessionFactory
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
  * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -38,25 +40,17 @@ import org.lilie.services.eliot.tice.CopyrightsType
  */
 class SujetServiceIntegrationTests extends GroovyTestCase {
 
-  private static final String UTILISATEUR_1_LOGIN = "mary.dupond"
-  private static final String UTILISATEUR_1_PASSWORD = "password"
-  private static final String UTILISATEUR_1_NOM = "dupond"
-  private static final String UTILISATEUR_1_PRENOM = "mary"
   private static final String SUJET_1_TITRE = "Sujet test 1"
 
   Utilisateur utilisateur
+  SessionFactory sessionFactory
 
-  UtilisateurService defaultUtilisateurService
+  InitialisationTestService initialisationTestService
   SujetService sujetService
 
   protected void setUp() {
     super.setUp()
-    utilisateur = defaultUtilisateurService.createUtilisateur(
-            UTILISATEUR_1_LOGIN,
-            UTILISATEUR_1_PASSWORD,
-            UTILISATEUR_1_NOM,
-            UTILISATEUR_1_PRENOM
-    )
+    utilisateur = initialisationTestService.getEnseignant1()
   }
 
   protected void tearDown() {

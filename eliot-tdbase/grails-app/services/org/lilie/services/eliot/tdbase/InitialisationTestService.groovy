@@ -26,30 +26,47 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-    logSql = true
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'org.hibernate.cache.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+
+
+package org.lilie.services.eliot.tdbase
+
+import org.lilie.services.eliot.tice.annuaire.UtilisateurService
+import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.scolarite.Fonction
+
+
+class InitialisationTestService {
+
+
+  private static final String ENSEIGNANT_1_LOGIN = "mary.dupond"
+  private static final String ENSEIGNANT_1_PASSWORD = "password"
+  private static final String ENSEIGNANT_1_NOM = "dupond"
+  private static final String ENSEIGNANT_1_PRENOM = "mary"
+
+  UtilisateurService utilisateurService
+
+  /**
+   *
+   * @return  l'enseignant correspondant à l'enseignant 1
+   */
+  Utilisateur getEnseignant1() {
+    //forceConnectionToDB()
+    utilisateurService.createUtilisateur(
+            ENSEIGNANT_1_LOGIN,
+            ENSEIGNANT_1_PASSWORD,
+            ENSEIGNANT_1_NOM,
+            ENSEIGNANT_1_PRENOM,
+            null,
+            new Date().parse("d/M/yyyy", "21/3/1972")
+    )
+  }
+
+  /**
+   * hack pour forcer l'ouverture de la connection à la base
+   */
+  private def forceConnectionToDB() {
+    log.info("${Fonction.count()}")
+  }
 
 
 }

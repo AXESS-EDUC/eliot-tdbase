@@ -52,7 +52,9 @@ class EliotTicePluginGrailsPlugin {
 
   def doWithSpring = {
 
-    utilisateurService(DefaultUtilisateurService)
+    utilisateurService(DefaultUtilisateurService) {
+      springSecurityService = ref("springSecurityService")
+    }
 
   }
 

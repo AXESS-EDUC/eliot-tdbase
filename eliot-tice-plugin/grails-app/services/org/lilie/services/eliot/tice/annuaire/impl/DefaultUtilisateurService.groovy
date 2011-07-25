@@ -52,7 +52,6 @@ class DefaultUtilisateurService implements UtilisateurService {
 
   SpringSecurityService springSecurityService
 
-  SessionFactory sessionFactory
 
   /**
    * Creer un nouvel utilisateur
@@ -353,8 +352,7 @@ class DefaultUtilisateurService implements UtilisateurService {
    * @return le nom de l'entité personne
    */
   private getPersonneNomEntite() {
-    ClassMetadata metaData = sessionFactory.getClassMetadata(Personne.class)
-    metaData.tableName
+    Personne.NOM_TABLE
   }
 
   /**
