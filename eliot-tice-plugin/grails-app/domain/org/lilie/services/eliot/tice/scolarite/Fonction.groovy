@@ -18,6 +18,7 @@ class Fonction {
     table('ent.fonction')
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.fonction_id_seq']
     version false
+    cache('read-only')
   }
 
 }

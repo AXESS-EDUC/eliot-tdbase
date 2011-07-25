@@ -36,13 +36,23 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.AnneeScolaire
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
+import org.lilie.services.eliot.tice.scolarite.FonctionService
+import org.lilie.services.eliot.tice.annuaire.SourceImport
+import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.PersonneProprietesScolarite
+import org.hibernate.SessionFactory
 
 class BootstrapService {
 
   static transactional = false
 
 
-  UtilisateurService defaultUtilisateurService
+  UtilisateurService utilisateurService
+  FonctionService fonctionService
+  ProfilScolariteService profilScolariteService
+  SessionFactory sessionFactory
 
   private static final String UTILISATEUR_1_LOGIN = "_test_mary"
   private static final String UTILISATEUR_1_PASSWORD = "_test_"
@@ -58,9 +68,10 @@ class BootstrapService {
   private static final String CODE_MEFSTAT4_PREFIXE = '**'
 
   private static final String CODE_ANNEE_SCOLAIRE_PREFIXE = '****'
-   private static final String CODE_STRUCTURE_PREFIXE = '****'
+  private static final String CODE_STRUCTURE_PREFIXE = '****'
 
 
+  private List<ProprietesScolarite> proprietesScolariteListUtilisateur1 = []
 
   /**
    * Initialise l'application au lancement en mode développement
@@ -72,16 +83,17 @@ class BootstrapService {
       initialiseNiveauxEnvDevelopment()
       initialiseAnneeScolaireEnvDevelopment()
       initialiseStructuresEnseignementsEnvDevelopment()
-      //initialiseProprietesScolaritesEnvDevelopment()
-      initialiseUtilisateuEnvDevelopment()
+      initialiseProprietesScolaritesEnseignantEnvDevelopment()
+      initialiseEnseignant1EnvDevelopment()
+      initialiseProfilsScolaritesEnseignant1EnvDevelopment()
     }
 
   }
 
 
-  private def initialiseUtilisateuEnvDevelopment() {
-    if (!defaultUtilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)) {
-      defaultUtilisateurService.createUtilisateur(
+  private def initialiseEnseignant1EnvDevelopment() {
+    if (!utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)) {
+      utilisateurService.createUtilisateur(
               UTILISATEUR_1_LOGIN,
               UTILISATEUR_1_PASSWORD,
               UTILISATEUR_1_NOM,
@@ -89,6 +101,8 @@ class BootstrapService {
       )
     }
   }
+
+
 
   private def initialiseStructuresEnseignementsEnvDevelopment() {
     if (!StructureEnseignement.findAllByCodeLike("${CODE_STRUCTURE_PREFIXE}%")) {
@@ -225,9 +239,86 @@ class BootstrapService {
       ).save(flush:true)
 
     }
+  }
+
+
+   private def initialiseProprietesScolaritesEnseignantEnvDevelopment() {
+    Etablissement lycee =  Etablissement.findByUai(UAI_LYCEE)
+    if (!ProprietesScolarite.findAllByEtablissement(lycee)) {
+      Etablissement college =  Etablissement.findByUai(UAI_COLLEGE)
+      AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
+      Niveau niveau6 = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_5")
+      Niveau niveauPrem = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_1")
+      Niveau niveauTerm = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_2")
+      Matiere matiereMaths = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_1")
+      Matiere matiereSES = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_2")
+      Matiere matiereHistoire = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_4")
+      StructureEnseignement struct6eme = StructureEnseignement.findByIdExterne("${college.uai}.${CODE_STRUCTURE_PREFIXE}_6ème1")
+      StructureEnseignement struct1ere = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA")
+      StructureEnseignement structGr1ere = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA_G1")
+      StructureEnseignement structTerm = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_Terminale_D")
+      SourceImport sourceImport = SourceImport.findByCode("STS")
+
+      new ProprietesScolarite(
+              source: sourceImport,
+              anneeScolaire: anneeScolaire,
+              fonction: fonctionService.fonctionEnseignant(),
+              etablissement: college,
+              matiere: matiereHistoire,
+              niveau: niveau6,
+              structureEnseignement: struct6eme
+      ).save()
+
+      new ProprietesScolarite(
+              source: sourceImport,
+              anneeScolaire: anneeScolaire,
+              fonction: fonctionService.fonctionEnseignant(),
+              etablissement: lycee,
+              matiere: matiereSES,
+              niveau: niveauPrem,
+              structureEnseignement: structGr1ere
+      ).save()
+
+      new ProprietesScolarite(
+              source: sourceImport,
+              anneeScolaire: anneeScolaire,
+              fonction: fonctionService.fonctionEnseignant(),
+              etablissement: lycee,
+              matiere: matiereMaths,
+              niveau: niveauTerm,
+              structureEnseignement: structTerm
+      ).save()
+
+      new ProprietesScolarite(
+              source: sourceImport,
+              anneeScolaire: anneeScolaire,
+              fonction: fonctionService.fonctionEnseignant(),
+              etablissement: lycee,
+              matiere: matiereMaths,
+              niveau: niveauPrem,
+              structureEnseignement: struct1ere
+      ).save(flush:true)
+
+    }
 
   }
 
+  private def initialiseProfilsScolaritesEnseignant1EnvDevelopment() {
+    Utilisateur ens1 = utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
+    Personne pers1 = Personne.get(ens1.personneId)
+    if (!profilScolariteService.findProprietesScolaritesForPersonne(pers1)) {
+      def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEnseignant())
+      props.each { ProprietesScolarite proprietesScolarite ->
+        new PersonneProprietesScolarite(
+              personne: pers1,
+              proprietesScolarite: proprietesScolarite,
+              estActive: true
+        ).save()
+      }
+      sessionFactory.currentSession.flush()
+    }
+
+  }
 
 
 }

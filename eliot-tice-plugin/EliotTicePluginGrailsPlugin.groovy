@@ -1,4 +1,5 @@
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
 import org.lilie.services.eliot.tice.securite.DomainAutorite
 
@@ -48,6 +49,12 @@ class EliotTicePluginGrailsPlugin {
   def description = '''\
       Plugin pour la création d'applications Eliot
       '''
+
+  def doWithSpring = {
+
+    utilisateurService(DefaultUtilisateurService)
+
+  }
 
   def doWithDynamicMethods = { ctx ->
     for (controllerClass in application.controllerClasses) {

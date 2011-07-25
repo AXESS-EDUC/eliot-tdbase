@@ -26,39 +26,49 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+
 package org.lilie.services.eliot.tice.scolarite
 
 import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
- * table ent.personne_proprietes_scolarite
- * @author othe
+ * 
+ * @author franck Silvestre
  */
-class PersonneProprietesScolarite {
+public class ProfilScolariteService {
 
-  Personne personne
-  ProprietesScolarite proprietesScolarite
-  Boolean estActive
-  Long importId
-  Date dateDesactivation
-  Date dateDebut
-  Date dateFin
+  static transactional = false
 
-  static constraints = {
-    personne(nullable: false)
-    proprietesScolarite(nullable: false)
-    importId(nullable: true)
-    dateDesactivation(nullable: true)
-    dateDebut(nullable: true)
-    dateFin(nullable: true)
-    estActive(nullable: true)
+  /**
+   * Récupère les profils de scolarite correspondant à la personne
+   * passée en paramètre
+   * @param personne la personne dont on cherche les profils scolarite
+   * @return les proprietes scolarites correspant à la personne
+   */
+  List<ProprietesScolarite> findProprietesScolaritesForPersonne(Personne personne) {
+     List<PersonneProprietesScolarite> profils =
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true)
+     return profils*.proprietesScolarite
   }
 
-  static mapping = {
-    table('ent.personne_proprietes_scolarite')
-    id column: 'id', generator: 'sequence', params: [sequence: 'ent.personne_proprietes_scolarite_id_seq']
-    version false
-    proprietesScolarite(fetch: 'join')
+  /**
+   * Récupère les fonctions occupées par la personne passée en paramètre, tout
+   * établissement confondu
+   * @param Personne la personne dont on recherche les fonctions
+   * @return la lsite des fonctions occupés par la personne
+   */
+  List<Fonction> findFonctionsForPersonne(Personne personne) {
+    List<PersonneProprietesScolarite> profils =
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true)
+    List<Fonction> fonctions = []
+    profils.collect {
+      Fonction fonction = it.proprietesScolarite.fonction
+      if (fonction && !fonctions.contains(fonction)) {
+        fonctions << fonction
+      }
+    }
+    return fonctions
   }
 
 }
