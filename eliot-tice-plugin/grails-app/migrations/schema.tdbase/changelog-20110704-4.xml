@@ -1001,4 +1001,35 @@
 
     </changeSet>
 
+    <changeSet id="13" author="fsil">
+        <comment>
+            Ajout de champs normalisés pour recherche sur sujets et questions
+        </comment>
+        <addColumn tableName="sujet" schemaName="td">
+            <column name="titre_normalise" type="text"/>
+            <column name="presentation_normalise" type="text"/>
+        </addColumn>
+
+        <addColumn tableName="question" schemaName="td">
+            <column name="titre_normalise" type="text"/>
+        </addColumn>
+    </changeSet>
+
+     <changeSet id="14" author="fsil">
+        <comment>
+            Ajout de champs "publies" pour optimiser recherche
+        </comment>
+        <addColumn tableName="sujet" schemaName="td">
+            <column name="publie" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="question" schemaName="td">
+            <column name="publie" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

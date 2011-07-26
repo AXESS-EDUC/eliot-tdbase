@@ -914,19 +914,46 @@ tr.ligne2, tr.odd {
 Styles relatives to pagination in tables 
 
 ********************************************************************************/
-a.pageLink {
+.portal_pagination {
+    text-align: center;
+}
+
+
+a.prevLink {
     border: solid 1px #b3bdd1; /* #d7dce7; */
     padding: 1px;
     margin:1px;
     text-decoration: none;
 }
-a.pageLink:hover {
+a.nextLink  {
+    border: solid 1px #b3bdd1; /* #d7dce7; */
+    padding: 1px;
+    margin:1px;
+    text-decoration: none;
+}
+a.step {
+    border: solid 1px #b3bdd1; /* #d7dce7; */
+    padding: 1px;
+    margin:1px;
+    text-decoration: none;
+}
+
+a.prevLink:hover {
     background: #d7dce7;
     text-decoration: none;
 }
-span.pageLinkCurrent {
+a.nextLink:hover  {
+    background: #d7dce7;
+    text-decoration: none;
+}
+a.step:hover  {
+    background: #d7dce7;
+    text-decoration: none;
+}
+span.currentStep {
     border: solid 1px #b3bdd1;
     background: #d7dce7;
+    text-decoration: none;
     padding: 1px;
     margin:1px;
 }

@@ -64,7 +64,6 @@ class EliotTiceUserDetailsService implements GrailsUserDetailsService {
     if (utilisateur) {
       List<Fonction> fonctions = profilScolariteService.findFonctionsForPersonne(utilisateur.personne)
       List roles =  fonctions ?: NO_ROLES
-      println "*****   ${roles*.getAuthority()}"
       return new EliotTiceUser(utilisateur, roles)
     }
     return null

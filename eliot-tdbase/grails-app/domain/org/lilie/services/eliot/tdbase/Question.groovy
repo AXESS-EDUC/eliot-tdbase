@@ -42,9 +42,12 @@ import org.lilie.services.eliot.tice.Attachement
 class Question {
 
   String titre
+  String titreNormalise
+
   int versionQuestion
   String specification
-  boolean estAutonome
+  Boolean estAutonome
+  Boolean publie
 
   Personne proprietaire
   QuestionType type

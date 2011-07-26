@@ -42,15 +42,19 @@ import org.lilie.services.eliot.tice.CopyrightsType
 class Sujet {
 
   String titre
+  String titreNormalise
   int versionSujet
 
   String presentation
+  String presentationNormalise
+
   String annotationPrivee
   Integer nbQuestions
   Integer dureeMinutes
   Float noteMax
   Float noteAutoMax
   Float noteEnseignantMax
+  Boolean publie
   Boolean accesPublic
   Boolean accesSequentiel
   Boolean ordreQuestionsAleatoire
@@ -73,6 +77,7 @@ class Sujet {
     niveau(nullable: true)
     publication(nullable: true)
     presentation(nullable: true)
+    presentationNormalise(nullable: true)
     annotationPrivee(nullable: true)
     nbQuestions(nullable: true)
     dureeMinutes(nullable: true)

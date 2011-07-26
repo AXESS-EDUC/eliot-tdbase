@@ -44,6 +44,11 @@ class InitialisationTestService {
   private static final String ENSEIGNANT_1_NOM = "dupond"
   private static final String ENSEIGNANT_1_PRENOM = "mary"
 
+  private static final String ENSEIGNANT_2_LOGIN = "paul.durand"
+  private static final String ENSEIGNANT_2_PASSWORD = "password"
+  private static final String ENSEIGNANT_2_NOM = "durand"
+  private static final String ENSEIGNANT_2_PRENOM = "paul"
+
   UtilisateurService utilisateurService
   FonctionService fonctionService
   BootstrapService bootstrapService
@@ -63,6 +68,23 @@ class InitialisationTestService {
             new Date().parse("d/M/yyyy", "21/3/1972")
     )
   }
+
+  /**
+   *
+   * @return  l'utilisateur  correspondant à l'utilisateur 2 (sans profils de
+   * scolarite)
+   */
+  Utilisateur getUtilisateur2() {
+    utilisateurService.createUtilisateur(
+            ENSEIGNANT_2_LOGIN,
+            ENSEIGNANT_2_PASSWORD,
+            ENSEIGNANT_2_NOM,
+            ENSEIGNANT_2_PRENOM,
+            null,
+            new Date().parse("d/M/yyyy", "19/5/1980")
+    )
+  }
+
 
   /**
    *

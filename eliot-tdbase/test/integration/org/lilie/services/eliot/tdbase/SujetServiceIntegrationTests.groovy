@@ -1,10 +1,11 @@
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tdbase.Sujet
-import org.lilie.services.eliot.tdbase.SujetService
-import org.lilie.services.eliot.tice.CopyrightsType
-import org.lilie.services.eliot.tice.misc.InitialisationTestService
+package org.lilie.services.eliot.tdbase
+
 import org.hibernate.SessionFactory
+import org.lilie.services.eliot.tdbase.misc.TdBaseInitialisationTestService
+import org.lilie.services.eliot.tice.CopyrightsType
+import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
  * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -34,22 +35,29 @@ import org.hibernate.SessionFactory
  */
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 class SujetServiceIntegrationTests extends GroovyTestCase {
 
   private static final String SUJET_1_TITRE = "Sujet test 1"
+  private static final String SUJET_2_TITRE = "Sujet test 2"
 
-  Utilisateur utilisateur
+  Utilisateur utilisateur1
+  Personne personne1
+  Utilisateur utilisateur2
+  Personne personne2
   SessionFactory sessionFactory
 
-  InitialisationTestService initialisationTestService
+  TdBaseInitialisationTestService tdBaseInitialisationTestService
   SujetService sujetService
 
   protected void setUp() {
     super.setUp()
-    utilisateur = initialisationTestService.getUtilisateur1()
+    utilisateur1 = tdBaseInitialisationTestService.getUtilisateur1()
+    personne1 = utilisateur1.personne
+    utilisateur2 = tdBaseInitialisationTestService.getUtilisateur2()
+    personne2 = utilisateur2.personne
   }
 
   protected void tearDown() {
@@ -57,15 +65,34 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
   }
 
   void testCreateSujet() {
-    Personne personne = Personne.get(utilisateur.personneId)
-    Sujet sujet = sujetService.createSujet(personne,SUJET_1_TITRE)
+
+    Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
     assertNotNull(sujet)
+    if (sujet.hasErrors()) {
+      log.severe("${sujet.errors}")
+    }
     assertFalse(sujet.hasErrors())
-    assertEquals(personne, sujet.proprietaire)
+
+    assertEquals(personne1, sujet.proprietaire)
     assertFalse(sujet.accesPublic)
     assertFalse(sujet.accesSequentiel)
     assertFalse(sujet.ordreQuestionsAleatoire)
     assertEquals(CopyrightsType.default, sujet.copyrightsType)
+  }
+
+  void testFindSujetsForProprietaire() {
+    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertFalse(sujet1.hasErrors())
+    Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertFalse(sujet2.hasErrors())
+    def sujets1 = sujetService.findSujetsForProprietaire(personne1)
+    assertEquals(2, sujets1.size())
+
+    def sujets2 = sujetService.findSujetsForProprietaire(personne2)
+    assertEquals(0, sujets2.size())
+
+    assertEquals(2, sujetService.nombreSujetsForProprietaire(personne1))
+    assertEquals(0, sujetService.nombreSujetsForProprietaire(personne2))
   }
 
 }

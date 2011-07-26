@@ -26,9 +26,16 @@ class SujetController {
    * Action "mesSujets"
    */
   def mesSujets() {
+    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    Personne personne = authenticatedPersonne
     def model = [
             titrePage: message(code: "sujet.messujets.titre"),
-            afficheFormulaire: false
+            afficheFormulaire: false,
+            sujets: sujetService.findSujetsForProprietaire(
+                    personne,
+                    params
+            ),
+            sujetsCount: sujetService.nombreSujetsForProprietaire(personne)
     ]
     render(view: "recherche", model: model)
   }
@@ -46,11 +53,26 @@ class SujetController {
 
   /**
    *
+   * Action "edite"
+   */
+  def edite() {
+    Sujet sujet = Sujet.get(params.id)
+    String titrePage = message(code: "sujet.edite.titre")
+    [
+            titrePage: titrePage,
+            titreSujet: message(code: sujet.titre),
+            sujet: sujet,
+            sujetEnEdition: true
+    ]
+  }
+
+  /**
+   *
    * Action "editeProprietes"
    */
   def editeProprietes() {
     Sujet sujet = Sujet.get(params.id)
-    render(view: "edite-proprietes", model: [sujet:sujet])
+    render(view: "edite-proprietes", model: [sujet: sujet])
   }
 
   /**
