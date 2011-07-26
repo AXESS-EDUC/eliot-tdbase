@@ -32,7 +32,9 @@
 </head>
 
 <body>
-<div class='body'>
-  <div class='errors'>Désolé, vous n'êtes pas autorisé à consulter cette page</div>
+<div class="column span-22 last middle">
+  <div class="portal-messages error">
+    <li>Désolé, vous n'êtes pas autorisé à consulter cette page</li>
+  </div>
 </div>
 </body>
