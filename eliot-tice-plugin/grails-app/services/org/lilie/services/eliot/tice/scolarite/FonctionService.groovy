@@ -47,7 +47,7 @@ class FonctionService  {
    * FonctionLibelle
    * @return la fonction
    */
-  Fonction fonctionForFonctionLibelle(FonctionLibelleEnum fonctionLibelleEnum) {
+  Fonction fonctionForFonctionLibelle(FonctionEnum fonctionLibelleEnum) {
     return Fonction.get(fonctionLibelleEnum.id)
   }
 
@@ -56,7 +56,7 @@ class FonctionService  {
    * @return la fonction correspondant à un enseignant
    */
   Fonction fonctionEnseignant() {
-    return fonctionForFonctionLibelle(FonctionLibelleEnum.ENSEIGNANT)
+    return fonctionForFonctionLibelle(FonctionEnum.ENS)
   }
 
   /**
@@ -64,7 +64,7 @@ class FonctionService  {
    * @return la fonction correspondant à un élève
    */
   Fonction fonctionEleve() {
-    return fonctionForFonctionLibelle(FonctionLibelleEnum.ELEVE)
+    return fonctionForFonctionLibelle(FonctionEnum.ELEVE)
   }
 
   /**
@@ -72,7 +72,7 @@ class FonctionService  {
    * @return la fonction correspondant à un responsable eleve
    */
   Fonction fonctionResponsableEleve() {
-    return fonctionForFonctionLibelle(FonctionLibelleEnum.PERS_REL_ELEVE)
+    return fonctionForFonctionLibelle(FonctionEnum.PERS_REL_ELEVE)
   }
 
   /**
@@ -80,7 +80,7 @@ class FonctionService  {
    * @return la fonction correspondant à un personnel de direction
    */
   Fonction fonctionDirection() {
-    return fonctionForFonctionLibelle(FonctionLibelleEnum.DIRECTION)
+    return fonctionForFonctionLibelle(FonctionEnum.DIR)
   }
 
   /**
@@ -88,7 +88,7 @@ class FonctionService  {
    * @return la fonction correspondant à un CPE
    */
   Fonction fonctionEducation() {
-    return fonctionForFonctionLibelle(FonctionLibelleEnum.EDUCATION)
+    return fonctionForFonctionLibelle(FonctionEnum.EDU)
   }
 
   /**
@@ -96,7 +96,7 @@ class FonctionService  {
    * @return la fonction correspondant à un CPE
    */
   Fonction fonctionDocumentation() {
-    return fonctionForFonctionLibelle(FonctionLibelleEnum.DOCUMENTATION)
+    return fonctionForFonctionLibelle(FonctionEnum.DOC)
   }
 
   /**
@@ -104,7 +104,7 @@ class FonctionService  {
    * @return la fonction correspondant à un chef de travaux
    */
   Fonction fonctionChefTravaux() {
-    return fonctionForFonctionLibelle(FonctionLibelleEnum.CHEF_TRAVAUX)
+    return fonctionForFonctionLibelle(FonctionEnum.CTR)
   }
 
   /**
@@ -112,7 +112,7 @@ class FonctionService  {
    * @return la fonction correspondant à un administrateur local
    */
   Fonction fonctionAdministrateurLocal() {
-    return fonctionForFonctionLibelle(FonctionLibelleEnum.ADMINISTRATEUR_LOCAL)
+    return fonctionForFonctionLibelle(FonctionEnum.AL)
   }
 
   /**
@@ -120,45 +120,73 @@ class FonctionService  {
    * @return la fonction correspondant à un administrateur central
    */
   Fonction fonctionAdministrateurCentral() {
-    return fonctionForFonctionLibelle(FonctionLibelleEnum.ADMINISTRATEUR_CENTRAL)
+    return fonctionForFonctionLibelle(FonctionEnum.AC)
   }
 
 }
 
-enum FonctionLibelleEnum {
-  ADMINISTRATEUR_CENTRAL(1),
-  ADMINISTRATEUR_LOCAL(2),
-  CORRESPONDANT_DEPLOIEMENT(3),
-  INVITE(4),
+/**
+ * Enumeration des fonctions
+ * <ul>
+ *  <li>AC - adminsitrateur central</li>
+ *  <li>AL - adminsitrateur local</li>
+ *  <li>CD - correspondant déploiement</li>
+ *  <li>UI - invité</li>
+ *  <li>ELEVE - élève</li>
+ *  <li>PERS_REL_ELEVE - responsable élève</li>
+ *  <li>ENS - enseignant</li>
+ *  <li>DIR - direction</li>
+ *  <li>EDU - CPE</li>
+ *  <li>DOC - Documentation</li>
+ *  <li>CFC - Conseiller Formation continue</li>
+ *  <li>CTR - Chef de travaux</li>
+ *  <li>ADF - Personnel administratif</li>
+ *  <li>ALB - Laboratoire</li>
+ *  <li>ASE - Assistant étranger</li>
+ *  <li>LAB - Personnel de laboratoire</li>
+ *  <li>MDS - Personnel medico-social</li>
+ *  <li>OUV - Personnel ouviriers et de service</li>
+ *  <li>SUR - Surveillance</li>
+ * </ul>
+ */
+enum FonctionEnum {
+  AC(1),
+  AL(2),
+  CD(3),
+  UI(4),
   ELEVE(5),
   PERS_REL_ELEVE(6),
-  ENSEIGNANT(7),
-  DIRECTION(8),
-  EDUCATION(9),
-  DOCUMENTATION(10),
-  CONSEILLER_FORMATION_CONTINUE(11),
-  CHEF_TRAVAUX(12),
-  PERSONNEL_ADMINISTRATIF(13),
-  LABORATOIRE(14),
-  ASSISTANT_ETRANGER(15),
-  PERSONNEL_LABORATOIRE(16),
-  PERSONNEL_MEDICO_SOCIAL(17),
-  PERSONNEL_OUVRIER_SERVIVE(18),
-  SURVEILLANCE(19),
-  ORIENTATION(20),
-  ASSISTANT_EDUCATION(21),
-  AUXILIAIRE_VIE_SCOLAIRE(22),
-  APPRENTISSAGE(23)
+  ENS(7),
+  DIR(8),
+  EDU(9),
+  DOC(10),
+  CFC(11),
+  CTR(12),
+  ADF(13),
+  ALB(14),
+  ASE(15),
+  LAB(16),
+  MDS(17),
+  OUV(18),
+  SUR(19)
+  //ORI(20),
+  //AED(21),
+  //AVS(22),
+  //APP(23)
 
 
   private Long id
 
-  private FonctionLibelleEnum(Long id) {
+  private FonctionEnum(Long id) {
     this.id = id
   }
 
   public Long getId() {
     return id
+  }
+
+  public String toRole() {
+    "ROLE_${this.toString()}"
   }
 
 }

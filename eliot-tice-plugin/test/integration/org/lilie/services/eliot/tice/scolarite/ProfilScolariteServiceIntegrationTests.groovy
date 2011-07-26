@@ -1,10 +1,3 @@
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tdbase.Sujet
-import org.lilie.services.eliot.tdbase.SujetService
-import org.lilie.services.eliot.tice.CopyrightsType
-import org.lilie.services.eliot.tice.misc.InitialisationTestService
-import org.hibernate.SessionFactory
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
  * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -33,39 +26,37 @@ import org.hibernate.SessionFactory
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+package org.lilie.services.eliot.tice.scolarite
+
+import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.misc.InitialisationTestService
+
 /**
- * 
- * @author franck Silvestre
+ *  Test la classe ProfilScolariteService
+ * @author franck silvestre
  */
-class SujetServiceIntegrationTests extends GroovyTestCase {
-
-  private static final String SUJET_1_TITRE = "Sujet test 1"
-
-  Utilisateur utilisateur
-  SessionFactory sessionFactory
+class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
   InitialisationTestService initialisationTestService
-  SujetService sujetService
+  ProfilScolariteService profilScolariteService
+  FonctionService fonctionService
 
-  protected void setUp() {
-    super.setUp()
-    utilisateur = initialisationTestService.getUtilisateur1()
+  Utilisateur enseignant1
+
+  void setUp() {
+      enseignant1 = initialisationTestService.enseignant1
   }
 
-  protected void tearDown() {
-    super.tearDown()
+  void testFindProprietesScolaritesForPersonne() {
+    List<ProprietesScolarite> props = profilScolariteService.findProprietesScolaritesForPersonne(enseignant1.personne)
+    assertEquals("pas le bon de nombre de proprietes", 4, props.size())
   }
 
-  void testCreateSujet() {
-    Personne personne = Personne.get(utilisateur.personneId)
-    Sujet sujet = sujetService.createSujet(personne,SUJET_1_TITRE)
-    assertNotNull(sujet)
-    assertFalse(sujet.hasErrors())
-    assertEquals(personne, sujet.proprietaire)
-    assertFalse(sujet.accesPublic)
-    assertFalse(sujet.accesSequentiel)
-    assertFalse(sujet.ordreQuestionsAleatoire)
-    assertEquals(CopyrightsType.default, sujet.copyrightsType)
+  void test() {
+    List<Fonction> fonctions = profilScolariteService.findFonctionsForPersonne(enseignant1.personne)
+    assertEquals("pas le bon de nombre de fonction", 1, fonctions.size())
+    assertEquals("pas la bonne fonction", fonctionService.fonctionEnseignant(), fonctions.last())
   }
 
 }

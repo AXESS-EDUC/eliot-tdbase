@@ -28,12 +28,13 @@
 
 
 
-package org.lilie.services.eliot.tdbase
+package org.lilie.services.eliot.tice.misc
 
 import org.lilie.services.eliot.tice.annuaire.UtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.scolarite.Fonction
-
+import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
+import org.lilie.services.eliot.tice.scolarite.FonctionService
+import org.lilie.services.eliot.tice.annuaire.Personne
 
 class InitialisationTestService {
 
@@ -44,13 +45,15 @@ class InitialisationTestService {
   private static final String ENSEIGNANT_1_PRENOM = "mary"
 
   UtilisateurService utilisateurService
+  FonctionService fonctionService
+  BootstrapService bootstrapService
 
   /**
    *
-   * @return  l'enseignant correspondant à l'enseignant 1
+   * @return  l'utilisateur  correspondant à l'utilisateur 1 (sans profils de
+   * scolarite)
    */
-  Utilisateur getEnseignant1() {
-    //forceConnectionToDB()
+  Utilisateur getUtilisateur1() {
     utilisateurService.createUtilisateur(
             ENSEIGNANT_1_LOGIN,
             ENSEIGNANT_1_PASSWORD,
@@ -62,10 +65,16 @@ class InitialisationTestService {
   }
 
   /**
-   * hack pour forcer l'ouverture de la connection à la base
+   *
+   * @return l'utilisateur 1 avec les proprietes de scolarite correspondant
+   * à l'enseignant 1
    */
-  private def forceConnectionToDB() {
-    log.info("${Fonction.count()}")
+  Utilisateur getEnseignant1() {
+    Utilisateur ens1 = getUtilisateur1()
+    bootstrapService.bootstrapForIntegrationTest()
+    def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEnseignant())
+    bootstrapService.addProprietesScolariteToPersonne(props,Personne.get(ens1.personneId))
+    return  ens1
   }
 
 

@@ -30,6 +30,9 @@ package org.lilie.services.eliot.tice.annuaire.data
 
 import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
+import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.securite.CompteUtilisateur
+import org.lilie.services.eliot.tice.securite.DomainAutorite
 
 /**
  * Classe représentant un utilisateur
@@ -65,5 +68,29 @@ class Utilisateur {
 
   // information autorite
   Long autoriteId
+
+  /**
+   *
+   * @return  la personne correspondante à l'utilisateur
+   */
+  Personne getPersonne() {
+    return Personne.get(personneId)
+  }
+
+  /**
+   *
+   * @return  le compte utilisateur correspondant à l'utilisateur
+   */
+  CompteUtilisateur getCompteUtilisateur() {
+    return CompteUtilisateur.get(compteUtilisateurId)
+  }
+
+  /**
+   *
+   * @return  l'autorité correspondant à l'utilisateur
+   */
+  DomainAutorite getAutorite() {
+    return DomainAutorite.get(autoriteId)
+  }
 
 }

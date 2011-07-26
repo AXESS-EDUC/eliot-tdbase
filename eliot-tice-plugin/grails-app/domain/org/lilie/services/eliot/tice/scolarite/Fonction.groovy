@@ -1,10 +1,12 @@
 package org.lilie.services.eliot.tice.scolarite
 
+import org.springframework.security.core.GrantedAuthority
+
 /**
  * Table fonction
  * @author othe
  */
-class Fonction {
+class Fonction implements GrantedAuthority {
   Long id
   String code
   String libelle
@@ -13,6 +15,16 @@ class Fonction {
     code(nullable: false)
     libelle(nullable: true)    
   }
+
+  /**
+   *
+   * @return le libelle de la fonction
+   */
+  String getAuthority() {
+    return "ROLE_${code}"
+  }
+
+  static transients = ['authority']
 
   static mapping = {
     table('ent.fonction')

@@ -31,6 +31,7 @@
 package org.lilie.services.eliot.tice.scolarite
 
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * 
@@ -58,6 +59,7 @@ public class ProfilScolariteService {
    * @param Personne la personne dont on recherche les fonctions
    * @return la lsite des fonctions occupés par la personne
    */
+  @Transactional
   List<Fonction> findFonctionsForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
       PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true)

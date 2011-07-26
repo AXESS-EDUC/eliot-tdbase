@@ -26,23 +26,15 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase
+package org.lilie.services.eliot.tice.misc
 
 import grails.util.Environment
-import org.lilie.services.eliot.tice.annuaire.UtilisateurService
-import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.scolarite.AnneeScolaire
-import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
-import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
-import org.lilie.services.eliot.tice.scolarite.FonctionService
-import org.lilie.services.eliot.tice.annuaire.SourceImport
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.PersonneProprietesScolarite
 import org.hibernate.SessionFactory
+import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.SourceImport
+import org.lilie.services.eliot.tice.annuaire.UtilisateurService
+import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.scolarite.*
 
 class BootstrapService {
 
@@ -78,18 +70,50 @@ class BootstrapService {
    */
   def bootstrapForDevelopment() {
     if (Environment.current == Environment.DEVELOPMENT) {
-      initialiseEtablissementsEnvDevelopment()
-      initialiseMatieresEnvDevelopment()
-      initialiseNiveauxEnvDevelopment()
-      initialiseAnneeScolaireEnvDevelopment()
-      initialiseStructuresEnseignementsEnvDevelopment()
-      initialiseProprietesScolaritesEnseignantEnvDevelopment()
+      initialiseEtablissementsEnvDevelopmentTest()
+      initialiseMatieresEnvDevelopmentTest()
+      initialiseNiveauxEnvDevelopmentTest()
+      initialiseAnneeScolaireEnvDevelopmentTest()
+      initialiseStructuresEnseignementsEnvDevelopmentTest()
+      initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
       initialiseEnseignant1EnvDevelopment()
       initialiseProfilsScolaritesEnseignant1EnvDevelopment()
     }
 
   }
 
+  /**
+   * Initialise les données pour des tests d'intégration
+   */
+  def bootstrapForIntegrationTest() {
+    if (Environment.current == Environment.TEST) {
+      initialiseEtablissementsEnvDevelopmentTest()
+      initialiseMatieresEnvDevelopmentTest()
+      initialiseNiveauxEnvDevelopmentTest()
+      initialiseAnneeScolaireEnvDevelopmentTest()
+      initialiseStructuresEnseignementsEnvDevelopmentTest()
+      initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
+    }
+
+  }
+
+  /**
+   * Ajoute les propriétés de scolarité à la personne passée en paramètre
+   * @param proprietesScolariteList la liste des proprietes de scolarite à ajouter
+   * @param personne la personne
+   */
+  def addProprietesScolariteToPersonne(List<ProprietesScolarite> proprietesScolariteList,
+                                       Personne personne) {
+    proprietesScolariteList.each { ProprietesScolarite proprietesScolarite ->
+      new PersonneProprietesScolarite(
+              personne: personne,
+              proprietesScolarite: proprietesScolarite,
+              estActive: true
+      ).save()
+    }
+    sessionFactory.currentSession.flush()
+
+  }
 
   private def initialiseEnseignant1EnvDevelopment() {
     if (!utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)) {
@@ -104,10 +128,10 @@ class BootstrapService {
 
 
 
-  private def initialiseStructuresEnseignementsEnvDevelopment() {
+  private def initialiseStructuresEnseignementsEnvDevelopmentTest() {
     if (!StructureEnseignement.findAllByCodeLike("${CODE_STRUCTURE_PREFIXE}%")) {
-      Etablissement lycee =  Etablissement.findByUai(UAI_LYCEE)
-      Etablissement college =  Etablissement.findByUai(UAI_COLLEGE)
+      Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
+      Etablissement college = Etablissement.findByUai(UAI_COLLEGE)
       AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
       new StructureEnseignement(
               etablissement: college,
@@ -140,12 +164,12 @@ class BootstrapService {
               idExterne: "${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_Terminale_D",
               type: StructureEnseignement.TYPE_CLASSE,
               actif: true
-      ).save(flush:true)
+      ).save(flush: true)
 
     }
   }
 
-  private def initialiseEtablissementsEnvDevelopment() {
+  private def initialiseEtablissementsEnvDevelopmentTest() {
     if (!Etablissement.findAllByUaiLike("${UAI_PREFIXE}%")) {
       new Etablissement(
               codePorteurENT: DEFAULT_CODE_PORTEUR_ENT,
@@ -158,25 +182,25 @@ class BootstrapService {
               uai: UAI_COLLEGE,
               nomAffichage: "Collège Pascal",
               idExterne: UAI_COLLEGE
-      ).save(flush:true)
+      ).save(flush: true)
     }
   }
 
-  private def initialiseAnneeScolaireEnvDevelopment() {
+  private def initialiseAnneeScolaireEnvDevelopmentTest() {
     if (!AnneeScolaire.findByAnneeEnCours(true)) {
       new AnneeScolaire(
               code: "${CODE_ANNEE_SCOLAIRE_PREFIXE}_2011-2012",
               anneeEnCours: true,
-      ).save(flush:true)
+      ).save(flush: true)
     }
   }
 
 
 
-  private def initialiseMatieresEnvDevelopment() {
+  private def initialiseMatieresEnvDevelopmentTest() {
     if (!Matiere.findAllByCodeGestionLike("${CODE_GESTION_PREFIXE}%")) {
-      Etablissement lycee =  Etablissement.findByUai(UAI_LYCEE)
-      Etablissement college =  Etablissement.findByUai(UAI_COLLEGE)
+      Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
+      Etablissement college = Etablissement.findByUai(UAI_COLLEGE)
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_1",
               etablissement: lycee,
@@ -211,11 +235,11 @@ class BootstrapService {
               codeGestion: "${CODE_GESTION_PREFIXE}_7",
               etablissement: lycee,
               libelleLong: "Anglais"
-      ).save(flush:true)
+      ).save(flush: true)
     }
   }
 
-  private def initialiseNiveauxEnvDevelopment() {
+  private def initialiseNiveauxEnvDevelopmentTest() {
     if (!Niveau.findAllByCodeMefstat4Like("${CODE_MEFSTAT4_PREFIXE}%")) {
       new Niveau(
               codeMefstat4: "${CODE_MEFSTAT4_PREFIXE}_1",
@@ -236,16 +260,16 @@ class BootstrapService {
       new Niveau(
               codeMefstat4: "${CODE_MEFSTAT4_PREFIXE}_5",
               libelleLong: "6ème"
-      ).save(flush:true)
+      ).save(flush: true)
 
     }
   }
 
 
-   private def initialiseProprietesScolaritesEnseignantEnvDevelopment() {
-    Etablissement lycee =  Etablissement.findByUai(UAI_LYCEE)
+  private def initialiseProprietesScolaritesEnseignantEnvDevelopmentTest() {
+    Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
     if (!ProprietesScolarite.findAllByEtablissement(lycee)) {
-      Etablissement college =  Etablissement.findByUai(UAI_COLLEGE)
+      Etablissement college = Etablissement.findByUai(UAI_COLLEGE)
       AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
       Niveau niveau6 = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_5")
       Niveau niveauPrem = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_1")
@@ -297,7 +321,7 @@ class BootstrapService {
               matiere: matiereMaths,
               niveau: niveauPrem,
               structureEnseignement: struct1ere
-      ).save(flush:true)
+      ).save(flush: true)
 
     }
 
@@ -308,16 +332,8 @@ class BootstrapService {
     Personne pers1 = Personne.get(ens1.personneId)
     if (!profilScolariteService.findProprietesScolaritesForPersonne(pers1)) {
       def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEnseignant())
-      props.each { ProprietesScolarite proprietesScolarite ->
-        new PersonneProprietesScolarite(
-              personne: pers1,
-              proprietesScolarite: proprietesScolarite,
-              estActive: true
-        ).save()
-      }
-      sessionFactory.currentSession.flush()
+      addProprietesScolariteToPersonne(props, pers1)
     }
-
   }
 
 

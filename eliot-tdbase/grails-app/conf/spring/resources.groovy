@@ -1,4 +1,5 @@
 import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -29,7 +30,8 @@ import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 */
 
 beans = {
-   userDetailsService(EliotTiceUserDetailsService) {
-      utilisateurService = ref("utilisateurService")
-    }
+  userDetailsService(EliotTiceUserDetailsService) {
+    utilisateurService = ref("utilisateurService")
+    profilScolariteService = ref("profilScolariteService")
+  }
 }
