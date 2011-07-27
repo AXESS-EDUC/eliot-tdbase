@@ -1032,4 +1032,97 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="15" author="fsil">
+        <comment>
+            Ajout des champs pour la gestion automatique du "timestamping"
+            Ajout des champs pour gestion des version
+        </comment>
+        <addColumn tableName="sujet" schemaName="td">
+            <column name="date_created" type="timestamp without time zone"></column>
+            <column name="last_updated" type="timestamp without time zone"></column>
+            <column name="sujet_derniere_version_id" type="bigint"/>
+        </addColumn>
+
+        <addColumn tableName="question" schemaName="td">
+            <column name="date_created" type="timestamp without time zone"></column>
+            <column name="last_updated" type="timestamp without time zone"></column>
+            <column name="question_derniere_version_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="sujet"
+                                 baseColumnNames="sujet_derniere_version_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_sujet_sujet_derniere_version_id"
+                                 referencedTableName="sujet"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <addForeignKeyConstraint baseTableName="question"
+                                 baseColumnNames="question_derniere_version_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_question_derniere_version_id"
+                                 referencedTableName="question"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <addUniqueConstraint tableName="sujet"
+                             columnNames="sujet_derniere_version_id, version_sujet"
+                             schemaName="td"
+                             constraintName="uk_sujet_version_sujet_derniere_version"/>
+
+        <addUniqueConstraint tableName="question"
+                             columnNames="question_derniere_version_id, version_question"
+                             schemaName="td"
+                             constraintName="uk_question_version_question_derniere_version"/>
+
+        <createIndex tableName="sujet" schemaName="td"
+                     indexName="idx_sujet_sujet_derniere_version_id">
+            <column name="sujet_derniere_version_id"></column>
+        </createIndex>
+
+        <createIndex tableName="question" schemaName="td"
+                     indexName="idx_question_question_derniere_version_id">
+            <column name="question_derniere_version_id"></column>
+        </createIndex>
+
+    </changeSet>
+
+    <changeSet id="16" author="fsil">
+        <comment>Support des types de sujet</comment>
+
+        <createTable tableName="sujet_type" schemaName="td">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="nom" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nom_anglais" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="sujet_type_id_seq"
+                        schemaName="td" startValue="100"/>
+
+        <addColumn tableName="sujet" schemaName="td">
+            <column name="sujet_type_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="sujet"
+                                 baseColumnNames="sujet_type_id"
+                                 constraintName="fk_sujet_sujet_type_id"
+                                 referencedTableName="sujet_type"
+                                 referencedColumnNames="id"
+                                 baseTableSchemaName="td"
+                                 referencedTableSchemaName="td"/>
+
+        <createIndex tableName="sujet"  schemaName="td"
+                     indexName="idx_sujet_sujet_type_id">
+            <column name="sujet_type_id"/>
+        </createIndex>
+
+
+    </changeSet>
+
 </databaseChangeLog>

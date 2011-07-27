@@ -59,7 +59,7 @@
 <body>
 <div class="container">
   <div class="column span-22 last middle">
-    <div class="portal-menu" style="margin-bottom:15px;">
+    <div class="portal-menu">
       <ul id="portal-hz-menu">
         <li id="menu-item-seances">
           <a title="Séances">Séances</a>

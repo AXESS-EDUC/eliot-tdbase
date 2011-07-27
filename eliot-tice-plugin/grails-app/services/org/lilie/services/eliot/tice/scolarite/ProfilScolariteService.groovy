@@ -56,13 +56,13 @@ public class ProfilScolariteService {
   /**
    * Récupère les fonctions occupées par la personne passée en paramètre, tout
    * établissement confondu
-   * @param Personne la personne dont on recherche les fonctions
-   * @return la lsite des fonctions occupés par la personne
+   * @param Personne la personne
+   * @return la liste des fonctions
    */
   @Transactional
   List<Fonction> findFonctionsForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true)
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true, [cache:true])
     List<Fonction> fonctions = []
     profils.collect {
       Fonction fonction = it.proprietesScolarite.fonction
@@ -71,6 +71,44 @@ public class ProfilScolariteService {
       }
     }
     return fonctions
+  }
+
+  /**
+   * Récupère les matières caractérisant la personne passée en paramètre, tout
+   * établissement confondu
+   * @param Personne la personne
+   * @return la liste des matières
+   */
+  List<Matiere> findMatieresForPersonne(Personne personne) {
+    List<PersonneProprietesScolarite> profils =
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true, [cache:true])
+    List<Matiere> matieres = []
+    profils.collect {
+      Matiere matiere = it.proprietesScolarite.matiere
+      if (matiere && !matieres.contains(matiere)) {
+        matieres << matiere
+      }
+    }
+    return matieres
+  }
+
+  /**
+   * Récupère les niveaux caractérisant la personne passée en paramètre, tout
+   * établissement confondu
+   * @param Personne la personne
+   * @return la liste des niveaux
+   */
+  List<Niveau> findNiveauxForPersonne(Personne personne) {
+    List<PersonneProprietesScolarite> profils =
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true, [cache:true])
+    List<Niveau> niveaux = []
+    profils.collect {
+      Niveau niveau = it.proprietesScolarite.niveau
+      if (niveau && !niveaux.contains(niveau)) {
+        niveaux << niveau
+      }
+    }
+    return niveaux
   }
 
 }

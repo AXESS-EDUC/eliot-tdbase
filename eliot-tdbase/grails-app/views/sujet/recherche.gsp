@@ -39,8 +39,7 @@
 
 <body>
 <div class="column span-22 last middle">
-  <h1>${titrePage}</h1>
-
+  <div class="portal-breadcrumbs">${titrePage}</div>
   <g:if test="${afficheFormulaire}">
     <form name="f_3_30_3" method="post"
           action="#">

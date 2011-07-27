@@ -35,6 +35,56 @@ class SujetService {
   }
 
   /**
+   * Retourne la dernière version éditable d'un sujet pour un proprietaire donné
+   * @param sujet le sujet
+   * @param proprietaire le proprietaire
+   * @return le sujet éditable
+   */
+  Sujet getDerniereVersionSujetForProprietaire(Sujet sujet,Personne proprietaire) {
+    // todofsil : implémenter la methode
+    return sujet
+  }
+
+  /**
+   * Change le titre du sujet
+   * @param sujet le sujet à modifier
+   * @param nouveauTitre  le titre
+   * @return le sujet
+   */
+  Sujet setTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
+    // verifie que c'est sur la derniere version du sujet editable que l'on
+    // travaille
+    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet,proprietaire)
+    leSujet.titre = nouveauTitre
+    leSujet.titreNormalise = StringUtils.normalise(nouveauTitre)
+    leSujet.save()
+    return sujet
+  }
+
+  /**
+   * Modifie les proprietes du sujet passé en paramètre
+   * @param sujet le sujet
+   * @param proprietes  les nouvelles proprietes
+   * @param proprietaire le proprietaire
+   * @return  le sujet
+   */
+  Sujet setProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
+    // verifie que c'est sur la derniere version du sujet editable que l'on
+    // travaille
+    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet,proprietaire)
+
+    if (proprietes.titre && leSujet.titre != proprietes.titre) {
+      leSujet.titreNormalise = StringUtils.normalise(proprietes.titre)
+    }
+     if (proprietes.prensentation && leSujet.presentation != proprietes.presentation) {
+      leSujet.presentationNormalise = StringUtils.normalise(proprietes.prensentation)
+    }
+    leSujet.properties = proprietes
+    leSujet.save()
+    return leSujet
+  }
+
+  /**
    * Recherche de sujets
    * @param chercheur la personne effectuant la recherche
    * @param patternTitre le pattern saisi pour le titre
@@ -85,7 +135,7 @@ class SujetService {
         eq 'publie', true
       }
       if (paginationAndSortingSpec) {
-        def sortArg = paginationAndSortingSpec['sort'] ?: 'titre'
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
         def orderArg = paginationAndSortingSpec['order'] ?: 'asc'
         if (sortArg) {
           order "${sortArg}", orderArg
@@ -124,6 +174,14 @@ class SujetService {
    */
   Long nombreSujetsForProprietaire(Personne proprietaire) {
      return Sujet.countByProprietaire(proprietaire)
+  }
+
+  /**
+   *
+   * @return  la liste de tous les types de sujet
+   */
+  List<SujetType> getAllSujetTypes() {
+    return SujetType.getAll()
   }
 
 }

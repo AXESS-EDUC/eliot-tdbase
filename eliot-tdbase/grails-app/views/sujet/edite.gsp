@@ -42,17 +42,33 @@
 <body>
 
 <div class="column span-22 last middle">
-  <h1>${titrePage}</h1>
+  <div class="portal-breadcrumbs">${titrePage}</div>
     <g:if test="${sujetEnEdition}">
     <div class="portal-tabs">
-      <g:link action="editeProprietes" id="${sujet.id}">Éditer les propriété du sujet</g:link> |
-      <g:link action="exporter" id="${sujet.id}">Exporter</g:link> |
-      <g:link action="ajouterElement" id="${sujet.id}">Ajouter un élément</g:link>
+      <span class="portal-tabs-famille-liens">
+        <g:link action="ajouterElement" id="${sujet.id}">Ajouter un élément</g:link> |
+        <g:link action="editeProprietes" id="${sujet.id}">Éditer les propriétés du sujet</g:link>
+      </span>
+      <span class="portal-tabs-famille-liens">
+        Exporter | Partager
+      </span>
+      <span class="portal-tabs-famille-liens">
+        Versions
+      </span>
     </div>
     </g:if>
   <g:else>
      <div class="portal-tabs">
-      Éditer les propriétés | Exporter | Ajouter un élément
+      <span class="portal-tabs-famille-liens">
+        Ajouter un élément |
+        Éditer les propriétés du sujet
+      </span>
+      <span class="portal-tabs-famille-liens">
+        Exporter | Partager
+      </span>
+      <span class="portal-tabs-famille-liens">
+        Versions
+      </span>
     </div>
   </g:else>
   <g:hasErrors bean="${sujet}">
@@ -78,20 +94,17 @@
           <td>
             <g:textField name="sujetTitre" value="${titreSujet}" size="80"/>
           </td>
+          <td>
+            <g:actionSubmit action="enregistre" value="Enregistrer"/>
+          </td>
         </tr>
       </table>
 
-      <div id="allItemsContainer" updateUrl="#">
-      </div><script>AUC.register('allItemsContainer');</script>
-
-    </div>
-
-    <div class="form_actions">
       <g:if test="${sujetEnEdition}">
         <g:hiddenField name="sujetId" value="${sujet.id}"/>
       </g:if>
-      <g:actionSubmit action="enregistre" value="Enregistrer"/>
     </div>
+
   </form>
 </div>
 

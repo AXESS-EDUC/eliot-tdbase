@@ -44,6 +44,9 @@ class Question {
   String titre
   String titreNormalise
 
+  Date dateCreated
+  Date lastUpdated
+
   int versionQuestion
   String specification
   Boolean estAutonome
@@ -51,6 +54,7 @@ class Question {
 
   Personne proprietaire
   QuestionType type
+  Question questionDerniereVersion
 
   Etablissement etablissement
   Matiere matiere
@@ -71,6 +75,7 @@ class Question {
   ]
 
   static constraints = {
+    questionDerniereVersion(nullable: true)
     etablissement(nullable: true)
     matiere(nullable: true)
     niveau(nullable: true)

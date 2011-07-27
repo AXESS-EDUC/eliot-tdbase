@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tdbase.SujetType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -44,7 +45,23 @@
 <body>
 
 <div class="column span-22 last middle">
-  <h1>Propriétés du sujet</h1>
+  <div class="portal-breadcrumbs">
+    <g:link action="edite" id="${sujet.id}">Edition du sujet</g:link> > Propriétés du sujet
+  </div>
+
+  <g:hasErrors bean="${sujet}">
+    <div class="portal-messages error">
+      <g:eachError>
+        <li><g:message error="${it}"/></li>
+      </g:eachError>
+    </div>
+  </g:hasErrors>
+  <g:if test="${request.messageCode}">
+    <div class="portal-messages success">
+      <li><g:message code="${request.messageCode}"
+                     class="portal-messages success"/></li>
+    </div>
+  </g:if>
 
   <form method="post"
         action="#">
@@ -57,96 +74,79 @@
           </td>
         </tr>
         <tr>
-          <td class="label">Type:</td>
+          <td class="label">Type :</td>
           <td>
-            <select name="3.30.3.3"><option value="0">Exercice</option><option
-                    selected="selected" value="1">Sujet</option></select>
+             <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
+                      noSelection="${['null':'Sélectionner un type...']}"
+                      from="${typesSujet}"
+                      optionKey="id"
+                      optionValue="nom" />
           </td>
         </tr>
         <tr>
-          <td class="label">Mati&egrave;re:</td>
+          <td class="label">Mati&egrave;re :</td>
           <td>
-            <select name="3.30.3.5"><option
-                    value="WONoSelectionString">Choisissez</option><option
-                    value="0">SES</option><option
-                    value="1">SES Spécialité</option><option
-                    value="2">Histoire</option><option
-                    value="3">Géographie</option><option
-                    value="4">Communication</option><option
-                    value="5">Anglais</option></select>
+            <g:select name="matiere.id" value="${sujet.matiere?.id}"
+                      noSelection="${['null':'Sélectionner une matière...']}"
+                      from="${matieres}"
+                      optionKey="id"
+                      optionValue="libelleLong" />
           </td>
         </tr>
         <tr>
-          <td class="label">Niveau:</td>
+          <td class="label">Niveau :</td>
           <td>
-            <select name="3.30.3.7"><option selected="selected"
-                                            value="0">Seconde</option><option
-                    value="1">Première</option><option
-                    value="2">Terminale</option><option
-                    value="3">IUT 1ère année</option><option
-                    value="4">IUT 2ème année</option></select>
+            <g:select name="niveau.id" value="${sujet.niveau?.id}"
+                      noSelection="${['null':'Sélectionner un niveau...']}"
+                      from="${niveaux}"
+                      optionKey="id"
+                      optionValue="libelleLong" />
           </td>
         </tr>
         <tr>
-          <td class="label">Statut:</td>
+          <td class="label">Dur&eacute;e :</td>
           <td>
-            <select name="3.30.3.9"><option selected="selected"
-                                            value="0">Privé</option><option
-                    value="1">En travaux</option><option
-                    value="2">Public</option></select>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Dur&eacute;e:</td>
-          <td>
-            <input type="text" name="3.30.3.11"/>
+            <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}"/>
             <i>(en minutes)</i>
           </td>
         </tr>
         <tr>
-          <td class="label">Accessible:</td>
+          <td class="label">Accessible :</td>
           <td>
-            <input type="checkbox" name="3.30.3.13" value="3.30.3.13"/>
-            Directement</td>
+            <g:checkBox name="accesPublic" checked="${sujet.accesPublic}"/>
+            via lien public</td>
         </tr>
         <tr>
-          <td class="label">Présentation:</td>
+          <td class="label">Présentation :</td>
           <td>
-            <input type="checkbox" name="3.30.3.15" value="3.30.3.15"/>
-            s&eacute;quentielle</td>
+            <g:checkBox name="accesSequentiel" checked="${sujet.accesSequentiel}"/>
+            1 seule question par écran</td>
         </tr>
         <tr>
-          <td class="label">Export QTI:</td>
+          <td class="label">Ordre des questions :</td>
           <td>
-            <input type="checkbox" name="3.30.3.17" value="3.30.3.17"/>
-            Autoris&eacute;e</td>
-        </tr>
-        <tr>
-          <td class="label">Ordre des questions:</td>
-          <td>
-            <input type="checkbox" name="3.30.3.19" value="3.30.3.19"/>
+            <g:checkBox name="ordreQuestionsAleatoire" checked="${sujet.ordreQuestionsAleatoire}"/>
             Al&eacute;atoire</td>
         </tr>
         <tr>
-          <td class="label">S&eacute;lection:</td>
+          <td class="label">S&eacute;lection :</td>
           <td>
-            <input type="text" name="3.30.3.21"/>
+            <input type="text" name="nbQuestions" value="${sujet.nbQuestions}"/>
             <i>(le nombre de questions &agrave; selectionner)</i>
           </td>
         </tr>
         <tr>
-          <td class="label">En bref:</td>
+          <td class="label">Description :</td>
           <td>
-            <textarea cols="80" rows="10" name="3.30.3.23"></textarea>
+            <g:textArea cols="80" rows="10" name="presentation" value="${sujet.presentation}"/>
           </td>
         </tr>
       </table>
     </div>
-
+    <g:hiddenField name="id" value="${sujet.id}"/>
     <div class="form_actions">
-      <input title="Mémorise et propage les modifications. A effectuer avant toute sauvegarde"
-             type="submit" value="Appliquer les modifications"
-             name="3.30.3.25"/>
+      <g:link action="edite" id="${sujet.id}">Annuler</g:link> |
+      <g:actionSubmit value="Enregistrer" action="enregistrePropriete" title="Enregistrer"/>
     </div>
   </form>
 </div>

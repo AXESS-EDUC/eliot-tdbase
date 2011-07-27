@@ -327,7 +327,8 @@ Style for the  breadcrumbs :
 
 .portal-breadcrumbs {
   padding:10px;
-  margin-top:14px;
+  margin-bottom: 4px;
+  margin-top: 4px;
   text-align: left;
   line-height: 0.5;
   font-weight: bold !important;
@@ -344,7 +345,6 @@ Style for the RSS link box :
 ********************************************************************************/
 
 .portal-rss {
-  padding: auto;
   padding-right:0px;
   margin: auto;
   margin-top: 14px;
@@ -605,6 +605,11 @@ Style for the edition of a document or category
 
 .portal-tabs a {
     color:#3F61A0;
+}
+
+span.portal-tabs-famille-liens {
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .portal-tab_content {

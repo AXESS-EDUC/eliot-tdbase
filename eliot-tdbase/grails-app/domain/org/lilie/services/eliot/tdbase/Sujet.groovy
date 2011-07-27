@@ -45,6 +45,9 @@ class Sujet {
   String titreNormalise
   int versionSujet
 
+  Date dateCreated
+  Date lastUpdated
+
   String presentation
   String presentationNormalise
 
@@ -61,6 +64,8 @@ class Sujet {
 
   Personne proprietaire
 
+  Sujet sujetDerniereVersion
+  SujetType sujetType
   Etablissement etablissement
   Matiere matiere
   Niveau niveau
@@ -72,6 +77,8 @@ class Sujet {
 
   static constraints = {
     titre(blank: false, nullable: false)
+    sujetDerniereVersion(nullable: true)
+    sujetType(nullable: true)
     etablissement(nullable: true)
     matiere(nullable: true)
     niveau(nullable: true)

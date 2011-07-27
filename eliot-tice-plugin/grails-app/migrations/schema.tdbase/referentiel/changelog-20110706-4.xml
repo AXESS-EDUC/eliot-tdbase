@@ -110,4 +110,16 @@
         </sql>
     </changeSet>
 
+    <changeSet id="4" author="fsil">
+        <comment>
+            Initialisation des types de sujet
+        </comment>
+        <sql>
+            INSERT INTO td.sujet_type (nom_anglais,nom,id)
+            VALUES
+            ('Exercise set','Sujet',1),
+            ('Exercise','Exercice',2)
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
