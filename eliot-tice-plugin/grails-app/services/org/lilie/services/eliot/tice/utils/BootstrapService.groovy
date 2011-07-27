@@ -26,7 +26,7 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.misc
+package org.lilie.services.eliot.tice.utils
 
 import grails.util.Environment
 import org.hibernate.SessionFactory

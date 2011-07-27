@@ -45,9 +45,7 @@
 <body>
 
 <div class="column span-22 last middle">
-  <div class="portal-breadcrumbs">
-    <g:link action="edite" id="${sujet.id}">Edition du sujet</g:link> > Propriétés du sujet
-  </div>
+  <g:render template="/breadcrumps" model="[liens: liens]"/>
 
   <g:hasErrors bean="${sujet}">
     <div class="portal-messages error">

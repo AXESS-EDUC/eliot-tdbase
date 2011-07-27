@@ -26,37 +26,19 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+package org.lilie.services.eliot.tice.utils
 
-package org.lilie.services.eliot.tice.scolarite
-
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.utils.InitialisationTestService
+import groovy.transform.EqualsAndHashCode
 
 /**
- *  Test la classe ProfilScolariteService
- * @author franck silvestre
+ * Classe représentant un lien de breadcrumps
+ * @author franck Silvestre
  */
-class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
-
-  InitialisationTestService initialisationTestService
-  ProfilScolariteService profilScolariteService
-  FonctionService fonctionService
-
-  Utilisateur enseignant1
-
-  void setUp() {
-      enseignant1 = initialisationTestService.enseignant1
-  }
-
-  void testFindProprietesScolaritesForPersonne() {
-    List<ProprietesScolarite> props = profilScolariteService.findProprietesScolaritesForPersonne(enseignant1.personne)
-    assertEquals("pas le bon de nombre de proprietes", 4, props.size())
-  }
-
-  void test() {
-    List<Fonction> fonctions = profilScolariteService.findFonctionsForPersonne(enseignant1.personne)
-    assertEquals("pas le bon de nombre de fonction", 1, fonctions.size())
-    assertEquals("pas la bonne fonction", fonctionService.fonctionEnseignant(), fonctions.last())
-  }
-
+@EqualsAndHashCode (excludes = "params, index, libelle")
+class BreadcrumpsLien {
+  String action
+  String controller
+  String libelle
+  Map params
+  int index
 }

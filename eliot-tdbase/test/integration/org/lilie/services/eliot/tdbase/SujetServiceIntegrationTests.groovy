@@ -1,7 +1,7 @@
 package org.lilie.services.eliot.tdbase
 
 import org.hibernate.SessionFactory
-import org.lilie.services.eliot.tdbase.misc.TdBaseInitialisationTestService
+import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur

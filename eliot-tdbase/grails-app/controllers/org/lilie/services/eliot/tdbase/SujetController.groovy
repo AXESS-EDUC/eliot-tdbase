@@ -3,6 +3,7 @@ package org.lilie.services.eliot.tdbase
 import grails.plugins.springsecurity.SpringSecurityService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class SujetController {
 
@@ -11,14 +12,16 @@ class SujetController {
   SujetService sujetService
   SpringSecurityService springSecurityService
   ProfilScolariteService profilScolariteService
+  BreadcrumpsService breadcrumpsService
 
   /**
    *
    * Action "recherche"
    */
   def recherche() {
+    manageBreadcrumps(message(code: "sujet.recherche.titre"))
     [
-            titrePage: message(code: "sujet.recherche.titre"),
+            liens: message(code: "sujet.recherche.titre"),
             afficheFormulaire: true
     ]
   }
@@ -28,10 +31,11 @@ class SujetController {
    * Action "mesSujets"
    */
   def mesSujets() {
+    manageBreadcrumps(message(code: "sujet.messujets.titre"))
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
     Personne personne = authenticatedPersonne
     def model = [
-            titrePage: message(code: "sujet.messujets.titre"),
+            liens: breadcrumpsService.liens,
             afficheFormulaire: false,
             sujets: sujetService.findSujetsForProprietaire(
                     personne,
@@ -47,8 +51,9 @@ class SujetController {
    * Action "nouveau"
    */
   def nouveau() {
+    manageBreadcrumps(message(code: "sujet.nouveau.titre"))
     render(view: "edite", model: [
-           titrePage: message(code: "sujet.nouveau.titre"),
+           liens: breadcrumpsService.liens,
            titreSujet: message(code: "sujet.nouveau.titre")
            ])
   }
@@ -58,10 +63,10 @@ class SujetController {
    * Action "edite"
    */
   def edite() {
+    manageBreadcrumps(message(code: "sujet.edite.titre"))
     Sujet sujet = Sujet.get(params.id)
-    String titrePage = message(code: "sujet.edite.titre")
     [
-            titrePage: titrePage,
+            liens: breadcrumpsService.liens,
             titreSujet: message(code: sujet.titre),
             sujet: sujet,
             sujetEnEdition: true
@@ -73,11 +78,13 @@ class SujetController {
    * Action "editeProprietes"
    */
   def editeProprietes() {
+    manageBreadcrumps(message(code: "sujet.editeproprietes.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
     render(view: "edite-proprietes", model: [
+           liens: breadcrumpsService.liens,
            sujet: sujet,
-           typesSujet : sujetService.getAllSujetTypes(),
+           typesSujet: sujetService.getAllSujetTypes(),
            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
            ])
@@ -95,7 +102,7 @@ class SujetController {
     if (sujetCmd.sujetId) {
       sujet = Sujet.get(sujetCmd.sujetId)
       sujetEnEdition = true
-      sujetService.setTitreSujet(sujet,sujetCmd.sujetTitre,personne)
+      sujetService.setTitreSujet(sujet, sujetCmd.sujetTitre, personne)
     } else {
       sujet = sujetService.createSujet(personne, sujetCmd.sujetTitre)
     }
@@ -105,28 +112,52 @@ class SujetController {
     } else if (!sujetEnEdition) {
       titrePage = message(code: "sujet.nouveau.titre")
     }
+    manageBreadcrumps(titrePage)
     render(view: "edite", model: [
-           titrePage: titrePage,
+           liens: breadcrumpsService.liens,
            titreSujet: sujet.titre,
            sujet: sujet,
            sujetEnEdition: sujetEnEdition
            ])
   }
 
+  /**
+   *
+   * Action "enregistrerPropriete
+   */
   def enregistrePropriete() {
+    manageBreadcrumps(message(code: "sujet.editeproprietes.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
-    Sujet sujetModifie = sujetService.setProprietes(sujet,params, proprietaire)
+    Sujet sujetModifie = sujetService.setProprietes(sujet, params, proprietaire)
     if (!sujet.hasErrors()) {
       request.messageCode = "sujet.enregistre.succes"
     }
     render(view: "edite-proprietes", model: [
+           liens: breadcrumpsService.liens,
            sujet: sujetModifie,
-           typesSujet : sujetService.getAllSujetTypes(),
+           typesSujet: sujetService.getAllSujetTypes(),
            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
            ])
   }
+
+
+  private def manageBreadcrumps(String libelle) {
+    if (params.initialiseBreadcrumps) {
+      breadcrumpsService.initialiseBreadcrumps()
+    }
+    if (params.breadcrumpsIndex) {
+      breadcrumpsService.onClikSurLienBreadcrumps(params.breadcrumpsIndex as Integer)
+    } else {
+      breadcrumpsService.onClickSurNouveauLien(params.action,
+                                               params.controller,
+                                               libelle,
+                                               params
+      )
+    }
+  }
+
 }
 
 class NouveauSujetCommand {

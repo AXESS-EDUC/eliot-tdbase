@@ -42,12 +42,14 @@
 <body>
 
 <div class="column span-22 last middle">
-  <div class="portal-breadcrumbs">${titrePage}</div>
-    <g:if test="${sujetEnEdition}">
+  <g:render template="/breadcrumps" model="[liens: liens]"/>
+  <g:if test="${sujetEnEdition}">
     <div class="portal-tabs">
       <span class="portal-tabs-famille-liens">
-        <g:link action="ajouterElement" id="${sujet.id}">Ajouter un élément</g:link> |
-        <g:link action="editeProprietes" id="${sujet.id}">Éditer les propriétés du sujet</g:link>
+        <g:link action="ajouterElement"
+                id="${sujet.id}">Ajouter un élément</g:link> |
+        <g:link action="editeProprietes"
+                id="${sujet.id}">Éditer les propriétés du sujet</g:link>
       </span>
       <span class="portal-tabs-famille-liens">
         Exporter | Partager
@@ -56,9 +58,9 @@
         Versions
       </span>
     </div>
-    </g:if>
+  </g:if>
   <g:else>
-     <div class="portal-tabs">
+    <div class="portal-tabs">
       <span class="portal-tabs-famille-liens">
         Ajouter un élément |
         Éditer les propriétés du sujet

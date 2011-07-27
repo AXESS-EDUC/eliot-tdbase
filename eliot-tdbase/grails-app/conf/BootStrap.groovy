@@ -1,5 +1,5 @@
 import grails.util.Environment
-import org.lilie.services.eliot.tice.misc.BootstrapService
+import org.lilie.services.eliot.tice.utils.BootstrapService
 
 class BootStrap {
 

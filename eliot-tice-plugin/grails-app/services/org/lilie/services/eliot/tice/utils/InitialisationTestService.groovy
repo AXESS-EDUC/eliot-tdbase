@@ -28,7 +28,7 @@
 
 
 
-package org.lilie.services.eliot.tice.misc
+package org.lilie.services.eliot.tice.utils
 
 import org.lilie.services.eliot.tice.annuaire.UtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur

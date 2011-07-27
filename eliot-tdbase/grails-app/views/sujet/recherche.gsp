@@ -39,7 +39,7 @@
 
 <body>
 <div class="column span-22 last middle">
-  <div class="portal-breadcrumbs">${titrePage}</div>
+  <g:render template="/breadcrumps" model="[liens: liens]"/>
   <g:if test="${afficheFormulaire}">
     <form name="f_3_30_3" method="post"
           action="#">

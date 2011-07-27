@@ -30,9 +30,9 @@
 
 
 
-package org.lilie.services.eliot.tdbase.misc
+package org.lilie.services.eliot.tdbase.utils
 
-import org.lilie.services.eliot.tice.misc.InitialisationTestService
+import org.lilie.services.eliot.tice.utils.InitialisationTestService
 
 class TdBaseInitialisationTestService extends InitialisationTestService{
 
