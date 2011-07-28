@@ -36,6 +36,8 @@ class QuestionType {
 
   String nom
   String nomAnglais
+  String code
+  Boolean interaction
 
   static constraints = {
     nomAnglais(nullable: true)

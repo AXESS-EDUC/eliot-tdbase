@@ -1125,4 +1125,18 @@
 
     </changeSet>
 
+    <changeSet id="17" author="fsil">
+        <comment>
+            Ajout de la colonne "code" sur table question_type
+        </comment>
+        <addColumn tableName="question_type" schemaName="td">
+            <column name="code" type="varchar(255)" defaultValue="Undefined">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interaction" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
