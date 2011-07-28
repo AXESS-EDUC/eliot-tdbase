@@ -50,13 +50,13 @@ class Matiere {
     codeGestion(nullable : false, blank:false)
     etablissement(nullable: false)
     libelleLong(nullable: false, blank:false)
-    etablissement(nullable:false)
   }
 
   static mapping = {
     table('ent.matiere')
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.matiere_id_seq']
     etablissement column: 'etablissement_id'
+    cache(true)
   }
 
 }

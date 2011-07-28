@@ -41,65 +41,60 @@
 <div class="column span-22 last middle">
   <g:render template="/breadcrumps" model="[liens: liens]"/>
   <g:if test="${afficheFormulaire}">
-    <form name="f_3_30_3" method="post"
-          action="#">
+    <form>
       <div class="portal-form_container">
         <table>
           <tr>
             <td class="label">
-              titre :
+              Titre :
             </td>
             <td>
-              <input size="30" type="text" name="3.30.3.1"/>
+              <g:textField name="patternTitre" title="titre" value="${rechercheCommand.patternTitre}"/>
             </td>
             <td width="20"/>
-            <td class="label">type :
+            <td class="label">Type :
             </td>
             <td>
-              <select name="3.30.3.3"><option
-                      value="WONoSelectionString">Tous</option><option
-                      value="0">Exercice</option><option
-                      value="1">Sujet</option></select>
+              <g:select name="typeId" value="${rechercheCommand.typeId}"
+                      noSelection="${['null':'Tous']}"
+                      from="${typesSujet}"
+                      optionKey="id"
+                      optionValue="nom" />
             </td>
           </tr>
           <tr>
             <td class="label">
-              en bref :
+              Description :
             </td>
             <td>
-              <input size="30" type="text" name="3.30.3.5"/>
+              <g:textField name="patternPresentation" title="titre" value="${rechercheCommand.patternPresentation}"/>
             </td>
             <td width="20"/>
-            <td class="label">discipline :
+            <td class="label">Matière :
             </td>
             <td>
-              <select name="3.30.3.7"><option
-                      value="WONoSelectionString">Toutes</option><option
-                      value="0">SES</option><option
-                      value="1">SES Spécialité</option><option
-                      value="2">Histoire</option><option
-                      value="3">Géographie</option><option
-                      value="4">Communication</option><option
-                      value="5">Anglais</option></select>
+               <g:select name="matiereId" value="${rechercheCommand.matiereId}"
+                      noSelection="${['null':'Toutes']}"
+                      from="${matieres}"
+                      optionKey="id"
+                      optionValue="libelleLong" />
             </td>
           </tr>
           <tr>
-            <td class="label">auteur :
+            <td class="label">Auteur :
             </td>
             <td>
-              <input size="30" type="text" name="3.30.3.9"/>
+              <g:textField name="patternAuteur" title="titre" value="${rechercheCommand.patternAuteur}"/>
             </td>
             <td width="20"/>
-            <td class="label">niveau :
+            <td class="label">Niveau :
             </td>
             <td>
-              <select name="3.30.3.11"><option
-                      value="WONoSelectionString">Tous</option><option
-                      value="0">Seconde</option><option
-                      value="1">Première</option><option
-                      value="2">Terminale</option><option
-                      value="3">IUT 1ère année</option><option
-                      value="4">IUT 2ème année</option></select>
+              <g:select name="niveauId" value="${rechercheCommand.niveauId}"
+                      noSelection="${['null':'Tous']}"
+                      from="${niveaux}"
+                      optionKey="id"
+                      optionValue="libelleLong" />
             </td>
           </tr>
 
@@ -107,14 +102,14 @@
       </div>
 
       <div class="form_actions">
-        <input type="submit" value="Rechercher" name="3.30.3.13"/>
+        <g:actionSubmit value="Rechercher" action="recherche" title="Lancer la recherche"/>
       </div>
     </form>
   </g:if>
 
-  <g:if test="${sujetsCount}">
+  <g:if test="${sujets}">
     <div class="portal_pagination">
-      <g:paginate controller="sujet" action="mesSujets" total="${sujetsCount}"></g:paginate>
+      <g:paginate controller="sujet" action="mesSujets" total="${sujets.totalCount}"></g:paginate>
     </div>
 
     <div class="portal-default_table">

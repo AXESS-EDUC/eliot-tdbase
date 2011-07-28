@@ -49,6 +49,7 @@ class Niveau {
     table('ent.niveau')
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.niveau_id_seq']
     version false
+    cache(true)
   }
 
 }

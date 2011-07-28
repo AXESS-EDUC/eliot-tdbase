@@ -102,12 +102,14 @@ class SujetService {
                          String patternPresentation,
                          Matiere matiere,
                          Niveau niveau,
+                         SujetType sujetType,
                          Map paginationAndSortingSpec = null) {
     if (!chercheur) {
       throw new IllegalArgumentException("sujet.recherche.chercheur.null")
     }
+
     def criteria = Sujet.createCriteria()
-    List<Sujet> sujets = criteria.list {
+    List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
       if (patternAuteur) {
         String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
         proprietaire {
@@ -128,7 +130,9 @@ class SujetService {
       }
       if (niveau) {
         eq "niveau", niveau
-
+      }
+      if (sujetType) {
+        eq "sujetType", sujetType
       }
       or {
         eq 'proprietaire', chercheur
@@ -141,18 +145,11 @@ class SujetService {
           order "${sortArg}", orderArg
         }
 
-        Integer maxArg = paginationAndSortingSpec['max'] as Integer
-        if (maxArg) {
-          maxResults maxArg
-        }
-        Integer offsetArg = paginationAndSortingSpec['offset'] as Integer
-        if (offsetArg) {
-          firstResult offsetArg
-        }
       }
     }
     return sujets
   }
+
 
   /**
    * Recherche de tous les sujet pour un proprietaire donné
@@ -163,18 +160,10 @@ class SujetService {
    */
   List<Sujet> findSujetsForProprietaire(Personne proprietaire,
                                         Map paginationAndSortingSpec = null) {
-     return findSujets(proprietaire,null, null, null, null, null,
+     return findSujets(proprietaire,null, null, null, null, null,null,
                        paginationAndSortingSpec)
   }
 
-  /**
-   * Retourne le nombre de sujet du proprietaire passé en paramètre
-   * @param proprietaire le proprietaire
-   * @return  le nombre de sujets
-   */
-  Long nombreSujetsForProprietaire(Personne proprietaire) {
-     return Sujet.countByProprietaire(proprietaire)
-  }
 
   /**
    *

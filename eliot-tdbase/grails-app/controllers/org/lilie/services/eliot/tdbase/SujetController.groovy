@@ -4,6 +4,8 @@ import grails.plugins.springsecurity.SpringSecurityService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.lilie.services.eliot.tice.scolarite.Niveau
 
 class SujetController {
 
@@ -18,11 +20,28 @@ class SujetController {
    *
    * Action "recherche"
    */
-  def recherche() {
-    breadcrumpsService.manageBreadcrumps(params,message(code: "sujet.recherche.titre"))
+  def recherche(RechercheSujetCommand rechCmd) {
+    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.recherche.titre"))
+    Personne personne = authenticatedPersonne
+    def sujets = sujetService.findSujets(
+            personne,
+            rechCmd.patternTitre,
+            rechCmd.patternAuteur,
+            rechCmd.patternPresentation,
+            Matiere.get(rechCmd.matiereId),
+            Niveau.get(rechCmd.niveauId),
+            SujetType.get(rechCmd.typeId),
+            params
+    )
     [
-            liens: message(code: "sujet.recherche.titre"),
-            afficheFormulaire: true
+            liens: breadcrumpsService.liens,
+            afficheFormulaire: true,
+            typesSujet: sujetService.getAllSujetTypes(),
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujets: sujets,
+            rechercheCommand: rechCmd
     ]
   }
 
@@ -31,17 +50,15 @@ class SujetController {
    * Action "mesSujets"
    */
   def mesSujets() {
-    breadcrumpsService.manageBreadcrumps(params,message(code: "sujet.messujets.titre"))
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.messujets.titre"))
     Personne personne = authenticatedPersonne
     def model = [
             liens: breadcrumpsService.liens,
             afficheFormulaire: false,
             sujets: sujetService.findSujetsForProprietaire(
                     personne,
-                    params
-            ),
-            sujetsCount: sujetService.nombreSujetsForProprietaire(personne)
+                    params)
     ]
     render(view: "recherche", model: model)
   }
@@ -51,7 +68,7 @@ class SujetController {
    * Action "nouveau"
    */
   def nouveau() {
-    breadcrumpsService.manageBreadcrumps(params,message(code: "sujet.nouveau.titre"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
     render(view: "edite", model: [
            liens: breadcrumpsService.liens,
            titreSujet: message(code: "sujet.nouveau.titre")
@@ -63,7 +80,7 @@ class SujetController {
    * Action "edite"
    */
   def edite() {
-    breadcrumpsService.manageBreadcrumps(params,message(code: "sujet.edite.titre"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.edite.titre"))
     Sujet sujet = Sujet.get(params.id)
     [
             liens: breadcrumpsService.liens,
@@ -78,12 +95,12 @@ class SujetController {
    * Action "editeProprietes"
    */
   def editeProprietes() {
-    breadcrumpsService.manageBreadcrumps(params,message(code: "sujet.editeproprietes.titre"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.editeproprietes.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
     render(view: "edite-proprietes", model: [
            liens: breadcrumpsService.liens,
-           lienRetour:breadcrumpsService.lienRetour(),
+           lienRetour: breadcrumpsService.lienRetour(),
            sujet: sujet,
            typesSujet: sujetService.getAllSujetTypes(),
            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
@@ -140,10 +157,21 @@ class SujetController {
   }
 
 
-
 }
 
 class NouveauSujetCommand {
   String sujetTitre
   Long sujetId
+}
+
+class RechercheSujetCommand {
+  String patternTitre
+  String patternAuteur
+  String patternPresentation
+
+  Long matiereId
+  Long typeId
+  Long niveauId
+
+
 }
