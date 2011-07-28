@@ -139,26 +139,13 @@ environments {
                     "${FonctionEnum.CTR.toRole()}",
                     "${FonctionEnum.DIR.toRole()}",
                     'IS_AUTHENTICATED_FULLY'
-            ],
-            '/': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
             ]
+
     ]
   }
   development {
     grails.plugins.springsecurity.interceptUrlMap = [
             '/sujet/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/': [
                     "${FonctionEnum.ENS.toRole()}",
                     "${FonctionEnum.DOC.toRole()}",
                     "${FonctionEnum.CTR.toRole()}",
@@ -170,13 +157,6 @@ environments {
   test {
     grails.plugins.springsecurity.interceptUrlMap = [
             '/sujet/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/': [
                     "${FonctionEnum.ENS.toRole()}",
                     "${FonctionEnum.DOC.toRole()}",
                     "${FonctionEnum.CTR.toRole()}",

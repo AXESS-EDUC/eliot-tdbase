@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 	<head>
-		<meta name="layout" content="main"/>
-		<title>Welcome to Grails</title>
+		<meta name="layout" content="eliot-tdbase-pub"/>
+		<title>Bienvenue sur éliot-tdbase</title>
 		<style type="text/css" media="screen">
 			#status {
 				background-color: #eee;
@@ -75,9 +75,9 @@
 		</style>
 	</head>
 	<body>
-		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+    <div class="column span-22 last middle">
 		<div id="status" role="complementary">
-			<h1>Application Status</h1>
+			<h1>Caractéristiques de l'application </h1>
 			<ul>
 				<li>App version: <g:meta name="app.version"/></li>
 				<li>Grails version: <g:meta name="app.grails.version"/></li>
@@ -88,7 +88,7 @@
 				<li>Services: ${grailsApplication.serviceClasses.size()}</li>
 				<li>Tag Libraries: ${grailsApplication.tagLibClasses.size()}</li>
 			</ul>
-			<h1>Installed Plugins</h1>
+			<h1>Plugins installés</h1>
 			<ul>
 				<g:set var="pluginManager" value="${applicationContext.getBean('pluginManager')}"/>
 				<g:each var="plugin" in="${pluginManager.allPlugins}">
@@ -97,14 +97,10 @@
 			</ul>
 		</div>
 		<div id="page-body" role="main">
-			<h1>Welcome to Grails</h1>
-			<p>Congratulations, you have successfully started your first Grails application! At the moment
-            this is the default page, feel free to modify it to either redirect to a controller or display whatever
-            content you may choose. Below is a list of controllers that are currently deployed in this application,
-            click on each to execute its default action:</p>
+			<h1>Bienvenue sur éliot-tdbase</h1>
 
 			<div id="controller-list" role="navigation">
-				<h2>Available Controllers:</h2>
+				<h2>Accès aux fonctionnalités:</h2>
 				<ul>
 					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
 						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
@@ -112,5 +108,6 @@
 				</ul>
 			</div>
 		</div>
+      </div>
 	</body>
 </html>

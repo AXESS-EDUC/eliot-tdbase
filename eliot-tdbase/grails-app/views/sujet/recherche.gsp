@@ -109,7 +109,7 @@
 
   <g:if test="${sujets}">
     <div class="portal_pagination">
-      <g:paginate controller="sujet" action="mesSujets" total="${sujets.totalCount}"></g:paginate>
+      ${sujets.totalCount} résultat(s) <g:paginate total="${sujets.totalCount}" params="${rechercheCommand?.toParams()}"></g:paginate>
     </div>
 
     <div class="portal-default_table">
@@ -118,6 +118,7 @@
         <tr>
           <th>Titre</th>
           <th>Niveau</th>
+          <th>Matière</th>
           <th>Dur&eacute;e</th>
           <g:if test="${afficheFormulaire}">
             <th>Auteur</th>
@@ -138,6 +139,9 @@
             </td>
             <td>
               ${sujetInstance.niveau?.libelleLong}
+            </td>
+            <td>
+              ${sujetInstance.matiere?.libelleLong}
             </td>
             <td>
               ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}
@@ -175,6 +179,11 @@
       </table>
     </div>
   </g:if>
+  <g:else>
+     <div class="portal_pagination">
+      Aucun résultat
+    </div>
+  </g:else>
 </div>
 
 </body>

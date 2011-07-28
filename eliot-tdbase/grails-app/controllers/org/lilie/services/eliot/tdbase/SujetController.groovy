@@ -9,7 +9,7 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
 
 class SujetController {
 
-  static defaultAction = "recherche"
+  static defaultAction = "mesSujets"
 
   SujetService sujetService
   SpringSecurityService springSecurityService
@@ -173,5 +173,15 @@ class RechercheSujetCommand {
   Long typeId
   Long niveauId
 
+  Map toParams() {
+    [
+      patternTitre: patternTitre,
+      patternAuteur: patternAuteur,
+      patternPresentation: patternPresentation,
+      matiereId: matiereId,
+      typeId: typeId,
+      niveauId: niveauId
+    ]
+  }
 
 }

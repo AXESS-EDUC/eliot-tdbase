@@ -86,10 +86,10 @@ Custom logo and menu styles
 styles for TDBase tables
 
 ********************************************************************************/
-div.portal-default_table {
-	border:0;
-	padding-top:15px;	
-}
+/*div.portal-default_table {*/
+	/*border:0;*/
+	/*padding-top:15px;	*/
+/*}*/
 
 div.portal-default_table tr {
 	height:10px;

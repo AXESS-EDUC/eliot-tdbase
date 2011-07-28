@@ -26,21 +26,13 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<%--
-  Created by IntelliJ IDEA.
-  User: franck
-  Date: 27/07/11
-  Time: 15:07
-  To change this template use File | Settings | File Templates.
---%>
-
 <div class="portal-breadcrumbs">
   <g:each in="${liens}" var="lien">
     <g:if test="${lien.index < liens.size()-1}">
       <g:link action="${lien.action}" controller="${lien.controller}" params="${lien.params}">
         ${lien.libelle}
       </g:link>
-       >
+       &gt;
     </g:if>
     <g:else>
        ${lien.libelle}

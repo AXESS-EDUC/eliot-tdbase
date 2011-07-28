@@ -1,6 +1,7 @@
 <html>
   <head>
-	  <title>Grails Runtime Exception</title>
+	  <title>Oups... une erreur s'est produite</title>
+      <meta name="layout" content="eliot-tdbase-pub"/>
 	  <style type="text/css">
 	  		.message {
 	  			border: 1px solid black;
@@ -24,8 +25,10 @@
   </head>
 
   <body>
-    <h1>Grails Runtime Exception</h1>
-    <h2>Error Details</h2>
+  <div class="column span-22 last middle">
+    <div class="portal-breadcrumbs">
+      Une erreur s'est produite > Détail de l'erreur
+    </div>
 
   	<div class="message">
 		<strong>Error ${request.'javax.servlet.error.status_code'}:</strong> ${request.'javax.servlet.error.message'.encodeAsHTML()}<br/>
@@ -50,5 +53,6 @@
 	      <pre><g:each in="${exception.stackTraceLines}">${it.encodeAsHTML()}<br/></g:each></pre>
 	    </div>
 	</g:if>
+    </div>
   </body>
 </html>
