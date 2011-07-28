@@ -26,7 +26,6 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
@@ -36,44 +35,15 @@
       $('#menu-item-sujets').addClass('actif');
     });
   </r:script>
-  <title>TDBase - Edition du sujet</title>
+  <title>TDBase - Edition des propriétés du sujet</title>
 </head>
 
 <body>
 
 <div class="column span-22 last middle">
   <g:render template="/breadcrumps" model="[liens: liens]"/>
-  <g:if test="${sujetEnEdition}">
-    <div class="portal-tabs">
-      <span class="portal-tabs-famille-liens">
-        <g:link action="ajouteElement"
-                id="${sujet.id}">Ajouter un élément</g:link> |
-        <g:link action="editeProprietes"
-                id="${sujet.id}">Éditer les propriétés du sujet</g:link>
-      </span>
-      <span class="portal-tabs-famille-liens">
-        Exporter | Partager
-      </span>
-      <span class="portal-tabs-famille-liens">
-        Versions
-      </span>
-    </div>
-  </g:if>
-  <g:else>
-    <div class="portal-tabs">
-      <span class="portal-tabs-famille-liens">
-        Ajouter un élément |
-        Éditer les propriétés du sujet
-      </span>
-      <span class="portal-tabs-famille-liens">
-        Exporter | Partager
-      </span>
-      <span class="portal-tabs-famille-liens">
-        Versions
-      </span>
-    </div>
-  </g:else>
-  <g:hasErrors bean="${sujet}">
+
+  <g:hasErrors bean="${question}">
     <div class="portal-messages error">
       <g:eachError>
         <li><g:message error="${it}"/></li>
@@ -86,27 +56,47 @@
                      class="portal-messages success"/></li>
     </div>
   </g:if>
-  <form method="post">
+
+  <form method="post"
+        action="#">
     <div class="portal-form_container">
       <table>
         <tr>
-          <td class="label">
-            titre :
-          </td>
+          <td class="label">Titre:</td>
           <td>
-            <g:textField name="sujetTitre" value="${titreSujet}" size="80"/>
-          </td>
-          <td>
-            <g:actionSubmit action="enregistre" value="Enregistrer"/>
+            <input size="80" type="text" value="${question.titre}" name="titre"/>
           </td>
         </tr>
+
+        <tr>
+          <td class="label">Mati&egrave;re :</td>
+          <td>
+            <g:select name="matiere.id" value="${question.matiere?.id}"
+                      noSelection="${['null':'Sélectionner une matière...']}"
+                      from="${matieres}"
+                      optionKey="id"
+                      optionValue="libelleLong" />
+          </td>
+        </tr>
+        <tr>
+          <td class="label">Niveau :</td>
+          <td>
+            <g:select name="niveau.id" value="${question.niveau?.id}"
+                      noSelection="${['null':'Sélectionner un niveau...']}"
+                      from="${niveaux}"
+                      optionKey="id"
+                      optionValue="libelleLong" />
+          </td>
+        </tr>
+        <g:render template="${question.type.code}/${question.type.code}Edition" />
       </table>
-
-      <g:if test="${sujetEnEdition}">
-        <g:hiddenField name="sujetId" value="${sujet.id}"/>
-      </g:if>
     </div>
-
+    <g:hiddenField name="id" value="${question.id}"/>
+    <div class="form_actions">
+      <g:link action="${lienRetour.action}" controller="${lienRetour.controller}"
+              params="${lienRetour.params}">Annuler</g:link> |
+      <g:actionSubmit value="Enregistrer" action="enregistre" title="Enregistrer"/>
+    </div>
   </form>
 </div>
 

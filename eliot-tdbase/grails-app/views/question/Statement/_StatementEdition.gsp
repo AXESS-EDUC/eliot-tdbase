@@ -26,3 +26,9 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
+<tr>
+  <td class="label">Le spécifique :</td>
+  <td>
+    Statement edition
+  </td>
+</tr>

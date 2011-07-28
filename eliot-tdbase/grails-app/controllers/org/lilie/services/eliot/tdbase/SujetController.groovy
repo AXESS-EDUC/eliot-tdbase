@@ -2,10 +2,10 @@ package org.lilie.services.eliot.tdbase
 
 import grails.plugins.springsecurity.SpringSecurityService
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
-import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class SujetController {
 
@@ -98,7 +98,7 @@ class SujetController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.editeproprietes.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
-    render(view: "edite-proprietes", model: [
+    render(view: "editeProprietes", model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
            sujet: sujet,
@@ -146,7 +146,7 @@ class SujetController {
     if (!sujet.hasErrors()) {
       request.messageCode = "sujet.enregistre.succes"
     }
-    render(view: "edite-proprietes", model: [
+    render(view: "editeProprietes", model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
            sujet: sujetModifie,
@@ -156,6 +156,17 @@ class SujetController {
            ])
   }
 
+  /**
+   *
+   * Action ajoute element
+   */
+  def ajouteElement() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"))
+    [
+            sujetId: params.id,
+            liens: breadcrumpsService.liens
+    ]
+  }
 
 }
 
@@ -175,12 +186,12 @@ class RechercheSujetCommand {
 
   Map toParams() {
     [
-      patternTitre: patternTitre,
-      patternAuteur: patternAuteur,
-      patternPresentation: patternPresentation,
-      matiereId: matiereId,
-      typeId: typeId,
-      niveauId: niveauId
+            patternTitre: patternTitre,
+            patternAuteur: patternAuteur,
+            patternPresentation: patternPresentation,
+            matiereId: matiereId,
+            typeId: typeId,
+            niveauId: niveauId
     ]
   }
 

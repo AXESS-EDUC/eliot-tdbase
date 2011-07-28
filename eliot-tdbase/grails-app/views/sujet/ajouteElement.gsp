@@ -26,4 +26,46 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-Statement interaction
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="layout" content="eliot-tdbase"/>
+  <r:require modules="jquery"/>
+  <r:script>
+    $(function() {
+      $('#menu-item-sujets').addClass('actif');
+    });
+  </r:script>
+  <title>TDBase - Edition des propriétés du sujet</title>
+</head>
+
+<body>
+
+<div class="column span-22 last middle">
+  <g:render template="/breadcrumps" model="[liens: liens]"/>
+
+  <h2>Créer et ajouter un élément</h2>
+  <ul>
+    <li><g:link action="edite" controller="question" params="[creation:true, questionType:'Statement']">Un élément d'énoncé</g:link></li>
+    <li>Un document</li>
+    <li>Une question de type...</li>
+  </ul>
+
+  <h2>Rechercher et ajouter un élément</h2>
+  <ul>
+    <li>Un élément d'énoncé</li>
+    <li>Un document</li>
+    <li>Une question de type...</li>
+  </ul>
+
+  <h2>Importer et ajouter un élément</h2>
+  <ul>
+    <li>Un élément d'énoncé</li>
+    <li>Un document</li>
+    <li>Une question de type...</li>
+  </ul>
+
+</div>
+
+</body>
+</html>
