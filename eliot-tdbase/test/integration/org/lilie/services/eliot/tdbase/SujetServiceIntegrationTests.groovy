@@ -5,6 +5,7 @@ import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.utils.StringUtils
 
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -91,8 +92,64 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     def sujets2 = sujetService.findSujetsForProprietaire(personne2)
     assertEquals(0, sujets2.size())
 
-    assertEquals(2, sujetService.nombreSujetsForProprietaire(personne1))
-    assertEquals(0, sujetService.nombreSujetsForProprietaire(personne2))
+  }
+
+  void testFindSujets() {
+    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertFalse(sujet1.hasErrors())
+
+    // tests pour vérifier que la propriété ou le caractère publié
+    // conditionne les résultats de recherche
+
+
+
+    def res = sujetService.findSujets(personne2, null,null,
+                                      null,null,null, null)
+
+    assertEquals(0,res.size())
+
+    res = sujetService.findSujets(personne1, null,null,
+                                      null,null,null, null)
+
+    assertEquals(1,res.size())
+
+    sujetService.setProprietes(sujet1,[publie:true],personne1)
+    res = sujetService.findSujets(personne2, null,null,
+                                      null,null,null, null)
+
+    assertEquals(1,res.size())
+
+    res = sujetService.findSujets(personne1, null,null,
+                                      null,null,null, null)
+
+    assertEquals(1,res.size())
+
+    // tests sur le titre et la presentation avec prise en compte des accents
+    //
+
+    def propsSujet1 = [
+            titre: "titre : Un sujet avé des accents àgravê",
+            'sujetType.id': 1
+    ]
+    sujetService.setProprietes(sujet1,propsSujet1,personne1)
+
+    res = sujetService.findSujets(personne1, "avê",null,
+                                      null,null,null, null)
+
+    assertEquals(1,res.size())
+
+    propsSujet1 = [
+            titre : SUJET_1_TITRE,
+            presentation: "pres : Un sujet avé des accents àgravê",
+            'sujetType.id': 1
+    ]
+    sujetService.setProprietes(sujet1,propsSujet1,personne1)
+
+    res = sujetService.findSujets(personne1, null,null,
+                                      "avê",null,null, null)
+
+    assertEquals(1,res.size())
+
   }
 
 }

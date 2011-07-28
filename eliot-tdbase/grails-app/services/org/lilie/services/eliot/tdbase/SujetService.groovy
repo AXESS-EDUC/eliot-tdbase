@@ -76,8 +76,8 @@ class SujetService {
     if (proprietes.titre && leSujet.titre != proprietes.titre) {
       leSujet.titreNormalise = StringUtils.normalise(proprietes.titre)
     }
-     if (proprietes.prensentation && leSujet.presentation != proprietes.presentation) {
-      leSujet.presentationNormalise = StringUtils.normalise(proprietes.prensentation)
+     if (proprietes.presentation && leSujet.presentation != proprietes.presentation) {
+      leSujet.presentationNormalise = StringUtils.normalise(proprietes.presentation)
     }
     leSujet.properties = proprietes
     leSujet.save()
@@ -106,6 +106,9 @@ class SujetService {
                          Map paginationAndSortingSpec = null) {
     if (!chercheur) {
       throw new IllegalArgumentException("sujet.recherche.chercheur.null")
+    }
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
     }
 
     def criteria = Sujet.createCriteria()
