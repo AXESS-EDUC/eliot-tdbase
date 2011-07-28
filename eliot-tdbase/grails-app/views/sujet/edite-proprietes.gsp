@@ -143,7 +143,8 @@
     </div>
     <g:hiddenField name="id" value="${sujet.id}"/>
     <div class="form_actions">
-      <g:link action="edite" id="${sujet.id}">Annuler</g:link> |
+      <g:link action="${lienRetour.action}" controller="${lienRetour.controller}"
+              params="${lienRetour.params}">Annuler</g:link> |
       <g:actionSubmit value="Enregistrer" action="enregistrePropriete" title="Enregistrer"/>
     </div>
   </form>

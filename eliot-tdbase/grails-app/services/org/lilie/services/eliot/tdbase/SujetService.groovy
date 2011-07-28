@@ -136,7 +136,7 @@ class SujetService {
       }
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
-        def orderArg = paginationAndSortingSpec['order'] ?: 'asc'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
         if (sortArg) {
           order "${sortArg}", orderArg
         }

@@ -28,12 +28,56 @@
 
 package org.lilie.services.eliot.tice.utils
 
+/**
+ * Classe fournissant le service de gestion de breadcrumps
+ * @author franck silvestre
+ */
 class BreadcrumpsService {
+
+  static final String PARAM_BREADCRUMPS_INIT = "bcInit"
+  static final String PARAM_BREADCRUMPS_INDEX = "bcIdx"
 
   static transactional = false
   static scope = "session"
 
   List<BreadcrumpsLien> liens = []
+
+
+
+  /**
+   * Gère le breacrumps à partir du contenu de la requête
+   * @param params les parametres de la requête
+   * @param libelle le libelle du lien à mettre dans le breadcrump si nécessaire
+   */
+  def manageBreadcrumps(Map params, String libelle) {
+    if (params."$PARAM_BREADCRUMPS_INIT") {
+      liens = []
+      params.remove(PARAM_BREADCRUMPS_INIT)
+    }
+    if (params."$PARAM_BREADCRUMPS_INDEX") {
+      onClikSurLienBreadcrumps(params."$PARAM_BREADCRUMPS_INDEX" as Integer)
+    } else {
+      onClickSurNouveauLien(params.action,
+                            params.controller,
+                            libelle,
+                            params
+      )
+    }
+  }
+
+  /**
+   * Renvoie le lien correspondant à un backtrack applicatif : à utiliser typiquement
+   * pour mettre en place un lien annuler
+   * @return
+   */
+  BreadcrumpsLien lienRetour() {
+    def lien
+    synchronized (liens) {
+      lien = liens.get(liens.size()-2)
+    }
+    return lien
+  }
+
 
   /**
    * Met à jour les liens du breadcrumps quand un nouveau lien est cliqué
@@ -41,11 +85,13 @@ class BreadcrumpsService {
    * @param controller le nom du controller
    * @param libelle le libelle
    * @param params les parametres à conserver
+   * @return le breadcrumps lien cliqué
    */
-  def onClickSurNouveauLien(String action,
-                            String controller,
-                            String libelle,
-                            Map params) {
+  private BreadcrumpsLien onClickSurNouveauLien(String action,
+                                        String controller,
+                                        String libelle,
+                                        Map params) {
+
     BreadcrumpsLien lien = new BreadcrumpsLien(action: action,
                                                controller: controller,
                                                libelle: libelle)
@@ -53,22 +99,23 @@ class BreadcrumpsService {
       params = [:]
     }
 
+    def lienRes
     synchronized (liens) {
-        if (liens && liens.last() == lien) {
-          // si on déclenche la même action (pagination) on ne doit pas
-          // ajouter de lien, on se contente de conserver la bonne version
-          // des parametres
-          def dernierLien = liens.last()
-          params.breadcrumpsIndex = dernierLien.index
-          dernierLien.params = params
+      if (liens && liens.last() == lien) {
+        // si on déclenche la même action (pagination) on ne doit pas
+        // ajouter de lien, on se contente de conserver la bonne version
+        // des parametres
+        lienRes = liens.last()
       } else {
         liens.add(lien)
         lien.index = liens.size() - 1
-        params.breadcrumpsIndex = lien.index
-        lien.params = params
+        lienRes = lien
       }
-
     }
+    params."$PARAM_BREADCRUMPS_INDEX" = lienRes.index
+    lienRes.params = params
+    return lienRes
+
   }
 
   /**
@@ -76,21 +123,16 @@ class BreadcrumpsService {
    * du breadcump
    * @param indexLien l'indice du lien cliqué dans le breadcrumps
    */
-  def onClikSurLienBreadcrumps(int indexLien) {
+  private BreadcrumpsLien onClikSurLienBreadcrumps(int indexLien) {
+    def lien
     synchronized (liens) {
       int depart = liens.size() - 1
       for (int i = depart; i > indexLien; i--) {
         liens.remove(i)
       }
+      lien = liens.get(indexLien)
     }
-  }
-
-  /**
-   * reinitialise le breadcrumps
-   * @return
-   */
-  def initialiseBreadcrumps() {
-    liens = []
+    return lien
   }
 
 }

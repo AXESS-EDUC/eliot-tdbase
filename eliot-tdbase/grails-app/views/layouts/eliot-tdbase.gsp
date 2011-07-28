@@ -79,15 +79,15 @@
           <ul>
             <li title="Nouveau">
               <g:link controller="sujet" action="nouveau"
-                      title="Pour créer un nouveau sujet" params="[initialiseBreadcrumps:true]">Nouveau</g:link>
+                      title="Pour créer un nouveau sujet" params="[bcInit:true]">Nouveau</g:link>
             </li>
             <li title="Rechercher">
               <g:link controller="sujet" action="recherche"
-                      title="Pour rechercher des sujets" params="[initialiseBreadcrumps:true]">Rechercher</g:link>
+                      title="Pour rechercher des sujets" params="[bcInit:true]">Rechercher</g:link>
             </li>
             <li title="Mes sujets">
               <g:link controller="sujet" action="mesSujets"
-                      title="Mes sujets" params="[initialiseBreadcrumps:true]">Mes sujets</g:link>
+                      title="Mes sujets" params="[bcInit:true]">Mes sujets</g:link>
             </li>
           </ul>
         </li>

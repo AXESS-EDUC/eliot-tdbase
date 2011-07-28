@@ -19,7 +19,7 @@ class SujetController {
    * Action "recherche"
    */
   def recherche() {
-    manageBreadcrumps(message(code: "sujet.recherche.titre"))
+    breadcrumpsService.manageBreadcrumps(params,message(code: "sujet.recherche.titre"))
     [
             liens: message(code: "sujet.recherche.titre"),
             afficheFormulaire: true
@@ -31,7 +31,7 @@ class SujetController {
    * Action "mesSujets"
    */
   def mesSujets() {
-    manageBreadcrumps(message(code: "sujet.messujets.titre"))
+    breadcrumpsService.manageBreadcrumps(params,message(code: "sujet.messujets.titre"))
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
     Personne personne = authenticatedPersonne
     def model = [
@@ -51,7 +51,7 @@ class SujetController {
    * Action "nouveau"
    */
   def nouveau() {
-    manageBreadcrumps(message(code: "sujet.nouveau.titre"))
+    breadcrumpsService.manageBreadcrumps(params,message(code: "sujet.nouveau.titre"))
     render(view: "edite", model: [
            liens: breadcrumpsService.liens,
            titreSujet: message(code: "sujet.nouveau.titre")
@@ -63,7 +63,7 @@ class SujetController {
    * Action "edite"
    */
   def edite() {
-    manageBreadcrumps(message(code: "sujet.edite.titre"))
+    breadcrumpsService.manageBreadcrumps(params,message(code: "sujet.edite.titre"))
     Sujet sujet = Sujet.get(params.id)
     [
             liens: breadcrumpsService.liens,
@@ -78,11 +78,12 @@ class SujetController {
    * Action "editeProprietes"
    */
   def editeProprietes() {
-    manageBreadcrumps(message(code: "sujet.editeproprietes.titre"))
+    breadcrumpsService.manageBreadcrumps(params,message(code: "sujet.editeproprietes.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
     render(view: "edite-proprietes", model: [
            liens: breadcrumpsService.liens,
+           lienRetour:breadcrumpsService.lienRetour(),
            sujet: sujet,
            typesSujet: sujetService.getAllSujetTypes(),
            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
@@ -96,7 +97,6 @@ class SujetController {
    */
   def enregistre(NouveauSujetCommand sujetCmd) {
     Sujet sujet
-    String titrePage = message(code: "sujet.edite.titre")
     boolean sujetEnEdition = false
     Personne personne = authenticatedPersonne
     if (sujetCmd.sujetId) {
@@ -109,10 +109,7 @@ class SujetController {
     if (!sujet.hasErrors()) {
       request.messageCode = "sujet.enregistre.succes"
       sujetEnEdition = true
-    } else if (!sujetEnEdition) {
-      titrePage = message(code: "sujet.nouveau.titre")
     }
-    manageBreadcrumps(titrePage)
     render(view: "edite", model: [
            liens: breadcrumpsService.liens,
            titreSujet: sujet.titre,
@@ -126,7 +123,6 @@ class SujetController {
    * Action "enregistrerPropriete
    */
   def enregistrePropriete() {
-    manageBreadcrumps(message(code: "sujet.editeproprietes.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
     Sujet sujetModifie = sujetService.setProprietes(sujet, params, proprietaire)
@@ -135,6 +131,7 @@ class SujetController {
     }
     render(view: "edite-proprietes", model: [
            liens: breadcrumpsService.liens,
+           lienRetour: breadcrumpsService.lienRetour(),
            sujet: sujetModifie,
            typesSujet: sujetService.getAllSujetTypes(),
            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
@@ -143,20 +140,6 @@ class SujetController {
   }
 
 
-  private def manageBreadcrumps(String libelle) {
-    if (params.initialiseBreadcrumps) {
-      breadcrumpsService.initialiseBreadcrumps()
-    }
-    if (params.breadcrumpsIndex) {
-      breadcrumpsService.onClikSurLienBreadcrumps(params.breadcrumpsIndex as Integer)
-    } else {
-      breadcrumpsService.onClickSurNouveauLien(params.action,
-                                               params.controller,
-                                               libelle,
-                                               params
-      )
-    }
-  }
 
 }
 

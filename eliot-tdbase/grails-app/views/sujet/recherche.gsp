@@ -130,6 +130,7 @@
           <th>Accès public</th>
           <th>Tester</th>
           <th>Séance</th>
+          <th>Mise à jour le</th>
         </tr>
         </thead>
 
@@ -169,6 +170,9 @@
                      width="20" height="19"/>
               </a>
 
+            </td>
+            <td>
+              ${sujetInstance.lastUpdated?.format('dd/MM/yy hh:mm')}
             </td>
           </tr>
         </g:each>
