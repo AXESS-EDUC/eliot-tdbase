@@ -38,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional
 class QuestionService {
 
   static transactional = false
+  SujetService sujetService
 
   /**
    * Créé une question
@@ -94,6 +95,30 @@ class QuestionService {
     question.specification = "specif pour question type ${question.type.nom}"
     laQuestion.save()
     return laQuestion
+  }
+
+  /**
+   * Créé une question et l'insert dans le sujet
+   * @param proprietesQuestion les propriétés de la question
+   * @param sujet le sujet
+   * @param proprietaire le propriétaire
+   * @return la question insérée
+   */
+  @Transactional
+  Question createQuestionAndInsertInSujet(Map proprietesQuestion, Sujet sujet,
+                                          Personne proprietaire, Integer rang = null) {
+    Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujet,proprietaire)
+    Question question = createQuestion(proprietesQuestion,proprietaire)
+    // todofsil : trouver un moyen plus efficace gestion du rang
+    def leRang = leSujet.questions.size()+1
+    def sequence = new SujetSequenceQuestions(
+            question: question,
+            sujet: sujet,
+            rang: leRang
+    ).save(failOnError:true)
+    sujet.addToQuestionsSequences(sequence)
+    return question
+
   }
 
   /**

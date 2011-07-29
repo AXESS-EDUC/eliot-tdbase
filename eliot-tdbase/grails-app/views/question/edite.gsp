@@ -69,7 +69,8 @@
         <tr>
           <td class="label">Titre:</td>
           <td>
-            <input size="80" type="text" value="${question.titre}" name="titre"/>
+            <input size="80" type="text" value="${question.titre}"
+                   name="titre"/>
           </td>
         </tr>
         <tr>
@@ -85,7 +86,7 @@
                       noSelection="${['null':'Sélectionner une matière...']}"
                       from="${matieres}"
                       optionKey="id"
-                      optionValue="libelleLong" />
+                      optionValue="libelleLong"/>
           </td>
         </tr>
         <tr>
@@ -95,31 +96,36 @@
                       noSelection="${['null':'Sélectionner un niveau...']}"
                       from="${niveaux}"
                       optionKey="id"
-                      optionValue="libelleLong" />
+                      optionValue="libelleLong"/>
           </td>
         </tr>
         <tr>
           <td class="label">Autonome :</td>
           <td>
-            <g:checkBox name="estAutonome" title="Autonome" checked="${question.estAutonome}" />
+            <g:checkBox name="estAutonome" title="Autonome"
+                        checked="${question.estAutonome}"/>
           </td>
         </tr>
-        <g:render template="${question.type.code}/${question.type.code}Edition" />
+        <g:render
+                template="${question.type.code}/${question.type.code}Edition"/>
       </table>
     </div>
     <g:hiddenField name="id" value="${question.id}"/>
     <g:hiddenField name="type.id" value="${question.type.id}"/>
     <div class="form_actions">
-      <g:link action="${lienRetour.action}" controller="${lienRetour.controller}"
+      <g:link action="${lienRetour.action}"
+              controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link> |
       <g:if test="${sujet}">
-        <g:hiddenField name="sujetId" value="${sujet.id}"/>
-         <g:actionSubmit value="Enregistrer" action="enregistreInsert"
-                         title="Enregistrer et insérer dans le sujet"/>
+        %{--<g:hiddenField name="sujetId" value="${sujet.id}"/>--}%
+        <g:actionSubmit value="Enregistrer et insérer dans le sujet"
+                        action="enregistreInsert"
+                        title="Enregistrer et insérer dans le sujet"/>
       </g:if>
       <g:else>
-      <g:actionSubmit value="Enregistrer" action="enregistre" title="Enregistrer"/>
-        </g:else>
+        <g:actionSubmit value="Enregistrer" action="enregistre"
+                        title="Enregistrer"/>
+      </g:else>
     </div>
   </form>
 </div>

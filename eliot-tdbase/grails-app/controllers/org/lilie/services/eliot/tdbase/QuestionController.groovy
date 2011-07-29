@@ -99,17 +99,15 @@ class QuestionController {
   }
 
   def enregistreInsert() {
-    Question question
     Personne personne = authenticatedPersonne
-    if (params.id) {
-      question = Question.get(params.id)
-      questionService.updateProprietes(question,params,personne)
-    } else {
-      question = questionService.createQuestion(params, personne)
-    }
-    Sujet sujet = Sujet.get(params.sujetId)
+    Long sujetId = params.sujetId as Long
+    Sujet sujet = Sujet.get(sujetId)
+    Question question = questionService.createQuestionAndInsertInSujet(params,
+                                                                       sujet,
+                                                                       personne)
+
     if (!question.hasErrors()) {
-      request.messageCode = "question.enregistre.succes"
+      request.messageCode = "question.enregistreinsert.succes"
     }
     render(view: 'edite', model: [
            liens: breadcrumpsService.liens,

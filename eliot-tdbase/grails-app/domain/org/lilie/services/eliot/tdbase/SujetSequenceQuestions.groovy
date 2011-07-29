@@ -32,7 +32,7 @@ package org.lilie.services.eliot.tdbase
  * Classe représentant la composition d'un sujet
  * @author franck Silvestre
  */
-class SujetSequenceQuestions {
+class SujetSequenceQuestions implements Comparable {
 
   Integer rang
   Float noteSeuilPoursuite

@@ -31,7 +31,7 @@
   <ul>
     <g:if test="${sujet.questions}">
       <g:each in="${sujet.questions}" var="question">
-        <li>${element.question}</li>
+        <li>${question.titre}</li>
       </g:each>
     </g:if>
     <g:else>
