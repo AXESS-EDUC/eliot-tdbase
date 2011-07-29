@@ -94,10 +94,17 @@
                       optionValue="libelleLong" />
           </td>
         </tr>
+        <tr>
+          <td class="label">Autonome :</td>
+          <td>
+            <g:checkBox name="estAutonome" title="Autonome" checked="${question.estAutonome}" />
+          </td>
+        </tr>
         <g:render template="${question.type.code}/${question.type.code}Edition" />
       </table>
     </div>
     <g:hiddenField name="id" value="${question.id}"/>
+    <g:hiddenField name="type.id" value="${question.type.id}"/>
     <div class="form_actions">
       <g:link action="${lienRetour.action}" controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link> |

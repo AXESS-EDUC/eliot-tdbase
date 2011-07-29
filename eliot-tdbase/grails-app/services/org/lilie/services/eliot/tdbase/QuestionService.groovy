@@ -40,54 +40,38 @@ class QuestionService {
   static transactional = false
 
   /**
-   * Créé un sujet
-   * @param proprietaire le proprietaire du sujet
-   * @param titre le titre du sujet
-   * @return le sujet créé
+   * Créé une question
+   * @param proprietaire le proprietaire
+   * @param titre le titre
+   * @return la question créée
    */
-  @Transactional
-  Sujet createSujet(Personne proprietaire, String titre) {
-    Sujet sujet = new Sujet(
+  Question createQuestion(Map proprietes, Personne proprietaire) {
+    Question question = new Question(
             proprietaire: proprietaire,
-            titre: titre,
-            titreNormalise: StringUtils.normalise(titre),
-            accesPublic: false,
-            accesSequentiel: false,
-            ordreQuestionsAleatoire: false,
+            titreNormalise: StringUtils.normalise(proprietes.titre),
             publie: false,
-            versionSujet: 1,
+            versionQuestion: 1,
             copyrightsType: CopyrightsType.getDefault()
     )
-    sujet.save()
-    return sujet
+    question.properties = proprietes
+    // todofsil : gerer le specifique
+    question.specification = "specif pour question type ${question.type.nom}"
+    question.save()
+    return question
   }
 
   /**
-   * Retourne la dernière version éditable d'un sujet pour un proprietaire donné
-   * @param sujet le sujet
+   * Retourne la dernière version éditable d'une question pour un proprietaire donné
+   * @param question la question
    * @param proprietaire le proprietaire
-   * @return le sujet éditable
+   * @return la question editable
    */
-  Sujet getDerniereVersionSujetForProprietaire(Sujet sujet,Personne proprietaire) {
+  Question getDerniereVersionQuestionForProprietaire(Question question,Personne proprietaire) {
     // todofsil : implémenter la methode
-    return sujet
+    return question
   }
 
-  /**
-   * Change le titre du sujet
-   * @param sujet le sujet à modifier
-   * @param nouveauTitre  le titre
-   * @return le sujet
-   */
-  Sujet setTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
-    // verifie que c'est sur la derniere version du sujet editable que l'on
-    // travaille
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet,proprietaire)
-    leSujet.titre = nouveauTitre
-    leSujet.titreNormalise = StringUtils.normalise(nouveauTitre)
-    leSujet.save()
-    return sujet
-  }
+
 
   /**
    * Modifie les proprietes du sujet passé en paramètre
@@ -96,24 +80,24 @@ class QuestionService {
    * @param proprietaire le proprietaire
    * @return  le sujet
    */
-  Sujet setProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
+  Question updateProprietes(Question question, Map proprietes, Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet,proprietaire)
+    Question laQuestion = getDerniereVersionQuestionForProprietaire(question,proprietaire)
 
-    if (proprietes.titre && leSujet.titre != proprietes.titre) {
-      leSujet.titreNormalise = StringUtils.normalise(proprietes.titre)
+    if (proprietes.titre && laQuestion.titre != proprietes.titre) {
+      laQuestion.titreNormalise = StringUtils.normalise(proprietes.titre)
     }
-     if (proprietes.presentation && leSujet.presentation != proprietes.presentation) {
-      leSujet.presentationNormalise = StringUtils.normalise(proprietes.presentation)
-    }
-    leSujet.properties = proprietes
-    leSujet.save()
-    return leSujet
+
+    laQuestion.properties = proprietes
+    // todofsil : gerer le specifique
+    question.specification = "specif pour question type ${question.type.nom}"
+    laQuestion.save()
+    return laQuestion
   }
 
   /**
-   * Recherche de sujets
+   * Recherche de questions
    * @param chercheur la personne effectuant la recherche
    * @param patternTitre le pattern saisi pour le titre
    * @param patternAuteur le pattern saisi pour l'auteur
@@ -124,23 +108,23 @@ class QuestionService {
    * la pagination
    * @return la liste des sujets
    */
-  List<Sujet> findSujets(Personne chercheur,
+  List<Question> findQuestions(Personne chercheur,
                          String patternTitre,
                          String patternAuteur,
-                         String patternPresentation,
+                         String patternSpecification,
                          Matiere matiere,
                          Niveau niveau,
-                         SujetType sujetType,
+                         QuestionType questionType,
                          Map paginationAndSortingSpec = null) {
     if (!chercheur) {
-      throw new IllegalArgumentException("sujet.recherche.chercheur.null")
+      throw new IllegalArgumentException("question.recherche.chercheur.null")
     }
     if (paginationAndSortingSpec == null) {
       paginationAndSortingSpec = [:]
     }
 
-    def criteria = Sujet.createCriteria()
-    List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
+    def criteria = Question.createCriteria()
+    List<Question> questions = criteria.list(paginationAndSortingSpec) {
       if (patternAuteur) {
         String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
         proprietaire {
@@ -153,8 +137,8 @@ class QuestionService {
       if (patternTitre) {
         like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
       }
-      if (patternPresentation) {
-        like "presentationNormalise", "%${StringUtils.normalise(patternPresentation)}%"
+      if (patternSpecification) {
+        like "specificationNormalise", "%${StringUtils.normalise(patternSpecification)}%"
       }
       if (matiere) {
         eq "matiere", matiere
@@ -162,8 +146,8 @@ class QuestionService {
       if (niveau) {
         eq "niveau", niveau
       }
-      if (sujetType) {
-        eq "sujetType", sujetType
+      if (questionType) {
+        eq "type", questionType
       }
       or {
         eq 'proprietaire', chercheur
@@ -178,31 +162,9 @@ class QuestionService {
 
       }
     }
-    return sujets
+    return questions
   }
 
-
-  /**
-   * Recherche de tous les sujet pour un proprietaire donné
-   * @param chercheur la personne effectuant la recherche
-   * @param paginationAndSortingSpec les specifications pour l'ordre et
-   * la pagination
-   * @return la liste des sujets
-   */
-  List<Sujet> findSujetsForProprietaire(Personne proprietaire,
-                                        Map paginationAndSortingSpec = null) {
-     return findSujets(proprietaire,null, null, null, null, null,null,
-                       paginationAndSortingSpec)
-  }
-
-
-  /**
-   *
-   * @return  la liste de tous les types de sujet
-   */
-  List<SujetType> getAllSujetTypes() {
-    return SujetType.getAll()
-  }
 
 }
 

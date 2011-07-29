@@ -51,7 +51,7 @@ class SujetService {
    * @param nouveauTitre  le titre
    * @return le sujet
    */
-  Sujet setTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
+  Sujet updateTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet,proprietaire)
@@ -68,7 +68,7 @@ class SujetService {
    * @param proprietaire le proprietaire
    * @return  le sujet
    */
-  Sujet setProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
+  Sujet updateProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet,proprietaire)

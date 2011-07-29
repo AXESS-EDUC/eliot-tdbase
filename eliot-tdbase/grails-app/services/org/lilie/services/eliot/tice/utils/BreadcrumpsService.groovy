@@ -71,9 +71,13 @@ class BreadcrumpsService {
    * @return
    */
   BreadcrumpsLien lienRetour() {
-    def lien
+    def lien = null
     synchronized (liens) {
-      lien = liens.get(liens.size()-2)
+      if (liens.size() > 1) {
+        lien = liens.get(liens.size()-2)
+      } else if (liens.size() > 0) {
+        lien = liens.get(liens.size()-1)
+      }
     }
     return lien
   }

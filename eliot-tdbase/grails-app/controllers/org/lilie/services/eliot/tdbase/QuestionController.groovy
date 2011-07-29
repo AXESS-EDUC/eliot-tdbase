@@ -38,7 +38,12 @@ class QuestionController {
 
   BreadcrumpsService breadcrumpsService
   ProfilScolariteService profilScolariteService
+  QuestionService questionService
 
+  /**
+   *
+   * Action "edite"
+   */
   def edite() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.edite.titre"))
     Question question
@@ -58,8 +63,22 @@ class QuestionController {
     ]
   }
 
+  /**
+   *
+   * Action "enregistre"
+   */
   def enregistre() {
-    Question question = Question.get(params.id)
+    Question question
+    Personne personne = authenticatedPersonne
+    if (params.id) {
+      question = Question.get(params.id)
+      questionService.updateProprietes(question,params,personne)
+    } else {
+      question = questionService.createQuestion(params, personne)
+    }
+    if (!question.hasErrors()) {
+      request.messageCode = "question.enregistre.succes"
+    }
     render(view: 'edite', model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),

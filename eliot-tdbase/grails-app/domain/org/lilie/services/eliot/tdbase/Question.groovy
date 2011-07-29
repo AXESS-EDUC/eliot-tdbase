@@ -34,6 +34,7 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.Attachement
+import org.lilie.services.eliot.tice.CopyrightsType
 
 /**
  * Classe représentant une question
@@ -49,6 +50,7 @@ class Question {
 
   int versionQuestion
   String specification
+  String specificationNormalise
   Boolean estAutonome
   Boolean publie
 
@@ -59,6 +61,7 @@ class Question {
   Etablissement etablissement
   Matiere matiere
   Niveau niveau
+  CopyrightsType copyrightsType
   Publication publication
   List<QuestionArborescence>  questionArborescenceFilles
   List<QuestionAttachement>  questionAttachements
@@ -76,6 +79,7 @@ class Question {
 
   static constraints = {
     questionDerniereVersion(nullable: true)
+    specificationNormalise(nullable: true)
     etablissement(nullable: true)
     matiere(nullable: true)
     niveau(nullable: true)

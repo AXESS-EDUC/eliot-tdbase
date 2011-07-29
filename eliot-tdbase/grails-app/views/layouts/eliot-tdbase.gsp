@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -79,32 +80,55 @@
           <ul>
             <li title="Nouveau">
               <g:link controller="sujet" action="nouveau"
-                      title="Pour créer un nouveau sujet" params="[bcInit:true]">Nouveau</g:link>
+                      title="Pour créer un nouveau sujet"
+                      params="[bcInit:true]">Nouveau</g:link>
             </li>
             <li title="Rechercher">
               <g:link controller="sujet" action="recherche"
-                      title="Pour rechercher des sujets" params="[bcInit:true]">Rechercher</g:link>
+                      title="Pour rechercher des sujets"
+                      params="[bcInit:true]">Rechercher</g:link>
             </li>
             <li title="Mes sujets">
               <g:link controller="sujet" action="mesSujets"
-                      title="Mes sujets" params="[bcInit:true]">Mes sujets</g:link>
+                      title="Mes sujets"
+                      params="[bcInit:true]">Mes sujets</g:link>
             </li>
           </ul>
         </li>
         <li id="menu-item-contributions">
           <a title="Mes contributions">Mes contributions</a>
           <ul>
+            <li>Nouveau</li>
+            <li title="Nouvelle question">
+                  <g:link controller="question" action="edite"
+                          title="Pour créer une nouvelle question"
+                          params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.MultipleChoice.id]">Nouvelle question</g:link>
+            </li>
+            <li title="Nouveau document">
+                  <g:link controller="question" action="edite"
+                          title="Pour créer un nouveau document"
+                          params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.Document.id]">Nouveau document</g:link>
+            </li>
+            <li title="Nouvel élément d'énoncé">
+                  <g:link controller="question" action="edite"
+                          title="Pour créer un nouvel élément d'énoncé"
+                          params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.Statement.id]">Nouvel élément d'énoncé</g:link>
+            </li>
+            <li><hr/></li>
+            <li>
+              Rechercher
+            </li>
             <li title="Questions">
               <a title="Rechercher mes questions"
-                 href="#">Questions</a>
+                 href="#">Mes Questions</a>
             </li>
             <li title="Documents">
               <a title="Rechercher mes documents"
-                 href="#">Documents</a>
+                 href="#">Mes Documents</a>
             </li>
             <li title="Enonces">
               <a title="Rechercher mes éléments d'énoncé"
-                 href="#">Eléments d'énoncés</a>
+                 href="#">Mes Eléments d'énoncés</a>
             </li>
           </ul>
         </li>

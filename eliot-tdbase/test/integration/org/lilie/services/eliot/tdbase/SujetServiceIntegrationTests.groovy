@@ -5,7 +5,6 @@ import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.utils.StringUtils
 
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -113,7 +112,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
 
     assertEquals(1,res.size())
 
-    sujetService.setProprietes(sujet1,[publie:true],personne1)
+    sujetService.updateProprietes(sujet1,[publie:true],personne1)
     res = sujetService.findSujets(personne2, null,null,
                                       null,null,null, null)
 
@@ -131,7 +130,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
             titre: "titre : Un sujet avé des accents àgravê",
             'sujetType.id': 1
     ]
-    sujetService.setProprietes(sujet1,propsSujet1,personne1)
+    sujetService.updateProprietes(sujet1,propsSujet1,personne1)
 
     res = sujetService.findSujets(personne1, "avê",null,
                                       null,null,null, null)
@@ -143,7 +142,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
             presentation: "pres : Un sujet avé des accents àgravê",
             'sujetType.id': 1
     ]
-    sujetService.setProprietes(sujet1,propsSujet1,personne1)
+    sujetService.updateProprietes(sujet1,propsSujet1,personne1)
 
     res = sujetService.findSujets(personne1, null,null,
                                       "avê",null,null, null)

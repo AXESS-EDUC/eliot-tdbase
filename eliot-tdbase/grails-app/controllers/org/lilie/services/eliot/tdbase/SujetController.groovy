@@ -119,7 +119,7 @@ class SujetController {
     if (sujetCmd.sujetId) {
       sujet = Sujet.get(sujetCmd.sujetId)
       sujetEnEdition = true
-      sujetService.setTitreSujet(sujet, sujetCmd.sujetTitre, personne)
+      sujetService.updateTitreSujet(sujet, sujetCmd.sujetTitre, personne)
     } else {
       sujet = sujetService.createSujet(personne, sujetCmd.sujetTitre)
     }
@@ -142,7 +142,7 @@ class SujetController {
   def enregistrePropriete() {
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
-    Sujet sujetModifie = sujetService.setProprietes(sujet, params, proprietaire)
+    Sujet sujetModifie = sujetService.updateProprietes(sujet, params, proprietaire)
     if (!sujet.hasErrors()) {
       request.messageCode = "sujet.enregistre.succes"
     }
