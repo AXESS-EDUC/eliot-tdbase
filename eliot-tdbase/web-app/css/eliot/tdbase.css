@@ -1,85 +1,84 @@
 h1 {
-	margin:15px;
-	font-family:inherit;
+    margin: 15px;
+    font-family: inherit;
 }
 
 h2 {
-	margin-top:10px;
-	margin-bottom:10px;
-	font-family:inherit;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: inherit;
 }
 
 h2.doc_title {
-	
+
 }
 
 p img {
-	float:none;
-	margin:0px 0px 0px 0px;
+    float: none;
+    margin: 0px 0px 0px 0px;
 
 }
 
 textarea {
-	height:auto;
-	width:auto;
+    height: auto;
+    width: auto;
 }
 
 .portal-form_container {
-	padding-left:2em;
-	padding-right: 2em;
+    padding-left: 2em;
+    padding-right: 2em;
 }
 
 .label {
-	color: #3F61A0;
-	font-weight: bold;
-	font-size: 1em;
-	text-align: right;
-	vertical-align: middle;
+    color: #3F61A0;
+    font-weight: bold;
+    font-size: 1em;
+    text-align: right;
+    vertical-align: middle;
 }
 
 .portal-form_container table {
-	border:0;
-	margin-left:auto;
-	margin-right: auto;
-	margin-top:1em;
+    border: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
 }
 
 .portal-form_container td {
-	border:0;
+    border: 0;
 }
 
-
 table table, table table td {
-	margin:0;
-	padding:0;
+    margin: 0;
+    padding: 0;
 }
 
 .portal-form_container table table {
-	width: 100%;
+    width: 100%;
 }
+
 /*******************************************************************************
 
 Custom logo and menu styles
 
 ********************************************************************************/
 #logo {
-	background-image:url("../../images/eliot/tdbase.png");
-	background-repeat: no-repeat;
-	padding-left:62px;
-	font-size:2.5em;
-	font-family:Georgia,Times,serif;
-	vertical-align:middle;
-	line-height:54px;
-	height:64px;
-	width:auto;
-	text-align:left;
-	color:#244A92;
+    background-image: url("../../images/eliot/tdbase.png");
+    background-repeat: no-repeat;
+    padding-left: 62px;
+    font-size: 2.5em;
+    font-family: Georgia, Times, serif;
+    vertical-align: middle;
+    line-height: 54px;
+    height: 64px;
+    width: auto;
+    text-align: left;
+    color: #244A92;
 }
 
 .portal-menu {
-	font-size:1.1em;	
+    font-size: 1.1em;
 }
-
 
 /*******************************************************************************
 
@@ -87,31 +86,31 @@ styles for TDBase tables
 
 ********************************************************************************/
 /*div.portal-default_table {*/
-	/*border:0;*/
-	/*padding-top:15px;	*/
+/*border:0;*/
+/*padding-top:15px;	*/
 /*}*/
 
 div.portal-default_table tr {
-	height:10px;
+    height: 10px;
 }
 
 div.portal-default_table table {
-	color: #555;
-	border: 2px solid #728CBD;
-	border-collapse: collapse;
-	width: 100%;
-	margin: auto;
-	font-size: 11px;
+    color: #555;
+    border: 2px solid #728CBD;
+    border-collapse: collapse;
+    width: 100%;
+    margin: auto;
+    font-size: 11px;
 }
 
 div.tdbase_layout_table table {
-	border:0;
-	padding: 2px;
-	margin:2px;
+    border: 0;
+    padding: 2px;
+    margin: 2px;
 }
 
 div.tdbase_layout_table td {
-	border:0;
+    border: 0;
 }
 
 /**div.tdbase_layout_table table tbody {
@@ -143,39 +142,39 @@ div.tdbase_layout_table table tbody tr td {
 }
 */
 td.insider_label {
-	text-align:right;
-	background-color: #F3F6FB;
-	color: #3F61A0;
-	width:50px;
-	padding-bottom:2px;
+    text-align: right;
+    background-color: #F3F6FB;
+    color: #3F61A0;
+    width: 50px;
+    padding-bottom: 2px;
 }
 
 td.inspect_field {
-	text-align:left;
-	background-color: #F3F6FB;
-	color: #3F61A0;
-	padding-bottom:2px;
+    text-align: left;
+    background-color: #F3F6FB;
+    color: #3F61A0;
+    padding-bottom: 2px;
 }
 
 td.ERXMatrixTableCell {
-	border:none;
-	margin-bottom:0px;
-	padding-bottom:0px;
-	width: 95%;
-	line-height:1;
+    border: none;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    width: 95%;
+    line-height: 1;
 }
 
 table.ERXMatrixTable {
-	border:none;
-	margin:0px;
-	width: 100%;
+    border: none;
+    margin: 0px;
+    width: 100%;
 }
 
 table.ERXMatrixTable tbody tr td {
-	border:none;
-	margin:0px;
-	padding-bottom:0px;
-	text-align:left;
+    border: none;
+    margin: 0px;
+    padding-bottom: 0px;
+    text-align: left;
 }
 
 /*******************************************************************************
@@ -185,16 +184,16 @@ styles for TDBase drag and drop operations
 ********************************************************************************/
 
 div.item_reordering_droparea {
-  				clear:both;
-  				border:1px solid #728CBD;
-  				background-color:white;
-  				padding:2px;
-  				width:780px;
-  				margin-top:10px
+    clear: both;
+    border: 1px solid #728CBD;
+    background-color: white;
+    padding: 2px;
+    width: 780px;
+    margin-top: 10px
 }
-		
-div.item_reordering_droparea_active { 
-	background-color: #728CBD;
+
+div.item_reordering_droparea_active {
+    background-color: #728CBD;
 }
 
 /*******************************************************************************
@@ -203,68 +202,75 @@ Style for the graphic match interaction :
 
 ********************************************************************************/
 
-	div.gmactive {
-		background-color:#728CBD;
-	}
-	div.gmdropArea {
-		background-color:#F3F6FB;
-		width:inherit;
-		height:inherit;
-		font-size: x-small;
-	}
-	span.gmdroppableItem {
-		background-color:white;
-		margin-right: 10px;
-		margin-left: 10px;
-		padding-top: 2px;
-		padding-bottom: 2px;
-		padding-left : 2px;
-		padding-right: 2px;
-		font-size: x-small;
-	}
-	.reorderableItem {
-		background-color:white;
-		margin:10px;
-		padding-bottom: 5px;
-		padding-top:5px;
-		padding-left : 2px;
-		padding-right: 2px;
-		font-size: x-small;
-		cursor: move;
-	}
-	
+div.gmactive {
+    background-color: #728CBD;
+}
+
+div.gmdropArea {
+    background-color: #F3F6FB;
+    width: inherit;
+    height: inherit;
+    font-size: x-small;
+}
+
+span.gmdroppableItem {
+    background-color: white;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: x-small;
+}
+
+.reorderableItem {
+    background-color: white;
+    margin: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: x-small;
+    cursor: move;
+}
+
 /*******************************************************************************
 
 Style for the association interaction :
 
 ********************************************************************************/
 
-	div.association_droparea {
-  		clear:both;
-  		border:1px solid #F3F6FB;
-  		background-color:white;
-  		height:30px;
-  		width:200px;
-  		margin-top:5px;
-  		text-align: center;
-	}			
-	div.association_droparea_active { background-color: #728CBD;}
-	div.filledArea  {
-  		clear:both;
-  		border:1px solid #E8A400;
-  		background-color:white;
-  		width:200px;
-  		margin-top:5px;
-  		padding-top:7px;
-  		padding-bottom:7px;
-  		text-align:center;
-	}
-	
+div.association_droparea {
+    clear: both;
+    border: 1px solid #F3F6FB;
+    background-color: white;
+    height: 30px;
+    width: 200px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+div.association_droparea_active {
+    background-color: #728CBD;
+}
+
+div.filledArea {
+    clear: both;
+    border: 1px solid #E8A400;
+    background-color: white;
+    width: 200px;
+    margin-top: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    text-align: center;
+}
+
 .portal-form_container_large {
-	width:100%;
-	margin-left:auto;
-	margin-right:auto;
-	border:1px solid #728CBD;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #728CBD;
 }
 
 /*******************************************************************************
@@ -273,35 +279,49 @@ Style for main page :
 
 ********************************************************************************/
 .left-column {
-	  background:rgb(203,219,234);
-	  margin-top:10px;
-	  padding:5px;
-	  border: 1px solid #153E7E ;
+    background: rgb(203, 219, 234);
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #153E7E;
 }
 
 .left-column ul li {
-	  color : #153E7E;
+    color: #153E7E;
 }
 
 .center-column {
-	  background:#f5fffa;
-	  margin-top:10px;
-	  padding:5px;
-	  border: 1px solid #153E7E ;
+    background: #f5fffa;
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #153E7E;
 }
 
 .right-column {
-	  color : #153E7E;
-	  background:rgb(203,219,234);
-	  margin-top:10px;
-	  padding:5px;
-	  border: 1px solid #153E7E ;
+    color: #153E7E;
+    background: rgb(203, 219, 234);
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #153E7E;
 }
 
-.app-name {     
-	  font-weight:bold;
-      color:#153E7E;
-      font-family:Arial,Sans-Serif;
-      font-size:xx-large;
-      font-style:italic;
+.app-name {
+    font-weight: bold;
+    color: #153E7E;
+    font-family: Arial, Sans-Serif;
+    font-size: xx-large;
+    font-style: italic;
+}
+
+/*******************************************************************************
+Style custom eliot-tdbase
+@author franck silvestre
+*******************************************************************************/
+
+.tdbase-sujet-liste-elements {
+    background: #f5fffa;
+    margin: 15px;
+    padding: 5px;
+    border: 1px solid #153E7E;
+    width: 30%;
+    float: right;
 }

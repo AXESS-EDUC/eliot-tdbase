@@ -101,4 +101,11 @@ class Sujet {
     questionsSequences(lazy: false)
   }
 
+  /**
+   *
+   * @return la liste des questions du sujet
+   */
+  List<Question> getQuestions() {
+     questionsSequences*.question
+  }
 }

@@ -87,7 +87,7 @@
     </div>
   </g:if>
   <form method="post">
-    <div class="portal-form_container">
+    <div class="portal-form_container" style="width: 80%;">
       <table>
         <tr>
           <td class="label">

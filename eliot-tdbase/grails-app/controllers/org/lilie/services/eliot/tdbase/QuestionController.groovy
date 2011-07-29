@@ -55,13 +55,18 @@ class QuestionController {
     } else {
       question = Question.get(params.id)
     }
+    Sujet sujet = null
+    if (params.sujetId) {
+      sujet = Sujet.get(params.sujetId)
+    }
     Personne personne = authenticatedPersonne
     [
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne)
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujet: sujet
     ]
   }
 
@@ -78,14 +83,41 @@ class QuestionController {
     } else {
       question = questionService.createQuestion(params, personne)
     }
+    Sujet sujet = null
+    if (params.sujetId) {
+      sujet = Sujet.get(params.sujetId)
+    }
     if (!question.hasErrors()) {
       request.messageCode = "question.enregistre.succes"
     }
     render(view: 'edite', model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
-           question: question
+           question: question,
+            sujet: sujet
            ])
+  }
+
+  def enregistreInsert() {
+    Question question
+    Personne personne = authenticatedPersonne
+    if (params.id) {
+      question = Question.get(params.id)
+      questionService.updateProprietes(question,params,personne)
+    } else {
+      question = questionService.createQuestion(params, personne)
+    }
+    Sujet sujet = Sujet.get(params.sujetId)
+    if (!question.hasErrors()) {
+      request.messageCode = "question.enregistre.succes"
+    }
+    render(view: 'edite', model: [
+           liens: breadcrumpsService.liens,
+           lienRetour: breadcrumpsService.lienRetour(),
+           question: question,
+           sujet: sujet
+           ])
+
   }
 
   /**

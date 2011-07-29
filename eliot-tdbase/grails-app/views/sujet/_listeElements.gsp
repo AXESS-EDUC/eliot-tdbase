@@ -1,4 +1,3 @@
-<%@ page import="org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -27,47 +26,16 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="jquery"/>
-  <r:script>
-    $(function() {
-      $('#menu-item-sujets').addClass('actif');
-    });
-  </r:script>
-  <title>TDBase - Ajout d'un élément</title>
-</head>
-
-<body>
-
-<div class="column span-22 last middle">
-  <g:render template="/breadcrumps" model="[liens: liens]"/>
-  <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
-  <div style="width:80%; padding:15px; margin: auto;">
-  <h4>Créer et ajouter un élément</h4>
+<div class="tdbase-sujet-liste-elements">
+  <h4>Dans votre sujet...</h4>
   <ul>
-    <li><g:link action="edite" controller="question" params="[creation:true, questionTypeId:QuestionTypeEnum.Statement.id, sujetId:sujet.id]" >Un élément d'énoncé</g:link></li>
-    <li>Un document</li>
-    <li>Une question de type...</li>
+    <g:if test="${sujet.questions}">
+      <g:each in="${sujet.questions}" var="question">
+        <li>${element.question}</li>
+      </g:each>
+    </g:if>
+    <g:else>
+      Aucun élément
+    </g:else>
   </ul>
-
-  <h4>Rechercher et ajouter un élément</h4>
-  <ul>
-    <li>Un élément d'énoncé</li>
-    <li>Un document</li>
-    <li>Une question de type...</li>
-  </ul>
-
-  <h4>Importer et ajouter un élément</h4>
-  <ul>
-    <li>Un élément d'énoncé</li>
-    <li>Un document</li>
-    <li>Une question de type...</li>
-  </ul>
-  </div>
 </div>
-
-</body>
-</html>

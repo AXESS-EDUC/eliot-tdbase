@@ -162,8 +162,9 @@ class SujetController {
    */
   def ajouteElement() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"))
+    Sujet sujet = Sujet.get(params.id)
     [
-            sujetId: params.id,
+            sujet: sujet,
             liens: breadcrumpsService.liens
     ]
   }

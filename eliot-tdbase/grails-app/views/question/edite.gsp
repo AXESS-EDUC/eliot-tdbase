@@ -57,6 +57,10 @@
     </div>
   </g:if>
 
+  <g:if test="${sujet}">
+    <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
+  </g:if>
+
   <form method="post"
         action="#">
     <div class="portal-form_container">
@@ -108,7 +112,14 @@
     <div class="form_actions">
       <g:link action="${lienRetour.action}" controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link> |
+      <g:if test="${sujet}">
+        <g:hiddenField name="sujetId" value="${sujet.id}"/>
+         <g:actionSubmit value="Enregistrer" action="enregistreInsert"
+                         title="Enregistrer et insérer dans le sujet"/>
+      </g:if>
+      <g:else>
       <g:actionSubmit value="Enregistrer" action="enregistre" title="Enregistrer"/>
+        </g:else>
     </div>
   </form>
 </div>

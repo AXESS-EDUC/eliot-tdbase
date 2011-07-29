@@ -133,7 +133,7 @@
         <tr>
           <td class="label">Description :</td>
           <td>
-            <g:textArea cols="80" rows="10" name="presentation" value="${sujet.presentation}"/>
+            <g:textArea cols="60" rows="10" name="presentation" value="${sujet.presentation}"/>
           </td>
         </tr>
       </table>
