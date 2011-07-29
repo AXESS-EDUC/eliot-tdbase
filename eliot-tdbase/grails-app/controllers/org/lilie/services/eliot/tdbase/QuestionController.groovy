@@ -31,10 +31,12 @@ package org.lilie.services.eliot.tdbase
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.lilie.services.eliot.tice.scolarite.Matiere
 
 class QuestionController {
 
-  static defaultAction = "edite"
+  static defaultAction = "recherche"
 
   BreadcrumpsService breadcrumpsService
   ProfilScolariteService profilScolariteService
@@ -85,6 +87,59 @@ class QuestionController {
            question: question
            ])
   }
+
+  /**
+   *
+   * Action "recherche"
+   */
+  def recherche(RechercheQuestionCommand rechCmd) {
+    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
+    Personne personne = authenticatedPersonne
+    def questions = questionService.findQuestions(
+            personne,
+            rechCmd.patternTitre,
+            rechCmd.patternAuteur,
+            rechCmd.patternSpecification,
+            rechCmd.estAutonome,
+            Matiere.get(rechCmd.matiereId),
+            Niveau.get(rechCmd.niveauId),
+            QuestionType.get(rechCmd.typeId),
+            params
+    )
+    [
+            liens: breadcrumpsService.liens,
+            afficheFormulaire: true,
+            typesQuestion: questionService.getAllQuestionTypes(),
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            questions: questions,
+            rechercheCommand: rechCmd
+    ]
+  }
+
 }
 
 
+class RechercheQuestionCommand {
+  String patternTitre
+  Boolean estAutonome
+  String patternAuteur
+  String patternSpecification
+
+  Long matiereId
+  Long typeId
+  Long niveauId
+
+  Map toParams() {
+    [
+            patternTitre: patternTitre,
+            estAutonome: estAutonome,
+            patternPresentation: patternSpecification,
+            matiereId: matiereId,
+            typeId: typeId,
+            niveauId: niveauId
+    ]
+  }
+
+}

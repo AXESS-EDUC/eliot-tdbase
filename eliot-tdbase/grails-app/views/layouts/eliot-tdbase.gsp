@@ -119,16 +119,21 @@
               Rechercher
             </li>
             <li title="Questions">
-              <a title="Rechercher mes questions"
-                 href="#">Mes Questions</a>
+              <g:link controller="question" action="recherche"
+                          title="Rechercher mes questions"
+                          params="[bcInit:true]">Mes questions</g:link>
+
             </li>
             <li title="Documents">
-              <a title="Rechercher mes documents"
-                 href="#">Mes Documents</a>
+              <g:link controller="question" action="recherche"
+                          title="Rechercher mes documents"
+                          params="[bcInit:true, typeId:QuestionTypeEnum.Document.id]">Mes documents</g:link>
+
             </li>
             <li title="Enonces">
-              <a title="Rechercher mes éléments d'énoncé"
-                 href="#">Mes Eléments d'énoncés</a>
+              <g:link controller="question" action="recherche"
+                          title="Rechercher mes éléménts d'énoncé"
+                          params="[bcInit:true, typeId:QuestionTypeEnum.Statement.id]">Mes éléments d'énoncé</g:link>
             </li>
           </ul>
         </li>

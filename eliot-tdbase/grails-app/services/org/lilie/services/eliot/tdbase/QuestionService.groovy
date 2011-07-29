@@ -112,6 +112,7 @@ class QuestionService {
                          String patternTitre,
                          String patternAuteur,
                          String patternSpecification,
+                         Boolean estAutonome,
                          Matiere matiere,
                          Niveau niveau,
                          QuestionType questionType,
@@ -140,6 +141,9 @@ class QuestionService {
       if (patternSpecification) {
         like "specificationNormalise", "%${StringUtils.normalise(patternSpecification)}%"
       }
+      if (estAutonome) {
+        eq "estAutonome", true
+      }
       if (matiere) {
         eq "matiere", matiere
       }
@@ -165,6 +169,13 @@ class QuestionService {
     return questions
   }
 
+  /**
+   *
+   * @return  la liste de tous les types de question
+   */
+  List<QuestionType> getAllQuestionTypes() {
+    return QuestionType.getAll()
+  }
 
 }
 

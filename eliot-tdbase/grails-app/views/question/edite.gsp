@@ -32,7 +32,7 @@
   <r:require modules="jquery"/>
   <r:script>
     $(function() {
-      $('#menu-item-sujets').addClass('actif');
+      $('#menu-item-contributions').addClass('actif');
     });
   </r:script>
   <title>TDBase - Edition d'une question</title>
