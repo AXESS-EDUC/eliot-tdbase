@@ -27,8 +27,8 @@
   --}%
 
 <tr>
-  <td class="label">Le spécifique :</td>
+  <td class="label">Énoncé :</td>
   <td>
-    Statement edition
+    <g:textArea name="specification" rows="10" cols="55" value="${question.specification}"/>
   </td>
 </tr>

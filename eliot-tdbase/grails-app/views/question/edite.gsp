@@ -79,6 +79,29 @@
             ${question.type.nom}
           </td>
         </tr>
+        <g:if test="${!question.id && sujet}">
+          <tr>
+          <td class="label">Mati&egrave;re :</td>
+          <td>
+            <g:select name="matiere.id" value="${sujet.matiere?.id}"
+                      noSelection="${['null':'Sélectionner une matière...']}"
+                      from="${matieres}"
+                      optionKey="id"
+                      optionValue="libelleLong"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">Niveau :</td>
+          <td>
+            <g:select name="niveau.id" value="${sujet.niveau?.id}"
+                      noSelection="${['null':'Sélectionner un niveau...']}"
+                      from="${niveaux}"
+                      optionKey="id"
+                      optionValue="libelleLong"/>
+          </td>
+        </tr>
+        </g:if>
+        <g:else>
         <tr>
           <td class="label">Mati&egrave;re :</td>
           <td>
@@ -99,15 +122,16 @@
                       optionValue="libelleLong"/>
           </td>
         </tr>
+          </g:else>
         <tr>
-          <td class="label">Autonome :</td>
+          <td class="label">Autonome&nbsp;:</td>
           <td>
             <g:checkBox name="estAutonome" title="Autonome"
                         checked="${question.estAutonome}"/>
           </td>
         </tr>
         <g:render
-                template="${question.type.code}/${question.type.code}Edition"/>
+                template="${question.type.code}/${question.type.code}Edition" model="[question:question]"/>
       </table>
     </div>
     <g:hiddenField name="id" value="${question.id}"/>

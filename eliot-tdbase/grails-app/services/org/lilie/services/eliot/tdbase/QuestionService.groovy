@@ -56,7 +56,7 @@ class QuestionService {
     )
     question.properties = proprietes
     // todofsil : gerer le specifique
-    question.specification = "specif pour question type ${question.type.nom}"
+    //question.specification = "specif pour question type ${question.type.nom}"
     question.save()
     return question
   }
@@ -92,7 +92,7 @@ class QuestionService {
 
     laQuestion.properties = proprietes
     // todofsil : gerer le specifique
-    question.specification = "specif pour question type ${question.type.nom}"
+    //question.specification = "specif pour question type ${question.type.nom}"
     laQuestion.save()
     return laQuestion
   }

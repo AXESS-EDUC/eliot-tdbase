@@ -106,8 +106,58 @@
         <g:hiddenField name="sujetId" value="${sujet.id}"/>
       </g:if>
     </div>
-
   </form>
+  <g:each in="${sujet.questions}" var="question">
+    <div class="TDBase_table_layout"
+         style="padding-left:5px;padding-right:5px;padding-bottom:0px;padding-top:0px;">
+      <table style="border:none;">
+        <tr>
+          <td style="border:none;vertical-align:middle;">
+
+            <div style="margin-bottom:2px;text-align:center;">
+              <a style="padding:1px;" href="#">
+                <img border="0" src="/eliot-tdbase/images/eliot/write-btn.gif" width="18"
+                     height="16"/>
+              </a>
+            </div>
+
+            <div style="margin-bottom:2px;text-align:center;">
+              <a style="padding:1px;" href="#">
+                          <img border="0" src="/eliot-tdbase/images/eliot/ActionIconAdd.gif" width="20" height="19" />
+            </a>
+            </div>
+
+            <div style="margin-bottom:2px;text-align:center;">
+              <a href="#"
+                 style="padding:1px;">
+                <img border="0" src="/eliot-tdbase/images/eliot/trashcan-btn.gif" width="14"
+                     height="16"/>
+              </a>
+            </div>
+          </td>
+          <td style="border:none;">
+            <div draggableID="dragged2">
+                <table style="width:100%; background-color: #F3F6FB;margin-top:0px;margin-bottom:0px;padding-left:5px;">
+                <tr>
+                  <td>
+                    <g:render template="/question/${question.type.code}/${question.type.code}Preview" model="[question:question]"/>
+                  </td>
+                </tr>
+              </table>
+
+            </div>
+
+          </td>
+          <td width="100"
+              style="border:none;vertical-align:middle;margin-bottom:0px;padding-bottom:0px;">
+
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  </g:each>
+
 </div>
 
 </body>
