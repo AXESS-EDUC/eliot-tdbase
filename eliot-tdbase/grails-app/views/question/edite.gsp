@@ -35,7 +35,7 @@
       $('#menu-item-sujets').addClass('actif');
     });
   </r:script>
-  <title>TDBase - Edition des propriétés du sujet</title>
+  <title>TDBase - Edition d'une question</title>
 </head>
 
 <body>
@@ -61,13 +61,19 @@
         action="#">
     <div class="portal-form_container">
       <table>
+
         <tr>
           <td class="label">Titre:</td>
           <td>
             <input size="80" type="text" value="${question.titre}" name="titre"/>
           </td>
         </tr>
-
+        <tr>
+          <td class="label">Type :</td>
+          <td>
+            ${question.type.nom}
+          </td>
+        </tr>
         <tr>
           <td class="label">Mati&egrave;re :</td>
           <td>

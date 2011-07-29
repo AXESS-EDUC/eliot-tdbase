@@ -29,25 +29,32 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.annuaire.Personne
 
 class QuestionController {
 
   static defaultAction = "edite"
 
   BreadcrumpsService breadcrumpsService
+  ProfilScolariteService profilScolariteService
 
   def edite() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.edite.titre"))
     Question question
     if (params.creation) {
-      question = new Question('type.id': 52, titre: 'question.nouveau.titre')
+      QuestionType questionType = QuestionType.get(params.questionTypeId)
+      question = new Question(type: questionType, titre: message(code:'question.nouveau.titre'))
     } else {
       question = Question.get(params.id)
     }
+    Personne personne = authenticatedPersonne
     [
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
-            question: question
+            question: question,
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne)
     ]
   }
 
