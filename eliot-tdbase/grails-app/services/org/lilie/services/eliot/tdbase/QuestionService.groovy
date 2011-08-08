@@ -33,12 +33,30 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.StringUtils
+import org.springframework.context.ApplicationContext
+import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 
-class QuestionService {
+/**
+ * Service de gestion des questions
+ * @author franck silvestre
+ */
+class QuestionService implements ApplicationContextAware {
 
   static transactional = false
+  ApplicationContext applicationContext
+
   SujetService sujetService
+
+  /**
+   * Récupère le service de gestion de spécification de question correspondant
+   * au type de question passé en paramètre
+   * @param questionType le type de question
+   * @return le service ad-hoc pour le type de question
+   */
+  QuestionSpecificationService questionSpecificationServiceForQuestionType(QuestionType questionType) {
+    return applicationContext.getBean("question${questionType.code}SpecificationService")
+  }
 
   /**
    * Créé une question
@@ -55,8 +73,11 @@ class QuestionService {
             copyrightsType: CopyrightsType.getDefault()
     )
     question.properties = proprietes
-    // todofsil : gerer le specifique
-    //question.specification = "specif pour question type ${question.type.nom}"
+    def specService = questionSpecificationServiceForQuestionType(question.type)
+    println()
+    println "*********** ${proprietes}"
+    println "*********** ${proprietes.specifobject}"
+    question.specification = specService.getSpecificationFromObject(proprietes.specifobject)
     question.save()
     return question
   }
@@ -67,32 +88,31 @@ class QuestionService {
    * @param proprietaire le proprietaire
    * @return la question editable
    */
-  Question getDerniereVersionQuestionForProprietaire(Question question,Personne proprietaire) {
+  Question getDerniereVersionQuestionForProprietaire(Question question, Personne proprietaire) {
     // todofsil : implémenter la methode
     return question
   }
 
-
-
   /**
    * Modifie les proprietes du sujet passé en paramètre
    * @param sujet le sujet
-   * @param proprietes  les nouvelles proprietes
+   * @param proprietes les nouvelles proprietes
    * @param proprietaire le proprietaire
-   * @return  le sujet
+   * @return le sujet
    */
   Question updateProprietes(Question question, Map proprietes, Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
-    Question laQuestion = getDerniereVersionQuestionForProprietaire(question,proprietaire)
+    Question laQuestion = getDerniereVersionQuestionForProprietaire(question, proprietaire)
 
     if (proprietes.titre && laQuestion.titre != proprietes.titre) {
       laQuestion.titreNormalise = StringUtils.normalise(proprietes.titre)
     }
 
     laQuestion.properties = proprietes
-    // todofsil : gerer le specifique
-    //question.specification = "specif pour question type ${question.type.nom}"
+    def specService = questionSpecificationServiceForQuestionType(laQuestion.type)
+    laQuestion.specification = specService.getSpecificationFromObject(proprietes.specifobject)
+    laQuestion.specificationNormalise = specService.getSpecificationNormaliseFromObject(proprietes.specifobject)
     laQuestion.save()
     return laQuestion
   }
@@ -107,15 +127,15 @@ class QuestionService {
   @Transactional
   Question createQuestionAndInsertInSujet(Map proprietesQuestion, Sujet sujet,
                                           Personne proprietaire, Integer rang = null) {
-    Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujet,proprietaire)
-    Question question = createQuestion(proprietesQuestion,proprietaire)
+    Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujet, proprietaire)
+    Question question = createQuestion(proprietesQuestion, proprietaire)
     // todofsil : trouver un moyen plus efficace gestion du rang
-    def leRang = leSujet.questions.size()+1
+    def leRang = leSujet.questions.size() + 1
     def sequence = new SujetSequenceQuestions(
             question: question,
             sujet: sujet,
             rang: leRang
-    ).save(failOnError:true)
+    ).save(failOnError: true)
     sujet.addToQuestionsSequences(sequence)
     return question
 
@@ -126,7 +146,7 @@ class QuestionService {
    * @param chercheur la personne effectuant la recherche
    * @param patternTitre le pattern saisi pour le titre
    * @param patternAuteur le pattern saisi pour l'auteur
-   * @param patternPresentation  le pattern saisi pour la presentation
+   * @param patternPresentation le pattern saisi pour la presentation
    * @param matiere la matiere
    * @param niveau le niveau
    * @param paginationAndSortingSpec les specifications pour l'ordre et
@@ -134,14 +154,16 @@ class QuestionService {
    * @return la liste des sujets
    */
   List<Question> findQuestions(Personne chercheur,
-                         String patternTitre,
-                         String patternAuteur,
-                         String patternSpecification,
-                         Boolean estAutonome,
-                         Matiere matiere,
-                         Niveau niveau,
-                         QuestionType questionType,
-                         Map paginationAndSortingSpec = null) {
+                               String patternTitre,
+                               String patternAuteur,
+                               String patternSpecification,
+                               Boolean estAutonome,
+                               Matiere matiere,
+                               Niveau niveau,
+                               QuestionType questionType,
+                               Map paginationAndSortingSpec = null) {
+    // todofsil : gerer les index de manière efficace couplée avec présentation
+    // paramètre de recherche ad-hoc
     if (!chercheur) {
       throw new IllegalArgumentException("question.recherche.chercheur.null")
     }
@@ -196,7 +218,7 @@ class QuestionService {
 
   /**
    *
-   * @return  la liste de tous les types de question
+   * @return la liste de tous les types de question
    */
   List<QuestionType> getAllQuestionTypes() {
     return QuestionType.getAll()

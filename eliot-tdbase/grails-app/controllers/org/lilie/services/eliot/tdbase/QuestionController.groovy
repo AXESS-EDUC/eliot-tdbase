@@ -33,6 +33,8 @@ import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.springframework.context.ApplicationContextAware
+import org.springframework.context.ApplicationContext
 
 class QuestionController {
 
@@ -41,6 +43,7 @@ class QuestionController {
   BreadcrumpsService breadcrumpsService
   ProfilScolariteService profilScolariteService
   QuestionService questionService
+
 
   /**
    *
@@ -59,11 +62,13 @@ class QuestionController {
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId)
     }
+    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
     Personne personne = authenticatedPersonne
     [
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             question: question,
+            specifobject: specService.getObjectFromSpecification(question.specification),
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet
@@ -90,10 +95,12 @@ class QuestionController {
     if (!question.hasErrors()) {
       request.messageCode = "question.enregistre.succes"
     }
+    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
     render(view: 'edite', model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
            question: question,
+           specifobject: specService.getObjectFromSpecification(question.specification),
             sujet: sujet
            ])
   }
@@ -109,10 +116,12 @@ class QuestionController {
     if (!question.hasErrors()) {
       request.messageCode = "question.enregistreinsert.succes"
     }
+    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
     render(view: 'edite', model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
            question: question,
+           specifobject: specService.getObjectFromSpecification(question.specification),
            sujet: sujet
            ])
 

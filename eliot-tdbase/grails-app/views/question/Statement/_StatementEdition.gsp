@@ -29,6 +29,6 @@
 <tr>
   <td class="label">Énoncé :</td>
   <td>
-    <g:textArea name="specification" rows="10" cols="55" value="${question.specification}"/>
+    <g:textArea name="specifobject.enonce" rows="10" cols="55" value="${specifobject.enonce}"/>
   </td>
 </tr>

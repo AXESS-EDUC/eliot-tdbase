@@ -56,7 +56,7 @@ class Question {
 
   Personne proprietaire
   QuestionType type
-  Question questionDerniereVersion
+  Question questionDepartBranche
 
   Etablissement etablissement
   Matiere matiere
@@ -78,7 +78,7 @@ class Question {
   ]
 
   static constraints = {
-    questionDerniereVersion(nullable: true)
+    questionDepartBranche(nullable: true)
     specificationNormalise(nullable: true)
     etablissement(nullable: true)
     matiere(nullable: true)

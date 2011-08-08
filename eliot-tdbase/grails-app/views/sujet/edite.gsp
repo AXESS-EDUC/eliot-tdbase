@@ -107,6 +107,7 @@
       </g:if>
     </div>
   </form>
+  <g:if test="${sujet}">
   <g:each in="${sujet.questions}" var="question">
     <div class="TDBase_table_layout"
          style="padding-left:5px;padding-right:5px;padding-bottom:0px;padding-top:0px;">
@@ -157,7 +158,7 @@
     </div>
 
   </g:each>
-
+   </g:if>
 </div>
 
 </body>

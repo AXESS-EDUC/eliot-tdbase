@@ -743,7 +743,8 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="date_echeance_remises" type="timestamp without time zone">
+            <column name="date_echeance_remises"
+                    type="timestamp without time zone">
                 <constraints nullable="false"/>
             </column>
             <column name="date_debut" type="timestamp without time zone"/>
@@ -814,7 +815,7 @@
             <column name="enseignant_id"/>
         </createIndex>
 
-         <addForeignKeyConstraint baseTableName="modalite_activite"
+        <addForeignKeyConstraint baseTableName="modalite_activite"
                                  baseColumnNames="etablissement_id"
                                  baseTableSchemaName="td"
                                  constraintName="fk_modalite_activite_etablissement_id"
@@ -860,7 +861,7 @@
             <column name="modalite_activite_id" type="bigint"/>
         </addColumn>
 
-         <addForeignKeyConstraint baseTableName="copie"
+        <addForeignKeyConstraint baseTableName="copie"
                                  baseColumnNames="modalite_activite_id"
                                  baseTableSchemaName="td"
                                  constraintName="fk_copie_modalite_activite_id"
@@ -898,7 +899,8 @@
         <comment>
             Modification non table copyrights_type
         </comment>
-        <renameTable oldTableName="copyrigths_type" newTableName="copyrights_type"
+        <renameTable oldTableName="copyrigths_type"
+                     newTableName="copyrights_type"
                      schemaName="tice"/>
     </changeSet>
 
@@ -945,7 +947,8 @@
             <column name="eleve_id"/>
         </createIndex>
 
-        <addUniqueConstraint tableName="reponse" columnNames="copie_id, question_id"
+        <addUniqueConstraint tableName="reponse"
+                             columnNames="copie_id, question_id"
                              schemaName="td"
                              constraintName="uk_reponse_copie_id_question_id"/>
 
@@ -963,7 +966,7 @@
         <createSequence sequenceName="copyrights_type_id_seq" schemaName="tice"
                         startValue="100"/>
 
-         <renameColumn tableName="publication" oldColumnName="copyrigths_type_id"
+        <renameColumn tableName="publication" oldColumnName="copyrigths_type_id"
                       newColumnName="copyrights_type_id" schemaName="tice"/>
 
     </changeSet>
@@ -1015,7 +1018,7 @@
         </addColumn>
     </changeSet>
 
-     <changeSet id="14" author="fsil">
+    <changeSet id="14" author="fsil">
         <comment>
             Ajout de champs "publies" pour optimiser recherche
         </comment>
@@ -1038,14 +1041,18 @@
             Ajout des champs pour gestion des version
         </comment>
         <addColumn tableName="sujet" schemaName="td">
-            <column name="date_created" type="timestamp without time zone"></column>
-            <column name="last_updated" type="timestamp without time zone"></column>
+            <column name="date_created"
+                    type="timestamp without time zone"></column>
+            <column name="last_updated"
+                    type="timestamp without time zone"></column>
             <column name="sujet_derniere_version_id" type="bigint"/>
         </addColumn>
 
         <addColumn tableName="question" schemaName="td">
-            <column name="date_created" type="timestamp without time zone"></column>
-            <column name="last_updated" type="timestamp without time zone"></column>
+            <column name="date_created"
+                    type="timestamp without time zone"></column>
+            <column name="last_updated"
+                    type="timestamp without time zone"></column>
             <column name="question_derniere_version_id" type="bigint"/>
         </addColumn>
 
@@ -1117,7 +1124,7 @@
                                  baseTableSchemaName="td"
                                  referencedTableSchemaName="td"/>
 
-        <createIndex tableName="sujet"  schemaName="td"
+        <createIndex tableName="sujet" schemaName="td"
                      indexName="idx_sujet_sujet_type_id">
             <column name="sujet_type_id"/>
         </createIndex>
@@ -1164,12 +1171,59 @@
 
     <changeSet id="19" author="fsil">
         <comment>
-            Ajout de champs normalisés pour recherche sur  questions
+            Ajout de champs normalisés pour recherche sur questions
         </comment>
 
         <addColumn tableName="question" schemaName="td">
             <column name="specification_normalise" type="text"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="20" author="fsil">
+        <comment>
+            Modification tables sujet et question pour gestion des versions
+        </comment>
+        <dropColumn tableName="sujet" columnName="sujet_derniere_version_id"
+                    schemaName="td"/>
+        <dropColumn tableName="question"
+                    columnName="question_derniere_version_id" schemaName="td"/>
+
+        <addColumn tableName="sujet"
+                   schemaName="td">
+            <column name="sujet_depart_branche_id" type="bigint"/>
+        </addColumn>
+
+        <addColumn tableName="question"
+                   schemaName="td">
+            <column name="question_depart_branche_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="sujet"
+                                 baseColumnNames="sujet_depart_branche_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_sujet_sujet_depart_branche_id"
+                                 referencedTableName="sujet"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <addForeignKeyConstraint baseTableName="question"
+                                 baseColumnNames="question_depart_branche_id"
+                                 baseTableSchemaName="td"
+                                 constraintName="fk_question_question_depart_branche_id"
+                                 referencedTableName="question"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="td"/>
+
+        <addUniqueConstraint tableName="sujet"
+                             columnNames="sujet_depart_branche_id, version_sujet, proprietaire_id"
+                             schemaName="td"
+                             constraintName="uk_sujet_version_sujet_depart_branche"/>
+
+        <addUniqueConstraint tableName="question"
+                             columnNames="question_depart_branche_id, version_question, proprietaire_id"
+                             schemaName="td"
+                             constraintName="uk_question_version_question_depart_branche"/>
+
     </changeSet>
 
 </databaseChangeLog>
