@@ -38,22 +38,12 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="eliot-tice-plugin" exported="" />
     <orderEntry type="module" module-name="eliot-tdbase-grailsPlugins" />
-    <orderEntry type="library" scope="PROVIDED" name="grails-1.4.0.M1" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="grails-2.0.0.M1" level="application" />
     <orderEntry type="module-library" exported="">
       <library name="Grails User Library (eliot-textes-plugin)">
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codenarc/CodeNarc/jars/CodeNarc-0.13.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/ant/ant/jars/ant-1.6.5.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/log4j/log4j/jars/log4j-1.2.13.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.7.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.ant/ant/jars/ant-1.7.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.groovy/groovy-all/jars/groovy-all-1.6.9.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.gmetrics/GMetrics/jars/GMetrics-0.3.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.liquibase/liquibase-core/jars/liquibase-core-2.0.1.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/postgresql/postgresql/jars/postgresql-8.4-702.jdbc4.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.springframework.security/org.springframework.security.web/jars/org.springframework.security.web-3.0.4.RELEASE.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.springframework.security/org.springframework.security.core/jars/org.springframework.security.core-3.0.4.RELEASE.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -66,7 +66,7 @@ grails.project.dependency.resolution = {
   plugins {
     compile ":hibernate:$grailsVersion"
     compile ":jquery:1.6.1.1"
-    compile ":resources:1.0"
+    compile ":resources:1.0.2"
     compile ":database-migration:0.2.1"
 
     compile ":codenarc:0.12"

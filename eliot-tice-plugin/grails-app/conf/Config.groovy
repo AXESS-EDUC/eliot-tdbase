@@ -39,3 +39,5 @@ grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.xml']
 //grails.plugins.springsecurity.userLookup.userDomainClassName = 'org.lilie.services.eliot.tice.temp.User'
 //grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'org.lilie.services.eliot.tice.temp.UserRole'
 //grails.plugins.springsecurity.authority.className = 'org.lilie.services.eliot.tice.temp.Role'
+grails.views.default.codec="none" // none, html, base64
+grails.views.gsp.encoding="UTF-8"
