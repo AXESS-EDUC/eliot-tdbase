@@ -1,3 +1,31 @@
+/*
+ * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
+ * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
+ *
+ * Lilie is free software. You can redistribute it and/or modify since
+ * you respect the terms of either (at least one of the both license) :
+ * - under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * - the CeCILL-C as published by CeCILL-C; either version 1 of the
+ * License, or any later version
+ *
+ * There are special exceptions to the terms and conditions of the
+ * licenses as they are applied to this software. View the full text of
+ * the exception in file LICENSE.txt in the directory of this software
+ * distribution.
+ *
+ * Lilie is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Licenses for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * and the CeCILL-C along with Lilie. If not, see :
+ *  <http://www.gnu.org/licenses/> and
+ *  <http://www.cecill.info/licences.fr.html>.
+ */
+
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.CopyrightsType
@@ -7,6 +35,7 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
 
+//todofsil : mettre en place controle securite
 class SujetService {
 
   static transactional = false
@@ -40,21 +69,75 @@ class SujetService {
    * @param proprietaire le proprietaire
    * @return le sujet éditable
    */
-  Sujet getDerniereVersionSujetForProprietaire(Sujet sujet,Personne proprietaire) {
-    // todofsil : implémenter la methode
-    return sujet
+  Sujet getDerniereVersionSujetForProprietaire(Sujet sujet, Personne proprietaire) {
+    if (sujet.proprietaire == proprietaire && !sujet.publie) {
+      return sujet
+    } else {
+      return recopieSujet(sujet, proprietaire)
+    }
+  }
+
+  /**
+   * Recopie un sujet
+   * - si le proprietaire de la copie est le proprietaire de l'original, on
+   * incrémente la version ; on ne crée pas de nouvelle branche :
+   * le sujet départ branche de la nouvelle version
+   * est le sujet départ branche de la version précédente
+   * - si le proprietaire de la copie est différent de l'original, on incrémente
+   * la version ; on créé une nouvelle branche : le sujet départ branche de la
+   * copie est le sujet recopié
+   * @param sujet le sujet à recopier
+   * @param proprietaire le proprietaire
+   * @return la copie du sujet
+   */
+  @Transactional
+  Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
+    // todofsil : implémenter le contrôle de sécurité
+    def versionSujet = 1
+    def sujetDepartBranche = sujet.sujetDepartBranche
+    if (sujet.proprietaire == proprietaire) {
+      versionSujet = sujet.versionSujet + 1
+    } else {
+      sujetDepartBranche = sujet
+    }
+    Sujet sujetCopie = new Sujet(
+            proprietaire: proprietaire,
+            titre: sujet.titre,
+            titreNormalise: sujet.titreNormalise,
+            presentation: sujet.presentation,
+            presentationNormalise: sujet.presentationNormalise,
+            accesPublic: false,
+            accesSequentiel: sujet.accesSequentiel,
+            ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
+            publie: false,
+            versionSujet: versionSujet,
+            sujetDepartBranche: sujetDepartBranche,
+            copyrightsType: sujet.copyrightsType,
+    )
+    sujetCopie.save()
+    // recopie de la séquence de questions
+    sujetCopie.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
+      SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
+              question: sujetQuestion.question,
+              sujet: sujetCopie,
+              rang: sujetQuestion.rang,
+              noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
+      ).save(failOnError:true)
+      sujetCopie.addToQuestionsSequences(copieSujetSequence)
+    }
+    return sujetCopie
   }
 
   /**
    * Change le titre du sujet
    * @param sujet le sujet à modifier
-   * @param nouveauTitre  le titre
+   * @param nouveauTitre le titre
    * @return le sujet
    */
   Sujet updateTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet,proprietaire)
+    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
     leSujet.titre = nouveauTitre
     leSujet.titreNormalise = StringUtils.normalise(nouveauTitre)
     leSujet.save()
@@ -64,19 +147,19 @@ class SujetService {
   /**
    * Modifie les proprietes du sujet passé en paramètre
    * @param sujet le sujet
-   * @param proprietes  les nouvelles proprietes
+   * @param proprietes les nouvelles proprietes
    * @param proprietaire le proprietaire
-   * @return  le sujet
+   * @return le sujet
    */
   Sujet updateProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet,proprietaire)
+    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
 
     if (proprietes.titre && leSujet.titre != proprietes.titre) {
       leSujet.titreNormalise = StringUtils.normalise(proprietes.titre)
     }
-     if (proprietes.presentation && leSujet.presentation != proprietes.presentation) {
+    if (proprietes.presentation && leSujet.presentation != proprietes.presentation) {
       leSujet.presentationNormalise = StringUtils.normalise(proprietes.presentation)
     }
     leSujet.properties = proprietes
@@ -89,7 +172,7 @@ class SujetService {
    * @param chercheur la personne effectuant la recherche
    * @param patternTitre le pattern saisi pour le titre
    * @param patternAuteur le pattern saisi pour l'auteur
-   * @param patternPresentation  le pattern saisi pour la presentation
+   * @param patternPresentation le pattern saisi pour la presentation
    * @param matiere la matiere
    * @param niveau le niveau
    * @param paginationAndSortingSpec les specifications pour l'ordre et
@@ -104,6 +187,8 @@ class SujetService {
                          Niveau niveau,
                          SujetType sujetType,
                          Map paginationAndSortingSpec = null) {
+    // todofsil : gerer les index de manière efficace couplée avec présentation
+    // paramètre de recherche ad-hoc
     if (!chercheur) {
       throw new IllegalArgumentException("sujet.recherche.chercheur.null")
     }
@@ -153,7 +238,6 @@ class SujetService {
     return sujets
   }
 
-
   /**
    * Recherche de tous les sujet pour un proprietaire donné
    * @param chercheur la personne effectuant la recherche
@@ -163,19 +247,17 @@ class SujetService {
    */
   List<Sujet> findSujetsForProprietaire(Personne proprietaire,
                                         Map paginationAndSortingSpec = null) {
-     return findSujets(proprietaire,null, null, null, null, null,null,
-                       paginationAndSortingSpec)
+    return findSujets(proprietaire, null, null, null, null, null, null,
+                      paginationAndSortingSpec)
   }
-
 
   /**
    *
-   * @return  la liste de tous les types de sujet
+   * @return la liste de tous les types de sujet
    */
   List<SujetType> getAllSujetTypes() {
     return SujetType.getAll()
   }
-
 
 
 }

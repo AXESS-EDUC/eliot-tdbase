@@ -64,7 +64,7 @@ class Sujet {
 
   Personne proprietaire
 
-  Sujet sujetDerniereVersion
+  Sujet sujetDepartBranche
   SujetType sujetType
   Etablissement etablissement
   Matiere matiere
@@ -77,7 +77,7 @@ class Sujet {
 
   static constraints = {
     titre(blank: false, nullable: false)
-    sujetDerniereVersion(nullable: true)
+    sujetDepartBranche(nullable: true)
     sujetType(nullable: true)
     etablissement(nullable: true)
     matiere(nullable: true)
