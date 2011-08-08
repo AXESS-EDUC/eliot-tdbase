@@ -325,3 +325,20 @@ Style custom eliot-tdbase
     width: 30%;
     float: right;
 }
+
+.tdbase-sujet-edition-question {
+    margin: 5px;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #728CBD;
+}
+
+.tdbase-sujet-edition-question-boutons {
+    text-align: right;
+    margin-top: 3px;
+}
+
+.tdbase-sujet-edition-question-preview {
+    background-color: #F3F6FB;
+    padding: 3px;
+}
