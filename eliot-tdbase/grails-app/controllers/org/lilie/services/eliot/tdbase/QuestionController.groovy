@@ -45,7 +45,8 @@ class QuestionController {
   QuestionService questionService
 
 
-  /**
+
+/**
    *
    * Action "edite"
    */
@@ -71,6 +72,28 @@ class QuestionController {
             specifobject: specService.getObjectFromSpecification(question.specification),
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujet: sujet
+    ]
+  }
+
+  /**
+   *
+   * Action "detail"
+   */
+  def detail() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "question.detail.titre"))
+    Question question
+    question = Question.get(params.id)
+    Sujet sujet = null
+    if (params.sujetId) {
+      sujet = Sujet.get(params.sujetId)
+    }
+    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
+    [
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            question: question,
+            specifobject: specService.getObjectFromSpecification(question.specification),
             sujet: sujet
     ]
   }
@@ -105,6 +128,10 @@ class QuestionController {
            ])
   }
 
+  /**
+   *
+   * Action "enregistreInsert"
+   */
   def enregistreInsert() {
     Personne personne = authenticatedPersonne
     Long sujetId = params.sujetId as Long
@@ -126,6 +153,29 @@ class QuestionController {
            ])
 
   }
+
+/**
+   *
+   * Action "insert"
+   */
+  def insert() {
+    Personne personne = authenticatedPersonne
+    Long sujetId = params.sujetId as Long
+    Sujet sujet = Sujet.get(sujetId)
+    Question question = Question.get(params.id)
+    questionService.insertQuestionInSujet(question,sujet,personne)
+    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
+    request.messageCode = "question.enregistreinsert.succes"
+    render(view: 'detail', model: [
+           liens: breadcrumpsService.liens,
+           lienRetour: breadcrumpsService.lienRetour(),
+           question: question,
+           specifobject: specService.getObjectFromSpecification(question.specification),
+           sujet: sujet
+           ])
+
+  }
+
 
   /**
    *
@@ -153,7 +203,8 @@ class QuestionController {
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             questions: questions,
-            rechercheCommand: rechCmd
+            rechercheCommand: rechCmd,
+            sujet: Sujet.get(rechCmd.sujetId)
     ]
   }
 
@@ -169,6 +220,7 @@ class RechercheQuestionCommand {
   Long matiereId
   Long typeId
   Long niveauId
+  Long sujetId
 
   Map toParams() {
     [
@@ -177,7 +229,8 @@ class RechercheQuestionCommand {
             patternPresentation: patternSpecification,
             matiereId: matiereId,
             typeId: typeId,
-            niveauId: niveauId
+            niveauId: niveauId,
+            sujetId: sujetId
     ]
   }
 

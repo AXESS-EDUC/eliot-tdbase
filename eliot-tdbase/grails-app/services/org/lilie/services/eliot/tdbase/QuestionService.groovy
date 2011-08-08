@@ -142,6 +142,28 @@ class QuestionService implements ApplicationContextAware {
   }
 
   /**
+   * Insert une question dans un sujet sujet
+   * @param question la question
+   * @param sujet le sujet
+   * @param proprietaire le propriétaire
+   * @return la question insérée
+   */
+  @Transactional
+  def insertQuestionInSujet(Question question, Sujet sujet,
+                                          Personne proprietaire, Integer rang = null) {
+    Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujet, proprietaire)
+    // todofsil : trouver un moyen plus efficace gestion du rang
+    def leRang = leSujet.questions.size() + 1
+    def sequence = new SujetSequenceQuestions(
+            question: question,
+            sujet: sujet,
+            rang: leRang
+    ).save(failOnError: true)
+    sujet.addToQuestionsSequences(sequence)
+
+  }
+
+  /**
    * Recherche de questions
    * @param chercheur la personne effectuant la recherche
    * @param patternTitre le pattern saisi pour le titre

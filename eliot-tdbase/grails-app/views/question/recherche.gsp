@@ -42,6 +42,11 @@
 <body>
 <div class="column span-22 last middle">
   <g:render template="/breadcrumps" model="[liens: liens]"/>
+
+  <g:if test="${sujet}">
+    <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
+  </g:if>
+
     <form>
       <div class="portal-form_container">
         <table>
@@ -103,6 +108,7 @@
       </div>
 
       <div class="form_actions">
+        <g:hiddenField name="sujetId" value="${sujet?.id}"/>
         <g:actionSubmit value="Rechercher" action="recherche" title="Lancer la recherche"/>
       </div>
     </form>
@@ -121,6 +127,8 @@
           <th>Niveau</th>
           <th>Matière</th>
           <th>Autonome</th>
+          <th>Détail</th>
+          <th>Modifier</th>
           <th>Mise à jour le</th>
         </tr>
         </thead>
@@ -129,8 +137,7 @@
         <g:each in="${questions}" status="i" var="questionInstance">
           <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td>
-              <g:link action="edite"
-                      id="${questionInstance.id}">${fieldValue(bean: questionInstance, field: "titre")}</g:link>
+              ${fieldValue(bean: questionInstance, field: "titre")}
             </td>
             <td>
               ${questionInstance.niveau?.libelleLong}
@@ -140,6 +147,22 @@
             </td>
             <td>
               ${questionInstance.estAutonome ? 'oui' : 'non'}
+            </td>
+            <td>
+              <g:link action="detail"
+                      id="${questionInstance.id}" params="[sujetId:sujet?.id]">
+                <img border="0"
+                     src="/eliot-tdbase/images/eliot/magglass-btn.gif"
+                     width="16" height="16"/>
+              </g:link>
+            </td>
+            <td>
+              <g:link action="edite"
+                      id="${questionInstance.id}" params="[sujetId:sujet?.id]">
+                <img border="0"
+                     src="/eliot-tdbase/images/eliot/write-btn.gif"
+                     width="18" height="16"/>
+              </g:link>
             </td>
             <td>
               ${questionInstance.lastUpdated?.format('dd/MM/yy hh:mm')}

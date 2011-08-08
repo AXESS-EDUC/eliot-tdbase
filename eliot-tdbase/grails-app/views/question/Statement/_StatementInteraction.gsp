@@ -26,4 +26,6 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-Statement interaction
+<p>
+  ${question.specification}
+</p>

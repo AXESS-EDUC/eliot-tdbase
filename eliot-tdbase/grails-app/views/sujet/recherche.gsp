@@ -124,7 +124,7 @@
             <th>Auteur</th>
           </g:if>
           <th>Accès public</th>
-          <th>Tester</th>
+          <th>Modifier</th>
           <th>Séance</th>
           <th>Mise à jour le</th>
         </tr>
@@ -134,8 +134,7 @@
         <g:each in="${sujets}" status="i" var="sujetInstance">
           <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td>
-              <g:link action="edite"
-                      id="${sujetInstance.id}">${fieldValue(bean: sujetInstance, field: "titre")}</g:link>
+              ${fieldValue(bean: sujetInstance, field: "titre")}
             </td>
             <td>
               ${sujetInstance.niveau?.libelleLong}
@@ -153,13 +152,12 @@
               ${sujetInstance.accesPublic ? 'oui' : 'non'}
             </td>
             <td>
-
-              <a href="#">
+              <g:link action="edite"
+                      id="${sujetInstance.id}">
                 <img border="0"
                      src="/eliot-tdbase/images/eliot/write-btn.gif"
                      width="18" height="16"/>
-              </a>
-
+              </g:link>
             </td>
             <td>
 

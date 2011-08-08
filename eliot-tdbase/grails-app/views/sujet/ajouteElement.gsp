@@ -48,16 +48,46 @@
   <div style="width:80%; padding:15px; margin: auto;">
   <h4>Créer et ajouter un élément</h4>
   <ul>
-    <li><g:link action="edite" controller="question" params="[creation:true, questionTypeId:QuestionTypeEnum.Statement.id, sujetId:sujet.id]" >Un élément d'énoncé</g:link></li>
-    <li>Un document</li>
-    <li>Une question de type...</li>
+    <li>
+      <g:link action="edite" controller="question"
+                params="[creation:true, questionTypeId:QuestionTypeEnum.Statement.id, sujetId:sujet.id]">
+        Un élément d'énoncé
+      </g:link>
+    </li>
+    <li>
+      <g:link action="edite" controller="question"
+                params="[creation:true, questionTypeId:QuestionTypeEnum.Document.id, sujetId:sujet.id]">
+        Un document
+      </g:link>
+    </li>
+    <li>
+      <g:link action="edite" controller="question"
+                params="[creation:true, questionTypeId:QuestionTypeEnum.MultipleChoice.id, sujetId:sujet.id]">
+        Une question de type QCM
+      </g:link>
+    </li>
   </ul>
 
   <h4>Rechercher et ajouter un élément</h4>
   <ul>
-    <li>Un élément d'énoncé</li>
-    <li>Un document</li>
-    <li>Une question de type...</li>
+    <li>
+      <g:link action="recherche" controller="question"
+                params="[typeId:QuestionTypeEnum.Statement.id, sujetId:sujet.id]">
+        Un élément d'énoncé
+      </g:link>
+    </li>
+    <li>
+      <g:link action="recherche" controller="question"
+                params="[typeId:QuestionTypeEnum.Document.id, sujetId:sujet.id]">
+        Un document
+      </g:link>
+    </li>
+    <li>
+      <g:link action="recherche" controller="question"
+                params="[typeId:QuestionTypeEnum.MultipleChoice.id, sujetId:sujet.id]">
+        Une question de type QCM
+      </g:link>
+    </li>
   </ul>
 
   <h4>Importer et ajouter un élément</h4>

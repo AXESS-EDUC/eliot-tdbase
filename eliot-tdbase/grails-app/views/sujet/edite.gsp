@@ -128,7 +128,7 @@
         </div>
         <div class="tdbase-sujet-edition-question-preview">
         <g:render
-                template="/question/${question.type.code}/${question.type.code}Preview"
+                template="/question/${question.type.code}/${question.type.code}Interaction"
                 model="[question:question]"/>
         </div>
 
