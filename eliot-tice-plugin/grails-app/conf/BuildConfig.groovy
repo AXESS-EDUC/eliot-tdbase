@@ -59,16 +59,19 @@ grails.project.dependency.resolution = {
   plugins {
     build(":tomcat:$grailsVersion",
           ":release:1.0.0.RC1",
-          ":hibernate:$grailsVersion") {
+          ) {
       export = false
     }
 
-    compile ":database-migration:0.2.1"
+    compile (":hibernate:$grailsVersion",
+             ":database-migration:0.2.1") {
+      export = false
+    }
 
     compile(":spring-security-core:1.1.3")
     //compile(":spring-security-cas:1.0.2")
 
-    compile(":codenarc:0.12") {
+    compile(":codenarc:0.15") {
       export = false
     }
 
