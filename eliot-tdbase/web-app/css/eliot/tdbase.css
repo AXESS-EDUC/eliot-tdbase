@@ -24,10 +24,6 @@ textarea {
     width: auto;
 }
 
-.portal-form_container {
-    padding-left: 2em;
-    padding-right: 2em;
-}
 
 .label {
     color: #3F61A0;
@@ -319,10 +315,9 @@ Style custom eliot-tdbase
 
 .tdbase-sujet-liste-elements {
     background: #f5fffa;
-    margin: 15px;
-    padding: 5px;
+    margin: 10px;
     border: 1px solid #153E7E;
-    width: 30%;
+    width: 25%;
     float: right;
 }
 

@@ -29,11 +29,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="jquery"/>
+  <g:javascript src="jquery/jquery-1.6.1.min.js"/>
+  <g:javascript src="eliot/tiny_mce/tiny_mce.js"/>
+
   <r:script>
     $(function() {
       $('#menu-item-contributions').addClass('actif');
     });
+  </r:script>
+  <r:script disposition="head">
+   tinyMCE.init({
+        // General options
+        language:'fr',
+        mode : "textareas",
+        theme : "advanced",
+        plugins : "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+        // Theme options
+        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,forecolor,backcolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect,|,preview",
+        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,cleanup,help,code",
+        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap,iespell,media,advhr",
+
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "bottom",
+        theme_advanced_resizing : true,
+
+        // Example content CSS (should be your site CSS)
+        content_css : "css/eliot/portal.css",
+
+        // Drop lists for link/image/media/template dialogs
+        template_external_list_url : "js/template_list.js",
+        external_link_list_url : "js/link_list.js",
+        external_image_list_url : "js/image_list.js",
+        media_external_list_url : "js/media_list.js",
+
+        // Replace values for the template plugin
+        template_replace_values : {
+                username : "Some User",
+                staffid : "991234"
+        }
+});
   </r:script>
   <title>TDBase - Edition d'une question</title>
 </head>
@@ -63,13 +99,13 @@
 
   <form method="post"
         action="#">
-    <div class="portal-form_container">
+    <div class="portal-form_container" style="width: 70%;margin-left: 15px;">
       <table>
 
         <tr>
           <td class="label">Titre:</td>
           <td>
-            <input size="80" type="text" value="${question.titre}"
+            <input size="75" type="text" value="${question.titre}"
                    name="titre"/>
           </td>
         </tr>
@@ -131,12 +167,13 @@
           </td>
         </tr>
         <g:render
-                template="${question.type.code}/${question.type.code}Edition" model="[question:question]"/>
+                template="${question.type.code}/${question.type.code}Edition"
+                model="[question:question]"/>
       </table>
     </div>
     <g:hiddenField name="id" value="${question.id}"/>
     <g:hiddenField name="type.id" value="${question.type.id}"/>
-    <div class="form_actions">
+    <div class="form_actions" style="width: 70%;margin-left: 15px;">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link> |

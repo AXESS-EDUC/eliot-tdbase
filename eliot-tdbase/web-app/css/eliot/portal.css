@@ -626,8 +626,8 @@ Style for forms :
 ********************************************************************************/
 
 .portal-form_container {
-    width:60%;
-    margin-left:30px;
+    width:70%;
+    margin-left:15px;
     margin-right:auto;
     border:1px solid #728CBD;
 }
@@ -720,14 +720,12 @@ select[disabled="disabled"] {
     border-top-width: 0;
     color: #3F61A0;
     font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial,helvetica;
-    padding-left: 2em;
-    padding-right: 2em;
     padding-top:0.5em;
     padding-bottom:0.5em;
-    margin-left:30px;
+    margin-left:15px;
     margin-right:auto;
     text-align: right;
-    width:60%;
+    width:70%;
 }
 
 /*******************************************************************************
