@@ -13,10 +13,10 @@
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12">
-      <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12/target/classes" />
-      <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12/target/test-classes" />
-      <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12/web-app/plugins" />
+    <content url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/codenarc-0.15">
+      <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/codenarc-0.15/target/classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/codenarc-0.15/target/test-classes" />
+      <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/codenarc-0.15/web-app/plugins" />
     </content>
     <content url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/database-migration-0.2.1">
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/database-migration-0.2.1/src/groovy" isTestSource="false" />
@@ -72,7 +72,6 @@
     <orderEntry type="module-library" exported="">
       <library name="Grails User Library (eliot-tdbase-grailsPlugins)">
         <CLASSES>
-          <root url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12/lib" />
           <root url="jar://$USER_HOME$/.ivy2/cache/ant/ant/jars/ant-1.6.5.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.liquibase/liquibase-core/jars/liquibase-core-2.0.1.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.springframework.security/org.springframework.security.web/jars/org.springframework.security.web-3.0.4.RELEASE.jar!/" />
@@ -83,10 +82,10 @@
           <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.ant/ant/jars/ant-1.7.1.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.groovy/groovy-all/jars/groovy-all-1.6.9.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.gmetrics/GMetrics/jars/GMetrics-0.3.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.codenarc/CodeNarc/jars/CodeNarc-0.15.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$USER_HOME$/.grails/2.0.0.M1/projects/eliot-tdbase/plugins/codenarc-0.12/lib" recursive="false" />
       </library>
     </orderEntry>
   </component>
