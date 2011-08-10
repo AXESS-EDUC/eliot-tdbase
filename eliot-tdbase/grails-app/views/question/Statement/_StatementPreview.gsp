@@ -27,8 +27,11 @@
   --}%
 
 <tr>
-  <td class="label">Énoncé :</td>
+  <td class="label" style="vertical-align: top;">Énoncé :</td>
   <td>
-     ${question.specification}</td>
+    ${question.specification}
+  </td>
 </tr>
+
+
 

@@ -102,15 +102,14 @@
                 template="${question.type.code}/${question.type.code}Preview" model="[question:question]"/>
       </table>
     </div>
-    <g:hiddenField name="id" value="${question.id}"/>
     <div class="form_actions">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Retour</g:link> |
-      <g:if test="${sujet}">
+              params="${lienRetour.params}">Retour</g:link>
+      <g:if test="${sujet}"> |
         <g:link action="insert"
                         title="Insérer dans le sujet" id="${question.id}" params="[sujetId: sujet?.id]">
-          Insérer dans le sujet
+          Insérer dans le sujet &nbsp;
         </g:link>
       </g:if>
     </div>

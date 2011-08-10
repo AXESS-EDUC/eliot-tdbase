@@ -91,7 +91,7 @@
       <table>
         <tr>
           <td class="label">
-            titre :
+            titre&nbsp;:
           </td>
           <td>
             <g:textField name="sujetTitre" value="${titreSujet}" size="80"/>
