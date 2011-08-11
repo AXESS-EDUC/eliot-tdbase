@@ -26,30 +26,34 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-    logSql = true
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
-        }
-    }
+
+
+
+package org.lilie.services.eliot.tice
+
+import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.scolarite.FonctionService
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
+import org.lilie.services.eliot.tice.utils.InitialisationTestService
+import org.lilie.services.eliot.tice.scolarite.Periode
+import org.codehaus.groovy.grails.commons.GrailsApplication
+
+/**
+ *  Test la classe ProfilScolariteService
+ * @author franck silvestre
+ */
+class DomainMappingIntegrationTests extends GroovyTestCase {
+
+  def grailsApplication
+
+  void testMapping() {
+    def domainsClass = grailsApplication.getArtefacts("Domain")*.clazz
+
+    assertTrue(domainsClass.size() > 0)
+  }
+
 
 
 }

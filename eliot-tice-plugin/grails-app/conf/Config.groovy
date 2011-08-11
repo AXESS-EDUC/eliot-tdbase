@@ -14,17 +14,17 @@ log4j = {
            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
            'org.codehaus.groovy.grails.web.mapping', // URL mapping
            'org.codehaus.groovy.grails.commons', // core / classloading
-           'org.codehaus.groovy.grails.plugins', // plugins
-           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-           'org.springframework',
-           'org.hibernate',
+           'org.codehaus.groovy.grails.plugins' // plugins
+    warn   'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+           'org.springframework'
+    warn   'org.hibernate'
            'net.sf.ehcache.hibernate'
 
     warn   'org.mortbay.log'
 }
 
 grails.plugin.databasemigration.changelogFileName =  "changelog.xml"
-grails.plugin.databasemigration.updateOnStart = false
+grails.plugin.databasemigration.updateOnStart = true
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.xml']
 
 // cas is not activated by default

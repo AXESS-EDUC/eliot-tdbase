@@ -29,9 +29,10 @@
 package org.lilie.services.eliot.tice.scolarite
 
 import org.lilie.services.eliot.tice.securite.DomainAutorite
+import groovy.transform.EqualsAndHashCode
 
 
-
+@EqualsAndHashCode
 class Enseignement implements Serializable {
 
   DomainAutorite enseignant

@@ -1226,4 +1226,25 @@
 
     </changeSet>
 
+    <changeSet id="21" author="fsil">
+        <comment>
+            Suppression de quelques clés uniques sur les tables
+            de jointures
+        </comment>
+
+        <dropUniqueConstraint tableName="question_arborescence"
+                             constraintName="uk_question_arborescence_question_id_question_fille_id"
+                             schemaName="td"/>
+
+        <dropUniqueConstraint tableName="question_attachement"
+                             constraintName="uk_question_attachement_question_id_attachement_id"
+                             schemaName="td"/>
+
+        <dropUniqueConstraint tableName="sujet_sequence_questions"
+                             constraintName="uk_sujet_sequence_questions_question_id_sujet_id"
+                             schemaName="td"/>
+
+
+    </changeSet>
+
 </databaseChangeLog>
