@@ -26,3 +26,83 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
+<tr>
+  <td class="label">
+    Lib&eacute;ll&eacute;:
+  </td>
+  <td>
+    <textarea rows="3" cols="60"
+              name="1.30.3.7">Quelle est la bonne réponse ?</textarea>
+  </td>
+</tr>
+<tr>
+  <td class="label">
+    R&eacute;ponse(s):
+  </td>
+  <td>
+
+    <table>
+      <tr>
+        <td>
+
+            <input type="checkbox" name="1.30.3.21.1.1.0.1"
+                   value="1.30.3.21.1.1.0.1"/>
+            <input size="35" type="text" value="réponse 1"
+                   name="1.30.3.21.1.1.0.3"/>
+            &nbsp;
+            <input size="2" type="text" value="0" name="1.30.3.21.1.1.0.5"/>
+            &nbsp;
+            <input title="Supprime la réponse" type="image"
+                   name="1.30.3.21.1.1.0.7"
+                   src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconRemove.gif"
+                   width="20" height="20"/>
+
+
+            &nbsp;
+            <input type="checkbox" name="1.30.3.21.1.1.1.1"
+                   value="1.30.3.21.1.1.1.1" checked="checked"/>
+            <input size="35" type="text" value="réponse 2"
+                   name="1.30.3.21.1.1.1.3"/>
+            &nbsp;
+            <input size="2" type="text" value="0" name="1.30.3.21.1.1.1.5"/>
+            &nbsp;
+            <input title="Supprime la réponse" type="image"
+                   name="1.30.3.21.1.1.1.7"
+                   src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconRemove.gif"
+                   width="20" height="20"/>
+
+
+
+            &nbsp;
+            <input type="checkbox" name="1.30.3.21.1.1.2.1"
+                   value="1.30.3.21.1.1.2.1" checked="checked"/>
+            <input size="35" type="text" value="réponse 3"
+                   name="1.30.3.21.1.1.2.3"/>
+            &nbsp;
+            <input size="2" type="text" value="0" name="1.30.3.21.1.1.2.5"/>
+            &nbsp;
+            <input title="Supprime la réponse" type="image"
+                   name="1.30.3.21.1.1.2.7"
+                   src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconRemove.gif"
+                   width="20" height="20"/>
+
+        </td>
+        <td>
+          <input type="image" name="1.30.3.21.1.3"
+                 src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconAdd.gif"
+                 width="20" height="19"/>
+        </td>
+      </tr>
+    </table>
+
+  </td>
+</tr>
+<tr>
+  <td class="label">
+    Correction:
+  </td>
+  <td>
+    <textarea rows="3" cols="60"
+              name="1.30.3.39">Attention la réponse 1 est mauvaise</textarea>
+  </td>
+</tr>
