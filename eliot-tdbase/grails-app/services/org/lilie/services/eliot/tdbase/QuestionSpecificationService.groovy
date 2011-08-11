@@ -57,4 +57,11 @@ public interface QuestionSpecificationService {
    */
   def getObjectFromSpecification(String specification)
 
+  /**
+   * Créer un objet specification à partir d'une map
+   * @param map
+   * @return
+   */
+  def getSpecificationObject(Map map)
+
 }

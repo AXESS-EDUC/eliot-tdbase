@@ -32,7 +32,7 @@ import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 class QuestionStatementSpecificationService implements QuestionSpecificationService {
@@ -61,6 +61,14 @@ class QuestionStatementSpecificationService implements QuestionSpecificationServ
    */
   String getSpecificationNormaliseFromObject(Object object) {
     return StringUtils.normalise(object.enonce)
+  }
+
+  /**
+   *
+   * @see QuestionSpecificationService
+   */
+  def getSpecificationObject(Map map) {
+    return map
   }
 
 

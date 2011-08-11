@@ -74,7 +74,8 @@ class QuestionService implements ApplicationContextAware {
     )
     question.properties = proprietes
     def specService = questionSpecificationServiceForQuestionType(question.type)
-    question.specification = specService.getSpecificationFromObject(proprietes.specifobject)
+    def specObject = specService.getSpecificationObject(proprietes.specifobject)
+    question.specification = specService.getSpecificationFromObject(specObject)
     question.save()
     return question
   }
@@ -108,8 +109,9 @@ class QuestionService implements ApplicationContextAware {
 
     laQuestion.properties = proprietes
     def specService = questionSpecificationServiceForQuestionType(laQuestion.type)
-    laQuestion.specification = specService.getSpecificationFromObject(proprietes.specifobject)
-    laQuestion.specificationNormalise = specService.getSpecificationNormaliseFromObject(proprietes.specifobject)
+    def specObject = specService.getSpecificationObject(proprietes.specifobject)
+    laQuestion.specification = specService.getSpecificationFromObject(specObject)
+    laQuestion.specificationNormalise = specService.getSpecificationNormaliseFromObject(specObject)
     laQuestion.save()
     return laQuestion
   }

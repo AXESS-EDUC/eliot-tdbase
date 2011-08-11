@@ -31,8 +31,11 @@
     Lib&eacute;ll&eacute;:
   </td>
   <td>
-    <textarea rows="3" cols="60"
-              name="1.30.3.7">Quelle est la bonne réponse ?</textarea>
+    <g:textArea
+            name="specifobject.libelle"
+            rows="5" cols="55"
+            value="${specifobject.libelle}"
+    />
   </td>
 </tr>
 <tr>
@@ -44,6 +47,8 @@
     <table>
       <tr>
         <td>
+          <g:each in="${specifobject.reponses}" var="reponse">
+            <br/>
             &nbsp;
             <input type="checkbox" name="1.30.3.21.1.1.0.1"
                    value="1.30.3.21.1.1.0.1"/>
@@ -56,39 +61,10 @@
                    name="1.30.3.21.1.1.0.7"
                    src="/eliot-tdbase/images/eliot/ActionIconRemove.gif"
                    width="20" height="20"/>
-            <br/>
-
-            &nbsp;
-            <input type="checkbox" name="1.30.3.21.1.1.1.1"
-                   value="1.30.3.21.1.1.1.1" checked="checked"/>
-            <input size="35" type="text" value="réponse 2"
-                   name="1.30.3.21.1.1.1.3"/>
-            &nbsp;
-            <input size="2" type="text" value="0" name="1.30.3.21.1.1.1.5"/>
-            &nbsp;
-            <input title="Supprime la réponse" type="image"
-                   name="1.30.3.21.1.1.1.7"
-                   src="/eliot-tdbase/images/eliot/ActionIconRemove.gif"
-                   width="20" height="20"/>
-            <br/>
-
-
-            &nbsp;
-            <input type="checkbox" name="1.30.3.21.1.1.2.1"
-                   value="1.30.3.21.1.1.2.1" checked="checked"/>
-            <input size="35" type="text" value="réponse 3"
-                   name="1.30.3.21.1.1.2.3"/>
-            &nbsp;
-            <input size="2" type="text" value="0" name="1.30.3.21.1.1.2.5"/>
-            &nbsp;
-            <input title="Supprime la réponse" type="image"
-                   name="1.30.3.21.1.1.2.7"
-                   src="/eliot-tdbase/images/eliot/ActionIconRemove.gif"
-                   width="20" height="20"/>
+          </g:each>
           <input type="image" name="1.30.3.21.1.3"
                  src="/eliot-tdbase/images/eliot/ActionIconAdd.gif"
                  width="20" height="19"/>
-
         </td>
 
       </tr>
@@ -101,7 +77,10 @@
     Correction:
   </td>
   <td>
-    <textarea rows="3" cols="60"
-              name="1.30.3.39">Attention la réponse 1 est mauvaise</textarea>
+     <g:textArea
+            name="specifobject.correction"
+            rows="5" cols="55"
+            value="${specifobject.correction}"
+    />
   </td>
 </tr>

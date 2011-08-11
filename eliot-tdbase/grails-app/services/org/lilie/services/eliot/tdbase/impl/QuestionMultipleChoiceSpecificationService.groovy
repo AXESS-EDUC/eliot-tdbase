@@ -87,6 +87,14 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
     return null
   }
 
+  /**
+   *
+   * @see QuestionSpecificationService
+   */
+  def getSpecificationObject(Map map) {
+    return new MultipleChoiceSpecification(map)
+  }
+
 }
 
 class MultipleChoiceSpecification {
