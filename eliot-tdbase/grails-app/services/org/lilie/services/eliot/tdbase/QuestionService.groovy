@@ -74,9 +74,6 @@ class QuestionService implements ApplicationContextAware {
     )
     question.properties = proprietes
     def specService = questionSpecificationServiceForQuestionType(question.type)
-    println()
-    println "*********** ${proprietes}"
-    println "*********** ${proprietes.specifobject}"
     question.specification = specService.getSpecificationFromObject(proprietes.specifobject)
     question.save()
     return question

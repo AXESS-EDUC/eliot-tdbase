@@ -30,7 +30,7 @@ textarea {
     font-weight: bold;
     font-size: 1em;
     text-align: right;
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 .portal-form_container table {

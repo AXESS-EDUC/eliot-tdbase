@@ -56,17 +56,17 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
   void testGetSpecificationFromObject() {
     def rep1 = new MultipleChoiceSpecificationReponse(
             libelleReponse: "réponse 1",
-            valeur: -0.5
+            rang: -0.5
     )
     def rep2 = new MultipleChoiceSpecificationReponse(
             libelleReponse: "réponse 2",
             estUneBonneReponse: true,
-            valeur: 0.5
+            rang: 0.5
     )
     def rep3 = new MultipleChoiceSpecificationReponse(
             libelleReponse: "réponse 3",
             estUneBonneReponse: true,
-            valeur: 0.5
+            rang: 0.5
     )
     def specObject = new MultipleChoiceSpecification(
             libelle: LIBELLE_QUESTION_1,
@@ -89,17 +89,17 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
               {
                   "libelleReponse": "réponse 1",
                   "estUneBonneReponse": false,
-                  "valeur": -0.5
+                  "rang": -0.5
               },
               {
                   "libelleReponse": "réponse 2",
                   "estUneBonneReponse": true,
-                  "valeur": 0.5
+                  "rang": 0.5
               },
               {
                   "libelleReponse": "réponse 3",
                   "estUneBonneReponse": true,
-                  "valeur": 0.5
+                  "rang": 0.5
               }
           ]
       }
@@ -112,6 +112,6 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
     assertTrue(specAsObject.reponses[1].estUneBonneReponse)
     assertTrue(specAsObject.reponses[2].estUneBonneReponse)
     assertFalse(specAsObject.reponses[0].estUneBonneReponse)
-    assertEquals(-0.5, specAsObject.reponses[0].valeur, 0.001)
+    assertEquals(-0.5, specAsObject.reponses[0].rang, 0.001)
   }
 }

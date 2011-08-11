@@ -48,6 +48,9 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
    * @see QuestionSpecificationService
    */
   def getObjectFromSpecification(String specification) {
+    if (!specification) {
+      return new MultipleChoiceSpecification()
+    }
     def slurper = new JsonSlurper()
     Map map = slurper.parseText(specification)
     return new MultipleChoiceSpecification(map)
@@ -59,7 +62,8 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
    */
   String getSpecificationFromObject(Object object) {
     if (!(object instanceof MultipleChoiceSpecification)) {
-      throw new IllegalArgumentException("objet ${object} n'est pas de type MultipleChoiceSpecification")
+      throw new IllegalArgumentException(
+              "objet ${object} n'est pas de type MultipleChoiceSpecification")
     }
     MultipleChoiceSpecification spec = object
     JsonBuilder builder = new JsonBuilder(spec.toMap())
@@ -72,7 +76,8 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
    */
   String getSpecificationNormaliseFromObject(Object object) {
     if (!(object instanceof MultipleChoiceSpecification)) {
-      throw new IllegalArgumentException("objet ${object} n'est pas de type MultipleChoiceSpecification")
+      throw new IllegalArgumentException(
+              "objet ${object} n'est pas de type MultipleChoiceSpecification")
     }
     MultipleChoiceSpecification spec = object
     String toNormalise = spec.libelle
@@ -123,7 +128,7 @@ class MultipleChoiceSpecification {
 class MultipleChoiceSpecificationReponse {
   String libelleReponse
   boolean estUneBonneReponse
-  Float valeur
+  Float rang
 
   MultipleChoiceSpecificationReponse() {
     super()
@@ -137,14 +142,14 @@ class MultipleChoiceSpecificationReponse {
   MultipleChoiceSpecificationReponse(Map map) {
     libelleReponse = map.libelleReponse
     estUneBonneReponse = map.estUneBonneReponse
-    valeur = map.valeur
+    rang = map.rang
   }
 
   def toMap() {
     [
             libelleReponse: libelleReponse,
             estUneBonneReponse: estUneBonneReponse,
-            valeur: valeur
+            rang: rang
     ]
   }
 }

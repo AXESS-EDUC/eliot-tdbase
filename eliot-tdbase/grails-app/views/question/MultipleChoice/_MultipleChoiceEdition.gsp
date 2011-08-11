@@ -44,7 +44,7 @@
     <table>
       <tr>
         <td>
-
+            &nbsp;
             <input type="checkbox" name="1.30.3.21.1.1.0.1"
                    value="1.30.3.21.1.1.0.1"/>
             <input size="35" type="text" value="réponse 1"
@@ -54,9 +54,9 @@
             &nbsp;
             <input title="Supprime la réponse" type="image"
                    name="1.30.3.21.1.1.0.7"
-                   src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconRemove.gif"
+                   src="/eliot-tdbase/images/eliot/ActionIconRemove.gif"
                    width="20" height="20"/>
-
+            <br/>
 
             &nbsp;
             <input type="checkbox" name="1.30.3.21.1.1.1.1"
@@ -68,9 +68,9 @@
             &nbsp;
             <input title="Supprime la réponse" type="image"
                    name="1.30.3.21.1.1.1.7"
-                   src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconRemove.gif"
+                   src="/eliot-tdbase/images/eliot/ActionIconRemove.gif"
                    width="20" height="20"/>
-
+            <br/>
 
 
             &nbsp;
@@ -83,15 +83,14 @@
             &nbsp;
             <input title="Supprime la réponse" type="image"
                    name="1.30.3.21.1.1.2.7"
-                   src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconRemove.gif"
+                   src="/eliot-tdbase/images/eliot/ActionIconRemove.gif"
                    width="20" height="20"/>
+          <input type="image" name="1.30.3.21.1.3"
+                 src="/eliot-tdbase/images/eliot/ActionIconAdd.gif"
+                 width="20" height="19"/>
 
         </td>
-        <td>
-          <input type="image" name="1.30.3.21.1.3"
-                 src="/WebObjects/TDBase.woa/Contents/WebServerResources/Images/ActionIconAdd.gif"
-                 width="20" height="19"/>
-        </td>
+
       </tr>
     </table>
 

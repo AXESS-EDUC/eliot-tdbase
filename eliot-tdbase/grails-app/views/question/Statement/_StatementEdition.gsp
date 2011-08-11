@@ -28,6 +28,15 @@
 
 <tr>
   <td colspan="2">
-    <g:textArea name="specifobject.enonce" rows="20" cols="55" value="${specifobject.enonce}"/>
+    <g:textArea
+            name="specifobject.enonce"
+            rows="20" cols="55"
+            value="${specifobject.enonce}"
+            id="specifobject.enonce"
+    />
   </td>
 </tr>
+
+<r:script>
+    tinyMCE.execCommand("mceAddControl", true, "specifobject.enonce");
+</r:script>
