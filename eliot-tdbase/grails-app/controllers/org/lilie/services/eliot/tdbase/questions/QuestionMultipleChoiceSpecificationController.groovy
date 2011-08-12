@@ -68,7 +68,25 @@ class QuestionMultipleChoiceSpecificationController {
     )
   }
 
-
+  /**
+   *
+   * Action "ajouteReponse"
+   */
+  def supprimeReponse() {
+    def specifobject = new MultipleChoiceSpecification()
+    def size = params.specifobject.reponses?.size as Integer
+    if (size) {
+      for(int i=0;i < size; i++) {
+        specifobject.reponses << new MultipleChoiceSpecificationReponse()
+      }
+    }
+    bindData(specifobject,params,"specifobject")
+    specifobject.reponses.remove(params.id as Integer)
+    render(
+            template: "/question/MultipleChoice/multipleChoiceEditionReponses",
+            model:[ specifobject: specifobject ]
+    )
+  }
 }
 
 

@@ -33,7 +33,7 @@
   <meta name="layout" content="eliot-tdbase"/>
   <r:require modules="jquery"/>
   <r:script>
-    $(function() {
+    $(document).ready(function() {
       $('#menu-item-sujets').addClass('actif');
     });
   </r:script>

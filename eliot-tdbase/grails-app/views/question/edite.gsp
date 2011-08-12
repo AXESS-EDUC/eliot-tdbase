@@ -33,7 +33,7 @@
   <g:javascript src="eliot/tiny_mce/tiny_mce.js"/>
 
   <r:script>
-    $(function() {
+    $(document).ready(function() {
       $('#menu-item-contributions').addClass('actif');
     });
   </r:script>

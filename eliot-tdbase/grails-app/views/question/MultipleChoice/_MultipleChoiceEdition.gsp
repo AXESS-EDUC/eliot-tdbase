@@ -49,7 +49,7 @@
         <td id="specifobject_reponses">
         </td>
         <td style="vertical-align: bottom;">
-          <g:submitToRemote value="Ajouter" action="ajouteReponse" controller="questionMultipleChoiceSpecification" update="specifobject_reponses"/>
+          <g:submitToRemote title="Ajouter une réponse possible" value="Ajouter" action="ajouteReponse" controller="questionMultipleChoiceSpecification" update="specifobject_reponses"/>
         </td>
       </tr>
     </table>
