@@ -39,9 +39,10 @@ import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecification
 import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecificationReponse
+import org.lilie.services.eliot.tdbase.QuestionController
 
 
-class QuestionMultipleChoiceSpecificationController {
+class QuestionMultipleChoiceController extends QuestionController {
 
   QuestionService questionService
   BreadcrumpsService breadcrumpsService
@@ -73,19 +74,29 @@ class QuestionMultipleChoiceSpecificationController {
    * Action "ajouteReponse"
    */
   def supprimeReponse() {
-    def specifobject = new MultipleChoiceSpecification()
-    def size = params.specifobject.reponses?.size as Integer
-    if (size) {
-      for(int i=0;i < size; i++) {
-        specifobject.reponses << new MultipleChoiceSpecificationReponse()
-      }
-    }
-    bindData(specifobject,params,"specifobject")
+    MultipleChoiceSpecification specifobject = bindDataToSpecification()
     specifobject.reponses.remove(params.id as Integer)
     render(
             template: "/question/MultipleChoice/multipleChoiceEditionReponses",
             model:[ specifobject: specifobject ]
     )
+  }
+
+  /**
+   *
+   * @param params  les paramètres de la requête
+   * @return l'objet représentant la spécification
+   */
+  def getSpecificationObjectFromParams(Map params) {
+    def specifobject = new MultipleChoiceSpecification()
+    def size = params.specifobject.reponses?.size as Integer
+    if (size) {
+      for (int i = 0; i < size; i++) {
+        specifobject.reponses << new MultipleChoiceSpecificationReponse()
+      }
+    }
+    bindData(specifobject, params, "specifobject")
+    return specifobject
   }
 }
 

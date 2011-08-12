@@ -97,8 +97,7 @@
     <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
   </g:if>
 
-  <form method="post"
-        action="#">
+  <form method="post">
     <div class="portal-form_container" style="width: 70%;margin-left: 15px;">
       <table>
 
@@ -181,10 +180,13 @@
         %{--<g:hiddenField name="sujetId" value="${sujet.id}"/>--}%
         <g:actionSubmit value="Enregistrer et insérer dans le sujet"
                         action="enregistreInsert"
+                        controller="question${question.type.code}"
                         title="Enregistrer et insérer dans le sujet"/>
       </g:if>
       <g:else>
-        <g:actionSubmit value="Enregistrer" action="enregistre"
+        <g:actionSubmit value="Enregistrer"
+                        action="enregistre"
+                        controller="question${question.type.code}"
                         title="Enregistrer"/>
       </g:else>
     </div>

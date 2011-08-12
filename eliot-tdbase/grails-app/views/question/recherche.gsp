@@ -109,7 +109,8 @@
 
       <div class="form_actions">
         <g:hiddenField name="sujetId" value="${sujet?.id}"/>
-        <g:actionSubmit value="Rechercher" action="recherche" title="Lancer la recherche"/>
+        <g:actionSubmit value="Rechercher" action="recherche"
+                        title="Lancer la recherche"/>
       </div>
     </form>
 

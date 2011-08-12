@@ -60,11 +60,12 @@ class QuestionService implements ApplicationContextAware {
 
   /**
    * Créé une question
+   * @param proprietes les propriétés hors specification
+   * @param specificationObject l'objet specification
    * @param proprietaire le proprietaire
-   * @param titre le titre
    * @return la question créée
    */
-  Question createQuestion(Map proprietes, Personne proprietaire) {
+  Question createQuestion(Map proprietes,def specificationObject, Personne proprietaire) {
     Question question = new Question(
             proprietaire: proprietaire,
             titreNormalise: StringUtils.normalise(proprietes.titre),
@@ -74,8 +75,8 @@ class QuestionService implements ApplicationContextAware {
     )
     question.properties = proprietes
     def specService = questionSpecificationServiceForQuestionType(question.type)
-    def specObject = specService.getSpecificationObject(proprietes.specifobject)
-    question.specification = specService.getSpecificationFromObject(specObject)
+    question.specification = specService.getSpecificationFromObject(specificationObject)
+    question.specificationNormalise = specService.getSpecificationNormaliseFromObject(specificationObject)
     question.save()
     return question
   }
@@ -95,10 +96,12 @@ class QuestionService implements ApplicationContextAware {
    * Modifie les proprietes du sujet passé en paramètre
    * @param sujet le sujet
    * @param proprietes les nouvelles proprietes
+   * @param specificationObject l'objet specification
    * @param proprietaire le proprietaire
    * @return le sujet
    */
-  Question updateProprietes(Question question, Map proprietes, Personne proprietaire) {
+  Question updateProprietes(Question question, Map proprietes,def specificationObject,
+                            Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
     Question laQuestion = getDerniereVersionQuestionForProprietaire(question, proprietaire)
@@ -109,9 +112,8 @@ class QuestionService implements ApplicationContextAware {
 
     laQuestion.properties = proprietes
     def specService = questionSpecificationServiceForQuestionType(laQuestion.type)
-    def specObject = specService.getSpecificationObject(proprietes.specifobject)
-    laQuestion.specification = specService.getSpecificationFromObject(specObject)
-    laQuestion.specificationNormalise = specService.getSpecificationNormaliseFromObject(specObject)
+    laQuestion.specification = specService.getSpecificationFromObject(specificationObject)
+    laQuestion.specificationNormalise = specService.getSpecificationNormaliseFromObject(specificationObject)
     laQuestion.save()
     return laQuestion
   }
@@ -119,15 +121,18 @@ class QuestionService implements ApplicationContextAware {
   /**
    * Créé une question et l'insert dans le sujet
    * @param proprietesQuestion les propriétés de la question
+   * @param specificationObject l'objet specification
    * @param sujet le sujet
    * @param proprietaire le propriétaire
    * @return la question insérée
    */
   @Transactional
-  Question createQuestionAndInsertInSujet(Map proprietesQuestion, Sujet sujet,
+  Question createQuestionAndInsertInSujet(Map proprietesQuestion,
+                                          def specificatinObject,
+                                          Sujet sujet,
                                           Personne proprietaire, Integer rang = null) {
     Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujet, proprietaire)
-    Question question = createQuestion(proprietesQuestion, proprietaire)
+    Question question = createQuestion(proprietesQuestion,specificatinObject, proprietaire)
     // todofsil : trouver un moyen plus efficace gestion du rang
     def leRang = leSujet.questions.size() + 1
     def sequence = new SujetSequenceQuestions(

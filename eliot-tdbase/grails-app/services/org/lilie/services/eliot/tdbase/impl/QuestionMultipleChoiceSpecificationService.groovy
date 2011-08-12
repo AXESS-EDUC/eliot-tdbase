@@ -30,18 +30,20 @@
 
 package org.lilie.services.eliot.tdbase.impl
 
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
-import groovy.json.JsonSlurper
-import groovy.json.JsonBuilder
+
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 class QuestionMultipleChoiceSpecificationService implements QuestionSpecificationService {
 
   static transactional = false
+
 
   /**
    *
@@ -87,13 +89,6 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
     return null
   }
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  def getSpecificationObject(Map map) {
-    return new MultipleChoiceSpecification(map)
-  }
 
 }
 
@@ -127,7 +122,7 @@ class MultipleChoiceSpecification {
     [
             libelle: libelle,
             correction: correction,
-            reponses : reponses*.toMap()
+            reponses: reponses*.toMap()
     ]
   }
 

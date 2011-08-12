@@ -26,43 +26,29 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.impl
 
-import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tice.utils.StringUtils
 
-/**
- *
- * @author franck Silvestre
- */
-class QuestionStatementSpecificationService implements QuestionSpecificationService {
 
-  static transactional = false
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  def getObjectFromSpecification(String specification) {
-    return [enonce: specification]
-  }
+package org.lilie.services.eliot.tdbase.questions
+
+import org.lilie.services.eliot.tdbase.QuestionController
+import org.lilie.services.eliot.tdbase.QuestionService
+import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecification
+import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecificationReponse
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+
+class QuestionStatementController extends QuestionController {
 
   /**
    *
-   * @see QuestionSpecificationService
+   * @param params  les paramètres de la requête
+   * @return l'objet représentant la spécification
    */
-  String getSpecificationFromObject(Object object) {
-    return object.enonce
+  def getSpecificationObjectFromParams(Map params) {
+    return params.specifobject
   }
-
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  String getSpecificationNormaliseFromObject(Object object) {
-    return StringUtils.normalise(object.enonce)
-  }
-
-
-
 }
+
+

@@ -36,14 +36,15 @@ import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.ApplicationContext
 
+//todofsil mettre les bons controleurs ds le layout et la vue ajouter un élément
 class QuestionController {
 
   static defaultAction = "recherche"
 
+
   BreadcrumpsService breadcrumpsService
   ProfilScolariteService profilScolariteService
   QuestionService questionService
-
 
 
 /**
@@ -105,11 +106,12 @@ class QuestionController {
   def enregistre() {
     Question question
     Personne personne = authenticatedPersonne
+    def specifObject = getSpecificationObjectFromParams(params)
     if (params.id) {
       question = Question.get(params.id)
-      questionService.updateProprietes(question,params,personne)
+      questionService.updateProprietes(question,params,specifObject,personne)
     } else {
-      question = questionService.createQuestion(params, personne)
+      question = questionService.createQuestion(params, specifObject,personne)
     }
     Sujet sujet = null
     if (params.sujetId) {
@@ -134,9 +136,11 @@ class QuestionController {
    */
   def enregistreInsert() {
     Personne personne = authenticatedPersonne
+    def specifObject = getSpecificationObjectFromParams(params)
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
     Question question = questionService.createQuestionAndInsertInSujet(params,
+                                                                       specifObject,
                                                                        sujet,
                                                                        personne)
 
@@ -207,6 +211,13 @@ class QuestionController {
             sujet: Sujet.get(rechCmd.sujetId)
     ]
   }
+
+   /**
+   *
+   * @param params  les paramètres de la requête
+   * @return l'objet représentant la spécification
+   */
+  def getSpecificationObjectFromParams(Map params) {}
 
 }
 
