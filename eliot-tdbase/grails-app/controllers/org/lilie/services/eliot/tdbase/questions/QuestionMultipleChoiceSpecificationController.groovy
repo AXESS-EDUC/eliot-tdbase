@@ -53,24 +53,19 @@ class QuestionMultipleChoiceSpecificationController {
    * Action "ajouteReponse"
    */
   def ajouteReponse() {
-    Question question = Question.get(params.id)
-    Sujet sujet = null
-    if (params.sujetId) {
-      sujet = Sujet.get(params.sujetId)
+    def specifobject = new MultipleChoiceSpecification()
+    def size = params.specifobject.reponses?.size as Integer
+    if (size) {
+      for(int i=0;i < size; i++) {
+        specifobject.reponses << new MultipleChoiceSpecificationReponse()
+      }
     }
-    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
-    MultipleChoiceSpecification specAsObject = specService.getObjectFromSpecification(question.specification)
-    specAsObject.reponses.add(new MultipleChoiceSpecificationReponse() )
-    Personne personne = authenticatedPersonne
-    [
-            liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
-            question: question,
-            specifobject: specAsObject,
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            sujet: sujet
-    ]
+    bindData(specifobject,params,"specifobject")
+    specifobject.reponses << new MultipleChoiceSpecificationReponse()
+    render(
+            template: "/question/MultipleChoice/multipleChoiceEditionReponses",
+            model:[ specifobject: specifobject ]
+    )
   }
 
 

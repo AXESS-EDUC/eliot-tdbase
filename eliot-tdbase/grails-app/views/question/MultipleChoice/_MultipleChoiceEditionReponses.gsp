@@ -26,45 +26,17 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<tr>
-  <td class="label">
-    Lib&eacute;ll&eacute;:
-  </td>
-  <td>
-    <g:textArea
-            name="specifobject.libelle"
-            rows="3" cols="55"
-            value="${specifobject.libelle}"
-    />
-  </td>
-</tr>
-<tr>
-  <td class="label">
-    R&eacute;ponse(s):
-  </td>
-  <td>
 
-    <table>
-      <tr>
-        <td id="specifobject_reponses">
-        </td>
-        <td style="vertical-align: bottom;">
-          <g:submitToRemote value="Ajouter" action="ajouteReponse" controller="questionMultipleChoiceSpecification" update="specifobject_reponses"/>
-        </td>
-      </tr>
-    </table>
-
-  </td>
-</tr>
-<tr>
-  <td class="label">
-    Correction:
-  </td>
-  <td>
-     <g:textArea
-            name="specifobject.correction"
-            rows="3" cols="55"
-            value="${specifobject.correction}"
-    />
-  </td>
-</tr>
+<g:each status="i" in="${specifobject.reponses}" var="reponse">
+  &nbsp;
+  <g:checkBox name="specifobject.reponses[${i}].estUneBonneReponse"
+              checked="${reponse.estUneBonneReponse}"/>
+  <g:textField name="specifobject.reponses[${i}].libelleReponse" size="35"
+                value="${reponse.libelleReponse}"/>
+  &nbsp;
+  <g:textField size="2"  value="${reponse.rang}" name="specifobject.reponses[${i}].rang"/>
+  &nbsp;
+  <br/>
+  %{--<g:submitToRemote value="\[-\]" action="supprimeReponse" controller="questionMultipleChoiceSpecification" update="specifobject.reponses"/>--}%
+</g:each>
+<g:hiddenField name="specifobject.reponses.size" value="${specifobject.reponses?.size()}"/>
