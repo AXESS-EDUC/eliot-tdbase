@@ -166,7 +166,7 @@
           </td>
         </tr>
         <g:render
-                template="${question.type.code}/${question.type.code}Edition"
+                template="/question/${question.type.code}/${question.type.code}Edition"
                 model="[question:question]"/>
       </table>
     </div>

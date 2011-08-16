@@ -26,12 +26,7 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<tr>
-  <td class="label" style="vertical-align: top;">Énoncé :</td>
-  <td>
-    ${question.specification}
-  </td>
-</tr>
+${question.specification}
 
 
 

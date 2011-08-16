@@ -42,6 +42,8 @@ import org.lilie.services.eliot.tice.CopyrightsType
  */
 class Question {
 
+  QuestionService questionService
+
   String titre
   String titreNormalise
 
@@ -65,6 +67,8 @@ class Question {
   Publication publication
   List<QuestionArborescence>  questionArborescenceFilles
   List<QuestionAttachement>  questionAttachements
+
+  private def specificationObject
 
   static hasMany = [
           questionArborescenceFilles : QuestionArborescence,
@@ -95,6 +99,8 @@ class Question {
     questionAttachements(lazy: 'false', sort: 'rang',order: 'asc')
   }
 
+  static transients = ['questionService','specificationObject']
+
   /**
    *
    * @return la liste des questions filles de la question courante
@@ -111,5 +117,13 @@ class Question {
     return questionAttachements*.attachement
   }
 
+  /**
+   *
+   * @return l'objet encapsulant la spécification
+   */
+  def getSpecificationObject() {
+    def specService = questionService.questionSpecificationServiceForQuestionType(type)
+    specService.getObjectFromSpecification(specification)
+  }
 }
 

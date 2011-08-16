@@ -150,7 +150,7 @@
               ${questionInstance.estAutonome ? 'oui' : 'non'}
             </td>
             <td>
-              <g:link action="detail"
+              <g:link action="detail" controller="question${questionInstance.type.code}"
                       id="${questionInstance.id}" params="[sujetId:sujet?.id]">
                 <img border="0"
                      src="/eliot-tdbase/images/eliot/magglass-btn.gif"
@@ -158,7 +158,7 @@
               </g:link>
             </td>
             <td>
-              <g:link action="edite"
+              <g:link action="edite" controller="question${questionInstance.type.code}"
                       id="${questionInstance.id}" params="[sujetId:sujet?.id]">
                 <img border="0"
                      src="/eliot-tdbase/images/eliot/write-btn.gif"
@@ -166,7 +166,7 @@
               </g:link>
             </td>
             <td>
-              ${questionInstance.lastUpdated?.format('dd/MM/yy hh:mm')}
+              ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}
             </td>
           </tr>
         </g:each>

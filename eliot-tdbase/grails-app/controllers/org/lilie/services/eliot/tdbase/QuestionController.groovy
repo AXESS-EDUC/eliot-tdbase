@@ -28,15 +28,12 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.utils.BreadcrumpsService
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.springframework.context.ApplicationContextAware
-import org.springframework.context.ApplicationContext
+import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
-//todofsil mettre les bons controleurs ds le layout et la vue ajouter un élément
 class QuestionController {
 
   static defaultAction = "recherche"
@@ -46,17 +43,16 @@ class QuestionController {
   ProfilScolariteService profilScolariteService
   QuestionService questionService
 
-
 /**
-   *
-   * Action "edite"
-   */
+ *
+ * Action "edite"
+ */
   def edite() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.edite.titre"))
     Question question
     if (params.creation) {
       QuestionType questionType = QuestionType.get(params.questionTypeId)
-      question = new Question(type: questionType, titre: message(code:'question.nouveau.titre'))
+      question = new Question(type: questionType, titre: message(code: 'question.nouveau.titre'))
     } else {
       question = Question.get(params.id)
     }
@@ -64,17 +60,15 @@ class QuestionController {
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId)
     }
-    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
     Personne personne = authenticatedPersonne
-    [
-            liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
-            question: question,
-            specifobject: specService.getObjectFromSpecification(question.specification),
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            sujet: sujet
-    ]
+    render(view: '/question/edite', model: [
+           liens: breadcrumpsService.liens,
+           lienRetour: breadcrumpsService.lienRetour(),
+           question: question,
+           matieres: profilScolariteService.findMatieresForPersonne(personne),
+           niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+           sujet: sujet
+           ])
   }
 
   /**
@@ -89,14 +83,12 @@ class QuestionController {
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId)
     }
-    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
-    [
-            liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
-            question: question,
-            specifobject: specService.getObjectFromSpecification(question.specification),
-            sujet: sujet
-    ]
+    render(view: '/question/detail', model: [
+           liens: breadcrumpsService.liens,
+           lienRetour: breadcrumpsService.lienRetour(),
+           question: question,
+           sujet: sujet
+           ])
   }
 
   /**
@@ -109,9 +101,9 @@ class QuestionController {
     def specifObject = getSpecificationObjectFromParams(params)
     if (params.id) {
       question = Question.get(params.id)
-      questionService.updateProprietes(question,params,specifObject,personne)
+      questionService.updateProprietes(question, params, specifObject, personne)
     } else {
-      question = questionService.createQuestion(params, specifObject,personne)
+      question = questionService.createQuestion(params, specifObject, personne)
     }
     Sujet sujet = null
     if (params.sujetId) {
@@ -120,13 +112,11 @@ class QuestionController {
     if (!question.hasErrors()) {
       request.messageCode = "question.enregistre.succes"
     }
-    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
-    render(view: 'edite', model: [
+    render(view: '/question/edite', model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
            question: question,
-           specifobject: specService.getObjectFromSpecification(question.specification),
-            sujet: sujet
+           sujet: sujet
            ])
   }
 
@@ -139,47 +129,42 @@ class QuestionController {
     def specifObject = getSpecificationObjectFromParams(params)
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
-    Question question = questionService.createQuestionAndInsertInSujet(params,
-                                                                       specifObject,
-                                                                       sujet,
-                                                                       personne)
-
+    Question question = questionService.createQuestionAndInsertInSujet(
+            params,
+            specifObject,
+            sujet,
+            personne)
     if (!question.hasErrors()) {
       request.messageCode = "question.enregistreinsert.succes"
     }
-    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
-    render(view: 'edite', model: [
+    render(view: '/question/edite', model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
            question: question,
-           specifobject: specService.getObjectFromSpecification(question.specification),
            sujet: sujet
            ])
 
   }
 
 /**
-   *
-   * Action "insert"
-   */
+ *
+ * Action "insert"
+ */
   def insert() {
     Personne personne = authenticatedPersonne
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
     Question question = Question.get(params.id)
-    questionService.insertQuestionInSujet(question,sujet,personne)
-    def specService = questionService.questionSpecificationServiceForQuestionType(question.type)
+    questionService.insertQuestionInSujet(question, sujet, personne)
     request.messageCode = "question.enregistreinsert.succes"
-    render(view: 'detail', model: [
+    render(view: '/question/detail', model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
            question: question,
-           specifobject: specService.getObjectFromSpecification(question.specification),
            sujet: sujet
            ])
 
   }
-
 
   /**
    *
@@ -212,12 +197,12 @@ class QuestionController {
     ]
   }
 
-   /**
+  /**
    *
-   * @param params  les paramètres de la requête
+   * @param params les paramètres de la requête
    * @return l'objet représentant la spécification
    */
-  def getSpecificationObjectFromParams(Map params) {}
+  protected def getSpecificationObjectFromParams(Map params) {}
 
 }
 

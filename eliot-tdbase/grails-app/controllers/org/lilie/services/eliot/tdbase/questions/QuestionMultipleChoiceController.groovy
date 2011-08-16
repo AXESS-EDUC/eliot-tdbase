@@ -44,25 +44,14 @@ import org.lilie.services.eliot.tdbase.QuestionController
 
 class QuestionMultipleChoiceController extends QuestionController {
 
-  QuestionService questionService
-  BreadcrumpsService breadcrumpsService
-  ProfilScolariteService profilScolariteService
-
-
   /**
    *
    * Action "ajouteReponse"
    */
   def ajouteReponse() {
-    def specifobject = new MultipleChoiceSpecification()
-    def size = params.specifobject.reponses?.size as Integer
-    if (size) {
-      for(int i=0;i < size; i++) {
-        specifobject.reponses << new MultipleChoiceSpecificationReponse()
-      }
-    }
-    bindData(specifobject,params,"specifobject")
-    specifobject.reponses << new MultipleChoiceSpecificationReponse()
+    MultipleChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.reponses << new MultipleChoiceSpecificationReponse(
+            rang: specifobject.reponses.size()+1)
     render(
             template: "/question/MultipleChoice/multipleChoiceEditionReponses",
             model:[ specifobject: specifobject ]
@@ -74,7 +63,7 @@ class QuestionMultipleChoiceController extends QuestionController {
    * Action "ajouteReponse"
    */
   def supprimeReponse() {
-    MultipleChoiceSpecification specifobject = bindDataToSpecification()
+    MultipleChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
     specifobject.reponses.remove(params.id as Integer)
     render(
             template: "/question/MultipleChoice/multipleChoiceEditionReponses",
@@ -96,6 +85,8 @@ class QuestionMultipleChoiceController extends QuestionController {
       }
     }
     bindData(specifobject, params, "specifobject")
+    def reponsesOrd = specifobject.reponses.sort { it.rang }
+    specifobject.reponses = reponsesOrd
     return specifobject
   }
 }

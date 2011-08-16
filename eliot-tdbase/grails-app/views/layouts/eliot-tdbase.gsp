@@ -98,17 +98,17 @@
           <ul>
             <li>Nouveau</li>
             <li title="Nouvelle question">
-                  <g:link controller="question" action="edite"
+                  <g:link controller="question${QuestionTypeEnum.MultipleChoice}" action="edite"
                           title="Pour créer une nouvelle question"
                           params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.MultipleChoice.id]">Nouvelle question</g:link>
             </li>
             <li title="Nouveau document">
-                  <g:link controller="question" action="edite"
+                  <g:link controller="question${QuestionTypeEnum.Document}" action="edite"
                           title="Pour créer un nouveau document"
                           params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.Document.id]">Nouveau document</g:link>
             </li>
             <li title="Nouvel élément d'énoncé">
-                  <g:link controller="question" action="edite"
+                  <g:link controller="question${QuestionTypeEnum.Statement}" action="edite"
                           title="Pour créer un nouvel élément d'énoncé"
                           params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.Statement.id]">Nouvel élément d'énoncé</g:link>
             </li>

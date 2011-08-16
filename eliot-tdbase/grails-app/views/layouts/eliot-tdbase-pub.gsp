@@ -53,9 +53,7 @@
         href="${resource(dir: 'css/eliot', file: 'tdbase.css')}"/>
   <g:layoutHead/>
   <r:layoutResources/>
-  <g:javascript src="eliot/overlib.js"/>
   <g:javascript src="eliot/portal-menu.js"/>
-  <g:javascript src="eliot/NoBacktrack.js"/>
 </head>
 
 <body>

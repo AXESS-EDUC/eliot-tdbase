@@ -49,19 +49,19 @@
   <h4>Créer et ajouter un élément</h4>
   <ul>
     <li>
-      <g:link action="edite" controller="question"
+      <g:link action="edite" controller="question${QuestionTypeEnum.Statement}"
                 params="[creation:true, questionTypeId:QuestionTypeEnum.Statement.id, sujetId:sujet.id]">
         Un élément d'énoncé
       </g:link>
     </li>
     <li>
-      <g:link action="edite" controller="question"
+      <g:link action="edite" controller="question${QuestionTypeEnum.Document}"
                 params="[creation:true, questionTypeId:QuestionTypeEnum.Document.id, sujetId:sujet.id]">
         Un document
       </g:link>
     </li>
     <li>
-      <g:link action="edite" controller="question"
+      <g:link action="edite" controller="question${QuestionTypeEnum.MultipleChoice}"
                 params="[creation:true, questionTypeId:QuestionTypeEnum.MultipleChoice.id, sujetId:sujet.id]">
         Une question de type QCM
       </g:link>

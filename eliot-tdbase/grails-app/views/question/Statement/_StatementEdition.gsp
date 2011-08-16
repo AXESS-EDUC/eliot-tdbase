@@ -25,7 +25,7 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
+<g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
   <td colspan="2">
     <g:textArea

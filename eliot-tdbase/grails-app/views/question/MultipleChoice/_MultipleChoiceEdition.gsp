@@ -25,7 +25,7 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
+<g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
   <td class="label">
     Lib&eacute;ll&eacute;:
@@ -47,6 +47,7 @@
     <table>
       <tr>
         <td id="specifobject_reponses">
+          <g:render template="/question/MultipleChoice/MultipleChoiceEditionReponses" model="[specifobject:specifobject]"/>
         </td>
         <td style="vertical-align: bottom;">
           <g:submitToRemote title="Ajouter une réponse possible" value="Ajouter" action="ajouteReponse" controller="questionMultipleChoice" update="specifobject_reponses"/>

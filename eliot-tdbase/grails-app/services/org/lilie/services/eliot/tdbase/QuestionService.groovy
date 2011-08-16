@@ -131,18 +131,9 @@ class QuestionService implements ApplicationContextAware {
                                           def specificatinObject,
                                           Sujet sujet,
                                           Personne proprietaire, Integer rang = null) {
-    Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujet, proprietaire)
     Question question = createQuestion(proprietesQuestion,specificatinObject, proprietaire)
-    // todofsil : trouver un moyen plus efficace gestion du rang
-    def leRang = leSujet.questions.size() + 1
-    def sequence = new SujetSequenceQuestions(
-            question: question,
-            sujet: sujet,
-            rang: leRang
-    ).save(failOnError: true)
-    sujet.addToQuestionsSequences(sequence)
+    insertQuestionInSujet(question,sujet,proprietaire,rang)
     return question
-
   }
 
   /**
@@ -157,14 +148,15 @@ class QuestionService implements ApplicationContextAware {
                                           Personne proprietaire, Integer rang = null) {
     Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujet, proprietaire)
     // todofsil : trouver un moyen plus efficace gestion du rang
-    def leRang = leSujet.questions.size() + 1
+    def leRang = rang ?: leSujet.questions.size() + 1
     def sequence = new SujetSequenceQuestions(
             question: question,
-            sujet: sujet,
+            sujet: leSujet,
             rang: leRang
     ).save(failOnError: true)
-    sujet.addToQuestionsSequences(sequence)
-
+    leSujet.addToQuestionsSequences(sequence)
+    leSujet.lastUpdated = new Date()
+    leSujet.save()
   }
 
   /**

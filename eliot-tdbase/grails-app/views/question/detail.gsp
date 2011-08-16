@@ -99,7 +99,7 @@
           </td>
         </tr>
         <g:render
-                template="${question.type.code}/${question.type.code}Preview" model="[question:question]"/>
+                template="/question/${question.type.code}/${question.type.code}Detail" model="[question:question]"/>
       </table>
     </div>
     <div class="form_actions">

@@ -169,7 +169,7 @@
 
             </td>
             <td>
-              ${sujetInstance.lastUpdated?.format('dd/MM/yy hh:mm')}
+              ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}
             </td>
           </tr>
         </g:each>

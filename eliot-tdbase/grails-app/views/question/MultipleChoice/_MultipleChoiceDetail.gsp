@@ -26,17 +26,18 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-
-<g:each status="i" in="${specifobject.reponses}" var="reponse">
-  &nbsp;
-  <g:checkBox name="specifobject.reponses[${i}].estUneBonneReponse"
-              checked="${reponse.estUneBonneReponse}"/>
-  <g:textField name="specifobject.reponses[${i}].libelleReponse" size="45"
-                value="${reponse.libelleReponse}"/>
-  &nbsp;
-  <g:textField size="2"  value="${reponse.rang}" name="specifobject.reponses[${i}].rang"/>
-  &nbsp;
-  <g:submitToRemote id="${i}" value="Suppr" title="Supprimer la réponse" action="supprimeReponse" controller="questionMultipleChoice" update="specifobject_reponses"/>
-    <br/>
-</g:each>
-<g:hiddenField name="specifobject.reponses.size" value="${specifobject.reponses?.size()}"/>
+<tr>
+  <td class="label">Détail :</td>
+  <td>
+    <g:set var="specifobject" value="${question.specificationObject}"/>
+    ${specifobject.libelle} <br/>
+    <g:each in="${specifobject.reponses}" var="reponse">
+      &nbsp;
+      <g:checkBox name="specifobject.reponses[${i}].estUneBonneReponse"
+                  checked="${reponse.estUneBonneReponse}" disabled="true"/>
+      ${reponse.libelleReponse}
+      <br/>
+    </g:each>
+    Correction : ${specifobject.correction}
+  </td>
+</tr>
