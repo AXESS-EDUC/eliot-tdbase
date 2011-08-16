@@ -97,7 +97,7 @@
     <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
   </g:if>
 
-  <form method="post">
+  <form method="post" id="form_question_edit">
     <div class="portal-form_container" style="width: 70%;margin-left: 15px;">
       <table>
 

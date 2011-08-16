@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tdbase.impl.DocumentTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -25,4 +26,66 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
+<r:script>
+  $(document).ready(function() {
+    dom.setAttrib($('#form_question_edit'), 'enctype', 'multipart/form-data');
+  });
+</r:script>
+<g:set var="specifobject" value="${question.specificationObject}"/>
+<tr>
+  <td class="label">Auteur&nbsp;:</td>
+  <td>
+    <input size="75" type="text" value="${specifobject.auteur}"
+           name="specifobject.auteur"/>
+  </td>
+</tr>
+<tr>
+  <td class="label">Source&nbsp;:</td>
+  <td>
+    <input size="75" type="text" value="${specifobject.source}"
+           name="specifobject.source"/>
+  </td>
+</tr>
+<tr>
+  <td class="label">Type&nbsp;:</td>
+  <td>
+    <g:select name="specifobject.type"
+              from="${DocumentTypeEnum.values()}"
+              value="${specifobject.type}"
+              optionKey="name"
+              optionValue="name"/>
+  </td>
+</tr>
+<tr>
+  <td class="label">URL externe&nbsp;:</td>
+  <td>
+    <input size="75" type="text" value="${specifobject.urlExterne}"
+           name="specifobject.urlExterne"/>
+  </td>
+</tr>
+<tr>
+  <td class="label">Fichier&nbsp;:</td>
+  <td>
+    <input type="file" name="specifobject.fichier">
+  </td>
+</tr>
+<tr>
+  <td class="label">Affichage&nbsp;:</td>
+  <td>
+    <g:checkBox name="specifobject.estInsereDansLeSujet"
+                title="Le document est inséré dans le sujet"
+                checked="${specifobject.estInsereDansLeSujet}"/>
+    Le document est inséré dans le sujet
+  </td>
+</tr>
+<tr>
+  <td class="label">
+    Présentation&nbsp;:
+  </td>
+  <td>
+    <g:textArea
+            name="specifobject.presentation"
+            rows="4" cols="55"
+            value="${specifobject.presentation}"/>
+  </td>
+</tr>
