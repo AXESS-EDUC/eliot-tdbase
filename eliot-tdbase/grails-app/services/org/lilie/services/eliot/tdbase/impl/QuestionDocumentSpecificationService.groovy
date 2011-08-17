@@ -157,7 +157,7 @@ class DocumentSpecification {
     [
             auteur: auteur,
             source: source,
-            prensentation: presentation,
+            presentation: presentation,
             type: type,
             urlExterne: urlExterne,
             questionAttachementId: questionAttachementId,
