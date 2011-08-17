@@ -36,6 +36,11 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
+import org.lilie.services.eliot.tdbase.Question
+import org.springframework.web.multipart.MultipartFile
+import org.lilie.services.eliot.tdbase.QuestionAttachementService
+import org.lilie.services.eliot.tdbase.QuestionAttachement
+import org.springframework.transaction.annotation.Transactional
 
 /**
  *
@@ -44,6 +49,7 @@ import org.lilie.services.eliot.tice.utils.StringUtils
 class QuestionDocumentSpecificationService implements QuestionSpecificationService {
 
   static transactional = false
+  QuestionAttachementService questionAttachementService
 
   /**
    *
@@ -89,6 +95,27 @@ class QuestionDocumentSpecificationService implements QuestionSpecificationServi
     return null
   }
 
+  /**
+   *
+   * @see QuestionSpecificationService
+   */
+  def updateQuestionSpecificationForObject(Question question, Object object) {
+     if (!(object instanceof DocumentSpecification)) {
+      throw new IllegalArgumentException(
+              "objet ${object} n'est pas de type DocumentSpecification")
+    }
+    DocumentSpecification spec = object
+    def questionAttachement = null
+    if (spec.fichier) {
+       questionAttachement = questionAttachementService.createAttachementForQuestion(
+               spec.fichier,question)
+    }
+    spec.questionAttachementId = questionAttachement.id
+    question.specification = getSpecificationFromObject(object)
+    question.specificationNormalise = getSpecificationNormaliseFromObject(object)
+    question.save()
+  }
+
 
 }
 
@@ -101,9 +128,9 @@ class DocumentSpecification {
   String presentation
   String type
   String urlExterne
-  String cheminInterne
+  Long questionAttachementId
   boolean estInsereDansLeSujet
-  def fichier
+  MultipartFile fichier
 
   DocumentSpecification() {
     super()
@@ -114,7 +141,8 @@ class DocumentSpecification {
     this.source = map.source
     this.presentation = map.presentation
     this.type = map.type
-    this.cheminInterne = map.cheminInterne
+    this.urlExterne = map.urlExterne
+    this.questionAttachementId = map.questionAttachementId
     this.estInsereDansLeSujet = map.estInsereDansLeSujet
   }
 
@@ -125,7 +153,7 @@ class DocumentSpecification {
             prensentation: presentation,
             type: type,
             urlExterne: urlExterne,
-            cheminInterne: cheminInterne,
+            questionAttachementId: questionAttachementId,
             estInsereDansLeSujet: estInsereDansLeSujet
     ]
   }

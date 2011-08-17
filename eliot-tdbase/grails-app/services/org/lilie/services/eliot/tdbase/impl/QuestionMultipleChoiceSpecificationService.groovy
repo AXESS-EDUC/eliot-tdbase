@@ -34,7 +34,7 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
-
+import org.lilie.services.eliot.tdbase.Question
 
 /**
  *
@@ -69,7 +69,7 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
     }
     MultipleChoiceSpecification spec = object
     JsonBuilder builder = new JsonBuilder(spec.toMap())
-    return builder.toPrettyString()
+    return builder.toString()
   }
 
   /**
@@ -89,6 +89,15 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
     return null
   }
 
+  /**
+   *
+   * @see QuestionSpecificationService
+   */
+  def updateQuestionSpecificationForObject(Question question, Object object) {
+    question.specification = getSpecificationFromObject(object)
+    question.specificationNormalise = getSpecificationNormaliseFromObject(object)
+    question.save()
+  }
 
 }
 

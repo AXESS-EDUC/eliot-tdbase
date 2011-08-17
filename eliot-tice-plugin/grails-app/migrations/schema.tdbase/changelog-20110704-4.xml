@@ -1247,4 +1247,25 @@
 
     </changeSet>
 
+    <changeSet id="22" author="fsil">
+        <comment>
+            Ajout colonne sur table attachement
+        </comment>
+        <addColumn tableName="attachement" schemaName="tice">
+            <column name="nom_fichier_original" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="23" author="fsil">
+        <comment>
+            Renommage et ajout colonne sur table attachement
+        </comment>
+        <addColumn tableName="attachement" schemaName="tice">
+            <column name="a_supprimer" type="boolean" defaultValue="false"/>
+        </addColumn>
+        <renameColumn tableName="attachement"
+                      oldColumnName="taille_en_ko"
+                      newColumnName="taille" schemaName="tice"/>
+    </changeSet>
+
 </databaseChangeLog>

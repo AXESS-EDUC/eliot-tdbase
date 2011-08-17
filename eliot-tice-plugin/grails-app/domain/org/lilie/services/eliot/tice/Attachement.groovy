@@ -36,12 +36,14 @@ class Attachement {
 
   String chemin
   String nom
-  Integer tailleEnKo
+  String nomFichierOriginal
+  Integer taille
   String typeMime
 
   static constraints = {
-    tailleEnKo(nullable: true)
+    taille(nullable: true)
     typeMime(nullable: true)
+    nomFichierOriginal(nullable: true)
   }
 
   static mapping = {

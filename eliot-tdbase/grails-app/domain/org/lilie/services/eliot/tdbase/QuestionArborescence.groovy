@@ -33,13 +33,24 @@ package org.lilie.services.eliot.tdbase
  * questions imbriquées
  * @author franck Silvestre
  */
-class QuestionArborescence {
+class QuestionArborescence implements Comparable {
 
   int rang
   Question question
   Question questionFille
 
   static belongsTo = [question: Question, questionFille: Question]
+
+/**
+ * Permet l'ordonnancement des attachements par le rang
+ * @param obj l'objet de comparaison
+ * @return
+ */
+  int compareTo(obj) {
+    rang.compareTo(obj.rang)
+  }
+
+
 
   static mapping = {
     table('td.question_arborescence')

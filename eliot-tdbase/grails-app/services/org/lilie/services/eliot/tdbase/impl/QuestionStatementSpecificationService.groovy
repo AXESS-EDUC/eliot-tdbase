@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
+import org.lilie.services.eliot.tdbase.Question
 
 /**
  *
@@ -64,5 +65,13 @@ class QuestionStatementSpecificationService implements QuestionSpecificationServ
   }
 
 
-
+  /**
+   *
+   * @see QuestionSpecificationService
+   */
+  def updateQuestionSpecificationForObject(Question question, Object object) {
+    question.specification = object.enonce
+    question.specificationNormalise = StringUtils.normalise(object.enonce)
+    question.save()
+  }
 }

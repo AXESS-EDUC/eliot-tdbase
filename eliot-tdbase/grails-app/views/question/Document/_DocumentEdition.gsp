@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.impl.DocumentTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tdbase.QuestionAttachement; org.lilie.services.eliot.tdbase.impl.DocumentTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -66,6 +66,10 @@
 <tr>
   <td class="label">Fichier&nbsp;:</td>
   <td>
+    <g:if test="${specifobject.questionAttachementId}">
+      <g:set var="questionAttachement" value="${QuestionAttachement.get(specifobject.questionAttachementId)}"/>
+      ${questionAttachement.attachement.nomFichierOriginal} <br/>
+    </g:if>
     <input type="file" name="specifobject.fichier">
   </td>
 </tr>

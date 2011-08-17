@@ -34,7 +34,7 @@ import org.lilie.services.eliot.tice.Attachement
  * Classe représentant l'attachement d'une question
  * @author franck Silvestre
  */
-class QuestionAttachement {
+class QuestionAttachement implements Comparable {
 
   Integer rang
 
@@ -46,6 +46,15 @@ class QuestionAttachement {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_attachement_id_seq'])
     cache(true)
+  }
+
+   /**
+   * Permet l'ordonnancement des attachements par le rang
+   * @param obj l'objet de comparaison
+   * @return
+   */
+  int compareTo(obj) {
+    rang.compareTo(obj.rang)
   }
 
 }

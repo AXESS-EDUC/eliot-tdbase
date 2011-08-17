@@ -186,6 +186,14 @@ environments {
     ]
   }
 
+  // configuration de la racine de l'espace de fichier
+  environments {
+    development {
+      eliot.fichiers.racine = "/Users/Shared/eliot-root"
+      eliot.fichiers.maxsize.mega = 10
+    }
+  }
+
 }
 
 

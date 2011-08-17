@@ -65,8 +65,8 @@ class Question {
   Niveau niveau
   CopyrightsType copyrightsType
   Publication publication
-  List<QuestionArborescence>  questionArborescenceFilles
-  List<QuestionAttachement>  questionAttachements
+  SortedSet<QuestionArborescence>  questionArborescenceFilles
+  SortedSet<QuestionAttachement>  questionAttachements
 
   private def specificationObject
 
