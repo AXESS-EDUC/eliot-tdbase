@@ -41,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.QuestionAttachementService
 import org.lilie.services.eliot.tdbase.QuestionAttachement
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.annotation.Propagation
 
 /**
  *
@@ -99,6 +100,7 @@ class QuestionDocumentSpecificationService implements QuestionSpecificationServi
    *
    * @see QuestionSpecificationService
    */
+  @Transactional(propagation = Propagation.REQUIRED)
   def updateQuestionSpecificationForObject(Question question, Object object) {
      if (!(object instanceof DocumentSpecification)) {
       throw new IllegalArgumentException(

@@ -29,9 +29,7 @@
 package org.lilie.services.eliot.tice
 
 import org.hibernate.SessionFactory
-import org.lilie.services.eliot.tdbase.Sujet
-import org.lilie.services.eliot.tdbase.SujetService
-import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
+
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.utils.InitialisationTestService
@@ -67,7 +65,7 @@ class ServivesEliotServiceIntegrationTests extends GroovyTestCase {
         eliot.fichiers.racine = '/Users/Shared/eliot-root'
     """)
     assertEquals('/Users/Shared/eliot-root/',
-                 servicesEliotService.getCheminRacineSystemeFichier(config))
+                 servicesEliotService.getCheminRacineEspaceFichier(config))
   }
 
   def testGetCheminRacineSystemeFichierForPersonneAndServiceEliot() {
@@ -75,13 +73,13 @@ class ServivesEliotServiceIntegrationTests extends GroovyTestCase {
         eliot.fichiers.racine = '/Users/Shared/eliot-root'
     """)
     assertEquals('/Users/Shared/eliot-root/',
-                 servicesEliotService.getCheminRacineSystemeFichier(config))
+                 servicesEliotService.getCheminRacineEspaceFichier(config))
     def persId = personne1.id.toString()
     persId = "00000000000000000000".substring(persId.size()) + persId
-    String chemin = servicesEliotService.getCheminRacineSystemeFichierForPersonneAndServiceEliot(
-                          personne1,ServiceEliotEnum.tdbase,config)
+    String chemin = servicesEliotService.getCheminEspaceFichierForPersonneAndServiceEliot(
+                          personne1,ServiceEliotEnum.tdbase)
     println(chemin)
-    assertEquals("/Users/Shared/eliot-root/${persId}/tdbase/".toString(),
+    assertEquals("${persId}/tdbase/Documents/".toString(),
                   chemin)
 
 

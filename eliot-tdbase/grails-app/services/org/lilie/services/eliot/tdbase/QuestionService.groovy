@@ -37,8 +37,6 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 
-
-
 /**
  * Service de gestion des questions
  * @author franck silvestre
@@ -49,7 +47,6 @@ class QuestionService implements ApplicationContextAware {
   ApplicationContext applicationContext
 
   SujetService sujetService
-
 
   /**
    * Récupère le service de gestion de spécification de question correspondant
@@ -69,21 +66,20 @@ class QuestionService implements ApplicationContextAware {
    * @return la question créée
    */
   @Transactional
-  Question createQuestion(Map proprietes,def specificationObject, Personne proprietaire) {
+  Question createQuestion(Map proprietes, def specificationObject, Personne proprietaire) {
     Question question = new Question(
             proprietaire: proprietaire,
             titreNormalise: StringUtils.normalise(proprietes.titre),
             publie: false,
             versionQuestion: 1,
-            copyrightsType: CopyrightsType.getDefault()
+            copyrightsType: CopyrightsType.getDefault(),
+            specification: "{}"
     )
     question.properties = proprietes
-    question.save(flush:true)
-    // todofsil : hibernate ne sauve pas la question en premier :(
-    println("\n************* Question save with id : ${question.id}")
+    question.save()
     def specService = questionSpecificationServiceForQuestionType(question.type)
-    specService.updateQuestionSpecificationForObject(question,specificationObject)
-    question.save(flush:true)
+    specService.updateQuestionSpecificationForObject(question, specificationObject)
+    question.save(flush: true)
     return question
   }
 
@@ -107,7 +103,7 @@ class QuestionService implements ApplicationContextAware {
    * @return le sujet
    */
   @Transactional
-  Question updateProprietes(Question question, Map proprietes,def specificationObject,
+  Question updateProprietes(Question question, Map proprietes, def specificationObject,
                             Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
@@ -120,8 +116,8 @@ class QuestionService implements ApplicationContextAware {
     laQuestion.properties = proprietes
     laQuestion.save()
     def specService = questionSpecificationServiceForQuestionType(laQuestion.type)
-    specService.updateQuestionSpecificationForObject(question,specificationObject)
-    question.save(flush:true)
+    specService.updateQuestionSpecificationForObject(question, specificationObject)
+    question.save(flush: true)
     return laQuestion
   }
 
@@ -138,8 +134,8 @@ class QuestionService implements ApplicationContextAware {
                                           def specificatinObject,
                                           Sujet sujet,
                                           Personne proprietaire, Integer rang = null) {
-    Question question = createQuestion(proprietesQuestion,specificatinObject, proprietaire)
-    insertQuestionInSujet(question,sujet,proprietaire,rang)
+    Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
+    insertQuestionInSujet(question, sujet, proprietaire, rang)
     return question
   }
 
@@ -152,7 +148,7 @@ class QuestionService implements ApplicationContextAware {
    */
   @Transactional
   def insertQuestionInSujet(Question question, Sujet sujet,
-                                          Personne proprietaire, Integer rang = null) {
+                            Personne proprietaire, Integer rang = null) {
     Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujet, proprietaire)
     // todofsil : trouver un moyen plus efficace gestion du rang
     def leRang = rang ?: leSujet.questions.size() + 1
@@ -165,7 +161,6 @@ class QuestionService implements ApplicationContextAware {
     leSujet.lastUpdated = new Date()
     leSujet.save()
   }
-
 
   /**
    * Recherche de questions

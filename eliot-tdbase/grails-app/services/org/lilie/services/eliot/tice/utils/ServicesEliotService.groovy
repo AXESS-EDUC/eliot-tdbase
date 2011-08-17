@@ -39,25 +39,23 @@ import java.text.NumberFormat
 class ServicesEliotService {
 
   static transactional = false
-  private static final String PREFIX_PERSONNE_ID = "00000000000000000000"
+  private static final String NOM_DOSSIER_DOCUMENTS = "Documents"
 
   /**
-   * Retourne le chemin correspondant à la racine de l'espace de fichiers
-   * de la personne pour le service passé en paramètre
+   * Retourne le chemin correspondant à l'espace de fichiers
+   * de la personne pour le service passé en paramètre. Le chemin est relatif
+   * à la racine de l'espace de fichier
    * @param personne la personne
    * @param serviceEliotEnum le service concerné
    * @param config le config object
    * @return le chemin
    */
-  String getCheminRacineSystemeFichierForPersonneAndServiceEliot(
+  String getCheminEspaceFichierForPersonneAndServiceEliot(
           Personne personne,
-          ServiceEliotEnum serviceEliotEnum,
-          def config = ConfigurationHolder.config) {
-    def chemin = getCheminRacineSystemeFichier(config)
+          ServiceEliotEnum serviceEliotEnum) {
     def fsep = File.separator
-    def persId = personne.id.toString()
-    persId = PREFIX_PERSONNE_ID.substring(persId.size()) + persId
-    chemin << persId << fsep << serviceEliotEnum.name() << fsep
+    def persId = personne.id.toString().padLeft(20,'0')
+    persId << fsep << serviceEliotEnum.name() << fsep << NOM_DOSSIER_DOCUMENTS << fsep
   }
 
   /**
@@ -65,7 +63,7 @@ class ServicesEliotService {
    * @param config le config object
    * @return le chemin
    */
-  String getCheminRacineSystemeFichier(def config = ConfigurationHolder.config) {
+  String getCheminRacineEspaceFichier(def config = ConfigurationHolder.config) {
    String chemin = config.eliot.fichiers.racine
    if (chemin.endsWith(File.separator)) {
       return chemin

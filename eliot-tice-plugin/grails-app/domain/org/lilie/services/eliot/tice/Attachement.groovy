@@ -39,6 +39,7 @@ class Attachement {
   String nomFichierOriginal
   Integer taille
   String typeMime
+  boolean aSupprimer
 
   static constraints = {
     taille(nullable: true)

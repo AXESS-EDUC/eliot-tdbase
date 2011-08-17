@@ -69,21 +69,30 @@ class AttachementService {
     if (fichier.size > 1024*1024*maxSizeEnMega) {
        throw new IllegalArgumentException("question.document.fichier.tropgros")
     }
+    // par defaut un nouvel attachement est marque a supprimer
+    // c'est à la création d'un lien vers un item qu'il faut le
+    // considérer comme attaché et donc comme non à supprimer
     Attachement attachement = new Attachement(
             taille: fichier.size,
             typeMime: fichier.contentType,
-            nom: fichier.name,
-            nomFichierOriginal: fichier.originalFilename
+            nom: fichier.originalFilename,
+            nomFichierOriginal: fichier.originalFilename,
+            aSupprimer: true
     )
-    String racine = servicesEliotService.getCheminRacineSystemeFichierForPersonneAndServiceEliot(
-      proprietaire,serviceEliotEnum, config
+    String racine = servicesEliotService.getCheminRacineEspaceFichier(config)
+    String espaceFic = servicesEliotService.getCheminEspaceFichierForPersonneAndServiceEliot(
+      proprietaire,serviceEliotEnum
     )
-    String racineDest = racine + new Date().format("yyyyMM")
+    String fs = File.separator
+    Date now = new Date()
+    String espaceDest = espaceFic << now.format("yyyy") << fs << now.format("MM")
+    String racineDest = racine + espaceDest
     new File(racineDest).mkdirs()
-    String cheminDest = racineDest << File.separator << UUID.randomUUID()
+    String cheminRel  = espaceDest << fs << UUID.randomUUID()
+    String cheminDest = racine + cheminRel
     File fichierDest = new File(cheminDest)
     fichier.transferTo(fichierDest)
-    attachement.chemin = cheminDest
+    attachement.chemin = cheminRel
     attachement.save()
     return attachement
   }

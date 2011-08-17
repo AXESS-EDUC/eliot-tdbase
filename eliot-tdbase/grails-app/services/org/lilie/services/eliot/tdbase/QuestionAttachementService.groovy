@@ -41,6 +41,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import org.springframework.transaction.annotation.Propagation
 
 /**
  * Service de gestion des questions
@@ -60,6 +61,7 @@ class QuestionAttachementService {
    * @param rang le rang
    * @return  l'objet de type QuestionAttachement
    */
+  @Transactional(propagation = Propagation.REQUIRED)
   QuestionAttachement createAttachementForQuestion(MultipartFile fichier,
                                    Question question,
                                    Integer rang = 1) {
@@ -72,6 +74,8 @@ class QuestionAttachementService {
             rang: rang
     )
     questionAttachement.save()
+    // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
+    attachement.aSupprimer = false
     question.addToQuestionAttachements(questionAttachement)
     question.lastUpdated = new Date()
     question.save()
