@@ -100,19 +100,24 @@ class QuestionDocumentSpecificationService implements QuestionSpecificationServi
    *
    * @see QuestionSpecificationService
    */
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional
   def updateQuestionSpecificationForObject(Question question, Object object) {
      if (!(object instanceof DocumentSpecification)) {
       throw new IllegalArgumentException(
               "objet ${object} n'est pas de type DocumentSpecification")
     }
     DocumentSpecification spec = object
-    def questionAttachement = null
     if (spec.fichier) {
-       questionAttachement = questionAttachementService.createAttachementForQuestion(
+       def questionAttachement = questionAttachementService.createAttachementForQuestion(
                spec.fichier,question)
+      def oldQuestAttId = question.specificationObject?.questionAttachementId
+      if (oldQuestAttId) {
+        questionAttachementService.deleteQuestionAttachement(
+                QuestionAttachement.get(oldQuestAttId))
+      }
+      spec.questionAttachementId = questionAttachement.id
     }
-    spec.questionAttachementId = questionAttachement.id
+
     question.specification = getSpecificationFromObject(object)
     question.specificationNormalise = getSpecificationNormaliseFromObject(object)
     question.save()

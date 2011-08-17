@@ -65,12 +65,9 @@
 </tr>
 <tr>
   <td class="label">Fichier&nbsp;:</td>
-  <td>
-    <g:if test="${specifobject.questionAttachementId}">
-      <g:set var="questionAttachement" value="${QuestionAttachement.get(specifobject.questionAttachementId)}"/>
-      ${questionAttachement.attachement.nomFichierOriginal} <br/>
-    </g:if>
-    <input type="file" name="specifobject.fichier">
+  <td id="specifobject_fichier">
+    <g:render template="/question/Document/DocumentEditionFichier"
+              model="[specifobject:specifobject]"/>
   </td>
 </tr>
 <tr>

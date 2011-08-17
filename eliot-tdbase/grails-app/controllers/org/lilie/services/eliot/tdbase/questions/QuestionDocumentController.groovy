@@ -34,8 +34,24 @@ package org.lilie.services.eliot.tdbase.questions
 
 import org.lilie.services.eliot.tdbase.QuestionController
 import org.lilie.services.eliot.tdbase.impl.DocumentSpecification
+import org.lilie.services.eliot.tdbase.QuestionAttachementService
+import org.lilie.services.eliot.tdbase.QuestionAttachement
 
 class QuestionDocumentController extends QuestionController {
+
+  QuestionAttachementService questionAttachementService
+
+  /**
+   * Action "supprimeAttachement"
+   */
+
+  def supprimeAttachement() {
+    DocumentSpecification spec = getSpecificationObjectFromParams(params)
+    //questionAttachementService.deleteQuestionAttachement(QuestionAttachement.get(spec.questionAttachementId))
+    spec.questionAttachementId = null
+    spec.fichier = null
+    render(template: "/question/Document/DocumentEditionFichier", model:[specifobject:spec])
+  }
 
   /**
    *

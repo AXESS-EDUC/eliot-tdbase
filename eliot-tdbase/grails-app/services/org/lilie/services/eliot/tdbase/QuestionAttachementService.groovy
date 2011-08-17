@@ -42,6 +42,7 @@ import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.transaction.annotation.Propagation
+import org.lilie.services.eliot.tice.Attachement
 
 /**
  * Service de gestion des questions
@@ -82,7 +83,22 @@ class QuestionAttachementService {
     return questionAttachement
   }
 
-
+  /**
+   * Supprime le question attachement
+   * @param questionAttachement l'objet représentant l'attachement à la question
+   */
+  @Transactional
+  def deleteQuestionAttachement(QuestionAttachement questionAttachement) {
+    def question = questionAttachement.question
+    def attachement = questionAttachement.attachement
+    question.removeFromQuestionAttachements(questionAttachement)
+    questionAttachement.delete(flush: true)
+    def refCount = QuestionAttachement.countByAttachement(questionAttachement.attachement)
+    if (refCount == 0) {
+      attachement.aSupprimer = true
+    }
+    attachement.save()
+  }
 
 }
 

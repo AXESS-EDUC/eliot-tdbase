@@ -25,51 +25,23 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<g:set var="specifobject" value="${question.specificationObject}"/>
-<tr>
-  <td class="label">
-    Lib&eacute;ll&eacute;:
-  </td>
-  <td>
-    <g:textArea
-            name="specifobject.libelle"
-            rows="3" cols="55"
-            value="${specifobject.libelle}"
-    />
-  </td>
-</tr>
-<tr>
-  <td class="label">
-    R&eacute;ponse(s):
-  </td>
-  <td>
 
-    <table>
-      <tr>
-        <td id="specifobject_reponses">
-          <g:render template="/question/MultipleChoice/MultipleChoiceEditionReponses"
-                    model="[specifobject:specifobject]"/>
-        </td>
-        <td style="vertical-align: bottom;">
-          <g:submitToRemote title="Ajouter une réponse possible" value="Ajouter"
-                            action="ajouteReponse"
-                            controller="questionMultipleChoice"
-                            update="specifobject_reponses"/>
-        </td>
-      </tr>
-    </table>
+<%@ page import="org.lilie.services.eliot.tdbase.QuestionAttachement" %>
 
-  </td>
-</tr>
-<tr>
-  <td class="label">
-    Correction:
-  </td>
-  <td>
-     <g:textArea
-            name="specifobject.correction"
-            rows="3" cols="55"
-            value="${specifobject.correction}"
-    />
-  </td>
-</tr>
+
+<g:if test="${specifobject.questionAttachementId}">
+  <g:set var="questionAttachement"
+         value="${QuestionAttachement.get(specifobject.questionAttachementId)}"/>
+  <g:hiddenField name="specifobject.questionAttachementId" value="${specifobject.questionAttachementId}"/>
+  ${questionAttachement.attachement.nomFichierOriginal}&nbsp;
+  <g:submitToRemote action="supprimeAttachement"
+                    controller="questionDocument"
+                    update="specifobject_fichier"
+                    value="Suppr"/>
+  <br/>
+</g:if>
+<g:else>
+  <input type="file" name="specifobject.fichier">
+</g:else>
+
+
