@@ -26,3 +26,8 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
+ <g:set var="specifobject" value="${question.specificationObject}"/>
+${question.titre} <br/>
+Auteur : ${specifobject.auteur} &nbsp;&nbsp;&nbsp;
+Source : ${specifobject.source}
+
