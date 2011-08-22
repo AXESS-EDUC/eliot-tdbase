@@ -26,8 +26,21 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
- <g:set var="specifobject" value="${question.specificationObject}"/>
-${question.titre} <br/>
-Auteur : ${specifobject.auteur} &nbsp;&nbsp;&nbsp;
+<g:set var="specifobject" value="${question.specificationObject}"/>
+<g:if test="${specifobject.estInsereDansLeSujet}">
+  ${question.titre} <br/>
+  Auteur : ${specifobject.auteur} &nbsp;&nbsp;&nbsp;
+Source : ${specifobject.source} <br/><br/>
+  <et:viewAttachement attachement="${specifobject.attachement}"/> <br/>
+</g:if>
+<g:else>
+  <g:link action="viewAttachement" controller="attachement"
+          id="${specifobject.attachement.id}" target="_blank">
+    ${question.titre}
+  </g:link> <br/>
+  Auteur : ${specifobject.auteur} &nbsp;&nbsp;&nbsp;
 Source : ${specifobject.source}
+</g:else>
+<br/>
+
 

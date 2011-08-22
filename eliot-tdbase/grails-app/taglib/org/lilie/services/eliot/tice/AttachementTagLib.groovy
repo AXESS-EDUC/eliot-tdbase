@@ -26,48 +26,37 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+package org.lilie.services.eliot.tice
 
+class AttachementTagLib {
 
-
-
-package org.lilie.services.eliot.tdbase.questions
-
-import org.lilie.services.eliot.tdbase.QuestionController
-import org.lilie.services.eliot.tdbase.impl.DocumentSpecification
-import org.lilie.services.eliot.tdbase.QuestionAttachementService
-import org.lilie.services.eliot.tdbase.QuestionAttachement
-import org.lilie.services.eliot.tice.Attachement
-import org.lilie.services.eliot.tice.AttachementService
-
-class QuestionDocumentController extends QuestionController {
-
-  QuestionAttachementService questionAttachementService
   AttachementService attachementService
 
-  /**
-   * Action "supprimeAttachement"
-   */
+  static namespace = "et"
 
-  def supprimeAttachement() {
-    DocumentSpecification spec = getSpecificationObjectFromParams(params)
-    spec.questionAttachementId = null
-    spec.fichier = null
-    render(template: "/question/Document/DocumentEditionFichier", model:[specifobject:spec])
-  }
-
-
-  /**
-   *
-   * @param params  les paramètres de la requête
-   * @return l'objet représentant la spécification
-   */
-  def getSpecificationObjectFromParams(Map params) {
-    def specifobject = new DocumentSpecification()
-    bindData(specifobject, params, "specifobject")
-    return specifobject
+/**
+ * Affiche un fichier.
+ *
+ * @attr attachement REQUIRED l'attachement à afficher
+ */
+  def viewAttachement = { attrs ->
+    if (attrs.attachement) {
+      Attachement attachement = attrs.attachement
+      String link = g.createLink(action: 'viewAttachement',
+                                 controller: 'attachement',
+                                 id: attachement.id)
+      if (attachement.estUneImageAffichable()) {
+        out << '<img src="' << link << '"//>'
+      } else if (attachement.estUnTexteAffichable()) {
+        File fichier = attachementService.getFileForAttachement(attachement)
+        out << fichier.text.encodeAsHTML()
+      } else {
+        out << '<a target="_blank" href="' << link << '">' <<
+        g.message(code: "attachement.acces") <<
+        '<//a>'
+      }
+    }
   }
 
 
 }
-
-

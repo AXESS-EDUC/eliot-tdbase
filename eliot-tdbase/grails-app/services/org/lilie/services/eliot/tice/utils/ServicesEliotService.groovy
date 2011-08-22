@@ -30,11 +30,8 @@
 
 package org.lilie.services.eliot.tice.utils
 
-import org.lilie.services.eliot.tice.annuaire.Personne
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
-import org.springframework.format.number.NumberFormatter
-import java.text.NumberFormat
-
+import org.lilie.services.eliot.tice.annuaire.Personne
 
 class ServicesEliotService {
 
@@ -47,14 +44,13 @@ class ServicesEliotService {
    * à la racine de l'espace de fichier
    * @param personne la personne
    * @param serviceEliotEnum le service concerné
-   * @param config le config object
    * @return le chemin
    */
-  String getCheminEspaceFichierForPersonneAndServiceEliot(
+  String getCheminRelatifEspaceFichierForPersonneAndServiceEliot(
           Personne personne,
           ServiceEliotEnum serviceEliotEnum) {
     def fsep = File.separator
-    def persId = personne.id.toString().padLeft(20,'0')
+    def persId = personne.id.toString().padLeft(20, '0')
     persId << fsep << serviceEliotEnum.name() << fsep << NOM_DOSSIER_DOCUMENTS << fsep
   }
 
@@ -64,11 +60,31 @@ class ServicesEliotService {
    * @return le chemin
    */
   String getCheminRacineEspaceFichier(def config = ConfigurationHolder.config) {
-   String chemin = config.eliot.fichiers.racine
-   if (chemin.endsWith(File.separator)) {
+    String chemin = config.eliot.fichiers.racine
+    if (chemin.endsWith(File.separator)) {
       return chemin
     }
-   return chemin + File.separator
+    return chemin + File.separator
+  }
+
+  /**
+   * Retourne le chemin correspondant à l'espace de fichiers
+   * de la personne pour le service passé en paramètre. Le chemin est absolu.
+   *
+   * @param personne la personne
+   * @param serviceEliotEnum le service concerné
+   * @param config le config object
+   * @return le chemin
+   */
+  String getCheminAbsoluEspaceFichierForPersonneAndServiceEliot(
+          Personne personne,
+          ServiceEliotEnum serviceEliotEnum,
+          def config = ConfigurationHolder.config) {
+      getCheminRacineEspaceFichier(config) <<
+      getCheminRelatifEspaceFichierForPersonneAndServiceEliot(
+              personne,
+              serviceEliotEnum
+      )
   }
 }
 

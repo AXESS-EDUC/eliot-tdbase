@@ -30,11 +30,11 @@
 
 package org.lilie.services.eliot.tice
 
-import org.springframework.web.multipart.MultipartFile
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.utils.ServiceEliotEnum
 import org.lilie.services.eliot.tice.utils.ServicesEliotService
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import org.springframework.web.multipart.MultipartFile
 
 /**
  * Classe fournissant le service de gestion de breadcrumps
@@ -66,8 +66,8 @@ class AttachementService {
       throw new IllegalArgumentException("question.document.fichier.nom.null")
     }
     def maxSizeEnMega = config.eliot.fichiers.maxsize.mega
-    if (fichier.size > 1024*1024*maxSizeEnMega) {
-       throw new IllegalArgumentException("question.document.fichier.tropgros")
+    if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+      throw new IllegalArgumentException("question.document.fichier.tropgros")
     }
     // par defaut un nouvel attachement est marque a supprimer
     // c'est à la création d'un lien vers un item qu'il faut le
@@ -80,21 +80,35 @@ class AttachementService {
             aSupprimer: true
     )
     String racine = servicesEliotService.getCheminRacineEspaceFichier(config)
-    String espaceFic = servicesEliotService.getCheminEspaceFichierForPersonneAndServiceEliot(
-      proprietaire,serviceEliotEnum
+    String espaceFic = servicesEliotService.getCheminRelatifEspaceFichierForPersonneAndServiceEliot(
+            proprietaire, serviceEliotEnum
     )
     String fs = File.separator
     Date now = new Date()
     String espaceDest = espaceFic << now.format("yyyy") << fs << now.format("MM")
     String racineDest = racine + espaceDest
     new File(racineDest).mkdirs()
-    String cheminRel  = espaceDest << fs << UUID.randomUUID()
+    String cheminRel = espaceDest << fs << UUID.randomUUID()
     String cheminDest = racine + cheminRel
     File fichierDest = new File(cheminDest)
     fichier.transferTo(fichierDest)
     attachement.chemin = cheminRel
     attachement.save()
     return attachement
+  }
+
+  /**
+   * Retourne l'objet File correspondant à un attachement
+   * @param attachement l'attachement
+   *
+   * @param config le config object
+   * @return l'objet de type File
+   */
+  File getFileForAttachement(Attachement attachement,
+                             def config = ConfigurationHolder.config) {
+    String chemin = servicesEliotService.getCheminRacineEspaceFichier(config) <<
+                    attachement.chemin
+    new File(chemin)
   }
 
 }

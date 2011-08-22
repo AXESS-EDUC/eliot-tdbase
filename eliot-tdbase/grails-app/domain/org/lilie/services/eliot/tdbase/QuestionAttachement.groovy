@@ -46,6 +46,8 @@ class QuestionAttachement implements Comparable {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_attachement_id_seq'])
     cache(true)
+    attachement(lazy: false)
+    question(lazy: false)
   }
 
    /**

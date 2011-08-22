@@ -42,6 +42,7 @@ import org.lilie.services.eliot.tdbase.QuestionAttachementService
 import org.lilie.services.eliot.tdbase.QuestionAttachement
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.annotation.Propagation
+import org.lilie.services.eliot.tice.Attachement
 
 /**
  *
@@ -163,6 +164,19 @@ class DocumentSpecification {
             questionAttachementId: questionAttachementId,
             estInsereDansLeSujet: estInsereDansLeSujet
     ]
+  }
+
+  /**
+   * Retourne l'attachement correspondant
+   * @return l'attachement
+   */
+  Attachement getAttachement() {
+    if (questionAttachementId) {
+      QuestionAttachement questionAttachement = QuestionAttachement.get(questionAttachementId)
+      return questionAttachement.attachement
+    } else {
+      return null
+    }
   }
 
 }

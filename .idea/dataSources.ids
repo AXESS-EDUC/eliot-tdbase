@@ -3228,25 +3228,25 @@
       <column name="publie" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" default="false" />
       <column name="date_created" sqlType="timestamptz" length="35" precision="6" nullable="true" jdbcType="93" />
       <column name="last_updated" sqlType="timestamptz" length="35" precision="6" nullable="true" jdbcType="93" />
-      <column name="question_derniere_version_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="copyrights_type_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="specification_normalise" sqlType="text" length="2147483647" precision="0" nullable="true" jdbcType="12" />
+      <column name="question_depart_branche_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="pk_question" columns="id" />
       <foreign-key name="fk_question_etablissement_id" columns="etablissement_id" ref-table="etablissement" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_question_matiere_id" columns="matiere_id" ref-table="matiere" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_question_niveau_id" columns="niveau_id" ref-table="niveau" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_question_proprietaire_id" columns="proprietaire_id" ref-table="personne" ref-schema="ent" ref-catalog="" ref-columns="id" />
-      <foreign-key name="fk_question_question_derniere_version_id" columns="question_derniere_version_id" ref-table="question" ref-schema="td" ref-catalog="" ref-columns="id" />
+      <foreign-key name="fk_question_question_depart_branche_id" columns="question_depart_branche_id" ref-table="question" ref-schema="td" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_question_type_id" columns="type_id" ref-table="question_type" ref-schema="td" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_question_copyrights_id" columns="copyrights_type_id" ref-table="copyrights_type" ref-schema="tice" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_question_publication_id" columns="publication_id" ref-table="publication" ref-schema="tice" ref-catalog="" ref-columns="id" />
-      <index name="uk_question_version_question_derniere_version" unique="true" columns="question_derniere_version_id,version_question" />
+      <index name="uk_question_version_question_depart_branche" unique="true" columns="question_depart_branche_id,version_question,proprietaire_id" />
       <index name="idx_question_copyrights_id" unique="false" columns="copyrights_type_id" />
       <index name="idx_question_etablissement_id" unique="false" columns="etablissement_id" />
       <index name="idx_question_matiere_id" unique="false" columns="matiere_id" />
       <index name="idx_question_niveau_id" unique="false" columns="niveau_id" />
       <index name="idx_question_proprietaire_id" unique="false" columns="proprietaire_id" />
       <index name="idx_question_publication_id" unique="false" columns="publication_id" />
-      <index name="idx_question_question_derniere_version_id" unique="false" columns="question_derniere_version_id" />
       <index name="idx_question_type_id" unique="false" columns="type_id" />
     </table>
     <table name="question_arborescence" schema="td" catalog="" type="TABLE">
@@ -3257,7 +3257,6 @@
       <primary-key name="pk_question_arborescence" columns="id" />
       <foreign-key name="fk_question_arboresence_question_fille_id" columns="question_fille_id" ref-table="question" ref-schema="td" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_question_arboresence_question_id" columns="question_id" ref-table="question" ref-schema="td" ref-catalog="" ref-columns="id" />
-      <index name="uk_question_arborescence_question_id_question_fille_id" unique="true" columns="question_id,question_fille_id" />
       <index name="idx_question_arborescence_question_fille_id" unique="false" columns="question_fille_id" />
       <index name="idx_question_arborescence_question_id" unique="false" columns="question_id" />
     </table>
@@ -3281,7 +3280,6 @@
       <primary-key name="pk_question_attachement" columns="id" />
       <foreign-key name="fk_question_attachement_question_id" columns="question_id" ref-table="question" ref-schema="td" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_question_attachement_attachement_id" columns="attachement_id" ref-table="attachement" ref-schema="tice" ref-catalog="" ref-columns="id" />
-      <index name="uk_question_attachement_question_id_attachement_id" unique="true" columns="question_id,attachement_id" />
       <index name="idx_question_attachement_attachement_id" unique="false" columns="attachement_id" />
       <index name="idx_question_attachement_question_id" unique="false" columns="question_id" />
     </table>
@@ -3425,25 +3423,24 @@
       <column name="publie" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" default="false" />
       <column name="date_created" sqlType="timestamptz" length="35" precision="6" nullable="true" jdbcType="93" />
       <column name="last_updated" sqlType="timestamptz" length="35" precision="6" nullable="true" jdbcType="93" />
-      <column name="sujet_derniere_version_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="sujet_type_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="sujet_depart_branche_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="pk_sujet" columns="id" />
       <foreign-key name="fk_sujet_etablissement_id" columns="etablissement_id" ref-table="etablissement" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_sujet_matiere_id" columns="matiere_id" ref-table="matiere" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_sujet_niveau_id" columns="niveau_id" ref-table="niveau" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_sujet_proprietaire_id" columns="proprietaire_id" ref-table="personne" ref-schema="ent" ref-catalog="" ref-columns="id" />
-      <foreign-key name="fk_sujet_sujet_derniere_version_id" columns="sujet_derniere_version_id" ref-table="sujet" ref-schema="td" ref-catalog="" ref-columns="id" />
+      <foreign-key name="fk_sujet_sujet_depart_branche_id" columns="sujet_depart_branche_id" ref-table="sujet" ref-schema="td" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_sujet_sujet_type_id" columns="sujet_type_id" ref-table="sujet_type" ref-schema="td" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_sujet_copyrights_id" columns="copyrights_type_id" ref-table="copyrights_type" ref-schema="tice" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_sujet_publication_id" columns="publication_id" ref-table="publication" ref-schema="tice" ref-catalog="" ref-columns="id" />
-      <index name="uk_sujet_version_sujet_derniere_version" unique="true" columns="sujet_derniere_version_id,version_sujet" />
+      <index name="uk_sujet_version_sujet_depart_branche" unique="true" columns="sujet_depart_branche_id,version_sujet,proprietaire_id" />
       <index name="idx_sujet_copyrights_id" unique="false" columns="copyrights_type_id" />
       <index name="idx_sujet_etablissement_id" unique="false" columns="etablissement_id" />
       <index name="idx_sujet_matiere_id" unique="false" columns="matiere_id" />
       <index name="idx_sujet_niveau_id" unique="false" columns="niveau_id" />
       <index name="idx_sujet_proprietaire_id" unique="false" columns="proprietaire_id" />
       <index name="idx_sujet_publication_id" unique="false" columns="publication_id" />
-      <index name="idx_sujet_sujet_derniere_version_id" unique="false" columns="sujet_derniere_version_id" />
       <index name="idx_sujet_sujet_type_id" unique="false" columns="sujet_type_id" />
     </table>
     <table name="sujet_id_seq" schema="td" catalog="" type="SEQUENCE">
@@ -3467,7 +3464,6 @@
       <primary-key name="pk_sujet_sequence_questions" columns="id" />
       <foreign-key name="fk_sujet_sequence_questions_question_id" columns="question_id" ref-table="question" ref-schema="td" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_sujet_sequence_questions_sujet_id" columns="sujet_id" ref-table="sujet" ref-schema="td" ref-catalog="" ref-columns="id" />
-      <index name="uk_sujet_sequence_questions_question_id_sujet_id" unique="true" columns="question_id,sujet_id" />
       <index name="idx_sujet_sequence_questions_question_id" unique="false" columns="question_id" />
       <index name="idx_sujet_sequence_questions_sujet_id" unique="false" columns="sujet_id" />
     </table>
@@ -3505,8 +3501,10 @@
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="chemin" sqlType="text" length="2147483647" precision="0" nullable="false" jdbcType="12" />
       <column name="nom" sqlType="varchar" length="255" precision="0" nullable="false" jdbcType="12" />
-      <column name="taille_en_ko" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="taille" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="type_mime" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
+      <column name="nom_fichier_original" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
+      <column name="a_supprimer" sqlType="bool" length="1" precision="0" nullable="true" jdbcType="-7" default="false" />
       <primary-key name="pk_attachement" columns="id" />
     </table>
     <table name="attachement_id_seq" schema="tice" catalog="" type="SEQUENCE">

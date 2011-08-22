@@ -34,6 +34,12 @@ package org.lilie.services.eliot.tice
  */
 class Attachement {
 
+  private static final ArrayList<String> TYPES_MIME_IMG_AFFICHABLE = [
+          'image/gif',
+          'image/jpeg',
+          'image/png'
+  ]
+
   String chemin
   String nom
   String nomFichierOriginal
@@ -52,6 +58,16 @@ class Attachement {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'tice.attachement_id_seq'])
     cache(true)
+  }
+
+  static transients = ['estUneImageAffichable','estUnTexteAffichable']
+
+  boolean estUneImageAffichable() {
+    return typeMime in TYPES_MIME_IMG_AFFICHABLE
+  }
+
+  boolean estUnTexteAffichable() {
+    return typeMime?.startsWith('text/')
   }
 
 }

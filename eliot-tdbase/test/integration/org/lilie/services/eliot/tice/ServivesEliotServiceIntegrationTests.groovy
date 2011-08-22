@@ -76,7 +76,7 @@ class ServivesEliotServiceIntegrationTests extends GroovyTestCase {
                  servicesEliotService.getCheminRacineEspaceFichier(config))
     def persId = personne1.id.toString()
     persId = "00000000000000000000".substring(persId.size()) + persId
-    String chemin = servicesEliotService.getCheminEspaceFichierForPersonneAndServiceEliot(
+    String chemin = servicesEliotService.getCheminRelatifEspaceFichierForPersonneAndServiceEliot(
                           personne1,ServiceEliotEnum.tdbase)
     println(chemin)
     assertEquals("${persId}/tdbase/Documents/".toString(),

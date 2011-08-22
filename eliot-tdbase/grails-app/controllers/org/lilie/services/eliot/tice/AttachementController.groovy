@@ -27,44 +27,24 @@
  */
 
 
+package org.lilie.services.eliot.tice
 
 
+class AttachementController {
 
-package org.lilie.services.eliot.tdbase.questions
-
-import org.lilie.services.eliot.tdbase.QuestionController
-import org.lilie.services.eliot.tdbase.impl.DocumentSpecification
-import org.lilie.services.eliot.tdbase.QuestionAttachementService
-import org.lilie.services.eliot.tdbase.QuestionAttachement
-import org.lilie.services.eliot.tice.Attachement
-import org.lilie.services.eliot.tice.AttachementService
-
-class QuestionDocumentController extends QuestionController {
-
-  QuestionAttachementService questionAttachementService
   AttachementService attachementService
 
   /**
-   * Action "supprimeAttachement"
-   */
-
-  def supprimeAttachement() {
-    DocumentSpecification spec = getSpecificationObjectFromParams(params)
-    spec.questionAttachementId = null
-    spec.fichier = null
-    render(template: "/question/Document/DocumentEditionFichier", model:[specifobject:spec])
-  }
-
-
-  /**
    *
-   * @param params  les paramètres de la requête
-   * @return l'objet représentant la spécification
+   * Action de visulaisation d'un fichier
    */
-  def getSpecificationObjectFromParams(Map params) {
-    def specifobject = new DocumentSpecification()
-    bindData(specifobject, params, "specifobject")
-    return specifobject
+  def viewAttachement() {
+    Attachement attachement = Attachement.get(params.id)
+    response.setHeader("Content-disposition", "filename=${attachement.nomFichierOriginal}")
+    response.contentType = attachement.typeMime
+    File fichier = attachementService.getFileForAttachement(attachement)
+    response.outputStream << fichier.newInputStream()
+    response.outputStream.flush()
   }
 
 

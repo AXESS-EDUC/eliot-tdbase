@@ -56,9 +56,13 @@
   <td class="label">Fichier&nbsp;:</td>
   <td>
     <g:if test="${specifobject.questionAttachementId}">
-      <g:set var="questionAttachement"
-             value="${QuestionAttachement.get(specifobject.questionAttachementId)}"/>
-      ${questionAttachement.attachement.nomFichierOriginal}
+      <g:set var="attachement"
+             value="${specifobject.attachement}"/>
+
+      <g:link action="viewAttachement" controller="attachement"
+              id="${attachement.id}" target="_blank">
+        ${attachement.nomFichierOriginal}
+      </g:link>
       <br/>
     </g:if>
   </td>
