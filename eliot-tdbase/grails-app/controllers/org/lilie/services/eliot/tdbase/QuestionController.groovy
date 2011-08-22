@@ -168,6 +168,21 @@ class QuestionController {
 
   /**
    *
+   * Action supprime element
+   */
+  def supprimeFromSujet() {
+    SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
+    Personne proprietaire = authenticatedPersonne
+    Sujet sujet = questionService.supprimeQuestionFromSujet(sujetQuestion,proprietaire)
+    render(view: '/sujet/edite', model:[
+            sujet: sujet,
+            titreSujet: sujet.titre,
+            liens: breadcrumpsService.liens
+    ])
+  }
+
+  /**
+   *
    * Action "recherche"
    */
   def recherche(RechercheQuestionCommand rechCmd) {

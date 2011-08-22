@@ -108,7 +108,7 @@
     </div>
   </form>
   <g:if test="${sujet}">
-    <g:each in="${sujet.questions}" var="question">
+    <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">
         <div class="tdbase-sujet-edition-question-boutons">
           <a href="#">
@@ -120,13 +120,14 @@
             <img border="0" src="/eliot-tdbase/images/eliot/ActionIconAdd.gif"
                  width="20" height="19"/>
           </a>
-          <a href="#">
+          <g:link action="supprimeFromSujet" controller="question" id="${sujetQuestion.id}" >
             <img border="0" src="/eliot-tdbase/images/eliot/trashcan-btn.gif"
                  width="14"
                  height="16"/>
-          </a>
+          </g:link>
         </div>
         <div class="tdbase-sujet-edition-question-preview">
+          <g:set var="question" value="${sujetQuestion.question}"/>
         <g:render
                 template="/question/${question.type.code}/${question.type.code}Preview"
                 model="[question:question]"/>

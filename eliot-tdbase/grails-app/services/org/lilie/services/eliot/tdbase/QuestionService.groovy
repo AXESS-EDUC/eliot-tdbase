@@ -144,7 +144,6 @@ class QuestionService implements ApplicationContextAware {
    * @param question la question
    * @param sujet le sujet
    * @param proprietaire le propriétaire
-   * @return la question insérée
    */
   @Transactional
   def insertQuestionInSujet(Question question, Sujet sujet,
@@ -161,6 +160,24 @@ class QuestionService implements ApplicationContextAware {
     leSujet.lastUpdated = new Date()
     leSujet.save()
   }
+
+/**
+   * Supprime une question d'un sujet
+   * @param question la question
+   * @param sujet le sujet
+   * @param proprietaire le propriétaire
+   * @return le sujet modifié
+   */
+  @Transactional
+  Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
+                            Personne proprietaire) {
+    Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
+    leSujet.removeFromQuestionsSequences(sujetQuestion)
+    sujetQuestion.delete()
+    leSujet.lastUpdated = new Date()
+    leSujet.save()
+  }
+
 
   /**
    * Recherche de questions
