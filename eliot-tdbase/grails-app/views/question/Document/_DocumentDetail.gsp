@@ -49,7 +49,11 @@
 <tr>
   <td class="label">URL externe&nbsp;:</td>
   <td>
-    ${specifobject.urlExterne}
+    <g:if test="${specifobject.urlExterne}">
+    <a href="${specifobject.urlExterne}" target="_blank">
+      ${specifobject.urlExterne}
+    </a>
+    </g:if>
   </td>
 </tr>
 <tr>

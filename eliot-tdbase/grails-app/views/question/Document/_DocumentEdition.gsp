@@ -64,6 +64,10 @@
   </td>
 </tr>
 <tr>
+  <td class="label">OU</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
   <td class="label">Fichier&nbsp;:</td>
   <td id="specifobject_fichier">
     <g:render template="/question/Document/DocumentEditionFichier"

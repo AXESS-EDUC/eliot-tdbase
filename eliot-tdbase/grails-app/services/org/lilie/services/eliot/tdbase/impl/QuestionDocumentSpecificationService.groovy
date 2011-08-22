@@ -43,6 +43,7 @@ import org.lilie.services.eliot.tdbase.QuestionAttachement
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.annotation.Propagation
 import org.lilie.services.eliot.tice.Attachement
+import grails.validation.ValidationException
 
 /**
  *
@@ -108,7 +109,7 @@ class QuestionDocumentSpecificationService implements QuestionSpecificationServi
               "objet ${object} n'est pas de type DocumentSpecification")
     }
     DocumentSpecification spec = object
-    if (spec.fichier) {
+    if (spec.fichier && !spec.fichier.empty) {
        def questionAttachement = questionAttachementService.createAttachementForQuestion(
                spec.fichier,question)
       def oldQuestAttId = question.specificationObject?.questionAttachementId
@@ -117,6 +118,8 @@ class QuestionDocumentSpecificationService implements QuestionSpecificationServi
                 QuestionAttachement.get(oldQuestAttId))
       }
       spec.questionAttachementId = questionAttachement.id
+    } else if (!spec.urlExterne) {
+      throw new IllegalArgumentException("question.document.fichier.vide")
     }
 
     question.specification = getSpecificationFromObject(object)
