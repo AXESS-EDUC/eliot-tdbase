@@ -293,7 +293,7 @@ class SujetService {
   Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
     def idx = sujetQuestion.rang
-    if (idx == 0) {
+    if (idx == 0) { // on ne fait rien
        return sujetQuestion.sujet
     }
     def idxPrec = sujetQuestion.rang - 1
@@ -323,7 +323,7 @@ class SujetService {
   Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
     def idx = sujetQuestion.rang
-    if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) {
+    if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) { // on ne fait rien
        return sujetQuestion.sujet
     }
     def idxSuiv = sujetQuestion.rang + 1
