@@ -124,6 +124,39 @@ class SujetController {
     ])
   }
 
+/**
+   *
+   * Action remonte element
+   */
+  def remonteElement() {
+    SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
+    Personne proprietaire = authenticatedPersonne
+    Sujet sujet = sujetService.inverseQuestionAvecLaPrecedente(sujetQuestion,proprietaire)
+    render(view: '/sujet/edite', model:[
+            sujet: sujet,
+            titreSujet: sujet.titre,
+            sujetEnEdition: true,
+            liens: breadcrumpsService.liens
+    ])
+  }
+
+  /**
+   *
+   * Action remonte element
+   */
+  def descendElement() {
+    SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
+    Personne proprietaire = authenticatedPersonne
+    Sujet sujet = sujetService.inverseQuestionAvecLaSuivante(sujetQuestion,proprietaire)
+    render(view: '/sujet/edite', model:[
+            sujet: sujet,
+            titreSujet: sujet.titre,
+            sujetEnEdition: true,
+            liens: breadcrumpsService.liens
+    ])
+  }
+
+
   /**
    *
    * Action "enregistrer"
@@ -142,7 +175,6 @@ class SujetController {
     if (!sujet.hasErrors()) {
       request.messageCode = "sujet.enregistre.succes"
       if (!sujetEnEdition) {
-        println("\n****************** ${params}")
         def params = [:]
         params."${BreadcrumpsService.PARAM_BREADCRUMPS_INIT}" = true
         params.id = sujet.id
@@ -150,9 +182,8 @@ class SujetController {
         params.controller = "sujet"
         breadcrumpsService.manageBreadcrumps(params,
               message(code: "sujet.edite.titre"))
+        sujetEnEdition = true
       }
-      sujetEnEdition = true
-
     }
     render(view: "edite", model: [
            liens: breadcrumpsService.liens,
@@ -161,6 +192,7 @@ class SujetController {
            sujetEnEdition: sujetEnEdition
            ])
   }
+
 
   /**
    *
@@ -195,7 +227,6 @@ class SujetController {
             liens: breadcrumpsService.liens
     ]
   }
-
 
 
 }

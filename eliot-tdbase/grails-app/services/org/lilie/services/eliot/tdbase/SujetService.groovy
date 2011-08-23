@@ -122,10 +122,10 @@ class SujetService {
       SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
               question: sujetQuestion.question,
               sujet: sujetCopie,
-              rang: sujetQuestion.rang,
               noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
-      ).save(failOnError:true)
+      )
       sujetCopie.addToQuestionsSequences(copieSujetSequence)
+      sujetCopie.save()
     }
     return sujetCopie
   }
@@ -283,6 +283,54 @@ class SujetService {
     return leSujet
   }
 
+  /**
+   * Inverse une question avec sa précédente dans un sujet
+   * @param sujetQuestion la question à inverser
+   * @param proprietaire le proprietaire du sujet
+   * @return  le sujet modifié
+   */
+  Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
+                                        Personne proprietaire) {
+    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet,
+                                                           proprietaire)
+    def idx = sujetQuestion.rang
+    def idxPrec = sujetQuestion.rang - 1
+    if (idx == 0) {
+       idxPrec = leSujet.questionsSequences.size() - 1
+    }
+    def squestPrec = leSujet.questionsSequences[idxPrec]
+    def squest = leSujet.questionsSequences[idx]
+    leSujet.questionsSequences[idx] = squestPrec
+    leSujet.questionsSequences[idxPrec] = squest
+    leSujet.lastUpdated = new Date()
+    leSujet.save(flush:true)
+    return leSujet
+  }
+
+  /**
+   * Inverse une question avec sa suivante dans un sujet
+   * @param sujetQuestion la question à inverser
+   * @param proprietaire le proprietaire du sujet
+   * @return  le sujet modifié
+   */
+  Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
+                                        Personne proprietaire) {
+    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet,
+                                                           proprietaire)
+    def idx = sujetQuestion.rang
+    def idxSuiv = sujetQuestion.rang + 1
+    if (idx == leSujet.questionsSequences.size() - 1) {
+       idxSuiv = 0
+    }
+    def squestSuiv = leSujet.questionsSequences[idxSuiv]
+    def squest = leSujet.questionsSequences[idx]
+    leSujet.questionsSequences[idx] = squestSuiv
+    leSujet.questionsSequences[idxSuiv] = squest
+    leSujet.lastUpdated = new Date()
+    leSujet.save(flush:true)
+    return leSujet
+  }
+
 /**
    * Supprime une question d'un sujet
    * @param question la question
@@ -294,8 +342,9 @@ class SujetService {
   Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
                             Personne proprietaire) {
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
-    leSujet.removeFromQuestionsSequences(sujetQuestion)
-    sujetQuestion.delete()
+    SujetSequenceQuestions squest = leSujet.questionsSequences[sujetQuestion.rang]
+    leSujet.removeFromQuestionsSequences(squest)
+    squest.delete()
     leSujet.lastUpdated = new Date()
     leSujet.save()
     return leSujet

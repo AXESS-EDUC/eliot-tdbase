@@ -118,21 +118,23 @@
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Modifier l'élément..." title="Modifier l'élément..."/>
           </a>
-          <a href="#" style="text-decoration: none;">
+           <g:link action="remonteElement" controller="sujet"
+                  id="${sujetQuestion.id}" style="text-decoration: none;">
             <img border="0" src="/eliot-tdbase/images/eliot/24-em-up.png"
                  width="22"
                  height="18"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Déplacer vers le haut..."
                  title="Déplacer vers le haut..."/>
-          </a>
-          <a href="#" style="text-decoration: none;">
+          </g:link>
+          <g:link action="descendElement" controller="sujet"
+                  id="${sujetQuestion.id}" style="text-decoration: none;">
             <img border="0" src="/eliot-tdbase/images/eliot/24-em-down.png"
                  width="22"
                  height="18"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Déplacer vers le bas..." title="Déplacer vers le bas..."/>
-          </a>
+          </g:link>
           <a href="#" style="text-decoration: none;">
             <img border="0"
                  src="/eliot-tdbase/images/eliot/btnInsertRowBefore.png"
@@ -148,7 +150,7 @@
                  title="Insérer un élément après..."/>
           </a>
           <g:link action="supprimeFromSujet" controller="sujet"
-                  id="${sujetQuestion.id}">
+                  id="${sujetQuestion.id}" style="text-decoration: none;">
             <img border="0" src="/eliot-tdbase/images/eliot/btnDeleteRow.png"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Supprimer l'élément du sujet..."
