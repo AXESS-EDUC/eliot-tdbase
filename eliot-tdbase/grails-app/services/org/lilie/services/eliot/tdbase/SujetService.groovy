@@ -289,23 +289,29 @@ class SujetService {
    * @param proprietaire le proprietaire du sujet
    * @return  le sujet modifié
    */
+  @Transactional
   Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
+    def idx = sujetQuestion.rang
+    if (idx == 0) {
+       return sujetQuestion.sujet
+    }
+    def idxPrec = sujetQuestion.rang - 1
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet,
                                                            proprietaire)
-    def idx = sujetQuestion.rang
-    def idxPrec = sujetQuestion.rang - 1
-    if (idx == 0) {
-       idxPrec = leSujet.questionsSequences.size() - 1
-    }
+
     def squestPrec = leSujet.questionsSequences[idxPrec]
     def squest = leSujet.questionsSequences[idx]
+    leSujet.lastUpdated = new Date()
     leSujet.questionsSequences[idx] = squestPrec
     leSujet.questionsSequences[idxPrec] = squest
-    leSujet.lastUpdated = new Date()
     leSujet.save(flush:true)
+    // refresh sinon la collection n'est pas raffraichie : raison possible
+    // pour suppression modelisation to many
+    leSujet.refresh()
     return leSujet
   }
+
 
   /**
    * Inverse une question avec sa suivante dans un sujet
@@ -313,21 +319,23 @@ class SujetService {
    * @param proprietaire le proprietaire du sujet
    * @return  le sujet modifié
    */
+  @Transactional
   Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
+    def idx = sujetQuestion.rang
+    if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) {
+       return sujetQuestion.sujet
+    }
+    def idxSuiv = sujetQuestion.rang + 1
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet,
                                                            proprietaire)
-    def idx = sujetQuestion.rang
-    def idxSuiv = sujetQuestion.rang + 1
-    if (idx == leSujet.questionsSequences.size() - 1) {
-       idxSuiv = 0
-    }
     def squestSuiv = leSujet.questionsSequences[idxSuiv]
     def squest = leSujet.questionsSequences[idx]
     leSujet.questionsSequences[idx] = squestSuiv
     leSujet.questionsSequences[idxSuiv] = squest
     leSujet.lastUpdated = new Date()
     leSujet.save(flush:true)
+    leSujet.refresh()
     return leSujet
   }
 
