@@ -46,9 +46,9 @@
   <g:if test="${sujetEnEdition}">
     <div class="portal-tabs">
       <span class="portal-tabs-famille-liens">
-        <g:link action="ajouteElement"
+        <g:link action="ajouteElement" controller="sujet"
                 id="${sujet.id}">Ajouter un élément</g:link> |
-        <g:link action="editeProprietes"
+        <g:link action="editeProprietes" controller="sujet"
                 id="${sujet.id}">Éditer les propriétés du sujet</g:link>
       </span>
       <span class="portal-tabs-famille-liens">
@@ -111,26 +111,56 @@
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">
         <div class="tdbase-sujet-edition-question-boutons">
-          <a href="#">
+          <a href="#" style="text-decoration: none;">
             <img border="0" src="/eliot-tdbase/images/eliot/write-btn.gif"
-                 width="18"
-                 height="16"/>
+                 width="22"
+                 height="18"
+                 style="border-style:solid;border-width:1px;border-color:#AAAAAA"
+                 alt="Modifier l'élément..." title="Modifier l'élément..."/>
           </a>
-          <a href="#">
-            <img border="0" src="/eliot-tdbase/images/eliot/ActionIconAdd.gif"
-                 width="20" height="19"/>
+          <a href="#" style="text-decoration: none;">
+            <img border="0" src="/eliot-tdbase/images/eliot/24-em-up.png"
+                 width="22"
+                 height="18"
+                 style="border-style:solid;border-width:1px;border-color:#AAAAAA"
+                 alt="Déplacer vers le haut..."
+                 title="Déplacer vers le haut..."/>
           </a>
-          <g:link action="supprimeFromSujet" controller="question" id="${sujetQuestion.id}" >
-            <img border="0" src="/eliot-tdbase/images/eliot/trashcan-btn.gif"
-                 width="14"
-                 height="16"/>
+          <a href="#" style="text-decoration: none;">
+            <img border="0" src="/eliot-tdbase/images/eliot/24-em-down.png"
+                 width="22"
+                 height="18"
+                 style="border-style:solid;border-width:1px;border-color:#AAAAAA"
+                 alt="Déplacer vers le bas..." title="Déplacer vers le bas..."/>
+          </a>
+          <a href="#" style="text-decoration: none;">
+            <img border="0"
+                 src="/eliot-tdbase/images/eliot/btnInsertRowBefore.png"
+                 style="border-style:solid;border-width:1px;border-color:#AAAAAA"
+                 alt="Insérer un élément avant..."
+                 title="Insérer un élément avant..."/>
+          </a>
+          <a href="#" style="text-decoration: none;">
+            <img border="0"
+                 src="/eliot-tdbase/images/eliot/btnInsertRowAfter.png"
+                 style="border-style:solid;border-width:1px;border-color:#AAAAAA"
+                 alt="Insérer un élément après..."
+                 title="Insérer un élément après..."/>
+          </a>
+          <g:link action="supprimeFromSujet" controller="sujet"
+                  id="${sujetQuestion.id}">
+            <img border="0" src="/eliot-tdbase/images/eliot/btnDeleteRow.png"
+                 style="border-style:solid;border-width:1px;border-color:#AAAAAA"
+                 alt="Supprimer l'élément du sujet..."
+                 title="Supprimer l'élément du sujet..."/>
           </g:link>
         </div>
+
         <div class="tdbase-sujet-edition-question-preview">
           <g:set var="question" value="${sujetQuestion.question}"/>
-        <g:render
-                template="/question/${question.type.code}/${question.type.code}Preview"
-                model="[question:question]"/>
+          <g:render
+                  template="/question/${question.type.code}/${question.type.code}Preview"
+                  model="[question:question]"/>
         </div>
 
       </div>

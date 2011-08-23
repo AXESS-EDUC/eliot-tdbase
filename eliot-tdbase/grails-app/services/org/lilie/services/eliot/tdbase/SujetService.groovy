@@ -40,6 +40,8 @@ class SujetService {
 
   static transactional = false
 
+  QuestionService questionService
+
   /**
    * Créé un sujet
    * @param proprietaire le proprietaire du sujet
@@ -259,5 +261,44 @@ class SujetService {
     return SujetType.getAll()
   }
 
+
+
+  /**
+   * Insert une question dans un sujet sujet
+   * @param question la question
+   * @param sujet le sujet
+   * @param proprietaire le propriétaire
+   */
+  @Transactional
+  Sujet insertQuestionInSujet(Question question, Sujet sujet,
+                            Personne proprietaire, Integer rang = null) {
+    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
+    def sequence = new SujetSequenceQuestions(
+            question: question,
+            sujet: leSujet
+    )
+    leSujet.addToQuestionsSequences(sequence)
+    leSujet.lastUpdated = new Date()
+    leSujet.save()
+    return leSujet
+  }
+
+/**
+   * Supprime une question d'un sujet
+   * @param question la question
+   * @param sujet le sujet
+   * @param proprietaire le propriétaire
+   * @return le sujet modifié
+   */
+  @Transactional
+  Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
+                            Personne proprietaire) {
+    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
+    leSujet.removeFromQuestionsSequences(sujetQuestion)
+    sujetQuestion.delete()
+    leSujet.lastUpdated = new Date()
+    leSujet.save()
+    return leSujet
+  }
 
 }

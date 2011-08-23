@@ -72,7 +72,7 @@ class Sujet {
   Publication publication
   CopyrightsType copyrightsType
 
-  SortedSet<SujetSequenceQuestions> questionsSequences
+  List<SujetSequenceQuestions> questionsSequences
   static hasMany = [questionsSequences : SujetSequenceQuestions]
 
   static constraints = {

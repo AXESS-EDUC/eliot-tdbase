@@ -84,7 +84,7 @@ class SujetController {
     Sujet sujet = Sujet.get(params.id)
     [
             liens: breadcrumpsService.liens,
-            titreSujet: message(code: sujet.titre),
+            titreSujet: sujet.titre,
             sujet: sujet,
             sujetEnEdition: true
     ]
@@ -110,6 +110,22 @@ class SujetController {
 
   /**
    *
+   * Action supprime element
+   */
+  def supprimeFromSujet() {
+    SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
+    Personne proprietaire = authenticatedPersonne
+    Sujet sujet = sujetService.supprimeQuestionFromSujet(sujetQuestion,proprietaire)
+    render(view: '/sujet/edite', model:[
+            sujet: sujet,
+            titreSujet: sujet.titre,
+            sujetEnEdition: true,
+            liens: breadcrumpsService.liens
+    ])
+  }
+
+  /**
+   *
    * Action "enregistrer"
    */
   def enregistre(NouveauSujetCommand sujetCmd) {
@@ -125,7 +141,18 @@ class SujetController {
     }
     if (!sujet.hasErrors()) {
       request.messageCode = "sujet.enregistre.succes"
+      if (!sujetEnEdition) {
+        println("\n****************** ${params}")
+        def params = [:]
+        params."${BreadcrumpsService.PARAM_BREADCRUMPS_INIT}" = true
+        params.id = sujet.id
+        params.action = "edite"
+        params.controller = "sujet"
+        breadcrumpsService.manageBreadcrumps(params,
+              message(code: "sujet.edite.titre"))
+      }
       sujetEnEdition = true
+
     }
     render(view: "edite", model: [
            liens: breadcrumpsService.liens,

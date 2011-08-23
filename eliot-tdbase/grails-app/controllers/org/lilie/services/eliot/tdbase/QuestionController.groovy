@@ -42,6 +42,7 @@ class QuestionController {
   BreadcrumpsService breadcrumpsService
   ProfilScolariteService profilScolariteService
   QuestionService questionService
+  SujetService sujetService
 
 /**
  *
@@ -155,7 +156,7 @@ class QuestionController {
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
     Question question = Question.get(params.id)
-    questionService.insertQuestionInSujet(question, sujet, personne)
+    sujetService.insertQuestionInSujet(question, sujet, personne)
     request.messageCode = "question.enregistreinsert.succes"
     render(view: '/question/detail', model: [
            liens: breadcrumpsService.liens,
@@ -166,20 +167,6 @@ class QuestionController {
 
   }
 
-  /**
-   *
-   * Action supprime element
-   */
-  def supprimeFromSujet() {
-    SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
-    Personne proprietaire = authenticatedPersonne
-    Sujet sujet = questionService.supprimeQuestionFromSujet(sujetQuestion,proprietaire)
-    render(view: '/sujet/edite', model:[
-            sujet: sujet,
-            titreSujet: sujet.titre,
-            liens: breadcrumpsService.liens
-    ])
-  }
 
   /**
    *

@@ -121,7 +121,7 @@ class QuestionService implements ApplicationContextAware {
     return laQuestion
   }
 
-  /**
+/**
    * Créé une question et l'insert dans le sujet
    * @param proprietesQuestion les propriétés de la question
    * @param specificationObject l'objet specification
@@ -135,48 +135,10 @@ class QuestionService implements ApplicationContextAware {
                                           Sujet sujet,
                                           Personne proprietaire, Integer rang = null) {
     Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
-    insertQuestionInSujet(question, sujet, proprietaire, rang)
+    sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
     return question
   }
 
-  /**
-   * Insert une question dans un sujet sujet
-   * @param question la question
-   * @param sujet le sujet
-   * @param proprietaire le propriétaire
-   */
-  @Transactional
-  def insertQuestionInSujet(Question question, Sujet sujet,
-                            Personne proprietaire, Integer rang = null) {
-    Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujet, proprietaire)
-    // todofsil : trouver un moyen plus efficace gestion du rang
-    def leRang = rang ?: leSujet.questions.size() + 1
-    def sequence = new SujetSequenceQuestions(
-            question: question,
-            sujet: leSujet,
-            rang: leRang
-    ).save(failOnError: true)
-    leSujet.addToQuestionsSequences(sequence)
-    leSujet.lastUpdated = new Date()
-    leSujet.save()
-  }
-
-/**
-   * Supprime une question d'un sujet
-   * @param question la question
-   * @param sujet le sujet
-   * @param proprietaire le propriétaire
-   * @return le sujet modifié
-   */
-  @Transactional
-  Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
-                            Personne proprietaire) {
-    Sujet leSujet = sujetService.getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
-    leSujet.removeFromQuestionsSequences(sujetQuestion)
-    sujetQuestion.delete()
-    leSujet.lastUpdated = new Date()
-    leSujet.save()
-  }
 
 
   /**

@@ -65,6 +65,8 @@ class BreadcrumpsService {
     }
   }
 
+
+
   /**
    * Renvoie le lien correspondant à un backtrack applicatif : à utiliser typiquement
    * pour mettre en place un lien annuler
