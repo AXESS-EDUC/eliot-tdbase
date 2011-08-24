@@ -111,13 +111,15 @@
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">
         <div class="tdbase-sujet-edition-question-boutons">
-          <a href="#" style="text-decoration: none;">
+
+           <g:link action="edite" controller="question${sujetQuestion.question.type.code}"
+                  id="${sujetQuestion.question.id}" style="text-decoration: none;">
             <img border="0" src="/eliot-tdbase/images/eliot/write-btn.gif"
                  width="22"
                  height="18"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Modifier l'élément..." title="Modifier l'élément..."/>
-          </a>
+          </g:link>
            <g:link action="remonteElement" controller="sujet"
                   id="${sujetQuestion.id}" style="text-decoration: none;">
             <img border="0" src="/eliot-tdbase/images/eliot/24-em-up.png"

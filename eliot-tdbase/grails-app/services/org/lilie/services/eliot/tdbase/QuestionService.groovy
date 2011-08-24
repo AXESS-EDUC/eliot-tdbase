@@ -90,8 +90,77 @@ class QuestionService implements ApplicationContextAware {
    * @return la question editable
    */
   Question getDerniereVersionQuestionForProprietaire(Question question, Personne proprietaire) {
-    // todofsil : implémenter la methode
-    return question
+    if (question.proprietaire == proprietaire && !question.publie) {
+      return question
+    } else {
+      return recopieQuestion(question, proprietaire)
+    }
+  }
+
+  /**
+   * Recopie une question
+   * - si le proprietaire de la copie est le proprietaire de l'original, on
+   * incrémente la version ; on ne crée pas de nouvelle branche :
+   * la question départ branche de la nouvelle version
+   * est la question départ branche de la version précédente
+   * - si le proprietaire de la copie est différent de l'original, on n'incrémente
+   * pas la version ; on créé une nouvelle branche : la question départ branche de la
+   * copie est la question recopié
+   * @param question la question à recopier
+   * @param proprietaire le proprietaire
+   * @return la copie de la question
+   */
+  @Transactional
+  Question recopieQuestion(Question question, Personne proprietaire) {
+    // todofsil : implémenter le contrôle de sécurité
+    def versionQuestion = 1
+    def questionDepartBranche = question.questionDepartBranche
+    if (question.proprietaire == proprietaire) {
+      versionQuestion = question.versionQuestion + 1
+    } else {
+      questionDepartBranche = question
+    }
+    Question questionCopie = new Question(
+            proprietaire: proprietaire,
+            titre: question.titre,
+            titreNormalise: question.titreNormalise,
+            specification: question.specification,
+            specificationNormalise: question.specificationNormalise,
+            publie: false,
+            versionQuestion: versionQuestion,
+            questionDepartBranche: questionDepartBranche,
+            copyrightsType: question.copyrightsType,
+            estAutonome: question.estAutonome,
+            type: question.type,
+            etablissement: question.etablissement,
+            matiere: question.matiere,
+            niveau: question.niveau,
+    )
+    questionCopie.save()
+
+    // recopie les attachements
+    question.questionAttachements.each { QuestionAttachement questionAttachement ->
+      QuestionAttachement copieQuestionAttachement = new QuestionAttachement(
+              question: questionCopie,
+              attachement: questionAttachement.attachement,
+              rang: questionAttachement.rang
+      )
+      questionCopie.addToQuestionAttachements(copieQuestionAttachement)
+      questionCopie.save()
+    }
+
+    // recopie l'arborescence (si question composite)
+    question.questionArborescenceFilles.each { QuestionArborescence questionArborescence ->
+      QuestionArborescence copieQuestionArborescence = new QuestionArborescence(
+              question: questionCopie,
+              questionFille: questionArborescence.questionFille,
+              rang: questionArborescence.rang
+      )
+      questionCopie.addToQuestionArborescenceFilles(copieQuestionArborescence)
+      questionCopie.save()
+    }
+
+    return questionCopie
   }
 
   /**

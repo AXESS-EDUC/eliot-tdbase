@@ -118,7 +118,7 @@ class QuestionDocumentSpecificationService implements QuestionSpecificationServi
                 QuestionAttachement.get(oldQuestAttId))
       }
       spec.questionAttachementId = questionAttachement.id
-    } else if (!spec.urlExterne) {
+    } else if (!spec.urlExterne && !spec.questionAttachementId) {
       throw new IllegalArgumentException("question.document.fichier.vide")
     }
 

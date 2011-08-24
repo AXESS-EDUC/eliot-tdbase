@@ -85,8 +85,8 @@ class SujetService {
    * incrémente la version ; on ne crée pas de nouvelle branche :
    * le sujet départ branche de la nouvelle version
    * est le sujet départ branche de la version précédente
-   * - si le proprietaire de la copie est différent de l'original, on incrémente
-   * la version ; on créé une nouvelle branche : le sujet départ branche de la
+   * - si le proprietaire de la copie est différent de l'original, on n'incrémente
+   * pas la version ; on créé une nouvelle branche : le sujet départ branche de la
    * copie est le sujet recopié
    * @param sujet le sujet à recopier
    * @param proprietaire le proprietaire
@@ -118,7 +118,7 @@ class SujetService {
     )
     sujetCopie.save()
     // recopie de la séquence de questions
-    sujetCopie.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
+    sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
       SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
               question: sujetQuestion.question,
               sujet: sujetCopie,
