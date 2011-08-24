@@ -36,6 +36,7 @@ import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
+import org.gcontracts.annotations.Requires
 
 /**
  * Service de gestion des questions
@@ -83,19 +84,7 @@ class QuestionService implements ApplicationContextAware {
     return question
   }
 
-  /**
-   * Retourne la dernière version éditable d'une question pour un proprietaire donné
-   * @param question la question
-   * @param proprietaire le proprietaire
-   * @return la question editable
-   */
-  Question getDerniereVersionQuestionForProprietaire(Question question, Personne proprietaire) {
-    if (question.proprietaire == proprietaire && !question.publie) {
-      return question
-    } else {
-      return recopieQuestion(question, proprietaire)
-    }
-  }
+
 
   /**
    * Recopie une question
@@ -111,8 +100,8 @@ class QuestionService implements ApplicationContextAware {
    * @return la copie de la question
    */
   @Transactional
+  @Requires ({question.proprietaire == proprietaire || question.publie})
   Question recopieQuestion(Question question, Personne proprietaire) {
-    // todofsil : implémenter le contrôle de sécurité
     def versionQuestion = question.versionQuestion + 1
     def questionDepartBranche = question.questionDepartBranche
     if (question.proprietaire != proprietaire) {
@@ -170,6 +159,7 @@ class QuestionService implements ApplicationContextAware {
    * @return le sujet
    */
   @Transactional
+  @Requires ({question.proprietaire == proprietaire || question.publie})
   Question updateProprietes(Question question, Map proprietes, def specificationObject,
                             Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
@@ -198,6 +188,7 @@ class QuestionService implements ApplicationContextAware {
  * @return la question insérée
  */
   @Transactional
+  @Requires ({sujet.proprietaire == proprietaire || sujet.publie})
   Question createQuestionAndInsertInSujet(Map proprietesQuestion,
                                           def specificatinObject,
                                           Sujet sujet,
@@ -289,6 +280,20 @@ class QuestionService implements ApplicationContextAware {
    */
   List<QuestionType> getAllQuestionTypes() {
     return QuestionType.getAll()
+  }
+
+  /**
+   * Retourne la dernière version éditable d'une question pour un proprietaire donné
+   * @param question la question
+   * @param proprietaire le proprietaire
+   * @return la question editable
+   */
+  private Question getDerniereVersionQuestionForProprietaire(Question question, Personne proprietaire) {
+    if (question.proprietaire == proprietaire && !question.publie) {
+      return question
+    } else {
+      return recopieQuestion(question, proprietaire)
+    }
   }
 
 }

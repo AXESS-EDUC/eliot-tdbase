@@ -34,8 +34,8 @@ import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
+import org.gcontracts.annotations.Requires
 
-//todofsil : mettre en place controle securite
 class SujetService {
 
   static transactional = false
@@ -65,19 +65,7 @@ class SujetService {
     return sujet
   }
 
-  /**
-   * Retourne la dernière version éditable d'un sujet pour un proprietaire donné
-   * @param sujet le sujet
-   * @param proprietaire le proprietaire
-   * @return le sujet éditable
-   */
-  Sujet getDerniereVersionSujetForProprietaire(Sujet sujet, Personne proprietaire) {
-    if (sujet.proprietaire == proprietaire && !sujet.publie) {
-      return sujet
-    } else {
-      return recopieSujet(sujet, proprietaire)
-    }
-  }
+
 
   /**
    * Recopie un sujet
@@ -93,8 +81,8 @@ class SujetService {
    * @return la copie du sujet
    */
   @Transactional
+  @Requires ({sujet.proprietaire == proprietaire || sujet.publie})
   Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
-    // todofsil : implémenter le contrôle de sécurité
     def versionSujet = sujet.versionSujet + 1
     def sujetDepartBranche = sujet.sujetDepartBranche
     if (sujet.proprietaire != proprietaire) {
@@ -134,6 +122,7 @@ class SujetService {
    * @param nouveauTitre le titre
    * @return le sujet
    */
+  @Requires ({sujet.proprietaire == proprietaire || sujet.publie})
   Sujet updateTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
@@ -151,6 +140,7 @@ class SujetService {
    * @param proprietaire le proprietaire
    * @return le sujet
    */
+  @Requires ({sujet.proprietaire == proprietaire || sujet.publie})
   Sujet updateProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
@@ -268,6 +258,10 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
+  @Requires ({
+    (sujet.proprietaire == proprietaire || sujet.publie) &&
+    (question.proprietaire == proprietaire || question.publie)
+  })
   Sujet insertQuestionInSujet(Question question, Sujet sujet,
                               Personne proprietaire, Integer rang = null) {
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
@@ -306,6 +300,8 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
+  @Requires({sujetQuestion.sujet.proprietaire == proprietaire ||
+             sujetQuestion.sujet.publie})
   Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
     def idx = sujetQuestion.rang
@@ -335,6 +331,8 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
+  @Requires({sujetQuestion.sujet.proprietaire == proprietaire ||
+             sujetQuestion.sujet.publie})
   Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
                                       Personne proprietaire) {
     def idx = sujetQuestion.rang
@@ -362,6 +360,8 @@ class SujetService {
  * @return le sujet modifié
  */
   @Transactional
+  @Requires({sujetQuestion.sujet.proprietaire == proprietaire ||
+             sujetQuestion.sujet.publie})
   Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
                                   Personne proprietaire) {
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
@@ -371,6 +371,20 @@ class SujetService {
     leSujet.lastUpdated = new Date()
     leSujet.save()
     return leSujet
+  }
+
+  /**
+   * Retourne la dernière version éditable d'un sujet pour un proprietaire donné
+   * @param sujet le sujet
+   * @param proprietaire le proprietaire
+   * @return le sujet éditable
+   */
+  private Sujet getDerniereVersionSujetForProprietaire(Sujet sujet, Personne proprietaire) {
+    if (sujet.proprietaire == proprietaire && !sujet.publie) {
+      return sujet
+    } else {
+      return recopieSujet(sujet, proprietaire)
+    }
   }
 
 }
