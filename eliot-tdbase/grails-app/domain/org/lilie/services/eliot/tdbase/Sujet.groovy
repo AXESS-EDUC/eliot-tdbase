@@ -75,6 +75,10 @@ class Sujet {
   List<SujetSequenceQuestions> questionsSequences
   static hasMany = [questionsSequences : SujetSequenceQuestions]
 
+  Integer rangInsertion
+
+  static transients = ['rangInsertion']
+
   static constraints = {
     titre(blank: false, nullable: false)
     sujetDepartBranche(nullable: true)

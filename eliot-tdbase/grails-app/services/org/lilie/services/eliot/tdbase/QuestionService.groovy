@@ -202,9 +202,9 @@ class QuestionService implements ApplicationContextAware {
   Question createQuestionAndInsertInSujet(Map proprietesQuestion,
                                           def specificatinObject,
                                           Sujet sujet,
-                                          Personne proprietaire, Integer rang = null) {
+                                          Personne proprietaire) {
     Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
-    sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
+    sujetService.insertQuestionInSujet(question, sujet, proprietaire)
     return question
   }
 

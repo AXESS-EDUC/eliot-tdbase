@@ -137,20 +137,23 @@
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Déplacer vers le bas..." title="Déplacer vers le bas..."/>
           </g:link>
-          <a href="#" style="text-decoration: none;">
+          <g:link action="ajouteElement" controller="sujet"
+                id="${sujet.id}" params="[direction:'avant',
+                                          rang: sujetQuestion.rang]">
             <img border="0"
                  src="/eliot-tdbase/images/eliot/btnInsertRowBefore.png"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Insérer un élément avant..."
                  title="Insérer un élément avant..."/>
-          </a>
-          <a href="#" style="text-decoration: none;">
+          </g:link>
+          <g:link action="ajouteElement" controller="sujet"
+                id="${sujet.id}" params="[rang: sujetQuestion.rang]">
             <img border="0"
                  src="/eliot-tdbase/images/eliot/btnInsertRowAfter.png"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Insérer un élément après..."
                  title="Insérer un élément après..."/>
-          </a>
+          </g:link>
           <g:link action="supprimeFromSujet" controller="sujet"
                   id="${sujetQuestion.id}" style="text-decoration: none;">
             <img border="0" src="/eliot-tdbase/images/eliot/btnDeleteRow.png"

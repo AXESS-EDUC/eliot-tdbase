@@ -114,7 +114,7 @@ class SujetService {
             publie: false,
             versionSujet: versionSujet,
             sujetDepartBranche: sujetDepartBranche,
-            copyrightsType: sujet.copyrightsType,
+            copyrightsType: sujet.copyrightsType
     )
     sujetCopie.save()
     // recopie de la séquence de questions
@@ -261,8 +261,6 @@ class SujetService {
     return SujetType.getAll()
   }
 
-
-
   /**
    * Insert une question dans un sujet sujet
    * @param question la question
@@ -271,15 +269,35 @@ class SujetService {
    */
   @Transactional
   Sujet insertQuestionInSujet(Question question, Sujet sujet,
-                            Personne proprietaire, Integer rang = null) {
+                              Personne proprietaire) {
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
     def sequence = new SujetSequenceQuestions(
             question: question,
-            sujet: leSujet
+            sujet: leSujet,
+            rang: leSujet.questionsSequences.size()
     )
     leSujet.addToQuestionsSequences(sequence)
     leSujet.lastUpdated = new Date()
-    leSujet.save()
+    leSujet.save(flush:true)
+    Integer rang = sujet.rangInsertion
+    println("*********** rang insertion = ${rang}")
+    if (rang && rang < leSujet.questionsSequences.size() - 1) {
+      // il faut insérer au rang correct
+      def idxSujQuest = leSujet.questionsSequences.size() - 1
+      while (idxSujQuest != rang) {
+        def idxSujQuestPrec = idxSujQuest - 1
+        def sujQuest = leSujet.questionsSequences[idxSujQuest]
+        def sujQuestPrec = leSujet.questionsSequences[idxSujQuestPrec]
+        leSujet.questionsSequences[idxSujQuest] = sujQuestPrec
+        leSujet.questionsSequences[idxSujQuestPrec] = sujQuest
+        idxSujQuest = idxSujQuestPrec
+      }
+      leSujet.save(flush: true)
+    }
+    // refresh sinon la collection n'est pas raffraichie : raison possible
+    // pour suppression modelisation to many
+    leSujet.refresh()
+    sujet.rangInsertion = null
     return leSujet
   }
 
@@ -287,14 +305,14 @@ class SujetService {
    * Inverse une question avec sa précédente dans un sujet
    * @param sujetQuestion la question à inverser
    * @param proprietaire le proprietaire du sujet
-   * @return  le sujet modifié
+   * @return le sujet modifié
    */
   @Transactional
   Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
     def idx = sujetQuestion.rang
     if (idx == 0) { // on ne fait rien
-       return sujetQuestion.sujet
+      return sujetQuestion.sujet
     }
     def idxPrec = sujetQuestion.rang - 1
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet,
@@ -305,26 +323,25 @@ class SujetService {
     leSujet.lastUpdated = new Date()
     leSujet.questionsSequences[idx] = squestPrec
     leSujet.questionsSequences[idxPrec] = squest
-    leSujet.save(flush:true)
+    leSujet.save(flush: true)
     // refresh sinon la collection n'est pas raffraichie : raison possible
     // pour suppression modelisation to many
     leSujet.refresh()
     return leSujet
   }
 
-
   /**
    * Inverse une question avec sa suivante dans un sujet
    * @param sujetQuestion la question à inverser
    * @param proprietaire le proprietaire du sujet
-   * @return  le sujet modifié
+   * @return le sujet modifié
    */
   @Transactional
   Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
-                                        Personne proprietaire) {
+                                      Personne proprietaire) {
     def idx = sujetQuestion.rang
     if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) { // on ne fait rien
-       return sujetQuestion.sujet
+      return sujetQuestion.sujet
     }
     def idxSuiv = sujetQuestion.rang + 1
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet,
@@ -334,21 +351,21 @@ class SujetService {
     leSujet.questionsSequences[idx] = squestSuiv
     leSujet.questionsSequences[idxSuiv] = squest
     leSujet.lastUpdated = new Date()
-    leSujet.save(flush:true)
+    leSujet.save(flush: true)
     leSujet.refresh()
     return leSujet
   }
 
 /**
-   * Supprime une question d'un sujet
-   * @param question la question
-   * @param sujet le sujet
-   * @param proprietaire le propriétaire
-   * @return le sujet modifié
-   */
+ * Supprime une question d'un sujet
+ * @param question la question
+ * @param sujet le sujet
+ * @param proprietaire le propriétaire
+ * @return le sujet modifié
+ */
   @Transactional
   Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
-                            Personne proprietaire) {
+                                  Personne proprietaire) {
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
     SujetSequenceQuestions squest = leSujet.questionsSequences[sujetQuestion.rang]
     leSujet.removeFromQuestionsSequences(squest)

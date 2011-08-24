@@ -10,6 +10,7 @@ import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 class SujetController {
 
   static defaultAction = "mesSujets"
+  private static final String PARAM_DIRECTION_AVANT = 'avant'
 
   SujetService sujetService
   SpringSecurityService springSecurityService
@@ -222,9 +223,17 @@ class SujetController {
   def ajouteElement() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"))
     Sujet sujet = Sujet.get(params.id)
+    if (params.rang) {
+      def rang = params.rang as Integer
+      if (PARAM_DIRECTION_AVANT == params.direction) {
+        sujet.rangInsertion = rang
+      } else {
+        sujet.rangInsertion = rang + 1
+      }
+    }
     [
             sujet: sujet,
-            liens: breadcrumpsService.liens
+            liens: breadcrumpsService.liens,
     ]
   }
 
