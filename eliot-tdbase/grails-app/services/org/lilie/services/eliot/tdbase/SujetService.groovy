@@ -85,8 +85,8 @@ class SujetService {
    * incrémente la version ; on ne crée pas de nouvelle branche :
    * le sujet départ branche de la nouvelle version
    * est le sujet départ branche de la version précédente
-   * - si le proprietaire de la copie est différent de l'original, on n'incrémente
-   * pas la version ; on créé une nouvelle branche : le sujet départ branche de la
+   * - si le proprietaire de la copie est différent de l'original, on incrémente
+   *  la version ; on créé une nouvelle branche : le sujet départ branche de la
    * copie est le sujet recopié
    * @param sujet le sujet à recopier
    * @param proprietaire le proprietaire
@@ -95,11 +95,9 @@ class SujetService {
   @Transactional
   Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
     // todofsil : implémenter le contrôle de sécurité
-    def versionSujet = 1
+    def versionSujet = sujet.versionSujet + 1
     def sujetDepartBranche = sujet.sujetDepartBranche
-    if (sujet.proprietaire == proprietaire) {
-      versionSujet = sujet.versionSujet + 1
-    } else {
+    if (sujet.proprietaire != proprietaire) {
       sujetDepartBranche = sujet
     }
     Sujet sujetCopie = new Sujet(

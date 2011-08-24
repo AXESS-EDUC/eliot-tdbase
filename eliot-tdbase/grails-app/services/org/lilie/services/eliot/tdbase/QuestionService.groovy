@@ -113,11 +113,9 @@ class QuestionService implements ApplicationContextAware {
   @Transactional
   Question recopieQuestion(Question question, Personne proprietaire) {
     // todofsil : implémenter le contrôle de sécurité
-    def versionQuestion = 1
+    def versionQuestion = question.versionQuestion + 1
     def questionDepartBranche = question.questionDepartBranche
-    if (question.proprietaire == proprietaire) {
-      versionQuestion = question.versionQuestion + 1
-    } else {
+    if (question.proprietaire != proprietaire) {
       questionDepartBranche = question
     }
     Question questionCopie = new Question(
