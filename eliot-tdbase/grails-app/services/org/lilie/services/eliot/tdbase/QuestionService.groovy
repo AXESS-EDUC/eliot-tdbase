@@ -191,24 +191,24 @@ class QuestionService implements ApplicationContextAware {
   }
 
 /**
-   * Créé une question et l'insert dans le sujet
-   * @param proprietesQuestion les propriétés de la question
-   * @param specificationObject l'objet specification
-   * @param sujet le sujet
-   * @param proprietaire le propriétaire
-   * @return la question insérée
-   */
+ * Créé une question et l'insert dans le sujet
+ * @param proprietesQuestion les propriétés de la question
+ * @param specificationObject l'objet specification
+ * @param sujet le sujet
+ * @param proprietaire le propriétaire
+ * @param rang le rang d'insertion
+ * @return la question insérée
+ */
   @Transactional
   Question createQuestionAndInsertInSujet(Map proprietesQuestion,
                                           def specificatinObject,
                                           Sujet sujet,
-                                          Personne proprietaire) {
+                                          Personne proprietaire,
+                                          Integer rang = null) {
     Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
-    sujetService.insertQuestionInSujet(question, sujet, proprietaire)
+    sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
     return question
   }
-
-
 
   /**
    * Recherche de questions

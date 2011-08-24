@@ -34,13 +34,16 @@ package org.lilie.services.eliot.tice.utils
  */
 class BreadcrumpsService {
 
-  static final String PARAM_BREADCRUMPS_INIT = "bcInit"
-  static final String PARAM_BREADCRUMPS_INDEX = "bcIdx"
+
 
   static transactional = false
   static scope = "session"
 
-  List<BreadcrumpsLien> liens = []
+  Breadcrumps breadcrumps = new Breadcrumps()
+
+  List<BreadcrumpsLien> getLiens() {
+     return breadcrumps.liens
+  }
 
 
 
@@ -49,18 +52,19 @@ class BreadcrumpsService {
    * @param params les parametres de la requête
    * @param libelle le libelle du lien à mettre dans le breadcrump si nécessaire
    */
-  def manageBreadcrumps(Map params, String libelle) {
-    if (params."$PARAM_BREADCRUMPS_INIT") {
-      liens = []
-      params.remove(PARAM_BREADCRUMPS_INIT)
+  def manageBreadcrumps(Map params, String libelle, Map proprietes = null) {
+    if (params."${Breadcrumps.PARAM_BREADCRUMPS_INIT}") {
+      breadcrumps.initialise()
+      params.remove(Breadcrumps.PARAM_BREADCRUMPS_INIT)
     }
-    if (params."$PARAM_BREADCRUMPS_INDEX") {
-      onClikSurLienBreadcrumps(params."$PARAM_BREADCRUMPS_INDEX" as Integer)
+    if (params."${Breadcrumps.PARAM_BREADCRUMPS_INDEX}") {
+      onClikSurLienBreadcrumps(params."${Breadcrumps.PARAM_BREADCRUMPS_INDEX}" as Integer)
     } else {
       onClickSurNouveauLien(params.action,
                             params.controller,
                             libelle,
-                            params
+                            params,
+                            proprietes
       )
     }
   }
@@ -70,20 +74,20 @@ class BreadcrumpsService {
   /**
    * Renvoie le lien correspondant à un backtrack applicatif : à utiliser typiquement
    * pour mettre en place un lien annuler
-   * @return
+   * @return le lien
    */
   BreadcrumpsLien lienRetour() {
-    def lien = null
-    synchronized (liens) {
-      if (liens.size() > 1) {
-        lien = liens.get(liens.size()-2)
-      } else if (liens.size() > 0) {
-        lien = liens.get(liens.size()-1)
-      }
-    }
-    return lien
+    return breadcrumps.lienRetour()
   }
 
+  /**
+   * Retourne la valeur d'une propriete
+   * @param nom  le nom de la propriete
+   * @return la valeur ou null si la propriete n'est pas definie
+   */
+  def getValeurPropriete(String nom)  {
+    return breadcrumps.getValeurPropriete(nom)
+  }
 
   /**
    * Met à jour les liens du breadcrumps quand un nouveau lien est cliqué
@@ -96,31 +100,14 @@ class BreadcrumpsService {
   private BreadcrumpsLien onClickSurNouveauLien(String action,
                                         String controller,
                                         String libelle,
-                                        Map params) {
+                                        Map params,
+                                        Map proprietes = null) {
 
     BreadcrumpsLien lien = new BreadcrumpsLien(action: action,
                                                controller: controller,
                                                libelle: libelle)
-    if (params == null) {
-      params = [:]
-    }
 
-    def lienRes
-    synchronized (liens) {
-      if (liens && liens.last() == lien) {
-        // si on déclenche la même action (pagination) on ne doit pas
-        // ajouter de lien, on se contente de conserver la bonne version
-        // des parametres
-        lienRes = liens.last()
-      } else {
-        liens.add(lien)
-        lien.index = liens.size() - 1
-        lienRes = lien
-      }
-    }
-    params."$PARAM_BREADCRUMPS_INDEX" = lienRes.index
-    lienRes.params = params
-    return lienRes
+    return breadcrumps.addLien(lien,params,proprietes)
 
   }
 
@@ -130,15 +117,7 @@ class BreadcrumpsService {
    * @param indexLien l'indice du lien cliqué dans le breadcrumps
    */
   private BreadcrumpsLien onClikSurLienBreadcrumps(int indexLien) {
-    def lien
-    synchronized (liens) {
-      int depart = liens.size() - 1
-      for (int i = depart; i > indexLien; i--) {
-        liens.remove(i)
-      }
-      lien = liens.get(indexLien)
-    }
-    return lien
+    return breadcrumps.depileLiens(indexLien)
   }
 
 }

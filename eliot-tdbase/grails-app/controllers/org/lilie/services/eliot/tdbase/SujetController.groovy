@@ -6,11 +6,13 @@ import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+import org.lilie.services.eliot.tice.utils.Breadcrumps
 
 class SujetController {
 
   static defaultAction = "mesSujets"
   private static final String PARAM_DIRECTION_AVANT = 'avant'
+  static final String PROP_RANG_INSERTION = 'rangInsertion'
 
   SujetService sujetService
   SpringSecurityService springSecurityService
@@ -177,7 +179,7 @@ class SujetController {
       request.messageCode = "sujet.enregistre.succes"
       if (!sujetEnEdition) {
         def params = [:]
-        params."${BreadcrumpsService.PARAM_BREADCRUMPS_INIT}" = true
+        params."${Breadcrumps.PARAM_BREADCRUMPS_INIT}" = true
         params.id = sujet.id
         params.action = "edite"
         params.controller = "sujet"
@@ -221,16 +223,19 @@ class SujetController {
    * Action ajoute element
    */
   def ajouteElement() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"))
-    Sujet sujet = Sujet.get(params.id)
+    def props = null
     if (params.rang) {
       def rang = params.rang as Integer
+      props = [:]
       if (PARAM_DIRECTION_AVANT == params.direction) {
-        sujet.rangInsertion = rang
+        props."${PROP_RANG_INSERTION}" = rang
       } else {
-        sujet.rangInsertion = rang + 1
+        props."${PROP_RANG_INSERTION}" = rang + 1
       }
     }
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"),props)
+    Sujet sujet = Sujet.get(params.id)
+
     [
             sujet: sujet,
             liens: breadcrumpsService.liens,

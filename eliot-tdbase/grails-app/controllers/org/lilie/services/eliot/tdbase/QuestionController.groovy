@@ -130,11 +130,14 @@ class QuestionController {
     def specifObject = getSpecificationObjectFromParams(params)
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
+    Integer rang = breadcrumpsService.getValeurPropriete(
+            SujetController.PROP_RANG_INSERTION)
     Question question = questionService.createQuestionAndInsertInSujet(
             params,
             specifObject,
             sujet,
-            personne)
+            personne,
+            rang)
     if (!question.hasErrors()) {
       request.messageCode = "question.enregistreinsert.succes"
     }
@@ -156,7 +159,9 @@ class QuestionController {
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
     Question question = Question.get(params.id)
-    sujetService.insertQuestionInSujet(question, sujet, personne)
+    Integer rang = breadcrumpsService.getValeurPropriete(
+            SujetController.PROP_RANG_INSERTION)
+    sujetService.insertQuestionInSujet(question, sujet, personne, rang)
     request.messageCode = "question.enregistreinsert.succes"
     render(view: '/question/detail', model: [
            liens: breadcrumpsService.liens,

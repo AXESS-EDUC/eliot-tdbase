@@ -266,10 +266,12 @@ class SujetService {
    * @param question la question
    * @param sujet le sujet
    * @param proprietaire le propriétaire
+   * @param rang le rang d'insertion
+   * @return le sujet modifié
    */
   @Transactional
   Sujet insertQuestionInSujet(Question question, Sujet sujet,
-                              Personne proprietaire) {
+                              Personne proprietaire, Integer rang = null) {
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
     def sequence = new SujetSequenceQuestions(
             question: question,
@@ -278,10 +280,8 @@ class SujetService {
     )
     leSujet.addToQuestionsSequences(sequence)
     leSujet.lastUpdated = new Date()
-    leSujet.save(flush:true)
-    Integer rang = sujet.rangInsertion
-    println("*********** rang insertion = ${rang}")
-    if (rang && rang < leSujet.questionsSequences.size() - 1) {
+    leSujet.save(flush: true)
+    if (rang != null && rang < leSujet.questionsSequences.size() - 1) {
       // il faut insérer au rang correct
       def idxSujQuest = leSujet.questionsSequences.size() - 1
       while (idxSujQuest != rang) {
