@@ -42,10 +42,10 @@ import org.lilie.services.eliot.tice.notes.Evaluation
  */
 class ModaliteActivite {
 
-  Date dateRemiseReponses
+  Date dateRemiseReponses = new Date()
 
-  Date dateDebut
-  Date dateFin
+  Date dateDebut = new Date()
+  Date dateFin = new Date()
 
   Sujet sujet
 
@@ -63,10 +63,27 @@ class ModaliteActivite {
   static constraints = {
     responsable(nullable: true)
     groupe(nullable: true)
+    etablissement(nullable: true)
     service(nullable: true)
     activite(nullable: true)
     evaluation(nullable: true)
   }
+
+  static transients = ['groupeLibelle']
+
+  /**
+   *
+   * @return le libelle du groupe ou de la structure d'enseignement concernée
+   */
+  String getGroupeLibelle() {
+    if (service) {
+      return service.structureEnseignement.nomAffichage
+    } else if (groupe) {
+      return groupe.nom
+    }
+    return ''
+  }
+
 
   static mapping = {
     table('td.modalite_activite')

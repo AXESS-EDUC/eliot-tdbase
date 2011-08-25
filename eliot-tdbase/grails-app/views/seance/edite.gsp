@@ -32,14 +32,18 @@
 <head>
   <meta name="layout" content="eliot-tdbase"/>
   <g:javascript src="jquery/jquery-1.6.1.min.js"/>
-  <g:javascript src="eliot/tiny_mce/tiny_mce.js"/>
-
+  <jqui:resources />
+  <g:javascript src="jquery/i18n/jquery.ui.datepicker-fr.js"/>
+  <g:javascript src="eliot/jquery-ui-timepicker-addon.js"/>
+  <g:javascript src="eliot/i18n/jquery.ui.timepicker-fr.js"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
+//      $.datepicker.setDefaults($.datepicker.regional['fr']);
+//      $.datetimepicker.setDefaults($.datepicker.regional['fr']);
+      $( ".datepicker" ).datetimepicker();
     });
   </r:script>
-
   <title>TDBase - Edition d'une séance</title>
 </head>
 
@@ -63,7 +67,7 @@
   </g:if>
 
 
-  <form method="post" id="form_question_edit">
+  <g:form method="post" controller="seance">
     <div class="portal-form_container" style="width: 70%;margin-left: 15px;">
       <table>
 
@@ -89,19 +93,25 @@
         <tr>
           <td class="label">Début&nbsp;:</td>
           <td>
-            <g:datePicker name="dateDebut" value="${modaliteActivite.dateDebut}"/>
+            <g:textField name="dateDebut"
+                         value="${modaliteActivite.dateDebut.format('dd/MM/yyyy HH:mm')}"
+                         class="datepicker"/>
           </td>
         </tr>
         <tr>
           <td class="label">Fin&nbsp;:</td>
           <td>
-            <g:datePicker name="dateFin" value="${modaliteActivite.dateDebut}"/>
+            <g:textField name="dateFin"
+                         value="${modaliteActivite.dateFin.format('dd/MM/yyyy HH:mm')}"
+                         class="datepicker"/>
           </td>
         </tr>
         <tr>
           <td class="label">Remise&nbsp;des&nbsp;réponses&nbsp;:</td>
           <td>
-            <g:datePicker name="dateRemiseReponses" value="${modaliteActivite.dateRemiseReponses}"/>
+            <g:textField name="dateRemiseReponses"
+                         value="${modaliteActivite.dateRemiseReponses.format('dd/MM/yyyy HH:mm')}"
+                         class="datepicker"/>
           </td>
         </tr>
 
@@ -115,16 +125,16 @@
       </table>
     </div>
     <g:hiddenField name="id" value="${modaliteActivite.id}"/>
+    <g:hiddenField name="sujet.id" value="${modaliteActivite.sujet?.id}"/>
     <div class="form_actions" style="width: 70%;margin-left: 15px;">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link> |
         <g:actionSubmit value="Enregistrer"
                         action="enregistre"
-                        controller="seance"
                         title="Enregistrer"/>
     </div>
-  </form>
+  </g:form>
 </div>
 
 </body>

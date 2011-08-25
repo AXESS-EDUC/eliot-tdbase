@@ -1,5 +1,5 @@
 import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -34,4 +34,5 @@ beans = {
     utilisateurService = ref("utilisateurService")
     profilScolariteService = ref("profilScolariteService")
   }
+  customPropertyEditorRegistrar(EliotEditeurRegistrar)
 }

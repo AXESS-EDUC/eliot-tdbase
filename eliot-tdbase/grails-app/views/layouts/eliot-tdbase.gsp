@@ -50,6 +50,8 @@
         href="${resource(dir: 'css/eliot', file: 'portal-menu.css')}"/>
   <link rel="stylesheet" type="text/css"
         href="${resource(dir: 'css/eliot', file: 'tdbase.css')}"/>
+  <link rel="stylesheet" type="text/css"
+        href="${resource(dir: 'css/eliot/jquery', file: 'jquery-ui.css')}"/>
   <g:javascript src="eliot/portal-menu.js"/>
   <g:layoutHead/>
   <r:layoutResources/>

@@ -38,9 +38,10 @@ import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class SeanceController {
 
+  static defaultAction = "liste"
+
   BreadcrumpsService breadcrumpsService
   ModaliteActiviteService modaliteActiviteService
-
 
 
 /**

@@ -1323,4 +1323,12 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="27" author="fsil">
+        <comment>
+            Supprime not null constrainte sur modalite_activite.etablissement
+        </comment>
+        <dropNotNullConstraint tableName="modalite_activite"
+                               columnName="etablissement_id" schemaName="td"/>
+    </changeSet>
+
 </databaseChangeLog>

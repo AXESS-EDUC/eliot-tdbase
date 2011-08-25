@@ -3186,24 +3186,27 @@
     </table>
     <table name="modalite_activite" schema="td" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="date_echeance_remises" sqlType="timestamptz" length="35" precision="6" nullable="false" jdbcType="93" />
-      <column name="date_debut" sqlType="timestamptz" length="35" precision="6" nullable="true" jdbcType="93" />
-      <column name="date_fin" sqlType="timestamptz" length="35" precision="6" nullable="true" jdbcType="93" />
+      <column name="date_remise_reponses" sqlType="timestamptz" length="35" precision="6" nullable="false" jdbcType="93" />
+      <column name="date_debut" sqlType="timestamptz" length="35" precision="6" nullable="false" jdbcType="93" />
+      <column name="date_fin" sqlType="timestamptz" length="35" precision="6" nullable="false" jdbcType="93" />
       <column name="etablissement_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="responsable_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="groupe_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
-      <column name="enseignant_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="enseignant_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="service_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="activite_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="evaluation_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="sujet_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="copie_ameliorable" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" default="true" />
       <primary-key name="pk_modalite_activite" columns="id" />
       <foreign-key name="fk_modalite_activite_etablissement_id" columns="etablissement_id" ref-table="etablissement" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_groupe_id" columns="groupe_id" ref-table="groupe_personnes" ref-schema="ent" ref-catalog="" ref-columns="id" />
-      <foreign-key name="fk_modalite_activite_enseignant_id" columns="enseignant_id" ref-table="personne" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_responsable_id" columns="responsable_id" ref-table="personne" ref-schema="ent" ref-catalog="" ref-columns="id" />
+      <foreign-key name="fk_modalite_activite_enseignant_id" columns="enseignant_id" ref-table="personne" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_service_id" columns="service_id" ref-table="service" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_activite_id" columns="activite_id" ref-table="activite" ref-schema="entcdt" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_evaluation_id" columns="evaluation_id" ref-table="evaluation" ref-schema="entnotes" ref-catalog="" ref-columns="id" />
+      <foreign-key name="fk_modalite_activite_sujet_id" columns="sujet_id" ref-table="sujet" ref-schema="td" ref-catalog="" ref-columns="id" />
       <index name="idx_modalite_activite_activite_id" unique="false" columns="activite_id" />
       <index name="idx_modalite_activite_enseignant_id" unique="false" columns="enseignant_id" />
       <index name="idx_modalite_activite_etablissement_id" unique="false" columns="etablissement_id" />
@@ -3211,6 +3214,19 @@
       <index name="idx_modalite_activite_groupe_id" unique="false" columns="groupe_id" />
       <index name="idx_modalite_activite_responsable_id" unique="false" columns="responsable_id" />
       <index name="idx_modalite_activite_service_id" unique="false" columns="service_id" />
+      <index name="idx_modalite_activite_sujet_id" unique="false" columns="sujet_id" />
+    </table>
+    <table name="modalite_activite_id_seq" schema="td" catalog="" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" length="2147483647" precision="0" nullable="false" jdbcType="12" />
+      <column name="last_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="start_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="increment_by" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="max_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="min_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="cache_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="log_cnt" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="is_cycled" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" />
+      <column name="is_called" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" />
     </table>
     <table name="question" schema="td" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3386,18 +3402,6 @@
       <column name="is_cycled" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" />
       <column name="is_called" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" />
     </table>
-    <table name="seance_id_seq" schema="td" catalog="" type="SEQUENCE">
-      <column name="sequence_name" sqlType="name" length="2147483647" precision="0" nullable="false" jdbcType="12" />
-      <column name="last_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="start_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="increment_by" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="max_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="min_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="cache_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="log_cnt" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="is_cycled" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" />
-      <column name="is_called" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" />
-    </table>
     <table name="sujet" schema="td" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="titre" sqlType="text" length="2147483647" precision="0" nullable="false" jdbcType="12" />
@@ -3459,7 +3463,7 @@
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="sujet_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="question_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="rang" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
+      <column name="questions_sequences_idx" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
       <column name="note_seuil_poursuite" sqlType="float8" length="17" precision="17" nullable="true" jdbcType="8" />
       <primary-key name="pk_sujet_sequence_questions" columns="id" />
       <foreign-key name="fk_sujet_sequence_questions_question_id" columns="question_id" ref-table="question" ref-schema="td" ref-catalog="" ref-columns="id" />
