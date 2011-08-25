@@ -31,9 +31,6 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class SeanceController {
@@ -42,7 +39,6 @@ class SeanceController {
 
   BreadcrumpsService breadcrumpsService
   ModaliteActiviteService modaliteActiviteService
-
 
 /**
  *
@@ -63,7 +59,6 @@ class SeanceController {
            modaliteActivite: modaliteActivite
            ])
   }
-
 
   /**
    *
@@ -90,7 +85,6 @@ class SeanceController {
            ])
   }
 
-
   /**
    *
    * Action "recherche"
@@ -103,13 +97,23 @@ class SeanceController {
             personne,
             params
     )
-    render(view: '/seance/liste', model:[
-            liens: breadcrumpsService.liens,
-            seances: modalitesActivites
-    ])
+    render(view: '/seance/liste', model: [
+           liens: breadcrumpsService.liens,
+           seances: modalitesActivites
+           ])
   }
 
-
+  /**
+   *
+   * Action supprime une séance
+   */
+  def supprime() {
+    ModaliteActivite seance = ModaliteActivite.get(params.id)
+    Personne personne = authenticatedPersonne
+    modaliteActiviteService.supprimeModaliteActivite(seance,
+                                                     personne)
+    redirect(action: "liste")
+  }
 
 }
 

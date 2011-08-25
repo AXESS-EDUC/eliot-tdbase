@@ -34,6 +34,9 @@
   <r:script>
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
+      $('.supprime').click(function() {
+        return confirm('Êtes vous sur de vouloir supprimer la séance ?');
+      })
     });
   </r:script>
   <title>TDBase - Liste des séances</title>
@@ -95,9 +98,12 @@
               </g:link>
             </td>
             <td>
+              <g:link action="supprime" controller="seance"
+                      id="${seance.id}" class="supprime">
                 <img border="0"
                      src="/eliot-tdbase/images/eliot/trashcan-btn.gif"
                      width="20" height="19"/>
+                </g:link>
             </td>
           </tr>
         </g:each>

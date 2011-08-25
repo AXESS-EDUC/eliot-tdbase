@@ -73,7 +73,8 @@
             </li>
             <li title="Liste des séances">
               <g:link controller="seance" action="liste"
-                      title="Liste des séances">Liste des séances
+                      title="Liste des séances"
+                      params="[bcInit:true]">Liste des séances
                       </g:link>
             </li>
           </ul>

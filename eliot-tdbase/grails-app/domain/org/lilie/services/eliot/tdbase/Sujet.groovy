@@ -102,7 +102,6 @@ class Sujet {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
     cache(true)
-    questionsSequences(lazy: false)
   }
 
   /**

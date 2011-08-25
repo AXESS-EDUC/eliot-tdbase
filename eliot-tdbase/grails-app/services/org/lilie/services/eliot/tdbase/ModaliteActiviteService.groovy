@@ -109,6 +109,14 @@ class ModaliteActiviteService {
     return seances
   }
 
+  /**
+   * Supprime une modalite activité
+   * @param modaliteActivite la modalite à supprimer
+   */
+  @Requires({modaliteActivite?.enseignant == personne})
+  def supprimeModaliteActivite(ModaliteActivite modaliteActivite,Personne personne) {
+    modaliteActivite.delete()
+  }
 
 }
 
