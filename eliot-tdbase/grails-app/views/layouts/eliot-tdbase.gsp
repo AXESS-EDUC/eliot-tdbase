@@ -70,7 +70,7 @@
               </g:link>
             </li>
             <li title="Liste des séances">
-              <g:link controller="modaliteActivite" action="liste"
+              <g:link controller="seance" action="liste"
                       title="Liste des séances">Liste des séances
                       </g:link>
             </li>

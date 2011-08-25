@@ -121,7 +121,7 @@
               params="${lienRetour.params}">Annuler</g:link> |
         <g:actionSubmit value="Enregistrer"
                         action="enregistre"
-                        controller="modaliteActivite"
+                        controller="seance"
                         title="Enregistrer"/>
     </div>
   </form>

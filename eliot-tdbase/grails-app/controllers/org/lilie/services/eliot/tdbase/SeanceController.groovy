@@ -36,7 +36,7 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
-class ModaliteActiviteController {
+class SeanceController {
 
   BreadcrumpsService breadcrumpsService
   ModaliteActiviteService modaliteActiviteService
@@ -102,10 +102,10 @@ class ModaliteActiviteController {
             personne,
             params
     )
-    [
+    render(view: '/seance/liste', model:[
             liens: breadcrumpsService.liens,
             seances: modalitesActivites
-    ]
+    ])
   }
 
 
