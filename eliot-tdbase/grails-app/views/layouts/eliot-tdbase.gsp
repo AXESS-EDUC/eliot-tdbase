@@ -63,13 +63,16 @@
         <li id="menu-item-seances">
           <a title="Séances">Séances</a>
           <ul>
-            <li title="Liste des séances">
-              <a title="Séances"
-                 href="#">Liste des séances</a>
-            </li>
             <li title="Nouvelle">
-              <a title="Nouvelle séance"
-                 href="#">Nouvelle</a>
+              <g:link controller="seance" action="edite"
+                          title="Pour créer une nouvelle séance"
+                          params="[bcInit:true, creation:true]">Nouvelle
+              </g:link>
+            </li>
+            <li title="Liste des séances">
+              <g:link controller="modaliteActivite" action="liste"
+                      title="Liste des séances">Liste des séances
+                      </g:link>
             </li>
           </ul>
         </li>

@@ -42,10 +42,12 @@ import org.lilie.services.eliot.tice.notes.Evaluation
  */
 class ModaliteActivite {
 
-  Date dateEcheanceRemises
+  Date dateRemiseReponses
 
   Date dateDebut
   Date dateFin
+
+  Sujet sujet
 
   Personne responsable
   GroupePersonnes groupe
@@ -56,14 +58,14 @@ class ModaliteActivite {
 
   Activite activite
   Evaluation evaluation
+  Boolean copieAmeliorable = true
 
   static constraints = {
-    dateDebut(nullable: true)
-    dateFin(nullable: true)
     responsable(nullable: true)
     groupe(nullable: true)
-    enseignant(nullable: true)
     service(nullable: true)
+    activite(nullable: true)
+    evaluation(nullable: true)
   }
 
   static mapping = {

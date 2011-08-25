@@ -5,8 +5,8 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
-import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.Breadcrumps
+import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class SujetController {
 
@@ -118,29 +118,29 @@ class SujetController {
   def supprimeFromSujet() {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
     Personne proprietaire = authenticatedPersonne
-    Sujet sujet = sujetService.supprimeQuestionFromSujet(sujetQuestion,proprietaire)
-    render(view: '/sujet/edite', model:[
-            sujet: sujet,
-            titreSujet: sujet.titre,
-            sujetEnEdition: true,
-            liens: breadcrumpsService.liens
-    ])
+    Sujet sujet = sujetService.supprimeQuestionFromSujet(sujetQuestion, proprietaire)
+    render(view: '/sujet/edite', model: [
+           sujet: sujet,
+           titreSujet: sujet.titre,
+           sujetEnEdition: true,
+           liens: breadcrumpsService.liens
+           ])
   }
 
 /**
-   *
-   * Action remonte element
-   */
+ *
+ * Action remonte element
+ */
   def remonteElement() {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
     Personne proprietaire = authenticatedPersonne
-    Sujet sujet = sujetService.inverseQuestionAvecLaPrecedente(sujetQuestion,proprietaire)
-    render(view: '/sujet/edite', model:[
-            sujet: sujet,
-            titreSujet: sujet.titre,
-            sujetEnEdition: true,
-            liens: breadcrumpsService.liens
-    ])
+    Sujet sujet = sujetService.inverseQuestionAvecLaPrecedente(sujetQuestion, proprietaire)
+    render(view: '/sujet/edite', model: [
+           sujet: sujet,
+           titreSujet: sujet.titre,
+           sujetEnEdition: true,
+           liens: breadcrumpsService.liens
+           ])
   }
 
   /**
@@ -150,15 +150,14 @@ class SujetController {
   def descendElement() {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
     Personne proprietaire = authenticatedPersonne
-    Sujet sujet = sujetService.inverseQuestionAvecLaSuivante(sujetQuestion,proprietaire)
-    render(view: '/sujet/edite', model:[
-            sujet: sujet,
-            titreSujet: sujet.titre,
-            sujetEnEdition: true,
-            liens: breadcrumpsService.liens
-    ])
+    Sujet sujet = sujetService.inverseQuestionAvecLaSuivante(sujetQuestion, proprietaire)
+    render(view: '/sujet/edite', model: [
+           sujet: sujet,
+           titreSujet: sujet.titre,
+           sujetEnEdition: true,
+           liens: breadcrumpsService.liens
+           ])
   }
-
 
   /**
    *
@@ -184,7 +183,7 @@ class SujetController {
         params.action = "edite"
         params.controller = "sujet"
         breadcrumpsService.manageBreadcrumps(params,
-              message(code: "sujet.edite.titre"))
+                                             message(code: "sujet.edite.titre"))
         sujetEnEdition = true
       }
     }
@@ -195,7 +194,6 @@ class SujetController {
            sujetEnEdition: sujetEnEdition
            ])
   }
-
 
   /**
    *
@@ -233,7 +231,7 @@ class SujetController {
         props."${PROP_RANG_INSERTION}" = rang + 1
       }
     }
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"),props)
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"), props)
     Sujet sujet = Sujet.get(params.id)
 
     [
@@ -242,6 +240,21 @@ class SujetController {
     ]
   }
 
+  /**
+   * Action ajoute séance
+   */
+  def ajouteSeance() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteseance.titre"))
+    Personne personne = authenticatedPersonne
+    Sujet sujet = Sujet.get(params.id)
+    def modaliteActivite = new ModaliteActivite(enseignant: personne,
+                                                sujet: sujet)
+    render(view: '/seance/edite', model: [
+           liens: breadcrumpsService.liens,
+           lienRetour: breadcrumpsService.lienRetour(),
+           modaliteActivite: modaliteActivite
+           ])
+  }
 
 }
 

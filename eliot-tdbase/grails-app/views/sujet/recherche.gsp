@@ -161,11 +161,12 @@
             </td>
             <td>
 
-              <a href="#">
+               <g:link action="ajouteSeance"
+                      id="${sujetInstance.id}">
                 <img border="0"
                      src="/eliot-tdbase/images/eliot/ActionIconAdd.gif"
                      width="20" height="19"/>
-              </a>
+              </g:link>
 
             </td>
             <td>

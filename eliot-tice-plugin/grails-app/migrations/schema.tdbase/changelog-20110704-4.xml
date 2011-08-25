@@ -1274,5 +1274,53 @@
                       newColumnName="questions_sequences_idx" schemaName="td"/>
     </changeSet>
 
+    <changeSet id="25" author="fsil">
+        <comment>Modifications relatives à la table modalite_activite</comment>
+        <createSequence sequenceName="modalite_activite_id_seq" schemaName="td"
+                        startValue="100"/>
+        <dropSequence sequenceName="seance_id_seq" schemaName="td"/>
+
+        <renameColumn tableName="modalite_activite"
+                      oldColumnName="date_echeance_remises"
+                      newColumnName="date_remise_reponses" schemaName="td"/>
+        <addNotNullConstraint tableName="modalite_activite"
+                              columnName="date_debut"
+                              schemaName="td"/>
+        <addNotNullConstraint tableName="modalite_activite"
+                              columnName="date_fin"
+                              schemaName="td"/>
+        <addNotNullConstraint tableName="modalite_activite"
+                              columnName="enseignant_id"
+                              schemaName="td"/>
+
+        <addColumn tableName="modalite_activite" schemaName="td">
+            <column name="sujet_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <createIndex tableName="modalite_activite"
+                     indexName="idx_modalite_activite_sujet_id" schemaName="td">
+            <column name="sujet_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="modalite_activite"
+                                 baseColumnNames="sujet_id"
+                                 constraintName="fk_modalite_activite_sujet_id"
+                                 referencedTableName="sujet"
+                                 referencedColumnNames="id"
+                                 baseTableSchemaName="td"
+                                 referencedTableSchemaName="td"/>
+
+    </changeSet>
+
+    <changeSet id="26" author="fsil">
+        <comment>Ajout colonne copie améliorable</comment>
+        <addColumn tableName="modalite_activite" schemaName="td">
+            <column name="copie_ameliorable" type="boolean" defaultValue="true">
+               <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

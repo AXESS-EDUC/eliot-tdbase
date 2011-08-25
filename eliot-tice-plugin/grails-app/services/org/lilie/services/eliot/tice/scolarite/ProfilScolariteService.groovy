@@ -111,4 +111,38 @@ public class ProfilScolariteService {
     return niveaux
   }
 
+  /**
+   * Récupère les structures d'enseignement (classes / divisions) caractérisant la
+   * personne passée en paramètre, tout établissement confondu
+   * @param Personne la personne
+   * @return la liste des structures d'enseignements
+   */
+  List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne) {
+    List<PersonneProprietesScolarite> profils =
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true, [cache:true])
+    List<StructureEnseignement> structures = []
+    profils.collect {
+      StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
+      if (structureEnseignement && !structures.contains(structureEnseignement)) {
+        structures << structureEnseignement
+      }
+    }
+    return structures
+  }
+
+  /**
+   * Récupère les services de la personne passé en paramètre
+   * @param personne la personne
+   * @return  la liste de ses services
+   */
+  List<Service> findServicesForPersonne(Personne personne) {
+    def criteria = Service.createCriteria()
+    criteria.list {
+      enseignements {
+        eq 'enseignant', personne.autorite
+        eq 'actif', true
+      }
+    }
+  }
+
 }
