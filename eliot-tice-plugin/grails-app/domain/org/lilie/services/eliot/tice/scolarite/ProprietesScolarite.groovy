@@ -61,6 +61,24 @@ class ProprietesScolarite {
     responsableStructureEnseignement(nullable: true)
   }
 
+  static transients = ['structureEnseignementNomAffichage']
+
+  /**
+   *
+   * @return  le nom de la structure avec matière associée si il y a
+   */
+  String getStructureEnseignementNomAffichage() {
+    if (!structureEnseignement) {
+      return  null
+    }
+    def matLib = matiere?.libelleLong
+    def suffixe = ''
+    if (matLib) {
+      suffixe = " (${matLib})"
+    }
+    structureEnseignement?.nomAffichage + suffixe
+  }
+
   static mapping = {
     table('ent.proprietes_scolarite')
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.proprietes_scolarite_id_seq']

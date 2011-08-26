@@ -131,6 +131,25 @@ public class ProfilScolariteService {
   }
 
   /**
+   * Récupère les propriétés de scolarité d'une personne référençant une structure
+   * s'enseignement
+   * @param personne  la personne
+   * @return  la liste des propriétés de scolarité
+   */
+  List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne) {
+    def props = []
+    List<PersonneProprietesScolarite> profils =
+          PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true, [cache:true])
+    profils.collect {
+      StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
+      if (structureEnseignement && !props.contains(it.proprietesScolarite)) {
+        props << it.proprietesScolarite
+      }
+    }
+    return props
+  }
+
+  /**
    * Récupère les services de la personne passé en paramètre
    * @param personne la personne
    * @return  la liste de ses services

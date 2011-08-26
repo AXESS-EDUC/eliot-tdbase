@@ -32,16 +32,23 @@
 <head>
   <meta name="layout" content="eliot-tdbase"/>
   <g:javascript src="jquery/jquery-1.6.1.min.js"/>
-  <jqui:resources />
+  <jqui:resources/>
   <g:javascript src="jquery/i18n/jquery.ui.datepicker-fr.js"/>
   <g:javascript src="eliot/jquery-ui-timepicker-addon.js"/>
   <g:javascript src="eliot/i18n/jquery.ui.timepicker-fr.js"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
-//      $.datepicker.setDefaults($.datepicker.regional['fr']);
-//      $.datetimepicker.setDefaults($.datepicker.regional['fr']);
-      $( ".datepicker" ).datetimepicker();
+      $(".datepicker").datetimepicker();
+      $( "#sujetsTitres" ).autocomplete({
+			source: "${createLink(controller:'sujet', action:'recherche', params:[format:'js'])}",
+			minLength: 3,
+			select: function( event, ui ) {
+			    if(ui.item) {
+                    $("#sujetId").attr('value',ui.item.id)
+                }
+			}
+		});
     });
   </r:script>
   <title>TDBase - Edition d'une séance</title>
@@ -67,27 +74,41 @@
   </g:if>
 
 
-  <g:form method="post" controller="seance">
+  <g:form method="post" controller="seance" action="edite">
     <div class="portal-form_container" style="width: 70%;margin-left: 15px;">
       <table>
 
         <tr>
-          <td class="label">Service&nbsp;:</td>
+          <td class="label">Groupe&nbsp;:</td>
           <td>
-            <g:select name="service.id" value="${modaliteActivite.service?.id}"
-                      noSelection="${['null':'Sélectionner un service...']}"
-                      from="${services}"
-                      optionKey="id"
-                      optionValue="libelle"/>
+            <g:if test="${modaliteActivite.structureEnseignement}">
+              ${modaliteActivite.structureEnseignement.nomAffichage} &nbsp;&nbsp;&nbsp;
+              <g:select name="proprietesScolariteSelectionId"
+                        noSelection="${['null':'Changer de groupe...']}"
+                        from="${proprietesScolarite}"
+                        optionKey="id"
+                        optionValue="structureEnseignementNomAffichage"/>
+            </g:if>
+            <g:else>
+              <g:select name="proprietesScolariteSelectionId"
+                        noSelection="${['null':'Sélectionner de groupe...']}"
+                        from="${proprietesScolarite}"
+                        optionKey="id"
+                        optionValue="structureEnseignementNomAffichage"/>
+            </g:else>
           </td>
         </tr>
         <tr>
           <td class="label">Sujet&nbsp;:</td>
           <td>
             <g:if test="${modaliteActivite.sujet}">
-            ${modaliteActivite.sujet.titre} &nbsp;&nbsp;&nbsp;
+              ${modaliteActivite.sujet.titre} <br/>
+              Changer de sujet...
             </g:if>
-            rechercher un sujet...
+            <g:else>
+              Rechercher un sujet...
+            </g:else>
+            <input size="45" id="sujetsTitres" />
           </td>
         </tr>
         <tr>
@@ -125,14 +146,14 @@
       </table>
     </div>
     <g:hiddenField name="id" value="${modaliteActivite.id}"/>
-    <g:hiddenField name="sujet.id" value="${modaliteActivite.sujet?.id}"/>
+    <g:hiddenField id="sujetId" name="sujet.id" value="${modaliteActivite.sujet?.id}"/>
     <div class="form_actions" style="width: 70%;margin-left: 15px;">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link> |
-        <g:actionSubmit value="Enregistrer"
-                        action="enregistre"
-                        title="Enregistrer"/>
+      <g:actionSubmit value="Enregistrer"
+                      action="enregistre"
+                      title="Enregistrer"/>
     </div>
   </g:form>
 </div>

@@ -1,5 +1,6 @@
 package org.lilie.services.eliot.tdbase
 
+import grails.converters.JSON
 import grails.plugins.springsecurity.SpringSecurityService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
@@ -25,7 +26,11 @@ class SujetController {
    */
   def recherche(RechercheSujetCommand rechCmd) {
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.recherche.titre"))
+    if (params.term) { // compatibilite avec autocomplete jquery
+      rechCmd.patternTitre = params.term
+    } else {
+      breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.recherche.titre"))
+    }
     Personne personne = authenticatedPersonne
     def sujets = sujetService.findSujets(
             personne,
@@ -37,15 +42,22 @@ class SujetController {
             SujetType.get(rechCmd.typeId),
             params
     )
-    [
-            liens: breadcrumpsService.liens,
-            afficheFormulaire: true,
-            typesSujet: sujetService.getAllSujetTypes(),
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            sujets: sujets,
-            rechercheCommand: rechCmd
-    ]
+    withFormat {
+      html {
+        [
+                liens: breadcrumpsService.liens,
+                afficheFormulaire: true,
+                typesSujet: sujetService.getAllSujetTypes(),
+                matieres: profilScolariteService.findMatieresForPersonne(personne),
+                niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+                sujets: sujets,
+                rechercheCommand: rechCmd
+        ]
+      }
+      js {
+        render sujets.collect { [id: it.id, value: it.titre] as JSON }
+      }
+    }
   }
 
   /**
@@ -249,10 +261,13 @@ class SujetController {
     Sujet sujet = Sujet.get(params.id)
     def modaliteActivite = new ModaliteActivite(enseignant: personne,
                                                 sujet: sujet)
+    def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
+            personne)
     render(view: '/seance/edite', model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
-           modaliteActivite: modaliteActivite
+           modaliteActivite: modaliteActivite,
+           proprietesScolarite: proprietesScolarite
            ])
   }
 

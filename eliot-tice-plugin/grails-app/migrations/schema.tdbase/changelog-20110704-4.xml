@@ -1331,4 +1331,43 @@
                                columnName="etablissement_id" schemaName="td"/>
     </changeSet>
 
+    <changeSet id="28" author="fsil">
+        <comment>Modifications relatives à la table modalite_activite</comment>
+
+        <addColumn tableName="modalite_activite" schemaName="td">
+            <column name="structure_enseignement_id" type="bigint"/>
+            <column name="matiere_id" type="bigint"/>
+        </addColumn>
+
+        <createIndex tableName="modalite_activite"
+                     indexName="idx_modalite_activite_structure_id" schemaName="td">
+            <column name="structure_enseignement_id"/>
+        </createIndex>
+
+        <createIndex tableName="modalite_activite"
+                     indexName="idx_modalite_activite_matiere_id" schemaName="td">
+            <column name="matiere_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="modalite_activite"
+                                 baseColumnNames="structure_enseignement_id"
+                                 constraintName="fk_modalite_activite_structure_enseignement_id"
+                                 referencedTableName="structure_enseignement"
+                                 referencedColumnNames="id"
+                                 baseTableSchemaName="td"
+                                 referencedTableSchemaName="ent"/>
+
+        <addForeignKeyConstraint baseTableName="modalite_activite"
+                                 baseColumnNames="matiere_id"
+                                 constraintName="fk_modalite_activite_matiere_id"
+                                 referencedTableName="matiere"
+                                 referencedColumnNames="id"
+                                 baseTableSchemaName="td"
+                                 referencedTableSchemaName="ent"/>
+
+        <dropColumn tableName="modalite_activite" columnName="service_id"
+                    schemaName="td"/>
+
+    </changeSet>
+
 </databaseChangeLog>

@@ -28,12 +28,13 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.GroupePersonnes
-import org.lilie.services.eliot.tice.scolarite.Service
-import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.textes.Activite
+import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.notes.Evaluation
+import org.lilie.services.eliot.tice.scolarite.Etablissement
+import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
+import org.lilie.services.eliot.tice.textes.Activite
 
 /**
  * Classe représentant les modalités de l'activité d'un groupe d'élèves pour traiter
@@ -54,7 +55,8 @@ class ModaliteActivite {
   Etablissement etablissement
 
   Personne enseignant
-  Service service
+  StructureEnseignement structureEnseignement
+  Matiere matiere
 
   Activite activite
   Evaluation evaluation
@@ -64,9 +66,15 @@ class ModaliteActivite {
     responsable(nullable: true)
     groupe(nullable: true)
     etablissement(nullable: true)
-    service(nullable: true)
     activite(nullable: true)
     evaluation(nullable: true)
+    structureEnseignement(nullable: true, validator: { val, obj ->
+      if (val == null) {
+        return (obj.groupe == null || obj.etablissement == null)
+      }
+      return true
+    })
+    matiere(nullable: true)
   }
 
   static transients = ['groupeLibelle']
@@ -76,8 +84,8 @@ class ModaliteActivite {
    * @return le libelle du groupe ou de la structure d'enseignement concernée
    */
   String getGroupeLibelle() {
-    if (service) {
-      return service.structureEnseignement.nomAffichage
+    if (structureEnseignement) {
+      return structureEnseignement.nomAffichage
     } else if (groupe) {
       return groupe.nom
     }
@@ -91,5 +99,6 @@ class ModaliteActivite {
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.modalite_activite_id_seq'])
     cache(true)
   }
+
 
 }

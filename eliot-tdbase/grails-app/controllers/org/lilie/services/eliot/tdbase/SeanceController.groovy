@@ -32,6 +32,8 @@ package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 
 class SeanceController {
 
@@ -39,6 +41,7 @@ class SeanceController {
 
   BreadcrumpsService breadcrumpsService
   ModaliteActiviteService modaliteActiviteService
+  ProfilScolariteService profilScolariteService
 
 /**
  *
@@ -53,10 +56,13 @@ class SeanceController {
     } else {
       modaliteActivite = ModaliteActivite.get(params.id)
     }
+    def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
+            personne)
     render(view: '/seance/edite', model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
-           modaliteActivite: modaliteActivite
+           modaliteActivite: modaliteActivite,
+           proprietesScolarite: proprietesScolarite
            ])
   }
 
@@ -67,7 +73,14 @@ class SeanceController {
   def enregistre() {
     ModaliteActivite modaliteActivite
     Personne personne = authenticatedPersonne
-
+    def propsId = params.proprietesScolariteSelectionId
+    if ( propsId && propsId != 'null') {
+      ProprietesScolarite props = ProprietesScolarite.get(params.proprietesScolariteSelectionId)
+      params.'structureEnseignement.id' = props.structureEnseignement.id
+      if (props.matiere) {
+        params.'matiere.id' = props.matiere.id
+      }
+    }
     if (params.id) {
       modaliteActivite = ModaliteActivite.get(params.id)
       modaliteActiviteService.updateProprietes(modaliteActivite, params, personne)
@@ -78,10 +91,13 @@ class SeanceController {
     if (!modaliteActivite.hasErrors()) {
       request.messageCode = "seance.enregistre.succes"
     }
+    def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
+            personne)
     render(view: '/seance/edite', model: [
            liens: breadcrumpsService.liens,
            lienRetour: breadcrumpsService.lienRetour(),
-           modaliteActivite: modaliteActivite
+           modaliteActivite: modaliteActivite,
+           proprietesScolarite: proprietesScolarite
            ])
   }
 

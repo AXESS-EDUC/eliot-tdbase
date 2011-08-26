@@ -78,7 +78,7 @@
                      width="16" height="16"/>
             </td>
             <td>
-              ${seance.service?.matiere?.libelleLong}
+              ${seance.matiere?.libelleLong}
             </td>
             <td>
               ${seance.sujet.titre}
