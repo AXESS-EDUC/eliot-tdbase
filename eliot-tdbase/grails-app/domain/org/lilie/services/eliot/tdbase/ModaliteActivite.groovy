@@ -70,7 +70,7 @@ class ModaliteActivite {
     evaluation(nullable: true)
     structureEnseignement(nullable: true, validator: { val, obj ->
       if (val == null) {
-        return (obj.groupe == null || obj.etablissement == null)
+        return (obj.groupe != null && obj.etablissement != null)
       }
       return true
     })
