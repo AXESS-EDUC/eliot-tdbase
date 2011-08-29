@@ -82,7 +82,7 @@
           <td class="label">Groupe&nbsp;:</td>
           <td>
             <g:if test="${modaliteActivite.structureEnseignement}">
-              ${modaliteActivite.structureEnseignement.nomAffichage} &nbsp;&nbsp;&nbsp;
+              <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong> &nbsp;&nbsp;&nbsp;
               <g:select name="proprietesScolariteSelectionId"
                         noSelection="${['null':'Changer de groupe...']}"
                         from="${proprietesScolarite}"
@@ -102,7 +102,7 @@
           <td class="label">Sujet&nbsp;:</td>
           <td>
             <g:if test="${modaliteActivite.sujet}">
-              ${modaliteActivite.sujet.titre} <br/>
+              <strong>${modaliteActivite.sujet.titre}</strong> <br/>
               Changer de sujet...
             </g:if>
             <g:else>

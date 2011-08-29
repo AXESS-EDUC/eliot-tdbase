@@ -93,6 +93,9 @@ environments {
   test {
     grails.serverURL = "http://localhost:8080/${appName}"
   }
+  demo {
+    grails.serverURL = "http://www.ticetime.com:8080/${appName}"
+  }
 
 }
 
@@ -146,6 +149,38 @@ environments {
                     "${FonctionEnum.CTR.toRole()}",
                     "${FonctionEnum.DIR.toRole()}",
                     'IS_AUTHENTICATED_FULLY'
+            ],
+            '/seance/**': [
+                    "${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
+                    "${FonctionEnum.CTR.toRole()}",
+                    "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'
+            ]
+    ]
+  }
+  demo {
+    grails.plugins.springsecurity.interceptUrlMap = [
+            '/sujet/**': [
+                    "${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
+                    "${FonctionEnum.CTR.toRole()}",
+                    "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'
+            ],
+            '/question/**': [
+                    "${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
+                    "${FonctionEnum.CTR.toRole()}",
+                    "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'
+            ],
+            '/seance/**': [
+                    "${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
+                    "${FonctionEnum.CTR.toRole()}",
+                    "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'
             ]
     ]
   }
@@ -164,6 +199,13 @@ environments {
                     "${FonctionEnum.CTR.toRole()}",
                     "${FonctionEnum.DIR.toRole()}",
                     'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/seance/**': [
+                    "${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
+                    "${FonctionEnum.CTR.toRole()}",
+                    "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
             ]
     ]
   }
@@ -177,6 +219,13 @@ environments {
                     'IS_AUTHENTICATED_REMEMBERED'
             ],
             '/question/**': [
+                    "${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
+                    "${FonctionEnum.CTR.toRole()}",
+                    "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/seance/**': [
                     "${FonctionEnum.ENS.toRole()}",
                     "${FonctionEnum.DOC.toRole()}",
                     "${FonctionEnum.CTR.toRole()}",

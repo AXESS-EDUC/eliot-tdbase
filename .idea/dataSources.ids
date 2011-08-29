@@ -3193,17 +3193,19 @@
       <column name="responsable_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="groupe_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="enseignant_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="service_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="activite_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="evaluation_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="sujet_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="copie_ameliorable" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" default="true" />
+      <column name="structure_enseignement_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="matiere_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="pk_modalite_activite" columns="id" />
       <foreign-key name="fk_modalite_activite_etablissement_id" columns="etablissement_id" ref-table="etablissement" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_groupe_id" columns="groupe_id" ref-table="groupe_personnes" ref-schema="ent" ref-catalog="" ref-columns="id" />
+      <foreign-key name="fk_modalite_activite_matiere_id" columns="matiere_id" ref-table="matiere" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_responsable_id" columns="responsable_id" ref-table="personne" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_enseignant_id" columns="enseignant_id" ref-table="personne" ref-schema="ent" ref-catalog="" ref-columns="id" />
-      <foreign-key name="fk_modalite_activite_service_id" columns="service_id" ref-table="service" ref-schema="ent" ref-catalog="" ref-columns="id" />
+      <foreign-key name="fk_modalite_activite_structure_enseignement_id" columns="structure_enseignement_id" ref-table="structure_enseignement" ref-schema="ent" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_activite_id" columns="activite_id" ref-table="activite" ref-schema="entcdt" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_evaluation_id" columns="evaluation_id" ref-table="evaluation" ref-schema="entnotes" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_modalite_activite_sujet_id" columns="sujet_id" ref-table="sujet" ref-schema="td" ref-catalog="" ref-columns="id" />
@@ -3212,8 +3214,9 @@
       <index name="idx_modalite_activite_etablissement_id" unique="false" columns="etablissement_id" />
       <index name="idx_modalite_activite_evaluation_id" unique="false" columns="evaluation_id" />
       <index name="idx_modalite_activite_groupe_id" unique="false" columns="groupe_id" />
+      <index name="idx_modalite_activite_matiere_id" unique="false" columns="matiere_id" />
       <index name="idx_modalite_activite_responsable_id" unique="false" columns="responsable_id" />
-      <index name="idx_modalite_activite_service_id" unique="false" columns="service_id" />
+      <index name="idx_modalite_activite_structure_id" unique="false" columns="structure_enseignement_id" />
       <index name="idx_modalite_activite_sujet_id" unique="false" columns="sujet_id" />
     </table>
     <table name="modalite_activite_id_seq" schema="td" catalog="" type="SEQUENCE">
