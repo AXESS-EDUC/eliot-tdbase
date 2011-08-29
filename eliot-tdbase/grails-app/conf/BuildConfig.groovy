@@ -34,7 +34,7 @@ grails.plugin.location.'eliot-tice-plugin' = "../eliot-tice-plugin"
 grails.plugin.location.'eliot-textes-plugin' = "../eliot-textes-plugin"
 grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
 
-//grails.project.war.file = "target/${appName}-${appVersion}.war"
+grails.project.war.file = "target/${appName}.war"
 
 grails.project.dependency.resolution = {
   // inherit Grails' default dependencies

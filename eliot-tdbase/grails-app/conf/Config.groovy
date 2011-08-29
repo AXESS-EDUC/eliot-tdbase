@@ -241,6 +241,10 @@ environments {
       eliot.fichiers.racine = "/Users/Shared/eliot-root"
       eliot.fichiers.maxsize.mega = 10
     }
+    demo {
+      eliot.fichiers.racine = "/usr/share/eliot-root"
+      eliot.fichiers.maxsize.mega = 10
+    }
   }
 
 }
