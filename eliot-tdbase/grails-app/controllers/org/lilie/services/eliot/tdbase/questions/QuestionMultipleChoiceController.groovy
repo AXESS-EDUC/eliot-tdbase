@@ -53,7 +53,7 @@ class QuestionMultipleChoiceController extends QuestionController {
     specifobject.reponses << new MultipleChoiceSpecificationReponse(
             rang: specifobject.reponses.size()+1)
     render(
-            template: "/question/MultipleChoice/multipleChoiceEditionReponses",
+            template: "/question/MultipleChoice/MultipleChoiceEditionReponses",
             model:[ specifobject: specifobject ]
     )
   }
@@ -66,7 +66,7 @@ class QuestionMultipleChoiceController extends QuestionController {
     MultipleChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
     specifobject.reponses.remove(params.id as Integer)
     render(
-            template: "/question/MultipleChoice/multipleChoiceEditionReponses",
+            template: "/question/MultipleChoice/MultipleChoiceEditionReponses",
             model:[ specifobject: specifobject ]
     )
   }
