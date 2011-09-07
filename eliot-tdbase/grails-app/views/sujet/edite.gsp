@@ -30,10 +30,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="jquery"/>
+  <g:javascript src="jquery/jquery-1.6.1.min.js"/>
+  <g:javascript src="eliot/jquery.editinplace.js"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-sujets').addClass('actif');
+
+      $(".editinplace").editInPlace({
+        url: "${g.createLink(controller: 'sujet', action: 'updatePoints')}"
+      });
+
     });
   </r:script>
   <title>TDBase - Edition du sujet</title>
@@ -111,16 +117,17 @@
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">
         <div class="tdbase-sujet-edition-question-boutons">
-
-           <g:link action="edite" controller="question${sujetQuestion.question.type.code}"
-                  id="${sujetQuestion.question.id}" style="text-decoration: none;">
+          <g:link action="edite"
+                  controller="question${sujetQuestion.question.type.code}"
+                  id="${sujetQuestion.question.id}"
+                  style="text-decoration: none;">
             <img border="0" src="/eliot-tdbase/images/eliot/write-btn.gif"
                  width="22"
                  height="18"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Modifier l'élément..." title="Modifier l'élément..."/>
           </g:link>
-           <g:link action="remonteElement" controller="sujet"
+          <g:link action="remonteElement" controller="sujet"
                   id="${sujetQuestion.id}" style="text-decoration: none;">
             <img border="0" src="/eliot-tdbase/images/eliot/24-em-up.png"
                  width="22"
@@ -138,7 +145,7 @@
                  alt="Déplacer vers le bas..." title="Déplacer vers le bas..."/>
           </g:link>
           <g:link action="ajouteElement" controller="sujet"
-                id="${sujet.id}" params="[direction:'avant',
+                  id="${sujet.id}" params="[direction:'avant',
                                           rang: sujetQuestion.rang]">
             <img border="0"
                  src="/eliot-tdbase/images/eliot/btnInsertRowBefore.png"
@@ -147,7 +154,7 @@
                  title="Insérer un élément avant..."/>
           </g:link>
           <g:link action="ajouteElement" controller="sujet"
-                id="${sujet.id}" params="[rang: sujetQuestion.rang]">
+                  id="${sujet.id}" params="[rang: sujetQuestion.rang]">
             <img border="0"
                  src="/eliot-tdbase/images/eliot/btnInsertRowAfter.png"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
@@ -162,7 +169,16 @@
                  title="Supprimer l'élément du sujet..."/>
           </g:link>
         </div>
+        <g:if test="${sujetQuestion.question.type.interaction}">
+          <div class="tdbase-sujet-edition-question-points" style="margin-bottom: 15px">
+          <div class="editinplace"
+               id="SujetSequenceQuestions-${sujetQuestion.id}"
+               title="Cliquez pour modifier le nombre de points..." style="float: left">
+            ${sujetQuestion.points}
+          </div>
 
+            &nbsp;point(s)</div>
+        </g:if>
         <div class="tdbase-sujet-edition-question-preview">
           <g:set var="question" value="${sujetQuestion.question}"/>
           <g:render

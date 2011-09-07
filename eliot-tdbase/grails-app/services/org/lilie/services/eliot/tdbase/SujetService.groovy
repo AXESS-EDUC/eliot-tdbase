@@ -28,13 +28,13 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
-import org.gcontracts.annotations.Requires
 
 class SujetService {
 
@@ -65,8 +65,6 @@ class SujetService {
     return sujet
   }
 
-
-
   /**
    * Recopie un sujet
    * - si le proprietaire de la copie est le proprietaire de l'original, on
@@ -81,7 +79,7 @@ class SujetService {
    * @return la copie du sujet
    */
   @Transactional
-  @Requires ({sujet.proprietaire == proprietaire || sujet.publie})
+  @Requires({sujet.proprietaire == proprietaire || sujet.publie})
   Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
     def versionSujet = sujet.versionSujet + 1
     def sujetDepartBranche = sujet.sujetDepartBranche
@@ -122,7 +120,7 @@ class SujetService {
    * @param nouveauTitre le titre
    * @return le sujet
    */
-  @Requires ({sujet.proprietaire == proprietaire || sujet.publie})
+  @Requires({sujet.proprietaire == proprietaire || sujet.publie})
   Sujet updateTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
@@ -140,7 +138,7 @@ class SujetService {
    * @param proprietaire le proprietaire
    * @return le sujet
    */
-  @Requires ({sujet.proprietaire == proprietaire || sujet.publie})
+  @Requires({sujet.proprietaire == proprietaire || sujet.publie})
   Sujet updateProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
@@ -258,7 +256,7 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
-  @Requires ({
+  @Requires({
     (sujet.proprietaire == proprietaire || sujet.publie) &&
     (question.proprietaire == proprietaire || question.publie)
   })
@@ -300,8 +298,10 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
-  @Requires({sujetQuestion.sujet.proprietaire == proprietaire ||
-             sujetQuestion.sujet.publie})
+  @Requires({
+    sujetQuestion.sujet.proprietaire == proprietaire ||
+    sujetQuestion.sujet.publie
+  })
   Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
     def idx = sujetQuestion.rang
@@ -331,8 +331,10 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
-  @Requires({sujetQuestion.sujet.proprietaire == proprietaire ||
-             sujetQuestion.sujet.publie})
+  @Requires({
+    sujetQuestion.sujet.proprietaire == proprietaire ||
+    sujetQuestion.sujet.publie
+  })
   Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
                                       Personne proprietaire) {
     def idx = sujetQuestion.rang
@@ -354,14 +356,15 @@ class SujetService {
 
 /**
  * Supprime une question d'un sujet
- * @param question la question
- * @param sujet le sujet
+ * @param sujetQuestion le sujet et la question
  * @param proprietaire le propriétaire
  * @return le sujet modifié
  */
   @Transactional
-  @Requires({sujetQuestion.sujet.proprietaire == proprietaire ||
-             sujetQuestion.sujet.publie})
+  @Requires({
+    sujetQuestion.sujet.proprietaire == proprietaire ||
+    sujetQuestion.sujet.publie
+  })
   Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
                                   Personne proprietaire) {
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
@@ -371,6 +374,26 @@ class SujetService {
     leSujet.lastUpdated = new Date()
     leSujet.save()
     return leSujet
+  }
+
+  /**
+   * Modifie le nombre de points associé à une question dans un sujet
+   * @param sujetQuestion le sujet et la question
+   * @param proprietaire le propriétaire
+   * @return le sujet modifié
+   */
+  @Transactional
+  @Requires({sujetQuestion.sujet.proprietaire == proprietaire})
+  SujetSequenceQuestions updatePointsForQuestion(Float newPoints,
+                                                 SujetSequenceQuestions sujetQuestion,
+                                                 Personne proprietaire) {
+    sujetQuestion.points = newPoints
+    if (sujetQuestion.save()) {
+      def leSujet = sujetQuestion.sujet
+      leSujet.lastUpdated = new Date()
+      leSujet.save()
+    }
+    return sujetQuestion
   }
 
   /**

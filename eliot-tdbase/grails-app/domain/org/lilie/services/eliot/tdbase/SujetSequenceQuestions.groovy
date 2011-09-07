@@ -36,6 +36,7 @@ class SujetSequenceQuestions implements Comparable {
 
   Integer rang
   Float noteSeuilPoursuite
+  Float points = 1
 
   Question question
   Sujet sujet

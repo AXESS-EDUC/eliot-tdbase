@@ -271,6 +271,28 @@ class SujetController {
            ])
   }
 
+  /**
+   *
+   * Action pour mettre à jour le nombre de  points associé à une question
+   */
+  def updatePoints() {
+    try {
+      // deduit l'id de l'objet SujetSequenceQuestions à modifier
+      def id = params.element_id - "SujetSequenceQuestions-" as Long
+      def sujetQuestion = SujetSequenceQuestions.get(id)
+      // récupère la nouvelle valeur
+      def points = params.update_value as Float
+      // met à jour
+      sujetService.updatePointsForQuestion(points,
+                                           sujetQuestion,
+                                           authenticatedPersonne)
+      render points
+    } catch (Exception e) {
+      log.info(e.message)
+      render params.original_html
+    }
+  }
+
 }
 
 class NouveauSujetCommand {

@@ -31,12 +31,7 @@
 package org.lilie.services.eliot.tdbase.questions
 
 
-import org.lilie.services.eliot.tdbase.QuestionService
-import org.lilie.services.eliot.tdbase.Question
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tdbase.Sujet
-import org.lilie.services.eliot.tice.utils.BreadcrumpsService
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+
 import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecification
 import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecificationReponse
 import org.lilie.services.eliot.tdbase.QuestionController

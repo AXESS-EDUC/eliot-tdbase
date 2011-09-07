@@ -333,6 +333,13 @@ Style custom eliot-tdbase
     margin-top: 3px;
 }
 
+.tdbase-sujet-edition-question-points {
+    margin-top: 3px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 0%;
+}
+
 .tdbase-sujet-edition-question-preview {
     background-color: #F3F6FB;
     padding: 3px;
