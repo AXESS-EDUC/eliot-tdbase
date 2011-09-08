@@ -88,6 +88,9 @@
 <body>
 <div class="container">
   <div class="column span-22 last middle">
+    <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
+      <g:render template="/menuPortail"/>
+    </g:if>
     <div class="portal-menu">
       <ul id="portal-hz-menu">
         <li id="menu-item-seances">

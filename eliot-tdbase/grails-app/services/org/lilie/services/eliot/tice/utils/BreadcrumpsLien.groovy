@@ -42,6 +42,7 @@ class BreadcrumpsLien {
   Map params
   int index
   Map proprietes
+  String url = null
 }
 
 class Breadcrumps {

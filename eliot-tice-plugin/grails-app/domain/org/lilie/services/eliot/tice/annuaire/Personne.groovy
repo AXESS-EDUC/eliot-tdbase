@@ -70,6 +70,8 @@ public class Personne  {
     autorite fetch:'join'
   }
 
+  static transients = ['nomAffichage']
+
   static constraints = {
     civilite(nullable: true)
     telephonePro(nullable: true)
@@ -91,6 +93,12 @@ public class Personne  {
     regime(nullable: true)
   }
 
-
+  /**
+   *
+   * @return  le nom d'affichage
+   */
+  String getNomAffichage() {
+     "$prenom $nom"
+  }
 
 }

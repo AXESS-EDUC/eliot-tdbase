@@ -137,7 +137,7 @@ environments {
   production {
     grails.plugins.springsecurity.interceptUrlMap = [
             '/': [
-               'IS_AUTHENTICATED_FULLY'
+                    'IS_AUTHENTICATED_FULLY'
             ],
             '/sujet/**': [
                     "${FonctionEnum.ENS.toRole()}",
@@ -169,7 +169,7 @@ environments {
   demo {
     grails.plugins.springsecurity.interceptUrlMap = [
             '/': [
-               'IS_AUTHENTICATED_FULLY'
+                    'IS_AUTHENTICATED_FULLY'
             ],
             '/sujet/**': [
                     "${FonctionEnum.ENS.toRole()}",
@@ -201,7 +201,7 @@ environments {
   development {
     grails.plugins.springsecurity.interceptUrlMap = [
             '/': [
-               'IS_AUTHENTICATED_REMEMBERED'
+                    'IS_AUTHENTICATED_REMEMBERED'
             ],
             '/sujet/**': [
                     "${FonctionEnum.ENS.toRole()}",
@@ -233,7 +233,7 @@ environments {
   test {
     grails.plugins.springsecurity.interceptUrlMap = [
             '/': [
-               'IS_AUTHENTICATED_REMEMBERED'
+                    'IS_AUTHENTICATED_REMEMBERED'
             ],
             '/sujet/**': [
                     "${FonctionEnum.ENS.toRole()}",
@@ -275,6 +275,35 @@ environments {
     }
   }
 
+  // configuration des liens du menu portail
+  environments {
+    development {
+      eliot.portail.menu.affichage = true
+      eliot.portail.menu.liens = [
+              [
+                      url: "http://wwww.ticetime.com",
+                      libelle: "ticetime"
+              ],
+              [
+                      url: "https://github.com/ticetime/eliot-tdbase/wiki",
+                      libelle: "eliot-tdbase sur Github"
+              ]
+      ]
+    }
+    demo {
+      eliot.portail.menu.affichage = true
+      eliot.portail.menu.liens = [
+              [
+                      url: "http://wwww.ticetime.com",
+                      libelle: "ticetime"
+              ],
+              [
+                      url: "https://github.com/ticetime/eliot-tdbase/wiki",
+                      libelle: "eliot-tdbase sur Github"
+              ]
+      ]
+    }
+  }
 }
 
 

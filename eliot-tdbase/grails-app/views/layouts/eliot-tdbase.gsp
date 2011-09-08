@@ -60,6 +60,9 @@
 <body>
 <div class="container">
   <div class="column span-22 last middle">
+    <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
+      <g:render template="/menuPortail"/>
+    </g:if>
     <div class="portal-menu">
       <ul id="portal-hz-menu">
         <li id="menu-item-seances">
@@ -67,15 +70,15 @@
           <ul>
             <li title="Nouvelle">
               <g:link controller="seance" action="edite"
-                          title="Pour créer une nouvelle séance"
-                          params="[bcInit:true, creation:true]">Nouvelle
+                      title="Pour créer une nouvelle séance"
+                      params="[bcInit:true, creation:true]">Nouvelle
               </g:link>
             </li>
             <li title="Liste des séances">
               <g:link controller="seance" action="liste"
                       title="Liste des séances"
                       params="[bcInit:true]">Liste des séances
-                      </g:link>
+              </g:link>
             </li>
           </ul>
         </li>
@@ -104,19 +107,22 @@
           <ul>
             <li>Nouveau</li>
             <li title="Nouvelle question">
-                  <g:link controller="question${QuestionTypeEnum.MultipleChoice}" action="edite"
-                          title="Pour créer une nouvelle question"
-                          params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.MultipleChoice.id]">Nouvelle question</g:link>
+              <g:link controller="question${QuestionTypeEnum.MultipleChoice}"
+                      action="edite"
+                      title="Pour créer une nouvelle question"
+                      params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.MultipleChoice.id]">Nouvelle question</g:link>
             </li>
             <li title="Nouveau document">
-                  <g:link controller="question${QuestionTypeEnum.Document}" action="edite"
-                          title="Pour créer un nouveau document"
-                          params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.Document.id]">Nouveau document</g:link>
+              <g:link controller="question${QuestionTypeEnum.Document}"
+                      action="edite"
+                      title="Pour créer un nouveau document"
+                      params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.Document.id]">Nouveau document</g:link>
             </li>
             <li title="Nouvel élément d'énoncé">
-                  <g:link controller="question${QuestionTypeEnum.Statement}" action="edite"
-                          title="Pour créer un nouvel élément d'énoncé"
-                          params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.Statement.id]">Nouvel élément d'énoncé</g:link>
+              <g:link controller="question${QuestionTypeEnum.Statement}"
+                      action="edite"
+                      title="Pour créer un nouvel élément d'énoncé"
+                      params="[bcInit:true, creation:true, questionTypeId:QuestionTypeEnum.Statement.id]">Nouvel élément d'énoncé</g:link>
             </li>
             <li><hr/></li>
             <li>
@@ -124,20 +130,20 @@
             </li>
             <li title="Questions">
               <g:link controller="question" action="recherche"
-                          title="Rechercher mes questions"
-                          params="[bcInit:true]">Mes questions</g:link>
+                      title="Rechercher mes questions"
+                      params="[bcInit:true]">Mes questions</g:link>
 
             </li>
             <li title="Documents">
               <g:link controller="question" action="recherche"
-                          title="Rechercher mes documents"
-                          params="[bcInit:true, typeId:QuestionTypeEnum.Document.id]">Mes documents</g:link>
+                      title="Rechercher mes documents"
+                      params="[bcInit:true, typeId:QuestionTypeEnum.Document.id]">Mes documents</g:link>
 
             </li>
             <li title="Enonces">
               <g:link controller="question" action="recherche"
-                          title="Rechercher mes éléménts d'énoncé"
-                          params="[bcInit:true, typeId:QuestionTypeEnum.Statement.id]">Mes éléments d'énoncé</g:link>
+                      title="Rechercher mes éléménts d'énoncé"
+                      params="[bcInit:true, typeId:QuestionTypeEnum.Statement.id]">Mes éléments d'énoncé</g:link>
             </li>
           </ul>
         </li>
