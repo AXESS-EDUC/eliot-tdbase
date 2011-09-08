@@ -136,6 +136,9 @@ grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptU
 environments {
   production {
     grails.plugins.springsecurity.interceptUrlMap = [
+            '/': [
+               'IS_AUTHENTICATED_FULLY'
+            ],
             '/sujet/**': [
                     "${FonctionEnum.ENS.toRole()}",
                     "${FonctionEnum.DOC.toRole()}",
@@ -165,6 +168,9 @@ environments {
   }
   demo {
     grails.plugins.springsecurity.interceptUrlMap = [
+            '/': [
+               'IS_AUTHENTICATED_FULLY'
+            ],
             '/sujet/**': [
                     "${FonctionEnum.ENS.toRole()}",
                     "${FonctionEnum.DOC.toRole()}",
@@ -194,6 +200,9 @@ environments {
   }
   development {
     grails.plugins.springsecurity.interceptUrlMap = [
+            '/': [
+               'IS_AUTHENTICATED_REMEMBERED'
+            ],
             '/sujet/**': [
                     "${FonctionEnum.ENS.toRole()}",
                     "${FonctionEnum.DOC.toRole()}",
@@ -223,6 +232,9 @@ environments {
   }
   test {
     grails.plugins.springsecurity.interceptUrlMap = [
+            '/': [
+               'IS_AUTHENTICATED_REMEMBERED'
+            ],
             '/sujet/**': [
                     "${FonctionEnum.ENS.toRole()}",
                     "${FonctionEnum.DOC.toRole()}",
