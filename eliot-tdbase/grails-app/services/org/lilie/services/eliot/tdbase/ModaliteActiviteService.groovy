@@ -128,10 +128,12 @@ class ModaliteActiviteService {
       paginationAndSortingSpec = [:]
     }
     def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur)
+    Date now = new Date()
     def criteria = ModaliteActivite.createCriteria()
     List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
       inList 'structureEnseignement', structs
-
+      lt 'dateDebut', now
+      gt 'dateFin', now
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
         def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
