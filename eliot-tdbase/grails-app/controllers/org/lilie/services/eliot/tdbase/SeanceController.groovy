@@ -109,7 +109,7 @@ class SeanceController {
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.liste.titre"))
     Personne personne = authenticatedPersonne
-    def modalitesActivites = modaliteActiviteService.findModalitesActivites(
+    def modalitesActivites = modaliteActiviteService.findModalitesActivitesForEnseignant(
             personne,
             params
     )

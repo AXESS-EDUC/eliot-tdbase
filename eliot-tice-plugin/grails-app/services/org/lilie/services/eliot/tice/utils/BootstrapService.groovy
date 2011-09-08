@@ -51,6 +51,11 @@ class BootstrapService {
   private static final String UTILISATEUR_1_NOM = "dupond"
   private static final String UTILISATEUR_1_PRENOM = "mary"
 
+  private static final String ELEVE_1_LOGIN = "elv1"
+  private static final String ELEVE_1_PASSWORD = "elv1"
+  private static final String ELEVE_1_NOM = "durand"
+  private static final String ELEVE_1_PRENOM = "paul"
+
   private static final String DEFAULT_CODE_PORTEUR_ENT = "ENT"
   private static final String UAI_LYCEE = '****L'
   private static final String UAI_COLLEGE = '****C'
@@ -78,6 +83,9 @@ class BootstrapService {
       initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
       initialiseEnseignant1EnvDevelopment()
       initialiseProfilsScolaritesEnseignant1EnvDevelopment()
+      initialiseEleve1EnvDevelopment()
+      initialiseProprietesScolaritesEleveEnvDevelopmentTest()
+      initialiseProfilsScolaritesEleve1EnvDevelopment()
     }
 
   }
@@ -93,6 +101,7 @@ class BootstrapService {
       initialiseAnneeScolaireEnvDevelopmentTest()
       initialiseStructuresEnseignementsEnvDevelopmentTest()
       initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
+      initialiseProprietesScolaritesEleveEnvDevelopmentTest()
     }
 
   }
@@ -268,7 +277,7 @@ class BootstrapService {
 
   private def initialiseProprietesScolaritesEnseignantEnvDevelopmentTest() {
     Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
-    if (!ProprietesScolarite.findAllByEtablissement(lycee)) {
+    if (!ProprietesScolarite.findAllByEtablissementAndFonction(lycee, fonctionService.fonctionEnseignant())) {
       Etablissement college = Etablissement.findByUai(UAI_COLLEGE)
       AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
       Niveau niveau6 = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_5")
@@ -332,6 +341,89 @@ class BootstrapService {
     Personne pers1 = Personne.get(ens1.personneId)
     if (!profilScolariteService.findProprietesScolaritesForPersonne(pers1)) {
       def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEnseignant())
+      addProprietesScolariteToPersonne(props, pers1)
+    }
+  }
+
+   private def initialiseEleve1EnvDevelopment() {
+    if (!utilisateurService.findUtilisateur(ELEVE_1_LOGIN)) {
+      utilisateurService.createUtilisateur(
+              ELEVE_1_LOGIN,
+              ELEVE_1_PASSWORD,
+              ELEVE_1_NOM,
+              ELEVE_1_PRENOM
+      )
+    }
+  }
+
+  private def initialiseProprietesScolaritesEleveEnvDevelopmentTest() {
+    Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
+    if (!ProprietesScolarite.findAllByEtablissementAndFonction(lycee,fonctionService.fonctionEleve() )) {
+      Etablissement college = Etablissement.findByUai(UAI_COLLEGE)
+      AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
+      Niveau niveau6 = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_5")
+      Niveau niveauPrem = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_1")
+      Niveau niveauTerm = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_2")
+      Matiere matiereMaths = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_1")
+      Matiere matiereSES = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_2")
+      Matiere matiereHistoire = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_4")
+      StructureEnseignement struct6eme = StructureEnseignement.findByIdExterne("${college.uai}.${CODE_STRUCTURE_PREFIXE}_6ème1")
+      StructureEnseignement struct1ere = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA")
+      StructureEnseignement structGr1ere = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA_G1")
+      StructureEnseignement structTerm = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_Terminale_D")
+      SourceImport sourceImport = SourceImport.findByCode("STS")
+
+      new ProprietesScolarite(
+              source: sourceImport,
+              anneeScolaire: anneeScolaire,
+              fonction: fonctionService.fonctionEleve(),
+              etablissement: college,
+              matiere: matiereHistoire,
+              niveau: niveau6,
+              structureEnseignement: struct6eme
+      ).save()
+
+      new ProprietesScolarite(
+              source: sourceImport,
+              anneeScolaire: anneeScolaire,
+              fonction: fonctionService.fonctionEleve(),
+              etablissement: lycee,
+              matiere: matiereSES,
+              niveau: niveauPrem,
+              structureEnseignement: structGr1ere
+      ).save()
+
+      new ProprietesScolarite(
+              source: sourceImport,
+              anneeScolaire: anneeScolaire,
+              fonction: fonctionService.fonctionEleve(),
+              etablissement: lycee,
+              matiere: matiereMaths,
+              niveau: niveauTerm,
+              structureEnseignement: structTerm
+      ).save()
+
+      new ProprietesScolarite(
+              source: sourceImport,
+              anneeScolaire: anneeScolaire,
+              fonction: fonctionService.fonctionEleve(),
+              etablissement: lycee,
+              matiere: matiereMaths,
+              niveau: niveauPrem,
+              structureEnseignement: struct1ere
+      ).save(flush: true)
+
+    }
+
+  }
+
+  private def initialiseProfilsScolaritesEleve1EnvDevelopment() {
+    Utilisateur elv1 = utilisateurService.findUtilisateur(ELEVE_1_LOGIN)
+    Personne pers1 = Personne.get(elv1.personneId)
+    Niveau niveauPrem = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_1")
+
+    if (!profilScolariteService.findProprietesScolaritesForPersonne(pers1)) {
+      def props = ProprietesScolarite.findAllByFonctionAndNiveau(fonctionService.fonctionEleve(),niveauPrem)
       addProprietesScolariteToPersonne(props, pers1)
     }
   }

@@ -33,6 +33,7 @@ package org.lilie.services.eliot.tdbase
 import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.springframework.transaction.annotation.Transactional
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 
 /**
  * Service de gestion des questions
@@ -41,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional
 class ModaliteActiviteService {
 
   static transactional = false
+  ProfilScolariteService profilScolariteService
 
   /**
    * Créé une séance (modaliteActivite)
@@ -84,7 +86,7 @@ class ModaliteActiviteService {
    * @return la liste des séance
    */
   @Requires({chercheur != null})
-  List<ModaliteActivite> findModalitesActivites(Personne chercheur,
+  List<ModaliteActivite> findModalitesActivitesForEnseignant(Personne chercheur,
                                                 Map paginationAndSortingSpec = null) {
     if (!chercheur) {
       throw new IllegalArgumentException("question.recherche.chercheur.null")
@@ -96,6 +98,39 @@ class ModaliteActiviteService {
     def criteria = ModaliteActivite.createCriteria()
     List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
       eq 'enseignant', chercheur
+
+      if (paginationAndSortingSpec) {
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+        if (sortArg) {
+          order "${sortArg}", orderArg
+        }
+
+      }
+    }
+    return seances
+  }
+
+   /**
+   * Recherche de séances pour profil élève
+   * @param chercheur la personne effectuant la recherche
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @return la liste des séance
+   */
+  @Requires({chercheur != null})
+  List<ModaliteActivite> findModalitesActivitesForApprenant(Personne chercheur,
+                                                Map paginationAndSortingSpec = null) {
+    if (!chercheur) {
+      throw new IllegalArgumentException("question.recherche.chercheur.null")
+    }
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
+    }
+    def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur)
+    def criteria = ModaliteActivite.createCriteria()
+    List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
+      inList 'structureEnseignement', structs
 
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'

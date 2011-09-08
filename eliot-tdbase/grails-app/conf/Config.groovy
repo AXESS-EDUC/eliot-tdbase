@@ -156,6 +156,10 @@ environments {
                     "${FonctionEnum.CTR.toRole()}",
                     "${FonctionEnum.DIR.toRole()}",
                     'IS_AUTHENTICATED_FULLY'
+            ],
+            '/activite/**': [
+                    "${FonctionEnum.ELEVE.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'
             ]
     ]
   }
@@ -180,6 +184,10 @@ environments {
                     "${FonctionEnum.DOC.toRole()}",
                     "${FonctionEnum.CTR.toRole()}",
                     "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'
+            ],
+            '/activite/**': [
+                    "${FonctionEnum.ELEVE.toRole()}",
                     'IS_AUTHENTICATED_FULLY'
             ]
     ]
@@ -206,6 +214,10 @@ environments {
                     "${FonctionEnum.CTR.toRole()}",
                     "${FonctionEnum.DIR.toRole()}",
                     'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/activite/**': [
+                    "${FonctionEnum.ELEVE.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
             ]
     ]
   }
@@ -230,6 +242,10 @@ environments {
                     "${FonctionEnum.DOC.toRole()}",
                     "${FonctionEnum.CTR.toRole()}",
                     "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/activite/**': [
+                    "${FonctionEnum.ELEVE.toRole()}",
                     'IS_AUTHENTICATED_REMEMBERED'
             ]
     ]
