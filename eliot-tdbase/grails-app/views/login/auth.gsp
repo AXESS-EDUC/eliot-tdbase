@@ -90,6 +90,11 @@
 
 <body>
 <div class="column span-22 last middle">
+  <div class="portal-message notice" id="news" style="margin: 15px 0px;float: left;">
+    <g:each in="${grailsApplication.config.eliot.portail.news}" var="annonce">
+      <p>${annonce}</p>
+    </g:each>
+</div>
   <div id='login'>
     <div class='inner'>
 

@@ -131,6 +131,7 @@ grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.xml']
 
 grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
+grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 
 // set per-environment security rbac
 environments {
@@ -275,7 +276,7 @@ environments {
     }
   }
 
-  // configuration des liens du menu portail
+  // configuration des liens du menu portail et des annonces portail
   environments {
     development {
       eliot.portail.menu.affichage = true
@@ -288,6 +289,10 @@ environments {
                       url: "https://github.com/ticetime/eliot-tdbase/wiki",
                       libelle: "eliot-tdbase sur Github"
               ]
+      ]
+      eliot.portail.news = [
+              "Login / mot de passe enseignant : ens1 / ens1",
+              "Login / mot de passe élève : elv1 / elv1"
       ]
     }
     demo {
@@ -302,8 +307,11 @@ environments {
                       libelle: "eliot-tdbase sur Github"
               ]
       ]
+      eliot.portail.news = [
+              "Login / mot de passe enseignant : ens1 / ens1",
+              "Login / mot de passe élève : elv1 / elv1"
+      ]
     }
   }
+
 }
-
-

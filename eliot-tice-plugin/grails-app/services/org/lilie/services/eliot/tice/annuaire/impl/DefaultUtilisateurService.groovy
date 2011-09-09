@@ -270,9 +270,10 @@ class DefaultUtilisateurService implements UtilisateurService {
       throw new IllegalStateException(
               "annuaire.no_user_avec_login : ${login}")
     }
-
-    if (compteUtilisateur.password != utilisateur.password) {
-      compteUtilisateur.password = utilisateur.password
+    String encodedPassword = springSecurityService.encodePassword(
+                    utilisateur.password, login)
+    if (compteUtilisateur.password != encodedPassword) {
+      compteUtilisateur.password = encodedPassword
       compteUtilisateur.save(failOnError: true)
     }
     Personne personne = compteUtilisateur.personne

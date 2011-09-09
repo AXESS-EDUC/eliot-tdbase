@@ -47,7 +47,8 @@ class BootstrapService {
   SessionFactory sessionFactory
 
   private static final String UTILISATEUR_1_LOGIN = "_test_mary"
-  private static final String UTILISATEUR_1_PASSWORD = "_test_"
+  private static final String UTILISATEUR_1_LOGIN_ALIAS = "ens1"
+  private static final String UTILISATEUR_1_PASSWORD = "ens1"
   private static final String UTILISATEUR_1_NOM = "dupond"
   private static final String UTILISATEUR_1_PRENOM = "mary"
 
@@ -86,6 +87,7 @@ class BootstrapService {
       initialiseEleve1EnvDevelopment()
       initialiseProprietesScolaritesEleveEnvDevelopmentTest()
       initialiseProfilsScolaritesEleve1EnvDevelopment()
+      changeLoginAliasMotdePassePourEnseignant1()
     }
 
   }
@@ -104,6 +106,18 @@ class BootstrapService {
       initialiseProprietesScolaritesEleveEnvDevelopmentTest()
     }
 
+  }
+
+  def changeLoginAliasMotdePassePourEnseignant1() {
+    def ens1 = utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN_ALIAS)
+    if (!ens1) {
+      ens1 = utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
+      if (ens1) {
+        utilisateurService.setAliasLogin(UTILISATEUR_1_LOGIN, UTILISATEUR_1_LOGIN_ALIAS)
+        ens1.password = UTILISATEUR_1_PASSWORD
+        utilisateurService.updateUtilisateur(UTILISATEUR_1_LOGIN, ens1)
+      }
+    }
   }
 
   /**
@@ -345,7 +359,7 @@ class BootstrapService {
     }
   }
 
-   private def initialiseEleve1EnvDevelopment() {
+  private def initialiseEleve1EnvDevelopment() {
     if (!utilisateurService.findUtilisateur(ELEVE_1_LOGIN)) {
       utilisateurService.createUtilisateur(
               ELEVE_1_LOGIN,
@@ -358,7 +372,7 @@ class BootstrapService {
 
   private def initialiseProprietesScolaritesEleveEnvDevelopmentTest() {
     Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
-    if (!ProprietesScolarite.findAllByEtablissementAndFonction(lycee,fonctionService.fonctionEleve() )) {
+    if (!ProprietesScolarite.findAllByEtablissementAndFonction(lycee, fonctionService.fonctionEleve())) {
       Etablissement college = Etablissement.findByUai(UAI_COLLEGE)
       AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
       Niveau niveau6 = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_5")
@@ -423,7 +437,7 @@ class BootstrapService {
     Niveau niveauPrem = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_1")
 
     if (!profilScolariteService.findProprietesScolaritesForPersonne(pers1)) {
-      def props = ProprietesScolarite.findAllByFonctionAndNiveau(fonctionService.fonctionEleve(),niveauPrem)
+      def props = ProprietesScolarite.findAllByFonctionAndNiveau(fonctionService.fonctionEleve(), niveauPrem)
       addProprietesScolariteToPersonne(props, pers1)
     }
   }
