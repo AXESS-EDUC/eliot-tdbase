@@ -68,7 +68,7 @@ grails.project.dependency.resolution = {
     compile ":jquery:1.6.1.1"
     compile ":jquery-ui:1.8.15"
     compile ":resources:1.0.2"
-    compile ":database-migration:0.2.1"
+    compile ":database-migration:1.0"
 
     compile ":codenarc:0.15"
     compile(":gmetrics:0.3.1") {

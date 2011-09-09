@@ -1,0 +1,33 @@
+<plugin name='eliot-notes-plugin' version='0.2-SNAPSHOT' grailsVersion='2.0.0.M1 &gt; *'>
+  <author>Franck Silvestre - Fylab</author>
+  <title>Eliot Notes  Plugin</title>
+  <description>Plugin contenant les services métiers relatifs à la gestion des notes"
+</description>
+  <type>EliotNotesPluginGrailsPlugin</type>
+  <resources>
+    <resource>org.lilie.services.eliot.tice.notes.AppreciationClasseEnseignementPeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.AppreciationEleveEnseignementPeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.AppreciationElevePeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.AvisConseilDeClasse</resource>
+    <resource>org.lilie.services.eliot.tice.notes.AvisOrientation</resource>
+    <resource>org.lilie.services.eliot.tice.notes.DernierChangementDansClasse</resource>
+    <resource>org.lilie.services.eliot.tice.notes.DirtyMoyenne</resource>
+    <resource>org.lilie.services.eliot.tice.notes.Evaluation</resource>
+    <resource>org.lilie.services.eliot.tice.notes.InfoCalculMoyennesClasse</resource>
+    <resource>org.lilie.services.eliot.tice.notes.ModeleAppreciation</resource>
+    <resource>org.lilie.services.eliot.tice.notes.ModeleAppreciationProfesseur</resource>
+    <resource>org.lilie.services.eliot.tice.notes.Note</resource>
+    <resource>org.lilie.services.eliot.tice.notes.ResultatClasseEnseignementPeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.ResultatClassePeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.ResultatClasseServicePeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.ResultatClasseSousServicePeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.ResultatEleveEnseignementPeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.ResultatElevePeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.ResultatEleveServicePeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.ResultatEleveSousServicePeriode</resource>
+    <resource>org.lilie.services.eliot.tice.notes.TypeAppreciationEnum</resource>
+    <resource>org.lilie.services.eliot.tice.notes.TypeMoyenneEnum</resource>
+  </resources>
+  <dependencies />
+  <behavior />
+</plugin>

@@ -50,13 +50,13 @@ class ServivesEliotServiceIntegrationTests extends GroovyTestCase {
   InitialisationTestService initialisationTestService
   ServicesEliotService servicesEliotService
 
-  protected void setUp() {
+  void setUp() {
     super.setUp()
     utilisateur1 = initialisationTestService.getUtilisateur1()
     personne1 = utilisateur1.personne
   }
 
-  protected void tearDown() {
+  void tearDown() {
     super.tearDown()
   }
 

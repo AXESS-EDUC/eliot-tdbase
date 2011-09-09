@@ -30,8 +30,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <g:javascript src="jquery/jquery-1.6.1.min.js"/>
-  <g:javascript src="eliot/jquery.editinplace.js"/>
+  <r:require modules="core"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-sujets').addClass('actif');
@@ -121,15 +120,13 @@
                   controller="question${sujetQuestion.question.type.code}"
                   id="${sujetQuestion.question.id}"
                   style="text-decoration: none;">
-            <img border="0" src="/eliot-tdbase/images/eliot/write-btn.gif"
-                 width="22"
-                 height="18"
-                 style="border-style:solid;border-width:1px;border-color:#AAAAAA"
-                 alt="Modifier l'élément..." title="Modifier l'élément..."/>
+            <r:img uri="/images/eliot/write-btn.gif" style="border-style:solid;border-width:1px;border-color:#AAAAAA"
+                alt="Modifier l'élément..."
+                title="Modifier l'élément..."/>
           </g:link>
           <g:link action="remonteElement" controller="sujet"
                   id="${sujetQuestion.id}" style="text-decoration: none;">
-            <img border="0" src="/eliot-tdbase/images/eliot/24-em-up.png"
+            <img  src="/eliot-tdbase/images/eliot/24-em-up.png"
                  width="22"
                  height="18"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
@@ -138,7 +135,7 @@
           </g:link>
           <g:link action="descendElement" controller="sujet"
                   id="${sujetQuestion.id}" style="text-decoration: none;">
-            <img border="0" src="/eliot-tdbase/images/eliot/24-em-down.png"
+            <img src="/eliot-tdbase/images/eliot/24-em-down.png"
                  width="22"
                  height="18"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
@@ -147,23 +144,21 @@
           <g:link action="ajouteElement" controller="sujet"
                   id="${sujet.id}" params="[direction:'avant',
                                           rang: sujetQuestion.rang]">
-            <img border="0"
-                 src="/eliot-tdbase/images/eliot/btnInsertRowBefore.png"
+            <img src="/eliot-tdbase/images/eliot/btnInsertRowBefore.png"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Insérer un élément avant..."
                  title="Insérer un élément avant..."/>
           </g:link>
           <g:link action="ajouteElement" controller="sujet"
                   id="${sujet.id}" params="[rang: sujetQuestion.rang]">
-            <img border="0"
-                 src="/eliot-tdbase/images/eliot/btnInsertRowAfter.png"
+            <img src="/eliot-tdbase/images/eliot/btnInsertRowAfter.png"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Insérer un élément après..."
                  title="Insérer un élément après..."/>
           </g:link>
           <g:link action="supprimeFromSujet" controller="sujet"
                   id="${sujetQuestion.id}" style="text-decoration: none;">
-            <img border="0" src="/eliot-tdbase/images/eliot/btnDeleteRow.png"
+            <img src="/eliot-tdbase/images/eliot/btnDeleteRow.png"
                  style="border-style:solid;border-width:1px;border-color:#AAAAAA"
                  alt="Supprimer l'élément du sujet..."
                  title="Supprimer l'élément du sujet..."/>

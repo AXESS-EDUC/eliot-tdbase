@@ -1,0 +1,71 @@
+<plugin name='eliot-tice-plugin' version='0.2-SNAPSHOT' grailsVersion='2.0.0.M1 &gt; *'>
+  <author>Franck Silvestre</author>
+  <title>Eliot Tice Plugin</title>
+  <description>      Plugin pour la création d'applications Eliot
+      </description>
+  <type>EliotTicePluginGrailsPlugin</type>
+  <resources>
+    <resource>LoginController</resource>
+    <resource>LogoutController</resource>
+    <resource>org.lilie.services.eliot.tice.Attachement</resource>
+    <resource>org.lilie.services.eliot.tice.CopyrightsType</resource>
+    <resource>org.lilie.services.eliot.tice.ExportFormat</resource>
+    <resource>org.lilie.services.eliot.tice.HashConstantes</resource>
+    <resource>org.lilie.services.eliot.tice.Publication</resource>
+    <resource>org.lilie.services.eliot.tice.annuaire.AppartenancePersonneGroupe</resource>
+    <resource>org.lilie.services.eliot.tice.annuaire.Civilite</resource>
+    <resource>org.lilie.services.eliot.tice.annuaire.GroupePersonnes</resource>
+    <resource>org.lilie.services.eliot.tice.annuaire.Personne</resource>
+    <resource>org.lilie.services.eliot.tice.annuaire.PorteurEnt</resource>
+    <resource>org.lilie.services.eliot.tice.annuaire.SourceImport</resource>
+    <resource>org.lilie.services.eliot.tice.discussion.Commentaire</resource>
+    <resource>org.lilie.services.eliot.tice.discussion.CommentaireLu</resource>
+    <resource>org.lilie.services.eliot.tice.discussion.Discussion</resource>
+    <resource>org.lilie.services.eliot.tice.discussion.EtatCommentaire</resource>
+    <resource>org.lilie.services.eliot.tice.discussion.EtatDiscussion</resource>
+    <resource>org.lilie.services.eliot.tice.discussion.TypeModeration</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.AnneeScolaire</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.Enseignement</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.Etablissement</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.Filiere</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.Fonction</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.IntervalleEnum</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.Matiere</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.Mef</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.ModaliteCours</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.ModaliteMatiere</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.NaturePeriodeEnum</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.Niveau</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.OrigineEnum</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.Periode</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.PersonneProprietesScolarite</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.PreferencesEtablissement</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.ProprietesScolarite</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.Regime</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.RelPeriodeService</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.ResponsableEleve</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.ResponsableProprietesScolarite</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.Service</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.SousService</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.StructureEnseignement</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.TypeIntervalleEnum</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.TypePeriode</resource>
+    <resource>org.lilie.services.eliot.tice.securite.CompteUtilisateur</resource>
+    <resource>org.lilie.services.eliot.tice.securite.DomainAutorisation</resource>
+    <resource>org.lilie.services.eliot.tice.securite.DomainAutorite</resource>
+    <resource>org.lilie.services.eliot.tice.securite.DomainItem</resource>
+    <resource>org.lilie.services.eliot.tice.securite.DomainPermission</resource>
+    <resource>org.lilie.services.eliot.tice.securite.Perimetre</resource>
+    <resource>org.lilie.services.eliot.tice.securite.PerimetreSecurite</resource>
+    <resource>org.lilie.services.eliot.tice.annuaire.UtilisateurService</resource>
+    <resource>org.lilie.services.eliot.tice.annuaire.data.Utilisateur</resource>
+    <resource>org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.FonctionService</resource>
+    <resource>org.lilie.services.eliot.tice.scolarite.ProfilScolariteService</resource>
+    <resource>org.lilie.services.eliot.tice.utils.BootstrapService</resource>
+    <resource>org.lilie.services.eliot.tice.utils.InitialisationTestService</resource>
+    <resource>org.lilie.services.eliot.tice.utils.StringUtils</resource>
+  </resources>
+  <dependencies />
+  <behavior />
+</plugin>

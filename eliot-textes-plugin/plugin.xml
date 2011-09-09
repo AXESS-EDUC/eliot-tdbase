@@ -1,0 +1,29 @@
+<plugin name='eliot-textes-plugin' version='0.2-SNAPSHOT' grailsVersion='2.0.0.M1 &gt; *'>
+  <author>Franck Silvestre - Fylab</author>
+  <title>Eliot Textes  Plugin</title>
+  <description>Plugin contenant les services métiers relatifs au cahier de textes"
+</description>
+  <type>EliotTextesPluginGrailsPlugin</type>
+  <resources>
+    <resource>org.lilie.services.eliot.tice.textes.Activite</resource>
+    <resource>org.lilie.services.eliot.tice.textes.CahierDeTextes</resource>
+    <resource>org.lilie.services.eliot.tice.textes.CahierDeTextesCopieInfo</resource>
+    <resource>org.lilie.services.eliot.tice.textes.Chapitre</resource>
+    <resource>org.lilie.services.eliot.tice.textes.ContexteActivite</resource>
+    <resource>org.lilie.services.eliot.tice.textes.DateActivite</resource>
+    <resource>org.lilie.services.eliot.tice.textes.Dossier</resource>
+    <resource>org.lilie.services.eliot.tice.textes.EtatChapitre</resource>
+    <resource>org.lilie.services.eliot.tice.textes.EtatDossier</resource>
+    <resource>org.lilie.services.eliot.tice.textes.Fichier</resource>
+    <resource>org.lilie.services.eliot.tice.textes.RelActiviteActeur</resource>
+    <resource>org.lilie.services.eliot.tice.textes.RelCahierActeur</resource>
+    <resource>org.lilie.services.eliot.tice.textes.RelCahierGroupe</resource>
+    <resource>org.lilie.services.eliot.tice.textes.RelDossierAutorisationCahier</resource>
+    <resource>org.lilie.services.eliot.tice.textes.Ressource</resource>
+    <resource>org.lilie.services.eliot.tice.textes.TextesPreferencesUtilisateur</resource>
+    <resource>org.lilie.services.eliot.tice.textes.TypeActivite</resource>
+    <resource>org.lilie.services.eliot.tice.textes.Visa</resource>
+  </resources>
+  <dependencies />
+  <behavior />
+</plugin>

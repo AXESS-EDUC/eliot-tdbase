@@ -84,8 +84,7 @@
             <td>
               <g:link action="faireSujet" controller="activite"
                       id="${seance.id}">
-                <img border="0"
-                     src="/eliot-tdbase/images/eliot/write-btn.gif"
+                <img src="/eliot-tdbase/images/eliot/write-btn.gif"
                      width="18" height="16"/>
               </g:link>
             </td>

@@ -27,11 +27,26 @@
  */
 
 modules = {
-    tinymce {
-        dependsOn 'jquery'
 
-        resource url:'/js/eliot/tiny_mce/tiny_mce.js', disposition:'head'
+  images {
+     resource url: '/images/eliot/write-btn.gif',
+              attrs:[
+                width:22,
+                height:18
+              ],
+              disposition:'inline'
+  }
 
-    }
+  core {
+    dependsOn 'jquery'
+    resource url: '/js/eliot/jquery.editinplace.js', disposition: 'head'
+  }
+
+  tinymce {
+    dependsOn 'jquery'
+
+    resource url: '/js/eliot/tiny_mce/tiny_mce.js', disposition: 'head'
+
+  }
 
 }
