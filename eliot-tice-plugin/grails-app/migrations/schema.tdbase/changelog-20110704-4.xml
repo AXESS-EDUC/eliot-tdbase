@@ -1233,16 +1233,16 @@
         </comment>
 
         <dropUniqueConstraint tableName="question_arborescence"
-                             constraintName="uk_question_arborescence_question_id_question_fille_id"
-                             schemaName="td"/>
+                              constraintName="uk_question_arborescence_question_id_question_fille_id"
+                              schemaName="td"/>
 
         <dropUniqueConstraint tableName="question_attachement"
-                             constraintName="uk_question_attachement_question_id_attachement_id"
-                             schemaName="td"/>
+                              constraintName="uk_question_attachement_question_id_attachement_id"
+                              schemaName="td"/>
 
         <dropUniqueConstraint tableName="sujet_sequence_questions"
-                             constraintName="uk_sujet_sequence_questions_question_id_sujet_id"
-                             schemaName="td"/>
+                              constraintName="uk_sujet_sequence_questions_question_id_sujet_id"
+                              schemaName="td"/>
 
 
     </changeSet>
@@ -1269,7 +1269,8 @@
     </changeSet>
 
     <changeSet id="24" author="fsil">
-        <comment>Renommage colonne rang dans table sujet_sequence_question</comment>
+        <comment>Renommage colonne rang dans table sujet_sequence_question
+        </comment>
         <renameColumn tableName="sujet_sequence_questions" oldColumnName="rang"
                       newColumnName="questions_sequences_idx" schemaName="td"/>
     </changeSet>
@@ -1318,7 +1319,7 @@
         <comment>Ajout colonne copie améliorable</comment>
         <addColumn tableName="modalite_activite" schemaName="td">
             <column name="copie_ameliorable" type="boolean" defaultValue="true">
-               <constraints nullable="false"/>
+                <constraints nullable="false"/>
             </column>
         </addColumn>
     </changeSet>
@@ -1340,12 +1341,14 @@
         </addColumn>
 
         <createIndex tableName="modalite_activite"
-                     indexName="idx_modalite_activite_structure_id" schemaName="td">
+                     indexName="idx_modalite_activite_structure_id"
+                     schemaName="td">
             <column name="structure_enseignement_id"/>
         </createIndex>
 
         <createIndex tableName="modalite_activite"
-                     indexName="idx_modalite_activite_matiere_id" schemaName="td">
+                     indexName="idx_modalite_activite_matiere_id"
+                     schemaName="td">
             <column name="matiere_id"/>
         </createIndex>
 
@@ -1379,6 +1382,42 @@
                 <constraints nullable="false"/>
             </column>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="30" author="fsil">
+        <comment>
+            Correction table reponse
+            Ajout de contraintes d'unicité sur table copie et reponse
+        </comment>
+        <dropColumn tableName="reponse" columnName="question_id"
+                    schemaName="td"/>
+        <addColumn tableName="reponse" schemaName="td">
+            <column name="sujet_question_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <createIndex tableName="reponse"
+                     indexName="idx_reponse_sujet_question_id" schemaName="td">
+            <column name="sujet_question_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="reponse"
+                                 baseColumnNames="sujet_question_id"
+                                 constraintName="fk_reponse_sujet_question_id"
+                                 referencedTableName="sujet_sequence_questions"
+                                 referencedColumnNames="id"
+                                 baseTableSchemaName="td"
+                                 referencedTableSchemaName="td"/>
+
+        <addUniqueConstraint tableName="copie"
+                             columnNames="modalite_activite_id,eleve_id"
+                             constraintName="uk_copie_seance_eleve"
+                             schemaName="td"/>
+
+         <addUniqueConstraint tableName="reponse"
+                             columnNames="sujet_question_id,copie_id"
+                             constraintName="uk_reponse_copie_question"
+                             schemaName="td"/>
+
     </changeSet>
 
 </databaseChangeLog>

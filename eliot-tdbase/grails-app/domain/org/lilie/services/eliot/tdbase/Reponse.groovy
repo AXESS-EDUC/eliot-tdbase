@@ -46,10 +46,10 @@ class Reponse {
   String correctionNoteNonNumerique
 
   Copie copie
-  Question question
+  SujetSequenceQuestions sujetQuestion
 
   Personne correcteur
-  Personne eleve
+  Personne eleve    // utile uniquement pour stats
 
   static constraints = {
     specification(nullable: true)

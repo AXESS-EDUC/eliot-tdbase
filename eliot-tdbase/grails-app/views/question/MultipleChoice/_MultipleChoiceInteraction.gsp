@@ -34,7 +34,4 @@ ${specifobject.libelle} <br/>
   ${reponse.libelleReponse}
   <br/>
 </g:each>
-<g:submitToRemote id="1" value="Enregistrer" title="Enregistrer la réponse"
-                    action="enregistreReponse" controller="activite"
-                    update="resultat_reponse"/>
 
