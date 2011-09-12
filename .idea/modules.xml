@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/dummy-grails2.0M2/dummy-grails2.0M2.iml" filepath="$PROJECT_DIR$/dummy-grails2.0M2/dummy-grails2.0M2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dummy-grails2.0M2/dummy-grails2.0M2-grailsPlugins.iml" filepath="$PROJECT_DIR$/dummy-grails2.0M2/dummy-grails2.0M2-grailsPlugins.iml" />
       <module fileurl="file://$PROJECT_DIR$/eliot-notes-plugin/eliot-notes-plugin.iml" filepath="$PROJECT_DIR$/eliot-notes-plugin/eliot-notes-plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/eliot-tdbase/eliot-tdbase.iml" filepath="$PROJECT_DIR$/eliot-tdbase/eliot-tdbase.iml" />
       <module fileurl="file://$PROJECT_DIR$/eliot-tdbase/eliot-tdbase-grailsPlugins.iml" filepath="$PROJECT_DIR$/eliot-tdbase/eliot-tdbase-grailsPlugins.iml" />

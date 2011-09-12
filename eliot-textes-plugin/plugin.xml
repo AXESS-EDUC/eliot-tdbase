@@ -1,4 +1,4 @@
-<plugin name='eliot-textes-plugin' version='0.2-SNAPSHOT' grailsVersion='2.0.0.M1 &gt; *'>
+<plugin name='eliot-textes-plugin' version='0.2-SNAPSHOT' grailsVersion='2.0.0.M2 &gt; *'>
   <author>Franck Silvestre - Fylab</author>
   <title>Eliot Textes  Plugin</title>
   <description>Plugin contenant les services métiers relatifs au cahier de textes"
