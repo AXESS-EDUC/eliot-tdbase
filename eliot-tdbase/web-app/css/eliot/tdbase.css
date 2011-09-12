@@ -344,3 +344,12 @@ Style custom eliot-tdbase
     background-color: #F3F6FB;
     padding: 3px;
 }
+
+.tdbase-sujet-edition-question-interaction {
+    background-color: #F3F6FB;
+    padding: 3px;
+}
+
+.tdbase-sujet-titre {
+    text-align: center;
+}

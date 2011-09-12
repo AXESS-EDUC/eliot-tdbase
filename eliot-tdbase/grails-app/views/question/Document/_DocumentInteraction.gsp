@@ -25,5 +25,6 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
+<g:render template="/question/Document/DocumentPreview"
+          model="[question:question]"/>
 

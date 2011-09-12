@@ -70,9 +70,22 @@ class ActiviteController {
    * Action "Faire sujet"
    */
   def faireSujet() {
-    render "pas encore implémenter !"
+    breadcrumpsService.manageBreadcrumps(params, message(code: "copie.edition.titre"))
+    ModaliteActivite seance = ModaliteActivite.get(params.id)
+    Sujet sujet = seance.sujet
+    render(view: '/activite/copie/edite', model: [
+           liens: breadcrumpsService.liens,
+           sujet: sujet
+           ])
   }
 
+  /**
+   *
+   * Action enregistre réponse
+   */
+  def enregistreReponse() {
+    render("Non implémenté")
+  }
 
 }
 

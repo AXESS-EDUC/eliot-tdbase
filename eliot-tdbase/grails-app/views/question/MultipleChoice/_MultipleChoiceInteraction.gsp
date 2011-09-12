@@ -25,5 +25,16 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
+<g:set var="specifobject" value="${question.specificationObject}"/>
+${specifobject.libelle} <br/>
+<g:each in="${specifobject.reponses}" var="reponse">
+  &nbsp;
+  <g:checkBox name="specifobject.reponses.estUneBonneReponse"
+              checked="${reponse.estUneBonneReponse}" />
+  ${reponse.libelleReponse}
+  <br/>
+</g:each>
+<g:submitToRemote id="1" value="Enregistrer" title="Enregistrer la réponse"
+                    action="enregistreReponse" controller="activite"
+                    update="resultat_reponse"/>
 
