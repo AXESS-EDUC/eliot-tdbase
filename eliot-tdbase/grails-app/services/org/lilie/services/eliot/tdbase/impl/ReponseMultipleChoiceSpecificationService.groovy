@@ -28,19 +28,23 @@
 
 
 
+
+
 package org.lilie.services.eliot.tdbase.impl
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
+import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
-import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.ReponseSpecificationService
+import org.lilie.services.eliot.tdbase.Reponse
 
 /**
  *
  * @author franck Silvestre
  */
-class QuestionMultipleChoiceSpecificationService implements QuestionSpecificationService {
+class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationService{
 
   static transactional = false
 
@@ -51,11 +55,11 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
    */
   def getObjectFromSpecification(String specification) {
     if (!specification) {
-      return new MultipleChoiceSpecification()
+      return new ReponseMultipleChoiceSpecification()
     }
     def slurper = new JsonSlurper()
     Map map = slurper.parseText(specification)
-    return new MultipleChoiceSpecification(map)
+    return new ReponseMultipleChoiceSpecification(map)
   }
 
   /**
@@ -63,40 +67,24 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
    * @see QuestionSpecificationService
    */
   String getSpecificationFromObject(Object object) {
-    if (!(object instanceof MultipleChoiceSpecification)) {
+    if (!(object instanceof ReponseMultipleChoiceSpecification)) {
       throw new IllegalArgumentException(
-              "objet ${object} n'est pas de type MultipleChoiceSpecification")
+              "objet ${object} n'est pas de type ReponseMultipleChoiceSpecification")
     }
-    MultipleChoiceSpecification spec = object
+    ReponseMultipleChoiceSpecification spec = object
     JsonBuilder builder = new JsonBuilder(spec.toMap())
     return builder.toString()
   }
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  String getSpecificationNormaliseFromObject(Object object) {
-    if (!(object instanceof MultipleChoiceSpecification)) {
-      throw new IllegalArgumentException(
-              "objet ${object} n'est pas de type MultipleChoiceSpecification")
-    }
-    MultipleChoiceSpecification spec = object
-    String toNormalise = spec.libelle
-    if (toNormalise) {
-      return StringUtils.normalise(toNormalise)
-    }
-    return null
-  }
+
 
   /**
    *
    * @see QuestionSpecificationService
    */
-  def updateQuestionSpecificationForObject(Question question, Object object) {
-    question.specification = getSpecificationFromObject(object)
-    question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-    question.save()
+  def updateReponseSpecificationForObject(Reponse reponse, Object object) {
+    reponse.specification = getSpecificationFromObject(object)
+    reponse.save()
   }
 
 }
@@ -104,23 +92,20 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
 /**
  * Représente un objet spécification pour une question de type MultipleChoice
  */
-class MultipleChoiceSpecification {
-  String libelle
-  String correction
+class ReponseMultipleChoiceSpecification {
+
   List<MultipleChoiceSpecificationReponsePossible> reponses = []
 
-  MultipleChoiceSpecification() {
+  ReponseMultipleChoiceSpecification() {
     super()
   }
 
   /**
-   * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
+   * Créer et initialise un nouvel objet de type RepoonseMultipleChoiceSpecification
    * @param map la map permettant d'initialiser l'objet en cours
    * de création
    */
-  MultipleChoiceSpecification(Map map) {
-    libelle = map.libelle
-    correction = map.correction
+  ReponseMultipleChoiceSpecification(Map map) {
     reponses = map.reponses.collect {
       if (it instanceof MultipleChoiceSpecificationReponsePossible) {
         it
@@ -132,43 +117,8 @@ class MultipleChoiceSpecification {
 
   def toMap() {
     [
-            libelle: libelle,
-            correction: correction,
             reponses: reponses*.toMap()
     ]
   }
 
-}
-
-/**
- * Représente un objet réponse possible de la spécification  pour une question de
- * type MultipleChoice
- */
-class MultipleChoiceSpecificationReponsePossible {
-  String libelleReponse
-  boolean estUneBonneReponse
-  Float rang
-
-  MultipleChoiceSpecificationReponsePossible() {
-    super()
-  }
-
-  /**
-   * Créer et initialise un nouvel objet de type MultipleChoiceSpecificationReponsePossible
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  MultipleChoiceSpecificationReponsePossible(Map map) {
-    libelleReponse = map.libelleReponse
-    estUneBonneReponse = map.estUneBonneReponse
-    rang = map.rang
-  }
-
-  def toMap() {
-    [
-            libelleReponse: libelleReponse,
-            estUneBonneReponse: estUneBonneReponse,
-            rang: rang
-    ]
-  }
 }

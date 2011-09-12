@@ -31,8 +31,9 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecification
-import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecificationReponse
+
 import org.lilie.services.eliot.tdbase.impl.QuestionMultipleChoiceSpecificationService
+import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecificationReponsePossible
 
 /**
  *
@@ -54,16 +55,16 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
   }
 
   void testGetSpecificationFromObject() {
-    def rep1 = new MultipleChoiceSpecificationReponse(
+    def rep1 = new MultipleChoiceSpecificationReponsePossible(
             libelleReponse: "réponse 1",
             rang: -0.5
     )
-    def rep2 = new MultipleChoiceSpecificationReponse(
+    def rep2 = new MultipleChoiceSpecificationReponsePossible(
             libelleReponse: "réponse 2",
             estUneBonneReponse: true,
             rang: 0.5
     )
-    def rep3 = new MultipleChoiceSpecificationReponse(
+    def rep3 = new MultipleChoiceSpecificationReponsePossible(
             libelleReponse: "réponse 3",
             estUneBonneReponse: true,
             rang: 0.5

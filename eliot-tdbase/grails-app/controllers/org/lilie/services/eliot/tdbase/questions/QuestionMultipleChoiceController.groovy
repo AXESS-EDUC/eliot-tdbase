@@ -33,8 +33,9 @@ package org.lilie.services.eliot.tdbase.questions
 
 
 import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecification
-import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecificationReponse
+
 import org.lilie.services.eliot.tdbase.QuestionController
+import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecificationReponsePossible
 
 
 class QuestionMultipleChoiceController extends QuestionController {
@@ -45,7 +46,7 @@ class QuestionMultipleChoiceController extends QuestionController {
    */
   def ajouteReponse() {
     MultipleChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
-    specifobject.reponses << new MultipleChoiceSpecificationReponse(
+    specifobject.reponses << new MultipleChoiceSpecificationReponsePossible(
             rang: specifobject.reponses.size()+1)
     render(
             template: "/question/MultipleChoice/MultipleChoiceEditionReponses",
@@ -76,7 +77,7 @@ class QuestionMultipleChoiceController extends QuestionController {
     def size = params.specifobject.reponses?.size as Integer
     if (size) {
       for (int i = 0; i < size; i++) {
-        specifobject.reponses << new MultipleChoiceSpecificationReponse()
+        specifobject.reponses << new MultipleChoiceSpecificationReponsePossible()
       }
     }
     bindData(specifobject, params, "specifobject")

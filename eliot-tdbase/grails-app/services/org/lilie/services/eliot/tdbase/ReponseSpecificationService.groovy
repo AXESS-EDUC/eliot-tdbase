@@ -28,22 +28,36 @@
 
 
 
+package org.lilie.services.eliot.tdbase
 
-
-package org.lilie.services.eliot.tdbase.questions
-
-import org.lilie.services.eliot.tdbase.QuestionController
-
-class QuestionStatementController extends QuestionController {
+/**
+ * Interface décrivant le service pour la specification d'une réponse
+ * @author franck Silvestre
+ */
+public interface ReponseSpecificationService {
 
   /**
-   *
-   * @param params  les paramètres de la requête
-   * @return l'objet représentant la spécification
+   * Récupère la specification d'une réponse à partir d'un objet
+   * @param object l'objet encapsulant la specification
+   * @return la specification
    */
-  def getSpecificationObjectFromParams(Map params) {
-    return params.specifobject
-  }
+  String getSpecificationFromObject(def object)
+
+
+  /**
+   * Récupère l'objet encapsulant la specification d'une réponse à partir de
+   * la spécification
+   * @param specification la specification
+   * @return l'objet encapsulant la specification
+   */
+  def getObjectFromSpecification(String specification)
+
+  /**
+   * Met à jour la specification de la question
+   * @param reponse la reponse
+   * @param object l'objet encapsulant la specification
+   */
+  def updateReponseSpecificationForObject(Reponse reponse, def object)
+
+
 }
-
-
