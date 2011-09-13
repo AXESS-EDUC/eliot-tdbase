@@ -34,7 +34,7 @@ package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
-import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
+
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class ActiviteController {
@@ -89,12 +89,21 @@ class ActiviteController {
   def rendLaCopie() {
     Copie copie = Copie.get(params.copie.id)
     def nombreReponses = params.nombreReponses as Integer
-    ListeReponsesCommand listeReponses = new ListeReponsesCommand()
+    ListeReponsesCommand listeReponsesCommand = new ListeReponsesCommand()
     nombreReponses.times {
-      listeReponses.reponses << new Reponse()
+      listeReponsesCommand.listeResponses << new ReponseCommand()
     }
-    bindData(listeReponses, params)
-    println "Les reponses id ${listeReponses.reponses*.id}"
+    bindData(listeReponsesCommand, params)
+    listeReponsesCommand.listeResponses.each {
+      def reponse = Reponse.get(it.reponse.id)
+      it.specificationObject = reponse.specificationObject
+    }
+    bindData(listeReponsesCommand, params)
+    println "****** <<<< params >>>>>> ${params}"
+    def ids = listeReponsesCommand.listeResponses.collect { it.reponse.id }
+    def specsobjs =  listeReponsesCommand.listeResponses.collect { it.specificationObject.reponses*.estUneBonneReponse }
+    println "Les reponses id ${ids}"
+    println "Les specs objs ${specsobjs}"
 
     render(view: '/activite/copie/edite', model: [
            liens: breadcrumpsService.liens,
@@ -106,7 +115,11 @@ class ActiviteController {
 }
 
 class ListeReponsesCommand {
-  List<Reponse> reponses = []
+  List<ReponseCommand> listeResponses = []
 }
 
+class ReponseCommand {
+  Reponse reponse = new Reponse()
+  def specificationObject
+}
 
