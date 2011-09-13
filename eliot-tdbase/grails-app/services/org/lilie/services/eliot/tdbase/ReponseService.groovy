@@ -61,6 +61,31 @@ class ReponseService implements ApplicationContextAware {
     return applicationContext.getBean("reponse${questionType.code}SpecificationService")
   }
 
+
+  /**
+   * Crée une nouvelle réponse à partir des éléments d'une question
+   * @param copie la copie
+   * @param sujetQuestion la question
+   * @param proprietaire le proprietaire
+   * @return la réponse
+   */
+  @Transactional
+  @Requires ({copie.eleve == proprietaire})
+  Reponse createReponse(Copie copie, SujetSequenceQuestions sujetQuestion,
+                            Personne proprietaire) {
+    Reponse reponse = new Reponse(
+                  copie: copie,
+                  sujetQuestion: sujetQuestion,
+                  eleve: proprietaire,
+          ).save()
+    def question = sujetQuestion.question
+    def qtype = question.type
+    def specService = reponseSpecificationServiceForQuestionType(qtype)
+    specService.initialiseReponseSpecificationForQuestion(reponse, question)
+    reponse.save(flush: true)
+    return reponse
+  }
+
   /**
    * Modifie les proprietes de la réponse passée en paramètre
    * @param reponse la reponse

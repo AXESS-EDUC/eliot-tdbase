@@ -59,5 +59,13 @@ public interface ReponseSpecificationService {
    */
   def updateReponseSpecificationForObject(Reponse reponse, def object)
 
+  /**
+   * Initialisele spécification d'une réponse à partir d'une question
+   * @param reponse la réponse
+   * @param question  la question
+   * @return
+   */
+  def initialiseReponseSpecificationForQuestion(Reponse reponse,Question question)
+
 
 }

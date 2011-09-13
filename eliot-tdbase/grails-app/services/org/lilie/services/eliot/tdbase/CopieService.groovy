@@ -45,6 +45,7 @@ class CopieService {
 
   static transactional = false
   ProfilScolariteService profilScolariteService
+  ReponseService reponseService
 
   /**
    * Récupère la copie d'un élève pour une séance
@@ -77,12 +78,11 @@ class CopieService {
       if (it.question.type.interaction) {
         Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
         if (reponse == null) {
-          new Reponse(
-                  copie: copie,
-                  sujetQuestion: it,
-                  eleve: eleve,
-                  specification: "{}"
-          ).save()
+          reponseService.createReponse(
+                  copie,
+                  it,
+                  eleve
+          )
         }
       }
     }

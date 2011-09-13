@@ -69,8 +69,9 @@
       <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
                       title="Rendre la copie"/>
     </div>
-
+    <g:hiddenField name="copie.id" value="${copie.id}"/>
     <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
+    <g:set var="indexReponse" value="0"/>
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">
         <g:if test="${sujetQuestion.question.type.interaction}">
@@ -83,14 +84,15 @@
             &nbsp;point(s)</div>
         </g:if>
         <g:set var="question" value="${sujetQuestion.question}"/>
+
         <g:if test="${question.type.interaction}">
           <div class="tdbase-sujet-edition-question-interaction">
-
             <g:set var="reponse"
                    value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
+            <g:hiddenField name="reponses[${indexReponse}].id" value="${reponse.id}"/>
             <g:render
                     template="/question/${question.type.code}/${question.type.code}Interaction"
-                    model="[question:question, reponse:reponse]"/>
+                    model="[question:question, reponse:reponse, indexReponse:indexReponse++]"/>
           </div>
         </g:if>
         <g:else>
@@ -105,13 +107,13 @@
       </div>
 
     </g:each>
-
+    <g:hiddenField name="nombreReponses" value="${indexReponse}"/>
     <div style="text-align: right;margin-top: 20px;">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link> |
       <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
-                      title="Rendre la copie"/>
+                      title="Rendre la copie" />
     </div>
   </form>
 </div>

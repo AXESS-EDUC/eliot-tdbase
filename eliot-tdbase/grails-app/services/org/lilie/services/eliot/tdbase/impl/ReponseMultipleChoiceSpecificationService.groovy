@@ -51,7 +51,7 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
 
   /**
    *
-   * @see QuestionSpecificationService
+   * @see ReponseSpecificationService
    */
   def getObjectFromSpecification(String specification) {
     if (!specification) {
@@ -64,7 +64,7 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
 
   /**
    *
-   * @see QuestionSpecificationService
+   * @see ReponseSpecificationService
    */
   String getSpecificationFromObject(Object object) {
     if (!(object instanceof ReponseMultipleChoiceSpecification)) {
@@ -80,13 +80,35 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
 
   /**
    *
-   * @see QuestionSpecificationService
+   * @see ReponseSpecificationService
    */
   def updateReponseSpecificationForObject(Reponse reponse, Object object) {
     reponse.specification = getSpecificationFromObject(object)
     reponse.save()
   }
 
+
+  /**
+   * @see ReponseSpecificationService
+   */
+  def initialiseReponseSpecificationForQuestion(Reponse reponse,
+                                                Question question) {
+    def questSpecObj = question.specificationObject
+    if (!(questSpecObj instanceof MultipleChoiceSpecification)) {
+      throw new IllegalArgumentException(
+              "objet ${questSpecObj} n'est pas de type MultipleChoiceSpecification")
+    }
+
+    def reponsesPossibles = questSpecObj.reponses
+    ReponseMultipleChoiceSpecification specObj = new ReponseMultipleChoiceSpecification()
+    reponsesPossibles.each {
+      specObj.reponses << new MultipleChoiceSpecificationReponsePossible(
+              libelleReponse: it.libelleReponse,
+              estUneBonneReponse: false
+      )
+    }
+    updateReponseSpecificationForObject(reponse,specObj)
+  }
 }
 
 /**
@@ -115,14 +137,7 @@ class ReponseMultipleChoiceSpecification {
     }
   }
 
-  /**
-   * Détermine si une réponse est contenue dans la liste des réponses
-   * @param libelleReponsePossible   le libelle de la réponse possible
-   * @return  true si la liste des réponses contient la reponse possible
-   */
-  boolean contientReponsePossible(String libelleReponsePossible) {
-    return libelleReponsePossible in reponses*.libelleReponse
-  }
+
 
   def toMap() {
     [

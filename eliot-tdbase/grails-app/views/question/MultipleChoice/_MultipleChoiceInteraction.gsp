@@ -28,11 +28,12 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse.specificationObject}"/>
 ${questionspecifobject.libelle} <br/>
-<g:each in="${questionspecifobject.reponses}" var="reponsePossible">
+<g:each status="i" in="${questionspecifobject.reponses}" var="reponsePossible">
   &nbsp;
-  <g:checkBox name="reponsePossible-${reponse.id}"
-              checked="${reponsespecifobject.contientReponsePossible(reponsePossible.libelleReponse)}"/>
+  <g:checkBox name="specificationObjects[${indexReponse}].reponses[${i}].estUneBonneReponse"
+              checked="${reponsespecifobject.reponses[i].estUneBonneReponse}"/>
   ${reponsePossible.libelleReponse}
   <br/>
+  <g:hiddenField name="specificationObjects[${indexReponse}].reponses[${i}].libelleReponse" value="${reponsePossible.libelleReponse}"/>
 </g:each>
 

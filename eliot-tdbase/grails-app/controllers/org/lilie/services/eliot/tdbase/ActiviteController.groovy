@@ -87,9 +87,26 @@ class ActiviteController {
    * Action enregistre réponse
    */
   def rendLaCopie() {
-    render("Non implémenté")
+    Copie copie = Copie.get(params.copie.id)
+    def nombreReponses = params.nombreReponses as Integer
+    ListeReponsesCommand listeReponses = new ListeReponsesCommand()
+    nombreReponses.times {
+      listeReponses.reponses << new Reponse()
+    }
+    bindData(listeReponses, params)
+    println "Les reponses id ${listeReponses.reponses*.id}"
+
+    render(view: '/activite/copie/edite', model: [
+           liens: breadcrumpsService.liens,
+           lienRetour: breadcrumpsService.lienRetour(),
+           copie: copie
+           ])
   }
 
+}
+
+class ListeReponsesCommand {
+  List<Reponse> reponses = []
 }
 
 
