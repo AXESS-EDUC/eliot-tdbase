@@ -115,6 +115,15 @@ class ReponseMultipleChoiceSpecification {
     }
   }
 
+  /**
+   * Détermine si une réponse est contenue dans la liste des réponses
+   * @param libelleReponsePossible   le libelle de la réponse possible
+   * @return  true si la liste des réponses contient la reponse possible
+   */
+  boolean contientReponsePossible(String libelleReponsePossible) {
+    return libelleReponsePossible in reponses*.libelleReponse
+  }
+
   def toMap() {
     [
             reponses: reponses*.toMap()

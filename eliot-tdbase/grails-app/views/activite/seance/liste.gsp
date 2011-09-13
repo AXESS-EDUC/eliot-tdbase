@@ -59,7 +59,7 @@
           <th>Matière</th>
           <th>Début</th>
           <th>Fin</th>
-          <th>Faire</th>
+          <th>Copie</th>
         </tr>
         </thead>
 
@@ -82,8 +82,8 @@
               ${seance.dateFin.format('dd/MM/yy HH:mm')}
             </td>
             <td>
-              <g:link action="faireSujet" controller="activite"
-                      id="${seance.id}">
+              <g:link action="travailleCopie" controller="activite"
+                      id="${seance.id}" title="Travailler sa copie">
                 <img src="/eliot-tdbase/images/eliot/write-btn.gif"
                      width="18" height="16"/>
               </g:link>

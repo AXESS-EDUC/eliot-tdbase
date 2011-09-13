@@ -47,7 +47,7 @@
 <div class="column span-22 last middle">
   <g:render template="/breadcrumps" model="[liens: liens]"/>
 
-  <g:hasErrors bean="${sujet}">
+  <g:hasErrors bean="${copie}">
     <div class="portal-messages error">
       <g:eachError>
         <li><g:message error="${it}"/></li>
@@ -60,27 +60,60 @@
                      class="portal-messages success"/></li>
     </div>
   </g:if>
-  <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
+  <g:set var="sujet" value="${copie.sujet}"/>
+  <form method="post">
+    <div style="text-align: right;">
+      <g:link action="${lienRetour.action}"
+              controller="${lienRetour.controller}"
+              params="${lienRetour.params}">Annuler</g:link> |
+      <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
+                      title="Rendre la copie"/>
+    </div>
+
+    <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">
         <g:if test="${sujetQuestion.question.type.interaction}">
-          <div class="tdbase-sujet-edition-question-points" style="margin-bottom: 15px">
-          <div id="SujetSequenceQuestions-${sujetQuestion.id}"
-               style="float: left">
-            ${sujetQuestion.points}
-          </div>
+          <div class="tdbase-sujet-edition-question-points"
+               style="margin-bottom: 15px">
+            <div id="SujetSequenceQuestions-${sujetQuestion.id}"
+                 style="float: left">
+              ${sujetQuestion.points}
+            </div>
             &nbsp;point(s)</div>
         </g:if>
-        <div class="tdbase-sujet-edition-question-interaction">
-          <g:set var="question" value="${sujetQuestion.question}"/>
-          <g:render
-                  template="/question/${question.type.code}/${question.type.code}Interaction"
-                  model="[question:question]"/>
-        </div>
+        <g:set var="question" value="${sujetQuestion.question}"/>
+        <g:if test="${question.type.interaction}">
+          <div class="tdbase-sujet-edition-question-interaction">
+
+            <g:set var="reponse"
+                   value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
+            <g:render
+                    template="/question/${question.type.code}/${question.type.code}Interaction"
+                    model="[question:question, reponse:reponse]"/>
+          </div>
+        </g:if>
+        <g:else>
+          <div class="tdbase-sujet-edition-question-interaction">
+            <g:set var="question" value="${sujetQuestion.question}"/>
+            <g:render
+                    template="/question/${question.type.code}/${question.type.code}Preview"
+                    model="[question:question]"/>
+          </div>
+        </g:else>
 
       </div>
 
     </g:each>
+
+    <div style="text-align: right;margin-top: 20px;">
+      <g:link action="${lienRetour.action}"
+              controller="${lienRetour.controller}"
+              params="${lienRetour.params}">Annuler</g:link> |
+      <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
+                      title="Rendre la copie"/>
+    </div>
+  </form>
 </div>
 
 </body>

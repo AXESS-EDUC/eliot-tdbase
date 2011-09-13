@@ -70,4 +70,13 @@ class Copie {
     cache(true)
   }
 
+  /**
+   *  Retourne la réponse correspondant à la question donnée
+   *  @param sujetQuestion  la question (objet type SujetSequenceQuestions)
+   *  @return la réponse
+   */
+  Reponse getReponseForSujetQuestion(SujetSequenceQuestions sujetQuestion) {
+      Reponse.findByCopieAndSujetQuestion(this, sujetQuestion)
+  }
+
 }

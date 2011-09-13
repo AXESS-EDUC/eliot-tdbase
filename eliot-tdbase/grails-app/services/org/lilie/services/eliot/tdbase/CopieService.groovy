@@ -80,7 +80,8 @@ class CopieService {
           new Reponse(
                   copie: copie,
                   sujetQuestion: it,
-                  eleve: eleve
+                  eleve: eleve,
+                  specification: "{}"
           ).save()
         }
       }

@@ -25,13 +25,14 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle} <br/>
-<g:each in="${specifobject.reponses}" var="reponse">
+<g:set var="questionspecifobject" value="${question.specificationObject}"/>
+<g:set var="reponsespecifobject" value="${reponse.specificationObject}"/>
+${questionspecifobject.libelle} <br/>
+<g:each in="${questionspecifobject.reponses}" var="reponsePossible">
   &nbsp;
-  <g:checkBox name="specifobject.reponses.estUneBonneReponse"
-              checked="${reponse.estUneBonneReponse}" />
-  ${reponse.libelleReponse}
+  <g:checkBox name="reponsePossible-${reponse.id}"
+              checked="${reponsespecifobject.contientReponsePossible(reponsePossible.libelleReponse)}"/>
+  ${reponsePossible.libelleReponse}
   <br/>
 </g:each>
 

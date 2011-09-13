@@ -36,6 +36,8 @@ import org.lilie.services.eliot.tice.annuaire.Personne
  */
 class Reponse {
 
+  ReponseService reponseService
+
   String specification
 
   String correctionAnnotation
@@ -49,7 +51,7 @@ class Reponse {
   SujetSequenceQuestions sujetQuestion
 
   Personne correcteur
-  Personne eleve    // utile uniquement pour stats
+  Personne eleve    // utile uniquement pour stats et securite
 
   static constraints = {
     specification(nullable: true)
@@ -69,4 +71,17 @@ class Reponse {
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.reponse_id_seq'])
     cache(true)
   }
+
+  static transients = ['reponseService']
+
+  /**
+   *
+   * @return l'objet encapsulant la spécification
+   */
+  def getSpecificationObject() {
+    def qtype = sujetQuestion.question.type
+    def specService = reponseService.reponseSpecificationServiceForQuestionType(qtype)
+    specService.getObjectFromSpecification(specification)
+  }
+
 }

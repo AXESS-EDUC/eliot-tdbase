@@ -151,12 +151,12 @@ class QuestionService implements ApplicationContextAware {
   }
 
   /**
-   * Modifie les proprietes du sujet passé en paramètre
-   * @param sujet le sujet
+   * Modifie les proprietes de la question passée en paramètre
+   * @param question la question
    * @param proprietes les nouvelles proprietes
    * @param specificationObject l'objet specification
    * @param proprietaire le proprietaire
-   * @return le sujet
+   * @return la question
    */
   @Transactional
   @Requires ({question.proprietaire == proprietaire || question.publie})

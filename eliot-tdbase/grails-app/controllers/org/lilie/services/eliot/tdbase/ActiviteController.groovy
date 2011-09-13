@@ -44,6 +44,7 @@ class ActiviteController {
   BreadcrumpsService breadcrumpsService
   ModaliteActiviteService modaliteActiviteService
   ProfilScolariteService profilScolariteService
+  CopieService copieService
 
 
 
@@ -69,13 +70,15 @@ class ActiviteController {
    *
    * Action "Faire sujet"
    */
-  def faireSujet() {
+  def travailleCopie() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "copie.edition.titre"))
+    Personne eleve = authenticatedPersonne
     ModaliteActivite seance = ModaliteActivite.get(params.id)
-    Sujet sujet = seance.sujet
+    Copie copie = copieService.getCopieForModaliteActiviteAndEleve(seance, eleve)
     render(view: '/activite/copie/edite', model: [
            liens: breadcrumpsService.liens,
-           sujet: sujet
+           lienRetour: breadcrumpsService.lienRetour(),
+           copie: copie
            ])
   }
 
@@ -83,7 +86,7 @@ class ActiviteController {
    *
    * Action enregistre réponse
    */
-  def enregistreReponse() {
+  def rendLaCopie() {
     render("Non implémenté")
   }
 

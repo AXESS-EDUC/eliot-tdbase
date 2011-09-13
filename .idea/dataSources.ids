@@ -3468,6 +3468,7 @@
       <column name="question_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="questions_sequences_idx" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
       <column name="note_seuil_poursuite" sqlType="float8" length="17" precision="17" nullable="true" jdbcType="8" />
+      <column name="points" sqlType="float8" length="17" precision="17" nullable="false" jdbcType="8" default="1::double precision" />
       <primary-key name="pk_sujet_sequence_questions" columns="id" />
       <foreign-key name="fk_sujet_sequence_questions_question_id" columns="question_id" ref-table="question" ref-schema="td" ref-catalog="" ref-columns="id" />
       <foreign-key name="fk_sujet_sequence_questions_sujet_id" columns="sujet_id" ref-table="sujet" ref-schema="td" ref-catalog="" ref-columns="id" />
