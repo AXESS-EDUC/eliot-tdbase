@@ -107,7 +107,8 @@ class CopieService {
                                           reponseCopie.specificationObject,
                                           eleve)
     }
-
+    copie.dateRemise = new Date()
+    copie.save()
   }
 
 }

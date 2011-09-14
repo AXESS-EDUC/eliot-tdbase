@@ -34,7 +34,6 @@ package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
-
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class ActiviteController {
@@ -46,8 +45,6 @@ class ActiviteController {
   ProfilScolariteService profilScolariteService
   CopieService copieService
   ReponseService reponseService
-
-
 
   /**
    *
@@ -94,18 +91,18 @@ class ActiviteController {
     nombreReponses.times {
       reponsesCopie.listeReponses << new ReponseCopie()
     }
-    bindData(reponsesCopie, params,"reponsesCopie")
+    bindData(reponsesCopie, params, "reponsesCopie")
 
     reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
       def reponse = Reponse.get(reponseCopie.reponse.id)
       reponseCopie.reponse = reponse
       reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
     }
-    bindData(reponsesCopie, params,"reponsesCopie")
+    bindData(reponsesCopie, params, "reponsesCopie")
     Personne eleve = authenticatedPersonne
     copieService.updateCopieForListeReponsesCopie(copie,
-                                                  reponsesCopie.listeReponses,
-                                                  eleve)
+                                                    reponsesCopie.listeReponses,
+                                                    eleve)
     request.messageCode = "copie.enregistre.succes"
 
     render(view: '/activite/copie/edite', model: [

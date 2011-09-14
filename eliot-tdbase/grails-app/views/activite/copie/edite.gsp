@@ -62,12 +62,19 @@
   </g:if>
   <g:set var="sujet" value="${copie.sujet}"/>
   <form method="post">
+    <g:if test="${!copie.estModifiable()}">
+      <div class="portal-messages notice">
+        <span class="portal-messages notice">La copie n'est plus modifiable.</span>
+      </div>
+    </g:if>
     <div style="text-align: right;">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link> |
-      <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
-                      title="Rendre la copie"/>
+              params="${lienRetour.params}">Annuler</g:link>&nbsp;
+      <g:if test="${copie.estModifiable()}">|&nbsp;
+        <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
+                      title="Rendre la copie" />
+      </g:if>
     </div>
     <g:hiddenField name="copie.id" value="${copie.id}"/>
     <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
@@ -112,9 +119,11 @@
     <div style="text-align: right;margin-top: 20px;">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link> |
-      <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
+              params="${lienRetour.params}">Annuler</g:link>&nbsp;
+      <g:if test="${copie.estModifiable()}">|&nbsp;
+        <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
                       title="Rendre la copie" />
+      </g:if>
     </div>
   </form>
 </div>
