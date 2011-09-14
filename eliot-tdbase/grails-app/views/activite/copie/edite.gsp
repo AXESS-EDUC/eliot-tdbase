@@ -73,22 +73,25 @@
               params="${lienRetour.params}">Annuler</g:link>&nbsp;
       <g:if test="${copie.estModifiable()}">|&nbsp;
         <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
-                      title="Rendre la copie" />
+                        title="Rendre la copie"/>
       </g:if>
     </div>
     <g:hiddenField name="copie.id" value="${copie.id}"/>
     <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
+    <g:if test="${copie.dateRemise}">
+     <div class="portal-messages notice">Note : ${copie.correctionNoteAutomatique} / ${copie.correctionNoteCorrecteur}</div>
+    </g:if>
     <g:set var="indexReponse" value="0"/>
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">
         <g:if test="${sujetQuestion.question.type.interaction}">
           <g:set var="reponse"
-                   value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
+                 value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
           <div class="tdbase-sujet-edition-question-points"
                style="margin-bottom: 15px">
             <div id="SujetSequenceQuestions-${sujetQuestion.id}"
                  style="float: left">
-          ${reponse.correctionNoteAutomatique}&nbsp;/&nbsp;${sujetQuestion.points}
+              ${reponse.correctionNoteAutomatique}&nbsp;/&nbsp;${sujetQuestion.points}
             </div>
             &nbsp;point(s)</div>
         </g:if>
@@ -97,7 +100,9 @@
         <g:if test="${question.type.interaction}">
           <div class="tdbase-sujet-edition-question-interaction">
 
-            <g:hiddenField name="reponsesCopie.listeReponses[${indexReponse}].reponse.id" value="${reponse.id}"/>
+            <g:hiddenField
+                    name="reponsesCopie.listeReponses[${indexReponse}].reponse.id"
+                    value="${reponse.id}"/>
 
             <g:render
                     template="/question/${question.type.code}/${question.type.code}Interaction"
@@ -123,7 +128,7 @@
               params="${lienRetour.params}">Annuler</g:link>&nbsp;
       <g:if test="${copie.estModifiable()}">|&nbsp;
         <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
-                      title="Rendre la copie" />
+                        title="Rendre la copie"/>
       </g:if>
     </div>
   </form>

@@ -102,12 +102,21 @@ class CopieService {
   def updateCopieForListeReponsesCopie(Copie copie,
                                        List<ReponseCopie> reponsesCopie,
                                        Personne eleve) {
+    def noteGlobale = 0
+    def nbGlobalPoints = 0
     reponsesCopie.each { ReponseCopie reponseCopie ->
-       reponseService.updateSpecificationAndEvalue(reponseCopie.reponse,
+      Reponse reponse = reponseCopie.reponse
+      reponseService.updateSpecificationAndEvalue(reponse,
                                           reponseCopie.specificationObject,
                                           eleve)
+      noteGlobale += reponse.correctionNoteAutomatique
+      nbGlobalPoints += reponse.sujetQuestion.points
     }
     copie.dateRemise = new Date()
+    copie.correctionNoteAutomatique = noteGlobale
+
+    // todofsil : c'est le nb de points sur le quel est noté le sujet
+    copie.correctionNoteCorrecteur = nbGlobalPoints
     copie.save()
   }
 
