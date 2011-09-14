@@ -70,6 +70,8 @@ class Copie {
     cache(true)
   }
 
+  static transients = ['estModifiable']
+
   /**
    *  Retourne la réponse correspondant à la question donnée
    *  @param sujetQuestion  la question (objet type SujetSequenceQuestions)
@@ -77,6 +79,26 @@ class Copie {
    */
   Reponse getReponseForSujetQuestion(SujetSequenceQuestions sujetQuestion) {
       Reponse.findByCopieAndSujetQuestion(this, sujetQuestion)
+  }
+
+  /**
+   *
+   * @return true si la copie est modifiable, false, sinon
+   */
+  boolean estModifiable() {
+    if (!modaliteActivite) {
+      return true
+    }
+    def now = new Date()
+    if (now.after(modaliteActivite.dateFin) ||
+        now.before(modaliteActivite.dateDebut)) {
+      return false
+    }
+    def copieAmeliorable = modaliteActivite.copieAmeliorable
+    if (dateRemise && !copieAmeliorable) {
+      return false
+    }
+    return true
   }
 
 }

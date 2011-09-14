@@ -95,20 +95,18 @@ class ActiviteController {
       reponsesCopie.listeReponses << new ReponseCopie()
     }
     bindData(reponsesCopie, params,"reponsesCopie")
-    def ids = reponsesCopie.listeReponses.collect { it.reponse.id }
-
-    println "Les reponses id ${ids}"
-
 
     reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
       def reponse = Reponse.get(reponseCopie.reponse.id)
+      reponseCopie.reponse = reponse
       reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
     }
     bindData(reponsesCopie, params,"reponsesCopie")
-
-    def specsobjs =  reponsesCopie.listeReponses.collect { it.specificationObject.reponses[0].estUneBonneReponse }
-
-    println "Les specs objs ${specsobjs}"
+    Personne eleve = authenticatedPersonne
+    copieService.updateCopieForListeReponsesCopie(copie,
+                                                  reponsesCopie.listeReponses,
+                                                  eleve)
+    request.messageCode = "copie.enregistre.succes"
 
     render(view: '/activite/copie/edite', model: [
            liens: breadcrumpsService.liens,

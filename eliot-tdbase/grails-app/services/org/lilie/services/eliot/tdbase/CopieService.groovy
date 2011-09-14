@@ -90,6 +90,25 @@ class CopieService {
     return copie
   }
 
+  /**
+   * Met à jour la copie en prenant en compte la liste de réponses soumises
+   * @param copie la copie
+   * @param reponsesCopie les réponses soumises
+   * @param eleve l'élève
+   * @return la copie mise à jour
+   */
+  @Transactional
+  @Requires({copie.eleve == eleve && copie.estModifiable()})
+  def updateCopieForListeReponsesCopie(Copie copie,
+                                       List<ReponseCopie> reponsesCopie,
+                                       Personne eleve) {
+    reponsesCopie.each { ReponseCopie reponseCopie ->
+       reponseService.updateSpecification(reponseCopie.reponse,
+                                          reponseCopie.specificationObject,
+                                          eleve)
+    }
+
+  }
 
 }
 
