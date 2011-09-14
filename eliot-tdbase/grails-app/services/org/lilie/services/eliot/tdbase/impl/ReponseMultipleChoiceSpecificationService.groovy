@@ -39,6 +39,8 @@ import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.lilie.services.eliot.tdbase.Reponse
+import org.gcontracts.annotations.Requires
+import org.springframework.transaction.annotation.Transactional
 
 /**
  *
@@ -66,11 +68,8 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
    *
    * @see ReponseSpecificationService
    */
+  @Requires({object instanceof ReponseMultipleChoiceSpecification})
   String getSpecificationFromObject(Object object) {
-    if (!(object instanceof ReponseMultipleChoiceSpecification)) {
-      throw new IllegalArgumentException(
-              "objet ${object} n'est pas de type ReponseMultipleChoiceSpecification")
-    }
     ReponseMultipleChoiceSpecification spec = object
     JsonBuilder builder = new JsonBuilder(spec.toMap())
     return builder.toString()
@@ -100,13 +99,9 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
   /**
    * @see ReponseSpecificationService
    */
+  @Requires({question.specificationObject instanceof MultipleChoiceSpecification})
   def getObjectInitialiseFromSpecification(Question question) {
     def questSpecObj = question.specificationObject
-    if (!(questSpecObj instanceof MultipleChoiceSpecification)) {
-      throw new IllegalArgumentException(
-              "objet ${questSpecObj} n'est pas de type MultipleChoiceSpecification")
-    }
-
     def reponsesPossibles = questSpecObj.reponses
     ReponseMultipleChoiceSpecification specObj = new ReponseMultipleChoiceSpecification()
     reponsesPossibles.each {
@@ -116,6 +111,40 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
       )
     }
     return specObj
+  }
+
+  /**
+   * L’évaluation est positive pour une réponse contenant l’ensemble des bonnes
+   * réponses attendues, et négative dès lors qu’une seule réponse
+   * attendue est manquante.
+   * L’espérance mathématique d’une réponse au hasard est nulle.
+   *
+   * @see ReponseSpecificationService
+   */
+  @Transactional
+  Float evalueReponse(Reponse reponse) {
+    def res = 1
+    ReponseMultipleChoiceSpecification repSpecObj = reponse.specificationObject
+    MultipleChoiceSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
+    for(int i=0; i < repSpecObj.reponses.size(); i++) {
+      MultipleChoiceSpecificationReponsePossible repPos = repSpecObj.reponses[i]
+      MultipleChoiceSpecificationReponsePossible repPosQ = questSpecObj.reponses[i]
+      if (repPos.libelleReponse != repPosQ.libelleReponse) {
+        log.info("Libelles reponses incohérent : ${repPos.libelleReponse} <> ${repPosQ.libelleReponse}")
+      }
+      if (repPos.estUneBonneReponse != repPosQ.estUneBonneReponse) {
+        res = -1
+        break
+      }
+    }
+    if (res < 0 ) {
+      res = 0
+    } else {
+      res *= reponse.sujetQuestion.points
+    }
+    reponse.correctionNoteAutomatique = res
+    reponse.save()
+    return res
   }
 
 

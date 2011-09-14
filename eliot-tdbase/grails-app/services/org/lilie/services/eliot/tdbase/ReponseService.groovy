@@ -91,16 +91,16 @@ class ReponseService implements ApplicationContextAware {
    * @param reponse la reponse
    * @param specificationObject l'objet specification
    * @param proprietaire le proprietaire
-   * @return la réponse
+   * @return la réponse avec la note correction automatique mise à jour
    */
   @Transactional
   @Requires ({reponse.eleve == proprietaire})
-  Reponse updateSpecification(Reponse reponse, def specificationObject,
+  Reponse updateSpecificationAndEvalue(Reponse reponse, def specificationObject,
                             Personne proprietaire) {
     QuestionType qtype = reponse.sujetQuestion.question.type
     def specService = reponseSpecificationServiceForQuestionType(qtype)
     specService.updateReponseSpecificationForObject(reponse, specificationObject)
-    reponse.save(flush: true)
+    specService.evalueReponse(reponse)
     return reponse
   }
 

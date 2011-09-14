@@ -103,7 +103,7 @@ class CopieService {
                                        List<ReponseCopie> reponsesCopie,
                                        Personne eleve) {
     reponsesCopie.each { ReponseCopie reponseCopie ->
-       reponseService.updateSpecification(reponseCopie.reponse,
+       reponseService.updateSpecificationAndEvalue(reponseCopie.reponse,
                                           reponseCopie.specificationObject,
                                           eleve)
     }

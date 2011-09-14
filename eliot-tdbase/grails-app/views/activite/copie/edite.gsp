@@ -82,11 +82,13 @@
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">
         <g:if test="${sujetQuestion.question.type.interaction}">
+          <g:set var="reponse"
+                   value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
           <div class="tdbase-sujet-edition-question-points"
                style="margin-bottom: 15px">
             <div id="SujetSequenceQuestions-${sujetQuestion.id}"
                  style="float: left">
-              ${sujetQuestion.points}
+          ${reponse.correctionNoteAutomatique}&nbsp;/&nbsp;${sujetQuestion.points}
             </div>
             &nbsp;point(s)</div>
         </g:if>
@@ -94,8 +96,7 @@
 
         <g:if test="${question.type.interaction}">
           <div class="tdbase-sujet-edition-question-interaction">
-            <g:set var="reponse"
-                   value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
+
             <g:hiddenField name="reponsesCopie.listeReponses[${indexReponse}].reponse.id" value="${reponse.id}"/>
 
             <g:render

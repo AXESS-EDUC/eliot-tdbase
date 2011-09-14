@@ -74,5 +74,12 @@ public interface ReponseSpecificationService {
    */
   def initialiseReponseSpecificationForQuestion(Reponse reponse, Question question)
 
+  /**
+   * Calcule le nombre de points obtenu par la réponse et met à jour la note
+   * issue de la correction automatique de la réponse
+   * @param reponse la réponse à évaluer
+   * @return le nombre de points obtenus pour cette réponse
+   */
+  Float evalueReponse(Reponse reponse)
 
 }
