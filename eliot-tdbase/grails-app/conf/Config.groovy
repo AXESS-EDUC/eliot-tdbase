@@ -133,6 +133,7 @@ grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 
+
 // set per-environment security rbac
 environments {
   production {
@@ -263,55 +264,52 @@ environments {
             ]
     ]
   }
-
-  // configuration de la racine de l'espace de fichier
-  environments {
-    development {
-      eliot.fichiers.racine = "/Users/Shared/eliot-root"
-      eliot.fichiers.maxsize.mega = 10
-    }
-    demo {
-      eliot.fichiers.racine = "/usr/share/eliot-root"
-      eliot.fichiers.maxsize.mega = 10
-    }
-  }
-
-  // configuration des liens du menu portail et des annonces portail
-  environments {
-    development {
-      eliot.portail.menu.affichage = true
-      eliot.portail.menu.liens = [
-              [
-                      url: "http://wwww.ticetime.com",
-                      libelle: "ticetime"
-              ],
-              [
-                      url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                      libelle: "eliot-tdbase sur Github"
-              ]
-      ]
-      eliot.portail.news = [
-              "Login / mot de passe enseignant : ens1 / ens1",
-              "Login / mot de passe élève : elv1 / elv1"
-      ]
-    }
-    demo {
-      eliot.portail.menu.affichage = true
-      eliot.portail.menu.liens = [
-              [
-                      url: "http://wwww.ticetime.com",
-                      libelle: "ticetime"
-              ],
-              [
-                      url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                      libelle: "eliot-tdbase sur Github"
-              ]
-      ]
-      eliot.portail.news = [
-              "Login / mot de passe enseignant : ens1 / ens1",
-              "Login / mot de passe élève : elv1 / elv1"
-      ]
-    }
-  }
-
 }
+
+
+environments {
+  development {
+    // configuration de la racine de l'espace de fichier
+    eliot.fichiers.racine = '/Users/Shared/eliot-root'
+    eliot.fichiers.maxsize.mega = 10
+    // configuration des liens du menu portail et des annonces portail
+    eliot.portail.menu.affichage = true
+    eliot.portail.menu.liens = [
+            [
+                    url: "http://wwww.ticetime.com",
+                    libelle: "ticetime"
+            ],
+            [
+                    url: "https://github.com/ticetime/eliot-tdbase/wiki",
+                    libelle: "eliot-tdbase sur Github"
+            ]
+    ]
+    eliot.portail.news = [
+            "Login / mot de passe enseignant : ens1 / ens1",
+            "Login / mot de passe élève : elv1 / elv1"
+    ]
+  }
+  demo {
+    // configuration de la racine de l'espace de fichier
+    eliot.fichiers.racine = '/usr/share/eliot-root'
+    eliot.fichiers.maxsize.mega = 10
+    // configuration des liens du menu portail et des annonces portail
+    eliot.portail.menu.affichage = true
+    eliot.portail.menu.liens = [
+            [
+                    url: "http://wwww.ticetime.com",
+                    libelle: "ticetime"
+            ],
+            [
+                    url: "https://github.com/ticetime/eliot-tdbase/wiki",
+                    libelle: "eliot-tdbase sur Github"
+            ]
+    ]
+    eliot.portail.news = [
+            "Login / mot de passe enseignant : ens1 / ens1",
+            "Login / mot de passe élève : elv1 / elv1"
+    ]
+  }
+}
+
+
