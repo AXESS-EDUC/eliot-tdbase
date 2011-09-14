@@ -93,4 +93,7 @@ class CopieService {
 
 }
 
-
+class ReponseCopie {
+  Reponse reponse
+  def specificationObject
+}

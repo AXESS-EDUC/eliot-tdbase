@@ -57,12 +57,15 @@ public interface QuestionSpecificationService {
    */
   def getObjectFromSpecification(String specification)
 
+
   /**
    * Met à jour la specification de la question
    * @param question la question
    * @param object l'objet encapsulant la specification
    */
   def updateQuestionSpecificationForObject(Question question, def object)
+
+
 
 
 }

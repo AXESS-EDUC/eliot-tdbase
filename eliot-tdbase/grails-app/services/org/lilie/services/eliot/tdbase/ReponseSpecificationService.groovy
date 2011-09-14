@@ -43,7 +43,6 @@ public interface ReponseSpecificationService {
    */
   String getSpecificationFromObject(def object)
 
-
   /**
    * Récupère l'objet encapsulant la specification d'une réponse à partir de
    * la spécification
@@ -51,6 +50,14 @@ public interface ReponseSpecificationService {
    * @return l'objet encapsulant la specification
    */
   def getObjectFromSpecification(String specification)
+
+  /**
+   * Récupère un objet specification de réponse initialisé à partir d'une
+   * question
+   * @param question la question
+   * @return l'objet specification initialisé
+   */
+  def getObjectInitialiseFromSpecification(Question question)
 
   /**
    * Met à jour la specification de la question
@@ -62,10 +69,10 @@ public interface ReponseSpecificationService {
   /**
    * Initialisele spécification d'une réponse à partir d'une question
    * @param reponse la réponse
-   * @param question  la question
+   * @param question la question
    * @return
    */
-  def initialiseReponseSpecificationForQuestion(Reponse reponse,Question question)
+  def initialiseReponseSpecificationForQuestion(Reponse reponse, Question question)
 
 
 }

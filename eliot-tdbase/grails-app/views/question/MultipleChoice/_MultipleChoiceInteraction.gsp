@@ -30,10 +30,9 @@
 ${questionspecifobject.libelle} <br/>
 <g:each status="i" in="${questionspecifobject.reponses}" var="reponsePossible">
   &nbsp;
-  <g:checkBox name="listeResponses[${indexReponse}].specificationObject.reponses[${i}].estUneBonneReponse"
+  <g:checkBox name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.reponses[${i}].estUneBonneReponse"
               checked="${reponsespecifobject.reponses[i].estUneBonneReponse}"/>
   ${reponsePossible.libelleReponse}
   <br/>
-  <g:hiddenField name="listeResponses[${indexReponse}].specificationObject.reponses[${i}].libelleReponse" value="${reponsePossible.libelleReponse}"/>
-</g:each>
+ </g:each>
 

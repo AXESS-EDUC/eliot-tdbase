@@ -45,6 +45,7 @@ class ActiviteController {
   ModaliteActiviteService modaliteActiviteService
   ProfilScolariteService profilScolariteService
   CopieService copieService
+  ReponseService reponseService
 
 
 
@@ -89,20 +90,24 @@ class ActiviteController {
   def rendLaCopie() {
     Copie copie = Copie.get(params.copie.id)
     def nombreReponses = params.nombreReponses as Integer
-    ListeReponsesCommand listeReponsesCommand = new ListeReponsesCommand()
+    ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
     nombreReponses.times {
-      listeReponsesCommand.listeResponses << new ReponseCommand()
+      reponsesCopie.listeReponses << new ReponseCopie()
     }
-    bindData(listeReponsesCommand, params)
-    listeReponsesCommand.listeResponses.each {
-      def reponse = Reponse.get(it.reponse.id)
-      it.specificationObject = reponse.specificationObject
-    }
-    bindData(listeReponsesCommand, params)
-    println "****** <<<< params >>>>>> ${params}"
-    def ids = listeReponsesCommand.listeResponses.collect { it.reponse.id }
-    def specsobjs =  listeReponsesCommand.listeResponses.collect { it.specificationObject.reponses*.estUneBonneReponse }
+    bindData(reponsesCopie, params,"reponsesCopie")
+    def ids = reponsesCopie.listeReponses.collect { it.reponse.id }
+
     println "Les reponses id ${ids}"
+
+
+    reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
+      def reponse = Reponse.get(reponseCopie.reponse.id)
+      reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
+    }
+    bindData(reponsesCopie, params,"reponsesCopie")
+
+    def specsobjs =  reponsesCopie.listeReponses.collect { it.specificationObject.reponses[0].estUneBonneReponse }
+
     println "Les specs objs ${specsobjs}"
 
     render(view: '/activite/copie/edite', model: [
@@ -114,12 +119,11 @@ class ActiviteController {
 
 }
 
-class ListeReponsesCommand {
-  List<ReponseCommand> listeResponses = []
+class ListeReponsesCopie {
+  List<ReponseCopie> listeReponses = []
 }
 
-class ReponseCommand {
-  Reponse reponse = new Reponse()
-  def specificationObject
-}
+
+
+
 

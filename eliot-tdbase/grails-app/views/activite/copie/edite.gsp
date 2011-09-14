@@ -89,7 +89,8 @@
           <div class="tdbase-sujet-edition-question-interaction">
             <g:set var="reponse"
                    value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
-            <g:hiddenField name="listeResponses[${indexReponse}].reponse.id" value="${reponse.id}"/>
+            <g:hiddenField name="reponsesCopie.listeReponses[${indexReponse}].reponse.id" value="${reponse.id}"/>
+
             <g:render
                     template="/question/${question.type.code}/${question.type.code}Interaction"
                     model="[question:question, reponse:reponse, indexReponse:indexReponse++]"/>

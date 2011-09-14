@@ -104,6 +104,19 @@ class ReponseService implements ApplicationContextAware {
     return reponse
   }
 
+  /**
+   * Récupère un template de spécification de réponse
+   * @param reponse la réponse pour laquelle on souhaite récupéré un template de
+   * spécification de réponse
+   * @return un objet specification de réponse "vide" correspondant au
+   * type de question
+   */
+  def getSpecificationReponseInitialisee(Reponse reponse) {
+    def question = reponse.sujetQuestion.question
+    def specService = reponseSpecificationServiceForQuestionType(question.type)
+    specService.getObjectInitialiseFromSpecification(question)
+  }
+
 }
 
 

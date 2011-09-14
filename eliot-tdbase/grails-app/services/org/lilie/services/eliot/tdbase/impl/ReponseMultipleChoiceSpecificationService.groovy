@@ -93,6 +93,14 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
    */
   def initialiseReponseSpecificationForQuestion(Reponse reponse,
                                                 Question question) {
+    def specObj = getObjectInitialiseFromSpecification(question)
+    updateReponseSpecificationForObject(reponse,specObj)
+  }
+
+  /**
+   * @see ReponseSpecificationService
+   */
+  def getObjectInitialiseFromSpecification(Question question) {
     def questSpecObj = question.specificationObject
     if (!(questSpecObj instanceof MultipleChoiceSpecification)) {
       throw new IllegalArgumentException(
@@ -107,8 +115,10 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
               estUneBonneReponse: false
       )
     }
-    updateReponseSpecificationForObject(reponse,specObj)
+    return specObj
   }
+
+
 }
 
 /**
