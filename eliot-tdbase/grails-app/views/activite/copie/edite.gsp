@@ -79,7 +79,9 @@
     <g:hiddenField name="copie.id" value="${copie.id}"/>
     <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
     <g:if test="${copie.dateRemise}">
-     <div class="portal-messages notice">Note : ${copie.correctionNoteAutomatique} / ${copie.correctionNoteCorrecteur}</div>
+     <div class="portal-messages notice">Note :
+       <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
+        / <g:formatNumber number="${copie.correctionNoteCorrecteur}" format="##0.00" /></div>
     </g:if>
     <g:set var="indexReponse" value="0"/>
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
@@ -90,10 +92,11 @@
           <div class="tdbase-sujet-edition-question-points"
                style="margin-bottom: 15px">
             <div id="SujetSequenceQuestions-${sujetQuestion.id}"
-                 style="float: left">
-              ${reponse.correctionNoteAutomatique}&nbsp;/&nbsp;${sujetQuestion.points}
+                 style="float: left;width: 40px;">
+              <g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00" />
             </div>
-            &nbsp;point(s)</div>
+             &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}" format="##0.00" />&nbsp;point(s)
+            </div>
         </g:if>
         <g:set var="question" value="${sujetQuestion.question}"/>
 

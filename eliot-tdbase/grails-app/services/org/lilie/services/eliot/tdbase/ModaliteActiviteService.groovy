@@ -152,6 +152,7 @@ class ModaliteActiviteService {
    */
   @Requires({modaliteActivite?.enseignant == personne})
   def supprimeModaliteActivite(ModaliteActivite modaliteActivite,Personne personne) {
+    // todofsil gerer la suppression des copies
     modaliteActivite.delete()
   }
 

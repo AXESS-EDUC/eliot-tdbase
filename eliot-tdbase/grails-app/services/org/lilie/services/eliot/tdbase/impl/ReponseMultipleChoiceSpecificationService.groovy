@@ -123,25 +123,23 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
    */
   @Transactional
   Float evalueReponse(Reponse reponse) {
-    def res = 1
+    def res = 0
     ReponseMultipleChoiceSpecification repSpecObj = reponse.specificationObject
     MultipleChoiceSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
-    for(int i=0; i < repSpecObj.reponses.size(); i++) {
+    def nbRepPos = repSpecObj.reponses.size()
+    for(int i=0; i < nbRepPos; i++) {
       MultipleChoiceSpecificationReponsePossible repPos = repSpecObj.reponses[i]
       MultipleChoiceSpecificationReponsePossible repPosQ = questSpecObj.reponses[i]
       if (repPos.libelleReponse != repPosQ.libelleReponse) {
         log.info("Libelles reponses incohérent : ${repPos.libelleReponse} <> ${repPosQ.libelleReponse}")
       }
-      if (repPos.estUneBonneReponse != repPosQ.estUneBonneReponse) {
-        res = -1
-        break
+      if (repPos.estUneBonneReponse == repPosQ.estUneBonneReponse) {
+        res += 1
+      } else {
+        res -= 1
       }
     }
-    if (res < 0 ) {
-      res = 0
-    } else {
-      res *= reponse.sujetQuestion.points
-    }
+    res =  (res / nbRepPos) * reponse.sujetQuestion.points
     reponse.correctionNoteAutomatique = res
     reponse.save()
     return res

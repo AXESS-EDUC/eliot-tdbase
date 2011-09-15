@@ -113,6 +113,9 @@ class CopieService {
       nbGlobalPoints += reponse.sujetQuestion.points
     }
     copie.dateRemise = new Date()
+    if (noteGlobale < 0) {
+      noteGlobale = 0
+    }
     copie.correctionNoteAutomatique = noteGlobale
 
     // todofsil : c'est le nb de points sur le quel est noté le sujet
