@@ -34,22 +34,19 @@ package org.lilie.services.eliot.tdbase.impl
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
-import org.lilie.services.eliot.tdbase.Question
-import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tice.utils.StringUtils
-import org.lilie.services.eliot.tdbase.ReponseSpecificationService
-import org.lilie.services.eliot.tdbase.Reponse
 import org.gcontracts.annotations.Requires
+import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.Reponse
+import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.springframework.transaction.annotation.Transactional
 
 /**
  *
  * @author franck Silvestre
  */
-class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationService{
+class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationService {
 
   static transactional = false
-
 
   /**
    *
@@ -75,8 +72,6 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
     return builder.toString()
   }
 
-
-
   /**
    *
    * @see ReponseSpecificationService
@@ -86,14 +81,13 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
     reponse.save()
   }
 
-
   /**
    * @see ReponseSpecificationService
    */
   def initialiseReponseSpecificationForQuestion(Reponse reponse,
                                                 Question question) {
     def specObj = getObjectInitialiseFromSpecification(question)
-    updateReponseSpecificationForObject(reponse,specObj)
+    updateReponseSpecificationForObject(reponse, specObj)
   }
 
   /**
@@ -124,14 +118,18 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
   @Transactional
   Float evalueReponse(Reponse reponse) {
     def res = 0
+    boolean aucuneReponse = true
     ReponseMultipleChoiceSpecification repSpecObj = reponse.specificationObject
     MultipleChoiceSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
     def nbRepPos = repSpecObj.reponses.size()
-    for(int i=0; i < nbRepPos; i++) {
+    for (int i = 0; i < nbRepPos; i++) {
       MultipleChoiceSpecificationReponsePossible repPos = repSpecObj.reponses[i]
       MultipleChoiceSpecificationReponsePossible repPosQ = questSpecObj.reponses[i]
       if (repPos.libelleReponse != repPosQ.libelleReponse) {
         log.info("Libelles reponses incohérent : ${repPos.libelleReponse} <> ${repPosQ.libelleReponse}")
+      }
+      if (repPos.estUneBonneReponse) {
+        aucuneReponse = false
       }
       if (repPos.estUneBonneReponse == repPosQ.estUneBonneReponse) {
         res += 1
@@ -139,7 +137,11 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
         res -= 1
       }
     }
-    res =  (res / nbRepPos) * reponse.sujetQuestion.points
+    if (aucuneReponse) { // si aucune reponse, l'eleve n'a pas repondu, il a 0
+      res = 0
+    } else { // sinon on décompte avec points positifs et/ou négatifs
+      res = (res / nbRepPos) * reponse.sujetQuestion.points
+    }
     reponse.correctionNoteAutomatique = res
     reponse.save()
     return res

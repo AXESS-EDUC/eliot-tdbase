@@ -118,8 +118,7 @@ class CopieService {
     }
     copie.correctionNoteAutomatique = noteGlobale
 
-    // todofsil : c'est le nb de points sur le quel est noté le sujet
-    copie.correctionNoteCorrecteur = nbGlobalPoints
+    copie.maxPoints = nbGlobalPoints
     copie.save()
   }
 

@@ -81,7 +81,7 @@
     <g:if test="${copie.dateRemise}">
      <div class="portal-messages notice">Note :
        <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
-        / <g:formatNumber number="${copie.correctionNoteCorrecteur}" format="##0.00" /></div>
+        / <g:formatNumber number="${copie.maxPoints}" format="##0.00" /></div>
     </g:if>
     <g:set var="indexReponse" value="0"/>
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">

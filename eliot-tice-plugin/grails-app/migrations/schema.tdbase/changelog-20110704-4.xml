@@ -1420,4 +1420,11 @@
 
     </changeSet>
 
+    <changeSet id="31" author="fsil">
+        <comment>Ajout de la colonne copie.maxPoints</comment>
+        <addColumn tableName="copie" schemaName="td">
+            <column name="max_points" type="float"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
