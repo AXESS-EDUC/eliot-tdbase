@@ -98,7 +98,8 @@
                   title="Liste des séances">Séances</g:link>
         </li>
         <li id="menu-item-resultats">
-          <a  title="Résultats">Résultats</a>
+          <g:link action="listeResultats" controller="activite" params="[bcInit:true]"
+                  title="Liste des résultats">Résultats</g:link>
         </li>
       </ul>
     </div>
