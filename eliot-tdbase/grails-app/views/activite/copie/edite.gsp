@@ -36,7 +36,9 @@
   <r:script>
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
-
+      <g:if test="${!copie.estModifiable()}">
+      $(':checkbox').attr('disabled',true)
+      </g:if>
     });
   </r:script>
   <title>TDBase - Edition d'une copie</title>
@@ -62,11 +64,6 @@
   </g:if>
   <g:set var="sujet" value="${copie.sujet}"/>
   <form method="post">
-    <g:if test="${!copie.estModifiable()}">
-      <div class="portal-messages notice">
-        <span class="portal-messages notice">La copie n'est plus modifiable.</span>
-      </div>
-    </g:if>
     <div style="text-align: right;">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
@@ -79,9 +76,17 @@
     <g:hiddenField name="copie.id" value="${copie.id}"/>
     <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
     <g:if test="${copie.dateRemise}">
-     <div class="portal-messages notice">Note :
+     <div class="portal-messages notice">
+       <span class="portal-messages notice">Note :
        <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
-        / <g:formatNumber number="${copie.maxPoints}" format="##0.00" /></div>
+        / <g:formatNumber number="${copie.maxPoints}" format="##0.00" /></span>
+       &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+     </div>
+    </g:if>
+    <g:if test="${!copie.estModifiable() && copie.modaliteActivite.estOuverte()}">
+      <div class="portal-messages notice">
+        <span class="portal-messages notice">La copie n'est plus modifiable.</span>
+      </div>
     </g:if>
     <g:set var="indexReponse" value="0"/>
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
@@ -110,6 +115,11 @@
             <g:render
                     template="/question/${question.type.code}/${question.type.code}Interaction"
                     model="[question:question, reponse:reponse, indexReponse:indexReponse++]"/>
+            <g:if test="${copie.modaliteActivite.estPerimee()}">
+              <g:render template="/question/${question.type.code}/${question.type.code}Correction"
+                    model="[question:question]"/>
+            </g:if>
+
           </div>
         </g:if>
         <g:else>
