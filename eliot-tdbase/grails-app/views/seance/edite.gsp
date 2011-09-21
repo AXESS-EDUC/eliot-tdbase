@@ -128,15 +128,6 @@
           </td>
         </tr>
         <tr>
-          <td class="label">Remise&nbsp;des&nbsp;réponses&nbsp;:</td>
-          <td>
-            <g:textField name="dateRemiseReponses"
-                         value="${modaliteActivite.dateRemiseReponses.format('dd/MM/yyyy HH:mm')}"
-                         class="datepicker"/>
-          </td>
-        </tr>
-
-        <tr>
           <td class="label">Copie&nbsp;améliorable&nbsp;:</td>
           <td>
             <g:checkBox name="copieAmeliorable" title="améliorable"

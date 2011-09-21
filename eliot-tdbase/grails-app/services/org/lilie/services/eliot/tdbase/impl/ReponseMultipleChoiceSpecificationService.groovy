@@ -132,9 +132,9 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
         aucuneReponse = false
       }
       if (repPos.estUneBonneReponse == repPosQ.estUneBonneReponse) {
-        res += 1
+        res +=  1
       } else {
-        res -= 1
+        res += -1
       }
     }
     if (aucuneReponse) { // si aucune reponse, l'eleve n'a pas repondu, il a 0

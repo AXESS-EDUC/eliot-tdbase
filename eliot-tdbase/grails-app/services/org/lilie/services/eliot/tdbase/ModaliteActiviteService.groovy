@@ -150,8 +150,8 @@ class ModaliteActiviteService {
    */
   @Requires({modaliteActivite?.enseignant == personne})
   def supprimeModaliteActivite(ModaliteActivite modaliteActivite,Personne personne) {
-    // todofsil gerer la suppression des copies
-    Copie.executeUpdate('DELETE FROM Copie WHERE modaliteActivite=:modActivite', [modActivite: modaliteActivite])
+    Copie.executeUpdate('DELETE FROM Copie WHERE modaliteActivite=:modActivite',
+                        [modActivite: modaliteActivite])
     modaliteActivite.delete()
   }
 

@@ -77,7 +77,7 @@ class ModaliteActivite {
     matiere(nullable: true)
   }
 
-  static transients = ['groupeLibelle']
+  static transients = ['groupeLibelle', 'estOuverte', 'estPerimee']
 
   /**
    *
@@ -90,6 +90,24 @@ class ModaliteActivite {
       return groupe.nom
     }
     return ''
+  }
+
+  /**
+   *
+   * @return true si la séance est ouverte
+   */
+  boolean estOuverte() {
+    Date now = new Date()
+    now.before(dateFin) && now.after(dateDebut)
+  }
+
+  /**
+   *
+   * @return true si la séance est terminée
+   */
+  boolean estPerimee() {
+    Date now = new Date()
+    now.after(dateFin)
   }
 
 

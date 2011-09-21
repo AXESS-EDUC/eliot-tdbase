@@ -48,7 +48,7 @@ class AccueilController {
     if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionEleve().authority)) {
       redirect(controller: 'activite', action: 'listeSeances')
     } else {
-      redirect(controller: 'sujet', action: 'mesSujets')
+      redirect(controller: 'seance', action: 'liste')
     }
   }
 
