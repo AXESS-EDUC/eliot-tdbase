@@ -116,14 +116,12 @@ class ModaliteActiviteService {
    * @param chercheur la personne effectuant la recherche
    * @param paginationAndSortingSpec les specifications pour l'ordre et
    * la pagination
-   * @return la liste des séance
+   * @return la liste des séances
    */
   @Requires({chercheur != null})
   List<ModaliteActivite> findModalitesActivitesForApprenant(Personne chercheur,
                                                 Map paginationAndSortingSpec = null) {
-    if (!chercheur) {
-      throw new IllegalArgumentException("question.recherche.chercheur.null")
-    }
+
     if (paginationAndSortingSpec == null) {
       paginationAndSortingSpec = [:]
     }
@@ -153,6 +151,7 @@ class ModaliteActiviteService {
   @Requires({modaliteActivite?.enseignant == personne})
   def supprimeModaliteActivite(ModaliteActivite modaliteActivite,Personne personne) {
     // todofsil gerer la suppression des copies
+    Copie.executeUpdate('DELETE FROM Copie WHERE modaliteActivite=:modActivite', [modActivite: modaliteActivite])
     modaliteActivite.delete()
   }
 

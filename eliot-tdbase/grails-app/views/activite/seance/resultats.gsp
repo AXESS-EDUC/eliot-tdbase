@@ -68,19 +68,23 @@
 
         <tbody>
         <g:each in="${copies}" status="i" var="copie">
-          <g:set var="seance" value="${copie.seance}"/>
+          <g:set var="seance" value="${copie.modaliteActivite}"/>
           <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td>
               ${seance.sujet.titre}
             </td>
              <td>
-              ${copie.correctionNoteFinale}
+               <g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" />
+        / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
             </td>
             <td>
-              ${copie.correctionNoteAutomatique}
+              <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
+              / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
             </td>
             <td>
-              ${copie.correctionNoteCorrecteur}
+              <g:formatNumber number="${copie.correctionNoteCorrecteur}" format="##0.00" />
+                            / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
+
             </td>
             <td>
               ${seance.dateDebut.format('dd/MM/yy HH:mm')}
@@ -103,7 +107,7 @@
   </g:if>
   <g:else>
      <div class="portal_pagination">
-      Aucune séance
+      Aucune copie à visualiser
     </div>
   </g:else>
 </div>

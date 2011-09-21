@@ -112,6 +112,39 @@ class ActiviteController {
            ])
   }
 
+  /**
+   * Action liste résulats
+   *
+   */
+    def listeResultats() {
+    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.resultats.titre"))
+    Personne personne = authenticatedPersonne
+    def copies = copieService.findCopiesEnVisualisationForApprenant(
+            personne,
+            params
+    )
+    render(view: '/activite/seance/resultats', model: [
+           liens: breadcrumpsService.liens,
+           copies: copies
+           ])
+  }
+
+
+  /**
+   *
+   * Action visualise copie
+   */
+  def visualiseCopie() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
+    Copie copie = Copie.get(params.id)
+    render(view: '/activite/copie/edite', model: [
+           liens: breadcrumpsService.liens,
+           lienRetour: breadcrumpsService.lienRetour(),
+           copie: copie
+           ])
+  }
+
 }
 
 class ListeReponsesCopie {

@@ -122,6 +122,42 @@ class CopieService {
     copie.save()
   }
 
+/**
+   * Recherche les copies en visualisation élève  (profil élève)
+   * @param chercheur la personne effectuant la recherche
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @return la liste des copies
+   */
+  @Requires({chercheur != null})
+  List<Copie> findCopiesEnVisualisationForApprenant(Personne chercheur,
+                                                Map paginationAndSortingSpec = null) {
+
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
+    }
+    def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur)
+    Date now = new Date()
+    def criteria = Copie.createCriteria()
+    List<Copie> copies = criteria.list(paginationAndSortingSpec) {
+      eq 'eleve', chercheur
+      modaliteActivite {
+        inList 'structureEnseignement', structs
+        lt 'dateFin', now
+      }
+      if (paginationAndSortingSpec) {
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'dateRemise'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+        if (sortArg) {
+          order "${sortArg}", orderArg
+        }
+
+      }
+    }
+    return copies
+  }
+
+
 }
 
 class ReponseCopie {

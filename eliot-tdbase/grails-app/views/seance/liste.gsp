@@ -35,7 +35,7 @@
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
       $('.supprime').click(function() {
-        return confirm('Êtes vous sur de vouloir supprimer la séance ?');
+        return confirm('Êtes vous sur de vouloir supprimer la séance et toutes les copies associées ?');
       })
     });
   </r:script>
