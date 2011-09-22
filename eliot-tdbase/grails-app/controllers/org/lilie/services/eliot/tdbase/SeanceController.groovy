@@ -31,9 +31,9 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
+import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class SeanceController {
 
@@ -60,11 +60,11 @@ class SeanceController {
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
             personne)
     render(view: '/seance/edite', model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           modaliteActivite: modaliteActivite,
-           proprietesScolarite: proprietesScolarite
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            modaliteActivite: modaliteActivite,
+            proprietesScolarite: proprietesScolarite
+    ])
   }
 
   /**
@@ -75,7 +75,7 @@ class SeanceController {
     ModaliteActivite modaliteActivite
     Personne personne = authenticatedPersonne
     def propsId = params.proprietesScolariteSelectionId
-    if ( propsId && propsId != 'null') {
+    if (propsId && propsId != 'null') {
       ProprietesScolarite props = ProprietesScolarite.get(params.proprietesScolariteSelectionId)
       params.'structureEnseignement.id' = props.structureEnseignement.id
       if (props.matiere) {
@@ -95,11 +95,11 @@ class SeanceController {
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
             personne)
     render(view: '/seance/edite', model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           modaliteActivite: modaliteActivite,
-           proprietesScolarite: proprietesScolarite
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            modaliteActivite: modaliteActivite,
+            proprietesScolarite: proprietesScolarite
+    ])
   }
 
   /**
@@ -115,9 +115,9 @@ class SeanceController {
             params
     )
     render(view: '/seance/liste', model: [
-           liens: breadcrumpsService.liens,
-           seances: modalitesActivites
-           ])
+            liens: breadcrumpsService.liens,
+            seances: modalitesActivites
+    ])
   }
 
   /**
@@ -145,38 +145,44 @@ class SeanceController {
             seance,
             personne)
     render(view: '/seance/listeResultats', model: [
-           liens: breadcrumpsService.liens,
-           seance: seance,
-           copies: copies
-           ])
+            liens: breadcrumpsService.liens,
+            seance: seance,
+            copies: copies
+    ])
   }
 
   /**
-     *
-     * Action visualise copie
-     */
-    def visualiseCopie() {
-      breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
-      Copie copie = Copie.get(params.id)
-      render(view: '/seance/copie/corrige', model: [
-             liens: breadcrumpsService.liens,
-             lienRetour: breadcrumpsService.lienRetour(),
-             copie: copie
-             ])
-    }
+   *
+   * Action visualise copie
+   */
+  def visualiseCopie() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
+    ModaliteActivite seance = ModaliteActivite.get(params.id)
+    Personne personne = authenticatedPersonne
+    List<Copie> copies = copieService.findCopiesForModaliteActivite(
+            seance,
+            personne,
+            params)
+    render(view: '/seance/copie/corrige', model: [
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            copies: copies,
+            seance: seance
+    ])
+  }
 
   /**
-       *
-       * Action visualise copie
-       */
-      def enregistreCopie() {
-        Copie copie = Copie.get(params.id)
-        render(view: '/seance/copie/corrige', model: [
-               liens: breadcrumpsService.liens,
-               lienRetour: breadcrumpsService.lienRetour(),
-               copie: copie
-               ])
-      }
+   *
+   * Action visualise copie
+   */
+  def enregistreCopie() {
+    Copie copie = Copie.get(params.id)
+    render(view: '/seance/copie/corrige', model: [
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            copie: copie
+    ])
+  }
 
 
 }

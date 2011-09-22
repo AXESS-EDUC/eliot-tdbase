@@ -286,7 +286,8 @@ environments {
     ]
     eliot.portail.news = [
             "Login / mot de passe enseignant : ens1 / ens1",
-            "Login / mot de passe élève : elv1 / elv1"
+            "Login / mot de passe élève 1 : elv1 / elv1",
+            "Login / mot de passe élève 2 : elv2 / elv2"
     ]
   }
   demo {

@@ -56,6 +56,11 @@ class BootstrapService {
   private static final String ELEVE_1_PASSWORD = "elv1"
   private static final String ELEVE_1_NOM = "durand"
   private static final String ELEVE_1_PRENOM = "paul"
+  private static final String ELEVE_2_LOGIN = "elv2"
+  private static final String ELEVE_2_PASSWORD = "elv2"
+  private static final String ELEVE_2_NOM = "Durandine"
+  private static final String ELEVE_2_PRENOM = "Pauline"
+
 
   private static final String DEFAULT_CODE_PORTEUR_ENT = "ENT"
   private static final String UAI_LYCEE = '****L'
@@ -88,6 +93,7 @@ class BootstrapService {
       initialiseProprietesScolaritesEleveEnvDevelopmentTest()
       initialiseProfilsScolaritesEleve1EnvDevelopment()
       changeLoginAliasMotdePassePourEnseignant1()
+      initialiseEleve2EnvDevelopment()
     }
 
   }
@@ -439,6 +445,24 @@ class BootstrapService {
     if (!profilScolariteService.findProprietesScolaritesForPersonne(pers1)) {
       def props = ProprietesScolarite.findAllByFonctionAndNiveau(fonctionService.fonctionEleve(), niveauPrem)
       addProprietesScolariteToPersonne(props, pers1)
+    }
+  }
+
+  private def initialiseEleve2EnvDevelopment() {
+    if (!utilisateurService.findUtilisateur(ELEVE_2_LOGIN)) {
+      utilisateurService.createUtilisateur(
+              ELEVE_2_LOGIN,
+              ELEVE_2_PASSWORD,
+              ELEVE_2_NOM,
+              ELEVE_2_PRENOM
+      )
+      Utilisateur elv2 = utilisateurService.findUtilisateur(ELEVE_2_LOGIN)
+      Personne pers = Personne.get(elv2.personneId)
+      Niveau niveauPrem = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_1")
+
+      def props = ProprietesScolarite.findAllByFonctionAndNiveau(fonctionService.fonctionEleve(), niveauPrem)
+      addProprietesScolariteToPersonne(props, pers)
+
     }
   }
 

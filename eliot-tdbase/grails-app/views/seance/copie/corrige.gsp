@@ -48,7 +48,10 @@
 
 <div class="column span-22 last middle">
   <g:render template="/breadcrumps" model="[liens: liens]"/>
-
+  <div class="portal_pagination">
+        ${copies.totalCount} élève(s) <g:paginate total="${copies.totalCount}" id="${seance.id}"></g:paginate>
+  </div>
+  <g:set var="copie" value="${copies[0]}"/>
   <g:hasErrors bean="${copie}">
     <div class="portal-messages error">
       <g:eachError>

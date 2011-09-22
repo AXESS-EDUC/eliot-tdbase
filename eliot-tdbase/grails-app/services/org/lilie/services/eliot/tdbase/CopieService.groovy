@@ -108,8 +108,8 @@ class CopieService {
     reponsesCopie.each { ReponseCopie reponseCopie ->
       Reponse reponse = reponseCopie.reponse
       reponseService.updateSpecificationAndEvalue(reponse,
-                                          reponseCopie.specificationObject,
-                                          eleve)
+                                                  reponseCopie.specificationObject,
+                                                  eleve)
       if (reponse.correctionNoteAutomatique != null) {
         noteGlobaleAuto += reponse.correctionNoteAutomatique
         nbGlobalPointsAuto += reponse.sujetQuestion.points
@@ -137,19 +137,15 @@ class CopieService {
   }
 
 /**
-   * Recherche les copies en visualisation élève  (profil élève)
-   * @param chercheur la personne effectuant la recherche
-   * @param paginationAndSortingSpec les specifications pour l'ordre et
-   * la pagination
-   * @return la liste des copies
-   */
+ * Recherche les copies en visualisation élève  (profil élève)
+ * @param chercheur la personne effectuant la recherche
+ * @param paginationAndSortingSpec les specifications pour l'ordre et
+ * la pagination
+ * @return la liste des copies
+ */
   @Requires({chercheur != null})
   List<Copie> findCopiesEnVisualisationForApprenant(Personne chercheur,
-                                                Map paginationAndSortingSpec = null) {
-
-    if (paginationAndSortingSpec == null) {
-      paginationAndSortingSpec = [:]
-    }
+                                                    Map paginationAndSortingSpec = [:]) {
     def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur)
     Date now = new Date()
     def criteria = Copie.createCriteria()
@@ -171,20 +167,22 @@ class CopieService {
     return copies
   }
 
-   /**
+  /**
    *
-   * @param seance  la séance
+   * @param seance la séance
    * @param chercheur la personne déclenchant la recherche
+   * @param paginationSpec les specifications la pagination
    * @return
    */
   @Requires({seance?.enseignant == chercheur})
-  List<Copie>  findCopiesForModaliteActivite(ModaliteActivite seance,
-                                              Personne chercheur) {
+  List<Copie> findCopiesForModaliteActivite(ModaliteActivite seance,
+                                            Personne chercheur,
+                                            Map paginationSpec = [:]) {
     def criteria = Copie.createCriteria()
-    List<Copie> copies = criteria.list() {
+    List<Copie> copies = criteria.list(paginationSpec) {
       eq 'modaliteActivite', seance
       eleve {
-        order 'nom','asc'
+        order 'nom', 'asc'
       }
       join 'eleve'
     }
