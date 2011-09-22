@@ -27,6 +27,8 @@
   --}%
 
 
+
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
@@ -34,79 +36,63 @@
   <r:script>
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
-      $('.supprime').click(function() {
-        return confirm('Êtes vous sur de vouloir supprimer la séance et toutes les copies associées ?');
-      })
     });
   </r:script>
-  <title>TDBase - Liste des séances</title>
+  <title>TDBase - Liste des résultats</title>
 </head>
 
 <body>
 <div class="column span-22 last middle">
   <g:render template="/breadcrumps" model="[liens: liens]"/>
 
-  <g:if test="${seances}">
-    <div class="portal_pagination">
-      ${seances.totalCount} résultat(s) <g:paginate total="${seances.totalCount}"></g:paginate>
-    </div>
-
+  <div class="portal-messages notice">
+  Groupe : ${seance.groupeLibelle}<br/>
+  Sujet : ${seance.sujet.titre} <br/>
+  Séance du ${seance.dateDebut.format('dd/MM/yy HH:mm')} au  ${seance.dateFin.format('dd/MM/yy HH:mm')}<br/>
+  </div>
+  <br/>
+  <g:if test="${copies}">
     <div class="portal-default_table">
       <table>
         <thead>
         <tr>
-          <th>Groupe</th>
-          <th>Résultats</th>
-          <th>Matière</th>
-          <th>Sujet</th>
-          <th>Début</th>
-          <th>Fin</th>
-          <th>Modifier</th>
-          <th>Supprimer</th>
+          <th>Élève</th>
+          <th>Note</th>
+          <th>Note auto.</th>
+          <th>Note prof.</th>
+          <th>Dernière remise</th>
+          <th>Visualiser</th>
         </tr>
         </thead>
 
         <tbody>
-        <g:each in="${seances}" status="i" var="seance">
+        <g:each in="${copies}" status="i" var="copie">
           <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td>
-              ${seance.groupeLibelle}
+              ${copie.eleve.nomAffichage}
             </td>
             <td>
-              <g:link action="listeResultats" controller="seance"
-                      id="${seance.id}">
-              <img border="0"
-                     src="/eliot-tdbase/images/eliot/magglass-btn.gif"
-                     width="16" height="16"/>
-              </g:link>
+               <g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" />
+        / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
             </td>
             <td>
-              ${seance.matiere?.libelleLong}
+              <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
+              / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
             </td>
             <td>
-              ${seance.sujet.titre}
+              <g:formatNumber number="${copie.correctionNoteCorrecteur}" format="##0.00" />
+                            / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
+
             </td>
             <td>
-              ${seance.dateDebut.format('dd/MM/yy HH:mm')}
+              ${copie.dateRemise.format('dd/MM/yy  à HH:mm')}
             </td>
-            <td>
-              ${seance.dateFin.format('dd/MM/yy HH:mm')}
-            </td>
-            <td>
-              <g:link action="edite" controller="seance"
-                      id="${seance.id}">
-                <img border="0"
-                     src="/eliot-tdbase/images/eliot/write-btn.gif"
+             <td>
+              <g:link action="visualiseCopie" controller="activite"
+                      id="${copie.id}" title="Visualiser la copie">
+                <img src="/eliot-tdbase/images/eliot/magglass-btn.gif"
                      width="18" height="16"/>
               </g:link>
-            </td>
-            <td>
-              <g:link action="supprime" controller="seance"
-                      id="${seance.id}" class="supprime">
-                <img border="0"
-                     src="/eliot-tdbase/images/eliot/trashcan-btn.gif"
-                     width="20" height="19"/>
-                </g:link>
             </td>
           </tr>
         </g:each>
@@ -116,7 +102,7 @@
   </g:if>
   <g:else>
      <div class="portal_pagination">
-      Aucune séance
+      Aucun résultat
     </div>
   </g:else>
 </div>

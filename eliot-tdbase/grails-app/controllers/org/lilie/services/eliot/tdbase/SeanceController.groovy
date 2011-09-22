@@ -41,6 +41,7 @@ class SeanceController {
 
   BreadcrumpsService breadcrumpsService
   ModaliteActiviteService modaliteActiviteService
+  CopieService copieService
   ProfilScolariteService profilScolariteService
 
 /**
@@ -130,6 +131,27 @@ class SeanceController {
                                                      personne)
     redirect(action: "liste")
   }
+
+  /**
+   *
+   * Action liste résultats
+   */
+  def listeResultats() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.resultats.titre"))
+
+    ModaliteActivite seance = ModaliteActivite.get(params.id)
+    Personne personne = authenticatedPersonne
+    List<Copie> copies = copieService.findCopiesForModaliteActivite(
+            seance,
+            personne)
+    render(view: '/seance/listeResultats', model: [
+           liens: breadcrumpsService.liens,
+           seance: seance,
+           copies: copies
+           ])
+  }
+
+
 
 }
 

@@ -157,6 +157,25 @@ class CopieService {
     return copies
   }
 
+   /**
+   *
+   * @param seance  la séance
+   * @param chercheur la personne déclenchant la recherche
+   * @return
+   */
+  @Requires({seance?.enseignant == chercheur})
+  List<Copie>  findCopiesForModaliteActivite(ModaliteActivite seance,
+                                              Personne chercheur) {
+    def criteria = Copie.createCriteria()
+    List<Copie> copies = criteria.list() {
+      eq 'modaliteActivite', seance
+      eleve {
+        order 'nom','asc'
+      }
+      join 'eleve'
+    }
+    return copies
+  }
 
 }
 
