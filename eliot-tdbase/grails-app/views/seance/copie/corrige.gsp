@@ -38,7 +38,7 @@
   <r:script>
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
-      $(':checkbox').attr('disabled',true)
+      $(':checkbox').attr('disabled', true)
     });
   </r:script>
   <title>TDBase - Edition d'une copie</title>
@@ -49,10 +49,11 @@
 <div class="column span-22 last middle">
   <g:render template="/breadcrumps" model="[liens: liens]"/>
   <div class="portal_pagination">
-        ${copies.totalCount} élève(s) <g:paginate total="${copies.totalCount}" id="${seance.id}"></g:paginate>
+    ${copies.totalCount} élève(s) <g:paginate total="${copies.totalCount}"
+                                              id="${seance.id}"></g:paginate>
   </div>
   <g:set var="copie" value="${copies[0]}"/>
-  <g:hasErrors bean="${copie}">
+  <g:hasErrors bean="${copieNotation}">
     <div class="portal-messages error">
       <g:eachError>
         <li><g:message error="${it}"/></li>
@@ -67,81 +68,102 @@
   </g:if>
   <g:set var="sujet" value="${copie.sujet}"/>
   <form method="post">
-    <div style="text-align: right;">
+
+    <g:hiddenField name="copieId" value="${copie.id}"/>
+    <div class="portal-form_container">
+      <table>
+        <tr>
+          <td class="label">Élève :</td>
+          <td><strong>${copie.eleve.nomAffichage}</strong></td>
+        </tr>
+
+        <tr>
+          <td class="label">Appréciation :</td>
+          <td>
+            <g:textArea name="copieAnnotation"
+                        value="${copie.correctionAnnotation}" rows="3"
+                        cols="50"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">Modulation :</td>
+          <td>
+            <g:textField name="copiePointsModulation"
+                         value="${copie.pointsModulation}"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">Note :</td>
+          <td>
+            <strong><g:formatNumber number="${copie.correctionNoteFinale}"
+                            format="##0.00"/>
+            / <g:formatNumber number="${copie.maxPoints}" format="##0.00" /></strong>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="form_actions">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link>&nbsp;
       |&nbsp;
       <g:actionSubmit value="Enregistrer" action="enregistreCopie"
-                              title="Enregistrer"/>
-    </div>
-    <g:hiddenField name="copie.id" value="${copie.id}"/>
-    <div class="portal-messages notice">
-      <span class="portal-messages notice">Élève : ${copie.eleve.nomAffichage}
-      </span><br/>
-      <span class="portal-messages notice">Note :
-           <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
-            / <g:formatNumber number="${copie.maxPoints}" format="##0.00" /></span>
-           &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
-    </div>
-    <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
-
-    <g:set var="indexReponse" value="0"/>
-    <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
-      <div class="tdbase-sujet-edition-question">
-        <g:if test="${sujetQuestion.question.type.interaction}">
-          <g:set var="reponse"
-                 value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
-          <div class="tdbase-sujet-edition-question-points"
-               style="margin-bottom: 15px">
-            <div id="SujetSequenceQuestions-${sujetQuestion.id}"
-                 style="float: left;width: 40px;">
-              <g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00" />
-            </div>
-             &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}" format="##0.00" />&nbsp;point(s)
-            </div>
-        </g:if>
-        <g:set var="question" value="${sujetQuestion.question}"/>
-
-        <g:if test="${question.type.interaction}">
-          <div class="tdbase-sujet-edition-question-interaction">
-
-            <g:hiddenField
-                    name="reponsesCopie.listeReponses[${indexReponse}].reponse.id"
-                    value="${reponse.id}"/>
-
-            <g:render
-                    template="/question/${question.type.code}/${question.type.code}Interaction"
-                    model="[question:question, reponse:reponse, indexReponse:indexReponse++]"/>
-
-              <g:render template="/question/${question.type.code}/${question.type.code}Correction"
-                    model="[question:question]"/>
-
-
-          </div>
-        </g:if>
-        <g:else>
-          <div class="tdbase-sujet-edition-question-interaction">
-            <g:set var="question" value="${sujetQuestion.question}"/>
-            <g:render
-                    template="/question/${question.type.code}/${question.type.code}Preview"
-                    model="[question:question]"/>
-          </div>
-        </g:else>
-
-      </div>
-
-    </g:each>
-    <g:hiddenField name="nombreReponses" value="${indexReponse}"/>
-    <div style="text-align: right;margin-top: 20px;">
-      <g:link action="${lienRetour.action}"
-              controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link>&nbsp;
-      |&nbsp;
-        <g:actionSubmit value="Enregistrer" action="enregistreCopie"
-                        title="Enregistrer"/>
+                      title="Enregistrer" id="${seance.id}"/>
     </div>
   </form>
+
+  <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
+
+  <g:set var="indexReponse" value="0"/>
+  <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
+    <div class="tdbase-sujet-edition-question">
+      <g:if test="${sujetQuestion.question.type.interaction}">
+        <g:set var="reponse"
+               value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
+        <div class="tdbase-sujet-edition-question-points"
+             style="margin-bottom: 15px">
+          <div id="SujetSequenceQuestions-${sujetQuestion.id}"
+               style="float: left;width: 40px;">
+            <g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                            format="##0.00"/>
+          </div>
+          &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}"
+                                       format="##0.00"/>&nbsp;point(s)
+        </div>
+      </g:if>
+      <g:set var="question" value="${sujetQuestion.question}"/>
+
+      <g:if test="${question.type.interaction}">
+        <div class="tdbase-sujet-edition-question-interaction">
+
+          <g:hiddenField
+                  name="reponsesCopie.listeReponses[${indexReponse}].reponse.id"
+                  value="${reponse.id}"/>
+
+          <g:render
+                  template="/question/${question.type.code}/${question.type.code}Interaction"
+                  model="[question:question, reponse:reponse, indexReponse:indexReponse++]"/>
+
+          <g:render
+                  template="/question/${question.type.code}/${question.type.code}Correction"
+                  model="[question:question]"/>
+
+        </div>
+      </g:if>
+      <g:else>
+        <div class="tdbase-sujet-edition-question-interaction">
+          <g:set var="question" value="${sujetQuestion.question}"/>
+          <g:render
+                  template="/question/${question.type.code}/${question.type.code}Preview"
+                  model="[question:question]"/>
+        </div>
+      </g:else>
+
+    </div>
+
+  </g:each>
+
 </div>
 
 </body>

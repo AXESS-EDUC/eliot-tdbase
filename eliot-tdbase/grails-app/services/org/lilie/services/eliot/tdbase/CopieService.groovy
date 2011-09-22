@@ -99,7 +99,7 @@ class CopieService {
    */
   @Transactional
   @Requires({copie.eleve == eleve && copie.estModifiable()})
-  def updateCopieForListeReponsesCopie(Copie copie,
+  Copie updateCopieForListeReponsesCopie(Copie copie,
                                        List<ReponseCopie> reponsesCopie,
                                        Personne eleve) {
     def noteGlobaleAuto = 0
@@ -133,7 +133,29 @@ class CopieService {
     } else {
       copie.correctionNoteFinale = copie.correctionNoteAutomatique
     }
+    copie.correctionNoteFinale += copie.pointsModulation
     copie.save()
+    return copie
+  }
+
+  /**
+   * Met à jour la notation de la copie
+   * @param copie la copie
+   * @param enseignant l'enseignant qui corrige
+   * @return la copie mise à jour
+   */
+  @Transactional
+  @Requires({copie.modaliteActivite.enseignant == enseignant })
+  Copie updateAnnotationAndModulationForCopie(
+          String annotation,
+          Float pointsModulation,
+          Copie copie,
+          Personne enseignant) {
+    copie.correctionAnnotation = annotation
+    copie.pointsModulation = pointsModulation
+    copie.correctionNoteFinale = copie.recalculeNoteFinale()
+    copie.save()
+    return copie
   }
 
 /**

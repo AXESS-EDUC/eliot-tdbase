@@ -175,12 +175,29 @@ class SeanceController {
    *
    * Action visualise copie
    */
-  def enregistreCopie() {
-    Copie copie = Copie.get(params.id)
+  def enregistreCopie(CopieNotationCommand copieNotation) {
+    Personne personne = authenticatedPersonne
+    ModaliteActivite seance = ModaliteActivite.get(params.id)
+    if (!copieNotation.hasErrors()) {
+      Copie copie = Copie.get(copieNotation.copieId)
+      copieService.updateAnnotationAndModulationForCopie(
+              copieNotation.copieAnnotation,
+              copieNotation.copiePointsModulation,
+              copie,
+              personne)
+      request.messageCode = "copie.correction.succes"
+    }
+    List<Copie> copies = copieService.findCopiesForModaliteActivite(
+            seance,
+            personne,
+            params)
     render(view: '/seance/copie/corrige', model: [
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
-            copie: copie
+            copies: copies,
+            seance: seance,
+            copieNotation: copieNotation
+
     ])
   }
 
@@ -188,3 +205,8 @@ class SeanceController {
 }
 
 
+class CopieNotationCommand {
+  Long copieId
+  String copieAnnotation
+  Float copiePointsModulation
+}

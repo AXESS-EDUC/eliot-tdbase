@@ -77,7 +77,7 @@ class Copie {
     cache(true)
   }
 
-  static transients = ['estModifiable']
+  static transients = ['estModifiable', 'recalculeNoteFinale']
 
   /**
    *  Retourne la réponse correspondant à la question donnée
@@ -107,5 +107,21 @@ class Copie {
     }
     return true
   }
+
+  /**
+   *
+   * @return la nouvelle valeur de la note finale
+   */
+  Float recalculeNoteFinale() {
+    def note = 0
+    if (correctionNoteAutomatique != null) {
+      note += correctionNoteAutomatique
+    }
+    if (correctionNoteCorrecteur != null) {
+      note += correctionNoteCorrecteur
+    }
+     note + pointsModulation
+  }
+
 
 }
