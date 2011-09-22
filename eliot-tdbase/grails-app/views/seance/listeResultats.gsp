@@ -61,7 +61,7 @@
           <th>Note auto.</th>
           <th>Note prof.</th>
           <th>Dernière remise</th>
-          <th>Visualiser</th>
+          <th>Copie</th>
         </tr>
         </thead>
 
@@ -77,18 +77,18 @@
             </td>
             <td>
               <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
-              / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
+              / <g:formatNumber number="${copie.maxPointsAutomatique}" format="##0.00" />
             </td>
             <td>
               <g:formatNumber number="${copie.correctionNoteCorrecteur}" format="##0.00" />
-                            / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
+                            / <g:formatNumber number="${copie.maxPointsCorrecteur}" format="##0.00" />
 
             </td>
             <td>
               ${copie.dateRemise.format('dd/MM/yy  à HH:mm')}
             </td>
              <td>
-              <g:link action="visualiseCopie" controller="activite"
+              <g:link action="visualiseCopie" controller="seance"
                       id="${copie.id}" title="Visualiser la copie">
                 <img src="/eliot-tdbase/images/eliot/magglass-btn.gif"
                      width="18" height="16"/>

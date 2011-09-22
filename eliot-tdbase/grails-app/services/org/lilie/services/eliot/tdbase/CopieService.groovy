@@ -102,23 +102,37 @@ class CopieService {
   def updateCopieForListeReponsesCopie(Copie copie,
                                        List<ReponseCopie> reponsesCopie,
                                        Personne eleve) {
-    def noteGlobale = 0
-    def nbGlobalPoints = 0
+    def noteGlobaleAuto = 0
+    def nbGlobalPointsAuto = 0
+    def nbGlobalPointsCorrecteur = 0
     reponsesCopie.each { ReponseCopie reponseCopie ->
       Reponse reponse = reponseCopie.reponse
       reponseService.updateSpecificationAndEvalue(reponse,
                                           reponseCopie.specificationObject,
                                           eleve)
-      noteGlobale += reponse.correctionNoteAutomatique
-      nbGlobalPoints += reponse.sujetQuestion.points
+      if (reponse.correctionNoteAutomatique != null) {
+        noteGlobaleAuto += reponse.correctionNoteAutomatique
+        nbGlobalPointsAuto += reponse.sujetQuestion.points
+      } else {
+        nbGlobalPointsCorrecteur += reponse.sujetQuestion.points
+      }
     }
     copie.dateRemise = new Date()
-    if (noteGlobale < 0) {
-      noteGlobale = 0
+    if (noteGlobaleAuto < 0) {
+      noteGlobaleAuto = 0
     }
-    copie.correctionNoteAutomatique = noteGlobale
+    copie.correctionNoteAutomatique = noteGlobaleAuto
 
-    copie.maxPoints = nbGlobalPoints
+    copie.maxPointsAutomatique = nbGlobalPointsAuto
+    copie.maxPointsCorrecteur = nbGlobalPointsCorrecteur
+    copie.maxPoints = nbGlobalPointsAuto + nbGlobalPointsCorrecteur
+    if (nbGlobalPointsCorrecteur > 0) {
+      if (copie.correctionNoteCorrecteur != null) {
+        copie.correctionNoteFinale = copie.correctionNoteAutomatique + copie.correctionNoteCorrecteur
+      }
+    } else {
+      copie.correctionNoteFinale = copie.correctionNoteAutomatique
+    }
     copie.save()
   }
 

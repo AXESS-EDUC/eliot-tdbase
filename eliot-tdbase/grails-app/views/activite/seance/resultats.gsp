@@ -79,11 +79,11 @@
             </td>
             <td>
               <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
-              / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
+              / <g:formatNumber number="${copie.maxPointsAutomatique}" format="##0.00" />
             </td>
             <td>
               <g:formatNumber number="${copie.correctionNoteCorrecteur}" format="##0.00" />
-                            / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
+                            / <g:formatNumber number="${copie.maxPointsCorrecteur}" format="##0.00" />
 
             </td>
             <td>

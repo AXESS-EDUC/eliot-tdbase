@@ -43,6 +43,9 @@ class Copie {
   Float correctionNoteFinale
   Float correctionNoteCorrecteur
   Float maxPoints
+  Float maxPointsAutomatique
+  Float maxPointsCorrecteur
+  Float pointsModulation = 0
   String correctionNoteNonNumerique
 
   Sujet sujet
@@ -60,6 +63,8 @@ class Copie {
     correctionNoteCorrecteur(nullable: true)
     correctionNoteNonNumerique(nullable: true)
     maxPoints(nullable: true)
+    maxPointsAutomatique(nullable: true)
+    maxPointsCorrecteur(nullable: true)
     eleve(nullable: true)
     correcteur(nullable: true)
     modaliteActivite(nullable: true)

@@ -82,7 +82,7 @@ class ActiviteController {
 
   /**
    *
-   * Action enregistre réponse
+   * Action rend la copie
    */
   def rendLaCopie() {
     Copie copie = Copie.get(params.copie.id)

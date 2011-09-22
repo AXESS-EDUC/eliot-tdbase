@@ -11,6 +11,11 @@
         <sourceRoots />
       </configuration>
     </facet>
+    <facet type="hibernate" name="Hibernate">
+      <configuration>
+        <datasource-map />
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
@@ -40,12 +45,14 @@
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-1.6.1.1/src/groovy" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-1.6.1.1/grails-app/services" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-1.6.1.1/grails-app/taglib" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-1.6.1.1/grails-app/i18n" isTestSource="false" />
       <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-1.6.1.1/target/classes" />
       <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-1.6.1.1/target/test-classes" />
       <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-1.6.1.1/web-app/plugins" />
     </content>
     <content url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-ui-1.8.15">
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/grails-app/taglib" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/grails-app/i18n" isTestSource="false" />
       <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/target/classes" />
       <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/target/test-classes" />
       <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/web-app/plugins" />
@@ -64,6 +71,7 @@
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/spring-security-core-1.2/src/groovy" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/spring-security-core-1.2/grails-app/services" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/spring-security-core-1.2/grails-app/taglib" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/spring-security-core-1.2/grails-app/i18n" isTestSource="false" />
       <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/spring-security-core-1.2/target/classes" />
       <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/spring-security-core-1.2/target/test-classes" />
       <excludeFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/spring-security-core-1.2/web-app/plugins" />

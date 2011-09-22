@@ -1427,4 +1427,13 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="32" author="fsil">
+            <comment>Ajout des la colonne copie.maxPoints...</comment>
+            <addColumn tableName="copie" schemaName="td">
+                <column name="max_points_automatique" type="float"/>
+                <column name="max_points_correcteur" type="float"/>
+                <column name="points_modulation" type="float" defaultValue="0"/>
+            </addColumn>
+        </changeSet>
+
 </databaseChangeLog>

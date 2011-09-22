@@ -151,6 +151,32 @@ class SeanceController {
            ])
   }
 
+  /**
+     *
+     * Action visualise copie
+     */
+    def visualiseCopie() {
+      breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
+      Copie copie = Copie.get(params.id)
+      render(view: '/seance/copie/corrige', model: [
+             liens: breadcrumpsService.liens,
+             lienRetour: breadcrumpsService.lienRetour(),
+             copie: copie
+             ])
+    }
+
+  /**
+       *
+       * Action visualise copie
+       */
+      def enregistreCopie() {
+        Copie copie = Copie.get(params.id)
+        render(view: '/seance/copie/corrige', model: [
+               liens: breadcrumpsService.liens,
+               lienRetour: breadcrumpsService.lienRetour(),
+               copie: copie
+               ])
+      }
 
 
 }
