@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -63,6 +64,51 @@
     </div>
   </g:if>
   <g:set var="sujet" value="${copie.sujet}"/>
+  <g:if test="${copie.modaliteActivite.estPerimee()}">
+    <div class="portal-form_container">
+          <table>
+            <tr>
+              <td class="label">Élève :</td>
+              <td><strong>${copie.eleve.nomAffichage}</strong></td>
+            </tr>
+
+            <tr>
+              <td class="label">Appréciation :</td>
+              <td>
+                ${copie.correctionAnnotation}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">Modulation :</td>
+              <td>
+                ${NumberUtils.formatFloat(copie.pointsModulation)}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">Note :</td>
+              <td>
+                <strong>${NumberUtils.formatFloat(copie.correctionNoteFinale)}
+                / ${NumberUtils.formatFloat(copie.maxPoints)}</strong>
+              </td>
+            </tr>
+          </table>
+        </div>
+  </g:if>
+  <g:if test="${copie.modaliteActivite.estOuverte()}">
+      <g:if test="${copie.dateRemise}">
+           <div class="portal-messages notice">
+             Note (correction automatique) :
+             <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
+              / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
+             &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+           </div>
+       </g:if>
+      <g:if test="${!copie.estModifiable()}">
+            <div class="portal-messages notice">
+              La copie n'est plus modifiable.
+            </div>
+      </g:if>
+  </g:if>
   <form method="post">
     <div style="text-align: right;">
       <g:link action="${lienRetour.action}"
@@ -74,20 +120,8 @@
       </g:if>
     </div>
     <g:hiddenField name="copie.id" value="${copie.id}"/>
+
     <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
-    <g:if test="${copie.dateRemise}">
-     <div class="portal-messages notice">
-       <span class="portal-messages notice">Note :
-       <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
-        / <g:formatNumber number="${copie.maxPoints}" format="##0.00" /></span>
-       &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
-     </div>
-    </g:if>
-    <g:if test="${!copie.estModifiable() && copie.modaliteActivite.estOuverte()}">
-      <div class="portal-messages notice">
-        <span class="portal-messages notice">La copie n'est plus modifiable.</span>
-      </div>
-    </g:if>
     <g:set var="indexReponse" value="0"/>
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">

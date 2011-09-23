@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -89,7 +90,7 @@
           <td class="label">Modulation :</td>
           <td>
             <g:textField name="copiePointsModulation"
-                         value="${copie.pointsModulation}"/>
+                         value="${NumberUtils.formatFloat(copie.pointsModulation)}"/>
           </td>
         </tr>
         <tr>
