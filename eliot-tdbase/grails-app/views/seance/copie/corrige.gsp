@@ -26,12 +26,6 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
-
-
-
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
@@ -162,10 +156,7 @@
       </g:else>
 
     </div>
-
   </g:each>
-
 </div>
-
 </body>
 </html>
