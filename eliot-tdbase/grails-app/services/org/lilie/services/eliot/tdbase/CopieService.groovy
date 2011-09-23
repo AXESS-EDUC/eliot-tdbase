@@ -48,6 +48,45 @@ class CopieService {
   ReponseService reponseService
 
   /**
+     * Récupère la copie de teste d'une personne pour un sujet
+     * @param sujet le sujet
+     * @param personne la personne
+     * @return la copie
+     */
+    @Transactional
+    Copie getCopieTestForSujetAndPersonne(Sujet sujet, Personne personne) {
+      Copie copie = Copie.findBySujetAndEleve(sujet, personne)
+      if (copie == null) {
+        copie = new Copie(
+                eleve: personne,
+                sujet: sujet
+        )
+        if (!copie.save() || copie.hasErrors()) {
+          return copie
+        }
+      }
+      // pour chaque question du sujet, on crée un obejt de type réponse ;
+      // on test la nécessité de creer la réponse car si le sujet a été modifié
+      // alors que la copie a déjà été créé, il faut créé la réponse adhoc pour
+      // la ou les questions ajoutées
+      sujet.questionsSequences.each {
+        if (it.question.type.interaction) {
+          Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
+          if (reponse == null) {
+            reponseService.createReponse(
+                    copie,
+                    it,
+                    personne
+            )
+          }
+        }
+      }
+
+      return copie
+    }
+
+
+  /**
    * Récupère la copie d'un élève pour une séance
    * @param seance la séance
    * @param eleve l'élève
@@ -89,6 +128,8 @@ class CopieService {
 
     return copie
   }
+
+
 
   /**
    * Met à jour la copie en prenant en compte la liste de réponses soumises

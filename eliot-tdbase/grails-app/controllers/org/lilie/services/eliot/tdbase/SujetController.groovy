@@ -16,6 +16,8 @@ class SujetController {
   static final String PROP_RANG_INSERTION = 'rangInsertion'
 
   SujetService sujetService
+  CopieService copieService
+  ReponseService reponseService
   SpringSecurityService springSecurityService
   ProfilScolariteService profilScolariteService
   BreadcrumpsService breadcrumpsService
@@ -85,9 +87,9 @@ class SujetController {
   def nouveau() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
     render(view: "edite", model: [
-           liens: breadcrumpsService.liens,
-           titreSujet: message(code: "sujet.nouveau.titre")
-           ])
+            liens: breadcrumpsService.liens,
+            titreSujet: message(code: "sujet.nouveau.titre")
+    ])
   }
 
   /**
@@ -106,6 +108,55 @@ class SujetController {
   }
 
   /**
+   * Action "teste"
+   */
+  def teste() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.edite.titre"))
+    Personne personne = authenticatedPersonne
+    Sujet sujet = Sujet.get(params.id)
+    Copie copie = copieService.getCopieTestForSujetAndPersonne(sujet, personne)
+    [
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            copie: copie,
+            afficheCorrection: false
+    ]
+  }
+
+  /**
+   *
+   * Action rend la copie
+   */
+  def rendLaCopieTeste() {
+    Copie copie = Copie.get(params.copie.id)
+    def nombreReponses = params.nombreReponses as Integer
+    ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
+    nombreReponses.times {
+      reponsesCopie.listeReponses << new ReponseCopie()
+    }
+    bindData(reponsesCopie, params, "reponsesCopie")
+
+    reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
+      def reponse = Reponse.get(reponseCopie.reponse.id)
+      reponseCopie.reponse = reponse
+      reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
+    }
+    bindData(reponsesCopie, params, "reponsesCopie")
+    Personne eleve = authenticatedPersonne
+    copieService.updateCopieForListeReponsesCopie(copie,
+                                                  reponsesCopie.listeReponses,
+                                                  eleve)
+    request.messageCode = "copie.enregistre.succes"
+
+    render(view: '/sujet/teste', model: [
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            copie: copie,
+            afficheCorrection: true
+    ])
+  }
+
+  /**
    *
    * Action "editeProprietes"
    */
@@ -114,13 +165,13 @@ class SujetController {
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
     render(view: "editeProprietes", model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           sujet: sujet,
-           typesSujet: sujetService.getAllSujetTypes(),
-           matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-           niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            sujet: sujet,
+            typesSujet: sujetService.getAllSujetTypes(),
+            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+    ])
   }
 
   /**
@@ -132,11 +183,11 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     Sujet sujet = sujetService.supprimeQuestionFromSujet(sujetQuestion, proprietaire)
     render(view: '/sujet/edite', model: [
-           sujet: sujet,
-           titreSujet: sujet.titre,
-           sujetEnEdition: true,
-           liens: breadcrumpsService.liens
-           ])
+            sujet: sujet,
+            titreSujet: sujet.titre,
+            sujetEnEdition: true,
+            liens: breadcrumpsService.liens
+    ])
   }
 
 /**
@@ -148,11 +199,11 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     Sujet sujet = sujetService.inverseQuestionAvecLaPrecedente(sujetQuestion, proprietaire)
     render(view: '/sujet/edite', model: [
-           sujet: sujet,
-           titreSujet: sujet.titre,
-           sujetEnEdition: true,
-           liens: breadcrumpsService.liens
-           ])
+            sujet: sujet,
+            titreSujet: sujet.titre,
+            sujetEnEdition: true,
+            liens: breadcrumpsService.liens
+    ])
   }
 
   /**
@@ -164,11 +215,11 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     Sujet sujet = sujetService.inverseQuestionAvecLaSuivante(sujetQuestion, proprietaire)
     render(view: '/sujet/edite', model: [
-           sujet: sujet,
-           titreSujet: sujet.titre,
-           sujetEnEdition: true,
-           liens: breadcrumpsService.liens
-           ])
+            sujet: sujet,
+            titreSujet: sujet.titre,
+            sujetEnEdition: true,
+            liens: breadcrumpsService.liens
+    ])
   }
 
   /**
@@ -200,11 +251,11 @@ class SujetController {
       }
     }
     render(view: "edite", model: [
-           liens: breadcrumpsService.liens,
-           titreSujet: sujet.titre,
-           sujet: sujet,
-           sujetEnEdition: sujetEnEdition
-           ])
+            liens: breadcrumpsService.liens,
+            titreSujet: sujet.titre,
+            sujet: sujet,
+            sujetEnEdition: sujetEnEdition
+    ])
   }
 
   /**
@@ -219,13 +270,13 @@ class SujetController {
       request.messageCode = "sujet.enregistre.succes"
     }
     render(view: "editeProprietes", model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           sujet: sujetModifie,
-           typesSujet: sujetService.getAllSujetTypes(),
-           matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-           niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            sujet: sujetModifie,
+            typesSujet: sujetService.getAllSujetTypes(),
+            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+    ])
   }
 
   /**
@@ -264,11 +315,11 @@ class SujetController {
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
             personne)
     render(view: '/seance/edite', model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           modaliteActivite: modaliteActivite,
-           proprietesScolarite: proprietesScolarite
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            modaliteActivite: modaliteActivite,
+            proprietesScolarite: proprietesScolarite
+    ])
   }
 
   /**

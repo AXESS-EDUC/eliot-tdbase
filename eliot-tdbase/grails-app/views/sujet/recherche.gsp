@@ -124,6 +124,7 @@
             <th>Auteur</th>
           </g:if>
           <th>Accès public</th>
+          <th>Tester</th>
           <th>Modifier</th>
           <th>Séance</th>
           <th>Mise à jour le</th>
@@ -150,6 +151,14 @@
             </g:if>
             <td>
               ${sujetInstance.accesPublic ? 'oui' : 'non'}
+            </td>
+            <td>
+              <g:link action="teste"
+                                    id="${sujetInstance.id}">
+                              <img border="0"
+                                   src="/eliot-tdbase/images/eliot/magglass-btn.gif"
+                                   width="18" height="16"/>
+               </g:link>
             </td>
             <td>
               <g:link action="edite"
