@@ -47,6 +47,8 @@ class AccueilController {
   def index() {
     if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionEleve().authority)) {
       redirect(controller: 'activite', action: 'listeSeances')
+    } else if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionResponsableEleve().authority)){
+      redirect(controller: 'resultats', action: 'liste')
     } else {
       redirect(controller: 'seance', action: 'liste')
     }

@@ -133,7 +133,6 @@ grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 
-
 // set per-environment security rbac
 environments {
   production {
@@ -164,6 +163,10 @@ environments {
             ],
             '/activite/**': [
                     "${FonctionEnum.ELEVE.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'
+            ],
+            '/resultats/**': [
+                    "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
                     'IS_AUTHENTICATED_FULLY'
             ]
     ]
@@ -197,6 +200,10 @@ environments {
             '/activite/**': [
                     "${FonctionEnum.ELEVE.toRole()}",
                     'IS_AUTHENTICATED_FULLY'
+            ],
+            '/resultats/**': [
+                    "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'
             ]
     ]
   }
@@ -228,6 +235,10 @@ environments {
             ],
             '/activite/**': [
                     "${FonctionEnum.ELEVE.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/resultats/**': [
+                    "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
                     'IS_AUTHENTICATED_REMEMBERED'
             ]
     ]
@@ -261,6 +272,10 @@ environments {
             '/activite/**': [
                     "${FonctionEnum.ELEVE.toRole()}",
                     'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/resultats/**': [
+                    "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
             ]
     ]
   }
@@ -287,7 +302,8 @@ environments {
     eliot.portail.news = [
             "Login / mot de passe enseignant : ens1 / ens1",
             "Login / mot de passe élève 1 : elv1 / elv1",
-            "Login / mot de passe élève 2 : elv2 / elv2"
+            "Login / mot de passe élève 2 : elv2 / elv2",
+            "Login / mot de passe parent 1 : resp1 / resp2"
     ]
   }
   demo {
@@ -308,7 +324,9 @@ environments {
     ]
     eliot.portail.news = [
             "Login / mot de passe enseignant : ens1 / ens1",
-            "Login / mot de passe élève : elv1 / elv1"
+            "Login / mot de passe élève 1 : elv1 / elv1",
+            "Login / mot de passe élève 2 : elv2 / elv2",
+            "Login / mot de passe parent 1 : resp1 / resp2"
     ]
   }
 }

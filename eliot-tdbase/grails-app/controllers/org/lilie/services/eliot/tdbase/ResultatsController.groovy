@@ -49,32 +49,30 @@ class ResultatsController {
   ReponseService reponseService
 
   /**
-   * Action liste élèves
-   */
-  def listeEleves() {
-     render "Pas encore implémenté"
-  }
-
-  /**
    * Action liste résulats
    *
    */
-    def listeResultats() {
+  def liste() {
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.resultats.titre"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "resultats.titre"))
     Personne parent = authenticatedPersonne
-    Personne eleve = Personne.get(params.id)
+    List<Personne> eleves = profilScolariteService.findElevesForResponsable(parent)
+    Personne eleveSelectionne = Personne.get(params.id)
+    if (!eleveSelectionne) {
+      eleveSelectionne = eleves[0]
+    }
     def copies = copieService.findCopiesEnVisualisationForResponsableAndApprenant(
             parent,
-            eleve,
+            eleveSelectionne,
             params
     )
-    render(view: '/activite/seance/resultats', model: [
-           liens: breadcrumpsService.liens,
-           copies: copies
-           ])
+    [
+            liens: breadcrumpsService.liens,
+            copies: copies,
+            eleves: eleves,
+            eleveSelectionne: eleveSelectionne
+    ]
   }
-
 
   /**
    *
@@ -84,9 +82,9 @@ class ResultatsController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
     Copie copie = Copie.get(params.id)
     render(view: '/activite/copie/visualise', model: [
-           liens: breadcrumpsService.liens,
-           copie: copie
-           ])
+            liens: breadcrumpsService.liens,
+            copie: copie
+    ])
   }
 
 }
