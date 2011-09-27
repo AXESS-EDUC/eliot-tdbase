@@ -29,7 +29,9 @@
     <div class="portal-breadcrumbs">
       Une erreur s'est produite > Détail de l'erreur
     </div>
-
+    <div>
+      <g:link controller="accueil">Reprendre la navigation...</g:link>
+    </div>
   	<div class="message">
 		<strong>Error ${request.'javax.servlet.error.status_code'}:</strong> ${request.'javax.servlet.error.message'.encodeAsHTML()}<br/>
 		<strong>Servlet:</strong> ${request.'javax.servlet.error.servlet_name'}<br/>
