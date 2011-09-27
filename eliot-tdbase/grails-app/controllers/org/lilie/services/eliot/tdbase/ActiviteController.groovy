@@ -138,9 +138,8 @@ class ActiviteController {
   def visualiseCopie() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
     Copie copie = Copie.get(params.id)
-    render(view: '/activite/copie/edite', model: [
+    render(view: '/activite/copie/visualise', model: [
            liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
            copie: copie
            ])
   }
