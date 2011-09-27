@@ -64,6 +64,7 @@
     <resource>org.lilie.services.eliot.tice.scolarite.ProfilScolariteService</resource>
     <resource>org.lilie.services.eliot.tice.utils.BootstrapService</resource>
     <resource>org.lilie.services.eliot.tice.utils.InitialisationTestService</resource>
+    <resource>org.lilie.services.eliot.tice.utils.NumberUtils</resource>
     <resource>org.lilie.services.eliot.tice.utils.StringUtils</resource>
   </resources>
   <dependencies />

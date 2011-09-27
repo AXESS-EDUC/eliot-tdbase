@@ -231,6 +231,22 @@ class CopieService {
   }
 
   /**
+   * Recherche les copies en visualisation élève  (profil parent)
+   * @param chercheur le parent effectuant la recherche
+   * @param apprenant l'élève
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @return la liste des copies
+   */
+    @Requires({profilScolariteService.personneEstResponsableEleve(chercheur,apprenant)})
+    List<Copie> findCopiesEnVisualisationForResponsableAndApprenant(Personne chercheur,
+                                                      Personne apprenant,
+                                                      Map paginationAndSortingSpec = [:]) {
+      def copies = findCopiesEnVisualisationForApprenant(apprenant,paginationAndSortingSpec)
+      return copies
+    }
+
+  /**
    *
    * @param seance la séance
    * @param chercheur la personne déclenchant la recherche

@@ -34,7 +34,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.springframework.transaction.annotation.Transactional
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 public class ProfilScolariteService {
@@ -48,9 +48,9 @@ public class ProfilScolariteService {
    * @return les proprietes scolarites correspant à la personne
    */
   List<ProprietesScolarite> findProprietesScolaritesForPersonne(Personne personne) {
-     List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true)
-     return profils*.proprietesScolarite
+    List<PersonneProprietesScolarite> profils =
+    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true)
+    return profils*.proprietesScolarite
   }
 
   /**
@@ -62,7 +62,7 @@ public class ProfilScolariteService {
   @Transactional
   List<Fonction> findFonctionsForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true, [cache:true])
+    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<Fonction> fonctions = []
     profils.collect {
       Fonction fonction = it.proprietesScolarite.fonction
@@ -81,7 +81,7 @@ public class ProfilScolariteService {
    */
   List<Matiere> findMatieresForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true, [cache:true])
+    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<Matiere> matieres = []
     profils.collect {
       Matiere matiere = it.proprietesScolarite.matiere
@@ -100,7 +100,7 @@ public class ProfilScolariteService {
    */
   List<Niveau> findNiveauxForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true, [cache:true])
+    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<Niveau> niveaux = []
     profils.collect {
       Niveau niveau = it.proprietesScolarite.niveau
@@ -119,7 +119,7 @@ public class ProfilScolariteService {
    */
   List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true, [cache:true])
+    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<StructureEnseignement> structures = []
     profils.collect {
       StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
@@ -133,13 +133,13 @@ public class ProfilScolariteService {
   /**
    * Récupère les propriétés de scolarité d'une personne référençant une structure
    * s'enseignement
-   * @param personne  la personne
-   * @return  la liste des propriétés de scolarité
+   * @param personne la personne
+   * @return la liste des propriétés de scolarité
    */
   List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne) {
     def props = []
     List<PersonneProprietesScolarite> profils =
-          PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne,true, [cache:true])
+    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     profils.collect {
       StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
       if (structureEnseignement && !props.contains(it.proprietesScolarite)) {
@@ -150,18 +150,38 @@ public class ProfilScolariteService {
   }
 
   /**
-   * Récupère les services de la personne passé en paramètre
-   * @param personne la personne
-   * @return  la liste de ses services
+   * Méthode recherchant la liste des élèves d'un responsable
+   * @param responsable le responsable élève
+   * @return la liste des eleves du responsable
    */
-  List<Service> findServicesForPersonne(Personne personne) {
-    def criteria = Service.createCriteria()
-    criteria.list {
-      enseignements {
-        eq 'enseignant', personne.autorite
-        eq 'actif', true
-      }
+  List<Personne> findElevesForResponsable(Personne responsable) {
+    def criteria = ResponsableEleve.createCriteria()
+    def respEleves = criteria.list {
+      eq 'personne', responsable
+      eq 'estActive', true
+      join 'eleve'
     }
+    def eleves = []
+    if (respEleves) {
+      eleves = respEleves*.eleve
+    }
+    return eleves
+  }
+
+  /**
+   * Méthode indiquant si une personne est responsable d'un élève
+   * @param personne le responsable présumé
+   * @param eleve l'élève
+   * @return true si la personne est bien responsable de l'eleve
+   */
+  boolean personneEstResponsableEleve(Personne personne, Personne eleve) {
+    def criteria = ResponsableEleve.createCriteria()
+    def countRespEleves = criteria.count {
+      eq 'personne', personne
+      eq 'eleve', eleve
+      eq 'estActive', true
+    }
+    return countRespEleves > 0
   }
 
 }
