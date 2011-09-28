@@ -9,4 +9,4 @@
 **eliot-tdbase** est la version entièrement Open Source de [TDBase](http://tdbase.fylab.fr/cgi-bin/WebObjects/TDBase.woa/wa/presentation) conçu et développé par Jean-Pierre Malrieu.
 TDBase a été développé à l'aide du framework propriétaire Apple WebObjects.
 
-**eliot-tdbase** est développé à présent, comme le reste d'éliot, à l'aide du framework Open Source [Grails](http://www.grails.org) par la société [Ticetime](http://www.ticetime.com).
+**eliot-tdbase** est développé à présent à l'aide du framework Open Source [Grails](http://www.grails.org) par la société [Ticetime](http://www.ticetime.com).
