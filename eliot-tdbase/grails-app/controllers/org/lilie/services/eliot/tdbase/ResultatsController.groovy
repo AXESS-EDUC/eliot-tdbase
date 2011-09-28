@@ -27,11 +27,6 @@
  */
 
 
-
-
-
-
-
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
