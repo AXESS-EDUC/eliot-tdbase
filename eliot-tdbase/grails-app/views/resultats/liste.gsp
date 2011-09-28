@@ -33,6 +33,9 @@
   <r:script>
     $(document).ready(function() {
       $('#menu-item-resultats').addClass('actif');
+      $("select").change(function() {
+        $("form").submit();
+      })
     });
   </r:script>
   <title>TDBase - Liste des résultats</title>
@@ -42,18 +45,18 @@
 <div class="column span-22 last middle">
   <g:render template="/breadcrumps" model="[liens: liens]"/>
   <div class="portal-form_container">
-    <form method="post">
+    <g:form method="get" action="liste" controller="resultats" name="form-eleve-select">
            <table>
              <tr>
                <td class="label">Élève :</td>
-               <td><strong><g:select from="${eleves}" name="id"
+               <td><strong><g:select from="${eleves}" name="eleveId"
                                      optionKey="id" optionValue="nomAffichage"
                                      value="${eleveSelectionne.id}"/></strong>
-                  <g:actionSubmit value="OK" controller="resultats" action="liste"/>
                </td>
              </tr>
            </table>
-    </form>
+    </g:form>
+  </div>
   <g:if test="${copies}">
     <div class="portal_pagination">
       ${copies.totalCount} résultat(s) <g:paginate total="${copies.totalCount}"></g:paginate>

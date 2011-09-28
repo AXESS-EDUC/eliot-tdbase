@@ -57,7 +57,7 @@ class ResultatsController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "resultats.titre"))
     Personne parent = authenticatedPersonne
     List<Personne> eleves = profilScolariteService.findElevesForResponsable(parent)
-    Personne eleveSelectionne = Personne.get(params.id)
+    Personne eleveSelectionne = Personne.get(params.eleveId as Long)
     if (!eleveSelectionne) {
       eleveSelectionne = eleves[0]
     }
@@ -81,7 +81,7 @@ class ResultatsController {
   def visualiseCopie() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
     Copie copie = Copie.get(params.id)
-    render(view: '/activite/copie/visualise', model: [
+    render(view: '/resultats/copie/visualise', model: [
             liens: breadcrumpsService.liens,
             copie: copie
     ])

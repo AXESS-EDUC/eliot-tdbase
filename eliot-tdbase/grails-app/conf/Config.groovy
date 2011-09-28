@@ -303,7 +303,7 @@ environments {
             "Login / mot de passe enseignant : ens1 / ens1",
             "Login / mot de passe élève 1 : elv1 / elv1",
             "Login / mot de passe élève 2 : elv2 / elv2",
-            "Login / mot de passe parent 1 : resp1 / resp2"
+            "Login / mot de passe parent 1 : resp1 / resp1"
     ]
   }
   demo {
@@ -326,7 +326,7 @@ environments {
             "Login / mot de passe enseignant : ens1 / ens1",
             "Login / mot de passe élève 1 : elv1 / elv1",
             "Login / mot de passe élève 2 : elv2 / elv2",
-            "Login / mot de passe parent 1 : resp1 / resp2"
+            "Login / mot de passe parent 1 : resp1 / resp1"
     ]
   }
 }

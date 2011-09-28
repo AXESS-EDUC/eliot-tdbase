@@ -69,7 +69,7 @@
     <div class="portal-menu">
       <ul id="portal-hz-menu">
         <li id="menu-item-resultats">
-          <g:link action="listeResultats" controller="resultats" params="[bcInit:true]"
+          <g:link action="liste" controller="resultats" params="[bcInit:true]"
                   title="Liste des résultats">Résultats</g:link>
         </li>
       </ul>

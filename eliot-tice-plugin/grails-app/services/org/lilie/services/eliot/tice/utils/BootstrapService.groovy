@@ -61,6 +61,11 @@ class BootstrapService {
   private static final String ELEVE_2_NOM = "Durandine"
   private static final String ELEVE_2_PRENOM = "Pauline"
 
+  private static final String RESP_1_LOGIN = "resp1"
+  private static final String RESP_1_PASSWORD = "resp1"
+  private static final String RESP_1_NOM = "Durand"
+  private static final String RESP_1_PRENOM = "Emilie"
+
 
   private static final String DEFAULT_CODE_PORTEUR_ENT = "ENT"
   private static final String UAI_LYCEE = '****L'
@@ -94,6 +99,7 @@ class BootstrapService {
       initialiseProfilsScolaritesEleve1EnvDevelopment()
       changeLoginAliasMotdePassePourEnseignant1()
       initialiseEleve2EnvDevelopment()
+      initialiseRespEleve1EnvDevelopment()
     }
 
   }
@@ -114,7 +120,7 @@ class BootstrapService {
 
   }
 
-  def changeLoginAliasMotdePassePourEnseignant1() {
+  private def changeLoginAliasMotdePassePourEnseignant1() {
     def ens1 = utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN_ALIAS)
     if (!ens1) {
       ens1 = utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
@@ -126,23 +132,7 @@ class BootstrapService {
     }
   }
 
-  /**
-   * Ajoute les propriétés de scolarité à la personne passée en paramètre
-   * @param proprietesScolariteList la liste des proprietes de scolarite à ajouter
-   * @param personne la personne
-   */
-  def addProprietesScolariteToPersonne(List<ProprietesScolarite> proprietesScolariteList,
-                                       Personne personne) {
-    proprietesScolariteList.each { ProprietesScolarite proprietesScolarite ->
-      new PersonneProprietesScolarite(
-              personne: personne,
-              proprietesScolarite: proprietesScolarite,
-              estActive: true
-      ).save()
-    }
-    sessionFactory.currentSession.flush()
 
-  }
 
   private def initialiseEnseignant1EnvDevelopment() {
     if (!utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)) {
@@ -466,4 +456,69 @@ class BootstrapService {
     }
   }
 
+  private def initialiseRespEleve1EnvDevelopment() {
+    if (!utilisateurService.findUtilisateur(RESP_1_LOGIN)) {
+      utilisateurService.createUtilisateur(
+              RESP_1_LOGIN,
+              RESP_1_PASSWORD,
+              RESP_1_NOM,
+              RESP_1_PRENOM
+      )
+      Utilisateur resp1 = utilisateurService.findUtilisateur(RESP_1_LOGIN)
+      Personne pers = Personne.get(resp1.personneId)
+      Utilisateur elv1 = utilisateurService.findUtilisateur(ELEVE_1_LOGIN)
+      Personne perselv1 = Personne.get(elv1.personneId)
+      Utilisateur elv2 = utilisateurService.findUtilisateur(ELEVE_2_LOGIN)
+      Personne perselv2 = Personne.get(elv2.personneId)
+      createResponsableEleve(pers, perselv1)
+      createResponsableEleve(pers, perselv2)
+
+    }
+  }
+
+  // methode utilitaires
+
+  private ResponsableEleve createResponsableEleve(Personne resp, Personne eleve) {
+    ResponsableEleve responsableEleve = new ResponsableEleve(
+            personne: resp,
+            eleve: eleve,
+            estActive: true,
+            responsableLegal: 1
+    ).save()
+    def profilsEleve = profilScolariteService.findProprietesScolaritesForPersonne(eleve)
+    def propsResp = []
+    profilsEleve.each { ProprietesScolarite props ->
+      if (props.fonction == fonctionService.fonctionEleve()) {
+        propsResp << new ProprietesScolarite(
+                source: props.source,
+                anneeScolaire: props.anneeScolaire,
+                fonction: fonctionService.fonctionResponsableEleve(),
+                etablissement: props.etablissement,
+                matiere: props.matiere,
+                niveau: props.niveau,
+                structureEnseignement: props.structureEnseignement
+        ).save()
+      }
+    }
+    addProprietesScolariteToPersonne(propsResp, resp)
+    return responsableEleve
+  }
+
+  /**
+   * Ajoute les propriétés de scolarité à la personne passée en paramètre
+   * @param proprietesScolariteList la liste des proprietes de scolarite à ajouter
+   * @param personne la personne
+   */
+  private def addProprietesScolariteToPersonne(List<ProprietesScolarite> proprietesScolariteList,
+                                               Personne personne) {
+    proprietesScolariteList.each { ProprietesScolarite proprietesScolarite ->
+      new PersonneProprietesScolarite(
+              personne: personne,
+              proprietesScolarite: proprietesScolarite,
+              estActive: true
+      ).save()
+    }
+    sessionFactory.currentSession.flush()
+
+  }
 }
