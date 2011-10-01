@@ -28,8 +28,6 @@
 
 package org.lilie.services.eliot.tice
 
-import org.hibernate.SessionFactory
-
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.utils.InitialisationTestService
@@ -40,24 +38,17 @@ import org.lilie.services.eliot.tice.utils.ServiceEliotEnum
  *
  * @author franck Silvestre
  */
-class ServivesEliotServiceIntegrationTests extends GroovyTestCase {
-
-
-  Utilisateur utilisateur1
-  Personne personne1
-  SessionFactory sessionFactory
+class ServicesEliotServiceIntegrationTests extends GroovyTestCase {
 
   InitialisationTestService initialisationTestService
   ServicesEliotService servicesEliotService
 
+  Utilisateur utilisateur1
+  Personne personne1
+
   void setUp() {
-    super.setUp()
     utilisateur1 = initialisationTestService.getUtilisateur1()
     personne1 = utilisateur1.personne
-  }
-
-  void tearDown() {
-    super.tearDown()
   }
 
   def testGetCheminRacineSystemeFichier() {

@@ -58,7 +58,9 @@ grails.project.dependency.resolution = {
   }
   dependencies {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-    compile 'org.gcontracts:gcontracts-core:1.2.4'
+    compile('org.gcontracts:gcontracts-core:1.2.4') {
+      excludes "junit"
+    }
     runtime "postgresql:postgresql:8.4-702.jdbc4"
 
   }
