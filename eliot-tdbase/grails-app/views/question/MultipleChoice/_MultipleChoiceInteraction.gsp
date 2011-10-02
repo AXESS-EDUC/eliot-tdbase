@@ -26,12 +26,12 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
-<g:set var="reponsespecifobject" value="${reponse.specificationObject}"/>
+<g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 ${questionspecifobject.libelle} <br/>
 <g:each status="i" in="${questionspecifobject.reponses}" var="reponsePossible">
   &nbsp;
   <g:checkBox name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.reponses[${i}].estUneBonneReponse"
-              checked="${reponsespecifobject.reponses[i].estUneBonneReponse}"/>
+              checked="${reponsespecifobject?.reponses?.getAt(i)?.estUneBonneReponse}"/>
   ${reponsePossible.libelleReponse}
   <br/>
  </g:each>

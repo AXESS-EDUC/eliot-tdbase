@@ -83,12 +83,18 @@
       <g:if test="${sujetQuestion.question.type.interaction}">
         <g:set var="reponse"
                value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
+
         <div class="tdbase-sujet-edition-question-points"
              style="margin-bottom: 15px">
           <div id="SujetSequenceQuestions-${sujetQuestion.id}"
                style="float: left;width: 40px;">
-            <g:formatNumber number="${reponse.correctionNoteAutomatique}"
+            <g:if test="${reponse}">
+              <g:formatNumber number="${reponse.correctionNoteAutomatique}"
                             format="##0.00"/>
+            </g:if>
+            <g:else>
+              Non noté
+            </g:else>
           </div>
           &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}"
                                        format="##0.00"/>&nbsp;point(s)
@@ -102,6 +108,7 @@
           <g:render
                   template="/question/${question.type.code}/${question.type.code}Interaction"
                   model="[question:question, reponse:reponse, indexReponse:indexReponse++]"/>
+
           <g:if test="${copie.modaliteActivite.estPerimee()}">
             <g:render
                     template="/question/${question.type.code}/${question.type.code}Correction"
@@ -118,7 +125,6 @@
                   model="[question:question]"/>
         </div>
       </g:else>
-
     </div>
 
   </g:each>
