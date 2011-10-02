@@ -33,7 +33,7 @@ import org.lilie.services.eliot.tice.securite.DomainAutorite
 
 class EliotTicePluginGrailsPlugin {
   // the plugin version
-  def version = "0.2a"
+  def version = "0.3a-SNAPSHOT"
   // the version or versions of Grails the plugin is designed for
   def grailsVersion = "1.4 > *"
   // the other plugins this plugin depends on
