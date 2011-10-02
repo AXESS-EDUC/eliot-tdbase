@@ -43,7 +43,7 @@
 <body>
 
 <div class="column span-22 last middle">
-  <g:render template="/breadcrumps" model="[liens: liens]"/>
+  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
   <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
   <div style="width:80%; padding:15px; margin: auto;">
   <h4>Créer et ajouter un élément</h4>

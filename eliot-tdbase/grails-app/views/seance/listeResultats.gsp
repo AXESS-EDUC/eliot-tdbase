@@ -43,7 +43,7 @@
 
 <body>
 <div class="column span-22 last middle">
-  <g:render template="/breadcrumps" model="[liens: liens]"/>
+  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
 
   <div class="portal-messages notice">
   Groupe : ${seance.groupeLibelle}<br/>

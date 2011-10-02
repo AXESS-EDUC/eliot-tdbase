@@ -39,7 +39,7 @@
 
 <body>
 <div class="column span-22 last middle">
-  <g:render template="/breadcrumps" model="[liens: liens]"/>
+  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
   <g:if test="${afficheFormulaire}">
     <form>
       <div class="portal-form_container">
