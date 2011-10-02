@@ -64,7 +64,7 @@
 <div class="container">
   <div class="column span-22 last middle">
     <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
-      <g:render template="/menuPortail"/>
+      <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
     </g:if>
     <div class="portal-menu">
       <ul id="portal-hz-menu">
