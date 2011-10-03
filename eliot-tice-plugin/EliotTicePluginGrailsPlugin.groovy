@@ -32,6 +32,8 @@ import org.lilie.services.eliot.tice.securite.DomainAutorite
 */
 
 class EliotTicePluginGrailsPlugin {
+  // the group id
+  def groupId = "org.lilie.services.eliot"
   // the plugin version
   def version = "0.3a-SNAPSHOT"
   // the version or versions of Grails the plugin is designed for

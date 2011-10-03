@@ -1,4 +1,4 @@
-<plugin name='eliot-tice-plugin' version='0.2-SNAPSHOT' grailsVersion='2.0.0.M2 &gt; *'>
+<plugin name='eliot-tice-plugin' version='0.3a-SNAPSHOT' grailsVersion='1.4 &gt; *'>
   <author>Franck Silvestre</author>
   <title>Eliot Tice Plugin</title>
   <description>      Plugin pour la création d'applications Eliot
@@ -7,6 +7,7 @@
   <resources>
     <resource>LoginController</resource>
     <resource>LogoutController</resource>
+    <resource>org.lilie.services.eliot.tice.AttachementController</resource>
     <resource>org.lilie.services.eliot.tice.Attachement</resource>
     <resource>org.lilie.services.eliot.tice.CopyrightsType</resource>
     <resource>org.lilie.services.eliot.tice.ExportFormat</resource>
@@ -57,13 +58,19 @@
     <resource>org.lilie.services.eliot.tice.securite.DomainPermission</resource>
     <resource>org.lilie.services.eliot.tice.securite.Perimetre</resource>
     <resource>org.lilie.services.eliot.tice.securite.PerimetreSecurite</resource>
+    <resource>org.lilie.services.eliot.tice.AttachementService</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.UtilisateurService</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.data.Utilisateur</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.FonctionService</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.ProfilScolariteService</resource>
     <resource>org.lilie.services.eliot.tice.utils.BootstrapService</resource>
+    <resource>org.lilie.services.eliot.tice.utils.BreadcrumpsLien</resource>
+    <resource>org.lilie.services.eliot.tice.utils.BreadcrumpsService</resource>
     <resource>org.lilie.services.eliot.tice.utils.InitialisationTestService</resource>
+    <resource>org.lilie.services.eliot.tice.utils.ServicesEliotService</resource>
+    <resource>org.lilie.services.eliot.tice.AttachementTagLib</resource>
+    <resource>org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar</resource>
     <resource>org.lilie.services.eliot.tice.utils.NumberUtils</resource>
     <resource>org.lilie.services.eliot.tice.utils.StringUtils</resource>
   </resources>
