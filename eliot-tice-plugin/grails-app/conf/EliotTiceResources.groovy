@@ -57,5 +57,10 @@ modules = {
     resource url:[dir: 'js/eliot/i18n', file: 'jquery.ui.timepicker-fr.js']
   }
 
+  'eliot-tice-tiny_mce' {
+      dependsOn 'jquery'
+      resource url:[dir: 'js/eliot/tiny_mce', file: 'tiny_mce.js'], disposition: 'head'
+    }
+
 
 }

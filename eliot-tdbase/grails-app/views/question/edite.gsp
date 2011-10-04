@@ -29,8 +29,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <g:javascript src="jquery/jquery-1.6.1.min.js"/>
-  <g:javascript src="eliot/tiny_mce/tiny_mce.js"/>
+  <r:require module="eliot-tice-tiny_mce"/>
 
   <r:script>
     $(document).ready(function() {
@@ -38,23 +37,23 @@
     });
   </r:script>
   <r:script disposition="head">
-   tinyMCE.init({
-        // General options
-        language:'fr',
-        mode : "none",
-        theme : "advanced",
-        plugins : "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+    tinyMCE.init({
+               // General options
+               language:'fr',
+               mode : "none",
+               theme : "advanced",
+               plugins : "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
-        // Theme options
-        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,forecolor,backcolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect,|,preview",
-        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,cleanup,help,code",
-        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap,iespell,media,advhr",
+               // Theme options
+               theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,forecolor,backcolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect,|,preview",
+               theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,cleanup,help,code",
+               theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap,iespell,media,advhr",
 
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "bottom",
-        theme_advanced_resizing : true
-});
+               theme_advanced_toolbar_location : "top",
+               theme_advanced_toolbar_align : "left",
+               theme_advanced_statusbar_location : "bottom",
+               theme_advanced_resizing : true
+       });
   </r:script>
   <title>TDBase - Edition d'une question</title>
 </head>
