@@ -26,6 +26,8 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+
 modules = {
 
   images {
@@ -37,16 +39,23 @@ modules = {
               disposition:'inline'
   }
 
-  core {
+  'eliot-tice' {
     dependsOn 'jquery'
-    resource url: '/js/eliot/jquery.editinplace.js', disposition: 'head'
+    resource url:[dir:'css/eliot/blueprint/compressed', file:'screen.css']
+    resource url:[dir: 'css/eliot', file: 'portal.css']
+    resource url:[dir: 'css/eliot', file: 'portal-menu.css']
+    resource url:[dir: 'js/eliot', file: 'portal-menu.js']
+
   }
 
-  tinymce {
-    dependsOn 'jquery'
-
-    resource url: '/js/eliot/tiny_mce/tiny_mce.js', disposition: 'head'
-
+  'eliot-tice-ui' {
+    dependsOn 'eliot-tice', 'jquery-ui'
+    resource url:[dir: 'css/eliot/jquery', file: 'jquery-ui.css']
+    resource url:[dir: 'js/eliot', file: 'jquery.editinplace.js']
+    resource url:[dir: 'js/eliot', file: 'jquery-ui-timepicker-addon.js']
+    resource url:[plugin: 'jquery-ui', dir: 'js/jquery/i18n', file: 'jquery.ui.datepicker-fr.js']
+    resource url:[dir: 'js/eliot/i18n', file: 'jquery.ui.timepicker-fr.js']
   }
+
 
 }

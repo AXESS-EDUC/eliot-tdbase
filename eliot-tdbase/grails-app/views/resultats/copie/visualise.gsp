@@ -34,7 +34,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase-resultats"/>
-  <r:require modules="core"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-resultats').addClass('actif');

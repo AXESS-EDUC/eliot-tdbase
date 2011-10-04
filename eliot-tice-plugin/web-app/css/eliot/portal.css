@@ -195,15 +195,6 @@ Styles for the header
 
 ********************************************************************************/
 
-#portal-header {
-    display: table;
-    height:auto;
-    width:100%;
-    background:transparent url('../../images/eliot/laf/page_header_bg.png') no-repeat right top;
-    text-align: left;
-    margin-top: 0px;
-    margin-bottom: 10px;
-}
 
 .portal-logo {
     margin:0;

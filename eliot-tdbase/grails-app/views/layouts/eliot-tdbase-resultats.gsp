@@ -40,22 +40,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title><g:layoutTitle default="TDbase"/></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <r:require modules="eliot-tice"/>
   <link rel="shortcut icon"
         href="${resource(dir: 'images', file: 'eliot/tdbasefavicon.ico')}"
         type="image/x-icon">
   <link rel="stylesheet" type="text/css"
-        href="${resource(dir: 'css/eliot/blueprint/compressed', file: 'screen.css')}"/>
-  <link rel="stylesheet" type="text/css"
-        href="${resource(dir: 'css/eliot', file: 'BatchNavigation.css')}"/>
-  <link rel="stylesheet" type="text/css"
-        href="${resource(dir: 'css/eliot', file: 'portal.css')}"/>
-  <link rel="stylesheet" type="text/css"
-        href="${resource(dir: 'css/eliot', file: 'portal-menu.css')}"/>
-  <link rel="stylesheet" type="text/css"
         href="${resource(dir: 'css/eliot', file: 'tdbase.css')}"/>
-  <link rel="stylesheet" type="text/css"
-        href="${resource(dir: 'css/eliot/jquery', file: 'jquery-ui.css')}"/>
-  <g:javascript src="eliot/portal-menu.js"/>
   <g:layoutHead/>
   <r:layoutResources/>
 </head>

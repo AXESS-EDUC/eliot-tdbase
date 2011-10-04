@@ -1,0 +1,104 @@
+/*
+ * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
+ * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
+ *
+ * Lilie is free software. You can redistribute it and/or modify since
+ * you respect the terms of either (at least one of the both license) :
+ * - under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * - the CeCILL-C as published by CeCILL-C; either version 1 of the
+ * License, or any later version
+ *
+ * There are special exceptions to the terms and conditions of the
+ * licenses as they are applied to this software. View the full text of
+ * the exception in file LICENSE.txt in the directory of this software
+ * distribution.
+ *
+ * Lilie is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Licenses for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * and the CeCILL-C along with Lilie. If not, see :
+ *  <http://www.gnu.org/licenses/> and
+ *  <http://www.cecill.info/licences.fr.html>.
+ */
+
+body {
+line-height:1.5;
+font-family:"Helvetica Neue", "Lucida Grande", Arial, Verdana, sans-serif;
+color:#000;
+background:none;
+font-size:10pt;
+}
+
+.container {
+background:none;
+}
+
+h1,h2,h3,h4,h5,h6 {
+font-family:"Helvetica Neue", Arial, "Lucida Grande", sans-serif;
+}
+
+code {
+font:.9em "Courier New", Monaco, Courier, monospace;
+}
+
+img {
+float:left;
+margin:1.5em 1.5em 1.5em 0;
+}
+
+a img {
+border:none;
+}
+
+p img.top {
+margin-top:0;
+}
+
+hr {
+background:#ccc;
+color:#ccc;
+width:100%;
+height:2px;
+border:none;
+margin:2em 0;
+padding:0;
+}
+
+blockquote {
+font-style:italic;
+font-size:.9em;
+margin:1.5em;
+padding:1em;
+}
+
+.small {
+font-size:.9em;
+}
+
+.large {
+font-size:1.1em;
+}
+
+.quiet {
+color:#999;
+}
+
+.hide {
+display:none;
+}
+
+a:link,a:visited {
+background:transparent;
+font-weight:700;
+text-decoration:underline;
+}
+
+a:link:after,a:visited:after {
+content:" (" attr(href) ") ";
+font-size:90%;
+}

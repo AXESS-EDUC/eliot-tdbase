@@ -1,3 +1,31 @@
+/*
+ * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
+ * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
+ *
+ * Lilie is free software. You can redistribute it and/or modify since
+ * you respect the terms of either (at least one of the both license) :
+ * - under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * - the CeCILL-C as published by CeCILL-C; either version 1 of the
+ * License, or any later version
+ *
+ * There are special exceptions to the terms and conditions of the
+ * licenses as they are applied to this software. View the full text of
+ * the exception in file LICENSE.txt in the directory of this software
+ * distribution.
+ *
+ * Lilie is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Licenses for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * and the CeCILL-C along with Lilie. If not, see :
+ *  <http://www.gnu.org/licenses/> and
+ *  <http://www.cecill.info/licences.fr.html>.
+ */
+
 /* CSS Document */
 body {
 	margin: 0;
@@ -33,13 +61,13 @@ body a:hover {
 }
 
 #top {
-	background-image: url(../images/interface/top_shade.gif);
+	background-image: url(../../images/eliot/interface/top_shade.gif);
 	background-repeat: no-repeat;
 	height: 31px;
 }
 
 #middle {
-	background-image: url(../images/interface/middle_shade.gif);
+	background-image: url(../../images/eliot/interface/middle_shade.gif);
 	background-repeat: repeat-y;
 	/**height: auto;*/
 	min-height:500px;
@@ -52,7 +80,7 @@ body a:hover {
 */
 
 #bottom {
-	background-image: url(../images/interface/bottom_shade.gif);
+	background-image: url(../../images/eliot/interface/bottom_shade.gif);
 	background-repeat: no-repeat;
 	height: 60px;
 	background-color: #E6E7EA;
@@ -69,14 +97,14 @@ body a:hover {
 
 /** contenu ******/
 #fondImg {
-	background: no-repeat 344px -6px url(../images/fd_img.jpg);
+	background: no-repeat 344px -6px url(../../images/eliot/fd_img.jpg);
 }
 
 #header {
 	position: relative;
 	margin: 0 46px;
 	height: 82px;
-	background: no-repeat left url(../images/logo.gif);
+	background: no-repeat left url(../../images/eliot/logo.gif);
 	text-align: right;
 }
 
@@ -109,7 +137,7 @@ div.npmOutil {
 	
 }
 
-/* Menu Ic�ne ****/
+/* Menu Ic�ne ****/
 #iconmenu {
 	position: relative;
 	margin: 20px 0 0 424px;
@@ -147,14 +175,14 @@ div.npmOutil {
 
 #logPassword .deconnect {
 	padding-left: 18px;
-	background: no-repeat left url(../images/interface/picto_croix.gif);
+	background: no-repeat left url(../../images/eliot/interface/picto_croix.gif);
 }
 
 #menuH {
 	position: relative;
 	margin: 2px 46px;
 	height: 27px;
-	background: repeat-x left url(../images/interface/fdmenu.gif);
+	background: repeat-x left url(../../images/eliot/interface/fdmenu.gif);
 	z-index: 30;
 }
 
@@ -287,7 +315,7 @@ dl,dt,dd,ul,li {
 	margin: 0;
 	padding: 0;
 	padding-left: 18px;
-	background: no-repeat left url(../images/interface/picto_fl.gif);
+	background: no-repeat left url(../../images/eliot/interface/picto_fl.gif);
 }
 
 #contenu #menuV p.date {
@@ -355,7 +383,7 @@ p.breadcrumbs {
 
 #sidebar .cat {
 	/**color: #244A92;*/
-	background: transparent url(../images/interface/picto_2fl_blue.gif) no-repeat;
+	background: transparent url(../../images/eliot/interface/picto_2fl_blue.gif) no-repeat;
 	background-position: 2px 6px;
 }
 
@@ -368,7 +396,7 @@ p.breadcrumbs {
 }
 
 #sidebar ul ul li.cat a:hover {
-	background: #F2F3F7 url(../images/interface/picto_2fl_blue.gif) no-repeat;
+	background: #F2F3F7 url(../../images/eliot/interface/picto_2fl_blue.gif) no-repeat;
 	background-position: 2px 6px;
 	scroll right center;	
 }
@@ -439,7 +467,7 @@ p.breadcrumbs {
 	font-weight: normal;
 	margin: 10px 0 20px 0;
 	padding: 0 0 0 10px;
-	background: url(../images/interface/picto_2fl.gif) no-repeat scroll left
+	background: url(../../images/eliot/interface/picto_2fl.gif) no-repeat scroll left
 		center;
 }
 
@@ -485,7 +513,7 @@ p.breadcrumbs {
 	padding: 0;
 	text-decoration: none;
 	padding-left: 18px;
-	background: no-repeat left url(../images/interface/picto_fl.gif);
+	background: no-repeat left url(../../images/eliot/interface/picto_fl.gif);
 }
 
 #contenu #page #article form {
@@ -679,7 +707,7 @@ tr.ligne2, tr.odd {
 	padding-left: 18px;
 	padding-top: 3px;
 	padding-bottom: 3px;
-	background: no-repeat left url(../images/interface/picto_fl.gif);
+	background: no-repeat left url(../../images/eliot/interface/picto_fl.gif);
 }
 
 /* Le contenu des tables sans border */

@@ -33,7 +33,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase-activite"/>
-  <r:require modules="core"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
