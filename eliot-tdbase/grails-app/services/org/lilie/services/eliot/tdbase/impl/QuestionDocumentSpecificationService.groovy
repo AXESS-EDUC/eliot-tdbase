@@ -44,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.annotation.Propagation
 import org.lilie.services.eliot.tice.Attachement
 import grails.validation.ValidationException
+import org.gcontracts.annotations.Requires
 
 /**
  *
@@ -103,22 +104,24 @@ class QuestionDocumentSpecificationService implements QuestionSpecificationServi
    * @see QuestionSpecificationService
    */
   @Transactional
+  @Requires({object instanceof DocumentSpecification})
   def updateQuestionSpecificationForObject(Question question, Object object) {
-     if (!(object instanceof DocumentSpecification)) {
-      throw new IllegalArgumentException(
-              "objet ${object} n'est pas de type DocumentSpecification")
-    }
     DocumentSpecification spec = object
+    def oldQuestAttId = question.specificationObject?.questionAttachementId
     if (spec.fichier && !spec.fichier.empty) {
        def questionAttachement = questionAttachementService.createAttachementForQuestion(
                spec.fichier,question)
-      def oldQuestAttId = question.specificationObject?.questionAttachementId
       if (oldQuestAttId) {
         questionAttachementService.deleteQuestionAttachement(
                 QuestionAttachement.get(oldQuestAttId))
       }
       spec.questionAttachementId = questionAttachement.id
-    } else if (!spec.urlExterne && !spec.questionAttachementId) {
+    } else if (spec.urlExterne) {
+      if (oldQuestAttId) {
+              questionAttachementService.deleteQuestionAttachement(
+                      QuestionAttachement.get(oldQuestAttId))
+      }
+    }else {
       throw new IllegalArgumentException("question.document.fichier.vide")
     }
 

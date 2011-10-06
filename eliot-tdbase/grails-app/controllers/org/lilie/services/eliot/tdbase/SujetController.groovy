@@ -305,22 +305,6 @@ class SujetController {
     ]
   }
 
-  /**
-   * Action de sélection du type de question
-   */
-  def selectionneTypeQuestion() {
-    def questionType = QuestionType.get(params.questionTypeId)
-    redirect([
-                     action: 'edite',
-                     controller: "question${questionType.code}",
-                     params: [creation: true,
-                             questionTypeId: questionType.id,
-                             sujetId: params.sujetId
-                     ]
-             ]
-    )
-
-  }
 
   /**
    * Action ajoute séance

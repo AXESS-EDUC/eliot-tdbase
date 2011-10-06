@@ -44,6 +44,18 @@ class QuestionController {
   QuestionService questionService
   SujetService sujetService
 
+  /**
+    *
+    * Action ajoute element
+    */
+   def nouvelle() {
+     breadcrumpsService.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
+     [
+             liens: breadcrumpsService.liens,
+             typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes
+     ]
+   }
+
 /**
  *
  * Action "edite"

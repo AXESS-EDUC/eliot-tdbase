@@ -28,7 +28,7 @@
   --}%
 <r:script>
   $(document).ready(function() {
-    $('#form_question_edit').attr('enctype', 'multipart/form-data');
+    $("form").attr('enctype', 'multipart/form-data');
   });
 </r:script>
 <g:set var="specifobject" value="${question.specificationObject}"/>
