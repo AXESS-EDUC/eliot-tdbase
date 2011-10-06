@@ -37,7 +37,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title><g:layoutTitle default="TDbase"/></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <r:require modules="eliot-tdbase"/>
+  <r:require module="eliot-tdbase"/>
   <g:layoutHead/>
   <r:layoutResources/>
 </head>

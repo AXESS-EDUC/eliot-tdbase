@@ -40,12 +40,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title><g:layoutTitle default="TDbase"/></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <r:require modules="eliot-tice"/>
-  <link rel="shortcut icon"
-        href="${resource(dir: 'images', file: 'eliot/tdbasefavicon.ico')}"
-        type="image/x-icon">
-  <link rel="stylesheet" type="text/css"
-        href="${resource(dir: 'css/eliot', file: 'tdbase.css')}"/>
+  <r:require module="eliot-tdbase"/>
   <g:layoutHead/>
   <r:layoutResources/>
 </head>
