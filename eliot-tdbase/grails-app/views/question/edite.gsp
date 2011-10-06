@@ -81,7 +81,7 @@
     <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
   </g:if>
 
-  <form method="post" id="form_question_edit">
+  <g:form method="post" controller="question${question.type.code}">
     <div class="portal-form_container" style="width: 70%;margin-left: 15px;">
       <table>
 
@@ -156,25 +156,24 @@
     </div>
     <g:hiddenField name="id" value="${question.id}"/>
     <g:hiddenField name="type.id" value="${question.type.id}"/>
+
     <div class="form_actions" style="width: 70%;margin-left: 15px;">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link> |
       <g:if test="${sujet}">
-        %{--<g:hiddenField name="sujetId" value="${sujet.id}"/>--}%
+        <g:hiddenField name="sujetId" value="${sujet.id}"/>
         <g:actionSubmit value="Enregistrer et insérer dans le sujet"
                         action="enregistreInsert"
-                        controller="question${question.type.code}"
                         title="Enregistrer et insérer dans le sujet"/>
       </g:if>
       <g:else>
         <g:actionSubmit value="Enregistrer"
                         action="enregistre"
-                        controller="question${question.type.code}"
                         title="Enregistrer"/>
       </g:else>
     </div>
-  </form>
+  </g:form>
 </div>
 
 </body>

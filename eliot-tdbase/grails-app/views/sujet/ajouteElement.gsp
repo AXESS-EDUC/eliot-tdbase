@@ -35,6 +35,9 @@
   <r:script>
     $(document).ready(function() {
       $('#menu-item-sujets').addClass('actif');
+      $("select").change(function() {
+        $("form").submit();
+      })
     });
   </r:script>
   <title>TDBase - Ajout d'un élément</title>
@@ -43,59 +46,69 @@
 <body>
 
 <div class="column span-22 last middle">
-  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
+  <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
+            model="[liens: liens]"/>
   <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
   <div style="width:80%; padding:15px; margin: auto;">
-  <h4>Créer et ajouter un élément</h4>
-  <ul>
-    <li>
-      <g:link action="edite" controller="question${QuestionTypeEnum.Statement}"
+    <h4>Créer et ajouter un élément</h4>
+    <ul>
+      <li>
+        <g:link action="edite"
+                controller="question${QuestionTypeEnum.Statement}"
                 params="[creation:true, questionTypeId:QuestionTypeEnum.Statement.id, sujetId:sujet.id]">
-        Un élément d'énoncé
-      </g:link>
-    </li>
-    <li>
-      <g:link action="edite" controller="question${QuestionTypeEnum.Document}"
+          Un élément d'énoncé
+        </g:link>
+      </li>
+      <li>
+        <g:link action="edite" controller="question${QuestionTypeEnum.Document}"
                 params="[creation:true, questionTypeId:QuestionTypeEnum.Document.id, sujetId:sujet.id]">
-        Un document
-      </g:link>
-    </li>
-    <li>
-      <g:link action="edite" controller="question${QuestionTypeEnum.MultipleChoice}"
-                params="[creation:true, questionTypeId:QuestionTypeEnum.MultipleChoice.id, sujetId:sujet.id]">
-        Une question de type QCM
-      </g:link>
-    </li>
-  </ul>
+          Un document
+        </g:link>
+      </li>
+      <li>
 
-  <h4>Rechercher et ajouter un élément</h4>
-  <ul>
-    <li>
-      <g:link action="recherche" controller="question"
+          <g:form method="get" action="edite"
+                  controller="question">
+            <g:hiddenField name="sujetId" value="${sujet.id}"/>
+            <g:hiddenField name="creation" value="true"/>
+            Une question de type <g:select name="questionTypeId"
+                                           noSelection="${['null':'Sélectionnez...']}"
+                                           from="${typesQuestionSupportes}"
+                                           optionKey="id"
+                                           optionValue="nom"/>
+          </g:form>
+
+      </li>
+    </ul>
+
+    <h4>Rechercher et ajouter un élément</h4>
+    <ul>
+      <li>
+        <g:link action="recherche" controller="question"
                 params="[typeId:QuestionTypeEnum.Statement.id, sujetId:sujet.id]">
-        Un élément d'énoncé
-      </g:link>
-    </li>
-    <li>
-      <g:link action="recherche" controller="question"
+          Un élément d'énoncé
+        </g:link>
+      </li>
+      <li>
+        <g:link action="recherche" controller="question"
                 params="[typeId:QuestionTypeEnum.Document.id, sujetId:sujet.id]">
-        Un document
-      </g:link>
-    </li>
-    <li>
-      <g:link action="recherche" controller="question"
+          Un document
+        </g:link>
+      </li>
+      <li>
+        <g:link action="recherche" controller="question"
                 params="[typeId:QuestionTypeEnum.MultipleChoice.id, sujetId:sujet.id]">
-        Une question de type QCM
-      </g:link>
-    </li>
-  </ul>
+          Une question de type QCM
+        </g:link>
+      </li>
+    </ul>
 
-  <h4>Importer et ajouter un élément</h4>
-  <ul>
-    <li>Un élément d'énoncé</li>
-    <li>Un document</li>
-    <li>Une question de type...</li>
-  </ul>
+    <h4>Importer et ajouter un élément</h4>
+    <ul>
+      <li>Un élément d'énoncé</li>
+      <li>Un document</li>
+      <li>Une question de type...</li>
+    </ul>
   </div>
 </div>
 

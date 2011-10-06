@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
@@ -36,7 +37,6 @@ import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
-import org.gcontracts.annotations.Requires
 
 /**
  * Service de gestion des questions
@@ -84,8 +84,6 @@ class QuestionService implements ApplicationContextAware {
     return question
   }
 
-
-
   /**
    * Recopie une question
    * - si le proprietaire de la copie est le proprietaire de l'original, on
@@ -100,7 +98,7 @@ class QuestionService implements ApplicationContextAware {
    * @return la copie de la question
    */
   @Transactional
-  @Requires ({question.proprietaire == proprietaire || question.publie})
+  @Requires({question.proprietaire == proprietaire || question.publie})
   Question recopieQuestion(Question question, Personne proprietaire) {
     def versionQuestion = question.versionQuestion + 1
     def questionDepartBranche = question.questionDepartBranche
@@ -122,7 +120,7 @@ class QuestionService implements ApplicationContextAware {
             etablissement: question.etablissement,
             matiere: question.matiere,
             niveau: question.niveau,
-    )
+            )
     questionCopie.save()
 
     // recopie les attachements
@@ -159,7 +157,7 @@ class QuestionService implements ApplicationContextAware {
    * @return la question
    */
   @Transactional
-  @Requires ({question.proprietaire == proprietaire || question.publie})
+  @Requires({question.proprietaire == proprietaire || question.publie})
   Question updateProprietes(Question question, Map proprietes, def specificationObject,
                             Personne proprietaire) {
     // verifie que c'est sur la derniere version du sujet editable que l'on
@@ -188,7 +186,7 @@ class QuestionService implements ApplicationContextAware {
  * @return la question insérée
  */
   @Transactional
-  @Requires ({sujet.proprietaire == proprietaire || sujet.publie})
+  @Requires({ sujet?.proprietaire == proprietaire || sujet?.publie })
   Question createQuestionAndInsertInSujet(Map proprietesQuestion,
                                           def specificatinObject,
                                           Sujet sujet,
@@ -280,6 +278,17 @@ class QuestionService implements ApplicationContextAware {
    */
   List<QuestionType> getAllQuestionTypes() {
     return QuestionType.getAll()
+  }
+
+  /**
+   *
+   * @return la liste des types de questions à interaction supportes par tdbase
+   */
+  List<QuestionType> getTypesQuestionsInteractionSupportes() {
+    [
+            QuestionTypeEnum.MultipleChoice.questionType //,
+            //QuestionTypeEnum.Decimal.questionType
+    ]
   }
 
   /**

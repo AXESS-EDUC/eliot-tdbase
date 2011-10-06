@@ -16,6 +16,7 @@ class SujetController {
   static final String PROP_RANG_INSERTION = 'rangInsertion'
 
   SujetService sujetService
+  QuestionService questionService
   CopieService copieService
   ReponseService reponseService
   SpringSecurityService springSecurityService
@@ -300,7 +301,25 @@ class SujetController {
     [
             sujet: sujet,
             liens: breadcrumpsService.liens,
+            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes
     ]
+  }
+
+  /**
+   * Action de sélection du type de question
+   */
+  def selectionneTypeQuestion() {
+    def questionType = QuestionType.get(params.questionTypeId)
+    redirect([
+                     action: 'edite',
+                     controller: "question${questionType.code}",
+                     params: [creation: true,
+                             questionTypeId: questionType.id,
+                             sujetId: params.sujetId
+                     ]
+             ]
+    )
+
   }
 
   /**

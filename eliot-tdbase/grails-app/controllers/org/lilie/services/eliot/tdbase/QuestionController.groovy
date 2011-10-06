@@ -63,13 +63,13 @@ class QuestionController {
     }
     Personne personne = authenticatedPersonne
     render(view: '/question/edite', model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           question: question,
-           matieres: profilScolariteService.findMatieresForPersonne(personne),
-           niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-           sujet: sujet
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            question: question,
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujet: sujet
+    ])
   }
 
   /**
@@ -85,11 +85,11 @@ class QuestionController {
       sujet = Sujet.get(params.sujetId)
     }
     render(view: '/question/detail', model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           question: question,
-           sujet: sujet
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            question: question,
+            sujet: sujet
+    ])
   }
 
   /**
@@ -101,24 +101,24 @@ class QuestionController {
     Personne personne = authenticatedPersonne
     def specifObject = getSpecificationObjectFromParams(params)
     if (params.id) {
-      question = Question.get(params.id)
+      question = Question.get(params.id as Long)
       questionService.updateProprietes(question, params, specifObject, personne)
     } else {
       question = questionService.createQuestion(params, specifObject, personne)
     }
     Sujet sujet = null
     if (params.sujetId) {
-      sujet = Sujet.get(params.sujetId)
+      sujet = Sujet.get(params.sujetId as Long)
     }
     if (!question.hasErrors()) {
       request.messageCode = "question.enregistre.succes"
     }
     render(view: '/question/edite', model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           question: question,
-           sujet: sujet
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            question: question,
+            sujet: sujet
+    ])
   }
 
   /**
@@ -133,20 +133,21 @@ class QuestionController {
     Integer rang = breadcrumpsService.getValeurPropriete(
             SujetController.PROP_RANG_INSERTION)
     Question question = questionService.createQuestionAndInsertInSujet(
-            params,
-            specifObject,
-            sujet,
-            personne,
-            rang)
+              params,
+              specifObject,
+              sujet,
+              personne,
+              rang)
+
     if (!question.hasErrors()) {
       request.messageCode = "question.enregistreinsert.succes"
     }
     render(view: '/question/edite', model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           question: question,
-           sujet: sujet
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            question: question,
+            sujet: sujet
+    ])
 
   }
 
@@ -164,14 +165,13 @@ class QuestionController {
     sujetService.insertQuestionInSujet(question, sujet, personne, rang)
     request.messageCode = "question.enregistreinsert.succes"
     render(view: '/question/detail', model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           question: question,
-           sujet: sujet
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            question: question,
+            sujet: sujet
+    ])
 
   }
-
 
   /**
    *
