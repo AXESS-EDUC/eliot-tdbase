@@ -87,13 +87,13 @@
         <div class="tdbase-sujet-edition-question-points"
              style="margin-bottom: 15px">
           <div id="SujetSequenceQuestions-${sujetQuestion.id}"
-               style="float: left;width: 40px;">
+               style="float: left;width: 60px;">
             <g:if test="${reponse}">
               <g:formatNumber number="${reponse.correctionNoteAutomatique}"
-                            format="##0.00"/>
+                              format="##0.00"/>
             </g:if>
             <g:else>
-              Non noté
+              <span title="Copie rendue après ajout de cette question.">Non&nbsp;notée&nbsp;</span>
             </g:else>
           </div>
           &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}"
@@ -101,9 +101,8 @@
         </div>
       </g:if>
       <g:set var="question" value="${sujetQuestion.question}"/>
-
-      <g:if test="${question.type.interaction}">
-        <div class="tdbase-sujet-edition-question-interaction">
+      <div class="tdbase-sujet-edition-question-interaction">
+        <g:if test="${question.type.interaction}">
 
           <g:render
                   template="/question/${question.type.code}/${question.type.code}Interaction"
@@ -115,16 +114,15 @@
                     model="[question:question]"/>
           </g:if>
 
-        </div>
-      </g:if>
-      <g:else>
-        <div class="tdbase-sujet-edition-question-interaction">
-          <g:set var="question" value="${sujetQuestion.question}"/>
+        </g:if>
+        <g:else>
+
           <g:render
                   template="/question/${question.type.code}/${question.type.code}Preview"
                   model="[question:question]"/>
-        </div>
-      </g:else>
+
+        </g:else>
+      </div>
     </div>
 
   </g:each>

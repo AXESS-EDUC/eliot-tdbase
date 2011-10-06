@@ -41,7 +41,8 @@
 <body>
 
 <div class="column span-22 last middle">
-  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
+  <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
+            model="[liens: liens]"/>
   <div class="portal_pagination">
     ${copies.totalCount} élève(s) <g:paginate total="${copies.totalCount}"
                                               id="${seance.id}"></g:paginate>
@@ -76,7 +77,7 @@
           <td>
             <g:textArea name="copieAnnotation"
                         value="${copie.correctionAnnotation}" rows="3"
-                        cols="50"/>
+                        cols="50" style="height: auto;"/>
           </td>
         </tr>
         <tr>
@@ -90,8 +91,9 @@
           <td class="label">Note :</td>
           <td>
             <strong><g:formatNumber number="${copie.correctionNoteFinale}"
-                            format="##0.00"/>
-            / <g:formatNumber number="${copie.maxPoints}" format="##0.00" /></strong>
+                                    format="##0.00"/>
+              / <g:formatNumber number="${copie.maxPoints}"
+                                format="##0.00"/></strong>
           </td>
         </tr>
       </table>
@@ -118,23 +120,24 @@
         <div class="tdbase-sujet-edition-question-points"
              style="margin-bottom: 15px">
           <div id="SujetSequenceQuestions-${sujetQuestion.id}"
-               style="float: left;width: 40px;">
-            <g:formatNumber number="${reponse.correctionNoteAutomatique}"
-                            format="##0.00"/>
+               style="float: left;width: 80px;">
+            <g:if test="${reponse}">
+              <g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                              format="##0.00"/>
+            </g:if>
+            <g:else>
+              <span title="L'élève a rendu sa copie après l'ajout de cette réponse">Non&nbsp;évaluable</span>
+            </g:else>
           </div>
-          &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}"
-                                       format="##0.00"/>&nbsp;point(s)
+        &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}"
+                                     format="##0.00"/>&nbsp;point(s)
         </div>
       </g:if>
+
+
       <g:set var="question" value="${sujetQuestion.question}"/>
-
-      <g:if test="${question.type.interaction}">
-        <div class="tdbase-sujet-edition-question-interaction">
-
-          <g:hiddenField
-                  name="reponsesCopie.listeReponses[${indexReponse}].reponse.id"
-                  value="${reponse.id}"/>
-
+      <div class="tdbase-sujet-edition-question-interaction">
+        <g:if test="${question.type.interaction}">
           <g:render
                   template="/question/${question.type.code}/${question.type.code}Interaction"
                   model="[question:question, reponse:reponse, indexReponse:indexReponse++]"/>
@@ -143,17 +146,12 @@
                   template="/question/${question.type.code}/${question.type.code}Correction"
                   model="[question:question]"/>
 
-        </div>
-      </g:if>
-      <g:else>
-        <div class="tdbase-sujet-edition-question-interaction">
-          <g:set var="question" value="${sujetQuestion.question}"/>
-          <g:render
-                  template="/question/${question.type.code}/${question.type.code}Preview"
+        </g:if>
+        <g:else>
+          <g:render template="/question/${question.type.code}/${question.type.code}Preview"
                   model="[question:question]"/>
-        </div>
-      </g:else>
-
+        </g:else>
+      </div>
     </div>
   </g:each>
 </div>

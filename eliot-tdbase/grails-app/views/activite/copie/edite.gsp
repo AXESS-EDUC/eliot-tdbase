@@ -37,8 +37,8 @@
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
       <g:if test="${!copie.estModifiable()}">
-      $(':checkbox').attr('disabled',true)
-      </g:if>
+    $(':checkbox').attr('disabled',true)
+  </g:if>
     });
   </r:script>
   <title>TDBase - Edition d'une copie</title>
@@ -47,7 +47,8 @@
 <body>
 
 <div class="column span-22 last middle">
-  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
+  <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
+            model="[liens: liens]"/>
 
   <g:hasErrors bean="${copie}">
     <div class="portal-messages error">
@@ -65,48 +66,49 @@
   <g:set var="sujet" value="${copie.sujet}"/>
   <g:if test="${copie.modaliteActivite.estPerimee()}">
     <div class="portal-form_container">
-          <table>
-            <tr>
-              <td class="label">Élève :</td>
-              <td><strong>${copie.eleve.nomAffichage}</strong></td>
-            </tr>
+      <table>
+        <tr>
+          <td class="label">Élève :</td>
+          <td><strong>${copie.eleve.nomAffichage}</strong></td>
+        </tr>
 
-            <tr>
-              <td class="label">Appréciation :</td>
-              <td>
-                ${copie.correctionAnnotation}
-              </td>
-            </tr>
-            <tr>
-              <td class="label">Modulation :</td>
-              <td>
-                ${NumberUtils.formatFloat(copie.pointsModulation)}
-              </td>
-            </tr>
-            <tr>
-              <td class="label">Note :</td>
-              <td>
-                <strong>${NumberUtils.formatFloat(copie.correctionNoteFinale)}
-                / ${NumberUtils.formatFloat(copie.maxPoints)}</strong>
-              </td>
-            </tr>
-          </table>
-        </div>
+        <tr>
+          <td class="label">Appréciation :</td>
+          <td>
+            ${copie.correctionAnnotation}
+          </td>
+        </tr>
+        <tr>
+          <td class="label">Modulation :</td>
+          <td>
+            ${NumberUtils.formatFloat(copie.pointsModulation)}
+          </td>
+        </tr>
+        <tr>
+          <td class="label">Note :</td>
+          <td>
+            <strong>${NumberUtils.formatFloat(copie.correctionNoteFinale)}
+              / ${NumberUtils.formatFloat(copie.maxPoints)}</strong>
+          </td>
+        </tr>
+      </table>
+    </div>
   </g:if>
   <g:if test="${copie.modaliteActivite.estOuverte()}">
-      <g:if test="${copie.dateRemise}">
-           <div class="portal-messages notice">
-             Note (correction automatique) :
-             <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
-              / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
-             &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
-           </div>
-       </g:if>
-      <g:if test="${!copie.estModifiable()}">
-            <div class="portal-messages notice">
-              La copie n'est plus modifiable.
-            </div>
-      </g:if>
+    <g:if test="${copie.dateRemise}">
+      <div class="portal-messages notice">
+        Note (correction automatique) :
+        <g:formatNumber number="${copie.correctionNoteAutomatique}"
+                        format="##0.00"/>
+        / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
+        &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+      </div>
+    </g:if>
+    <g:if test="${!copie.estModifiable()}">
+      <div class="portal-messages notice">
+        La copie n'est plus modifiable.
+      </div>
+    </g:if>
   </g:if>
   <form method="post">
     <div style="text-align: right;">
@@ -130,16 +132,17 @@
           <div class="tdbase-sujet-edition-question-points"
                style="margin-bottom: 15px">
             <div id="SujetSequenceQuestions-${sujetQuestion.id}"
-                 style="float: left;width: 40px;">
-              <g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00" />
+                 style="float: left;width: 60px;">
+              <g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                              format="##0.00"/>
             </div>
-             &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}" format="##0.00" />&nbsp;point(s)
-            </div>
+            &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}"
+                                         format="##0.00"/>&nbsp;point(s)
+          </div>
         </g:if>
         <g:set var="question" value="${sujetQuestion.question}"/>
-
-        <g:if test="${question.type.interaction}">
-          <div class="tdbase-sujet-edition-question-interaction">
+        <div class="tdbase-sujet-edition-question-interaction">
+          <g:if test="${question.type.interaction}">
 
             <g:hiddenField
                     name="reponsesCopie.listeReponses[${indexReponse}].reponse.id"
@@ -149,20 +152,19 @@
                     template="/question/${question.type.code}/${question.type.code}Interaction"
                     model="[question:question, reponse:reponse, indexReponse:indexReponse++]"/>
             <g:if test="${copie.modaliteActivite.estPerimee()}">
-              <g:render template="/question/${question.type.code}/${question.type.code}Correction"
-                    model="[question:question]"/>
+              <g:render
+                      template="/question/${question.type.code}/${question.type.code}Correction"
+                      model="[question:question]"/>
             </g:if>
 
-          </div>
-        </g:if>
-        <g:else>
-          <div class="tdbase-sujet-edition-question-interaction">
-            <g:set var="question" value="${sujetQuestion.question}"/>
+          </g:if>
+          <g:else>
             <g:render
                     template="/question/${question.type.code}/${question.type.code}Preview"
                     model="[question:question]"/>
-          </div>
-        </g:else>
+
+          </g:else>
+        </div>
 
       </div>
 
