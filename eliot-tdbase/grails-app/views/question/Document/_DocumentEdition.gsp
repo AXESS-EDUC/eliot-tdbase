@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.QuestionAttachement; org.lilie.services.eliot.tdbase.impl.DocumentTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tdbase.impl.document.DocumentTypeEnum; org.lilie.services.eliot.tdbase.QuestionAttachement; org.lilie.services.eliot.tdbase.impl.document.DocumentTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -50,7 +50,7 @@
   <td class="label">Type&nbsp;:</td>
   <td>
     <g:select name="specifobject.type"
-              from="${DocumentTypeEnum.values()}"
+              from="${org.lilie.services.eliot.tdbase.impl.document.DocumentTypeEnum.values()}"
               value="${specifobject.type}"
               optionKey="name"
               optionValue="name"/>

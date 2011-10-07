@@ -27,34 +27,11 @@
  */
 
 
-
-
-
-package org.lilie.services.eliot.tdbase.questions
+package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
-import org.lilie.services.eliot.tdbase.impl.DocumentSpecification
-import org.lilie.services.eliot.tdbase.QuestionAttachementService
-import org.lilie.services.eliot.tdbase.QuestionAttachement
-import org.lilie.services.eliot.tice.Attachement
-import org.lilie.services.eliot.tice.AttachementService
 
-class QuestionDocumentController extends QuestionController {
-
-  QuestionAttachementService questionAttachementService
-  AttachementService attachementService
-
-  /**
-   * Action "supprimeAttachement"
-   */
-
-  def supprimeAttachement() {
-    DocumentSpecification spec = getSpecificationObjectFromParams(params)
-    spec.questionAttachementId = null
-    spec.fichier = null
-    render(template: "/question/Document/DocumentEditionFichier", model:[specifobject:spec])
-  }
-
+class QuestionDecimalController extends QuestionController {
 
   /**
    *
@@ -62,12 +39,8 @@ class QuestionDocumentController extends QuestionController {
    * @return l'objet représentant la spécification
    */
   def getSpecificationObjectFromParams(Map params) {
-    def specifobject = new DocumentSpecification()
-    bindData(specifobject, params, "specifobject")
-    return specifobject
+    return params.specifobject
   }
-
-
 }
 
 

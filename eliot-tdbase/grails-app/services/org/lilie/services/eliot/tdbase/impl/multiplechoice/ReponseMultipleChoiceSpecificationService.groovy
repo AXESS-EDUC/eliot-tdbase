@@ -30,7 +30,7 @@
 
 
 
-package org.lilie.services.eliot.tdbase.impl
+package org.lilie.services.eliot.tdbase.impl.multiplechoice
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
@@ -108,10 +108,11 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
   }
 
   /**
-   * L’évaluation est positive pour une réponse contenant l’ensemble des bonnes
-   * réponses attendues, et négative dès lors qu’une seule réponse
-   * attendue est manquante.
-   * L’espérance mathématique d’une réponse au hasard est nulle.
+   * Si il n'y a aucune réponse explicite (pas de cases cochées), la notes est 0.
+   * Si il y a au moins une réponse explicite (une case cochée), alors :
+   * - pour chaque réponse juste on ajoute un point
+   * - pour chaque réponse fausse on retranche un point
+   * On effectue une règle de trois pour ramener la note correspondant au barême
    *
    * @see ReponseSpecificationService
    */

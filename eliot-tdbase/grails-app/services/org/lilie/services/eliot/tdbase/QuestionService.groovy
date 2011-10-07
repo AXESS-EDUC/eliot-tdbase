@@ -286,10 +286,22 @@ class QuestionService implements ApplicationContextAware {
    */
   List<QuestionType> getTypesQuestionsInteractionSupportes() {
     [
-            QuestionTypeEnum.MultipleChoice.questionType //,
-            //QuestionTypeEnum.Decimal.questionType
+            QuestionTypeEnum.MultipleChoice.questionType,
+            QuestionTypeEnum.Decimal.questionType
     ]
   }
+
+  /**
+    *
+    * @return la liste des types de questions à interaction supportes par tdbase
+    */
+   List<QuestionType> getTypesQuestionsSupportes() {
+     typesQuestionsInteractionSupportes +
+     [
+             QuestionTypeEnum.Document.questionType,
+             QuestionTypeEnum.Statement.questionType,
+     ]
+   }
 
   /**
    * Retourne la dernière version éditable d'une question pour un proprietaire donné

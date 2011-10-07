@@ -26,7 +26,7 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.impl
+package org.lilie.services.eliot.tdbase.impl.statement
 
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils

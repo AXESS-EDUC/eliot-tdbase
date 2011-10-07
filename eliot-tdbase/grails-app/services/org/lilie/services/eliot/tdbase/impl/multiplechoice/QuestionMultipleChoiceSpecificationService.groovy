@@ -28,7 +28,7 @@
 
 
 
-package org.lilie.services.eliot.tdbase.impl
+package org.lilie.services.eliot.tdbase.impl.multiplechoice
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper

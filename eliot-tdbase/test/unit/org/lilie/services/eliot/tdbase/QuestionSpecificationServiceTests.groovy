@@ -30,10 +30,10 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecification
+import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
 
-import org.lilie.services.eliot.tdbase.impl.QuestionMultipleChoiceSpecificationService
-import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecificationReponsePossible
+import org.lilie.services.eliot.tdbase.impl.multiplechoice.QuestionMultipleChoiceSpecificationService
+import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 
 /**
  *

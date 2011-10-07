@@ -28,14 +28,14 @@
 
 
 
-package org.lilie.services.eliot.tdbase.questions
+package org.lilie.services.eliot.tdbase.impl
 
 
 
-import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecification
+import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
 
 import org.lilie.services.eliot.tdbase.QuestionController
-import org.lilie.services.eliot.tdbase.impl.MultipleChoiceSpecificationReponsePossible
+import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 
 
 class QuestionMultipleChoiceController extends QuestionController {

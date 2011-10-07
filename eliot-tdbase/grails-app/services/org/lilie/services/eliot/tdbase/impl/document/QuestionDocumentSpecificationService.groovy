@@ -30,7 +30,7 @@
 
 
 
-package org.lilie.services.eliot.tdbase.impl
+package org.lilie.services.eliot.tdbase.impl.document
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
@@ -41,9 +41,9 @@ import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.QuestionAttachementService
 import org.lilie.services.eliot.tdbase.QuestionAttachement
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.transaction.annotation.Propagation
+
 import org.lilie.services.eliot.tice.Attachement
-import grails.validation.ValidationException
+
 import org.gcontracts.annotations.Requires
 
 /**
