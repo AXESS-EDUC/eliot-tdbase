@@ -207,7 +207,7 @@ class QuestionController {
     [
             liens: breadcrumpsService.liens,
             afficheFormulaire: true,
-            typesQuestion: questionService.getAllQuestionTypes(),
+            typesQuestion: questionService.getTypesQuestionsSupportes(),
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             questions: questions,
