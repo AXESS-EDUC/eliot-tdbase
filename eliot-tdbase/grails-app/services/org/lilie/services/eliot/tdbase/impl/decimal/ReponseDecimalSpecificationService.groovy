@@ -44,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.ReponseMultipleChoiceSpecification
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
+import org.lilie.services.eliot.tice.utils.NumberUtils
 
 /**
  *
@@ -97,7 +98,7 @@ class ReponseDecimalSpecificationService implements ReponseSpecificationService 
   /**
    * @see ReponseSpecificationService
    */
-  @Requires({question.specificationObject instanceof MultipleChoiceSpecification})
+  @Requires({question.specificationObject instanceof DecimalSpecification})
   def getObjectInitialiseFromSpecification(Question question) {
     return new ReponseDecimalSpecification()
   }
@@ -162,5 +163,12 @@ class ReponseDecimalSpecification {
             valeurReponse: valeurReponse
     ]
   }
+
+  String getValeurReponseAffichage() {
+     if (valeurReponse != null) {
+       return NumberUtils.formatFloat(valeurReponse)
+     }
+     return null
+   }
 
 }

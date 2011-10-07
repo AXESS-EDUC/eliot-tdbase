@@ -35,6 +35,7 @@ import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.gcontracts.annotations.Requires
+import org.lilie.services.eliot.tice.utils.NumberUtils
 
 /**
  *
@@ -130,5 +131,19 @@ class DecimalSpecification {
             correction: correction
     ]
   }
+
+  String getValeurAffichage() {
+    if (valeur != null) {
+      return NumberUtils.formatFloat(valeur)
+    }
+    return null
+  }
+
+  String getPrecisionAffichage() {
+     if (precision != null) {
+       return NumberUtils.formatFloat(precision)
+     }
+     return null
+   }
 
 }

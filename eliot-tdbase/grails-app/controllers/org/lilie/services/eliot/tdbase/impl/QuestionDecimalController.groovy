@@ -30,6 +30,7 @@
 package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
+import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 
 class QuestionDecimalController extends QuestionController {
 
@@ -39,7 +40,9 @@ class QuestionDecimalController extends QuestionController {
    * @return l'objet représentant la spécification
    */
   def getSpecificationObjectFromParams(Map params) {
-    return params.specifobject
+    def specifobject = new DecimalSpecification()
+    bindData(specifobject, params, "specifobject")
+    return specifobject
   }
 }
 

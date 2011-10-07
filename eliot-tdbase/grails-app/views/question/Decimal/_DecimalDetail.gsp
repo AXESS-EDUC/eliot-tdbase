@@ -31,12 +31,12 @@
   <td>
     <g:set var="specifobject" value="${question.specificationObject}"/>
     ${specifobject.libelle} <br/>
-    ${specifobject.valeur}
+    ${specifobject.valeurAffichage}
     &nbsp;&nbsp;
     <g:if test="${specifobject.unite}">
     Unité&nbsp;:&nbsp;${specifobject.unite} &nbsp;&nbsp;
     </g:if>
-    Précision&nbsp;:&nbsp;${specifobject.precision}<br/>
+    Précision&nbsp;:&nbsp;${specifobject.precisionAffichage}<br/>
     Correction : ${specifobject.correction}
   </td>
 </tr>

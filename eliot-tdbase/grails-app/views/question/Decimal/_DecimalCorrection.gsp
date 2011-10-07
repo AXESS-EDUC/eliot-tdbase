@@ -30,10 +30,10 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <br/>
 Correction&nbsp;: <br/>
-${specifobject.valeur}
+${specifobject.valeurAffichage}
 &nbsp;&nbsp;
 <g:if test="${specifobject.unite}">
-  Unité&nbsp;:&nbsp;${specifobject.unite} &nbsp;&nbsp;
+${specifobject.unite} &nbsp;&nbsp;
 </g:if>
 <br/>
 Remarque : ${specifobject.correction}

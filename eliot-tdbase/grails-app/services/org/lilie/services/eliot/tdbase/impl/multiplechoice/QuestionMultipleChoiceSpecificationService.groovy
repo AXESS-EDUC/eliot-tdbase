@@ -35,6 +35,7 @@ import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.lilie.services.eliot.tdbase.Question
+import org.gcontracts.annotations.Requires
 
 /**
  *
@@ -62,13 +63,9 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
    *
    * @see QuestionSpecificationService
    */
+  @Requires({object instanceof MultipleChoiceSpecification})
   String getSpecificationFromObject(Object object) {
-    if (!(object instanceof MultipleChoiceSpecification)) {
-      throw new IllegalArgumentException(
-              "objet ${object} n'est pas de type MultipleChoiceSpecification")
-    }
-    MultipleChoiceSpecification spec = object
-    JsonBuilder builder = new JsonBuilder(spec.toMap())
+    JsonBuilder builder = new JsonBuilder(object.toMap())
     return builder.toString()
   }
 
@@ -76,13 +73,9 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
    *
    * @see QuestionSpecificationService
    */
+  @Requires({object instanceof MultipleChoiceSpecification})
   String getSpecificationNormaliseFromObject(Object object) {
-    if (!(object instanceof MultipleChoiceSpecification)) {
-      throw new IllegalArgumentException(
-              "objet ${object} n'est pas de type MultipleChoiceSpecification")
-    }
-    MultipleChoiceSpecification spec = object
-    String toNormalise = spec.libelle
+    String toNormalise = object.libelle
     if (toNormalise) {
       return StringUtils.normalise(toNormalise)
     }
