@@ -4,7 +4,8 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 grails.plugin.location.'eliot-tice-plugin' = "../eliot-tice-plugin"
-
+grails.plugin.location.'eliot-textes-plugin' = "../eliot-textes-plugin"
+grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
 
 grails.project.dependency.resolution = {
   // inherit Grails' default dependencies
@@ -28,7 +29,10 @@ grails.project.dependency.resolution = {
   dependencies {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
-    // runtime 'mysql:mysql-connector-java:5.1.5'
+    compile('org.gcontracts:gcontracts-core:1.2.4') {
+      excludes "junit"
+    }
+    runtime "postgresql:postgresql:8.4-702.jdbc4"
   }
 
   plugins {
@@ -38,7 +42,7 @@ grails.project.dependency.resolution = {
       export = false
     }
 
-    compile(":codenarc:0.12") {
+    compile(":codenarc:0.15") {
       export = false
     }
 

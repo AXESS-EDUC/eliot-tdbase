@@ -26,35 +26,24 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-  pooled = true
-  driverClassName = "org.postgresql.Driver"
-  username = "eliot"
-  password = "eliot"
-  logSql = true
-}
-hibernate {
-  cache.use_second_level_cache = true
-  cache.use_query_cache = true
-  cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
-environments {
-  development {
-    dataSource {
-      url = "jdbc:postgresql://localhost:5432/eliot-tdbase-dev"
-    }
-  }
-  test {
-    dataSource {
-      url = "jdbc:postgresql://localhost:5432/eliot-tdbase-test"
-    }
-  }
-  demo {
-    dataSource {
-      url = "jdbc:postgresql://localhost:5432/eliot-tdbase-demo"
-    }
-  }
+class EliotTdbasePluginGrailsPlugin {
+  // the group id
+      def groupId = "org.lilie.services.eliot"
+    // the plugin version
+    def version = "0.3a-SNAPSHOT"
+    // the version or versions of Grails the plugin is designed for
+    def grailsVersion = "1.4 > *"
+    // the other plugins this plugin depends on
+    def dependsOn = ['eliot-tice-plugin':'0.3a-SNAPSHOT > *']
+    // resources that are excluded from plugin packaging
+    def pluginExcludes = [
+            "grails-app/views/error.gsp"
+    ]
 
-
+    def title = "Eliot Tdbase  Plugin" // Headline display name of the plugin
+    def author = "Franck Silvestre - Ticetime"
+    def authorEmail = ""
+    def description = '''\
+  Plugin contenant les services métiers relatifs à la gestion des TD"
+  '''
 }

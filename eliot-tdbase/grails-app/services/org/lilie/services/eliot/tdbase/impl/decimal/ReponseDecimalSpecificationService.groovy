@@ -41,9 +41,7 @@ import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.springframework.transaction.annotation.Transactional
-import org.lilie.services.eliot.tdbase.impl.multiplechoice.ReponseMultipleChoiceSpecification
-import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
-import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
+
 import org.lilie.services.eliot.tice.utils.NumberUtils
 
 /**

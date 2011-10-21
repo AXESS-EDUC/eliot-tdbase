@@ -2,7 +2,7 @@
   <data-source source="LOCAL" name="eliot-tdbase-dev" product="PostgreSQL" version="8.4.8" jdbc-version="3.0" driver-version="PostgreSQL 8.2 JDBC3 with SSL (build 506)" uuid="642da85c-8ce7-480c-92c3-09f120788168">
     <identifier-quote-string>"</identifier-quote-string>
     <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-    <jdbc-url>jdbc:postgresql://localhost:5433/eliot-tdbase-dev</jdbc-url>
+    <jdbc-url>jdbc:postgresql://localhost:5432/eliot-tdbase-dev</jdbc-url>
     <user-name>eliot</user-name>
     <user-password>dfcfdfc6dfc3dfc5dfde</user-password>
     <libraries>

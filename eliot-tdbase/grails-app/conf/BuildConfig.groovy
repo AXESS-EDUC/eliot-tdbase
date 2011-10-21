@@ -31,6 +31,7 @@ grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 
 grails.plugin.location.'eliot-tice-plugin' = "../eliot-tice-plugin"
+grails.plugin.location.'eliot-tdbase-plugin' = "../eliot-tdbase-plugin"
 grails.plugin.location.'eliot-textes-plugin' = "../eliot-textes-plugin"
 grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
 
