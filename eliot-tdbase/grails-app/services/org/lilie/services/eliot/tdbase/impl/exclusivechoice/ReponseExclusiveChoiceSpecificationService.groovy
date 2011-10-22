@@ -122,7 +122,6 @@ class ReponseExclusiveChoiceSpecificationService implements ReponseSpecification
   @Transactional
   Float evalueReponse(Reponse reponse) {
     def res = 0
-    boolean aucuneReponse = true
     ReponseExclusiveChoiceSpecification repSpecObj = reponse.specificationObject
     ExclusiveChoiceSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
     def nbRepPos = repSpecObj.reponses.size()
@@ -133,17 +132,15 @@ class ReponseExclusiveChoiceSpecificationService implements ReponseSpecification
         log.info("Libelles reponses incohérent : ${repPos.libelleReponse} <> ${repPosQ.libelleReponse}")
       }
       if (repPos.estUneBonneReponse) {
-        aucuneReponse = false
         if (repPos.estUneBonneReponse == repPosQ.estUneBonneReponse) {
-          res += 1
+          res = 1
         } else {
-          res += -1
+          res = -1
         }
       }
     }
-    if (aucuneReponse) { // si aucune reponse, l'eleve n'a pas repondu, il a 0
-      res = 0
-    } else { // sinon on décompte avec points positifs et/ou négatifs
+    if (res != 0) {
+      // on décompte avec points positifs et/ou négatifs
       res = (res / nbRepPos) * reponse.sujetQuestion.points
     }
     reponse.correctionNoteAutomatique = res
