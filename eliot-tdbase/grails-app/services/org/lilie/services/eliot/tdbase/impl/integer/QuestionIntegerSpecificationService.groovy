@@ -27,7 +27,9 @@
  */
 
 
-package org.lilie.services.eliot.tdbase.impl.decimal
+
+
+package org.lilie.services.eliot.tdbase.impl.integer
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
@@ -41,7 +43,7 @@ import org.lilie.services.eliot.tice.utils.NumberUtils
  *
  * @author franck Silvestre
  */
-class QuestionDecimalSpecificationService implements QuestionSpecificationService {
+class QuestionIntegerSpecificationService implements QuestionSpecificationService {
 
   static transactional = false
 
@@ -51,18 +53,18 @@ class QuestionDecimalSpecificationService implements QuestionSpecificationServic
    */
   def getObjectFromSpecification(String specification) {
     if (!specification) {
-      return new DecimalSpecification()
+      return new IntegerSpecification()
     }
     def slurper = new JsonSlurper()
     Map map = slurper.parseText(specification)
-    return new DecimalSpecification(map)
+    return new IntegerSpecification(map)
   }
 
   /**
    *
    * @see QuestionSpecificationService
    */
-  @Requires({object instanceof DecimalSpecification})
+  @Requires({object instanceof IntegerSpecification})
   String getSpecificationFromObject(Object object) {
     JsonBuilder builder = new JsonBuilder(object.toMap())
     return builder.toString()
@@ -72,9 +74,9 @@ class QuestionDecimalSpecificationService implements QuestionSpecificationServic
    *
    * @see QuestionSpecificationService
    */
-  @Requires({object instanceof DecimalSpecification})
+  @Requires({object instanceof IntegerSpecification})
   String getSpecificationNormaliseFromObject(Object object) {
-    DecimalSpecification spec = object
+    IntegerSpecification spec = object
     String toNormalise = spec.libelle
     if (toNormalise) {
       return StringUtils.normalise(toNormalise)
@@ -95,17 +97,16 @@ class QuestionDecimalSpecificationService implements QuestionSpecificationServic
 }
 
 /**
- * Représente un objet spécification pour une question de type Decimal
+ * Représente un objet spécification pour une question de type Integer
  */
-class DecimalSpecification {
+class IntegerSpecification {
   String libelle
-  Float valeur
+  Integer valeur
   String unite
-  Float precision = 0
   String correction
 
 
-  DecimalSpecification() {
+  IntegerSpecification() {
     super()
   }
 
@@ -114,11 +115,10 @@ class DecimalSpecification {
    * @param map la map permettant d'initialiser l'objet en cours
    * de création
    */
-  DecimalSpecification(Map map) {
+  IntegerSpecification(Map map) {
     libelle = map.libelle
     valeur = map.valeur
     unite = map.unite
-    precision = map.precision
     correction = map.correction
   }
 
@@ -127,23 +127,9 @@ class DecimalSpecification {
             libelle: libelle,
             valeur: valeur,
             unite: unite,
-            precision: precision,
             correction: correction
     ]
   }
 
-  String getValeurAffichage() {
-    if (valeur != null) {
-      return NumberUtils.formatFloat(valeur)
-    }
-    return null
-  }
-
-  String getPrecisionAffichage() {
-     if (precision != null) {
-       return NumberUtils.formatFloat(precision)
-     }
-     return null
-   }
 
 }

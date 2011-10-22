@@ -1,4 +1,4 @@
-<plugin name='eliot-tice-plugin' version='0.3a-SNAPSHOT' grailsVersion='2.0.0.M2 &gt; *'>
+<plugin name='eliot-tice-plugin' version='0.3a-SNAPSHOT' grailsVersion='1.4 &gt; *'>
   <author>Franck Silvestre</author>
   <title>Eliot Tice Plugin</title>
   <description>      Plugin pour la création d'applications Eliot

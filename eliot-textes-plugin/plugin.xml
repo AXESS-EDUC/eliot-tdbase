@@ -1,4 +1,4 @@
-<plugin name='eliot-textes-plugin' version='0.2-SNAPSHOT' grailsVersion='2.0.0.M2 &gt; *'>
+<plugin name='eliot-textes-plugin' version='0.3a-SNAPSHOT' grailsVersion='1.4 &gt; *'>
   <author>Franck Silvestre - Fylab</author>
   <title>Eliot Textes  Plugin</title>
   <description>Plugin contenant les services métiers relatifs au cahier de textes"
@@ -24,6 +24,8 @@
     <resource>org.lilie.services.eliot.tice.textes.TypeActivite</resource>
     <resource>org.lilie.services.eliot.tice.textes.Visa</resource>
   </resources>
-  <dependencies />
+  <dependencies>
+    <plugin name='eliot-tice-plugin' version='0.3a-SNAPSHOT &gt; *' />
+  </dependencies>
   <behavior />
 </plugin>
