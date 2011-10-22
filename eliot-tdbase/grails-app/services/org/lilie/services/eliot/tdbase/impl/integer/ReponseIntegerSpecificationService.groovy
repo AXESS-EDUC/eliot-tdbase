@@ -106,7 +106,7 @@ class ReponseIntegerSpecificationService implements ReponseSpecificationService 
 
   /**
    * Si il n'y a pas de réponse la note vaut 0
-   * Si la valeur attendue est égale à la réponse la note vaut 1
+   * Si la valeur attendue est égale à la réponse la note vaut 1 sinon 0
    * On effectue une règle de trois pour ramener la note correspondant au barême
    *
    * @see ReponseSpecificationService
