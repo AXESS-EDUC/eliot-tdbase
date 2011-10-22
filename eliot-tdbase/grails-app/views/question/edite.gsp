@@ -103,7 +103,7 @@
           <tr>
             <td class="label">Mati&egrave;re :</td>
             <td>
-              <g:select name="matiere.id" value="${sujet.matiere?.id}"
+              <g:select name="matiere.id" value="${sujet.matiereId}"
                         noSelection="${['null':'Sélectionner une matière...']}"
                         from="${matieres}"
                         optionKey="id"
@@ -113,7 +113,7 @@
           <tr>
             <td class="label">Niveau :</td>
             <td>
-              <g:select name="niveau.id" value="${sujet.niveau?.id}"
+              <g:select name="niveau.id" value="${sujet.niveauId}"
                         noSelection="${['null':'Sélectionner un niveau...']}"
                         from="${niveaux}"
                         optionKey="id"
@@ -125,7 +125,7 @@
           <tr>
             <td class="label">Mati&egrave;re :</td>
             <td>
-              <g:select name="matiere.id" value="${question.matiere?.id}"
+              <g:select name="matiere.id" value="${question.matiereId}"
                         noSelection="${['null':'Sélectionner une matière...']}"
                         from="${matieres}"
                         optionKey="id"
@@ -135,7 +135,7 @@
           <tr>
             <td class="label">Niveau :</td>
             <td>
-              <g:select name="niveau.id" value="${question.niveau?.id}"
+              <g:select name="niveau.id" value="${question.niveauId}"
                         noSelection="${['null':'Sélectionner un niveau...']}"
                         from="${niveaux}"
                         optionKey="id"
@@ -156,7 +156,7 @@
       </table>
     </div>
     <g:hiddenField name="id" value="${question.id}"/>
-    <g:hiddenField name="type.id" value="${question.type.id}"/>
+    <g:hiddenField name="type.id" value="${question.typeId}"/>
 
     <div class="form_actions" style="width: 70%;margin-left: 15px;">
       <g:link action="${lienRetour.action}"

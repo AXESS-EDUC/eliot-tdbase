@@ -32,8 +32,8 @@
 ${questionspecifobject.libelle} <br/>
 <g:each status="i" in="${questionspecifobject.reponses}" var="reponsePossible">
   &nbsp;
-  <g:radio name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.indexBonneReponse"
-           value="${i}"/>
+  <g:radio name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.indexReponse"
+           value="${i}" checked="${i == reponsespecifobject?.indexReponse}"/>
   ${reponsePossible.libelleReponse}
   <br/>
  </g:each>

@@ -117,9 +117,8 @@ class ReponseIntegerSpecificationService implements ReponseSpecificationService 
     ReponseIntegerSpecification repSpecObj = reponse.specificationObject
     def val = repSpecObj.valeurReponse
     IntegerSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
-    if (val != null && val instanceof Integer) {
-      res = 1
-      res = res * reponse.sujetQuestion.points
+    if (val == questSpecObj.valeur) {
+        res = reponse.sujetQuestion.points
     }
     reponse.correctionNoteAutomatique = res
     reponse.save()

@@ -129,6 +129,8 @@ class QuestionController {
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             question: question,
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet
     ])
   }

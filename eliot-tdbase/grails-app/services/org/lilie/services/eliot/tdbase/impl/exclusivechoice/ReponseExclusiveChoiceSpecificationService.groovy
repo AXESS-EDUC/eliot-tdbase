@@ -40,7 +40,6 @@ import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
-import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 import org.springframework.transaction.annotation.Transactional
 
 /**
@@ -98,15 +97,7 @@ class ReponseExclusiveChoiceSpecificationService implements ReponseSpecification
    */
   @Requires({question.specificationObject instanceof ExclusiveChoiceSpecification})
   def getObjectInitialiseFromSpecification(Question question) {
-    def questSpecObj = question.specificationObject
-    def reponsesPossibles = questSpecObj.reponses
     ReponseExclusiveChoiceSpecification specObj = new ReponseExclusiveChoiceSpecification()
-    reponsesPossibles.each {
-      specObj.reponses << new ExclusiveChoiceSpecificationReponsePossible(
-              libelleReponse: it.libelleReponse,
-              estUneBonneReponse: false
-      )
-    }
     return specObj
   }
 
@@ -124,24 +115,12 @@ class ReponseExclusiveChoiceSpecificationService implements ReponseSpecification
     def res = 0
     ReponseExclusiveChoiceSpecification repSpecObj = reponse.specificationObject
     ExclusiveChoiceSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
-    def nbRepPos = repSpecObj.reponses.size()
-    for (int i = 0; i < nbRepPos; i++) {
-      ExclusiveChoiceSpecificationReponsePossible repPos = repSpecObj.reponses[i]
-      ExclusiveChoiceSpecificationReponsePossible repPosQ = questSpecObj.reponses[i]
-      if (repPos.libelleReponse != repPosQ.libelleReponse) {
-        log.info("Libelles reponses incohérent : ${repPos.libelleReponse} <> ${repPosQ.libelleReponse}")
-      }
-      if (repPos.estUneBonneReponse) {
-        if (repPos.estUneBonneReponse == repPosQ.estUneBonneReponse) {
-          res = 1
-        } else {
-          res = -1
-        }
-      }
-    }
-    if (res != 0) {
+    if (repSpecObj.indexReponse == questSpecObj.indexBonneReponse) {
+      res = reponse.sujetQuestion.points
+    } else if (repSpecObj.indexReponse != null) {
+      def nbRepPos = questSpecObj.reponses.size()
       // on décompte avec points positifs et/ou négatifs
-      res = (res / nbRepPos) * reponse.sujetQuestion.points
+      res = (-1 / nbRepPos) * reponse.sujetQuestion.points
     }
     reponse.correctionNoteAutomatique = res
     reponse.save()
@@ -156,7 +135,7 @@ class ReponseExclusiveChoiceSpecificationService implements ReponseSpecification
  */
 class ReponseExclusiveChoiceSpecification {
 
-  List<MultipleChoiceSpecificationReponsePossible> reponses = []
+  Integer indexReponse
 
   ReponseExclusiveChoiceSpecification() {
     super()
@@ -168,20 +147,14 @@ class ReponseExclusiveChoiceSpecification {
    * de création
    */
   ReponseExclusiveChoiceSpecification(Map map) {
-    reponses = map.reponses.collect {
-      if (it instanceof MultipleChoiceSpecificationReponsePossible) {
-        it
-      } else {
-        new MultipleChoiceSpecificationReponsePossible(it)
-      }
-    }
+    indexReponse = map.indexReponse
   }
 
 
 
   def toMap() {
     [
-            reponses: reponses*.toMap()
+            indexReponse: indexReponse
     ]
   }
 
