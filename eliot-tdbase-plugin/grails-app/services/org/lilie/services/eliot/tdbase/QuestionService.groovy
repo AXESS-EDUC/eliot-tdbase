@@ -287,7 +287,8 @@ class QuestionService implements ApplicationContextAware {
   List<QuestionType> getTypesQuestionsInteractionSupportes() {
     [
             QuestionTypeEnum.MultipleChoice.questionType,
-            QuestionTypeEnum.Decimal.questionType
+            QuestionTypeEnum.Decimal.questionType,
+            QuestionTypeEnum.Integer.questionType
     ]
   }
 
