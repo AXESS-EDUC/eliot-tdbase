@@ -113,7 +113,7 @@
     </div>
   </form>
   <g:if test="${sujet}">
-    <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
+    <g:each in="${sujet.questionsSequences}" var="sujetQuestion" status="indexQuestion">
       <div class="tdbase-sujet-edition-question">
         <div class="tdbase-sujet-edition-question-boutons">
           <g:link action="edite"
@@ -178,7 +178,7 @@
           <g:set var="question" value="${sujetQuestion.question}"/>
           <g:render
                   template="/question/${question.type.code}/${question.type.code}Preview"
-                  model="[question:question]"/>
+                  model="[question:question, indexQuestion:indexQuestion]"/>
         </div>
 
       </div>

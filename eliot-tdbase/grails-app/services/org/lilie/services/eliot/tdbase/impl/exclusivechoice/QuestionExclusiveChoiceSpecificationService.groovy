@@ -103,6 +103,7 @@ class ExclusiveChoiceSpecification {
   String libelle
   String correction
   List<ExclusiveChoiceSpecificationReponsePossible> reponses = []
+  Integer indexBonneReponse
 
   ExclusiveChoiceSpecification() {
     super()
@@ -116,6 +117,7 @@ class ExclusiveChoiceSpecification {
   ExclusiveChoiceSpecification(Map map) {
     libelle = map.libelle
     correction = map.correction
+    indexBonneReponse = map.indexBonneReponse
     reponses = map.reponses.collect {
       if (it instanceof ExclusiveChoiceSpecificationReponsePossible) {
         it
@@ -129,7 +131,8 @@ class ExclusiveChoiceSpecification {
     [
             libelle: libelle,
             correction: correction,
-            reponses: reponses*.toMap()
+            reponses: reponses*.toMap(),
+            indexBonneReponse: indexBonneReponse
     ]
   }
 
@@ -141,7 +144,6 @@ class ExclusiveChoiceSpecification {
  */
 class ExclusiveChoiceSpecificationReponsePossible {
   String libelleReponse
-  boolean estUneBonneReponse
   Float rang
 
   ExclusiveChoiceSpecificationReponsePossible() {
@@ -155,14 +157,12 @@ class ExclusiveChoiceSpecificationReponsePossible {
    */
   ExclusiveChoiceSpecificationReponsePossible(Map map) {
     libelleReponse = map.libelleReponse
-    estUneBonneReponse = map.estUneBonneReponse
     rang = map.rang
   }
 
   def toMap() {
     [
             libelleReponse: libelleReponse,
-            estUneBonneReponse: estUneBonneReponse,
             rang: rang
     ]
   }

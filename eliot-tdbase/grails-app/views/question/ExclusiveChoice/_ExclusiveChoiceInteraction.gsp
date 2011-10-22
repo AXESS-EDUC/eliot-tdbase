@@ -1,4 +1,3 @@
-<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -28,12 +27,14 @@
   --}%
 
 
-<g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle} <br/>
-<g:textField name="listeQuestions[${indexQuestion}].specifobject.valeur" value="${specifobject.valeurAffichage}" size="10" disabled="true"/>
-&nbsp;&nbsp;
-<g:if test="${specifobject.unite}">
-Unité&nbsp;:&nbsp;${specifobject.unite} &nbsp;&nbsp;
-</g:if>
-Précision&nbsp;:&nbsp;${specifobject.precisionAffichage}<br/>
-Correction : ${specifobject.correction}
+<g:set var="questionspecifobject" value="${question.specificationObject}"/>
+<g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
+${questionspecifobject.libelle} <br/>
+<g:each status="i" in="${questionspecifobject.reponses}" var="reponsePossible">
+  &nbsp;
+  <g:radio name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.indexBonneReponse"
+           value="${i}"/>
+  ${reponsePossible.libelleReponse}
+  <br/>
+ </g:each>
+

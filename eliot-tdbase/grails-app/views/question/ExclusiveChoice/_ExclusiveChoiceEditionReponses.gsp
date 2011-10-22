@@ -1,4 +1,3 @@
-<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -28,12 +27,18 @@
   --}%
 
 
-<g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle} <br/>
-<g:textField name="listeQuestions[${indexQuestion}].specifobject.valeur" value="${specifobject.valeurAffichage}" size="10" disabled="true"/>
-&nbsp;&nbsp;
-<g:if test="${specifobject.unite}">
-Unité&nbsp;:&nbsp;${specifobject.unite} &nbsp;&nbsp;
-</g:if>
-Précision&nbsp;:&nbsp;${specifobject.precisionAffichage}<br/>
-Correction : ${specifobject.correction}
+
+
+<g:each status="i" in="${specifobject.reponses}" var="reponse">
+  &nbsp;
+  <g:radio name="specifobject.indexBonneReponse"
+              value="${i}" checked="${i == specifobject.indexBonneReponse}"/>
+  <g:textField name="specifobject.reponses[${i}].libelleReponse" size="45"
+                value="${reponse.libelleReponse}"/>
+  &nbsp;
+  <g:textField size="2"  value="${reponse.rang}" name="specifobject.reponses[${i}].rang"/>
+  &nbsp;
+  <g:submitToRemote id="${i}" value="Suppr" title="Supprimer la réponse" action="supprimeReponse" controller="questionExclusiveChoice" update="specifobject_reponses"/>
+    <br/>
+</g:each>
+<g:hiddenField name="specifobject.reponses.size" value="${specifobject.reponses?.size()}"/>

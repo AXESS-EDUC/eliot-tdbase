@@ -288,7 +288,8 @@ class QuestionService implements ApplicationContextAware {
     [
             QuestionTypeEnum.MultipleChoice.questionType,
             QuestionTypeEnum.Decimal.questionType,
-            QuestionTypeEnum.Integer.questionType
+            QuestionTypeEnum.Integer.questionType,
+            QuestionTypeEnum.ExclusiveChoice.questionType
     ]
   }
 

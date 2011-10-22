@@ -1,4 +1,3 @@
-<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -29,11 +28,50 @@
 
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle} <br/>
-<g:textField name="listeQuestions[${indexQuestion}].specifobject.valeur" value="${specifobject.valeurAffichage}" size="10" disabled="true"/>
-&nbsp;&nbsp;
-<g:if test="${specifobject.unite}">
-Unité&nbsp;:&nbsp;${specifobject.unite} &nbsp;&nbsp;
-</g:if>
-Précision&nbsp;:&nbsp;${specifobject.precisionAffichage}<br/>
-Correction : ${specifobject.correction}
+<tr>
+  <td class="label">
+    Lib&eacute;ll&eacute;:
+  </td>
+  <td>
+    <g:textArea
+            name="specifobject.libelle"
+            rows="3" cols="55"
+            value="${specifobject.libelle}"
+    />
+  </td>
+</tr>
+<tr>
+  <td class="label">
+    R&eacute;ponse(s):
+  </td>
+  <td>
+
+    <table>
+      <tr>
+        <td id="specifobject_reponses">
+          <g:render template="/question/ExclusiveChoice/ExclusiveChoiceEditionReponses"
+                    model="[specifobject:specifobject]"/>
+        </td>
+        <td style="vertical-align: bottom;">
+          <g:submitToRemote title="Ajouter une réponse possible" value="Ajouter"
+                            action="ajouteReponse"
+                            controller="questionExclusiveChoice"
+                            update="specifobject_reponses"/>
+        </td>
+      </tr>
+    </table>
+
+  </td>
+</tr>
+<tr>
+  <td class="label">
+    Correction:
+  </td>
+  <td>
+     <g:textArea
+            name="specifobject.correction"
+            rows="3" cols="55"
+            value="${specifobject.correction}"
+    />
+  </td>
+</tr>

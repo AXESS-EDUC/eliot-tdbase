@@ -27,9 +27,9 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 ${specifobject.libelle} <br/>
-<g:each in="${specifobject.reponses}" var="reponse">
+<g:each in="${specifobject.reponses}" var="reponse" status="i">
   &nbsp;
-  <g:checkBox name="specifobject.reponses[${i}].estUneBonneReponse"
+  <g:checkBox name="listeQuestions[${indexQuestion}].specifobject.reponses[${i}].estUneBonneReponse"
               checked="${reponse.estUneBonneReponse}" disabled="true"/>
   ${reponse.libelleReponse}
   <br/>

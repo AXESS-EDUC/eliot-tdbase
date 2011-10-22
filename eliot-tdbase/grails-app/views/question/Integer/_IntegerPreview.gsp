@@ -32,7 +32,7 @@
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
 ${specifobject.libelle} <br/>
-<g:textField name="specifobject.valeur" value="${specifobject.valeur}" size="10" disabled="true"/>
+<g:textField name="listeQuestions[${indexQuestion}].specifobject.valeur" value="${specifobject.valeur}" size="10" disabled="true"/>
 &nbsp;&nbsp;
 <g:if test="${specifobject.unite}">
 Unité&nbsp;:&nbsp;${specifobject.unite} &nbsp;&nbsp;

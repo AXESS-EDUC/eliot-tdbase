@@ -79,8 +79,14 @@ class QuestionExclusiveChoiceController extends QuestionController {
       }
     }
     bindData(specifobject, params, "specifobject")
+    def indexBonneReponse = specifobject.indexBonneReponse
+    def bonneReponse = null
+    if (indexBonneReponse != null)  {
+      bonneReponse = specifobject.reponses[indexBonneReponse]
+    }
     def reponsesOrd = specifobject.reponses.sort { it.rang }
     specifobject.reponses = reponsesOrd
+    specifobject.indexBonneReponse =  bonneReponse ? reponsesOrd.indexOf(bonneReponse) : null
     return specifobject
   }
 }
