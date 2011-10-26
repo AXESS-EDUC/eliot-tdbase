@@ -1,5 +1,6 @@
 import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 import org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar
+import liquibase.integration.spring.SpringLiquibase
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -30,9 +31,21 @@ import org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar
 */
 
 beans = {
+
+  // bean orientés sécuroté
   userDetailsService(EliotTiceUserDetailsService) {
     utilisateurService = ref("utilisateurService")
     profilScolariteService = ref("profilScolariteService")
   }
+
+  //bean orientés gestion des formulaires
   customPropertyEditorRegistrar(EliotEditeurRegistrar)
+
+
+  // beans pour la migration des données
+  liquibase(SpringLiquibase) {
+    dataSource = ref("dataSource")
+    changelog = "classpath:changelog.xml"
+  }
+
 }
