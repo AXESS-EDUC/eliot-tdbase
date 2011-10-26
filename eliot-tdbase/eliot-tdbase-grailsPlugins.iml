@@ -5,7 +5,6 @@
       <configuration>
         <webroots>
           <root url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/web-app" relative="/" />
-          <root url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/database-migration-1.0/grails-app/views" relative="/" />
           <root url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-1.6.1.1/web-app" relative="/" />
         </webroots>
         <sourceRoots />
@@ -20,10 +19,6 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/codenarc-0.15" />
-    <content url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/database-migration-1.0">
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/database-migration-1.0/src/groovy" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/database-migration-1.0/grails-app/controllers" isTestSource="false" />
-    </content>
     <content url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/gmetrics-0.3.1" />
     <content url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/hibernate-2.0.0.M2" />
     <content url="file://$USER_HOME$/.grails/2.0.0.M2/projects/eliot-tdbase/plugins/jquery-1.6.1.1">

@@ -1,0 +1,109 @@
+group = "org.lilie.services.eliot"
+artefactId = "eliot-tice-dbmigration"
+version = "0.3a-SNAPSHOT"
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+
+
+repositories {
+  mavenCentral()
+}
+
+configurations {
+  liquibase
+  deploiementArtefact
+}
+
+
+dependencies {
+  liquibase group: 'org.liquibase', name: 'liquibase-core', version: '2.0.3'
+  liquibase group: 'postgresql', name: 'postgresql', version: '8.4-702.jdbc4'
+  deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
+}
+
+/**
+ *   Deploiement artefact
+ */
+
+
+/**
+ *  La config du repository est au format des parametres attendus par Grails
+ *  pour ne pas avoir à dupliquer les informations de connexion au repositoty
+ */
+userHome = System.properties['user.home']
+println userHome
+repositoryConfigFile = "${userHome}/.grails/settings.groovy"
+
+/**
+ * Configuration de la tache upload archives
+ */
+uploadArchives {
+  if (!project.hasProperty('environment')) {
+      project.environment = 'development'
+  }
+  project.configRepository = new ConfigSlurper(project.environment).parse(
+          new File(repositoryConfigFile).toURL())
+
+  repositories.mavenDeployer {
+    configuration = configurations.deploiementArtefact
+    repository(url: configRepository.grails.project.repos.ticetimesnapshot.url) {
+      authentication(
+              userName: configRepository.grails.project.repos.ticetimesnapshot.username,
+              password: configRepository.grails.project.repos.ticetimesnapshot.password
+      )
+    }
+  }
+}
+
+// Lancement liquibase
+
+
+dataSourceConfigFile = "${projectDir}/DataSource.groovy"
+
+/**
+ * Configuration de la tache update
+ */
+task update(dependsOn: build) {
+  if (!project.hasProperty('environment')) {
+    project.environment = 'development'
+  }
+  project.configDataSource = new ConfigSlurper(project.environment).parse(new File(dataSourceConfigFile).toURL())
+  displayConfig(configDataSource)
+}
+
+/**
+ * Action de la tâche update
+ */
+update << {
+  ant.path(id: 'classpath') {
+    ant.pathelement(path: configurations.liquibase.asPath)
+    ant.pathelement(location: "${project.buildDir}/libs/${project.name}-${version}.jar")
+  }
+  ant.taskdef(resource: 'liquibasetasks.properties', classpathref: 'classpath')
+  ant.updateDatabase(
+          changeLogFile: "${project.configDataSource.liquibase.changelogfile}",
+          driver: "${project.configDataSource.dataSource.driverClassName}",
+          url: "${project.configDataSource.dataSource.url}",
+          username: "${project.configDataSource.dataSource.username}",
+          password: "${project.configDataSource.dataSource.password}",
+          promptOnNonLocalDatabase: "false",
+          dropFirst: "false",
+          classpathref: 'classpath')
+}
+
+// methode utilitaire
+
+def displayConfig(config) {
+  println """
+  ---   Config DataSource ---
+  Environnement : ${environment}
+  liquibase.changelogfile : ${config.liquibase.changelogfile}
+  dataSource.driverClassName: ${config.dataSource.driverClassName}
+  dataSource.url: ${config.dataSource.url}
+  ---
+  """
+
+}
