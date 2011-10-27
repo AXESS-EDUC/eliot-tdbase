@@ -34,7 +34,6 @@ dependencies {
  *  pour ne pas avoir à dupliquer les informations de connexion au repositoty
  */
 userHome = System.properties['user.home']
-println userHome
 repositoryConfigFile = "${userHome}/.grails/settings.groovy"
 
 /**
