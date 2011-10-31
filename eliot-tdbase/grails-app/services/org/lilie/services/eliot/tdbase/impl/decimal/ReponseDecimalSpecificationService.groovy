@@ -36,7 +36,6 @@ package org.lilie.services.eliot.tdbase.impl.decimal
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
-import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
@@ -69,8 +68,10 @@ class ReponseDecimalSpecificationService implements ReponseSpecificationService 
    *
    * @see ReponseSpecificationService
    */
-  @Requires({object instanceof ReponseDecimalSpecification})
   String getSpecificationFromObject(Object object) {
+
+    assert (object instanceof ReponseDecimalSpecification)
+
     JsonBuilder builder = new JsonBuilder(object.toMap())
     return builder.toString()
   }
@@ -96,8 +97,10 @@ class ReponseDecimalSpecificationService implements ReponseSpecificationService 
   /**
    * @see ReponseSpecificationService
    */
-  @Requires({question.specificationObject instanceof DecimalSpecification})
   def getObjectInitialiseFromSpecification(Question question) {
+
+    assert (question.specificationObject instanceof DecimalSpecification)
+
     return new ReponseDecimalSpecification()
   }
 

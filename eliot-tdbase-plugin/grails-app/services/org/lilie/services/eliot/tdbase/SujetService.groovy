@@ -28,7 +28,6 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
@@ -79,8 +78,10 @@ class SujetService {
    * @return la copie du sujet
    */
   @Transactional
-  @Requires({sujet.proprietaire == proprietaire || sujet.publie})
   Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
+    // verification securité
+    assert(sujet.proprietaire == proprietaire || sujet.publie)
+
     def versionSujet = sujet.versionSujet + 1
     def sujetDepartBranche = sujet.sujetDepartBranche
     if (sujet.proprietaire != proprietaire) {
@@ -120,8 +121,10 @@ class SujetService {
    * @param nouveauTitre le titre
    * @return le sujet
    */
-  @Requires({sujet.proprietaire == proprietaire || sujet.publie})
   Sujet updateTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
+    // verif securite
+    assert(sujet.proprietaire == proprietaire || sujet.publie)
+
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
@@ -138,8 +141,10 @@ class SujetService {
    * @param proprietaire le proprietaire
    * @return le sujet
    */
-  @Requires({sujet.proprietaire == proprietaire || sujet.publie})
   Sujet updateProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
+    // verif securite
+    assert(sujet.proprietaire == proprietaire || sujet.publie)
+
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
@@ -256,12 +261,14 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
-  @Requires({
-    (sujet.proprietaire == proprietaire || sujet.publie) &&
-    (question.proprietaire == proprietaire || question.publie)
-  })
   Sujet insertQuestionInSujet(Question question, Sujet sujet,
                               Personne proprietaire, Integer rang = null) {
+
+    // verif securite
+    assert((sujet.proprietaire == proprietaire || sujet.publie) &&
+        (question.proprietaire == proprietaire || question.publie))
+
+
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
     def sequence = new SujetSequenceQuestions(
             question: question,
@@ -298,12 +305,13 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
-  @Requires({
-    sujetQuestion.sujet.proprietaire == proprietaire ||
-    sujetQuestion.sujet.publie
-  })
   Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
+    // verif securite
+    assert(sujetQuestion.sujet.proprietaire == proprietaire ||
+            sujetQuestion.sujet.publie)
+
+
     def idx = sujetQuestion.rang
     if (idx == 0) { // on ne fait rien
       return sujetQuestion.sujet
@@ -331,12 +339,12 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
-  @Requires({
-    sujetQuestion.sujet.proprietaire == proprietaire ||
-    sujetQuestion.sujet.publie
-  })
   Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
                                       Personne proprietaire) {
+    // verif securite
+    assert(sujetQuestion.sujet.proprietaire == proprietaire ||
+            sujetQuestion.sujet.publie)
+
     def idx = sujetQuestion.rang
     if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) { // on ne fait rien
       return sujetQuestion.sujet
@@ -361,12 +369,12 @@ class SujetService {
  * @return le sujet modifié
  */
   @Transactional
-  @Requires({
-    sujetQuestion.sujet.proprietaire == proprietaire ||
-    sujetQuestion.sujet.publie
-  })
   Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
                                   Personne proprietaire) {
+    // verif securite
+    assert(sujetQuestion.sujet.proprietaire == proprietaire ||
+        sujetQuestion.sujet.publie)
+
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
     SujetSequenceQuestions squest = leSujet.questionsSequences[sujetQuestion.rang]
     leSujet.removeFromQuestionsSequences(squest)
@@ -383,10 +391,12 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
-  @Requires({sujetQuestion.sujet.proprietaire == proprietaire})
   SujetSequenceQuestions updatePointsForQuestion(Float newPoints,
                                                  SujetSequenceQuestions sujetQuestion,
                                                  Personne proprietaire) {
+
+    assert(sujetQuestion.sujet.proprietaire == proprietaire)
+
     sujetQuestion.points = newPoints
     if (sujetQuestion.save()) {
       def leSujet = sujetQuestion.sujet

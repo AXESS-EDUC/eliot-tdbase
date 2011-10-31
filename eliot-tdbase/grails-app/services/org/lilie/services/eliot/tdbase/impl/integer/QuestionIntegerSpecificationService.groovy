@@ -36,8 +36,6 @@ import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
-import org.gcontracts.annotations.Requires
-import org.lilie.services.eliot.tice.utils.NumberUtils
 
 /**
  *
@@ -64,8 +62,10 @@ class QuestionIntegerSpecificationService implements QuestionSpecificationServic
    *
    * @see QuestionSpecificationService
    */
-  @Requires({object instanceof IntegerSpecification})
   String getSpecificationFromObject(Object object) {
+
+    assert(object instanceof IntegerSpecification)
+
     JsonBuilder builder = new JsonBuilder(object.toMap())
     return builder.toString()
   }
@@ -74,8 +74,10 @@ class QuestionIntegerSpecificationService implements QuestionSpecificationServic
    *
    * @see QuestionSpecificationService
    */
-  @Requires({object instanceof IntegerSpecification})
   String getSpecificationNormaliseFromObject(Object object) {
+
+    assert(object instanceof IntegerSpecification)
+
     IntegerSpecification spec = object
     String toNormalise = spec.libelle
     if (toNormalise) {

@@ -38,7 +38,6 @@ package org.lilie.services.eliot.tdbase.impl.integer
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
-import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
@@ -72,8 +71,10 @@ class ReponseIntegerSpecificationService implements ReponseSpecificationService 
    *
    * @see ReponseSpecificationService
    */
-  @Requires({object instanceof ReponseIntegerSpecification})
   String getSpecificationFromObject(Object object) {
+
+    assert(object instanceof ReponseIntegerSpecification)
+
     JsonBuilder builder = new JsonBuilder(object.toMap())
     return builder.toString()
   }
@@ -99,8 +100,10 @@ class ReponseIntegerSpecificationService implements ReponseSpecificationService 
   /**
    * @see ReponseSpecificationService
    */
-  @Requires({question.specificationObject instanceof IntegerSpecification})
   def getObjectInitialiseFromSpecification(Question question) {
+
+    assert(question.specificationObject instanceof IntegerSpecification)
+
     return new ReponseIntegerSpecification()
   }
 

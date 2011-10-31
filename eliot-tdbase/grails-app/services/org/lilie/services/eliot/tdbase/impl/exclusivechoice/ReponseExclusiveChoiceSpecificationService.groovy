@@ -36,7 +36,6 @@ package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
-import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
@@ -67,8 +66,10 @@ class ReponseExclusiveChoiceSpecificationService implements ReponseSpecification
    *
    * @see ReponseSpecificationService
    */
-  @Requires({object instanceof ReponseExclusiveChoiceSpecification})
   String getSpecificationFromObject(Object object) {
+
+    assert (object instanceof ReponseExclusiveChoiceSpecification)
+
     ReponseExclusiveChoiceSpecification spec = object
     JsonBuilder builder = new JsonBuilder(spec.toMap())
     return builder.toString()
@@ -95,8 +96,10 @@ class ReponseExclusiveChoiceSpecificationService implements ReponseSpecification
   /**
    * @see ReponseSpecificationService
    */
-  @Requires({question.specificationObject instanceof ExclusiveChoiceSpecification})
   def getObjectInitialiseFromSpecification(Question question) {
+
+    assert (question.specificationObject instanceof ExclusiveChoiceSpecification)
+
     ReponseExclusiveChoiceSpecification specObj = new ReponseExclusiveChoiceSpecification()
     return specObj
   }

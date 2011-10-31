@@ -35,7 +35,6 @@ import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.lilie.services.eliot.tdbase.Question
-import org.gcontracts.annotations.Requires
 
 /**
  *
@@ -63,8 +62,10 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
    *
    * @see QuestionSpecificationService
    */
-  @Requires({object instanceof MultipleChoiceSpecification})
   String getSpecificationFromObject(Object object) {
+
+    assert(object instanceof MultipleChoiceSpecification)
+
     JsonBuilder builder = new JsonBuilder(object.toMap())
     return builder.toString()
   }
@@ -73,8 +74,10 @@ class QuestionMultipleChoiceSpecificationService implements QuestionSpecificatio
    *
    * @see QuestionSpecificationService
    */
-  @Requires({object instanceof MultipleChoiceSpecification})
   String getSpecificationNormaliseFromObject(Object object) {
+
+    assert(object instanceof MultipleChoiceSpecification)
+
     String toNormalise = object.libelle
     if (toNormalise) {
       return StringUtils.normalise(toNormalise)

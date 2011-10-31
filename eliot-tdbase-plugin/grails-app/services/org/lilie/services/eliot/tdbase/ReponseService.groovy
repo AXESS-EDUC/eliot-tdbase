@@ -30,12 +30,8 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.gcontracts.annotations.Requires
-import org.lilie.services.eliot.tice.CopyrightsType
+
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
@@ -70,9 +66,11 @@ class ReponseService implements ApplicationContextAware {
    * @return la réponse
    */
   @Transactional
-  @Requires ({copie.eleve == proprietaire})
   Reponse createReponse(Copie copie, SujetSequenceQuestions sujetQuestion,
                             Personne proprietaire) {
+
+    assert(copie.eleve == proprietaire)
+
     Reponse reponse = new Reponse(
                   copie: copie,
                   sujetQuestion: sujetQuestion,
@@ -94,9 +92,11 @@ class ReponseService implements ApplicationContextAware {
    * @return la réponse avec la note correction automatique mise à jour
    */
   @Transactional
-  @Requires ({reponse.eleve == proprietaire})
   Reponse updateSpecificationAndEvalue(Reponse reponse, def specificationObject,
                             Personne proprietaire) {
+
+    assert(reponse.eleve == proprietaire)
+
     QuestionType qtype = reponse.sujetQuestion.question.type
     def specService = reponseSpecificationServiceForQuestionType(qtype)
     specService.updateReponseSpecificationForObject(reponse, specificationObject)

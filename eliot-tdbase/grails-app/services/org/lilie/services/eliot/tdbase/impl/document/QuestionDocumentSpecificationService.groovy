@@ -44,7 +44,6 @@ import org.springframework.transaction.annotation.Transactional
 
 import org.lilie.services.eliot.tice.Attachement
 
-import org.gcontracts.annotations.Requires
 
 /**
  *
@@ -104,8 +103,10 @@ class QuestionDocumentSpecificationService implements QuestionSpecificationServi
    * @see QuestionSpecificationService
    */
   @Transactional
-  @Requires({object instanceof DocumentSpecification})
   def updateQuestionSpecificationForObject(Question question, Object object) {
+
+    assert (object instanceof DocumentSpecification)
+
     DocumentSpecification spec = object
     def oldQuestAttId = question.specificationObject?.questionAttachementId
     if (spec.fichier && !spec.fichier.empty) {

@@ -32,7 +32,6 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.springframework.transaction.annotation.Transactional
@@ -92,12 +91,12 @@ class CopieService {
    * @param eleve l'élève
    * @return la copie
    */
-  @Requires({
-    seance.structureEnseignement in
-    profilScolariteService.findStructuresEnseignementForPersonne(eleve)
-  })
   @Transactional
   Copie getCopieForModaliteActiviteAndEleve(ModaliteActivite seance, Personne eleve) {
+
+    assert (seance.structureEnseignement in
+        profilScolariteService.findStructuresEnseignementForPersonne(eleve))
+
     Copie copie = Copie.findByModaliteActiviteAndEleve(seance, eleve)
     if (copie == null) {
       copie = new Copie(
@@ -139,10 +138,12 @@ class CopieService {
    * @return la copie mise à jour
    */
   @Transactional
-  @Requires({copie.eleve == eleve && copie.estModifiable()})
   Copie updateCopieForListeReponsesCopie(Copie copie,
                                        List<ReponseCopie> reponsesCopie,
                                        Personne eleve) {
+
+    assert (copie.eleve == eleve && copie.estModifiable())
+
     def noteGlobaleAuto = 0
     def nbGlobalPointsAuto = 0
     def nbGlobalPointsCorrecteur = 0
@@ -186,12 +187,14 @@ class CopieService {
    * @return la copie mise à jour
    */
   @Transactional
-  @Requires({copie.modaliteActivite.enseignant == enseignant })
   Copie updateAnnotationAndModulationForCopie(
           String annotation,
           Float pointsModulation,
           Copie copie,
           Personne enseignant) {
+
+    assert (copie.modaliteActivite.enseignant == enseignant)
+
     copie.correctionAnnotation = annotation
     copie.pointsModulation = pointsModulation
     copie.correctionNoteFinale = copie.recalculeNoteFinale()
@@ -206,9 +209,11 @@ class CopieService {
  * la pagination
  * @return la liste des copies
  */
-  @Requires({chercheur != null})
   List<Copie> findCopiesEnVisualisationForApprenant(Personne chercheur,
                                                     Map paginationAndSortingSpec = [:]) {
+
+    assert (chercheur != null)
+
     def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur)
     Date now = new Date()
     def criteria = Copie.createCriteria()
@@ -238,10 +243,12 @@ class CopieService {
    * la pagination
    * @return la liste des copies
    */
-    @Requires({profilScolariteService.personneEstResponsableEleve(chercheur,apprenant)})
     List<Copie> findCopiesEnVisualisationForResponsableAndApprenant(Personne chercheur,
                                                       Personne apprenant,
                                                       Map paginationAndSortingSpec = [:]) {
+
+      assert (profilScolariteService.personneEstResponsableEleve(chercheur,apprenant))
+
       def copies = findCopiesEnVisualisationForApprenant(apprenant,paginationAndSortingSpec)
       return copies
     }
@@ -253,10 +260,12 @@ class CopieService {
    * @param paginationSpec les specifications la pagination
    * @return
    */
-  @Requires({seance?.enseignant == chercheur})
   List<Copie> findCopiesForModaliteActivite(ModaliteActivite seance,
                                             Personne chercheur,
                                             Map paginationSpec = [:]) {
+
+    assert (seance?.enseignant == chercheur)
+
     def criteria = Copie.createCriteria()
     List<Copie> copies = criteria.list(paginationSpec) {
       eq 'modaliteActivite', seance

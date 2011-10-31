@@ -30,7 +30,6 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.springframework.transaction.annotation.Transactional
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
@@ -68,10 +67,10 @@ class ModaliteActiviteService {
    * @return la séance modifiée
    */
   @Transactional
-  @Requires({modaliteActivite.enseignant == proprietaire})
   ModaliteActivite updateProprietes(ModaliteActivite modaliteActivite, Map proprietes,
                                     Personne proprietaire) {
 
+    assert (modaliteActivite.enseignant == proprietaire)
 
     modaliteActivite.properties = proprietes
     modaliteActivite.save()
@@ -85,12 +84,11 @@ class ModaliteActiviteService {
    * la pagination
    * @return la liste des séance
    */
-  @Requires({chercheur != null})
   List<ModaliteActivite> findModalitesActivitesForEnseignant(Personne chercheur,
                                                 Map paginationAndSortingSpec = null) {
-    if (!chercheur) {
-      throw new IllegalArgumentException("question.recherche.chercheur.null")
-    }
+
+    assert(chercheur != null)
+
     if (paginationAndSortingSpec == null) {
       paginationAndSortingSpec = [:]
     }
@@ -118,9 +116,10 @@ class ModaliteActiviteService {
    * la pagination
    * @return la liste des séances
    */
-  @Requires({chercheur != null})
   List<ModaliteActivite> findModalitesActivitesForApprenant(Personne chercheur,
                                                 Map paginationAndSortingSpec = null) {
+
+    assert (chercheur != null)
 
     if (paginationAndSortingSpec == null) {
       paginationAndSortingSpec = [:]
@@ -148,8 +147,10 @@ class ModaliteActiviteService {
    * Supprime une modalite activité
    * @param modaliteActivite la modalite à supprimer
    */
-  @Requires({modaliteActivite?.enseignant == personne})
   def supprimeModaliteActivite(ModaliteActivite modaliteActivite,Personne personne) {
+
+    assert (modaliteActivite?.enseignant == personne)
+
     Copie.executeUpdate('DELETE FROM Copie WHERE modaliteActivite=:modActivite',
                         [modActivite: modaliteActivite])
     modaliteActivite.delete()

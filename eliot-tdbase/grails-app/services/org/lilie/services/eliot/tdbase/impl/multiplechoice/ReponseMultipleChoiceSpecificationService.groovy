@@ -34,7 +34,6 @@ package org.lilie.services.eliot.tdbase.impl.multiplechoice
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
-import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
@@ -65,8 +64,10 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
    *
    * @see ReponseSpecificationService
    */
-  @Requires({object instanceof ReponseMultipleChoiceSpecification})
   String getSpecificationFromObject(Object object) {
+
+    assert(object instanceof ReponseMultipleChoiceSpecification)
+
     ReponseMultipleChoiceSpecification spec = object
     JsonBuilder builder = new JsonBuilder(spec.toMap())
     return builder.toString()
@@ -93,8 +94,10 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
   /**
    * @see ReponseSpecificationService
    */
-  @Requires({question.specificationObject instanceof MultipleChoiceSpecification})
   def getObjectInitialiseFromSpecification(Question question) {
+
+    assert(question.specificationObject instanceof MultipleChoiceSpecification)
+
     def questSpecObj = question.specificationObject
     def reponsesPossibles = questSpecObj.reponses
     ReponseMultipleChoiceSpecification specObj = new ReponseMultipleChoiceSpecification()

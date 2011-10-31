@@ -28,7 +28,6 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.gcontracts.annotations.Requires
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
@@ -98,8 +97,10 @@ class QuestionService implements ApplicationContextAware {
    * @return la copie de la question
    */
   @Transactional
-  @Requires({question.proprietaire == proprietaire || question.publie})
   Question recopieQuestion(Question question, Personne proprietaire) {
+
+    assert(question.proprietaire == proprietaire || question.publie)
+
     def versionQuestion = question.versionQuestion + 1
     def questionDepartBranche = question.questionDepartBranche
     if (question.proprietaire != proprietaire) {
@@ -157,9 +158,11 @@ class QuestionService implements ApplicationContextAware {
    * @return la question
    */
   @Transactional
-  @Requires({question.proprietaire == proprietaire || question.publie})
   Question updateProprietes(Question question, Map proprietes, def specificationObject,
                             Personne proprietaire) {
+
+    assert(question.proprietaire == proprietaire || question.publie)
+
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
     Question laQuestion = getDerniereVersionQuestionForProprietaire(question, proprietaire)
@@ -186,12 +189,14 @@ class QuestionService implements ApplicationContextAware {
  * @return la question insérée
  */
   @Transactional
-  @Requires({ sujet?.proprietaire == proprietaire || sujet?.publie })
   Question createQuestionAndInsertInSujet(Map proprietesQuestion,
                                           def specificatinObject,
                                           Sujet sujet,
                                           Personne proprietaire,
                                           Integer rang = null) {
+
+    assert(sujet?.proprietaire == proprietaire || sujet?.publie)
+
     Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
     sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
     return question
