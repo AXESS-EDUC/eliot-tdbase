@@ -28,7 +28,6 @@ dependencies {
  *   Deploiement artefact
  */
 
-
 /**
  *  La config du repository est au format des parametres attendus par Grails
  *  pour ne pas avoir à dupliquer les informations de connexion au repositoty
@@ -41,7 +40,7 @@ repositoryConfigFile = "${userHome}/.grails/settings.groovy"
  */
 uploadArchives {
   if (!project.hasProperty('environment')) {
-      project.environment = 'development'
+    project.environment = 'development'
   }
   project.configRepository = new ConfigSlurper(project.environment).parse(
           new File(repositoryConfigFile).toURL())
@@ -71,17 +70,17 @@ task update(dependsOn: build) {
   }
   project.configDataSource = new ConfigSlurper(project.environment).parse(new File(dataSourceConfigFile).toURL())
   displayConfig(configDataSource)
+  ant.path(id: 'classpath') {
+    ant.pathelement(path: configurations.liquibase.asPath)
+    ant.pathelement(location: "${project.buildDir}/libs/${project.name}-${version}.jar")
+  }
+  ant.taskdef(resource: 'liquibasetasks.properties', classpathref: 'classpath')
 }
 
 /**
  * Action de la tâche update
  */
 update << {
-  ant.path(id: 'classpath') {
-    ant.pathelement(path: configurations.liquibase.asPath)
-    ant.pathelement(location: "${project.buildDir}/libs/${project.name}-${version}.jar")
-  }
-  ant.taskdef(resource: 'liquibasetasks.properties', classpathref: 'classpath')
   ant.updateDatabase(
           changeLogFile: "${project.configDataSource.liquibase.changelogfile}",
           driver: "${project.configDataSource.dataSource.driverClassName}",
