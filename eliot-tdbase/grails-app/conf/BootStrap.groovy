@@ -9,10 +9,9 @@ class BootStrap {
 
   def init = { servletContext ->
 
-    dbMigrationService.updateDb()
-
     switch (Environment.current) {
       case Environment.DEVELOPMENT:
+        dbMigrationService.updateDb()
         bootstrapService.bootstrapForDevelopment()
         break
     }
