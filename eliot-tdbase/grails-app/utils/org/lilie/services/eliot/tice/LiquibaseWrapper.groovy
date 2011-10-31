@@ -28,14 +28,14 @@
 
 package org.lilie.services.eliot.tice
 
-import liquibase.integration.spring.SpringLiquibase
-import liquibase.Liquibase
 import java.sql.Connection
-import liquibase.exception.DatabaseException
 import java.sql.SQLException
+import liquibase.Liquibase
+import liquibase.exception.DatabaseException
+import liquibase.integration.spring.SpringLiquibase
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 class LiquibaseWrapper extends SpringLiquibase {
@@ -44,38 +44,36 @@ class LiquibaseWrapper extends SpringLiquibase {
    * Lance l'update Liquibase
    * @return
    */
-
   def runUpdate() {
     Connection c = null;
-            Liquibase liquibase = null;
-            try {
-                c = getDataSource().getConnection();
-                liquibase = createLiquibase(c);
-                liquibase.update(getContexts());
-            } catch (SQLException e) {
-                throw new DatabaseException(e);
-            } finally {
-                if (c != null) {
-                    try {
-                        c.rollback();
-                        c.close();
-                    } catch (SQLException e) {
-                        //nothing to do
-                    }
-                }
-            }
+    Liquibase liquibase = null;
+    try {
+      c = getDataSource().getConnection();
+      liquibase = createLiquibase(c);
+      liquibase.update(getContexts());
+    } catch (SQLException e) {
+      throw new DatabaseException(e);
+    } finally {
+      if (c != null) {
+        try {
+          c.rollback();
+          c.close();
+        } catch (SQLException e) {
+          //nothing to do
+        }
+      }
+    }
   }
 
   /**
    * Cree l'objet Liquibase responsable de l'update
    * @param c la connection JDBC
-   * @return  l'objet Liquibase obtenu à partir de la connexion et des attributs
+   * @return l'objet Liquibase obtenu à partir de la connexion et des attributs
    *          initialisé par Spring
    */
   Liquibase createLiquibase(Connection c) {
     super.createLiquibase(c)
   }
-
 
 
 }

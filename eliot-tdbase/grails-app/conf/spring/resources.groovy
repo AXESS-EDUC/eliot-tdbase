@@ -45,7 +45,7 @@ beans = {
   // beans pour la migration des données
   liquibase(LiquibaseWrapper) {
     dataSource = ref("dataSource")
-    changelog = "classpath:changelog.xml"
+    changeLog = "classpath:migrations/changelog.xml"
   }
 
 }
