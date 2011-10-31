@@ -78,12 +78,6 @@ grails.project.dependency.resolution = {
       export = false
     }
 
-    compile (":database-migration:1.0") {
-      export = false
-    }
-
-
-
 
     compile(":codenarc:0.15") {
       export = false
