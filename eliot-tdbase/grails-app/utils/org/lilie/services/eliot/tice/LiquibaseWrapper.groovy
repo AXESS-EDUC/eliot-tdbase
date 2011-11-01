@@ -41,6 +41,15 @@ import liquibase.integration.spring.SpringLiquibase
 class LiquibaseWrapper extends SpringLiquibase {
 
   /**
+   *  Redéfinition de la méthode pour ne pas déclencher automatiquement
+   *  Liquibase
+   */
+  @Override
+  void afterPropertiesSet() {
+    return
+  }
+
+  /**
    * Lance l'update Liquibase
    * @return
    */
