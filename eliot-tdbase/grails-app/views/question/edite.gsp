@@ -29,14 +29,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require module="eliot-tice-tiny_mce"/>
-
-  <r:script>
-    $(document).ready(function() {
-      $('#menu-item-contributions').addClass('actif');
-    });
-  </r:script>
-  <r:script disposition="head">
+  <g:external dir="js/eliot/tiny_mce/tiny_mce.js" plugin="eliot-tice-plugin"/>
+  <script type="text/javascript">
     tinyMCE.init({
       // General options
       language:'fr',
@@ -54,7 +48,12 @@
       theme_advanced_statusbar_location:"bottom",
       theme_advanced_resizing:true
     });
-  </r:script>
+  </script>
+  <r:script>
+      $(document).ready(function() {
+        $('#menu-item-contributions').addClass('actif');
+      });
+    </r:script>
   <title>TDBase - Edition d'une question</title>
 </head>
 

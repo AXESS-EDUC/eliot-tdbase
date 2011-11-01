@@ -49,14 +49,6 @@ grails.project.dependency.resolution = {
     grailsHome()
     grailsCentral()
     mavenRepo "http://www.ticetime.com/nexus/content/repositories/snapshots/"
-    // uncomment the below to enable remote dependency resolution
-    // from public Maven repositories
-    //mavenCentral()
-    //mavenLocal()
-    //mavenRepo "http://snapshots.repository.codehaus.org"
-    //mavenRepo "http://repository.codehaus.org"
-    //mavenRepo "http://download.java.net/maven/2/"
-    //mavenRepo "http://repository.jboss.com/maven2/"
   }
   dependencies {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
@@ -71,7 +63,7 @@ grails.project.dependency.resolution = {
     compile ":hibernate:$grailsVersion"
     compile ":jquery:1.6.1.1"
     compile ":jquery-ui:1.8.15"
-    compile ":resources:1.0.2"
+    compile ":resources:1.1.1"
 
     compile ":codenarc:0.15"
     compile(":gmetrics:0.3.1") {
