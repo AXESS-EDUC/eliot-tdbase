@@ -26,63 +26,24 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice
+package org.lilie.services.eliot.tice.migrations
 
-import java.sql.Connection
-import java.sql.SQLException
-import liquibase.Liquibase
-import liquibase.exception.DatabaseException
-import liquibase.integration.spring.SpringLiquibase
+import org.lilie.services.eliot.tice.utils.LiquibaseWrapper
 
 /**
- *
+ * 
  * @author franck Silvestre
  */
-class LiquibaseWrapper extends SpringLiquibase {
+class DbMigrationService {
 
-  /**
-   *  Redéfinition de la méthode pour ne pas déclencher automatiquement
-   *  Liquibase
-   */
-  @Override
-  void afterPropertiesSet() {
-    return
+  static transactional = false
+
+  LiquibaseWrapper liquibase
+
+  def updateDb() {
+    liquibase.runUpdate()
   }
 
-  /**
-   * Lance l'update Liquibase
-   * @return
-   */
-  def runUpdate() {
-    Connection c = null;
-    Liquibase liquibase = null;
-    try {
-      c = getDataSource().getConnection();
-      liquibase = createLiquibase(c);
-      liquibase.update(getContexts());
-    } catch (SQLException e) {
-      throw new DatabaseException(e);
-    } finally {
-      if (c != null) {
-        try {
-          c.rollback();
-          c.close();
-        } catch (SQLException e) {
-          //nothing to do
-        }
-      }
-    }
-  }
-
-  /**
-   * Cree l'objet Liquibase responsable de l'update
-   * @param c la connection JDBC
-   * @return l'objet Liquibase obtenu à partir de la connexion et des attributs
-   *          initialisé par Spring
-   */
-  Liquibase createLiquibase(Connection c) {
-    super.createLiquibase(c)
-  }
 
 
 }

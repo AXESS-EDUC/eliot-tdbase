@@ -1,6 +1,6 @@
 import grails.util.Environment
 import org.lilie.services.eliot.tice.utils.BootstrapService
-import org.lilie.services.eliot.migrations.DbMigrationService
+import org.lilie.services.eliot.tice.migrations.DbMigrationService
 
 class BootStrap {
 

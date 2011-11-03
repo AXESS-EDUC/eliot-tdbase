@@ -1,6 +1,6 @@
 group = "org.lilie.services.eliot"
 artefactId = "eliot-tice-dbmigration"
-version = "0.3a-SNAPSHOT"
+version = "0.3a"
 
 apply plugin: 'idea'
 apply plugin: 'java'
@@ -34,6 +34,8 @@ dependencies {
  */
 userHome = System.properties['user.home']
 repositoryConfigFile = "${userHome}/.grails/settings.groovy"
+repositoryReleases = "ticetimereleases"
+repositorySnapshots = "ticetimesnapshot"
 
 /**
  * Configuration de la tache upload archives
@@ -47,10 +49,14 @@ uploadArchives {
 
   repositories.mavenDeployer {
     configuration = configurations.deploiementArtefact
-    repository(url: configRepository.grails.project.repos.ticetimesnapshot.url) {
+    def reposName = repositoryReleases
+    if (version.endsWith("SNAPSHOT")) {
+      reposName = repositorySnapshots
+    }
+    repository(url: configRepository.grails.project.repos."${reposName}".url) {
       authentication(
-              userName: configRepository.grails.project.repos.ticetimesnapshot.username,
-              password: configRepository.grails.project.repos.ticetimesnapshot.password
+              userName: configRepository.grails.project.repos."${reposName}".username,
+              password: configRepository.grails.project.repos."${reposName}".password
       )
     }
   }

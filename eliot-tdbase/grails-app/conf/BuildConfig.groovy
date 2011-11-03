@@ -54,8 +54,7 @@ grails.project.dependency.resolution = {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
     runtime "postgresql:postgresql:8.4-702.jdbc4"
-    runtime group: 'org.liquibase', name: 'liquibase-core', version: '2.0.3'
-    runtime group: 'org.lilie.services.eliot', name:'eliot-tice-dbmigration', version:'0.3a-SNAPSHOT'
+
 
   }
 
