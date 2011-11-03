@@ -37,6 +37,7 @@
       <sourceFolder url="file://$MODULE_DIR$/test/unit" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/grails-app/i18n" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/grails-app/utils" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/web-app/plugins" />
@@ -59,7 +60,6 @@
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.springframework.security/spring-security-core/jars/spring-security-core-3.0.5.RELEASE.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/net.sf.ehcache/ehcache-core/jars/ehcache-core-2.4.3.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/xml-apis/xml-apis/jars/xml-apis-1.0.b2.jar!/" />
-          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.lilie.services.eliot/eliot-tice-dbmigration/jars/eliot-tice-dbmigration-0.3a-SNAPSHOT.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.liquibase/liquibase-core/jars/liquibase-core-2.0.3.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/postgresql/postgresql/jars/postgresql-8.4-702.jdbc4.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/ant/ant/jars/ant-1.6.5.jar!/" />
@@ -71,6 +71,7 @@
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.gmetrics/GMetrics/jars/GMetrics-0.3.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.codenarc/CodeNarc/jars/CodeNarc-0.15.jar!/" />
           <root url="file://$MODULE_DIR$/lib" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.lilie.services.eliot/eliot-tice-dbmigration/jars/eliot-tice-dbmigration-0.3a.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

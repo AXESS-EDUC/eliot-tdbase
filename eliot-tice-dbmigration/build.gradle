@@ -1,6 +1,6 @@
 group = "org.lilie.services.eliot"
 artefactId = "eliot-tice-dbmigration"
-version = "0.3a"
+version = "0.4a-SNAPSHOT"
 
 apply plugin: 'idea'
 apply plugin: 'java'

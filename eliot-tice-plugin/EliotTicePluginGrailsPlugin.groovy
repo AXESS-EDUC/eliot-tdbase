@@ -35,7 +35,7 @@ class EliotTicePluginGrailsPlugin {
   // the group id
   def groupId = "org.lilie.services.eliot"
   // the plugin version
-  def version = "0.3a"
+  def version = "0.4a-SNAPSHOT"
   // the version or versions of Grails the plugin is designed for
   def grailsVersion = "1.4 > *"
   // the other plugins this plugin depends on

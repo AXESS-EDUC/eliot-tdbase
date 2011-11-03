@@ -1,4 +1,4 @@
-<plugin name='eliot-tice-plugin' version='0.3a-SNAPSHOT' grailsVersion='2.0.0.RC1 &gt; *'>
+<plugin name='eliot-tice-plugin' version='0.4a-SNAPSHOT' grailsVersion='2.0.0.RC1 &gt; *'>
   <author>Franck Silvestre</author>
   <title>Eliot Tice Plugin</title>
   <description>      Plugin pour la création d'applications Eliot
@@ -63,6 +63,7 @@
     <resource>org.lilie.services.eliot.tice.annuaire.UtilisateurService</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.data.Utilisateur</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService</resource>
+    <resource>org.lilie.services.eliot.tice.migrations.DbMigrationService</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.FonctionService</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.ProfilScolariteService</resource>
     <resource>org.lilie.services.eliot.tice.utils.BootstrapService</resource>
@@ -72,6 +73,7 @@
     <resource>org.lilie.services.eliot.tice.utils.ServicesEliotService</resource>
     <resource>org.lilie.services.eliot.tice.AttachementTagLib</resource>
     <resource>org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar</resource>
+    <resource>org.lilie.services.eliot.tice.utils.LiquibaseWrapper</resource>
     <resource>org.lilie.services.eliot.tice.utils.NumberUtils</resource>
     <resource>org.lilie.services.eliot.tice.utils.StringUtils</resource>
   </resources>
