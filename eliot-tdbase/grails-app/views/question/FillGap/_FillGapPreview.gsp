@@ -25,18 +25,24 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<g:set var="specifobject" value="${question.specificationObject}"/>
-<tr>
-  <td colspan="2">
-    <g:textArea
-            name="specifobject.enonce"
-            rows="20" cols="55"
-            value="${specifobject.enonce}"
-            id="specifobject.enonce"
-    />
-  </td>
-</tr>
 
-<r:script>
-    tinyMCE.execCommand("mceAddControl", true, "specifobject.statement");
-</r:script>
+
+<g:set var="specifobject" value="${question.specificationObject}"/>
+${specifobject.libelle} <br/>
+
+
+
+%{--
+<g:each in="${specifobject.reponses}" var="reponse" status="i">
+  &nbsp;
+  
+     <li>${reponse}</li>
+    
+</g:each>
+--}%
+
+<g:if test="${specifobject.montrerLesMots}">
+    ${specifobject.motsSugeres}
+</g:if>
+
+</ul>

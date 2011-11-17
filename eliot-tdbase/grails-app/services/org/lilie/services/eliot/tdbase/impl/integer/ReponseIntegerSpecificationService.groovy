@@ -26,14 +26,6 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-
-
-
-
-
-
-
-
 package org.lilie.services.eliot.tdbase.impl.integer
 
 import groovy.json.JsonBuilder
@@ -42,9 +34,6 @@ import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.springframework.transaction.annotation.Transactional
-
-import org.lilie.services.eliot.tice.utils.NumberUtils
-import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 
 /**
  *
@@ -127,8 +116,6 @@ class ReponseIntegerSpecificationService implements ReponseSpecificationService 
     reponse.save()
     return res
   }
-
-
 }
 
 /**
@@ -137,21 +124,6 @@ class ReponseIntegerSpecificationService implements ReponseSpecificationService 
 class ReponseIntegerSpecification {
 
   Integer valeurReponse
-
-  ReponseIntegerSpecification() {
-    super()
-  }
-
-  /**
-   * Créer et initialise un nouvel objet de type RepoonseDecimalSpecification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  ReponseIntegerSpecification(Map map) {
-    valeurReponse = map.valeurReponse
-  }
-
-
 
   def toMap() {
     [

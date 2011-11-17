@@ -30,109 +30,76 @@
 
 package org.lilie.services.eliot.tdbase.impl.multiplechoice
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
-import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tice.utils.StringUtils
 import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tdbase.Specification
+import org.lilie.services.eliot.tice.utils.StringUtils
 
 /**
  *
  * @author franck Silvestre
  */
-class QuestionMultipleChoiceSpecificationService implements QuestionSpecificationService {
+class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationService<MultipleChoiceSpecification> {
 
-  static transactional = false
+    static transactional = false
 
-
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  def getObjectFromSpecification(String specification) {
-    if (!specification) {
-      return new MultipleChoiceSpecification()
+    @Override
+    def createSpecification(map) {
+        new MultipleChoiceSpecification(map)
     }
-    def slurper = new JsonSlurper()
-    Map map = slurper.parseText(specification)
-    return new MultipleChoiceSpecification(map)
-  }
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  String getSpecificationFromObject(Object object) {
-
-    assert(object instanceof MultipleChoiceSpecification)
-
-    JsonBuilder builder = new JsonBuilder(object.toMap())
-    return builder.toString()
-  }
-
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  String getSpecificationNormaliseFromObject(Object object) {
-
-    assert(object instanceof MultipleChoiceSpecification)
-
-    String toNormalise = object.libelle
-    if (toNormalise) {
-      return StringUtils.normalise(toNormalise)
+    @Override
+    def updateQuestionSpecificationForObject(Question question, Object object) {
+        question.specification = getSpecificationFromObject(object)
+        question.specificationNormalise = getSpecificationNormaliseFromObject(object)
+        question.save()
     }
-    return null
-  }
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  def updateQuestionSpecificationForObject(Question question, Object object) {
-    question.specification = getSpecificationFromObject(object)
-    question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-    question.save()
-  }
+    @Override
+    def getSpecificationNormaliseFromObject(MultipleChoiceSpecification specification) {
+        specification?.libelle ? StringUtils.normalise(specification.libelle) : null
+    }
 
 }
 
 /**
  * Représente un objet spécification pour une question de type MultipleChoice
  */
-class MultipleChoiceSpecification {
-  String libelle
-  String correction
-  List<MultipleChoiceSpecificationReponsePossible> reponses = []
+class MultipleChoiceSpecification implements Specification {
+    String libelle
+    String correction
+    List<MultipleChoiceSpecificationReponsePossible> reponses = []
 
-  MultipleChoiceSpecification() {
-    super()
-  }
 
-  /**
-   * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  MultipleChoiceSpecification(Map map) {
-    libelle = map.libelle
-    correction = map.correction
-    reponses = map.reponses.collect {
-      if (it instanceof MultipleChoiceSpecificationReponsePossible) {
-        it
-      } else {
-        new MultipleChoiceSpecificationReponsePossible(it)
-      }
+    MultipleChoiceSpecification()
+    {
+        super()
     }
-  }
 
-  def toMap() {
-    [
-            libelle: libelle,
-            correction: correction,
-            reponses: reponses*.toMap()
-    ]
-  }
+    /**
+     * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
+     * @param map la map permettant d'initialiser l'objet en cours
+     * de création
+     */
+    MultipleChoiceSpecification(Map map) {
+        libelle = map.libelle
+        correction = map.correction
+        reponses = map.reponses.collect {
+            if (it instanceof MultipleChoiceSpecificationReponsePossible) {
+                it
+            } else {
+                new MultipleChoiceSpecificationReponsePossible(it)
+            }
+        }
+    }
+
+    def Map toMap() {
+        [
+                libelle: libelle,
+                correction: correction,
+                reponses: reponses*.toMap()
+        ]
+    }
 
 }
 
@@ -141,30 +108,30 @@ class MultipleChoiceSpecification {
  * type MultipleChoice
  */
 class MultipleChoiceSpecificationReponsePossible {
-  String libelleReponse
-  boolean estUneBonneReponse
-  Float rang
+    String libelleReponse
+    boolean estUneBonneReponse
+    Float rang
 
-  MultipleChoiceSpecificationReponsePossible() {
-    super()
-  }
+    MultipleChoiceSpecificationReponsePossible() {
+        super()
+    }
 
-  /**
-   * Créer et initialise un nouvel objet de type MultipleChoiceSpecificationReponsePossible
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  MultipleChoiceSpecificationReponsePossible(Map map) {
-    libelleReponse = map.libelleReponse
-    estUneBonneReponse = map.estUneBonneReponse
-    rang = map.rang
-  }
+    /**
+     * Créer et initialise un nouvel objet de type MultipleChoiceSpecificationReponsePossible
+     * @param map la map permettant d'initialiser l'objet en cours
+     * de création
+     */
+    MultipleChoiceSpecificationReponsePossible(Map map) {
+        libelleReponse = map.libelleReponse
+        estUneBonneReponse = map.estUneBonneReponse
+        rang = map.rang
+    }
 
-  def toMap() {
-    [
-            libelleReponse: libelleReponse,
-            estUneBonneReponse: estUneBonneReponse,
-            rang: rang
-    ]
-  }
+    def toMap() {
+        [
+                libelleReponse: libelleReponse,
+                estUneBonneReponse: estUneBonneReponse,
+                rang: rang
+        ]
+    }
 }

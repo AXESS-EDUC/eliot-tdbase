@@ -32,112 +32,77 @@
 
 package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
-import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tice.utils.StringUtils
 import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tdbase.Specification
+import org.lilie.services.eliot.tice.utils.StringUtils
 
 /**
  *
  * @author franck Silvestre
  */
-class QuestionExclusiveChoiceSpecificationService implements QuestionSpecificationService {
+class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationService<ExclusiveChoiceSpecification> {
 
-  static transactional = false
+    static transactional = false
 
-
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  def getObjectFromSpecification(String specification) {
-    if (!specification) {
-      return new ExclusiveChoiceSpecification()
+    @Override
+    def createSpecification(Object map) {
+        new ExclusiveChoiceSpecification(map)
     }
-    def slurper = new JsonSlurper()
-    Map map = slurper.parseText(specification)
-    return new ExclusiveChoiceSpecification(map)
-  }
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  String getSpecificationFromObject(Object object) {
-
-    assert (object instanceof ExclusiveChoiceSpecification)
-
-    JsonBuilder builder = new JsonBuilder(object.toMap())
-    return builder.toString()
-  }
-
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  String getSpecificationNormaliseFromObject(Object object) {
-
-    assert (object instanceof ExclusiveChoiceSpecification)
-
-    String toNormalise = object.libelle
-    if (toNormalise) {
-      return StringUtils.normalise(toNormalise)
+    @Override
+    def updateQuestionSpecificationForObject(Question question, Object object) {
+        question.specification = getSpecificationFromObject(object)
+        question.specificationNormalise = getSpecificationNormaliseFromObject(object)
+        question.save()
     }
-    return null
-  }
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  def updateQuestionSpecificationForObject(Question question, Object object) {
-    question.specification = getSpecificationFromObject(object)
-    question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-    question.save()
-  }
+    @Override
+    def getSpecificationNormaliseFromObject(ExclusiveChoiceSpecification specification) {
+        specification?.libelle ? StringUtils.normalise(specification.libelle) : null
+    }
 
 }
 
 /**
  * Représente un objet spécification pour une question de type MultipleChoice
  */
-class ExclusiveChoiceSpecification {
-  String libelle
-  String correction
-  List<ExclusiveChoiceSpecificationReponsePossible> reponses = []
-  Integer indexBonneReponse
+class ExclusiveChoiceSpecification implements Specification {
+    String libelle
+    String correction
+    List<ExclusiveChoiceSpecificationReponsePossible> reponses = []
+    Integer indexBonneReponse
 
-  ExclusiveChoiceSpecification() {
-    super()
-  }
-
-  /**
-   * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  ExclusiveChoiceSpecification(Map map) {
-    libelle = map.libelle
-    correction = map.correction
-    indexBonneReponse = map.indexBonneReponse
-    reponses = map.reponses.collect {
-      if (it instanceof ExclusiveChoiceSpecificationReponsePossible) {
-        it
-      } else {
-        new ExclusiveChoiceSpecificationReponsePossible(it)
-      }
+    ExclusiveChoiceSpecification() {
+        super()
     }
-  }
 
-  def toMap() {
-    [
-            libelle: libelle,
-            correction: correction,
-            reponses: reponses*.toMap(),
-            indexBonneReponse: indexBonneReponse
-    ]
-  }
+    /**
+     * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecification
+     * @param map la map permettant d'initialiser l'objet en cours
+     * de création
+     */
+    ExclusiveChoiceSpecification(Map map) {
+        libelle = map.libelle
+        correction = map.correction
+        indexBonneReponse = map.indexBonneReponse
+        reponses = map.reponses.collect {
+            if (it instanceof ExclusiveChoiceSpecificationReponsePossible) {
+                it
+            } else {
+                new ExclusiveChoiceSpecificationReponsePossible(it)
+            }
+        }
+    }
+
+    def Map toMap() {
+        [
+                libelle: libelle,
+                correction: correction,
+                reponses: reponses*.toMap(),
+                indexBonneReponse: indexBonneReponse
+        ]
+    }
 
 }
 
@@ -146,27 +111,27 @@ class ExclusiveChoiceSpecification {
  * type MultipleChoice
  */
 class ExclusiveChoiceSpecificationReponsePossible {
-  String libelleReponse
-  Float rang
+    String libelleReponse
+    Float rang
 
-  ExclusiveChoiceSpecificationReponsePossible() {
-    super()
-  }
+    ExclusiveChoiceSpecificationReponsePossible() {
+        super()
+    }
 
-  /**
-   * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecificationReponsePossible
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  ExclusiveChoiceSpecificationReponsePossible(Map map) {
-    libelleReponse = map.libelleReponse
-    rang = map.rang
-  }
+    /**
+     * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecificationReponsePossible
+     * @param map la map permettant d'initialiser l'objet en cours
+     * de création
+     */
+    ExclusiveChoiceSpecificationReponsePossible(Map map) {
+        libelleReponse = map.libelleReponse
+        rang = map.rang
+    }
 
-  def toMap() {
-    [
-            libelleReponse: libelleReponse,
-            rang: rang
-    ]
-  }
+    def toMap() {
+        [
+                libelleReponse: libelleReponse,
+                rang: rang
+        ]
+    }
 }

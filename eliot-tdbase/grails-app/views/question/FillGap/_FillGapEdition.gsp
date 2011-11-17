@@ -25,18 +25,45 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
-  <td colspan="2">
-    <g:textArea
-            name="specifobject.enonce"
-            rows="20" cols="55"
-            value="${specifobject.enonce}"
-            id="specifobject.enonce"
-    />
-  </td>
+    <td class="label">
+        Lib&eacute;ll&eacute;:
+    </td>
+    <td>
+        <g:textArea
+                name="specifobject.libelle"
+                rows="3" cols="55"
+                value="${specifobject.libelle}"
+        />
+    </td>
 </tr>
 
-<r:script>
-    tinyMCE.execCommand("mceAddControl", true, "specifobject.statement");
-</r:script>
+<tr>
+    <td class="label">R&eacute;ponse:</td>
+    <td>
+        <g:textArea
+                name="specifobject.texteATrous"
+                rows="10" cols="55"
+                value="${specifobject.texteATrous}"><g:message code="question.fillgap.texteatrous"/>
+        </g:textArea>
+    </td>
+</tr>
+<tr>
+    <td class="label">Montrer les mots:</td>
+ <td>
+     <g:checkBox name="specifobject.montrerLesMots"
+                 checked="${specifobject.montrerLesMots}"/>
+ </td>
+</tr>
+<tr>
+    <td class="label">Correction:</td>
+    <td>
+        <g:textArea
+                name="specifobject.correction"
+                rows="10" cols="55"
+                value="${specifobject.correction}"><g:message code="question.fillgap.correction"/>
+        </g:textArea>
+    </td>
+</tr>

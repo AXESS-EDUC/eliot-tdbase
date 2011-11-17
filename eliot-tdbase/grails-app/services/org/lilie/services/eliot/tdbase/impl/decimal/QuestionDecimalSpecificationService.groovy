@@ -29,124 +29,90 @@
 
 package org.lilie.services.eliot.tdbase.impl.decimal
 
-import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tice.utils.StringUtils
 import org.lilie.services.eliot.tice.utils.NumberUtils
+import org.lilie.services.eliot.tice.utils.StringUtils
+import org.lilie.services.eliot.tdbase.Specification
 
 /**
  *
  * @author franck Silvestre
  */
-class QuestionDecimalSpecificationService implements QuestionSpecificationService {
+class QuestionDecimalSpecificationService extends QuestionSpecificationService<DecimalSpecification> {
 
-  static transactional = false
+    static transactional = false
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  def getObjectFromSpecification(String specification) {
-    if (!specification) {
-      return new DecimalSpecification()
+    @Override
+    def createSpecification(Object map) {
+       new DecimalSpecification(map)
     }
-    def slurper = new JsonSlurper()
-    Map map = slurper.parseText(specification)
-    return new DecimalSpecification(map)
-  }
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  String getSpecificationFromObject(Object object) {
-
-    assert(object instanceof DecimalSpecification)
-
-    JsonBuilder builder = new JsonBuilder(object.toMap())
-    return builder.toString()
-  }
-
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  String getSpecificationNormaliseFromObject(Object object) {
-
-    assert (object instanceof DecimalSpecification)
-
-    DecimalSpecification spec = object
-    String toNormalise = spec.libelle
-    if (toNormalise) {
-      return StringUtils.normalise(toNormalise)
+    @Override
+    def getSpecificationNormaliseFromObject(DecimalSpecification specification) {
+        specification?.libelle ? StringUtils.normalise(specification.libelle) : null
     }
-    return null
-  }
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  def updateQuestionSpecificationForObject(Question question, Object object) {
-    question.specification = getSpecificationFromObject(object)
-    question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-    question.save()
-  }
+    @Override
+    def updateQuestionSpecificationForObject(Question question, Object object) {
+        question.specification = getSpecificationFromObject(object)
+        question.specificationNormalise = getSpecificationNormaliseFromObject(object)
+        question.save()
+    }
 
 }
 
 /**
  * Représente un objet spécification pour une question de type Decimal
  */
-class DecimalSpecification {
-  String libelle
-  Float valeur
-  String unite
-  Float precision = 0
-  String correction
+class DecimalSpecification implements Specification{
+    String libelle
+    Float valeur
+    String unite
+    Float precision = 0
+    String correction
 
 
-  DecimalSpecification() {
-    super()
-  }
-
-  /**
-   * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  DecimalSpecification(Map map) {
-    libelle = map.libelle
-    valeur = map.valeur
-    unite = map.unite
-    precision = map.precision
-    correction = map.correction
-  }
-
-  def toMap() {
-    [
-            libelle: libelle,
-            valeur: valeur,
-            unite: unite,
-            precision: precision,
-            correction: correction
-    ]
-  }
-
-  String getValeurAffichage() {
-    if (valeur != null) {
-      return NumberUtils.formatFloat(valeur)
+    DecimalSpecification() {
+        super()
     }
-    return null
-  }
 
-  String getPrecisionAffichage() {
-     if (precision != null) {
-       return NumberUtils.formatFloat(precision)
-     }
-     return null
-   }
+    /**
+     * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
+     * @param map la map permettant d'initialiser l'objet en cours
+     * de création
+     */
+    DecimalSpecification(Map map) {
+        libelle = map.libelle
+        valeur = map.valeur
+        unite = map.unite
+        precision = map.precision
+        correction = map.correction
+    }
+
+    Map toMap() {
+        [
+                libelle: libelle,
+                valeur: valeur,
+                unite: unite,
+                precision: precision,
+                correction: correction
+        ]
+    }
+
+    String getValeurAffichage() {
+        if (valeur != null) {
+            return NumberUtils.formatFloat(valeur)
+        }
+        return null
+    }
+
+    String getPrecisionAffichage() {
+        if (precision != null) {
+            return NumberUtils.formatFloat(precision)
+        }
+        return null
+    }
 
 }

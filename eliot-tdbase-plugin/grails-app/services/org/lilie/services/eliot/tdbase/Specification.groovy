@@ -26,45 +26,18 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.impl.statement
-
-import org.lilie.services.eliot.tdbase.Question
-import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tdbase.Specification
-import org.lilie.services.eliot.tice.utils.StringUtils
+package org.lilie.services.eliot.tdbase
 
 /**
- *
- * @author franck Silvestre
+ * Inteface de marquage pour tous les Specifications.
+ * Created by IntelliJ IDEA.
+ * User: bert
+ * Date: 10/11/11
+ * Time: 14:13
+ * To change this template use File | Settings | File Templates.
  */
-class QuestionStatementSpecificationService extends QuestionSpecificationService<StatementSpecification> {
+public interface Specification {
 
-    static transactional = false
+    Map toMap()
 
-    def createSpecification(Object map) {
-        return new StatementSpecification(map)
-    }
-
-    @Override
-    String getSpecificationNormaliseFromObject(StatementSpecification specification) {
-        specification.statement ? StringUtils.normalise(specification.statement) : null
-    }
-
-    def updateQuestionSpecificationForObject(Question question, Object object) {
-        question.specification = object.statement
-        question.specificationNormalise = StringUtils.normalise(object.statement)
-        question.save()
-    }
-}
-
-class StatementSpecification implements Specification {
-    String statement
-
-    public StatementSpecification() {
-        super()
-    }
-
-    Map toMap() {
-        return [statement: statement]
-    }
 }

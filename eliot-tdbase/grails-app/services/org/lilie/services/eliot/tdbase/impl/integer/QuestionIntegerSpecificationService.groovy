@@ -31,107 +31,76 @@
 
 package org.lilie.services.eliot.tdbase.impl.integer
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
+import org.lilie.services.eliot.tdbase.Specification
 
 /**
  *
  * @author franck Silvestre
  */
-class QuestionIntegerSpecificationService implements QuestionSpecificationService {
+class QuestionIntegerSpecificationService extends QuestionSpecificationService<IntegerSpecification> {
 
-  static transactional = false
+    static transactional = false
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  def getObjectFromSpecification(String specification) {
-    if (!specification) {
-      return new IntegerSpecification()
+    /**
+     *
+     * @see QuestionSpecificationService
+     */
+    @Override
+    def createSpecification(Object map) {
+        return new IntegerSpecification(map)
     }
-    def slurper = new JsonSlurper()
-    Map map = slurper.parseText(specification)
-    return new IntegerSpecification(map)
-  }
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  String getSpecificationFromObject(Object object) {
-
-    assert(object instanceof IntegerSpecification)
-
-    JsonBuilder builder = new JsonBuilder(object.toMap())
-    return builder.toString()
-  }
-
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  String getSpecificationNormaliseFromObject(Object object) {
-
-    assert(object instanceof IntegerSpecification)
-
-    IntegerSpecification spec = object
-    String toNormalise = spec.libelle
-    if (toNormalise) {
-      return StringUtils.normalise(toNormalise)
+    @Override
+    def updateQuestionSpecificationForObject(Question question, Object object) {
+        question.specification = getSpecificationFromObject(object)
+        question.specificationNormalise = getSpecificationNormaliseFromObject(object)
+        question.save()
     }
-    return null
-  }
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
-  def updateQuestionSpecificationForObject(Question question, Object object) {
-    question.specification = getSpecificationFromObject(object)
-    question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-    question.save()
-  }
+    @Override
+    def getSpecificationNormaliseFromObject(IntegerSpecification specification) {
+        specification?.libelle ? StringUtils.normalise(specification.libelle) : null
+    }
 
 }
 
 /**
  * Représente un objet spécification pour une question de type Integer
  */
-class IntegerSpecification {
-  String libelle
-  Integer valeur
-  String unite
-  String correction
+class IntegerSpecification implements Specification{
+    String libelle
+    Integer valeur
+    String unite
+    String correction
 
 
-  IntegerSpecification() {
-    super()
-  }
+    IntegerSpecification() {
+        super()
+    }
 
-  /**
-   * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  IntegerSpecification(Map map) {
-    libelle = map.libelle
-    valeur = map.valeur
-    unite = map.unite
-    correction = map.correction
-  }
+    /**
+     * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
+     * @param map la map permettant d'initialiser l'objet en cours
+     * de création
+     */
+    IntegerSpecification(Map map) {
+        libelle = map.libelle
+        valeur = map.valeur
+        unite = map.unite
+        correction = map.correction
+    }
 
-  def toMap() {
-    [
-            libelle: libelle,
-            valeur: valeur,
-            unite: unite,
-            correction: correction
-    ]
-  }
+    def Map toMap() {
+        [
+                libelle: libelle,
+                valeur: valeur,
+                unite: unite,
+                correction: correction
+        ]
+    }
 
 
 }

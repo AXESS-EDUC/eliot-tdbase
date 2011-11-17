@@ -26,12 +26,6 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-
-
-
-
-
-
 package org.lilie.services.eliot.tdbase.impl.decimal
 
 import groovy.json.JsonBuilder

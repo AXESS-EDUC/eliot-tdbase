@@ -28,44 +28,55 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+
 /**
- * Interface décrivant le service pour la specification d'une question
+ * Abstract classe décrivant le service pour la specification d'une question
  * @author franck Silvestre
  */
-public interface QuestionSpecificationService {
+abstract class QuestionSpecificationService<S extends Specification> {
 
-  /**
-   * Récupère la specification d'une question à partir d'un objet
-   * @param object l'objet encapsulant la specification
-   * @return la specification
-   */
-  String getSpecificationFromObject(def object)
+    /**
+     * Récupère la specification d'une question à partir d'un objet
+     * @param object l'objet encapsulant la specification
+     * @return la specification
+     */
+    String getSpecificationFromObject(S object) {
+        new JsonBuilder(object.toMap()).toString()
+    }
 
+    /**
+     * Récupère l'objet d'une spécification à partir d'un string json
+     * @param specification le string en json
+     * @return l'objet
+     */
+    def getObjectFromSpecification(String specification) {
+        if (!specification) {
+            createSpecification(new HashMap())
+        } else {
+            createSpecification new JsonSlurper().parseText(specification)
+        }
+    }
 
-  /**
-   * Récupère la specification normalisée d'une question à partir d'un objet
-   * @param object l'objet encapsulant la specification
-   * @return la specification
-   */
-  String getSpecificationNormaliseFromObject(def object)
+    /**
+     * Crée une spécification
+     * @return la spécification
+     */
+    abstract createSpecification(map)
 
-  /**
-   * Récupère l'objet encapsulant la specification d'une question à partir de
-   * la spécification
-   * @param specification la specification
-   * @return l'objet encapsulant la specification
-   */
-  def getObjectFromSpecification(String specification)
+    /**
+     * Récupère la specification normalisée d'une question à partir d'un objet
+     * @param specification l'objet encapsulant la specification
+     * @return la specification
+     */
+    abstract getSpecificationNormaliseFromObject(S specification)
 
-
-  /**
-   * Met à jour la specification de la question
-   * @param question la question
-   * @param object l'objet encapsulant la specification
-   */
-  def updateQuestionSpecificationForObject(Question question, def object)
-
-
-
+    /**
+     * Met à jour la specification de la question
+     * @param question la question
+     * @param object l'objet encapsulant la specification
+     */
+    abstract updateQuestionSpecificationForObject(Question question, def object)
 
 }
