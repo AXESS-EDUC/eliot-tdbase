@@ -26,22 +26,23 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
+<g:set var="questionspecifobject" value="${question.specificationObject}"/>
+<g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
+<g:set var="index" value="0"/>
+${questionspecifobject.libelle} <br/>
 
-<g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle} <br/>
+<g:each in="${questionspecifobject.texteATrousStructure}" var="textElement" status="i">
+    &nbsp;
 
-<g:each in="${specifobject.texteATrousStructure}" var="textElement" status="i">
-  &nbsp;
-  
-     <g:if test="${textElement.type=="TEXTE"}">
-         ${textElement.valeur}
-     </g:if>
+    <g:if test="${textElement.type=="TEXTE"}">
+        ${textElement.valeur}
+    </g:if>
     <g:else>
-       <g:field type="text" name="toto"/>
+        <g:textField  value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}" name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index++}]"/>
     </g:else>
 </g:each>
 
 <br>
-<g:if test="${specifobject.montrerLesMots}">
-    Mots sugeres : ${specifobject.motsSugeres}
+<g:if test="${questionspecifobject.montrerLesMots}">
+    Mots sugeres : ${questionspecifobject.motsSugeres}
 </g:if>

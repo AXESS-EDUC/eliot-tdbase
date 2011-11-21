@@ -25,23 +25,17 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
 <g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle} <br/>
 
-<g:each in="${specifobject.texteATrousStructure}" var="textElement" status="i">
-  &nbsp;
-  
-     <g:if test="${textElement.type=="TEXTE"}">
-         ${textElement.valeur}
-     </g:if>
-    <g:else>
-       <g:field type="text" name="toto"/>
-    </g:else>
-</g:each>
-
-<br>
-<g:if test="${specifobject.montrerLesMots}">
-    Mots sugeres : ${specifobject.motsSugeres}
-</g:if>
+<tr>
+    <td class="label">Détail :</td>
+    <td>
+        ${specifobject.libelle}
+        <br/>
+        Texte à trous : <p>${specifobject.texteATrous}</p>
+        <br>
+        Mots sugerés : ${specifobject.motsSugeres}
+        <br/>
+        Correction : ${specifobject.correction}
+    </td>
+</tr>

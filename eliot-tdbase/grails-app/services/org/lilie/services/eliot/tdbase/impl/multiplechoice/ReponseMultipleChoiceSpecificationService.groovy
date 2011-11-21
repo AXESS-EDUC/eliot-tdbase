@@ -99,7 +99,7 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
     assert(question.specificationObject instanceof MultipleChoiceSpecification)
 
     def questSpecObj = question.specificationObject
-    def reponsesPossibles = questSpecObj.reponses
+    def reponsesPossibles = questSpecObj.reponsesPossibles
     ReponseMultipleChoiceSpecification specObj = new ReponseMultipleChoiceSpecification()
     reponsesPossibles.each {
       specObj.reponses << new MultipleChoiceSpecificationReponsePossible(
@@ -130,7 +130,7 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
       MultipleChoiceSpecificationReponsePossible repPos = repSpecObj.reponses[i]
       MultipleChoiceSpecificationReponsePossible repPosQ = questSpecObj.reponses[i]
       if (repPos.libelleReponse != repPosQ.libelleReponse) {
-        log.info("Libelles reponses incohérent : ${repPos.libelleReponse} <> ${repPosQ.libelleReponse}")
+        log.info("Libelles reponsesPossibles incohérent : ${repPos.libelleReponse} <> ${repPosQ.libelleReponse}")
       }
       if (repPos.estUneBonneReponse) {
         aucuneReponse = false
