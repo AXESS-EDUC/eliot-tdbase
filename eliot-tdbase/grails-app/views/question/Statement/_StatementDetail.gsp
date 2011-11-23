@@ -29,10 +29,10 @@
 
 
 <tr>
-  <td class="label" style="vertical-align: top;">Énoncé :</td>
-  <td>
-    ${question.specification}
-  </td>
+    <td class="label" style="vertical-align: top;">Énoncé :</td>
+    <td>
+        ${question.specification.enonce}
+    </td>
 </tr>
 
 

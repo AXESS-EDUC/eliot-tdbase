@@ -35,8 +35,7 @@
         <g:textArea
                 name="specifobject.libelle"
                 rows="3" cols="55"
-                value="${specifobject.libelle}"
-        />
+                value="${specifobject.libelle}"/>
     </td>
 </tr>
 
@@ -52,10 +51,10 @@
 </tr>
 <tr>
     <td class="label">Montrer les mots:</td>
- <td>
-     <g:checkBox name="specifobject.montrerLesMots"
-                 checked="${specifobject.montrerLesMots}"/>
- </td>
+    <td>
+        <g:checkBox name="specifobject.montrerLesMots"
+                    checked="${specifobject.montrerLesMots}"/>
+    </td>
 </tr>
 <tr>
     <td class="label">Correction:</td>
@@ -67,3 +66,8 @@
         </g:textArea>
     </td>
 </tr>
+
+<r:script>
+    tinyMCE.execCommand("mceAddControl", true, "specifobject.texteATrous");
+    tinyMCE.execCommand("mceAddControl", true, "specifobject.correction");
+</r:script>

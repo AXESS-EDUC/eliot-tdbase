@@ -47,24 +47,24 @@ class QuestionStatementSpecificationService extends QuestionSpecificationService
 
     @Override
     String getSpecificationNormaliseFromObject(StatementSpecification specification) {
-        specification.statement ? StringUtils.normalise(specification.statement) : null
+        specification.enonce ? StringUtils.normalise(specification.enonce) : null
     }
 
     def updateQuestionSpecificationForObject(Question question, Object object) {
-        question.specification = object.statement
-        question.specificationNormalise = StringUtils.normalise(object.statement)
+        question.specification = object.enonce
+        question.specificationNormalise = StringUtils.normalise(object.enonce)
         question.save()
     }
 }
 
 class StatementSpecification implements Specification {
-    String statement
+    String enonce
 
     public StatementSpecification() {
         super()
     }
 
     Map toMap() {
-        return [statement: statement]
+        return [statement: enonce]
     }
 }
