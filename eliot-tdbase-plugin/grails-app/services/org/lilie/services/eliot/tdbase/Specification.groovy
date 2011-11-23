@@ -27,17 +27,16 @@
  */
 
 package org.lilie.services.eliot.tdbase
+public interface Specification {
+    Map toMap()
+}
 
 /**
- * Inteface de marquage pour tous les Specifications.
- * Created by IntelliJ IDEA.
- * User: bert
- * Date: 10/11/11
- * Time: 14:13
- * To change this template use File | Settings | File Templates.
+ * Interface de marquage.
  */
-public interface Specification {
+public interface QuestionSpecification extends Specification {}
 
-    Map toMap()
-
-}
+/**
+ * Interface de marquage.
+ */
+public interface ReponseSpecification extends Specification {}

@@ -32,10 +32,8 @@
 
 package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 
-import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.Specification
-import org.lilie.services.eliot.tice.utils.StringUtils
 
 /**
  *
@@ -43,23 +41,9 @@ import org.lilie.services.eliot.tice.utils.StringUtils
  */
 class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationService<ExclusiveChoiceSpecification> {
 
-    static transactional = false
-
     @Override
     def createSpecification(Object map) {
         new ExclusiveChoiceSpecification(map)
-    }
-
-    @Override
-    def updateQuestionSpecificationForObject(Question question, Object object) {
-        question.specification = getSpecificationFromObject(object)
-        question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-        question.save()
-    }
-
-    @Override
-    def getSpecificationNormaliseFromObject(ExclusiveChoiceSpecification specification) {
-        specification?.libelle ? StringUtils.normalise(specification.libelle) : null
     }
 
 }

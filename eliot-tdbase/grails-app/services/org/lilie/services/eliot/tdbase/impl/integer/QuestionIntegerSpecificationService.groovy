@@ -42,8 +42,6 @@ import org.lilie.services.eliot.tdbase.Specification
  */
 class QuestionIntegerSpecificationService extends QuestionSpecificationService<IntegerSpecification> {
 
-    static transactional = false
-
     /**
      *
      * @see QuestionSpecificationService
@@ -52,25 +50,12 @@ class QuestionIntegerSpecificationService extends QuestionSpecificationService<I
     def createSpecification(Object map) {
         return new IntegerSpecification(map)
     }
-
-    @Override
-    def updateQuestionSpecificationForObject(Question question, Object object) {
-        question.specification = getSpecificationFromObject(object)
-        question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-        question.save()
-    }
-
-    @Override
-    def getSpecificationNormaliseFromObject(IntegerSpecification specification) {
-        specification?.libelle ? StringUtils.normalise(specification.libelle) : null
-    }
-
 }
 
 /**
  * Représente un objet spécification pour une question de type Integer
  */
-class IntegerSpecification implements Specification{
+class IntegerSpecification implements Specification {
     String libelle
     Integer valeur
     String unite

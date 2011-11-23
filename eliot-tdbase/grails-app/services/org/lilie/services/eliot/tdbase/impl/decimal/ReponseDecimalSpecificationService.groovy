@@ -28,105 +28,53 @@
 
 package org.lilie.services.eliot.tdbase.impl.decimal
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
+import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
-import org.springframework.transaction.annotation.Transactional
-
 import org.lilie.services.eliot.tice.utils.NumberUtils
+import org.springframework.transaction.annotation.Transactional
 
 /**
  *
  * @author franck Silvestre
  */
-class ReponseDecimalSpecificationService implements ReponseSpecificationService {
+class ReponseDecimalSpecificationService extends ReponseSpecificationService<ReponseDecimalSpecification> {
 
-  static transactional = false
-
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  def getObjectFromSpecification(String specification) {
-    if (!specification) {
-      return new ReponseDecimalSpecification()
+    @Override
+    ReponseDecimalSpecification createSpecification(Map map) {
+        new ReponseDecimalSpecification(map)
     }
-    def slurper = new JsonSlurper()
-    Map map = slurper.parseText(specification)
-    return new ReponseDecimalSpecification(map)
-  }
 
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  String getSpecificationFromObject(Object object) {
-
-    assert (object instanceof ReponseDecimalSpecification)
-
-    JsonBuilder builder = new JsonBuilder(object.toMap())
-    return builder.toString()
-  }
-
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  def updateReponseSpecificationForObject(Reponse reponse, Object object) {
-    reponse.specification = getSpecificationFromObject(object)
-    reponse.save()
-  }
-
-  /**
-   * @see ReponseSpecificationService
-   */
-  def initialiseReponseSpecificationForQuestion(Reponse reponse,
-                                                Question question) {
-    def specObj = getObjectInitialiseFromSpecification(question)
-    updateReponseSpecificationForObject(reponse, specObj)
-  }
-
-  /**
-   * @see ReponseSpecificationService
-   */
-  def getObjectInitialiseFromSpecification(Question question) {
-
-    assert (question.specificationObject instanceof DecimalSpecification)
-
-    return new ReponseDecimalSpecification()
-  }
-
-  /**
-   * Si il n'y a pas de réponse la note vaut 0
-   * Si la valeur attendue est comprise entre la réponse - la précision et la
-   * réponse + la précision, la note vaut 1
-   * On effectue une règle de trois pour ramener la note correspondant au barême
-   *
-   * @see ReponseSpecificationService
-   */
-  @Transactional
-  Float evalueReponse(Reponse reponse) {
-    def res = 0
-    ReponseDecimalSpecification repSpecObj = reponse.specificationObject
-    def val = repSpecObj.valeurReponse
-    DecimalSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
-    Float precision = questSpecObj.precision
-    if (precision == null) {
-      precision = 0
+    /**
+     * Si il n'y a pas de réponse la note vaut 0
+     * Si la valeur attendue est comprise entre la réponse - la précision et la
+     * réponse + la précision, la note vaut 1
+     * On effectue une règle de trois pour ramener la note correspondant au barême
+     *
+     * @see ReponseSpecificationService
+     */
+    @Transactional
+    Float evalueReponse(Reponse reponse) {
+        def res = 0
+        ReponseDecimalSpecification repSpecObj = reponse.specificationObject
+        def val = repSpecObj.valeurReponse
+        DecimalSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
+        Float precision = questSpecObj.precision
+        if (precision == null) {
+            precision = 0
+        }
+        if (val != null && val instanceof Float) {
+            if (val - precision <= questSpecObj.valeur &&
+                    val + precision >= questSpecObj.valeur) {
+                res = 1
+            }
+            res = res * reponse.sujetQuestion.points
+        }
+        reponse.correctionNoteAutomatique = res
+        reponse.save()
+        return res
     }
-    if (val != null && val instanceof Float) {
-      if (val - precision <= questSpecObj.valeur &&
-          val + precision >= questSpecObj.valeur) {
-         res = 1
-      }
-      res = res * reponse.sujetQuestion.points
-    }
-    reponse.correctionNoteAutomatique = res
-    reponse.save()
-    return res
-  }
 
 
 }
@@ -134,36 +82,36 @@ class ReponseDecimalSpecificationService implements ReponseSpecificationService 
 /**
  * Représente un objet spécification pour une question de type Decimal
  */
-class ReponseDecimalSpecification {
+class ReponseDecimalSpecification implements ReponseSpecification {
 
-  Float valeurReponse
+    Float valeurReponse
 
-  ReponseDecimalSpecification() {
-    super()
-  }
+    ReponseDecimalSpecification() {
+        super()
+    }
 
-  /**
-   * Créer et initialise un nouvel objet de type RepoonseDecimalSpecification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  ReponseDecimalSpecification(Map map) {
-    valeurReponse = map.valeurReponse
-  }
+    /**
+     * Créer et initialise un nouvel objet de type RepoonseDecimalSpecification
+     * @param map la map permettant d'initialiser l'objet en cours
+     * de création
+     */
+    ReponseDecimalSpecification(Map map) {
+        valeurReponse = map.valeurReponse
+    }
 
 
 
-  def toMap() {
-    [
-            valeurReponse: valeurReponse
-    ]
-  }
+    Map toMap() {
+        [
+                valeurReponse: valeurReponse
+        ]
+    }
 
-  String getValeurReponseAffichage() {
-     if (valeurReponse != null) {
-       return NumberUtils.formatFloat(valeurReponse)
-     }
-     return null
-   }
+    String getValeurReponseAffichage() {
+        if (valeurReponse != null) {
+            return NumberUtils.formatFloat(valeurReponse)
+        }
+        return null
+    }
 
 }

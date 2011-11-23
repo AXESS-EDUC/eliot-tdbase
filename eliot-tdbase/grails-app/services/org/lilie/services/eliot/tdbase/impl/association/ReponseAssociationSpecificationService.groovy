@@ -26,54 +26,30 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.impl.fillgap
+package org.lilie.services.eliot.tdbase.impl.association
 
-import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
-import org.springframework.transaction.annotation.Transactional
-import static org.lilie.services.eliot.tice.utils.StringUtils.normalise
-import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.Specification
+import org.lilie.services.eliot.tdbase.ReponseSpecification
 
-class ReponseFillGapSpecificationService extends ReponseSpecificationService<ReponseFillGapSpecification> {
+class ReponseAssociationSpecificationService extends ReponseSpecificationService<ReponseAssociationSpecification> {
+
 
     @Override
-    ReponseFillGapSpecification createSpecification(Map map) {
-        new ReponseFillGapSpecification(map)
+    ReponseAssociationSpecification createSpecification(Map map) {
+        new ReponseAssociationSpecification(map)
     }
 
-    ReponseFillGapSpecification getObjectInitialiseFromSpecification(Question question) {
-        new ReponseFillGapSpecification(reponsesPossibles: question.specificationObject.reponsesPossibles)
-    }
-
-
-    @Transactional
+    @Override
     Float evalueReponse(org.lilie.services.eliot.tdbase.Reponse reponse) {
-        int reponsesCorrects = 0
-        ReponseFillGapSpecification repSpecObj = reponse.specificationObject
-        int numberRes = repSpecObj.valeursDeReponse.size()
-
-
-        for (i in 0..numberRes - 1) {
-
-            def valeurDeReponse = normalise(repSpecObj.valeursDeReponse[i].trim())
-
-            if (repSpecObj.reponsesPossibles[i].contains(valeurDeReponse)) {
-                reponsesCorrects++
-            }
-        }
-
-        float points = (reponsesCorrects / numberRes) * reponse.sujetQuestion.points
-
-        reponse.correctionNoteAutomatique = points
-        reponse.save()
-        points
+        return null  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
 
-class ReponseFillGapSpecification implements ReponseSpecification {
+class ReponseAssociationSpecification implements ReponseSpecification {
 
-    List<String> valeursDeReponse = []
-    List<List<String>> reponsesPossibles = [[]]
+    List<Associaction> valeursDeReponse = []
+    List<Associaction> reponsesPossibles = []
 
     Map toMap() {
         [

@@ -44,7 +44,6 @@ import org.lilie.services.eliot.tdbase.*
  */
 class QuestionDocumentSpecificationService extends QuestionSpecificationService<DocumentSpecification> {
 
-    static transactional = false
     QuestionAttachementService questionAttachementService
 
     @Override
@@ -52,20 +51,14 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
         return new DocumentSpecification(map);
     }
 
-    String getSpecificationNormaliseFromObject(DocumentSpecification specification){
+    String getSpecificationNormaliseFromObject(DocumentSpecification specification) {
         specification?.presentation ? StringUtils.normalise(specification.presentation) : null
     }
 
-    /**
-     *
-     * @see QuestionSpecificationService
-     */
     @Transactional
-    def updateQuestionSpecificationForObject(Question question, Object object) {
+    @Override
+    def updateQuestionSpecificationForObject(Question question, DocumentSpecification spec) {
 
-        assert (object instanceof DocumentSpecification)
-
-        DocumentSpecification spec = object
         def oldQuestAttId = question.specificationObject?.questionAttachementId
         if (spec.fichier && !spec.fichier.empty) {
             def questionAttachement = questionAttachementService.createAttachementForQuestion(

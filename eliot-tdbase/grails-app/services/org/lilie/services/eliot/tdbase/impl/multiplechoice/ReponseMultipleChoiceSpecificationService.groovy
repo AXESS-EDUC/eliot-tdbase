@@ -32,10 +32,9 @@
 
 package org.lilie.services.eliot.tdbase.impl.multiplechoice
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
+import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.springframework.transaction.annotation.Transactional
 
@@ -43,113 +42,71 @@ import org.springframework.transaction.annotation.Transactional
  *
  * @author franck Silvestre
  */
-class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationService {
+class ReponseMultipleChoiceSpecificationService extends ReponseSpecificationService<ReponseMultipleChoiceSpecification> {
 
-  static transactional = false
-
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  def getObjectFromSpecification(String specification) {
-    if (!specification) {
-      return new ReponseMultipleChoiceSpecification()
+    @Override
+    ReponseMultipleChoiceSpecification createSpecification(Map map) {
+        new ReponseMultipleChoiceSpecification(map)
     }
-    def slurper = new JsonSlurper()
-    Map map = slurper.parseText(specification)
-    return new ReponseMultipleChoiceSpecification(map)
-  }
 
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  String getSpecificationFromObject(Object object) {
+    /**
+     * @see ReponseSpecificationService
+     */
+    ReponseMultipleChoiceSpecification getObjectInitialiseFromSpecification(Question question) {
 
-    assert(object instanceof ReponseMultipleChoiceSpecification)
+        def questSpecObj = question.specificationObject
+        def reponsesPossibles = questSpecObj.reponsesPossibles
 
-    ReponseMultipleChoiceSpecification spec = object
-    JsonBuilder builder = new JsonBuilder(spec.toMap())
-    return builder.toString()
-  }
-
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  def updateReponseSpecificationForObject(Reponse reponse, Object object) {
-    reponse.specification = getSpecificationFromObject(object)
-    reponse.save()
-  }
-
-  /**
-   * @see ReponseSpecificationService
-   */
-  def initialiseReponseSpecificationForQuestion(Reponse reponse,
-                                                Question question) {
-    def specObj = getObjectInitialiseFromSpecification(question)
-    updateReponseSpecificationForObject(reponse, specObj)
-  }
-
-  /**
-   * @see ReponseSpecificationService
-   */
-  def getObjectInitialiseFromSpecification(Question question) {
-
-    assert(question.specificationObject instanceof MultipleChoiceSpecification)
-
-    def questSpecObj = question.specificationObject
-    def reponsesPossibles = questSpecObj.reponsesPossibles
-    ReponseMultipleChoiceSpecification specObj = new ReponseMultipleChoiceSpecification()
-    reponsesPossibles.each {
-      specObj.reponses << new MultipleChoiceSpecificationReponsePossible(
-              libelleReponse: it.libelleReponse,
-              estUneBonneReponse: false
-      )
+        ReponseMultipleChoiceSpecification specObj = new ReponseMultipleChoiceSpecification()
+        reponsesPossibles.each {
+            specObj.reponses << new MultipleChoiceSpecificationReponsePossible(
+                    libelleReponse: it.libelleReponse,
+                    estUneBonneReponse: false
+            )
+        }
+        return specObj
     }
-    return specObj
-  }
 
-  /**
-   * Si il n'y a aucune réponse explicite (pas de cases cochées), la notes est 0.
-   * Si il y a au moins une réponse explicite (une case cochée), alors :
-   * - pour chaque réponse juste on ajoute un point
-   * - pour chaque réponse fausse on retranche un point
-   * On effectue une règle de trois pour ramener la note correspondant au barême
-   *
-   * @see ReponseSpecificationService
-   */
-  @Transactional
-  Float evalueReponse(Reponse reponse) {
-    def res = 0
-    boolean aucuneReponse = true
-    ReponseMultipleChoiceSpecification repSpecObj = reponse.specificationObject
-    MultipleChoiceSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
-    def nbRepPos = repSpecObj.reponses.size()
-    for (int i = 0; i < nbRepPos; i++) {
-      MultipleChoiceSpecificationReponsePossible repPos = repSpecObj.reponses[i]
-      MultipleChoiceSpecificationReponsePossible repPosQ = questSpecObj.reponses[i]
-      if (repPos.libelleReponse != repPosQ.libelleReponse) {
-        log.info("Libelles reponsesPossibles incohérent : ${repPos.libelleReponse} <> ${repPosQ.libelleReponse}")
-      }
-      if (repPos.estUneBonneReponse) {
-        aucuneReponse = false
-      }
-      if (repPos.estUneBonneReponse == repPosQ.estUneBonneReponse) {
-        res +=  1
-      } else {
-        res += -1
-      }
+    /**
+     * Si il n'y a aucune réponse explicite (pas de cases cochées), la notes est 0.
+     * Si il y a au moins une réponse explicite (une case cochée), alors :
+     * - pour chaque réponse juste on ajoute un point
+     * - pour chaque réponse fausse on retranche un point
+     * On effectue une règle de trois pour ramener la note correspondant au barême
+     *
+     * @see ReponseSpecificationService
+     */
+    @Transactional
+    Float evalueReponse(Reponse reponse) {
+        def res = 0
+        boolean aucuneReponse = true
+        ReponseMultipleChoiceSpecification repSpecObj = reponse.specificationObject
+        MultipleChoiceSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
+        def nbRepPos = repSpecObj.reponses.size()
+        for (int i = 0; i < nbRepPos; i++) {
+            MultipleChoiceSpecificationReponsePossible repPos = repSpecObj.reponses[i]
+            MultipleChoiceSpecificationReponsePossible repPosQ = questSpecObj.reponses[i]
+            if (repPos.libelleReponse != repPosQ.libelleReponse) {
+                log.info("Libelles reponsesPossibles incohérent : ${repPos.libelleReponse} <> ${repPosQ.libelleReponse}")
+            }
+            if (repPos.estUneBonneReponse) {
+                aucuneReponse = false
+            }
+            if (repPos.estUneBonneReponse == repPosQ.estUneBonneReponse) {
+                res += 1
+            } else {
+                res += -1
+            }
+        }
+        if (aucuneReponse) { // si aucune reponse, l'eleve n'a pas repondu, il a 0
+            res = 0
+        } else { // sinon on décompte avec points positifs et/ou négatifs
+            res = (res / nbRepPos) * reponse.sujetQuestion.points
+        }
+        reponse.correctionNoteAutomatique = res
+        reponse.save()
+        return res
     }
-    if (aucuneReponse) { // si aucune reponse, l'eleve n'a pas repondu, il a 0
-      res = 0
-    } else { // sinon on décompte avec points positifs et/ou négatifs
-      res = (res / nbRepPos) * reponse.sujetQuestion.points
-    }
-    reponse.correctionNoteAutomatique = res
-    reponse.save()
-    return res
-  }
 
 
 }
@@ -157,35 +114,33 @@ class ReponseMultipleChoiceSpecificationService implements ReponseSpecificationS
 /**
  * Représente un objet spécification pour une question de type MultipleChoice
  */
-class ReponseMultipleChoiceSpecification {
+class ReponseMultipleChoiceSpecification implements ReponseSpecification {
 
-  List<MultipleChoiceSpecificationReponsePossible> reponses = []
+    List<MultipleChoiceSpecificationReponsePossible> reponses = []
 
-  ReponseMultipleChoiceSpecification() {
-    super()
-  }
-
-  /**
-   * Créer et initialise un nouvel objet de type RepoonseMultipleChoiceSpecification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  ReponseMultipleChoiceSpecification(Map map) {
-    reponses = map.reponses.collect {
-      if (it instanceof MultipleChoiceSpecificationReponsePossible) {
-        it
-      } else {
-        new MultipleChoiceSpecificationReponsePossible(it)
-      }
+    ReponseMultipleChoiceSpecification() {
+        super()
     }
-  }
 
+    /**
+     * Créer et initialise un nouvel objet de type RepoonseMultipleChoiceSpecification
+     * @param map la map permettant d'initialiser l'objet en cours
+     * de création
+     */
+    ReponseMultipleChoiceSpecification(Map map) {
+        reponses = map.reponses.collect {
+            if (it instanceof MultipleChoiceSpecificationReponsePossible) {
+                it
+            } else {
+                new MultipleChoiceSpecificationReponsePossible(it)
+            }
+        }
+    }
 
-
-  def toMap() {
-    [
-            reponses: reponses*.toMap()
-    ]
-  }
+    Map toMap() {
+        [
+                reponses: reponses*.toMap()
+        ]
+    }
 
 }

@@ -30,56 +30,83 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+
 /**
  * Interface décrivant le service pour la specification d'une réponse
  * @author franck Silvestre
  */
-public interface ReponseSpecificationService {
+public abstract class ReponseSpecificationService<R extends ReponseSpecification> {
 
-  /**
-   * Récupère la specification d'une réponse à partir d'un objet
-   * @param object l'objet encapsulant la specification
-   * @return la specification
-   */
-  String getSpecificationFromObject(def object)
+    static transactional = false
 
-  /**
-   * Récupère l'objet encapsulant la specification d'une réponse à partir de
-   * la spécification
-   * @param specification la specification
-   * @return l'objet encapsulant la specification
-   */
-  def getObjectFromSpecification(String specification)
+    /**
+     * Récupère la specification d'une réponse à partir d'un objet
+     * @param reponseSpecObject l'objet encapsulant la specification
+     * @return la specification
+     */
+    String getSpecificationFromObject(R reponseSpecObject) {
+        new JsonBuilder(reponseSpecObject.toMap()).toString()
+    }
 
-  /**
-   * Récupère un objet specification de réponse initialisé à partir d'une
-   * question
-   * @param question la question
-   * @return l'objet specification initialisé
-   */
-  def getObjectInitialiseFromSpecification(Question question)
+    /**
+     * Récupère l'objet encapsulant la specification d'une réponse à partir de
+     * la spécification
+     * @param specification la specification
+     * @return l'objet encapsulant la specification
+     */
+    R getObjectFromSpecification(String specification) {
+        if (!specification) {
+            createSpecification(new HashMap())
+        } else {
+            createSpecification new JsonSlurper().parseText(specification)
+        }
+    }
 
-  /**
-   * Met à jour la specification de la question
-   * @param reponse la reponse
-   * @param object l'objet encapsulant la specification
-   */
-  def updateReponseSpecificationForObject(Reponse reponse, def object)
+    /**
+     * Crée une spécification
+     * @return la spécification
+     */
+    abstract R createSpecification(Map map)
 
-  /**
-   * Initialisele spécification d'une réponse à partir d'une question
-   * @param reponse la réponse
-   * @param question la question
-   * @return
-   */
-  def initialiseReponseSpecificationForQuestion(Reponse reponse, Question question)
+    /**
+     * Récupère un objet specification de réponse initialisé à partir d'une
+     * question
+     * @param question la question
+     * @return l'objet specification initialisé
+     */
+    R getObjectInitialiseFromSpecification(Question question) {
+        return createSpecification(new HashMap())
+    }
 
-  /**
-   * Calcule le nombre de points obtenu par la réponse et met à jour la note
-   * issue de la correction automatique de la réponse
-   * @param reponse la réponse à évaluer
-   * @return le nombre de points obtenus pour cette réponse
-   */
-  Float evalueReponse(Reponse reponse)
+    /**
+     * Met à jour la specification de la question
+     * @param reponse la reponse
+     * @param reponseSpecObject l'objet encapsulant la specification
+     */
+    Reponse updateReponseSpecificationForObject(Reponse reponse, R reponseSpecObject) {
+        reponse.specification = getSpecificationFromObject(reponseSpecObject)
+        reponse.save()
+    }
+
+    /**
+     * Initialisele spécification d'une réponse à partir d'une question
+     * @param reponse la réponse
+     * @param question la question
+     * @return
+     */
+    Reponse initialiseReponseSpecificationForQuestion(Reponse reponse,
+                                                      Question question) {
+        updateReponseSpecificationForObject(reponse, getObjectInitialiseFromSpecification(question))
+    }
+
+    /**
+     * Calcule le nombre de points obtenu par la réponse et met à jour la note
+     * issue de la correction automatique de la réponse
+     * @param reponse la réponse à évaluer
+     * @return le nombre de points obtenus pour cette réponse
+     */
+    abstract Float evalueReponse(Reponse reponse)
 
 }

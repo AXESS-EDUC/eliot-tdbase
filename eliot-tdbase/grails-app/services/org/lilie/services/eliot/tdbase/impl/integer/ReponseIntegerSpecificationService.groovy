@@ -28,10 +28,8 @@
 
 package org.lilie.services.eliot.tdbase.impl.integer
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
-import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
+import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.springframework.transaction.annotation.Transactional
 
@@ -39,96 +37,50 @@ import org.springframework.transaction.annotation.Transactional
  *
  * @author franck Silvestre
  */
-class ReponseIntegerSpecificationService implements ReponseSpecificationService {
+class ReponseIntegerSpecificationService extends ReponseSpecificationService<ReponseIntegerSpecification> {
 
-  static transactional = false
-
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  def getObjectFromSpecification(String specification) {
-    if (!specification) {
-      return new ReponseIntegerSpecification()
+    /**
+     *
+     * @see ReponseSpecificationService
+     */
+    @Override
+    ReponseIntegerSpecification createSpecification(Map map) {
+        new ReponseIntegerSpecification(map)
     }
-    def slurper = new JsonSlurper()
-    Map map = slurper.parseText(specification)
-    return new ReponseIntegerSpecification(map)
-  }
 
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  String getSpecificationFromObject(Object object) {
-
-    assert(object instanceof ReponseIntegerSpecification)
-
-    JsonBuilder builder = new JsonBuilder(object.toMap())
-    return builder.toString()
-  }
-
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  def updateReponseSpecificationForObject(Reponse reponse, Object object) {
-    reponse.specification = getSpecificationFromObject(object)
-    reponse.save()
-  }
-
-  /**
-   * @see ReponseSpecificationService
-   */
-  def initialiseReponseSpecificationForQuestion(Reponse reponse,
-                                                Question question) {
-    def specObj = getObjectInitialiseFromSpecification(question)
-    updateReponseSpecificationForObject(reponse, specObj)
-  }
-
-  /**
-   * @see ReponseSpecificationService
-   */
-  def getObjectInitialiseFromSpecification(Question question) {
-
-    assert(question.specificationObject instanceof IntegerSpecification)
-
-    return new ReponseIntegerSpecification()
-  }
-
-  /**
-   * Si il n'y a pas de réponse la note vaut 0
-   * Si la valeur attendue est égale à la réponse la note vaut 1 sinon 0
-   * On effectue une règle de trois pour ramener la note correspondant au barême
-   *
-   * @see ReponseSpecificationService
-   */
-  @Transactional
-  Float evalueReponse(Reponse reponse) {
-    def res = 0
-    ReponseIntegerSpecification repSpecObj = reponse.specificationObject
-    def val = repSpecObj.valeurReponse
-    IntegerSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
-    if (val == questSpecObj.valeur) {
-        res = reponse.sujetQuestion.points
+    /**
+     * Si il n'y a pas de réponse la note vaut 0
+     * Si la valeur attendue est égale à la réponse la note vaut 1 sinon 0
+     * On effectue une règle de trois pour ramener la note correspondant au barême
+     *
+     * @see ReponseSpecificationService
+     */
+    @Transactional
+    Float evalueReponse(Reponse reponse) {
+        def res = 0
+        ReponseIntegerSpecification repSpecObj = reponse.specificationObject
+        def val = repSpecObj.valeurReponse
+        IntegerSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
+        if (val == questSpecObj.valeur) {
+            res = reponse.sujetQuestion.points
+        }
+        reponse.correctionNoteAutomatique = res
+        reponse.save()
+        return res
     }
-    reponse.correctionNoteAutomatique = res
-    reponse.save()
-    return res
-  }
 }
 
 /**
  * Représente un objet spécification pour une question de type Decimal
  */
-class ReponseIntegerSpecification {
+class ReponseIntegerSpecification implements ReponseSpecification {
 
-  Integer valeurReponse
+    Integer valeurReponse
 
-  def toMap() {
-    [
-            valeurReponse: valeurReponse
-    ]
-  }
+    Map toMap() {
+        [
+                valeurReponse: valeurReponse
+        ]
+    }
 
 }

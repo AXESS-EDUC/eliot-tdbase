@@ -42,23 +42,9 @@ import org.lilie.services.eliot.tdbase.Specification
  */
 class QuestionDecimalSpecificationService extends QuestionSpecificationService<DecimalSpecification> {
 
-    static transactional = false
-
     @Override
     def createSpecification(Object map) {
-       new DecimalSpecification(map)
-    }
-
-    @Override
-    def getSpecificationNormaliseFromObject(DecimalSpecification specification) {
-        specification?.libelle ? StringUtils.normalise(specification.libelle) : null
-    }
-
-    @Override
-    def updateQuestionSpecificationForObject(Question question, Object object) {
-        question.specification = getSpecificationFromObject(object)
-        question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-        question.save()
+        new DecimalSpecification(map)
     }
 
 }
@@ -66,7 +52,7 @@ class QuestionDecimalSpecificationService extends QuestionSpecificationService<D
 /**
  * Représente un objet spécification pour une question de type Decimal
  */
-class DecimalSpecification implements Specification{
+class DecimalSpecification implements Specification {
     String libelle
     Float valeur
     String unite

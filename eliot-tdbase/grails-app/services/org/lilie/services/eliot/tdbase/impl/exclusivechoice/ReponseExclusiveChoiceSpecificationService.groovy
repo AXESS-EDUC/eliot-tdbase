@@ -34,10 +34,9 @@
 
 package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
+import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.springframework.transaction.annotation.Transactional
 
@@ -45,90 +44,38 @@ import org.springframework.transaction.annotation.Transactional
  *
  * @author franck Silvestre
  */
-class ReponseExclusiveChoiceSpecificationService implements ReponseSpecificationService {
+class ReponseExclusiveChoiceSpecificationService extends ReponseSpecificationService<ReponseExclusiveChoiceSpecification> {
 
-  static transactional = false
-
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  def getObjectFromSpecification(String specification) {
-    if (!specification) {
-      return new ReponseExclusiveChoiceSpecification()
+    @Override
+    ReponseExclusiveChoiceSpecification createSpecification(Map map) {
+        new ReponseExclusiveChoiceSpecification(map)
     }
-    def slurper = new JsonSlurper()
-    Map map = slurper.parseText(specification)
-    return new ReponseExclusiveChoiceSpecification(map)
-  }
 
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  String getSpecificationFromObject(Object object) {
-
-    assert (object instanceof ReponseExclusiveChoiceSpecification)
-
-    ReponseExclusiveChoiceSpecification spec = object
-    JsonBuilder builder = new JsonBuilder(spec.toMap())
-    return builder.toString()
-  }
-
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  def updateReponseSpecificationForObject(Reponse reponse, Object object) {
-    reponse.specification = getSpecificationFromObject(object)
-    reponse.save()
-  }
-
-  /**
-   * @see ReponseSpecificationService
-   */
-  def initialiseReponseSpecificationForQuestion(Reponse reponse,
-                                                Question question) {
-    def specObj = getObjectInitialiseFromSpecification(question)
-    updateReponseSpecificationForObject(reponse, specObj)
-  }
-
-  /**
-   * @see ReponseSpecificationService
-   */
-  def getObjectInitialiseFromSpecification(Question question) {
-
-    assert (question.specificationObject instanceof ExclusiveChoiceSpecification)
-
-    ReponseExclusiveChoiceSpecification specObj = new ReponseExclusiveChoiceSpecification()
-    return specObj
-  }
-
-  /**
-   * Si il n'y a aucune réponse explicite (pas de bouton coché), la notes est 0.
-   * Si il y a au moins une réponse explicite (un bouton cochée), alors :
-   * - si réponse juste on ajoute un point
-   * - si réponse fausse on retranche un point
-   * On effectue une règle de trois pour ramener la note correspondant au barême
-   *
-   * @see ReponseSpecificationService
-   */
-  @Transactional
-  Float evalueReponse(Reponse reponse) {
-    def res = 0
-    ReponseExclusiveChoiceSpecification repSpecObj = reponse.specificationObject
-    ExclusiveChoiceSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
-    if (repSpecObj.indexReponse == questSpecObj.indexBonneReponse) {
-      res = reponse.sujetQuestion.points
-    } else if (repSpecObj.indexReponse != null) {
-      def nbRepPos = questSpecObj.reponses.size()
-      // on décompte avec points positifs et/ou négatifs
-      res = (-1 / nbRepPos) * reponse.sujetQuestion.points
+    /**
+     * Si il n'y a aucune réponse explicite (pas de bouton coché), la notes est 0.
+     * Si il y a au moins une réponse explicite (un bouton cochée), alors :
+     * - si réponse juste on ajoute un point
+     * - si réponse fausse on retranche un point
+     * On effectue une règle de trois pour ramener la note correspondant au barême
+     *
+     * @see ReponseSpecificationService
+     */
+    @Transactional
+    Float evalueReponse(Reponse reponse) {
+        def res = 0
+        ReponseExclusiveChoiceSpecification repSpecObj = reponse.specificationObject
+        ExclusiveChoiceSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
+        if (repSpecObj.indexReponse == questSpecObj.indexBonneReponse) {
+            res = reponse.sujetQuestion.points
+        } else if (repSpecObj.indexReponse != null) {
+            def nbRepPos = questSpecObj.reponses.size()
+            // on décompte avec points positifs et/ou négatifs
+            res = (-1 / nbRepPos) * reponse.sujetQuestion.points
+        }
+        reponse.correctionNoteAutomatique = res
+        reponse.save()
+        return res
     }
-    reponse.correctionNoteAutomatique = res
-    reponse.save()
-    return res
-  }
 
 
 }
@@ -136,29 +83,29 @@ class ReponseExclusiveChoiceSpecificationService implements ReponseSpecification
 /**
  * Représente un objet spécification pour une question de type MultipleChoice
  */
-class ReponseExclusiveChoiceSpecification {
+class ReponseExclusiveChoiceSpecification implements ReponseSpecification {
 
-  Integer indexReponse
+    Integer indexReponse
 
-  ReponseExclusiveChoiceSpecification() {
-    super()
-  }
+    ReponseExclusiveChoiceSpecification() {
+        super()
+    }
 
-  /**
-   * Créer et initialise un nouvel objet de type RepoonseMultipleChoiceSpecification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  ReponseExclusiveChoiceSpecification(Map map) {
-    indexReponse = map.indexReponse
-  }
+    /**
+     * Créer et initialise un nouvel objet de type RepoonseMultipleChoiceSpecification
+     * @param map la map permettant d'initialiser l'objet en cours
+     * de création
+     */
+    ReponseExclusiveChoiceSpecification(Map map) {
+        indexReponse = map.indexReponse
+    }
 
 
 
-  def toMap() {
-    [
-            indexReponse: indexReponse
-    ]
-  }
+    Map toMap() {
+        [
+                indexReponse: indexReponse
+        ]
+    }
 
 }

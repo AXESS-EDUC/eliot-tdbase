@@ -26,33 +26,62 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.impl.statement
+package org.lilie.services.eliot.tdbase.impl.association
 
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.Specification
 import org.lilie.services.eliot.tice.utils.StringUtils
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
-/**
- *
- * @author franck Silvestre
- */
-class QuestionStatementSpecificationService extends QuestionSpecificationService<StatementSpecification> {
+class QuestionAssociationSpecificationService extends QuestionSpecificationService<AssociationSpecification> {
 
-    def createSpecification(Object map) {
-        return new StatementSpecification(map)
-    }
 
     @Override
-    String getSpecificationNormaliseFromObject(StatementSpecification specification) {
-        specification.enonce ? StringUtils.normalise(specification.enonce) : null
+    def createSpecification(Object map) {
+        new Associaction(map)
     }
 
 }
 
-class StatementSpecification implements Specification {
-    String enonce
+class AssociationSpecification implements QuestionSpecification {
+
+    String libelle
+    String correction
+    List<Associaction> associactions
+
+    AssociationSpecification() {
+        super()
+    }
+
+    AssociationSpecification(Map params) {
+        libelle = params.libelle
+        correction = params.correction
+        associactions = params.associactions.collect {new Associaction(it)}
+    }
 
     Map toMap() {
-        return [enonce: enonce]
+        return [libelle: libelle,
+                correction: correction,
+                assocations: associactions.collect {it.toMap()}]
+    }
+
+    List<String> getParticipants() {
+        List<String> participants = []
+
+        associactions.each {participants << it.participant1; participants << it.participant2}
+
+        Collections.shuffle(participants)
+        participants
+    }
+}
+
+class Associaction {
+
+    String participant1
+    String participant2
+
+    Map toMap() {
+        return [participant1: participant1,
+                participant2: participant2]
     }
 }

@@ -67,10 +67,11 @@
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.codehaus.groovy/groovy-all/jars/groovy-all-1.6.9.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.gmetrics/GMetrics/jars/GMetrics-0.3.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.codenarc/CodeNarc/jars/CodeNarc-0.15.jar!/" />
-          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.lilie.services.eliot/eliot-tice-dbmigration/jars/eliot-tice-dbmigration-0.3a.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../groovy-all-1.6.9-sources.jar!/" />
+        </SOURCES>
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>

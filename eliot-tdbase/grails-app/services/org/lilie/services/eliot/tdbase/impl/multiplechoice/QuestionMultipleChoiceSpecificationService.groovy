@@ -30,10 +30,8 @@
 
 package org.lilie.services.eliot.tdbase.impl.multiplechoice
 
-import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.Specification
-import org.lilie.services.eliot.tice.utils.StringUtils
 
 /**
  *
@@ -41,23 +39,9 @@ import org.lilie.services.eliot.tice.utils.StringUtils
  */
 class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationService<MultipleChoiceSpecification> {
 
-    static transactional = false
-
     @Override
     def createSpecification(map) {
         new MultipleChoiceSpecification(map)
-    }
-
-    @Override
-    def updateQuestionSpecificationForObject(Question question, Object object) {
-        question.specification = getSpecificationFromObject(object)
-        question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-        question.save()
-    }
-
-    @Override
-    def getSpecificationNormaliseFromObject(MultipleChoiceSpecification specification) {
-        specification?.libelle ? StringUtils.normalise(specification.libelle) : null
     }
 
 }
@@ -71,8 +55,7 @@ class MultipleChoiceSpecification implements Specification {
     List<MultipleChoiceSpecificationReponsePossible> reponses = []
 
 
-    MultipleChoiceSpecification()
-    {
+    MultipleChoiceSpecification() {
         super()
     }
 

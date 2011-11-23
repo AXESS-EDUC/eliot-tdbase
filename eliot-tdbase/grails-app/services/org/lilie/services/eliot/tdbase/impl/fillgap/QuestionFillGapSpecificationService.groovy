@@ -40,19 +40,7 @@ class QuestionFillGapSpecificationService extends QuestionSpecificationService<F
 
     @Override
     def createSpecification(map) {
-        new FillGapSpecification(map);
-    }
-
-    @Override
-    def updateQuestionSpecificationForObject(Question question, Object object) {
-        question.specification = getSpecificationFromObject(object)
-        question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-        question.save()
-    }
-
-    @Override
-    def getSpecificationNormaliseFromObject(FillGapSpecification specification) {
-        specification?.libelle ? StringUtils.normalise(specification.libelle) : null
+        new FillGapSpecification(map)
     }
 }
 

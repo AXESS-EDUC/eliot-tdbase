@@ -30,19 +30,22 @@ package org.lilie.services.eliot.tdbase
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
+import org.lilie.services.eliot.tice.utils.StringUtils
 
 /**
  * Abstract classe décrivant le service pour la specification d'une question
  * @author franck Silvestre
  */
-abstract class QuestionSpecificationService<S extends Specification> {
+abstract class QuestionSpecificationService<QS extends QuestionSpecification> {
+
+    static transactional = false
 
     /**
      * Récupère la specification d'une question à partir d'un objet
      * @param object l'objet encapsulant la specification
      * @return la specification
      */
-    String getSpecificationFromObject(S object) {
+    String getSpecificationFromObject(QS object) {
         new JsonBuilder(object.toMap()).toString()
     }
 
@@ -60,6 +63,18 @@ abstract class QuestionSpecificationService<S extends Specification> {
     }
 
     /**
+     * Met à jour et persiste l'entité de question avec les informations de sa specification.
+     * @param question l'entité de question à mettre à jour
+     * @param specification la specification.
+     * @return la question mise à jour.
+     */
+    def updateQuestionSpecificationForObject(Question question, QS specification) {
+        question.specification = getSpecificationFromObject(specification)
+        question.specificationNormalise = getSpecificationNormaliseFromObject(specification)
+        question.save()
+    }
+
+    /**
      * Crée une spécification
      * @return la spécification
      */
@@ -70,13 +85,8 @@ abstract class QuestionSpecificationService<S extends Specification> {
      * @param specification l'objet encapsulant la specification
      * @return la specification
      */
-    abstract getSpecificationNormaliseFromObject(S specification)
-
-    /**
-     * Met à jour la specification de la question
-     * @param question la question
-     * @param object l'objet encapsulant la specification
-     */
-    abstract updateQuestionSpecificationForObject(Question question, def object)
+    def getSpecificationNormaliseFromObject(QS specification) {
+        specification?.libelle ? StringUtils.normalise(specification.libelle) : null
+    }
 
 }
