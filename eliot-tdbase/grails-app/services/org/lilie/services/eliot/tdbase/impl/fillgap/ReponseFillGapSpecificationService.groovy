@@ -28,12 +28,15 @@
 
 package org.lilie.services.eliot.tdbase.impl.fillgap
 
+import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.springframework.transaction.annotation.Transactional
 import static org.lilie.services.eliot.tice.utils.StringUtils.normalise
-import org.lilie.services.eliot.tdbase.Question
 
+/**
+ * Service pour les specifications de reponses de type texte à trous.
+ */
 class ReponseFillGapSpecificationService extends ReponseSpecificationService<ReponseFillGapSpecification> {
 
     @Override
@@ -41,12 +44,13 @@ class ReponseFillGapSpecificationService extends ReponseSpecificationService<Rep
         new ReponseFillGapSpecification(map)
     }
 
+    @Override
     ReponseFillGapSpecification getObjectInitialiseFromSpecification(Question question) {
-        new ReponseFillGapSpecification(reponsesPossibles: question.specificationObject.reponsesPossibles)
+        new ReponseFillGapSpecification(reponsesPossibles: question.specificationObject.trouElements)
     }
 
-
     @Transactional
+    @Override
     Float evalueReponse(org.lilie.services.eliot.tdbase.Reponse reponse) {
         int reponsesCorrects = 0
         ReponseFillGapSpecification repSpecObj = reponse.specificationObject
@@ -56,8 +60,9 @@ class ReponseFillGapSpecificationService extends ReponseSpecificationService<Rep
         for (i in 0..numberRes - 1) {
 
             def valeurDeReponse = normalise(repSpecObj.valeursDeReponse[i].trim())
+            def validReponseList = repSpecObj.reponsesPossibles[i].valeur.collect {normalise(it)}
 
-            if (repSpecObj.reponsesPossibles[i].contains(valeurDeReponse)) {
+            if (validReponseList.contains(valeurDeReponse)) {
                 reponsesCorrects++
             }
         }
@@ -70,11 +75,22 @@ class ReponseFillGapSpecificationService extends ReponseSpecificationService<Rep
     }
 }
 
+/**
+ * Specifications de reponses de type texte à trous.
+ */
 class ReponseFillGapSpecification implements ReponseSpecification {
 
+    /**
+     * les valeurs de reponse.
+     */
     List<String> valeursDeReponse = []
-    List<List<String>> reponsesPossibles = [[]]
 
+    /**
+     * Liste des reponses possibles. Structurés par TrouElement
+     */
+    List<TrouElement> reponsesPossibles = []
+
+    @Override
     Map toMap() {
         [
                 valeursDeReponse: valeursDeReponse,

@@ -32,8 +32,8 @@
 
 package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tdbase.Specification
 
 /**
  *
@@ -51,7 +51,7 @@ class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationS
 /**
  * Représente un objet spécification pour une question de type MultipleChoice
  */
-class ExclusiveChoiceSpecification implements Specification {
+class ExclusiveChoiceSpecification implements QuestionSpecification {
     String libelle
     String correction
     List<ExclusiveChoiceSpecificationReponsePossible> reponses = []

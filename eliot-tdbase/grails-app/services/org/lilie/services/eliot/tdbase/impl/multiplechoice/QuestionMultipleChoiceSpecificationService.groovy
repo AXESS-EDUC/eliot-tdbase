@@ -30,8 +30,8 @@
 
 package org.lilie.services.eliot.tdbase.impl.multiplechoice
 
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tdbase.Specification
 
 /**
  *
@@ -49,7 +49,7 @@ class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationSe
 /**
  * Représente un objet spécification pour une question de type MultipleChoice
  */
-class MultipleChoiceSpecification implements Specification {
+class MultipleChoiceSpecification implements QuestionSpecification {
     String libelle
     String correction
     List<MultipleChoiceSpecificationReponsePossible> reponses = []

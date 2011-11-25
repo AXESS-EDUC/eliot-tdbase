@@ -31,14 +31,15 @@
 <g:set var="index" value="0"/>
 ${questionspecifobject.libelle} <br/>
 
-<g:each in="${questionspecifobject.texteATrousStructure}" var="textElement" status="i">
+<g:each in="${questionspecifobject.texteATrousStructure}" var="texteATrouElement" status="i">
     &nbsp;
 
-    <g:if test="${textElement.type=="TEXTE"}">
-        ${textElement.valeur}
+    <g:if test="${texteATrouElement.isTexte()}">
+        ${texteATrouElement.valeur}
     </g:if>
     <g:else>
-        <g:textField  value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}" name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index++}]"/>
+        <g:textField value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
+                     name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index++}]"/>
     </g:else>
 </g:each>
 

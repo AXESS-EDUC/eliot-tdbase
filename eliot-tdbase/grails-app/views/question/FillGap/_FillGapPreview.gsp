@@ -30,14 +30,14 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 ${specifobject.libelle} <br/>
 
-<g:each in="${specifobject.texteATrousStructure}" var="textElement" status="i">
-  &nbsp;
-  
-     <g:if test="${textElement.type=="TEXTE"}">
-         ${textElement.valeur}
-     </g:if>
+<g:each in="${specifobject.texteATrousStructure}" var="texteATrouElement" status="i">
+    &nbsp;
+
+    <g:if test="${texteATrouElement.isTexte()}">
+        ${texteATrouElement.valeur}
+    </g:if>
     <g:else>
-       <g:field type="text" name="toto"/>
+        <g:field type="text" name="toto"/>
     </g:else>
 </g:each>
 

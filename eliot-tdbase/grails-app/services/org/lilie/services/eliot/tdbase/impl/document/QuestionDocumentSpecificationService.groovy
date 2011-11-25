@@ -88,7 +88,7 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
 /**
  * Représente un objet spécification pour une question de type Document
  */
-class DocumentSpecification implements Specification {
+class DocumentSpecification implements QuestionSpecification {
     String auteur
     String source
     String presentation

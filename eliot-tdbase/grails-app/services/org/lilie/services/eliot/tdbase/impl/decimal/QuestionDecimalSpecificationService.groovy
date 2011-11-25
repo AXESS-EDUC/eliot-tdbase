@@ -35,6 +35,7 @@ import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.lilie.services.eliot.tdbase.Specification
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  *
@@ -52,7 +53,7 @@ class QuestionDecimalSpecificationService extends QuestionSpecificationService<D
 /**
  * Représente un objet spécification pour une question de type Decimal
  */
-class DecimalSpecification implements Specification {
+class DecimalSpecification implements QuestionSpecification {
     String libelle
     Float valeur
     String unite

@@ -31,6 +31,7 @@ package org.lilie.services.eliot.tdbase.impl.statement
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.Specification
 import org.lilie.services.eliot.tice.utils.StringUtils
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  *
@@ -49,7 +50,7 @@ class QuestionStatementSpecificationService extends QuestionSpecificationService
 
 }
 
-class StatementSpecification implements Specification {
+class StatementSpecification implements QuestionSpecification {
     String enonce
 
     Map toMap() {

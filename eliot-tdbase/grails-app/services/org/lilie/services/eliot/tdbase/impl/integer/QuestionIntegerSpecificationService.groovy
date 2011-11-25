@@ -31,10 +31,8 @@
 
 package org.lilie.services.eliot.tdbase.impl.integer
 
-import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tice.utils.StringUtils
-import org.lilie.services.eliot.tdbase.Specification
 
 /**
  *
@@ -55,7 +53,7 @@ class QuestionIntegerSpecificationService extends QuestionSpecificationService<I
 /**
  * Représente un objet spécification pour une question de type Integer
  */
-class IntegerSpecification implements Specification {
+class IntegerSpecification implements QuestionSpecification {
     String libelle
     Integer valeur
     String unite
