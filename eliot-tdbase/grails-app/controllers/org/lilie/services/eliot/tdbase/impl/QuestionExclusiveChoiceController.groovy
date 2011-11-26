@@ -72,7 +72,7 @@ class QuestionExclusiveChoiceController extends QuestionController {
    */
   def getSpecificationObjectFromParams(Map params) {
     def specifobject = new ExclusiveChoiceSpecification()
-    def size = params.specifobject.reponsesPossibles?.size as Integer
+    def size = params.specifobject.reponses?.size as Integer
     if (size) {
       for (int i = 0; i < size; i++) {
         specifobject.reponses << new ExclusiveChoiceSpecificationReponsePossible()
