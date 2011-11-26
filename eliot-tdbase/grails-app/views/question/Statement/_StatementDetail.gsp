@@ -31,7 +31,7 @@
 <tr>
     <td class="label" style="vertical-align: top;">Énoncé :</td>
     <td>
-        ${question.specification.enonce}
+        ${question.specificationObject.enonce}
     </td>
 </tr>
 

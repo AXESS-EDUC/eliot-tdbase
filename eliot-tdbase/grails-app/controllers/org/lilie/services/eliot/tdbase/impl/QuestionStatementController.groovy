@@ -33,6 +33,7 @@
 package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
+import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
 
 class QuestionStatementController extends QuestionController {
 
@@ -42,7 +43,7 @@ class QuestionStatementController extends QuestionController {
    * @return l'objet représentant la spécification
    */
   def getSpecificationObjectFromParams(Map params) {
-    return params.specifobject
+    return new StatementSpecification(params.specifobject)
   }
 }
 
