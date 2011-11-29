@@ -56,7 +56,7 @@ class QuestionMultipleChoiceController extends QuestionController {
 
   /**
    *
-   * Action "ajouteReponse"
+   * Action "supprimeReponse"
    */
   def supprimeReponse() {
     MultipleChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
@@ -74,7 +74,7 @@ class QuestionMultipleChoiceController extends QuestionController {
    */
   def getSpecificationObjectFromParams(Map params) {
     def specifobject = new MultipleChoiceSpecification()
-    def size = params.specifobject.reponsesPossibles?.size as Integer
+    def size = params.specifobject.reponses?.size as Integer
     if (size) {
       for (int i = 0; i < size; i++) {
         specifobject.reponses << new MultipleChoiceSpecificationReponsePossible()

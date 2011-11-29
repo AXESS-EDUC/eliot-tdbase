@@ -55,7 +55,7 @@ class ReponseMultipleChoiceSpecificationService extends ReponseSpecificationServ
     ReponseMultipleChoiceSpecification getObjectInitialiseFromSpecification(Question question) {
 
         def questSpecObj = question.specificationObject
-        def reponsesPossibles = questSpecObj.reponsesPossibles
+        def reponsesPossibles = questSpecObj.reponses
 
         ReponseMultipleChoiceSpecification specObj = new ReponseMultipleChoiceSpecification()
         reponsesPossibles.each {
