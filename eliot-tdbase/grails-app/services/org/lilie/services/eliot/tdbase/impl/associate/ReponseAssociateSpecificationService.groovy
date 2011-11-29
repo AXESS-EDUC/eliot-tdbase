@@ -26,31 +26,56 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.impl.association
+package org.lilie.services.eliot.tdbase.impl.associate
 
-import org.lilie.services.eliot.tdbase.ReponseSpecificationService
-import org.lilie.services.eliot.tdbase.Specification
+import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecification
+import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 
-class ReponseAssociationSpecificationService extends ReponseSpecificationService<ReponseAssociationSpecification> {
+/**
+ * Service pour les specifications de reponses de type associate.
+ */
+class ReponseAssociateSpecificationService extends ReponseSpecificationService<ReponseAssociateSpecification> {
 
 
     @Override
-    ReponseAssociationSpecification createSpecification(Map map) {
-        new ReponseAssociationSpecification(map)
+    ReponseAssociateSpecification createSpecification(Map map) {
+        new ReponseAssociateSpecification(map)
     }
 
     @Override
-    Float evalueReponse(org.lilie.services.eliot.tdbase.Reponse reponse) {
-        return null  //To change body of implemented methods use File | Settings | File Templates.
+    Float evalueReponse(Reponse reponse) {
+
+        int reponsesCorrects = 0
+        ReponseAssociateSpecification repSpecObj = reponse.specificationObject
+        int numberRes = repSpecObj.valeursDeReponse.size()
+
+        repSpecObj.valeursDeReponse.each {if (repSpecObj.reponsesPossibles.contains(it)) {reponsesCorrects++}}
+
+        float points = (reponsesCorrects / numberRes) * reponse.sujetQuestion.points
+
+        reponse.correctionNoteAutomatique = points
+        reponse.save()
+        points
     }
 }
 
-class ReponseAssociationSpecification implements ReponseSpecification {
+/**
+ * Specifications de reponses de type associate.
+ */
+class ReponseAssociateSpecification implements ReponseSpecification {
 
+    /**
+     * Liste d'associations fournis comme reponse à la question.
+     */
     List<Associaction> valeursDeReponse = []
+
+    /**
+     * Liste d'associations qui forment une reponse correcte.
+     */
     List<Associaction> reponsesPossibles = []
 
+    @Override
     Map toMap() {
         [
                 valeursDeReponse: valeursDeReponse,

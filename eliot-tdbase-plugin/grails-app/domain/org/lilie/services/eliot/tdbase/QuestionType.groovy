@@ -34,21 +34,21 @@ package org.lilie.services.eliot.tdbase
  */
 class QuestionType {
 
-  String nom
-  String nomAnglais
-  String code
-  Boolean interaction
+    String nom
+    String nomAnglais
+    String code
+    Boolean interaction
 
-  static constraints = {
-    nomAnglais(nullable: true)
-  }
+    static constraints = {
+        nomAnglais(nullable: true)
+    }
 
-  static mapping = {
-    table('td.question_type')
-    version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_type_id_seq'])
-    cache('read-only')
-  }
+    static mapping = {
+        table('td.question_type')
+        version(false)
+        id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_type_id_seq'])
+        cache('read-only')
+    }
 }
 
 /**
@@ -65,7 +65,7 @@ class QuestionType {
  *  <li>FillGraphics - graphique à compléter</li>
  *  <li>FileUpload - fichier à télécharger</li>
  *  <li>Order - ordre à rétablir</li>
- *  <li>Associate - association</li>
+ *  <li>Associate - associate</li>
  *  <li>Slider - curseur à déplacer</li>
  *  <li>GraphicMatch - correspondance en glisser déposer</li>
  *  <li>Match - correspondance</li>
@@ -76,38 +76,38 @@ class QuestionType {
  */
 enum QuestionTypeEnum {
 
-  MultipleChoice(1),
-  Open(2),
-  Decimal(3),
-  Integer(4),
-  FillTable(5),
-  FillGap(6),
-  BooleanMatch(7),
-  ExclusiveChoice(8),
-  FillGraphics(9),
-  FileUpload(10),
-  Order(11),
-  Associate(12),
-  Slider(13),
-  GraphicMatch(14),
-  Match(15),
-  Document(51),
-  Statement(52),
-  Composite(53),
+    MultipleChoice(1),
+    Open(2),
+    Decimal(3),
+    Integer(4),
+    FillTable(5),
+    FillGap(6),
+    BooleanMatch(7),
+    ExclusiveChoice(8),
+    FillGraphics(9),
+    FileUpload(10),
+    Order(11),
+    Associate(12),
+    Slider(13),
+    GraphicMatch(14),
+    Match(15),
+    Document(51),
+    Statement(52),
+    Composite(53),
 
 
-  private Long id
+    private Long id
 
-  private QuestionTypeEnum(Long id) {
-     this.id = id
-  }
+    private QuestionTypeEnum(Long id) {
+        this.id = id
+    }
 
-  Long getId() {
-    return id
-  }
+    Long getId() {
+        return id
+    }
 
-  QuestionType getQuestionType() {
-     QuestionType.get(id)
-  }
+    QuestionType getQuestionType() {
+        QuestionType.get(id)
+    }
 
 }

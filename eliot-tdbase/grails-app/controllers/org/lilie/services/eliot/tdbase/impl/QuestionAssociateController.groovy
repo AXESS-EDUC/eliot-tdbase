@@ -29,15 +29,17 @@
 package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
-import org.lilie.services.eliot.tdbase.impl.fillgap.FillGapSpecification
+import org.lilie.services.eliot.tdbase.impl.associate.AssociateSpecification
 
 /**
- * Controlleur pour la saisie des questions de type texte à trous
+ * Controlleur pour la saisie des questions de type association
  */
-class QuestionFillGapController extends QuestionController {
+class QuestionAssociateController extends QuestionController {
 
     @Override
     def getSpecificationObjectFromParams(Map params) {
-        bindData(new FillGapSpecification(), params, "specifobject")
+        bindData(new AssociateSpecification(), params, "specifobject")
     }
+
+
 }
