@@ -60,12 +60,12 @@ class AssociateSpecification implements QuestionSpecification {
     /**
      * La liste d'associations.
      */
-    List<Associaction> associactions
+    List<Association> associations = []
 
     /**
      * La liste de tous les participants de toutes les associations.
      */
-    List<String> participants
+    List<String> participants = []
 
     /**
      * Constructeur par défaut.
@@ -81,22 +81,22 @@ class AssociateSpecification implements QuestionSpecification {
     AssociateSpecification(Map params) {
         libelle = params.libelle
         correction = params.correction
-        associactions = params.associactions.collect {new Associaction(it)}
-        setParticipants(associactions)
+        associations = params.associations.collect {new Association(it)}
+        sauverParticipants(associations)
     }
 
     @Override
     Map toMap() {
         return [libelle: libelle,
                 correction: correction,
-                assocations: associactions.collect {it.toMap()}]
+                associations: associations.collect {it.toMap()}]
     }
 
     /**
      * Setter polymorphique pour la liste des Participants à partir d'une liste d'associations.
      * @param associactionList
      */
-    void setParticipants(List<Associaction> associactionList) {
+    void sauverParticipants(List<Association> associactionList) {
         participants = []
         associactionList.each {participants << it.participant1; participants << it.participant2}
         Collections.shuffle(participants)
@@ -106,7 +106,7 @@ class AssociateSpecification implements QuestionSpecification {
 /**
  * Classe qui represente une associate. Une associate lie deux participants.
  */
-class Associaction {
+class Association {
 
     /**
      * Le premier participant.
@@ -133,7 +133,7 @@ class Associaction {
      */
     @Override
     boolean equals(Object object) {
-        if (object == null || !(object instanceof Associaction)) {
+        if (object == null || !(object instanceof Association)) {
             return false
         }
 

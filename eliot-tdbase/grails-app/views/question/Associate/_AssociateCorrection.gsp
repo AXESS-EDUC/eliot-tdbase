@@ -25,21 +25,6 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<tr>
-    <td class="label">Détail :</td>
-    <td>
-        <g:set var="specifobject" value="${question.specificationObject}"/>
-        ${specifobject.libelle} <br/>
-        <g:each status="i" in="${specifobject.associations}" var="association">
-            &nbsp;
-            <g:textField name="specifobject.associations[${i}].participant1" size="30"
-                         value="${association.participant1}"/>
-            &nbsp;
-            <g:textField name="specifobject.associations[${i}].participant2" size="30"
-                         value="${association.participant2}"/>
-            <br/>
-        </g:each>
-
-        Correction : ${specifobject.correction}
-    </td>
-</tr>
+<g:set var="questionspecifobject" value="${question.specificationObject}"/>
+<br>
+Correction: ${questionspecifobject.correction}

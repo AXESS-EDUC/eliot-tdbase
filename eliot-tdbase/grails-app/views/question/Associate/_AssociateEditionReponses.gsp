@@ -26,17 +26,17 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<%--
-  Created by IntelliJ IDEA.
-  User: bert
-  Date: 29/11/11
-  Time: 16:17
-  To change this template use File | Settings | File Templates.
---%>
+<g:each status="i" in="${specifobject.associations}" var="association">
+    &nbsp;
+    <g:textField name="specifobject.associations[${i}].participant1" size="30"
+                 value="${association.participant1}"/>
+    &nbsp;
+    <g:textField name="specifobject.associations[${i}].participant2" size="30"
+                 value="${association.participant2}"/>
+    &nbsp;
+    <g:submitToRemote id="${i}" value="Suppr" title="Supprimer l'associaction" action="supprimeAssociation"
+                      controller="questionAssociate" update="associate_reponses"/>
+    <br/>
+</g:each>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head><title>Simple GSP page</title></head>
-
-<body>Place your content here</body>
-</html>
+<g:hiddenField name="specifobject.associations.size" value="${specifobject.associations?.size()}"/>

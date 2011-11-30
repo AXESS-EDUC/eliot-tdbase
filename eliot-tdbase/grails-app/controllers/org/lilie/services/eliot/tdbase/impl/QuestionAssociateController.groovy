@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
 import org.lilie.services.eliot.tdbase.impl.associate.AssociateSpecification
+import org.lilie.services.eliot.tdbase.impl.associate.Association
 
 /**
  * Controlleur pour la saisie des questions de type association
@@ -38,8 +39,41 @@ class QuestionAssociateController extends QuestionController {
 
     @Override
     def getSpecificationObjectFromParams(Map params) {
-        bindData(new AssociateSpecification(), params, "specifobject")
+
+        def specifobject = new AssociateSpecification()
+        def size = params.specifobject.associations.size as Integer
+        if (size) {
+            size.times {
+                specifobject.associations << new Association()
+            }
+        }
+        bindData(specifobject, params, "specifobject")
     }
 
+    /**
+     *
+     * Action "ajouteAssociation"
+     */
+    def ajouteAssociation() {
+        AssociateSpecification specifobject = getSpecificationObjectFromParams(params) ?: new AssociateSpecification()
+        specifobject.associations << new Association()
+        render(
+                template: "/question/Associate/AssociateEditionReponses",
+                model: [specifobject: specifobject]
+        )
+    }
+
+    /**
+     *
+     * Action "supprimeAssociation"
+     */
+    def supprimeAssociation() {
+        AssociateSpecification specifobject = getSpecificationObjectFromParams(params)
+        specifobject.associations.remove(params.id as Integer)
+        render(
+                template: "/question/Associate/AssociateEditionReponses",
+                model: [specifobject: specifobject]
+        )
+    }
 
 }

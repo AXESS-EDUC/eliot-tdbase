@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.impl.associate
 
+import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
@@ -43,6 +44,22 @@ class ReponseAssociateSpecificationService extends ReponseSpecificationService<R
         new ReponseAssociateSpecification(map)
     }
 
+    /**
+     * @see ReponseSpecificationService
+     */
+    ReponseAssociateSpecification getObjectInitialiseFromSpecification(Question question) {
+
+
+        List<Association> valeursReponse = []
+
+        question.specificationObject.associations.size().times {
+            valeursReponse << new Association()
+        }
+
+        new ReponseAssociateSpecification(valeursDeReponse: valeursReponse,
+                reponsesPossibles: question.specificationObject.associations)
+    }
+
     @Override
     Float evalueReponse(Reponse reponse) {
 
@@ -50,7 +67,15 @@ class ReponseAssociateSpecificationService extends ReponseSpecificationService<R
         ReponseAssociateSpecification repSpecObj = reponse.specificationObject
         int numberRes = repSpecObj.valeursDeReponse.size()
 
-        repSpecObj.valeursDeReponse.each {if (repSpecObj.reponsesPossibles.contains(it)) {reponsesCorrects++}}
+        def reponsesPossibles = []
+        reponsesPossibles.addAll(repSpecObj.reponsesPossibles)
+
+        repSpecObj.valeursDeReponse.each {
+            if (reponsesPossibles.contains(it)) {
+                reponsesCorrects++
+                reponsesPossibles.remove(it)
+            }
+        }
 
         float points = (reponsesCorrects / numberRes) * reponse.sujetQuestion.points
 
@@ -68,12 +93,24 @@ class ReponseAssociateSpecification implements ReponseSpecification {
     /**
      * Liste d'associations fournis comme reponse à la question.
      */
-    List<Associaction> valeursDeReponse = []
+    List<Association> valeursDeReponse = []
 
     /**
      * Liste d'associations qui forment une reponse correcte.
      */
-    List<Associaction> reponsesPossibles = []
+    List<Association> reponsesPossibles = []
+
+    /**
+     * Constructeur par defaut
+     */
+    ReponseAssociateSpecification() {
+        super()
+    }
+
+    ReponseAssociateSpecification(Map params) {
+        valeursDeReponse = params.valeursDeReponse.collect {createAssociation(it)}
+        reponsesPossibles = params.reponsesPossibles.collect {createAssociation(it)}
+    }
 
     @Override
     Map toMap() {
@@ -83,4 +120,11 @@ class ReponseAssociateSpecification implements ReponseSpecification {
         ]
     }
 
+    private createAssociation(Association association) {
+        association
+    }
+
+    private createAssociation(Map params) {
+        new Association(params)
+    }
 }

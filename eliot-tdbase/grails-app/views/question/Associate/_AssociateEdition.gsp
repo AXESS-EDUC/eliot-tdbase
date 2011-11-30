@@ -60,3 +60,14 @@
 
     </td>
 </tr>
+<tr>
+    <td class="label">
+        Correction:
+    </td>
+    <td>
+        <g:textArea
+                name="specifobject.correction"
+                rows="3" cols="55"
+                value="${specifobject.correction}"/>
+    </td>
+</tr>
