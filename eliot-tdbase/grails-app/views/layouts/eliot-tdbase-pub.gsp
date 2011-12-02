@@ -46,19 +46,14 @@
 
 <body>
 <div class="container">
-  <div class="column span-22 last middle">
-    <div class="portal-menu">
-      <ul id="portal-hz-menu">
-        <li>
-          <a title="Accueil">Accueil</a>
-        </li>
-      </ul>
-    </div>
+  <div class="portal-menu">
+    <ul id="portal-hz-menu">
+      <li>
+        <a title="Accueil">Accueil</a>
+      </li>
+    </ul>
   </div>
   <g:layoutBody/>
-  <div class="column span-22 last middle" id="portal-footer">
-    %{--footer à compléter--}%
-  </div>
 </div>
 <r:layoutResources/>
 

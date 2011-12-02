@@ -67,30 +67,31 @@
 
 <body>
 
-<div class="column span-22 last middle">
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
 
   <g:hasErrors bean="${copie}">
-    <div class="portal-messages error">
+    <div class="portal-messages">
       <g:eachError>
-        <li><g:message error="${it}"/></li>
+        <li class="error"><g:message error="${it}"/></li>
       </g:eachError>
     </div>
   </g:hasErrors>
   <g:if test="${request.messageCode}">
-    <div class="portal-messages success">
-      <li><g:message code="${request.messageCode}"
+    <div class="portal-messages">
+      <li class="success"><g:message code="${request.messageCode}"
                      class="portal-messages success"/></li>
     </div>
   </g:if>
   <g:set var="sujet" value="${copie.sujet}"/>
 
       <g:if test="${copie.dateRemise}">
-           <div class="portal-messages notice">
+           <div class="portal-messages">
+             <li class="notice">
              Note (correction automatique) :
              <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
               / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
              &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+             </li>
            </div>
        </g:if>
 
@@ -163,7 +164,6 @@
                         title="Rendre la copie"/>
     </div>
   </form>
-</div>
 
 </body>
 </html>

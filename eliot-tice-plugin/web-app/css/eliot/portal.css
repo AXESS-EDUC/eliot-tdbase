@@ -36,14 +36,12 @@ a:hover {
 
 .container {
     text-align:left;
-    width:870px;
     padding-top:0;
     border:1px solid #8F8F8F;
     background-color: white;
 }
 
 .footer-container {
-    width:870px;
     padding:2em;
     padding-top:0;
 }
@@ -138,7 +136,7 @@ Portal Messages styles
     background-image:url('../../images/eliot/ico12/info.gif');
     background-repeat:no-repeat;
     background-position:5px 5px;
-    padding-left: 15px;
+    padding: 5px 25px;
 }
 
 .portal-messages .error {
@@ -148,7 +146,7 @@ Portal Messages styles
     background-image:url('../../images/eliot/ico12/warning.gif');
     background-repeat:no-repeat;
     background-position:5px 5px;
-    padding-left: 15px;
+    padding: 5px 25px;
 }
 
 .portal-messages .success {
@@ -159,7 +157,7 @@ Portal Messages styles
     background-position:5px 5px;
     color: #529214;
     border: solid 1px #C6D880;
-    padding-left: 15px;
+    padding: 5px 25px;
 }
 
 .notice .notice, .error .error, .success .success {

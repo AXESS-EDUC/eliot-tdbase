@@ -44,7 +44,6 @@
 
 <body>
 <div class="container">
-  <div class="column span-22 last middle">
     <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
       <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
     </g:if>
@@ -108,12 +107,9 @@
           </ul>
         </li>
       </ul>
-    </div>
-  </div>
+
+ </div>
   <g:layoutBody/>
-  <div class="column span-22 last middle" id="portal-footer">
-    %{--footer à compléter--}%
-  </div>
 </div>
 <r:layoutResources/>
 </body>

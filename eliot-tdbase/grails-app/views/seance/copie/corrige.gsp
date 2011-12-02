@@ -40,7 +40,6 @@
 
 <body>
 
-<div class="column span-22 last middle">
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
             model="[liens: liens]"/>
   <div class="portal_pagination">
@@ -49,15 +48,15 @@
   </div>
   <g:set var="copie" value="${copies[0]}"/>
   <g:hasErrors bean="${copieNotation}">
-    <div class="portal-messages error">
+    <div class="portal-messages">
       <g:eachError>
-        <li><g:message error="${it}"/></li>
+        <li class="error"><g:message error="${it}"/></li>
       </g:eachError>
     </div>
   </g:hasErrors>
   <g:if test="${request.messageCode}">
-    <div class="portal-messages success">
-      <li><g:message code="${request.messageCode}"
+    <div class="portal-messages">
+      <li class="success"><g:message code="${request.messageCode}"
                      class="portal-messages success"/></li>
     </div>
   </g:if>
@@ -154,6 +153,6 @@
       </div>
     </div>
   </g:each>
-</div>
+
 </body>
 </html>

@@ -25,12 +25,9 @@
   </head>
 
   <body>
-  <div class="column span-22 last middle">
-    <div class="portal-breadcrumbs">
-      Une erreur s'est produite > Détail de l'erreur
-    </div>
-    <div>
-      <g:link controller="accueil">Reprendre la navigation...</g:link>
+    <div class="portal-messages">
+      <p class="error">Une erreur s'est produite > Détail de l'erreur</p>
+      <p><g:link controller="accueil">Reprendre la navigation...</g:link></p>
     </div>
   	<div class="message">
 		<strong>Error ${request.'javax.servlet.error.status_code'}:</strong> ${request.'javax.servlet.error.message'.encodeAsHTML()}<br/>
@@ -55,6 +52,5 @@
 	      <pre><g:each in="${exception.stackTraceLines}">${it.encodeAsHTML()}<br/></g:each></pre>
 	    </div>
 	</g:if>
-    </div>
   </body>
 </html>

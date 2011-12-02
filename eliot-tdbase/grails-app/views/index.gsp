@@ -75,7 +75,6 @@
 		</style>
 	</head>
 	<body>
-    <div class="column span-22 last middle">
 		<div id="status" role="complementary">
 			<h1>Caractéristiques de l'application </h1>
 			<ul>
@@ -108,6 +107,5 @@
 				</ul>
 			</div>
 		</div>
-      </div>
 	</body>
 </html>

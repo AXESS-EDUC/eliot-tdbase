@@ -45,7 +45,6 @@
 
 <body>
 
-<div class="column span-22 last middle">
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
             model="[liens: liens]"/>
   <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
@@ -110,7 +109,6 @@
       <li>Une question de type...</li>
     </ul>
   </div>
-</div>
 
 </body>
 </html>

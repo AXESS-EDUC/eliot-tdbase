@@ -109,34 +109,6 @@ div.tdbase_layout_table td {
     border: 0;
 }
 
-/**div.tdbase_layout_table table tbody {
-	border:none;
-	padding: 2px;
-	margin:2px;
-}
-
-div.tdbase_layout_table tbody tr {
-	border:none;
-	padding: 2px;
-}
-
-div.tdbase_layout_table td {
-	border:none;
-	padding: 2px;
-	margin:2px;
-}
-
-div.tdbase_layout_table table tbody tr td {
-	border:none;
-	padding: 2px;
-}
-
-div.tdbase_layout_table table tbody tr td {
-	border:none;
-	padding: 2px;
-	margin:2px;
-}
-*/
 td.insider_label {
     text-align: right;
     background-color: #F3F6FB;

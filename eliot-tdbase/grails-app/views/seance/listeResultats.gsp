@@ -42,13 +42,14 @@
 </head>
 
 <body>
-<div class="column span-22 last middle">
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
 
-  <div class="portal-messages notice">
+  <div class="portal-messages">
+  <li class="notice">
   Groupe : ${seance.groupeLibelle}<br/>
   Sujet : ${seance.sujet.titre} <br/>
   Séance du ${seance.dateDebut.format('dd/MM/yy HH:mm')} au  ${seance.dateFin.format('dd/MM/yy HH:mm')}<br/>
+  </li>
   </div>
   <br/>
   <g:if test="${copies}">
@@ -106,7 +107,6 @@
       Aucun résultat
     </div>
   </g:else>
-</div>
 
 </body>
 </html>

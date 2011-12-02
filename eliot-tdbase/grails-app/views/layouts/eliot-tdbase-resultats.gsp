@@ -47,24 +47,20 @@
 
 <body>
 <div class="container">
-  <div class="column span-22 last middle">
-    <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
-      <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
-    </g:if>
-    <div class="portal-menu">
-      <ul id="portal-hz-menu">
-        <li id="menu-item-resultats">
-          <g:link action="liste" controller="resultats" params="[bcInit:true]"
-                  title="Liste des résultats">Résultats</g:link>
-        </li>
-      </ul>
-    </div>
+  <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
+    <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
+  </g:if>
+  <div class="portal-menu">
+    <ul id="portal-hz-menu">
+      <li id="menu-item-resultats">
+        <g:link action="liste" controller="resultats" params="[bcInit:true]"
+                title="Liste des résultats">Résultats</g:link>
+      </li>
+    </ul>
   </div>
   <g:layoutBody/>
-  <div class="column span-22 last middle" id="portal-footer">
-    %{--footer à compléter--}%
-  </div>
 </div>
+
 <r:layoutResources/>
 
 </body>

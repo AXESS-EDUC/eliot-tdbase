@@ -46,7 +46,6 @@
 
 <body>
 
-<div class="column span-22 last middle">
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
   <g:if test="${sujetEnEdition}">
     <div class="portal-tabs">
@@ -79,15 +78,15 @@
     </div>
   </g:else>
   <g:hasErrors bean="${sujet}">
-    <div class="portal-messages error">
+    <div class="portal-messages">
       <g:eachError>
-        <li><g:message error="${it}"/></li>
+        <li class="error"><g:message error="${it}"/></li>
       </g:eachError>
     </div>
   </g:hasErrors>
   <g:if test="${request.messageCode}">
-    <div class="portal-messages success">
-      <li><g:message code="${request.messageCode}"
+    <div class="portal-messages">
+      <li class="success"><g:message code="${request.messageCode}"
                      class="portal-messages success"/></li>
     </div>
   </g:if>
@@ -185,7 +184,5 @@
 
     </g:each>
   </g:if>
-</div>
-
 </body>
 </html>
