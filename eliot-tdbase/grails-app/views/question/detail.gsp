@@ -42,13 +42,11 @@
 
 <body>
 
-<div class="column span-22 last middle">
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
 
   <g:if test="${request.messageCode}">
-    <div class="portal-messages success">
-      <li><g:message code="${request.messageCode}"
-                     class="portal-messages success"/></li>
+    <div class="portal-messages">
+      <li class="success"><g:message code="${request.messageCode}"/></li>
     </div>
   </g:if>
 
@@ -113,7 +111,6 @@
         </g:link>
       </g:if>
     </div>
-</div>
 
 </body>
 </html>

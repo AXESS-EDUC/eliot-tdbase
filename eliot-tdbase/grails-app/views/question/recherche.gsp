@@ -40,7 +40,7 @@
 </head>
 
 <body>
-<div class="column span-22 last middle">
+
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
 
   <g:if test="${sujet}">
@@ -179,7 +179,7 @@
       Aucun résultat
     </div>
   </g:else>
-</div>
+
 
 </body>
 </html>

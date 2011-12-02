@@ -42,7 +42,7 @@
 </head>
 
 <body>
-<div class="column span-22 last middle">
+
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
   <div class="portal-form_container">
     <g:form method="get" action="liste" controller="resultats" name="form-eleve-select">
@@ -120,7 +120,7 @@
       Aucune copie à visualiser
     </div>
   </g:else>
-</div>
+
 
 </body>
 </html>

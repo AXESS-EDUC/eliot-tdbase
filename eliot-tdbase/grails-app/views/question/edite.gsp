@@ -59,20 +59,19 @@
 
 <body>
 
-<div class="column span-22 last middle">
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
             model="[liens: liens]"/>
 
   <g:hasErrors bean="${question}">
-    <div class="portal-messages error">
+    <div class="portal-messages">
       <g:eachError>
-        <li><g:message error="${it}"/></li>
+        <li class="error"><g:message error="${it}"/></li>
       </g:eachError>
     </div>
   </g:hasErrors>
   <g:if test="${request.messageCode}">
-    <div class="portal-messages success">
-      <li><g:message code="${request.messageCode}"
+    <div class="portal-messages">
+      <li class="success"><g:message code="${request.messageCode}"
                      class="portal-messages success"/></li>
     </div>
   </g:if>
@@ -174,7 +173,6 @@
       </g:else>
     </div>
   </g:form>
-</div>
 
 </body>
 </html>
