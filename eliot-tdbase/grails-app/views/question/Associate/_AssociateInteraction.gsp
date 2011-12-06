@@ -53,7 +53,7 @@
 }
 
 .highlighted {
-    background: #FFFFFF;
+    background: #b5bdff;
 }
 
 </style>
@@ -70,17 +70,27 @@
 
     function registerEventHandlers() {
         $(".participantDroppable").bind("dropover", function (event, ui) {
-            onDropIn($(this), ui.draggable);
+            onDropOver($(this), ui.draggable);
         });
 
         $(".participantDroppable").bind("dropout", function (event, ui) {
             onDropOut($(this), ui.draggable);
         });
+
+        $(".participantDraggable").bind("dragstop", function () {
+            onDragStop($(this));
+        })
     }
 
     function initWidgets() {
-        $(".participantDraggable").draggable();
+
+        $(".participantDraggable").each(function () {
+            var containmentObjectId = calculateContainmentObjectId($(this).attr("id"));
+            $(this).draggable({containment:containmentObjectId});
+        });
+
         $(".participantDroppable").droppable();
+
         positionParticipants();
     }
 
@@ -90,6 +100,14 @@
 
     function resetFieldValue(fieldId) {
         $("#" + fieldId).removeAttr("value");
+    }
+
+    function calculateContainmentObjectId(draggableId) {
+        var result = draggableId.substr(9);
+        result = result.substr(0, result.indexOf("_"));
+        result = "#draggableContainment_" + result;
+
+        return result;
     }
 
     function onDropOut(dropTarget, draggable) {
@@ -103,14 +121,26 @@
         }
     }
 
-    function onDropIn(dropTarget, draggable) {
+    function onDropOver(dropTarget, draggable) {
         var dropTargetId = dropTarget.attr('id');
         var draggableId = draggable.attr('id');
 
         if (!(dropTargetId in droppedItems)) {
+
             dropTarget.addClass("highlighted");
+
             setFieldValue(dropTargetId + "_hidden", getDraggableValue(draggableId));
             droppedItems[dropTargetId] = draggableId;
+        }
+    }
+
+    function onDragStop(draggable) {
+        var draggableId = draggable.attr("id");
+
+        for (var dropTargetId in droppedItems) {
+            if (droppedItems[dropTargetId] == draggableId) {
+                putDraggableIntoDroppable(draggableId, dropTargetId);
+            }
         }
     }
 
@@ -130,6 +160,7 @@
             if (droppableValue) {
                 var draggableId = findMatchingDraggableIdByDroppableValue(droppableValue);
                 putDraggableIntoDroppable(draggableId, droppableId);
+                $("#" + droppableId).addClass("highlighted");
             }
         });
     }
@@ -148,39 +179,40 @@
     }
 
     function putDraggableIntoDroppable(draggableId, droppableId) {
-
         $("#" + draggableId).position({my:"center center", at:"center center", of:$("#" + droppableId), collision:"none"});
-        $("#" + droppableId).addClass("highlighted");
         droppedItems[droppableId] = draggableId;
     }
 
 </script>
 
-<g:set var="questionspecifobject" value="${question.specificationObject}"/>
-<g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
-${questionspecifobject.libelle} <br/>
-<table id="participantDropTargets">
-    <g:each status="i" in="${questionspecifobject.associations}" var="association">
-        <tr>
-            <td id="droppable${indexReponse}_${i}left" class="participantDroppable">
-                <g:hiddenField id="droppable${indexReponse}_${i}left_hidden"
-                               name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant1"
-                               value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant1}"/>
-            </td>
-            <td id="droppable${indexReponse}_${i}right" class="participantDroppable">
-                <g:hiddenField id="droppable${indexReponse}_${i}right_hidden"
-                               name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant2"
-                               value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant2}"/>
-            </td>
-        </tr>
-    </g:each>
-</table>
-<table>
-    <tr id="participantDraggables">
-        <g:each status="i" in="${questionspecifobject.participants}" var="participant">
-            <td id="draggable${indexReponse}_${i}" class="participantDraggable">
-                <p>${participant}</p>
-            </td>
+<div id="draggableContainment_${indexReponse}" class="draggableContainmentClass">
+    <g:set var="questionspecifobject" value="${question.specificationObject}"/>
+    <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
+    ${questionspecifobject.libelle} <br/>
+    <table id="participantDropTargets">
+        <g:each status="i" in="${questionspecifobject.associations}" var="association">
+            <tr>
+                <td id="droppable${indexReponse}_${i}left" class="participantDroppable">
+                    <g:hiddenField id="droppable${indexReponse}_${i}left_hidden"
+                                   name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant1"
+                                   value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant1}"/>
+                </td>
+                <td>------</td>
+                <td id="droppable${indexReponse}_${i}right" class="participantDroppable">
+                    <g:hiddenField id="droppable${indexReponse}_${i}right_hidden"
+                                   name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant2"
+                                   value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant2}"/>
+                </td>
+            </tr>
         </g:each>
-    </tr>
-</table>
+    </table>
+    <table>
+        <tr id="participantDraggables">
+            <g:each status="i" in="${questionspecifobject.participants}" var="participant">
+                <td id="draggable${indexReponse}_${i}" class="participantDraggable">
+                    <p>${participant}</p>
+                </td>
+            </g:each>
+        </tr>
+    </table>
+</div>
