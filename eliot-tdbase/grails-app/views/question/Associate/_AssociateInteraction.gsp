@@ -48,7 +48,7 @@
     background: #f5f5f5;
     display: inline-block;
     height: 1.5em;
-    width: 4em;
+    width: 17em;
     padding: 0.5em 0.5em 0.5em 0.5em;
 }
 
