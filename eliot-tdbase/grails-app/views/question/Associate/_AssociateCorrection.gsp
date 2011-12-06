@@ -25,6 +25,39 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+
+
+<style type="text/css">
+
+.participantCorrection {
+    text-align: center;
+    float: left;
+    margin: 5px 5px 5px 5px;
+    border: solid 1px #808080;
+    background: #b5bdff;
+    display: inline-block;
+    height: 1.5em;
+    width: 17em;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    text-decoration-color: #817134;
+}
+
+</style>
+
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <br>
 Correction: ${questionspecifobject.correction}
+
+<table>
+    <g:each status="i" in="${questionspecifobject.associations}" var="association">
+        <tr>
+            <td class="participantCorrection">
+                ${association.participant1}
+            </td>
+            <td>------</td>
+            <td class="participantCorrection">
+                ${association.participant2}
+            </td>
+        </tr>
+    </g:each>
+</table>
