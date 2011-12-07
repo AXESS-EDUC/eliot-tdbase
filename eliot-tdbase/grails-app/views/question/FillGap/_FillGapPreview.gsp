@@ -31,14 +31,7 @@
 ${specifobject.libelle} <br/>
 
 <g:each in="${specifobject.texteATrousStructure}" var="texteATrouElement" status="i">
-    &nbsp;
-
-    <g:if test="${texteATrouElement.isTexte()}">
-        ${texteATrouElement.valeur}
-    </g:if>
-    <g:else>
-        <g:field type="text" name="toto"/>
-    </g:else>
+    ${texteATrouElement.valeur}
 </g:each>
 
 <br>
