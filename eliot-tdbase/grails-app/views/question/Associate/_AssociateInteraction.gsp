@@ -29,7 +29,7 @@
 
 <style type="text/css">
 
-.participantDraggable {
+.participant {
     float: left;
     margin: 0 2px 0 2px;
     border: solid 1px #FFD324;
@@ -41,7 +41,7 @@
     text-decoration: none;
 }
 
-.participantDroppable {
+.associationCell {
     float: left;
     margin: 5px 5px 5px 5px;
     border: solid 1px #808080;
@@ -68,30 +68,35 @@
         registerEventHandlers();
     });
 
-    function registerEventHandlers() {
-        $(".participantDroppable").bind("dropover", function (event, ui) {
-            onDropOver($(this), ui.draggable);
-        });
-
-        $(".participantDroppable").bind("dropout", function (event, ui) {
-            onDropOut($(this), ui.draggable);
-        });
-
-        $(".participantDraggable").bind("dragstop", function () {
-            onDragStop($(this));
-        })
-    }
-
     function initWidgets() {
 
-        $(".participantDraggable").each(function () {
-            var containmentObjectId = calculateContainmentObjectId($(this).attr("id"));
+        // make participants draggable
+        $(".participant").each(function () {
+            var containmentObjectId = calculateContainmentObjectId($(this));
             $(this).draggable({containment:containmentObjectId});
         });
 
-        $(".participantDroppable").droppable();
+        // convert associationcells into drop targets
+        $(".associationCell").droppable();
+
+        // hide association table cells' input fields
+        $('.associationCell input').hide();
 
         positionParticipants();
+    }
+
+    function registerEventHandlers() {
+        $(".associationCell").bind("dropover", function (event, ui) {
+            onDropOver($(this), ui.draggable);
+        });
+
+        $(".associationCell").bind("dropout", function (event, ui) {
+            onDropOut($(this), ui.draggable);
+        });
+
+        $(".participant").bind("dragstop", function () {
+            onDragStop($(this));
+        })
     }
 
     function setFieldValue(fieldId, value) {
@@ -99,13 +104,13 @@
     }
 
     function resetFieldValue(fieldId) {
-        $("#" + fieldId).removeAttr("value");
+        $("#" + fieldId).attr("value", "");
     }
 
-    function calculateContainmentObjectId(draggableId) {
-        var result = draggableId.substr(9);
+    function calculateContainmentObjectId(draggable) {
+        var result = draggable.attr("id").substr(11);
         result = result.substr(0, result.indexOf("_"));
-        result = "#draggableContainment_" + result;
+        result = "#associateQuestion_" + result;
 
         return result;
     }
@@ -116,7 +121,7 @@
 
         if (dropTargetId in droppedItems && droppedItems[dropTargetId] == draggableId) {
             dropTarget.removeClass("highlighted");
-            resetFieldValue(dropTargetId + "_hidden");
+            resetFieldValue(dropTargetId + "_field");
             delete droppedItems[dropTargetId];
         }
     }
@@ -126,10 +131,8 @@
         var draggableId = draggable.attr('id');
 
         if (!(dropTargetId in droppedItems)) {
-
             dropTarget.addClass("highlighted");
-
-            setFieldValue(dropTargetId + "_hidden", getDraggableValue(draggableId));
+            setFieldValue(dropTargetId + "_field", getDraggableValue(draggableId));
             droppedItems[dropTargetId] = draggableId;
         }
     }
@@ -149,13 +152,13 @@
     }
 
     function getDroppableValue(droppableId) {
-        return $("#" + droppableId + "_hidden").attr("value");
+        return $("#" + droppableId + "_field").attr("value");
     }
 
     function positionParticipants() {
-        $(".participantDroppable input").each(function () {
+        $(".associationCell input").each(function () {
             var droppableValue = $(this).val();
-            var droppableId = $(this).parent(".participantDroppable").attr("id");
+            var droppableId = $(this).parent(".associationCell").attr("id");
 
             if (droppableValue) {
                 var draggableId = findMatchingDraggableIdByDroppableValue(droppableValue);
@@ -166,12 +169,11 @@
     }
 
     function findMatchingDraggableIdByDroppableValue(droppableValue) {
-
         var theParentId;
 
-        $(".participantDraggable p").each(function () {
+        $(".participant p").each(function () {
             if (droppableValue == $(this).text()) {
-                theParentId = $(this).parent(".participantDraggable").attr("id");
+                theParentId = $(this).parent(".participant").attr("id");
             }
         });
 
@@ -185,31 +187,35 @@
 
 </script>
 
-<div id="draggableContainment_${indexReponse}" class="draggableContainmentClass">
-    <g:set var="questionspecifobject" value="${question.specificationObject}"/>
-    <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
+
+<g:set var="questionspecifobject" value="${question.specificationObject}"/>
+<g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
+
+<div id="associateQuestion_${indexReponse}">
     ${questionspecifobject.libelle} <br/>
-    <table id="participantDropTargets">
+
+    <table>
         <g:each status="i" in="${questionspecifobject.associations}" var="association">
             <tr>
-                <td id="droppable${indexReponse}_${i}left" class="participantDroppable">
-                    <g:hiddenField id="droppable${indexReponse}_${i}left_hidden"
-                                   name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant1"
-                                   value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant1}"/>
+                <td id="association${indexReponse}_${i}left" class="associationCell">
+                    <g:textField id="association${indexReponse}_${i}left_field"
+                                 name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant1"
+                                 value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant1}"/>
                 </td>
                 <td>------</td>
-                <td id="droppable${indexReponse}_${i}right" class="participantDroppable">
-                    <g:hiddenField id="droppable${indexReponse}_${i}right_hidden"
-                                   name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant2"
-                                   value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant2}"/>
+                <td id="association${indexReponse}_${i}right" class="associationCell">
+                    <g:textField id="association${indexReponse}_${i}right_field"
+                                 name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant2"
+                                 value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant2}"/>
                 </td>
             </tr>
         </g:each>
     </table>
+
     <table>
-        <tr id="participantDraggables">
+        <tr id="participants">
             <g:each status="i" in="${questionspecifobject.participants}" var="participant">
-                <td id="draggable${indexReponse}_${i}" class="participantDraggable">
+                <td id="participant${indexReponse}_${i}" class="participant">
                     <p>${participant}</p>
                 </td>
             </g:each>
