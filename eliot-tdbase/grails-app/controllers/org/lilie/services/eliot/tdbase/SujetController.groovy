@@ -112,7 +112,7 @@ class SujetController {
    * Action "teste"
    */
   def teste() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.edite.titre"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.teste.titre"))
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
     Copie copie = copieService.getCopieTestForSujetAndPersonne(sujet, personne)
