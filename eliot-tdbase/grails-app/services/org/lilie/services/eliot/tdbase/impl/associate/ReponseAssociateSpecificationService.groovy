@@ -44,9 +44,7 @@ class ReponseAssociateSpecificationService extends ReponseSpecificationService<R
         new ReponseAssociateSpecification(map)
     }
 
-    /**
-     * @see ReponseSpecificationService
-     */
+    @Override
     ReponseAssociateSpecification getObjectInitialiseFromSpecification(Question question) {
 
 

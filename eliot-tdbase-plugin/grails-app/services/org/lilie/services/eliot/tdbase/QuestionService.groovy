@@ -297,7 +297,8 @@ class QuestionService implements ApplicationContextAware {
                 QuestionTypeEnum.Integer.questionType,
                 ExclusiveChoice.questionType,
                 FillGap.questionType,
-                Associate.questionType
+                Associate.questionType,
+                Order.questionType
         ]
     }
 

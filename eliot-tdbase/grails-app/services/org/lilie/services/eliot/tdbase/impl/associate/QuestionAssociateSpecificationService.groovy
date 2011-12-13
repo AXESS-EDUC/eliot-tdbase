@@ -88,7 +88,7 @@ class AssociateSpecification implements QuestionSpecification {
 
     @Override
     Map toMap() {
-        return [libelle: libelle,
+        [libelle: libelle,
                 correction: correction,
                 associations: associations.collect {it.toMap()}]
     }

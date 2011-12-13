@@ -26,18 +26,22 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-    <meta name="layout" content="eliot-tdbase-pub"/>
-    <title>Modernizr Test page</title>
-    <r:use module="associateJS"/>
+<g:set var="specifobject" value="${question.specificationObject}"/>
 
-</head>
+<tr>
+    <td class="label">Détail :</td>
+    <td>
+        ${specifobject.libelle} <br/>
+        <g:each status="i" in="${specifobject.orderedItems}" var="orderedItem">
+            &nbsp;
+            <g:textField name="specifobject.orderedItems[${i}].text" size="50"
+                         value="${orderedItem.text}" disabled="true"/>
+            &nbsp;
+            <g:textField name="specifobject.orderedItems[${i}].ordinal" size="2"
+                         value="${orderedItem.ordinal}" disabled="true"/>
+            <br/>
+        </g:each>
 
-<body>
-
-<p id="result"></p>
-
-</body>
-</html>
+        Correction : ${specifobject.correction}
+    </td>
+</tr>

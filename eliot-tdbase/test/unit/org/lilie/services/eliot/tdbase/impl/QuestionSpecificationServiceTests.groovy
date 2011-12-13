@@ -16,9 +16,10 @@ import org.lilie.services.eliot.tdbase.impl.integer.QuestionIntegerSpecification
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.QuestionMultipleChoiceSpecificationService
+import org.lilie.services.eliot.tdbase.impl.order.OrderSpecification
+import org.lilie.services.eliot.tdbase.impl.order.QuestionOrderSpecificationService
 import org.lilie.services.eliot.tdbase.impl.statement.QuestionStatementSpecificationService
 import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
-import org.lilie.services.eliot.tdbase.impl.fillgap.QuestionFillGapSpecificationService
 
 class QuestionSpecificationServiceTests extends GroovyTestCase {
 
@@ -31,6 +32,7 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
                 // [new QuestionFillGapSpecificationService(), fillGapSpecification()],
                 [new QuestionIntegerSpecificationService(), integerSpecification()],
                 [new QuestionMultipleChoiceSpecificationService(), multipleChoiceSpecification()],
+                // [new QuestionOrderSpecificationService(), orderSpecification()],
                 [new QuestionStatementSpecificationService(), new StatementSpecification([enonce: "We should improve our carbon footprint."])]
         ]
 
@@ -40,6 +42,17 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
             executeTestSpecificationNormaliseFromObject(it[0], it[1])
         }
 
+    }
+
+
+
+    def orderSpecification() {
+
+        def List<String> orderedItems = ["TheNumberOne", "TheNumberTwo", "TheNumberThree"];
+
+        new OrderSpecification([libelle: "Please put this mess into order!",
+                correction: "Yes chap, that's the right way of doing it",
+                orderedItems: orderedItems])
     }
 
     def fillGapSpecification() {
@@ -136,11 +149,11 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
 
     def executeTestSpecificationNormaliseFromObject(QuestionSpecificationService service, Specification specObject) {
 
-        /*assertNull(service.getSpecificationNormaliseFromObject(null));
-        specObject.libelle = "TötÖ"
+        /*    assertNull(service.getSpecificationNormaliseFromObject(null));
+       specObject.libelle = "ToTo"
 
-        println(service.getSpecificationNormaliseFromObject(specObject))
-        assertEquals("TOTO", service.getSpecificationNormaliseFromObject(specObject))*/
+       println(service.getSpecificationNormaliseFromObject(specObject))
+       assertEquals("TOTO", service.getSpecificationNormaliseFromObject(specObject))*/
     }
 
     def superCoolValidator(spec1, spec2) {
