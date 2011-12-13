@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.impl.associate
 
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tice.utils.StringUtils
 
 /**
  * Service des specifications de questios de type associate.
@@ -137,8 +138,8 @@ class Association {
             return false
         }
 
-        def meParticipants = [participant1, participant2]
-        def lesAutresParticipants = [object.participant1, object.participant2]
+        def meParticipants = [StringUtils.normalise(participant1), StringUtils.normalise(participant2)]
+        def lesAutresParticipants = [StringUtils.normalise(object.participant1), StringUtils.normalise(object.participant2)]
 
 
         (meParticipants - lesAutresParticipants).isEmpty()
