@@ -87,15 +87,42 @@ class OrderSpecification implements QuestionSpecification {
                 correction: correction,
                 orderedItems: orderedItems.collect {it.toMap()}]
     }
+    /**
+     * Genère une liste des ordinals que l'on peut selectionner lors de l'edition d'une question de type
+     * ordre à retablir.
+     * @return
+     */
+    def getSelectableOrdinalList() {
+        def ordinal = 1
+        def selectableOrdinalList = []
+        orderedItems.size().times {selectableOrdinalList << ordinal++}
+        selectableOrdinalList
+    }
 }
 
 class Item {
 
     String text;
-    Integer ordinal;
+    String ordinal;
 
     Map toMap() {
         [text: text, ordinal: ordinal]
+    }
+
+
+    boolean equals(Object object) {
+        if (object != null && object instanceof Item) {
+            Item theOther = object
+            return text == theOther.text && ordinal == theOther.ordinal
+        }
+        false
+    }
+
+    int hashCode() {
+        int hash = 1
+        hash = hash * 31 + (text == null ? 0 : text.hashCode())
+        hash = hash * 31 + (ordinal == null ? 0 : ordinal.hashCode())
+        hash
     }
 
 }

@@ -46,12 +46,11 @@ class ReponseOrderSpecificationService extends ReponseSpecificationService<Repon
     @Override
     ReponseOrderSpecification getObjectInitialiseFromSpecification(Question question) {
 
-        List<String> valeursReponse = []
+        List<Item> valeursReponse = []
 
         question.specificationObject.orderedItems.size().times {
-            valeursReponse << new String()
+            valeursReponse << new Item()
         }
-
 
         new ReponseOrderSpecification(valeursDeReponse: valeursReponse,
                 reponsesPossibles: question.specificationObject.orderedItems)
@@ -62,13 +61,7 @@ class ReponseOrderSpecificationService extends ReponseSpecificationService<Repon
 
         ReponseOrderSpecification repSpecObj = reponse.specificationObject
 
-        float points = reponse.sujetQuestion.points;
-
-
-        for (i in 0..repSpecObj.valeursDeReponse.size() - 1) {
-            if (!repSpecObj.valeursDeReponse[i].equals(repSpecObj.reponsesPossibles[i]))
-                points = 0f;
-        }
+        float points = repSpecObj.evaluate(reponse.sujetQuestion.points)
 
         reponse.correctionNoteAutomatique = points
         reponse.save()
@@ -84,7 +77,7 @@ class ReponseOrderSpecification implements ReponseSpecification {
     /**
      * Liste d'elements fournis comme reponse à la question.
      */
-    List<String> valeursDeReponse = []
+    List<Item> valeursDeReponse = []
 
     /**
      * Liste d'elements qui forment une reponse correcte.
@@ -103,25 +96,37 @@ class ReponseOrderSpecification implements ReponseSpecification {
      * @param params map des paramètres pour l'initialisation de l'objet
      */
     ReponseOrderSpecification(Map params) {
-        valeursDeReponse = params.valeursDeReponse
-        reponsesPossibles = params.reponsesPossibles.each {createItem(it)}
+        valeursDeReponse = params.valeursDeReponse.collect {createItem(it)}
+        reponsesPossibles = params.reponsesPossibles.collect {createItem(it)}
     }
 
     @Override
     Map toMap() {
         [
-                valeursDeReponse: valeursDeReponse,
-                reponsesPossibles: reponsesPossibles
+                valeursDeReponse: valeursDeReponse.collect {it.toMap()},
+                reponsesPossibles: reponsesPossibles.collect {it.toMap()}
         ]
     }
 
-    private createItem(Item item) {
+    /**
+     * Logique d'evaluation.
+     * @param maximumPoints les points maximum que l'on peut atteindre si la reponse est bonne.
+     * @return les points correspondants à l'evaluation.
+     */
+    def evaluate(float maximumPoints) {
+        float points = maximumPoints
+        def difference = valeursDeReponse - reponsesPossibles
+        if (!difference.isEmpty()) {
+            points = 0.0f
+        }
+        points
+    }
+
+    def createItem(Item item) {
         item
     }
 
-    private createItem(Map params) {
+    def createItem(Map params) {
         new Item(params)
     }
-
-
 }

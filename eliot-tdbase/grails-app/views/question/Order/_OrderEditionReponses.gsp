@@ -30,8 +30,10 @@
     <g:textField name="specifobject.orderedItems[${i}].text" size="55"
                  value="${orderedItem.text}" maxlength="50"/>
     &nbsp;
-    <g:textField name="specifobject.orderedItems[${i}].ordinal" size="2" maxlength="2"
-                 value="${orderedItem.ordinal}"/>
+
+    <g:select name="specifobject.orderedItems[${i}].ordinal" value="${orderedItem.ordinal}"
+              from="${specifobject.selectableOrdinalList}"/>
+
     &nbsp;
     <g:submitToRemote id="${i}" value="Suppr" title="Supprimer l'element" action="supprimeItem"
                       controller="questionOrder" update="order_reponses"/>

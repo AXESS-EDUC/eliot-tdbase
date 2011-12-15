@@ -33,9 +33,6 @@ ${specifobject.libelle}
     &nbsp;
     <g:textField name="specifobject.orderedItems[${i}].text" size="50"
                  value="${orderedItem.text}" disabled="true"/>
-    &nbsp;
-    <g:textField name="specifobject.orderedItems[${i}].ordinal" size="2"
-                 value="${orderedItem.ordinal}" disabled="true"/>
     <br/>
 </g:each>
 <br/>

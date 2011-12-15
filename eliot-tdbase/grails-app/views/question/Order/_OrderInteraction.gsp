@@ -35,21 +35,20 @@
         <g:each status="i" in="${questionspecifobject.orderedItems}" var="orderedItem">
             <tr>
                 <td id="orderedItem{indexReponse}_${i}" class="orderedItemCell">
-                    <g:textField id="orderedItem${indexReponse}_${i}_field"
-                                 name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}]"
-                                 value="${reponsespecifobject?.valeursDeReponse?.getAt(i)}"/>
+                    <g:hiddenField id="orderedItem${indexReponse}_${i}_text"
+                                   name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].text"
+                                   value="${orderedItem.text}"/>
+                    ${orderedItem.text}
+                    &nbsp;
+
+                    [${reponsespecifobject.valeursDeReponse[i].ordinal}]
+                    &nbsp;
+                    <g:select
+                            name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].ordinal"
+                            from="${questionspecifobject.selectableOrdinalList}"/>
+
                 </td>
             </tr>
         </g:each>
-    </table>
-
-    <table>
-        <tr id="items">
-            <g:each status="i" in="${questionspecifobject.orderedItems}" var="orderedItem">
-                <td id="item${indexReponse}_${i}" class="item">
-                    <p>${orderedItem.text}</p>
-                </td>
-            </g:each>
-        </tr>
     </table>
 </div>
