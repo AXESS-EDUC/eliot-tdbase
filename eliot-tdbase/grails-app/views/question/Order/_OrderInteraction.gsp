@@ -25,28 +25,65 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+
+<style type="text/css">
+
+.draggableItem {
+    float: left;
+    margin: 0;
+    padding: 0;
+    border: solid 1px #FFD324;
+    background: #FFF6BF;
+    color: #817134;
+    display: inline-block;
+    height: 1em;
+    width: 16em;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    text-decoration: none;
+}
+
+.dropTarget {
+    float: left;
+    margin: 0;
+    padding: 0;
+    border: solid 1px #808080;
+    background: #f5f5f5;
+    display: inline-block;
+    height: 2em;
+    width: 17em;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+}
+
+</style>
+
+<r:require module="orderJS"/>
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-<div id="orderQuestion_${indexReponse}">
-    ${questionspecifobject.libelle} <br/>
+${questionspecifobject.libelle} <br/>
 
+<div id="orderQuestionContainment_${indexReponse}">
     <table>
         <g:each status="i" in="${questionspecifobject.orderedItems}" var="orderedItem">
             <tr>
-                <td id="orderedItem{indexReponse}_${i}" class="orderedItemCell">
-                    <g:hiddenField id="orderedItem${indexReponse}_${i}_text"
-                                   name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].text"
-                                   value="${orderedItem.text}"/>
-                    ${orderedItem.text}
-                    &nbsp;
+                <td id="dropTarget${indexReponse}_${i}" class="dropTarget">
 
-                    [${reponsespecifobject.valeursDeReponse[i].ordinal}]
-                    &nbsp;
-                    <g:select
-                            name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].ordinal"
-                            from="${questionspecifobject.selectableOrdinalList}"/>
+                    <div id="orderedItem${indexReponse}_${i}" class="orderedItemCell">
+                        <g:hiddenField id="orderedItem${indexReponse}_${i}_text"
+                                       name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].text"
+                                       value="${orderedItem.text}"/>
 
+                        <span>${orderedItem.text}</span>
+                        &nbsp;
+                        <div class="orderedLastOrdinal">
+                            [${reponsespecifobject.valeursDeReponse[i].ordinal}]
+                            &nbsp;
+                        </div>
+                        <g:select class="ordinalSelector"
+                                  name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].ordinal"
+                                  from="${questionspecifobject.selectableOrdinalList}"
+                                  value="${questionspecifobject.selectableOrdinalList[i]}"/>
+                    </div>
                 </td>
             </tr>
         </g:each>
