@@ -37,7 +37,7 @@ function initDragNDrop() {
     hideHTML();
     initData();
     initWidgets();
-    //moveItems();
+    moveItems();
     registerEventHandlers();
 
     /**
@@ -156,33 +156,17 @@ function initDragNDrop() {
      */
     function setOrdinal(draggableId, droppableId) {
         var ordinal = 1 + parseInt(droppableId.substr(droppableId.indexOf('_') + 1, droppableId.length));
-        $('#' + draggableId + ' select').val(ordinal);
+        $('#' + draggableId + ' select').val(ordinal).trigger('change');
     }
 
     function moveItems() {
-        var draggablesIds = new Array();
-
-        $('.orderedItemCell').each(function () {
-            draggablesIds.push($(this).attr('id'));
-        });
-
-        for (var i = 0; i < draggablesIds.length; i++) {
-            var draggableId = draggablesIds[i];
+        $('.dropTarget').each(function () {
+            var currentDroppableId = $(this).attr('id');
+            var draggableId = $(this).children('.orderedItemCell').attr('id');
             var droppableTargetId = getDroppableFromSelectValue(draggableId);
-            var dragCoords = draggableId.substr(11, draggableId.length);
-            var dropCoords = droppableTargetId.substr(10, droppableTargetId.length);
-
-            if (dragCoords != dropCoords) {
-                moveFromTo(draggableId, droppableTargetId);
-            }
-        }
-    }
-
-    function moveFromTo(draggableId, droppableTargetId) {
-
-        onDropOut(getDroppableId(draggableId));
-        onDropOver(droppableTargetId);
-        onDragStop();
+            move(draggableId, droppableTargetId);
+            setItems[droppableTargetId] = draggableId;
+        });
     }
 
     function getDroppableFromSelectValue(draggableId) {
