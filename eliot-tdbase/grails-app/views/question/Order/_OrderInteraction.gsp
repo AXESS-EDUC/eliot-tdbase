@@ -71,18 +71,15 @@ ${questionspecifobject.libelle} <br/>
                     <div id="orderedItem${indexReponse}_${i}" class="orderedItemCell">
                         <g:hiddenField id="orderedItem${indexReponse}_${i}_text"
                                        name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].text"
-                                       value="${orderedItem.text}"/>
+                                       value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}"/>
 
-                        <span>${orderedItem.text}</span>
+                        <span>${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}</span>
+
                         &nbsp;
-                        <div class="orderedLastOrdinal">
-                            [${reponsespecifobject.valeursDeReponse[i].ordinal}]
-                            &nbsp;
-                        </div>
                         <g:select class="ordinalSelector"
                                   name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].ordinal"
                                   from="${questionspecifobject.selectableOrdinalList}"
-                                  value="${questionspecifobject.selectableOrdinalList[i]}"/>
+                                  value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.ordinal}"/>
                     </div>
                 </td>
             </tr>

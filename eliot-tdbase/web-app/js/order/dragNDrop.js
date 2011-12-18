@@ -37,13 +37,13 @@ function initDragNDrop() {
     hideHTML();
     initData();
     initWidgets();
+    //moveItems();
     registerEventHandlers();
 
     /**
      * Cacher les elements du formulaire.
      */
     function hideHTML() {
-        $('.orderedLastOrdinal').hide();
         $('.ordinalSelector').hide();
     }
 
@@ -52,10 +52,8 @@ function initDragNDrop() {
      */
     function initData() {
         $(".dropTarget").each(function () {
-
             var dropTargetId = $(this).attr('id');
             var itemId = $(this).children(".orderedItemCell").attr('id');
-
             setItems[dropTargetId] = itemId;
         });
     }
@@ -86,31 +84,29 @@ function initDragNDrop() {
     }
 
     function registerEventHandlers() {
-        $(".dropTarget").bind("dropover", function (event, ui) {
-            onDropOver($(this));
+        $(".dropTarget").bind("dropover", function () {
+            onDropOver($(this).attr('id'));
         });
 
-        $(".dropTarget").bind("dropout", function (event, ui) {
-            onDropOut($(this));
+        $(".dropTarget").bind("dropout", function () {
+            onDropOut($(this).attr('id'));
         });
 
         $('.orderedItemCell').bind("dragstop", function () {
-            onDragStop($(this));
+            onDragStop();
         })
     }
 
-    function onDropOut(droppable) {
+    function onDropOut(currentDroppableId) {
 
         if (movingItemId == "") {
-            var currentDroppableId = droppable.attr('id');
             movingItemId = setItems[currentDroppableId];
             setItems[currentDroppableId] = "";
         }
     }
 
-    function onDropOver(droppable) {
+    function onDropOver(currentDroppableId) {
         if (movingItemId != "") {
-            var currentDroppableId = droppable.attr('id');
             var currentItemId = setItems[currentDroppableId];
             var emptyDroppableId = getEmptyDroppableId();
             move(currentItemId, emptyDroppableId);
@@ -120,7 +116,7 @@ function initDragNDrop() {
         }
     }
 
-    function onDragStop(draggable) {
+    function onDragStop() {
         var emptyDroppableId = getEmptyDroppableId();
         move(movingItemId, emptyDroppableId);
         setOrdinal(movingItemId, emptyDroppableId);
@@ -128,14 +124,18 @@ function initDragNDrop() {
         movingItemId = "";
     }
 
-    /**
-     * Retrouve l'id du droppable qui n'a pas un item associé.
-     */
     function getEmptyDroppableId() {
+        return getDroppableId("");
+    }
+
+    /**
+     * Retrouve l'id du droppable associé à un draggable.
+     */
+    function getDroppableId(draggableId) {
 
         for (var droppableId in setItems) {
 
-            if (setItems[droppableId] == "")
+            if (setItems[droppableId] == draggableId)
                 return droppableId;
         }
 
@@ -158,5 +158,42 @@ function initDragNDrop() {
         var ordinal = 1 + parseInt(droppableId.substr(droppableId.indexOf('_') + 1, droppableId.length));
         $('#' + draggableId + ' select').val(ordinal);
     }
-}
 
+    function moveItems() {
+        var draggablesIds = new Array();
+
+        $('.orderedItemCell').each(function () {
+            draggablesIds.push($(this).attr('id'));
+        });
+
+        for (var i = 0; i < draggablesIds.length; i++) {
+            var draggableId = draggablesIds[i];
+            var droppableTargetId = getDroppableFromSelectValue(draggableId);
+            var dragCoords = draggableId.substr(11, draggableId.length);
+            var dropCoords = droppableTargetId.substr(10, droppableTargetId.length);
+
+            if (dragCoords != dropCoords) {
+                moveFromTo(draggableId, droppableTargetId);
+            }
+        }
+    }
+
+    function moveFromTo(draggableId, droppableTargetId) {
+
+        onDropOut(getDroppableId(draggableId));
+        onDropOver(droppableTargetId);
+        onDragStop();
+    }
+
+    function getDroppableFromSelectValue(draggableId) {
+        var selectValue = parseInt($('#' + draggableId + ' select').val()) - 1;
+        return 'dropTarget' + parseIndexReponse(draggableId) + '_' + selectValue;
+    }
+
+    function parseIndexReponse(draggableId) {
+        var result = draggableId;
+        result = result.substring(11);
+        result = result.substr(0, result.indexOf('_'));
+        return result;
+    }
+}

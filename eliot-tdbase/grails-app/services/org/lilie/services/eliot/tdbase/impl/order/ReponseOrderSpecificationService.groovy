@@ -48,8 +48,8 @@ class ReponseOrderSpecificationService extends ReponseSpecificationService<Repon
 
         List<Item> valeursReponse = []
 
-        question.specificationObject.orderedItems.size().times {
-            valeursReponse << new Item()
+        question.specificationObject.orderedItems.each {
+            valeursReponse << new Item(text: it.text)
         }
 
         new ReponseOrderSpecification(valeursDeReponse: valeursReponse,
