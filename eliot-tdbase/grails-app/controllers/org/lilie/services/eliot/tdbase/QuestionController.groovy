@@ -43,6 +43,7 @@ class QuestionController {
   ProfilScolariteService profilScolariteService
   QuestionService questionService
   SujetService sujetService
+  ArtefactAutorisationService artefactAutorisationService
 
   /**
     *
@@ -80,7 +81,8 @@ class QuestionController {
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            sujet: sujet
+            sujet: sujet,
+            peutSupprimer : artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question)
     ])
   }
 
@@ -102,6 +104,20 @@ class QuestionController {
             question: question,
             sujet: sujet
     ])
+  }
+
+  /**
+   * Action "Supprimer"
+   */
+  def supprime() {
+    Personne personne = authenticatedPersonne
+    Question question = Question.get(params.id as Long)
+    questionService.supprimeQuestion(question, personne)
+    def lien = breadcrumpsService.lienRetour()
+    forward(action: lien.action,
+            controller: lien.controller,
+            params: lien.params)
+
   }
 
   /**
