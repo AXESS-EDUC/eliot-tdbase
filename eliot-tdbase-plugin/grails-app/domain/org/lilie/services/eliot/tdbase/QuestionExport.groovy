@@ -36,19 +36,19 @@ import org.lilie.services.eliot.tice.ExportFormat
  */
 class QuestionExport {
 
-  String export
+    String export
 
-  Question question
-  ExportFormat format
+    Question question
+    ExportFormat format
 
-  static belongsTo = [question: Question]
+    static belongsTo = [question: Question]
 
-  static mapping = {
-    table('td.question_export')
-    version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_export_id_seq'])
-    cache(true)
-  }
+    static mapping = {
+        table('td.question_export')
+        version(false)
+        id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_export_id_seq'])
+        cache(true)
+    }
 
 
 }

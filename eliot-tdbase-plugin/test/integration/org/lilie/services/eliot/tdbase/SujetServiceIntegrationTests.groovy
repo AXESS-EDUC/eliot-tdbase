@@ -41,139 +41,139 @@ import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
  */
 class SujetServiceIntegrationTests extends GroovyTestCase {
 
-  private static final String SUJET_1_TITRE = "Sujet test 1"
-  private static final String SUJET_2_TITRE = "Sujet test 2"
+    private static final String SUJET_1_TITRE = "Sujet test 1"
+    private static final String SUJET_2_TITRE = "Sujet test 2"
 
-  Utilisateur utilisateur1
-  Personne personne1
-  Utilisateur utilisateur2
-  Personne personne2
-  StructureEnseignement struct1ere
-  SessionFactory sessionFactory
+    Utilisateur utilisateur1
+    Personne personne1
+    Utilisateur utilisateur2
+    Personne personne2
+    StructureEnseignement struct1ere
+    SessionFactory sessionFactory
 
-  TdBaseInitialisationTestService tdBaseInitialisationTestService
-  SujetService sujetService
-  ModaliteActiviteService modaliteActiviteService
+    TdBaseInitialisationTestService tdBaseInitialisationTestService
+    SujetService sujetService
+    ModaliteActiviteService modaliteActiviteService
 
 
-  protected void setUp() {
-    super.setUp()
-    utilisateur1 = tdBaseInitialisationTestService.getUtilisateur1()
-    personne1 = utilisateur1.personne
-    utilisateur2 = tdBaseInitialisationTestService.getUtilisateur2()
-    personne2 = utilisateur2.personne
-    struct1ere = tdBaseInitialisationTestService.findStructure1ere()
-  }
-
-  protected void tearDown() {
-    super.tearDown()
-  }
-
-  void testCreateSujet() {
-
-    Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertNotNull(sujet)
-    if (sujet.hasErrors()) {
-      log.severe("${sujet.errors}")
+    protected void setUp() {
+        super.setUp()
+        utilisateur1 = tdBaseInitialisationTestService.getUtilisateur1()
+        personne1 = utilisateur1.personne
+        utilisateur2 = tdBaseInitialisationTestService.getUtilisateur2()
+        personne2 = utilisateur2.personne
+        struct1ere = tdBaseInitialisationTestService.findStructure1ere()
     }
-    assertFalse(sujet.hasErrors())
 
-    assertEquals(personne1, sujet.proprietaire)
-    assertFalse(sujet.accesPublic)
-    assertFalse(sujet.accesSequentiel)
-    assertFalse(sujet.ordreQuestionsAleatoire)
-    assertEquals(CopyrightsType.default, sujet.copyrightsType)
-  }
+    protected void tearDown() {
+        super.tearDown()
+    }
 
-  void testFindSujetsForProprietaire() {
-    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertFalse(sujet1.hasErrors())
-    Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertFalse(sujet2.hasErrors())
-    def sujets1 = sujetService.findSujetsForProprietaire(personne1)
-    assertEquals(2, sujets1.size())
+    void testCreateSujet() {
 
-    def sujets2 = sujetService.findSujetsForProprietaire(personne2)
-    assertEquals(0, sujets2.size())
+        Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertNotNull(sujet)
+        if (sujet.hasErrors()) {
+            log.severe("${sujet.errors}")
+        }
+        assertFalse(sujet.hasErrors())
 
-  }
+        assertEquals(personne1, sujet.proprietaire)
+        assertFalse(sujet.accesPublic)
+        assertFalse(sujet.accesSequentiel)
+        assertFalse(sujet.ordreQuestionsAleatoire)
+        assertEquals(CopyrightsType.default, sujet.copyrightsType)
+    }
 
-  void testFindSujets() {
-    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertFalse(sujet1.hasErrors())
+    void testFindSujetsForProprietaire() {
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertFalse(sujet1.hasErrors())
+        Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertFalse(sujet2.hasErrors())
+        def sujets1 = sujetService.findSujetsForProprietaire(personne1)
+        assertEquals(2, sujets1.size())
 
-    // tests pour vérifier que la propriété ou le caractère publié
-    // conditionne les résultats de recherche
+        def sujets2 = sujetService.findSujetsForProprietaire(personne2)
+        assertEquals(0, sujets2.size())
+
+    }
+
+    void testFindSujets() {
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertFalse(sujet1.hasErrors())
+
+        // tests pour vérifier que la propriété ou le caractère publié
+        // conditionne les résultats de recherche
 
 
-    def res = sujetService.findSujets(personne2, null, null,
-                                      null, null, null, null)
+        def res = sujetService.findSujets(personne2, null, null,
+                null, null, null, null)
 
-    assertEquals(0, res.size())
+        assertEquals(0, res.size())
 
-    res = sujetService.findSujets(personne1, null, null,
-                                  null, null, null, null)
+        res = sujetService.findSujets(personne1, null, null,
+                null, null, null, null)
 
-    assertEquals(1, res.size())
+        assertEquals(1, res.size())
 
-    sujetService.updateProprietes(sujet1, [publie: true], personne1)
-    res = sujetService.findSujets(personne2, null, null,
-                                  null, null, null, null)
+        sujetService.updateProprietes(sujet1, [publie: true], personne1)
+        res = sujetService.findSujets(personne2, null, null,
+                null, null, null, null)
 
-    assertEquals(1, res.size())
+        assertEquals(1, res.size())
 
-    res = sujetService.findSujets(personne1, null, null,
-                                  null, null, null, null)
+        res = sujetService.findSujets(personne1, null, null,
+                null, null, null, null)
 
-    assertEquals(1, res.size())
+        assertEquals(1, res.size())
 
-    // tests sur le titre et la presentation avec prise en compte des accents
-    //
+        // tests sur le titre et la presentation avec prise en compte des accents
+        //
 
-    def propsSujet1 = [
-            titre: "titre : Un sujet avé des accents àgravê",
-            'sujetType.id': 1
-    ]
-    sujetService.updateProprietes(sujet1, propsSujet1, personne1)
+        def propsSujet1 = [
+                titre: "titre : Un sujet avé des accents àgravê",
+                'sujetType.id': 1
+        ]
+        sujetService.updateProprietes(sujet1, propsSujet1, personne1)
 
-    res = sujetService.findSujets(personne1, "avê", null,
-                                  null, null, null, null)
+        res = sujetService.findSujets(personne1, "avê", null,
+                null, null, null, null)
 
-    assertEquals(1, res.size())
+        assertEquals(1, res.size())
 
-    propsSujet1 = [
-            titre: SUJET_1_TITRE,
-            presentation: "pres : Un sujet avé des accents àgravê",
-            'sujetType.id': 1
-    ]
-    sujetService.updateProprietes(sujet1, propsSujet1, personne1)
+        propsSujet1 = [
+                titre: SUJET_1_TITRE,
+                presentation: "pres : Un sujet avé des accents àgravê",
+                'sujetType.id': 1
+        ]
+        sujetService.updateProprietes(sujet1, propsSujet1, personne1)
 
-    res = sujetService.findSujets(personne1, null, null,
-                                  "avê", null, null, null)
+        res = sujetService.findSujets(personne1, null, null,
+                "avê", null, null, null)
 
-    assertEquals(1, res.size())
+        assertEquals(1, res.size())
 
-  }
+    }
 
-  void testSujetEstDistribue() {
-    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertFalse(sujet1.hasErrors())
-    def now = new Date()
-    def dateDebut = now - 10
-    def dateFin = now + 10
-    def props = [
-            dateDebut: dateDebut,
-            dateFin: dateFin,
-            sujet: sujet1,
-            structureEnseignement: struct1ere
-    ]
-    ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
-            props,
-            personne1
-    )
-    assertTrue(sujet1.estDistribue())
-    modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
-    assertFalse(sujet1.estDistribue())
-  }
+    void testSujetEstDistribue() {
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertFalse(sujet1.hasErrors())
+        def now = new Date()
+        def dateDebut = now - 10
+        def dateFin = now + 10
+        def props = [
+                dateDebut: dateDebut,
+                dateFin: dateFin,
+                sujet: sujet1,
+                structureEnseignement: struct1ere
+        ]
+        ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
+                props,
+                personne1
+        )
+        assertTrue(sujet1.estDistribue())
+        modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
+        assertFalse(sujet1.estDistribue())
+    }
 
 }

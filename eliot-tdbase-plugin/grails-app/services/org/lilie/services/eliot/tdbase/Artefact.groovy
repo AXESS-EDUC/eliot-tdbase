@@ -36,31 +36,31 @@ import org.lilie.services.eliot.tice.annuaire.Personne
  */
 public interface Artefact {
 
-  /**
-   * Le propriétaire d'un artefact est l'utilisateur qui a créé l'emprunte
-   * mémoire sur l'espace de l'ENT correspondant à l'artefact. Il est par
-   * exemple le créateur initial d'un item ou d'un sujet. Si un utilisateur
-   * duplique un artefact, alors il devient propriétaire du nouvel artefact
-   * issue de la duplication.
-   * @return le proprietaire de l'artefact
-   */
-  Personne getProprietaire()
+    /**
+     * Le propriétaire d'un artefact est l'utilisateur qui a créé l'emprunte
+     * mémoire sur l'espace de l'ENT correspondant à l'artefact. Il est par
+     * exemple le créateur initial d'un item ou d'un sujet. Si un utilisateur
+     * duplique un artefact, alors il devient propriétaire du nouvel artefact
+     * issue de la duplication.
+     * @return le proprietaire de l'artefact
+     */
+    Personne getProprietaire()
 
-  /**
-   * Un artefact est paratagé si il est distribué sous licence Creative Commons
-   * CC BY-NC. Un artefact ne peut être paratagé que par volonté de son
-   * propriétaire
-   * @return true si l'artefact est partagé
-   */
-  boolean estPartage()
+    /**
+     * Un artefact est paratagé si il est distribué sous licence Creative Commons
+     * CC BY-NC. Un artefact ne peut être paratagé que par volonté de son
+     * propriétaire
+     * @return true si l'artefact est partagé
+     */
+    boolean estPartage()
 
-  /**
-   * Un artefact est distribué lorsqu'il est mis à disposition pour une
-   * interaction pédagogique. Par exemple un sujet est distribué quand il est
-   * associé à une séance. Un item est distribué quand il est attaché à un
-   * sujet distribué.
-   * @return true si l'artefact est distribué
-   */
-  boolean estDistribue()
+    /**
+     * Un artefact est distribué lorsqu'il est mis à disposition pour une
+     * interaction pédagogique. Par exemple un sujet est distribué quand il est
+     * associé à une séance. Un item est distribué quand il est attaché à un
+     * sujet distribué.
+     * @return true si l'artefact est distribué
+     */
+    boolean estDistribue()
 
 }

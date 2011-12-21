@@ -39,30 +39,19 @@ import org.lilie.services.eliot.tdbase.impl.fillgap.FillGapSpecification
  */
 class FillGapSpecificationTest extends GroovyTestCase {
 
-    void testGetReponsePossibles() {
+    void testGetTextATrousStructure() {
 
         def texteATrous = "The color of blood is #{red}. Major blood vessels are #{arteries, veins} and #{veins, arteries}."
+        def structure = new FillGapSpecification([texteATrous: texteATrous]).texteATrousStructure
 
-        def spec = new FillGapSpecification([texteATrous:texteATrous])
-
-        def responses = spec.reponsesPossibles
-
-        assertEquals(responses.size(), 3)
-        assertEquals(responses[0], ["red"])
-        assertEquals(responses[1], ["arteries","veins"])
-        assertEquals(responses[2], ["veins", "arteries"])
-    }
-    
-    void testGetTextATrousStructure(){
-
-        def texteATrous = "The color of blood is #{red}. Major blood vessels are #{arteries, veins} and #{veins, arteries}."
-
-        def spec = new FillGapSpecification([texteATrous:texteATrous])
-        
-        def structure = spec.texteATrousStructure
-        
         assertEquals(structure.size(), 7)
-
+        assertTrue(structure[0].isTexte())
+        assertFalse(structure[1].isTexte())
+        assertTrue(structure[2].isTexte())
+        assertFalse(structure[3].isTexte())
+        assertTrue(structure[4].isTexte())
+        assertFalse(structure[5].isTexte())
+        assertTrue(structure[6].isTexte())
     }
 
 }

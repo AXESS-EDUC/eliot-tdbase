@@ -26,31 +26,27 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-    logSql = true
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
+package org.lilie.services.eliot.tdbase.impl
 
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5432/eliot-tdbase-dev"
+import org.lilie.services.eliot.tdbase.impl.graphicmatch.GraphicMatchSpecification
+import org.lilie.services.eliot.tdbase.impl.graphicmatch.TextField
+import org.lilie.services.eliot.tdbase.QuestionController
+
+/**
+ * Controlleur pour la saisie des questions de type graphique à compléter
+ */
+class QuestionGraphicMatchController extends QuestionController {
+
+    @Override
+    def getSpecificationObjectFromParams(Map params) {
+
+        def specifobject = new GraphicMatchSpecification()
+        def size = params.specifobject.textFields.size as Integer
+        if (size) {
+            size.times {
+                specifobject.textFields << new TextField()
+            }
         }
+        bindData(specifobject, params, "specifobject")
     }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5432/eliot-tdbase-test"
-        }
-    }
-
-
 }

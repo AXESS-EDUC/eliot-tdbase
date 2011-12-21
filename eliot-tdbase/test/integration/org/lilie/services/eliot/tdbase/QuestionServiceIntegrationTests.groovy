@@ -41,34 +41,34 @@ import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
  */
 class QuestionServiceIntegrationTests extends GroovyTestCase {
 
-  private static final String SUJET_1_TITRE = "Sujet test 1"
-  private static final String SUJET_2_TITRE = "Sujet test 2"
+    private static final String SUJET_1_TITRE = "Sujet test 1"
+    private static final String SUJET_2_TITRE = "Sujet test 2"
 
-  Utilisateur utilisateur1
-  Personne personne1
-  Utilisateur utilisateur2
-  Personne personne2
-  StructureEnseignement struct1ere
-  SessionFactory sessionFactory
+    Utilisateur utilisateur1
+    Personne personne1
+    Utilisateur utilisateur2
+    Personne personne2
+    StructureEnseignement struct1ere
+    SessionFactory sessionFactory
 
-  TdBaseInitialisationTestService tdBaseInitialisationTestService
-  QuestionService questionService
-  SujetService sujetService
-  ModaliteActiviteService modaliteActiviteService
+    TdBaseInitialisationTestService tdBaseInitialisationTestService
+    QuestionService questionService
+    SujetService sujetService
+    ModaliteActiviteService modaliteActiviteService
 
 
-  protected void setUp() {
-    super.setUp()
-    utilisateur1 = tdBaseInitialisationTestService.getUtilisateur1()
-    personne1 = utilisateur1.personne
-    utilisateur2 = tdBaseInitialisationTestService.getUtilisateur2()
-    personne2 = utilisateur2.personne
-    struct1ere = tdBaseInitialisationTestService.findStructure1ere()
-  }
+    protected void setUp() {
+        super.setUp()
+        utilisateur1 = tdBaseInitialisationTestService.getUtilisateur1()
+        personne1 = utilisateur1.personne
+        utilisateur2 = tdBaseInitialisationTestService.getUtilisateur2()
+        personne2 = utilisateur2.personne
+        struct1ere = tdBaseInitialisationTestService.findStructure1ere()
+    }
 
-  protected void tearDown() {
-    super.tearDown()
-  }
+    protected void tearDown() {
+        super.tearDown()
+    }
 
 
 
