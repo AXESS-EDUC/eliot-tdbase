@@ -27,31 +27,30 @@
  */
 
 dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-    logSql = true
+  pooled = true
+  driverClassName = "org.postgresql.Driver"
+  username = "eliot"
+  password = "eliot"
+  logSql = true
 }
 hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
+  cache.use_second_level_cache = true
+  cache.use_query_cache = true
+  cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
 }
-
 
 // environment specific settings
 environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5432/eliot-tdbase-dev"
-        }
+  development {
+    dataSource {
+      url = "jdbc:postgresql://localhost:5432/eliot-tdbase-dev"
     }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5432/eliot-tdbase-test"
-        }
+  }
+  test {
+    dataSource {
+      url = "jdbc:postgresql://localhost:5432/eliot-tdbase-test"
     }
+  }
 
 
 }

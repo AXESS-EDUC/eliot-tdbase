@@ -120,6 +120,13 @@ class BootstrapService {
 
   }
 
+  def findStruct1ere() {
+    Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
+    return StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA")
+  }
+
+
+
   private def changeLoginAliasMotdePassePourEnseignant1() {
     def ens1 = utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN_ALIAS)
     if (!ens1) {

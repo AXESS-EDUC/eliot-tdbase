@@ -41,7 +41,7 @@ class QuestionExport {
   Question question
   ExportFormat format
 
-  static belongsTo = [question : Question]
+  static belongsTo = [question: Question]
 
   static mapping = {
     table('td.question_export')

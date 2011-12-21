@@ -28,35 +28,39 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.Attachement
+import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
- * Classe représentant l'attachement d'une question
+ * Un artefact représente une question ou un sujet
  * @author franck Silvestre
  */
-class QuestionAttachement implements Comparable {
-
-  Integer rang
-
-  Question question
-  Attachement attachement
-
-  static mapping = {
-    table('td.question_attachement')
-    version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_attachement_id_seq'])
-    cache(true)
-    attachement(lazy: false)
-    question(lazy: false)
-  }
+public interface Artefact {
 
   /**
-   * Permet l'ordonnancement des attachements par le rang
-   * @param obj l'objet de comparaison
-   * @return
+   * Le propriétaire d'un artefact est l'utilisateur qui a créé l'emprunte
+   * mémoire sur l'espace de l'ENT correspondant à l'artefact. Il est par
+   * exemple le créateur initial d'un item ou d'un sujet. Si un utilisateur
+   * duplique un artefact, alors il devient propriétaire du nouvel artefact
+   * issue de la duplication.
+   * @return le proprietaire de l'artefact
    */
-  int compareTo(obj) {
-    rang.compareTo(obj.rang)
-  }
+  Personne getProprietaire()
+
+  /**
+   * Un artefact est paratagé si il est distribué sous licence Creative Commons
+   * CC BY-NC. Un artefact ne peut être paratagé que par volonté de son
+   * propriétaire
+   * @return true si l'artefact est partagé
+   */
+  boolean estPartage()
+
+  /**
+   * Un artefact est distribué lorsqu'il est mis à disposition pour une
+   * interaction pédagogique. Par exemple un sujet est distribué quand il est
+   * associé à une séance. Un item est distribué quand il est attaché à un
+   * sujet distribué.
+   * @return true si l'artefact est distribué
+   */
+  boolean estDistribue()
 
 }

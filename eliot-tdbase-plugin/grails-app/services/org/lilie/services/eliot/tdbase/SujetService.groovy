@@ -80,7 +80,7 @@ class SujetService {
   @Transactional
   Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
     // verification securité
-    assert(sujet.proprietaire == proprietaire || sujet.publie)
+    assert (sujet.proprietaire == proprietaire || sujet.publie)
 
     def versionSujet = sujet.versionSujet + 1
     def sujetDepartBranche = sujet.sujetDepartBranche
@@ -123,7 +123,7 @@ class SujetService {
    */
   Sujet updateTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
     // verif securite
-    assert(sujet.proprietaire == proprietaire || sujet.publie)
+    assert (sujet.proprietaire == proprietaire || sujet.publie)
 
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
@@ -143,7 +143,7 @@ class SujetService {
    */
   Sujet updateProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
     // verif securite
-    assert(sujet.proprietaire == proprietaire || sujet.publie)
+    assert (sujet.proprietaire == proprietaire || sujet.publie)
 
     // verifie que c'est sur la derniere version du sujet editable que l'on
     // travaille
@@ -265,8 +265,8 @@ class SujetService {
                               Personne proprietaire, Integer rang = null) {
 
     // verif securite
-    assert((sujet.proprietaire == proprietaire || sujet.publie) &&
-        (question.proprietaire == proprietaire || question.publie))
+    assert ((sujet.proprietaire == proprietaire || sujet.publie) &&
+            (question.proprietaire == proprietaire || question.publie))
 
 
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
@@ -308,7 +308,7 @@ class SujetService {
   Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
     // verif securite
-    assert(sujetQuestion.sujet.proprietaire == proprietaire ||
+    assert (sujetQuestion.sujet.proprietaire == proprietaire ||
             sujetQuestion.sujet.publie)
 
 
@@ -342,7 +342,7 @@ class SujetService {
   Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
                                       Personne proprietaire) {
     // verif securite
-    assert(sujetQuestion.sujet.proprietaire == proprietaire ||
+    assert (sujetQuestion.sujet.proprietaire == proprietaire ||
             sujetQuestion.sujet.publie)
 
     def idx = sujetQuestion.rang
@@ -372,8 +372,8 @@ class SujetService {
   Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
                                   Personne proprietaire) {
     // verif securite
-    assert(sujetQuestion.sujet.proprietaire == proprietaire ||
-        sujetQuestion.sujet.publie)
+    assert (sujetQuestion.sujet.proprietaire == proprietaire ||
+            sujetQuestion.sujet.publie)
 
     Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
     SujetSequenceQuestions squest = leSujet.questionsSequences[sujetQuestion.rang]
@@ -395,7 +395,7 @@ class SujetService {
                                                  SujetSequenceQuestions sujetQuestion,
                                                  Personne proprietaire) {
 
-    assert(sujetQuestion.sujet.proprietaire == proprietaire)
+    assert (sujetQuestion.sujet.proprietaire == proprietaire)
 
     sujetQuestion.points = newPoints
     if (sujetQuestion.save()) {

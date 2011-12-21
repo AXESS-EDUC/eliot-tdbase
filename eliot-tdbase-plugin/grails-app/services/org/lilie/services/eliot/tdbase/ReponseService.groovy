@@ -45,8 +45,6 @@ class ReponseService implements ApplicationContextAware {
   static transactional = false
   ApplicationContext applicationContext
 
-
-
   /**
    * Récupère le service de gestion de spécification de réponse correspondant
    * au type de question passé en paramètre
@@ -57,7 +55,6 @@ class ReponseService implements ApplicationContextAware {
     return applicationContext.getBean("reponse${questionType.code}SpecificationService")
   }
 
-
   /**
    * Crée une nouvelle réponse à partir des éléments d'une question
    * @param copie la copie
@@ -67,15 +64,15 @@ class ReponseService implements ApplicationContextAware {
    */
   @Transactional
   Reponse createReponse(Copie copie, SujetSequenceQuestions sujetQuestion,
-                            Personne proprietaire) {
+                        Personne proprietaire) {
 
-    assert(copie.eleve == proprietaire)
+    assert (copie.eleve == proprietaire)
 
     Reponse reponse = new Reponse(
-                  copie: copie,
-                  sujetQuestion: sujetQuestion,
-                  eleve: proprietaire,
-          ).save()
+            copie: copie,
+            sujetQuestion: sujetQuestion,
+            eleve: proprietaire,
+            ).save()
     def question = sujetQuestion.question
     def qtype = question.type
     def specService = reponseSpecificationServiceForQuestionType(qtype)
@@ -93,9 +90,9 @@ class ReponseService implements ApplicationContextAware {
    */
   @Transactional
   Reponse updateSpecificationAndEvalue(Reponse reponse, def specificationObject,
-                            Personne proprietaire) {
+                                       Personne proprietaire) {
 
-    assert(reponse.eleve == proprietaire)
+    assert (reponse.eleve == proprietaire)
 
     QuestionType qtype = reponse.sujetQuestion.question.type
     def specService = reponseSpecificationServiceForQuestionType(qtype)

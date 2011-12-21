@@ -31,8 +31,8 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.springframework.transaction.annotation.Transactional
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Service de gestion des questions
@@ -85,9 +85,9 @@ class ModaliteActiviteService {
    * @return la liste des séance
    */
   List<ModaliteActivite> findModalitesActivitesForEnseignant(Personne chercheur,
-                                                Map paginationAndSortingSpec = null) {
+                                                             Map paginationAndSortingSpec = null) {
 
-    assert(chercheur != null)
+    assert (chercheur != null)
 
     if (paginationAndSortingSpec == null) {
       paginationAndSortingSpec = [:]
@@ -109,7 +109,7 @@ class ModaliteActiviteService {
     return seances
   }
 
-   /**
+  /**
    * Recherche de séances pour profil élève
    * @param chercheur la personne effectuant la recherche
    * @param paginationAndSortingSpec les specifications pour l'ordre et
@@ -117,7 +117,7 @@ class ModaliteActiviteService {
    * @return la liste des séances
    */
   List<ModaliteActivite> findModalitesActivitesForApprenant(Personne chercheur,
-                                                Map paginationAndSortingSpec = null) {
+                                                            Map paginationAndSortingSpec = null) {
 
     assert (chercheur != null)
 
@@ -129,8 +129,8 @@ class ModaliteActiviteService {
     def criteria = ModaliteActivite.createCriteria()
     List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
       inList 'structureEnseignement', structs
-      lt 'dateDebut', now
-      gt 'dateFin', now
+      le 'dateDebut', now
+      ge 'dateFin', now
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
         def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
@@ -147,7 +147,7 @@ class ModaliteActiviteService {
    * Supprime une modalite activité
    * @param modaliteActivite la modalite à supprimer
    */
-  def supprimeModaliteActivite(ModaliteActivite modaliteActivite,Personne personne) {
+  def supprimeModaliteActivite(ModaliteActivite modaliteActivite, Personne personne) {
 
     assert (modaliteActivite?.enseignant == personne)
 
@@ -155,7 +155,6 @@ class ModaliteActiviteService {
                         [modActivite: modaliteActivite])
     modaliteActivite.delete()
   }
-
 
 
 }

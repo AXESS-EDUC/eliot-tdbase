@@ -63,7 +63,7 @@ class SujetSequenceQuestions implements Comparable {
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_sequence_questions_id_seq'])
     cache(true)
     question(fetch: 'join')
-    rang(column: 'questions_sequences_idx',insertable:false, updateable: false)
+    rang(column: 'questions_sequences_idx', insertable: false, updateable: false)
   }
 
 

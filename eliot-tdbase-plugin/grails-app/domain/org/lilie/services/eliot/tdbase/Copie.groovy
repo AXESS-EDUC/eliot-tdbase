@@ -81,11 +81,11 @@ class Copie {
 
   /**
    *  Retourne la réponse correspondant à la question donnée
-   *  @param sujetQuestion  la question (objet type SujetSequenceQuestions)
-   *  @return la réponse
+   * @param sujetQuestion la question (objet type SujetSequenceQuestions)
+   * @return la réponse
    */
   Reponse getReponseForSujetQuestion(SujetSequenceQuestions sujetQuestion) {
-      Reponse.findByCopieAndSujetQuestion(this, sujetQuestion)
+    Reponse.findByCopieAndSujetQuestion(this, sujetQuestion)
   }
 
   /**
@@ -120,7 +120,7 @@ class Copie {
     if (correctionNoteCorrecteur != null) {
       note += correctionNoteCorrecteur
     }
-     note + pointsModulation
+    note + pointsModulation
   }
 
 

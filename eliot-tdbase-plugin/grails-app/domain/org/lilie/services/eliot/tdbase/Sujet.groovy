@@ -28,18 +28,18 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tice.CopyrightsType
+import org.lilie.services.eliot.tice.Publication
+import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.Publication
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.CopyrightsType
 
 /**
  * Classe représentant un sujet
  * @author franck Silvestre
  */
-class Sujet {
+class Sujet implements Artefact {
 
   String titre
   String titreNormalise
@@ -73,7 +73,7 @@ class Sujet {
   CopyrightsType copyrightsType
 
   List<SujetSequenceQuestions> questionsSequences
-  static hasMany = [questionsSequences : SujetSequenceQuestions]
+  static hasMany = [questionsSequences: SujetSequenceQuestions]
 
   Integer rangInsertion
 
@@ -109,6 +109,42 @@ class Sujet {
    * @return la liste des questions du sujet
    */
   List<Question> getQuestions() {
-     questionsSequences*.question
+    questionsSequences*.question
   }
+
+  /**
+   *
+   * @return true si le sujet est distribué
+   * @see Artefact
+   */
+  boolean estDistribue() {
+    // verifie en premier si des copies sont attachées
+    def critCopie = Copie.createCriteria()
+    def nbCopies = critCopie.count {
+      eq 'sujet', this
+    }
+    if (nbCopies > 0) {
+      return true
+    }
+    // sinon verifie qu'une séance ouverte n'est pas attaché
+    def crit = ModaliteActivite.createCriteria()
+    def now = new Date()
+    def nbSeances = crit.count {
+      le 'dateDebut', now
+      ge 'dateFin', now
+      eq 'sujet', this
+    }
+    return nbSeances > 0
+  }
+
+  /**
+   *
+   * @return true si le sujet est partagé
+   * @see Artefact
+   */
+  boolean estPartage() {
+    return publication != null
+  }
+
+
 }

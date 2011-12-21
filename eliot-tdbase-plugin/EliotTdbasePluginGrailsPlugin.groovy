@@ -28,22 +28,22 @@
 
 class EliotTdbasePluginGrailsPlugin {
   // the group id
-      def groupId = "org.lilie.services.eliot"
-    // the plugin version
-    def version = "0.4a-SNAPSHOT"
-    // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "1.4 > *"
-    // the other plugins this plugin depends on
-    def dependsOn = ['eliot-tice-plugin':'0.4a-SNAPSHOT > *']
-    // resources that are excluded from plugin packaging
-    def pluginExcludes = [
-            "grails-app/views/error.gsp"
-    ]
+  def groupId = "org.lilie.services.eliot"
+  // the plugin version
+  def version = "0.4a-SNAPSHOT"
+  // the version or versions of Grails the plugin is designed for
+  def grailsVersion = "1.4 > *"
+  // the other plugins this plugin depends on
+  def dependsOn = ['eliot-tice-plugin': '0.4a-SNAPSHOT > *']
+  // resources that are excluded from plugin packaging
+  def pluginExcludes = [
+          "grails-app/views/error.gsp"
+  ]
 
-    def title = "Eliot Tdbase  Plugin" // Headline display name of the plugin
-    def author = "Franck Silvestre - Ticetime"
-    def authorEmail = ""
-    def description = '''\
+  def title = "Eliot Tdbase  Plugin" // Headline display name of the plugin
+  def author = "Franck Silvestre - Ticetime"
+  def authorEmail = ""
+  def description = '''\
   Plugin contenant les services métiers relatifs à la gestion des TD"
   '''
 }

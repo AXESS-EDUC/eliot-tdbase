@@ -32,11 +32,11 @@ package org.lilie.services.eliot.tdbase
  * Interface de Specifications.
  */
 public interface Specification {
-    /**
-     * Marshalling des membres de la classe vers une map
-     * @return map des valeurs sous forme des Strings
-     */
-    Map toMap()
+  /**
+   * Marshalling des membres de la classe vers une map
+   * @return map des valeurs sous forme des Strings
+   */
+  Map toMap()
 }
 
 /**

@@ -44,141 +44,141 @@ import static org.lilie.services.eliot.tdbase.QuestionTypeEnum.*
  */
 class QuestionService implements ApplicationContextAware {
 
-    static transactional = false
-    ApplicationContext applicationContext
+  static transactional = false
+  ApplicationContext applicationContext
 
-    SujetService sujetService
+  SujetService sujetService
 
-    /**
-     * Récupère le service de gestion de spécification de question correspondant
-     * au type de question passé en paramètre
-     * @param questionType le type de question
-     * @return le service ad-hoc pour le type de question
-     */
-    QuestionSpecificationService questionSpecificationServiceForQuestionType(QuestionType questionType) {
-        return applicationContext.getBean("question${questionType.code}SpecificationService")
+  /**
+   * Récupère le service de gestion de spécification de question correspondant
+   * au type de question passé en paramètre
+   * @param questionType le type de question
+   * @return le service ad-hoc pour le type de question
+   */
+  QuestionSpecificationService questionSpecificationServiceForQuestionType(QuestionType questionType) {
+    return applicationContext.getBean("question${questionType.code}SpecificationService")
+  }
+
+  /**
+   * Créé une question
+   * @param proprietes les propriétés hors specification
+   * @param specificationObject l'objet specification
+   * @param proprietaire le proprietaire
+   * @return la question créée
+   */
+  @Transactional
+  Question createQuestion(Map proprietes, def specificationObject, Personne proprietaire) {
+    Question question = new Question(
+            proprietaire: proprietaire,
+            titreNormalise: StringUtils.normalise(proprietes.titre),
+            publie: false,
+            versionQuestion: 1,
+            copyrightsType: CopyrightsType.getDefault(),
+            specification: "{}"
+    )
+    question.properties = proprietes
+    question.save()
+    def specService = questionSpecificationServiceForQuestionType(question.type)
+    specService.updateQuestionSpecificationForObject(question, specificationObject)
+    question.save(flush: true)
+    return question
+  }
+
+  /**
+   * Recopie une question
+   * - si le proprietaire de la copie est le proprietaire de l'original, on
+   * incrémente la version ; on ne crée pas de nouvelle branche :
+   * la question départ branche de la nouvelle version
+   * est la question départ branche de la version précédente
+   * - si le proprietaire de la copie est différent de l'original, on n'incrémente
+   * pas la version ; on créé une nouvelle branche : la question départ branche de la
+   * copie est la question recopié
+   * @param question la question à recopier
+   * @param proprietaire le proprietaire
+   * @return la copie de la question
+   */
+  @Transactional
+  Question recopieQuestion(Question question, Personne proprietaire) {
+
+    assert (question.proprietaire == proprietaire || question.publie)
+
+    def versionQuestion = question.versionQuestion + 1
+    def questionDepartBranche = question.questionDepartBranche
+    if (question.proprietaire != proprietaire) {
+      questionDepartBranche = question
     }
-
-    /**
-     * Créé une question
-     * @param proprietes les propriétés hors specification
-     * @param specificationObject l'objet specification
-     * @param proprietaire le proprietaire
-     * @return la question créée
-     */
-    @Transactional
-    Question createQuestion(Map proprietes, def specificationObject, Personne proprietaire) {
-        Question question = new Question(
-                proprietaire: proprietaire,
-                titreNormalise: StringUtils.normalise(proprietes.titre),
-                publie: false,
-                versionQuestion: 1,
-                copyrightsType: CopyrightsType.getDefault(),
-                specification: "{}"
-        )
-        question.properties = proprietes
-        question.save()
-        def specService = questionSpecificationServiceForQuestionType(question.type)
-        specService.updateQuestionSpecificationForObject(question, specificationObject)
-        question.save(flush: true)
-        return question
-    }
-
-    /**
-     * Recopie une question
-     * - si le proprietaire de la copie est le proprietaire de l'original, on
-     * incrémente la version ; on ne crée pas de nouvelle branche :
-     * la question départ branche de la nouvelle version
-     * est la question départ branche de la version précédente
-     * - si le proprietaire de la copie est différent de l'original, on n'incrémente
-     * pas la version ; on créé une nouvelle branche : la question départ branche de la
-     * copie est la question recopié
-     * @param question la question à recopier
-     * @param proprietaire le proprietaire
-     * @return la copie de la question
-     */
-    @Transactional
-    Question recopieQuestion(Question question, Personne proprietaire) {
-
-        assert (question.proprietaire == proprietaire || question.publie)
-
-        def versionQuestion = question.versionQuestion + 1
-        def questionDepartBranche = question.questionDepartBranche
-        if (question.proprietaire != proprietaire) {
-            questionDepartBranche = question
-        }
-        Question questionCopie = new Question(
-                proprietaire: proprietaire,
-                titre: question.titre,
-                titreNormalise: question.titreNormalise,
-                specification: question.specification,
-                specificationNormalise: question.specificationNormalise,
-                publie: false,
-                versionQuestion: versionQuestion,
-                questionDepartBranche: questionDepartBranche,
-                copyrightsType: question.copyrightsType,
-                estAutonome: question.estAutonome,
-                type: question.type,
-                etablissement: question.etablissement,
-                matiere: question.matiere,
-                niveau: question.niveau,
-        )
-        questionCopie.save()
-
-        // recopie les attachements
-        question.questionAttachements.each { QuestionAttachement questionAttachement ->
-            QuestionAttachement copieQuestionAttachement = new QuestionAttachement(
-                    question: questionCopie,
-                    attachement: questionAttachement.attachement,
-                    rang: questionAttachement.rang
+    Question questionCopie = new Question(
+            proprietaire: proprietaire,
+            titre: question.titre,
+            titreNormalise: question.titreNormalise,
+            specification: question.specification,
+            specificationNormalise: question.specificationNormalise,
+            publie: false,
+            versionQuestion: versionQuestion,
+            questionDepartBranche: questionDepartBranche,
+            copyrightsType: question.copyrightsType,
+            estAutonome: question.estAutonome,
+            type: question.type,
+            etablissement: question.etablissement,
+            matiere: question.matiere,
+            niveau: question.niveau,
             )
-            questionCopie.addToQuestionAttachements(copieQuestionAttachement)
-            questionCopie.save()
-        }
+    questionCopie.save()
 
-        // recopie l'arborescence (si question composite)
-        question.questionArborescenceFilles.each { QuestionArborescence questionArborescence ->
-            QuestionArborescence copieQuestionArborescence = new QuestionArborescence(
-                    question: questionCopie,
-                    questionFille: questionArborescence.questionFille,
-                    rang: questionArborescence.rang
-            )
-            questionCopie.addToQuestionArborescenceFilles(copieQuestionArborescence)
-            questionCopie.save()
-        }
-
-        return questionCopie
+    // recopie les attachements
+    question.questionAttachements.each { QuestionAttachement questionAttachement ->
+      QuestionAttachement copieQuestionAttachement = new QuestionAttachement(
+              question: questionCopie,
+              attachement: questionAttachement.attachement,
+              rang: questionAttachement.rang
+      )
+      questionCopie.addToQuestionAttachements(copieQuestionAttachement)
+      questionCopie.save()
     }
 
-    /**
-     * Modifie les proprietes de la question passée en paramètre
-     * @param question la question
-     * @param proprietes les nouvelles proprietes
-     * @param specificationObject l'objet specification
-     * @param proprietaire le proprietaire
-     * @return la question
-     */
-    @Transactional
-    Question updateProprietes(Question question, Map proprietes, def specificationObject,
-                              Personne proprietaire) {
-
-        assert (question.proprietaire == proprietaire || question.publie)
-
-        // verifie que c'est sur la derniere version du sujet editable que l'on
-        // travaille
-        Question laQuestion = getDerniereVersionQuestionForProprietaire(question, proprietaire)
-
-        if (proprietes.titre && laQuestion.titre != proprietes.titre) {
-            laQuestion.titreNormalise = StringUtils.normalise(proprietes.titre)
-        }
-
-        laQuestion.properties = proprietes
-        laQuestion.save()
-        def specService = questionSpecificationServiceForQuestionType(laQuestion.type)
-        specService.updateQuestionSpecificationForObject(question, specificationObject)
-        question.save(flush: true)
-        return laQuestion
+    // recopie l'arborescence (si question composite)
+    question.questionArborescenceFilles.each { QuestionArborescence questionArborescence ->
+      QuestionArborescence copieQuestionArborescence = new QuestionArborescence(
+              question: questionCopie,
+              questionFille: questionArborescence.questionFille,
+              rang: questionArborescence.rang
+      )
+      questionCopie.addToQuestionArborescenceFilles(copieQuestionArborescence)
+      questionCopie.save()
     }
+
+    return questionCopie
+  }
+
+  /**
+   * Modifie les proprietes de la question passée en paramètre
+   * @param question la question
+   * @param proprietes les nouvelles proprietes
+   * @param specificationObject l'objet specification
+   * @param proprietaire le proprietaire
+   * @return la question
+   */
+  @Transactional
+  Question updateProprietes(Question question, Map proprietes, def specificationObject,
+                            Personne proprietaire) {
+
+    assert (question.proprietaire == proprietaire || question.publie)
+
+    // verifie que c'est sur la derniere version du sujet editable que l'on
+    // travaille
+    Question laQuestion = getDerniereVersionQuestionForProprietaire(question, proprietaire)
+
+    if (proprietes.titre && laQuestion.titre != proprietes.titre) {
+      laQuestion.titreNormalise = StringUtils.normalise(proprietes.titre)
+    }
+
+    laQuestion.properties = proprietes
+    laQuestion.save()
+    def specService = questionSpecificationServiceForQuestionType(laQuestion.type)
+    specService.updateQuestionSpecificationForObject(question, specificationObject)
+    question.save(flush: true)
+    return laQuestion
+  }
 
 /**
  * Créé une question et l'insert dans le sujet
@@ -189,144 +189,144 @@ class QuestionService implements ApplicationContextAware {
  * @param rang le rang d'insertion
  * @return la question insérée
  */
-    @Transactional
-    Question createQuestionAndInsertInSujet(Map proprietesQuestion,
-                                            def specificatinObject,
-                                            Sujet sujet,
-                                            Personne proprietaire,
-                                            Integer rang = null) {
+  @Transactional
+  Question createQuestionAndInsertInSujet(Map proprietesQuestion,
+                                          def specificatinObject,
+                                          Sujet sujet,
+                                          Personne proprietaire,
+                                          Integer rang = null) {
 
-        assert (sujet?.proprietaire == proprietaire || sujet?.publie)
+    assert (sujet?.proprietaire == proprietaire || sujet?.publie)
 
-        Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
-        sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
-        return question
+    Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
+    sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
+    return question
+  }
+
+  /**
+   * Recherche de questions
+   * @param chercheur la personne effectuant la recherche
+   * @param patternTitre le pattern saisi pour le titre
+   * @param patternAuteur le pattern saisi pour l'auteur
+   * @param patternPresentation le pattern saisi pour la presentation
+   * @param matiere la matiere
+   * @param niveau le niveau
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @return la liste des sujets
+   */
+  List<Question> findQuestions(Personne chercheur,
+                               String patternTitre,
+                               String patternAuteur,
+                               String patternSpecification,
+                               Boolean estAutonome,
+                               Matiere matiere,
+                               Niveau niveau,
+                               QuestionType questionType,
+                               Map paginationAndSortingSpec = null) {
+    // todofsil : gerer les index de manière efficace couplée avec présentation
+    // paramètre de recherche ad-hoc
+    if (!chercheur) {
+      throw new IllegalArgumentException("question.recherche.chercheur.null")
+    }
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
     }
 
-    /**
-     * Recherche de questions
-     * @param chercheur la personne effectuant la recherche
-     * @param patternTitre le pattern saisi pour le titre
-     * @param patternAuteur le pattern saisi pour l'auteur
-     * @param patternPresentation le pattern saisi pour la presentation
-     * @param matiere la matiere
-     * @param niveau le niveau
-     * @param paginationAndSortingSpec les specifications pour l'ordre et
-     * la pagination
-     * @return la liste des sujets
-     */
-    List<Question> findQuestions(Personne chercheur,
-                                 String patternTitre,
-                                 String patternAuteur,
-                                 String patternSpecification,
-                                 Boolean estAutonome,
-                                 Matiere matiere,
-                                 Niveau niveau,
-                                 QuestionType questionType,
-                                 Map paginationAndSortingSpec = null) {
-        // todofsil : gerer les index de manière efficace couplée avec présentation
-        // paramètre de recherche ad-hoc
-        if (!chercheur) {
-            throw new IllegalArgumentException("question.recherche.chercheur.null")
+    def criteria = Question.createCriteria()
+    List<Question> questions = criteria.list(paginationAndSortingSpec) {
+      if (patternAuteur) {
+        String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
+        proprietaire {
+          or {
+            like "nomNormalise", patternAuteurNormalise
+            like "prenomNormalise", patternAuteurNormalise
+          }
         }
-        if (paginationAndSortingSpec == null) {
-            paginationAndSortingSpec = [:]
+      }
+      if (patternTitre) {
+        like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
+      }
+      if (patternSpecification) {
+        like "specificationNormalise", "%${StringUtils.normalise(patternSpecification)}%"
+      }
+      if (estAutonome) {
+        eq "estAutonome", true
+      }
+      if (matiere) {
+        eq "matiere", matiere
+      }
+      if (niveau) {
+        eq "niveau", niveau
+      }
+      if (questionType) {
+        eq "type", questionType
+      }
+      or {
+        eq 'proprietaire', chercheur
+        eq 'publie', true
+      }
+      if (paginationAndSortingSpec) {
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+        if (sortArg) {
+          order "${sortArg}", orderArg
         }
 
-        def criteria = Question.createCriteria()
-        List<Question> questions = criteria.list(paginationAndSortingSpec) {
-            if (patternAuteur) {
-                String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
-                proprietaire {
-                    or {
-                        like "nomNormalise", patternAuteurNormalise
-                        like "prenomNormalise", patternAuteurNormalise
-                    }
-                }
-            }
-            if (patternTitre) {
-                like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
-            }
-            if (patternSpecification) {
-                like "specificationNormalise", "%${StringUtils.normalise(patternSpecification)}%"
-            }
-            if (estAutonome) {
-                eq "estAutonome", true
-            }
-            if (matiere) {
-                eq "matiere", matiere
-            }
-            if (niveau) {
-                eq "niveau", niveau
-            }
-            if (questionType) {
-                eq "type", questionType
-            }
-            or {
-                eq 'proprietaire', chercheur
-                eq 'publie', true
-            }
-            if (paginationAndSortingSpec) {
-                def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
-                def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-                if (sortArg) {
-                    order "${sortArg}", orderArg
-                }
-
-            }
-        }
-        return questions
+      }
     }
+    return questions
+  }
 
-    /**
-     *
-     * @return la liste de tous les types de question
-     */
-    List<QuestionType> getAllQuestionTypes() {
-        return QuestionType.getAll()
-    }
+  /**
+   *
+   * @return la liste de tous les types de question
+   */
+  List<QuestionType> getAllQuestionTypes() {
+    return QuestionType.getAll()
+  }
 
-    /**
-     *
-     * @return la liste des types de questions à interaction supportes par tdbase
-     */
-    List<QuestionType> getTypesQuestionsInteractionSupportes() {
-        [
-                MultipleChoice.questionType,
-                Decimal.questionType,
-                QuestionTypeEnum.Integer.questionType,
-                ExclusiveChoice.questionType,
-                FillGap.questionType,
-                Associate.questionType,
-                Order.questionType
-        ]
-    }
+  /**
+   *
+   * @return la liste des types de questions à interaction supportes par tdbase
+   */
+  List<QuestionType> getTypesQuestionsInteractionSupportes() {
+    [
+            MultipleChoice.questionType,
+            Decimal.questionType,
+            QuestionTypeEnum.Integer.questionType,
+            ExclusiveChoice.questionType,
+            FillGap.questionType,
+            Associate.questionType,
+            Order.questionType
+    ]
+  }
 
-    /**
-     *
-     * @return la liste des types de questions à interaction supportes par tdbase
-     */
-    List<QuestionType> getTypesQuestionsSupportes() {
-        typesQuestionsInteractionSupportes +
-                [
-                        Document.questionType,
-                        Statement.questionType,
-                ]
-    }
+  /**
+   *
+   * @return la liste des types de questions à interaction supportes par tdbase
+   */
+  List<QuestionType> getTypesQuestionsSupportes() {
+    typesQuestionsInteractionSupportes +
+    [
+            Document.questionType,
+            Statement.questionType,
+    ]
+  }
 
-    /**
-     * Retourne la dernière version éditable d'une question pour un proprietaire donné
-     * @param question la question
-     * @param proprietaire le proprietaire
-     * @return la question editable
-     */
-    private Question getDerniereVersionQuestionForProprietaire(Question question, Personne proprietaire) {
-        if (question.proprietaire == proprietaire && !question.publie) {
-            return question
-        } else {
-            return recopieQuestion(question, proprietaire)
-        }
+  /**
+   * Retourne la dernière version éditable d'une question pour un proprietaire donné
+   * @param question la question
+   * @param proprietaire le proprietaire
+   * @return la question editable
+   */
+  private Question getDerniereVersionQuestionForProprietaire(Question question, Personne proprietaire) {
+    if (question.proprietaire == proprietaire && !question.publie) {
+      return question
+    } else {
+      return recopieQuestion(question, proprietaire)
     }
+  }
 
 }
 

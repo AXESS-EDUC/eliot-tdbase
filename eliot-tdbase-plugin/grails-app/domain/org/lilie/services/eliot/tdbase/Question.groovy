@@ -28,19 +28,19 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tice.Attachement
+import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.Attachement
-import org.lilie.services.eliot.tice.CopyrightsType
 
 /**
  * Classe représentant une question
  * @author franck Silvestre
  */
-class Question {
+class Question implements Artefact {
 
   QuestionService questionService
 
@@ -65,20 +65,20 @@ class Question {
   Niveau niveau
   CopyrightsType copyrightsType
   Publication publication
-  SortedSet<QuestionArborescence>  questionArborescenceFilles
-  SortedSet<QuestionAttachement>  questionAttachements
+  SortedSet<QuestionArborescence> questionArborescenceFilles
+  SortedSet<QuestionAttachement> questionAttachements
 
   private def specificationObject
 
   static hasMany = [
-          questionArborescenceFilles : QuestionArborescence,
-          questionArborescenceParentes : QuestionArborescence,
-          questionAttachements : QuestionAttachement
+          questionArborescenceFilles: QuestionArborescence,
+          questionArborescenceParentes: QuestionArborescence,
+          questionAttachements: QuestionAttachement
   ]
 
   static mappedBy = [
-          questionArborescenceFilles : 'question',
-          questionArborescenceParentes : 'questionFille'
+          questionArborescenceFilles: 'question',
+          questionArborescenceParentes: 'questionFille'
   ]
 
   static constraints = {
@@ -95,11 +95,11 @@ class Question {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
     cache(true)
-    questionArborescenceFilles(lazy: 'false', sort: 'rang',order: 'asc')
-    questionAttachements(lazy: 'false', sort: 'rang',order: 'asc')
+    questionArborescenceFilles(lazy: 'false', sort: 'rang', order: 'asc')
+    questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
   }
 
-  static transients = ['questionService','specificationObject']
+  static transients = ['questionService', 'specificationObject']
 
   /**
    *
@@ -125,5 +125,47 @@ class Question {
     def specService = questionService.questionSpecificationServiceForQuestionType(type)
     specService.getObjectFromSpecification(specification)
   }
+
+  /**
+   * @return true si la question est distribuée
+   * @see Artefact
+   */
+  boolean estDistribue() {
+    // verifie en premier si des copies sont attachées à la question
+    def critCopie = Copie.createCriteria()
+    def nbCopies = critCopie.count {
+      sujet {
+        questionsSequences {
+          eq 'question', this
+        }
+      }
+    }
+    if (nbCopies > 0) {
+      return true
+    }
+    // sinon verifie qu'une séance ouverte n'est pas attaché à la question
+    def now = new Date()
+    def crit = ModaliteActivite.createCriteria()
+    def nbSeances = crit.count {
+      le 'dateDebut', now
+      ge 'dateFin', now
+      sujet {
+        questionsSequences {
+          eq 'question', this
+        }
+      }
+    }
+    return nbSeances > 0
+  }
+
+  /**
+   *
+   * @return true si la question est partagée
+   * @see Artefact
+   */
+  boolean estPartage() {
+    return publication != null
+  }
+
 }
 

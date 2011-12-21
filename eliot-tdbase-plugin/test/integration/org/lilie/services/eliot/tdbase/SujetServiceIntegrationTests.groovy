@@ -5,6 +5,7 @@ import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -47,10 +48,13 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
   Personne personne1
   Utilisateur utilisateur2
   Personne personne2
+  StructureEnseignement struct1ere
   SessionFactory sessionFactory
 
   TdBaseInitialisationTestService tdBaseInitialisationTestService
   SujetService sujetService
+  ModaliteActiviteService modaliteActiviteService
+
 
   protected void setUp() {
     super.setUp()
@@ -58,6 +62,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     personne1 = utilisateur1.personne
     utilisateur2 = tdBaseInitialisationTestService.getUtilisateur2()
     personne2 = utilisateur2.personne
+    struct1ere = tdBaseInitialisationTestService.findStructure1ere()
   }
 
   protected void tearDown() {
@@ -101,27 +106,26 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     // conditionne les résultats de recherche
 
 
+    def res = sujetService.findSujets(personne2, null, null,
+                                      null, null, null, null)
 
-    def res = sujetService.findSujets(personne2, null,null,
-                                      null,null,null, null)
+    assertEquals(0, res.size())
 
-    assertEquals(0,res.size())
+    res = sujetService.findSujets(personne1, null, null,
+                                  null, null, null, null)
 
-    res = sujetService.findSujets(personne1, null,null,
-                                      null,null,null, null)
+    assertEquals(1, res.size())
 
-    assertEquals(1,res.size())
+    sujetService.updateProprietes(sujet1, [publie: true], personne1)
+    res = sujetService.findSujets(personne2, null, null,
+                                  null, null, null, null)
 
-    sujetService.updateProprietes(sujet1,[publie:true],personne1)
-    res = sujetService.findSujets(personne2, null,null,
-                                      null,null,null, null)
+    assertEquals(1, res.size())
 
-    assertEquals(1,res.size())
+    res = sujetService.findSujets(personne1, null, null,
+                                  null, null, null, null)
 
-    res = sujetService.findSujets(personne1, null,null,
-                                      null,null,null, null)
-
-    assertEquals(1,res.size())
+    assertEquals(1, res.size())
 
     // tests sur le titre et la presentation avec prise en compte des accents
     //
@@ -130,25 +134,46 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
             titre: "titre : Un sujet avé des accents àgravê",
             'sujetType.id': 1
     ]
-    sujetService.updateProprietes(sujet1,propsSujet1,personne1)
+    sujetService.updateProprietes(sujet1, propsSujet1, personne1)
 
-    res = sujetService.findSujets(personne1, "avê",null,
-                                      null,null,null, null)
+    res = sujetService.findSujets(personne1, "avê", null,
+                                  null, null, null, null)
 
-    assertEquals(1,res.size())
+    assertEquals(1, res.size())
 
     propsSujet1 = [
-            titre : SUJET_1_TITRE,
+            titre: SUJET_1_TITRE,
             presentation: "pres : Un sujet avé des accents àgravê",
             'sujetType.id': 1
     ]
-    sujetService.updateProprietes(sujet1,propsSujet1,personne1)
+    sujetService.updateProprietes(sujet1, propsSujet1, personne1)
 
-    res = sujetService.findSujets(personne1, null,null,
-                                      "avê",null,null, null)
+    res = sujetService.findSujets(personne1, null, null,
+                                  "avê", null, null, null)
 
-    assertEquals(1,res.size())
+    assertEquals(1, res.size())
 
+  }
+
+  void testSujetEstDistribue() {
+    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertFalse(sujet1.hasErrors())
+    def now = new Date()
+    def dateDebut = now - 10
+    def dateFin = now + 10
+    def props = [
+            dateDebut: dateDebut,
+            dateFin: dateFin,
+            sujet: sujet1,
+            structureEnseignement: struct1ere
+    ]
+    ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
+            props,
+            personne1
+    )
+    assertTrue(sujet1.estDistribue())
+    modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
+    assertFalse(sujet1.estDistribue())
   }
 
 }

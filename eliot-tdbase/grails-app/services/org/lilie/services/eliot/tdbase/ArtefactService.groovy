@@ -26,37 +26,32 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+
+
+
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.Attachement
+import org.lilie.services.eliot.tice.AttachementService
+import org.lilie.services.eliot.tice.utils.ServiceEliotEnum
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 
 /**
- * Classe représentant l'attachement d'une question
- * @author franck Silvestre
+ * Service de gestion des artefacts : un artefact est une question ou un sujet
+ * Ce service contient les méthodes permettant de savoir si il est possible de
+ * modifier, supprimer, dupliquer un artefact
+ * @author franck silvestre
  */
-class QuestionAttachement implements Comparable {
+class ArtefactService {
 
-  Integer rang
+  static transactional = false
 
-  Question question
-  Attachement attachement
 
-  static mapping = {
-    table('td.question_attachement')
-    version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_attachement_id_seq'])
-    cache(true)
-    attachement(lazy: false)
-    question(lazy: false)
-  }
 
-  /**
-   * Permet l'ordonnancement des attachements par le rang
-   * @param obj l'objet de comparaison
-   * @return
-   */
-  int compareTo(obj) {
-    rang.compareTo(obj.rang)
-  }
+
 
 }
+
+
