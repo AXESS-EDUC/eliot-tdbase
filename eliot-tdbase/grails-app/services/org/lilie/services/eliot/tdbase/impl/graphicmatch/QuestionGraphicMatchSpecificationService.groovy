@@ -67,14 +67,16 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
             throw new IllegalArgumentException("question.document.fichier.vide")
         }
 
-        super.updateQuestionSpecificationForObject(question, spec)
+        question.specification = getSpecificationFromObject(spec)
+        question.specificationNormalise = getSpecificationNormaliseFromObject(spec)
+        question.save()
     }
 }
 
 /**
  * Représente un objet de spécification pour une question de type graphique à completer
  */
-class GraphicMatchSpecification implements Specification {
+class GraphicMatchSpecification implements QuestionSpecification {
 
     /**
      * Le libellé.
@@ -125,7 +127,7 @@ class GraphicMatchSpecification implements Specification {
                 libelle: libelle,
                 correction: correction,
                 textFields: textFields.collect {it.toMap()},
-                attachementId: attachmentId
+                attachmentId: attachmentId
         ]
     }
 
@@ -135,7 +137,7 @@ class GraphicMatchSpecification implements Specification {
      */
     Attachement getAttachement() {
         if (attachmentId) {
-            return QuestionAttachement.get(attachmentId)
+            return QuestionAttachement.get(attachmentId).attachement
         }
         null
     }
