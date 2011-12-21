@@ -32,39 +32,34 @@
 
 package org.lilie.services.eliot.tdbase.impl
 
+import org.lilie.services.eliot.tdbase.QuestionAttachementService
 import org.lilie.services.eliot.tdbase.QuestionController
 import org.lilie.services.eliot.tdbase.impl.document.DocumentSpecification
-import org.lilie.services.eliot.tdbase.QuestionAttachementService
-
 import org.lilie.services.eliot.tice.AttachementService
 
 class QuestionDocumentController extends QuestionController {
 
-  QuestionAttachementService questionAttachementService
-  AttachementService attachementService
+    QuestionAttachementService questionAttachementService
+    AttachementService attachementService
 
-  /**
-   * Action "supprimeAttachement"
-   */
+    /**
+     * Action "supprimeAttachement"
+     */
+    def supprimeAttachement() {
+        DocumentSpecification spec = getSpecificationObjectFromParams(params)
+        spec.questionAttachementId = null
+        spec.fichier = null
+        render(template: "/question/Document/DocumentEditionFichier", model: [specifobject: spec])
+    }
 
-  def supprimeAttachement() {
-    DocumentSpecification spec = getSpecificationObjectFromParams(params)
-    spec.questionAttachementId = null
-    spec.fichier = null
-    render(template: "/question/Document/DocumentEditionFichier", model:[specifobject:spec])
-  }
-
-
-  /**
-   *
-   * @param params  les paramètres de la requête
-   * @return l'objet représentant la spécification
-   */
-  def getSpecificationObjectFromParams(Map params) {
-    def specifobject = new DocumentSpecification()
-    bindData(specifobject, params, "specifobject")
-    return specifobject
-  }
+    /**
+     *
+     * @param params les paramètres de la requête
+     * @return l'objet représentant la spécification
+     */
+    def getSpecificationObjectFromParams(Map params) {
+        bindData(new DocumentSpecification(), params, "specifobject")
+    }
 
 
 }

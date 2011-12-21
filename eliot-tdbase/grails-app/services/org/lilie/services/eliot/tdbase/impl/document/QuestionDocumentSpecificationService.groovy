@@ -77,9 +77,7 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
             throw new IllegalArgumentException("question.document.fichier.vide")
         }
 
-        question.specification = getSpecificationFromObject(object)
-        question.specificationNormalise = getSpecificationNormaliseFromObject(object)
-        question.save()
+        super.updateQuestionSpecificationForObject(question, spec)
     }
 
 

@@ -33,7 +33,7 @@ import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import static java.util.Collections.shuffle
 
 /**
- * Service des specifications de questios de type texte à trou.
+ * Service des specifications de questions de type texte à trou.
  * @author Bert Poller
  */
 class QuestionFillGapSpecificationService extends QuestionSpecificationService<FillGapSpecification> {
@@ -191,7 +191,7 @@ class FillGapSpecification implements QuestionSpecification {
 }
 /**
  * Classe abstraite d'un constituant d'un texte à trou.
- * @param < V >   le type de la valeur du constituant.
+ * @param < V >     le type de la valeur du constituant.
  */
 abstract class TextATrouElement<V> {
     int index

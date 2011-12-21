@@ -39,7 +39,7 @@ class QuestionOrderSpecificationService extends QuestionSpecificationService<Ord
 
     @Override
     def createSpecification(Object map) {
-        new OrderSpecification(map);
+        new OrderSpecification(map)
 
     }
 }
@@ -83,10 +83,13 @@ class OrderSpecification implements QuestionSpecification {
 
     @Override
     Map toMap() {
-        [libelle: libelle,
+        [
+                libelle: libelle,
                 correction: correction,
-                orderedItems: orderedItems.collect {it.toMap()}]
+                orderedItems: orderedItems.collect {it.toMap()}
+        ]
     }
+
     /**
      * Genère une liste des ordinals que l'on peut selectionner lors de l'edition d'une question de type
      * ordre à retablir.
@@ -100,16 +103,28 @@ class OrderSpecification implements QuestionSpecification {
     }
 }
 
+/**
+ * Un element de la liste des elements à remettre en ordre.
+ */
 class Item {
+    /**
+     * Le texte.
+     */
+    String text
+    /**
+     * La position dans la liste.
+     */
+    String ordinal
 
-    String text;
-    String ordinal;
-
+    /**
+     * Marshalling sous forme d'une map.
+     * @return la presentation map de l'Item.
+     */
     Map toMap() {
         [text: text, ordinal: ordinal]
     }
 
-
+    @Override
     boolean equals(Object object) {
         if (object != null && object instanceof Item) {
             Item theOther = object
@@ -118,11 +133,11 @@ class Item {
         false
     }
 
+    @Override
     int hashCode() {
         int hash = 1
         hash = hash * 31 + (text == null ? 0 : text.hashCode())
         hash = hash * 31 + (ordinal == null ? 0 : ordinal.hashCode())
         hash
     }
-
 }

@@ -26,40 +26,29 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.impl.order
+package org.lilie.services.eliot.tdbase.impl.graphicmatch
 
-import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 
 /**
- * Service pour les specifications de reponses de type 'ordre à retablir'.
+ * Created by IntelliJ IDEA.
+ * User: bert
+ * Date: 20/12/11
+ * Time: 14:02
+ * To change this template use File | Settings | File Templates.
  */
-class ReponseOrderSpecificationService extends ReponseSpecificationService<ReponseOrderSpecification> {
-
+class ReponseGraphicMatchSpecificationService extends ReponseSpecificationService<ReponseGraphicMatchSpecification> {
 
     @Override
-    ReponseOrderSpecification createSpecification(Map map) {
-        new ReponseOrderSpecification(map)
+    ReponseGraphicMatchSpecification createSpecification(Map map) {
+        new ReponseGraphicMatchSpecification(map)
     }
 
     @Override
-    ReponseOrderSpecification getObjectInitialiseFromSpecification(Question question) {
-
-        List<Item> valeursReponse = []
-
-        question.specificationObject.orderedItems.each {
-            valeursReponse << new Item(text: it.text)
-        }
-
-        new ReponseOrderSpecification(valeursDeReponse: valeursReponse,
-                reponsesPossibles: question.specificationObject.orderedItems)
-    }
-
-    @Override
-    Float evalueReponse(org.lilie.services.eliot.tdbase.Reponse reponse) {
-
-        ReponseOrderSpecification repSpecObj = reponse.specificationObject
+    Float evalueReponse(Reponse reponse) {
+        ReponseGraphicMatchSpecification repSpecObj = reponse.specificationObject
         reponse.correctionNoteAutomatique = repSpecObj.evaluate(reponse.sujetQuestion.points)
         reponse.save()
         reponse.correctionNoteAutomatique
@@ -67,24 +56,24 @@ class ReponseOrderSpecificationService extends ReponseSpecificationService<Repon
 }
 
 /**
- * Specifications de reponses de type ordre a retablir.
+ * Specifications de reponses de type graphique à compléter.
  */
-class ReponseOrderSpecification implements ReponseSpecification {
+class ReponseGraphicMatchSpecification implements ReponseSpecification {
 
     /**
      * Liste d'elements fournis comme reponse à la question.
      */
-    List<Item> valeursDeReponse = []
+    List<TextField> valeursDeReponse = []
 
     /**
      * Liste d'elements qui forment une reponse correcte.
      */
-    List<Item> reponsesPossibles = []
+    List<TextField> reponsesPossibles = []
 
     /**
      * Constructeur par defaut
      */
-    ReponseOrderSpecification() {
+    ReponseGraphicMatchSpecification() {
         super()
     }
 
@@ -92,9 +81,9 @@ class ReponseOrderSpecification implements ReponseSpecification {
      * Constructeur
      * @param params map des paramètres pour l'initialisation de l'objet
      */
-    ReponseOrderSpecification(Map params) {
-        valeursDeReponse = params.valeursDeReponse.collect {createItem(it)}
-        reponsesPossibles = params.reponsesPossibles.collect {createItem(it)}
+    ReponseGraphicMatchSpecification(Map params) {
+        valeursDeReponse = params.valeursDeReponse.collect {createTextField(it)}
+        reponsesPossibles = params.reponsesPossibles.collect {createTextField(it)}
     }
 
     @Override
@@ -111,19 +100,17 @@ class ReponseOrderSpecification implements ReponseSpecification {
      * @return les points correspondants à l'evaluation.
      */
     def evaluate(float maximumPoints) {
-        float points = maximumPoints
-        def difference = valeursDeReponse - reponsesPossibles
-        if (!difference.isEmpty()) {
-            points = 0.0f
-        }
-        points
+        def differenceCount = (reponsesPossibles - valeursDeReponse).size()
+        def totalFieldCount = reponsesPossibles.size()
+        def validFieldCount = totalFieldCount - differenceCount
+        maximumPoints * validFieldCount / totalFieldCount
     }
 
-    def createItem(Item item) {
-        item
+    def createTextField(TextField field) {
+        field
     }
 
-    def createItem(Map params) {
-        new Item(params)
+    def createTextField(Map params) {
+        new TextField(params)
     }
 }

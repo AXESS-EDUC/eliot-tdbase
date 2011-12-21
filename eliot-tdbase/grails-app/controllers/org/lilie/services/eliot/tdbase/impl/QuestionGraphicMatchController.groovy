@@ -26,32 +26,27 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.impl.gapfill
+package org.lilie.services.eliot.tdbase.impl
 
-import org.lilie.services.eliot.tdbase.impl.fillgap.FillGapSpecification
+import org.lilie.services.eliot.tdbase.impl.graphicmatch.GraphicMatchSpecification
+import org.lilie.services.eliot.tdbase.impl.graphicmatch.TextField
+import org.lilie.services.eliot.tdbase.QuestionController
 
 /**
- * Created by IntelliJ IDEA.
- * User: bert
- * Date: 18/11/11
- * Time: 17:53
- * To change this template use File | Settings | File Templates.
+ * Controlleur pour la saisie des questions de type graphique à compléter
  */
-class FillGapSpecificationTest extends GroovyTestCase {
+class QuestionGraphicMatchController extends QuestionController {
 
-    void testGetTextATrousStructure() {
+    @Override
+    def getSpecificationObjectFromParams(Map params) {
 
-        def texteATrous = "The color of blood is #{red}. Major blood vessels are #{arteries, veins} and #{veins, arteries}."
-        def structure = new FillGapSpecification([texteATrous: texteATrous]).texteATrousStructure
-
-        assertEquals(structure.size(), 7)
-        assertTrue(structure[0].isTexte())
-        assertFalse(structure[1].isTexte())
-        assertTrue(structure[2].isTexte())
-        assertFalse(structure[3].isTexte())
-        assertTrue(structure[4].isTexte())
-        assertFalse(structure[5].isTexte())
-        assertTrue(structure[6].isTexte())
+        def specifobject = new GraphicMatchSpecification()
+        def size = params.specifobject.textFields.size as Integer
+        if (size) {
+            size.times {
+                specifobject.textFields << new TextField()
+            }
+        }
+        bindData(specifobject, params, "specifobject")
     }
-
 }
