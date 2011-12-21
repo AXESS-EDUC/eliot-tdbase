@@ -273,7 +273,7 @@ class SujetService {
     def sequence = new SujetSequenceQuestions(
             question: question,
             sujet: leSujet,
-            rang: leSujet.questionsSequences.size()
+            rang: leSujet.questionsSequences?.size()
     )
     leSujet.addToQuestionsSequences(sequence)
     leSujet.lastUpdated = new Date()

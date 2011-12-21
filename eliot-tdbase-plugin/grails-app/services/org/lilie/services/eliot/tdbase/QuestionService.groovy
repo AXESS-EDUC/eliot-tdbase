@@ -48,6 +48,7 @@ class QuestionService implements ApplicationContextAware {
   ApplicationContext applicationContext
 
   SujetService sujetService
+  ArtefactAutorisationService artefactAutorisationService
 
   /**
    * Récupère le service de gestion de spécification de question correspondant
@@ -201,6 +202,22 @@ class QuestionService implements ApplicationContextAware {
     Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
     sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
     return question
+  }
+
+  /**
+   * Supprime une question
+   * @param question  la question à supprimer
+   * @param supprimeur la personne tentant la suppression
+   */
+  @Transactional
+  def supprimeQuestion(Question laQuestion, Personne supprimeur) {
+    assert ( artefactAutorisationService.utilisateurPeutSupprimerArtefact(
+                supprimeur,laQuestion))
+    def sujetQuests = SujetSequenceQuestions.where {
+      question == laQuestion
+    }
+    sujetQuests.deleteAll()
+    laQuestion.delete()
   }
 
   /**

@@ -29,11 +29,11 @@
 package org.lilie.services.eliot.tdbase
 
 import org.hibernate.SessionFactory
+import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
-import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 
 /**
  *
@@ -86,26 +86,52 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
             personne1,
             )
     assertFalse(quest1.hasErrors())
-    //sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+    sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
 
-    //assertNotNull(sujet1.questionsSequences)
+    assertNotNull(sujet1.questionsSequences)
 
-//    def now = new Date()
-//    def dateDebut = now - 10
-//    def dateFin = now + 10
-//    def props = [
-//            dateDebut : dateDebut,
-//            dateFin : dateFin,
-//            sujet : sujet1,
-//            structureEnseignement : struct1ere
-//    ]
-//    ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
-//            props,
-//            personne1
-//    )
-//    assertTrue(sujet1.estDistribue())
-//    modaliteActiviteService.updateProprietes(seance1,[dateFin: now - 5], personne1)
-//    assertFalse(sujet1.estDistribue())
+    def now = new Date()
+    def dateDebut = now - 10
+    def dateFin = now + 10
+    def props = [
+            dateDebut: dateDebut,
+            dateFin: dateFin,
+            sujet: sujet1,
+            structureEnseignement: struct1ere
+    ]
+    ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
+            props,
+            personne1
+    )
+    assertTrue(quest1.estDistribue())
+    modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
+    assertFalse(quest1.estDistribue())
+  }
+
+  void testSupprimeQuestion() {
+
+    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    Question quest1 = questionService.createQuestion(
+            [
+                    titre: "Question 1",
+                    type: QuestionTypeEnum.Decimal.questionType,
+                    estAutonome: true
+            ],
+            new DecimalSpecification(),
+            personne1,
+            )
+    assertFalse(quest1.hasErrors())
+    sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+
+    assertNotNull(sujet1.questionsSequences)
+    def quest2 = Question.findById(quest1.id)
+    questionService.supprimeQuestion(quest2, personne1)
+
+    def quest3 =  Question.findById(quest1.id)
+    assertNull(quest3)
+    def sujetQuests = SujetSequenceQuestions.findAllBySujet(sujet1)
+    assertEquals(0, sujetQuests.size())
+
   }
 
 }
