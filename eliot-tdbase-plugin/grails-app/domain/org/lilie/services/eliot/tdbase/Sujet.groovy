@@ -28,87 +28,123 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tice.CopyrightsType
+import org.lilie.services.eliot.tice.Publication
+import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.Publication
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.CopyrightsType
 
 /**
  * Classe représentant un sujet
  * @author franck Silvestre
  */
-class Sujet {
+class Sujet implements Artefact {
 
-  String titre
-  String titreNormalise
-  int versionSujet
+    String titre
+    String titreNormalise
+    int versionSujet
 
-  Date dateCreated
-  Date lastUpdated
+    Date dateCreated
+    Date lastUpdated
 
-  String presentation
-  String presentationNormalise
+    String presentation
+    String presentationNormalise
 
-  String annotationPrivee
-  Integer nbQuestions
-  Integer dureeMinutes
-  Float noteMax
-  Float noteAutoMax
-  Float noteEnseignantMax
-  Boolean publie
-  Boolean accesPublic
-  Boolean accesSequentiel
-  Boolean ordreQuestionsAleatoire
+    String annotationPrivee
+    Integer nbQuestions
+    Integer dureeMinutes
+    Float noteMax
+    Float noteAutoMax
+    Float noteEnseignantMax
+    Boolean publie
+    Boolean accesPublic
+    Boolean accesSequentiel
+    Boolean ordreQuestionsAleatoire
 
-  Personne proprietaire
+    Personne proprietaire
 
-  Sujet sujetDepartBranche
-  SujetType sujetType
-  Etablissement etablissement
-  Matiere matiere
-  Niveau niveau
-  Publication publication
-  CopyrightsType copyrightsType
+    Sujet sujetDepartBranche
+    SujetType sujetType
+    Etablissement etablissement
+    Matiere matiere
+    Niveau niveau
+    Publication publication
+    CopyrightsType copyrightsType
 
-  List<SujetSequenceQuestions> questionsSequences
-  static hasMany = [questionsSequences : SujetSequenceQuestions]
+    List<SujetSequenceQuestions> questionsSequences
+    static hasMany = [questionsSequences: SujetSequenceQuestions]
 
-  Integer rangInsertion
+    Integer rangInsertion
 
-  static transients = ['rangInsertion']
+    static transients = ['rangInsertion']
 
-  static constraints = {
-    titre(blank: false, nullable: false)
-    sujetDepartBranche(nullable: true)
-    sujetType(nullable: true)
-    etablissement(nullable: true)
-    matiere(nullable: true)
-    niveau(nullable: true)
-    publication(nullable: true)
-    presentation(nullable: true)
-    presentationNormalise(nullable: true)
-    annotationPrivee(nullable: true)
-    nbQuestions(nullable: true)
-    dureeMinutes(nullable: true)
-    noteMax(nullable: true)
-    noteAutoMax(nullable: true)
-    noteEnseignantMax(nullable: true)
-  }
+    static constraints = {
+        titre(blank: false, nullable: false)
+        sujetDepartBranche(nullable: true)
+        sujetType(nullable: true)
+        etablissement(nullable: true)
+        matiere(nullable: true)
+        niveau(nullable: true)
+        publication(nullable: true)
+        presentation(nullable: true)
+        presentationNormalise(nullable: true)
+        annotationPrivee(nullable: true)
+        nbQuestions(nullable: true)
+        dureeMinutes(nullable: true)
+        noteMax(nullable: true)
+        noteAutoMax(nullable: true)
+        noteEnseignantMax(nullable: true)
+    }
 
-  static mapping = {
-    table('td.sujet')
-    version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
-    cache(true)
-  }
+    static mapping = {
+        table('td.sujet')
+        version(false)
+        id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
+        cache(true)
+    }
 
-  /**
-   *
-   * @return la liste des questions du sujet
-   */
-  List<Question> getQuestions() {
-     questionsSequences*.question
-  }
+    /**
+     *
+     * @return la liste des questions du sujet
+     */
+    List<Question> getQuestions() {
+        questionsSequences*.question
+    }
+
+    /**
+     *
+     * @return true si le sujet est distribué
+     * @see Artefact
+     */
+    boolean estDistribue() {
+        // verifie en premier si des copies sont attachées
+        def critCopie = Copie.createCriteria()
+        def nbCopies = critCopie.count {
+            eq 'sujet', this
+        }
+        if (nbCopies > 0) {
+            return true
+        }
+        // sinon verifie qu'une séance ouverte n'est pas attaché
+        def crit = ModaliteActivite.createCriteria()
+        def now = new Date()
+        def nbSeances = crit.count {
+            le 'dateDebut', now
+            ge 'dateFin', now
+            eq 'sujet', this
+        }
+        return nbSeances > 0
+    }
+
+    /**
+     *
+     * @return true si le sujet est partagé
+     * @see Artefact
+     */
+    boolean estPartage() {
+        return publication != null
+    }
+
+
 }

@@ -26,31 +26,29 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
-    username = "eliot"
-    password = "eliot"
-    logSql = true
-}
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
 
-// environment specific settings
-environments {
-    development {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5432/eliot-tdbase-dev"
-        }
-    }
-    test {
-        dataSource {
-            url = "jdbc:postgresql://localhost:5432/eliot-tdbase-test"
-        }
-    }
+
+
+
+package org.lilie.services.eliot.tdbase
+
+import org.lilie.services.eliot.tice.AttachementService
+import org.lilie.services.eliot.tice.utils.ServiceEliotEnum
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
+
+/**
+ * Service de gestion des artefacts : un artefact est une question ou un sujet
+ * Ce service contient les méthodes permettant de savoir si il est possible de
+ * modifier, supprimer, dupliquer un artefact
+ * @author franck silvestre
+ */
+class ArtefactService {
+
+    static transactional = false
 
 
 }
+
+

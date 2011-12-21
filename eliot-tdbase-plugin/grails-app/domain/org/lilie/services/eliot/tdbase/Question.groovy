@@ -28,102 +28,144 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tice.Attachement
+import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.Attachement
-import org.lilie.services.eliot.tice.CopyrightsType
 
 /**
  * Classe représentant une question
  * @author franck Silvestre
  */
-class Question {
+class Question implements Artefact {
 
-  QuestionService questionService
+    QuestionService questionService
 
-  String titre
-  String titreNormalise
+    String titre
+    String titreNormalise
 
-  Date dateCreated
-  Date lastUpdated
+    Date dateCreated
+    Date lastUpdated
 
-  int versionQuestion
-  String specification
-  String specificationNormalise
-  Boolean estAutonome
-  Boolean publie
+    int versionQuestion
+    String specification
+    String specificationNormalise
+    Boolean estAutonome
+    Boolean publie
 
-  Personne proprietaire
-  QuestionType type
-  Question questionDepartBranche
+    Personne proprietaire
+    QuestionType type
+    Question questionDepartBranche
 
-  Etablissement etablissement
-  Matiere matiere
-  Niveau niveau
-  CopyrightsType copyrightsType
-  Publication publication
-  SortedSet<QuestionArborescence>  questionArborescenceFilles
-  SortedSet<QuestionAttachement>  questionAttachements
+    Etablissement etablissement
+    Matiere matiere
+    Niveau niveau
+    CopyrightsType copyrightsType
+    Publication publication
+    SortedSet<QuestionArborescence> questionArborescenceFilles
+    SortedSet<QuestionAttachement> questionAttachements
 
-  private def specificationObject
+    private def specificationObject
 
-  static hasMany = [
-          questionArborescenceFilles : QuestionArborescence,
-          questionArborescenceParentes : QuestionArborescence,
-          questionAttachements : QuestionAttachement
-  ]
+    static hasMany = [
+            questionArborescenceFilles: QuestionArborescence,
+            questionArborescenceParentes: QuestionArborescence,
+            questionAttachements: QuestionAttachement
+    ]
 
-  static mappedBy = [
-          questionArborescenceFilles : 'question',
-          questionArborescenceParentes : 'questionFille'
-  ]
+    static mappedBy = [
+            questionArborescenceFilles: 'question',
+            questionArborescenceParentes: 'questionFille'
+    ]
 
-  static constraints = {
-    questionDepartBranche(nullable: true)
-    specificationNormalise(nullable: true)
-    etablissement(nullable: true)
-    matiere(nullable: true)
-    niveau(nullable: true)
-    publication(nullable: true)
-  }
+    static constraints = {
+        questionDepartBranche(nullable: true)
+        specificationNormalise(nullable: true)
+        etablissement(nullable: true)
+        matiere(nullable: true)
+        niveau(nullable: true)
+        publication(nullable: true)
+    }
 
-  static mapping = {
-    table('td.question')
-    version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
-    cache(true)
-    questionArborescenceFilles(lazy: 'false', sort: 'rang',order: 'asc')
-    questionAttachements(lazy: 'false', sort: 'rang',order: 'asc')
-  }
+    static mapping = {
+        table('td.question')
+        version(false)
+        id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
+        cache(true)
+        questionArborescenceFilles(lazy: 'false', sort: 'rang', order: 'asc')
+        questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
+    }
 
-  static transients = ['questionService','specificationObject']
+    static transients = ['questionService', 'specificationObject']
 
-  /**
-   *
-   * @return la liste des questions filles de la question courante
-   */
-  List<Question> questionsFilles() {
-    return questionArborescenceFilles*.questionFille
-  }
+    /**
+     *
+     * @return la liste des questions filles de la question courante
+     */
+    List<Question> questionsFilles() {
+        return questionArborescenceFilles*.questionFille
+    }
 
-  /**
-   *
-   * @return la liste des attachements de la question courante
-   */
-  List<Attachement> attachements() {
-    return questionAttachements*.attachement
-  }
+    /**
+     *
+     * @return la liste des attachements de la question courante
+     */
+    List<Attachement> attachements() {
+        return questionAttachements*.attachement
+    }
 
-  /**
-   *
-   * @return l'objet encapsulant la spécification
-   */
-  def getSpecificationObject() {
-    def specService = questionService.questionSpecificationServiceForQuestionType(type)
-    specService.getObjectFromSpecification(specification)
-  }
+    /**
+     *
+     * @return l'objet encapsulant la spécification
+     */
+    def getSpecificationObject() {
+        def specService = questionService.questionSpecificationServiceForQuestionType(type)
+        specService.getObjectFromSpecification(specification)
+    }
+
+    /**
+     * @return true si la question est distribuée
+     * @see Artefact
+     */
+    boolean estDistribue() {
+        // verifie en premier si des copies sont attachées à la question
+        def critCopie = Copie.createCriteria()
+        def nbCopies = critCopie.count {
+            sujet {
+                questionsSequences {
+                    eq 'question', this
+                }
+            }
+        }
+        if (nbCopies > 0) {
+            return true
+        }
+        // sinon verifie qu'une séance ouverte n'est pas attaché à la question
+        def now = new Date()
+        def crit = ModaliteActivite.createCriteria()
+        def nbSeances = crit.count {
+            le 'dateDebut', now
+            ge 'dateFin', now
+            sujet {
+                questionsSequences {
+                    eq 'question', this
+                }
+            }
+        }
+        return nbSeances > 0
+    }
+
+    /**
+     *
+     * @return true si la question est partagée
+     * @see Artefact
+     */
+    boolean estPartage() {
+        return publication != null
+    }
+
 }
 
