@@ -28,9 +28,9 @@
 
 package org.lilie.services.eliot.tdbase.impl
 
+import org.lilie.services.eliot.tdbase.QuestionController
 import org.lilie.services.eliot.tdbase.impl.graphicmatch.GraphicMatchSpecification
 import org.lilie.services.eliot.tdbase.impl.graphicmatch.TextField
-import org.lilie.services.eliot.tdbase.QuestionController
 
 /**
  * Controlleur pour la saisie des questions de type graphique à compléter
@@ -41,12 +41,22 @@ class QuestionGraphicMatchController extends QuestionController {
     def getSpecificationObjectFromParams(Map params) {
 
         def specifobject = new GraphicMatchSpecification()
-        def size = params.specifobject.textFields.size as Integer
+        def size = params.specifobject.textFields?.size as Integer
         if (size) {
             size.times {
                 specifobject.textFields << new TextField()
             }
         }
         bindData(specifobject, params, "specifobject")
+    }
+
+    /**
+     * Action "supprimeAttachement"
+     */
+    def supprimeAttachement() {
+        GraphicMatchSpecification spec = getSpecificationObjectFromParams(params)
+        spec.attachmentId = null
+        spec.fichier = null
+        render(template: "/question/GraphicMatch/GraphicMatchEditionFichier", model: [specifobject: spec])
     }
 }

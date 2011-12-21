@@ -25,6 +25,8 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+<g:set var="specifobject" value="${question.specificationObject}"/>
+
 <g:if test="${specifobject.attachement}">
     <br/>
     <et:viewAttachement attachement="${specifobject.attachement}"/> <br/>
