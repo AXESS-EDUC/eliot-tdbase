@@ -217,6 +217,11 @@ class QuestionService implements ApplicationContextAware {
       question == laQuestion
     }
     sujetQuests.deleteAll()
+    // todofsil tester si ceci fonctionne correctement en 2.0
+//    def questionQuests = QuestionArborescence.where {
+//      question == laQuestion || questionFille == laQuestion
+//    }
+//    questionQuests.deleteAll()
     laQuestion.delete()
   }
 

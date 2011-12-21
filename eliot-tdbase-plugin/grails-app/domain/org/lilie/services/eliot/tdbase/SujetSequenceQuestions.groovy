@@ -41,7 +41,6 @@ class SujetSequenceQuestions implements Comparable {
     Question question
     Sujet sujet
 
-  static belongsTo = [sujet: Sujet, question: Question]
 
     static constraints = {
         noteSeuilPoursuite(nullable: true)

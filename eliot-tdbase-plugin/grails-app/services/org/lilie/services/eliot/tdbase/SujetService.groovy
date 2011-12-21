@@ -40,6 +40,7 @@ class SujetService {
   static transactional = false
 
   QuestionService questionService
+  ArtefactAutorisationService artefactAutorisationService
 
   /**
    * Créé un sujet
@@ -159,6 +160,22 @@ class SujetService {
     leSujet.save()
     return leSujet
   }
+
+  /**
+     * Supprime un sujet
+     * @param sujet la question à supprimer
+     * @param supprimeur la personne tentant la suppression
+     */
+    @Transactional
+    def supprimeSujet(Sujet leSujet, Personne supprimeur) {
+      assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
+              supprimeur, leSujet))
+      def sujetQuests = SujetSequenceQuestions.where {
+        sujet == leSujet
+      }
+      sujetQuests.deleteAll()
+      leSujet.delete()
+    }
 
   /**
    * Recherche de sujets
