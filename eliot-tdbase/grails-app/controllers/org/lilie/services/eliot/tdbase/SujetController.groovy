@@ -22,6 +22,7 @@ class SujetController {
   SpringSecurityService springSecurityService
   ProfilScolariteService profilScolariteService
   BreadcrumpsService breadcrumpsService
+  ArtefactAutorisationService artefactAutorisationService
 
   /**
    *
@@ -89,7 +90,8 @@ class SujetController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
     render(view: "edite", model: [
             liens: breadcrumpsService.liens,
-            titreSujet: message(code: "sujet.nouveau.titre")
+            titreSujet: message(code: "sujet.nouveau.titre"),
+            peutSupprimerSujet: false
     ])
   }
 
@@ -99,14 +101,30 @@ class SujetController {
    */
   def edite() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.edite.titre"))
+    Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
     [
             liens: breadcrumpsService.liens,
             titreSujet: sujet.titre,
             sujet: sujet,
-            sujetEnEdition: true
+            sujetEnEdition: true,
+            peutSupprimerSujet : artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet)
     ]
   }
+
+  /**
+     * Action "Supprimer"
+     */
+    def supprime() {
+      Personne personne = authenticatedPersonne
+      Sujet sujet = Sujet.get(params.id)
+      sujetService.supprimeSujet(sujet, personne)
+      def lien = breadcrumpsService.lienRetour()
+      forward(action: lien.action,
+              controller: lien.controller,
+              params: lien.params)
+
+    }
 
   /**
    * Action "teste"
@@ -190,6 +208,8 @@ class SujetController {
             liens: breadcrumpsService.liens
     ])
   }
+
+
 
 /**
  *

@@ -64,17 +64,19 @@ class QuestionController {
   def edite() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.edite.titre"))
     Question question
+    boolean peutSupprimerQuestion = false
+    Personne personne = authenticatedPersonne
     if (params.creation) {
       QuestionType questionType = QuestionType.get(params.questionTypeId)
       question = new Question(type: questionType, titre: message(code: 'question.nouveau.titre'))
     } else {
       question = Question.get(params.id)
+      peutSupprimerQuestion = artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question)
     }
     Sujet sujet = null
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId)
     }
-    Personne personne = authenticatedPersonne
     render(view: '/question/edite', model: [
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
@@ -82,7 +84,7 @@ class QuestionController {
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,
-            peutSupprimer : artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question)
+            peutSupprimer : peutSupprimerQuestion
     ])
   }
 
@@ -111,7 +113,7 @@ class QuestionController {
    */
   def supprime() {
     Personne personne = authenticatedPersonne
-    Question question = Question.get(params.id as Long)
+    Question question = Question.get(params.id)
     questionService.supprimeQuestion(question, personne)
     def lien = breadcrumpsService.lienRetour()
     forward(action: lien.action,
