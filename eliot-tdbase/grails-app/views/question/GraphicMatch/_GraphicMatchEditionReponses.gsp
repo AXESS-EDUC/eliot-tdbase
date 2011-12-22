@@ -25,20 +25,17 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<%@ page import="org.lilie.services.eliot.tdbase.QuestionAttachement" %>
+<g:hiddenField name="specifobject.attachmentId"
+               value="${specifobject.attachmentId}"/>
 
 <g:if test="${specifobject.attachmentId}">
-    <g:set var="questionAttachement"
-           value="${QuestionAttachement.get(specifobject.attachmentId)}"/>
-    <g:hiddenField name="specifobject.attachmentId" value="${specifobject.attachmentId}"/>
-
-    ${questionAttachement.attachement.nomFichierOriginal}&nbsp;
-    <g:submitToRemote action="supprimeAttachement"
-                      controller="questionGraphicMatch"
-                      update="specifobject_fichier"
-                      value="Suppr"/>
-    <br/>
+  <et:viewAttachement
+          attachement="${specifobject.attachement}"/>
+  <br>
 </g:if>
-<g:else>
-    <input type="file" name="specifobject.fichier">
-</g:else>
+
+<input type="file" name="specifobject.fichier"
+       onchange="$('#imageUpload').trigger('click');"/>
+
+<g:actionSubmit value="upload" action="enregistre" title="Upload" hidden="true"
+                id="imageUpload"/>

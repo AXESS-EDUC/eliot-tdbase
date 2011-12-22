@@ -37,26 +37,16 @@ import org.lilie.services.eliot.tdbase.impl.graphicmatch.TextField
  */
 class QuestionGraphicMatchController extends QuestionController {
 
-    @Override
-    def getSpecificationObjectFromParams(Map params) {
+  @Override
+  def getSpecificationObjectFromParams(Map params) {
 
-        def specifobject = new GraphicMatchSpecification()
-        def size = params.specifobject.textFields?.size as Integer
-        if (size) {
-            size.times {
-                specifobject.textFields << new TextField()
-            }
-        }
-        bindData(specifobject, params, "specifobject")
+    def specifobject = new GraphicMatchSpecification()
+    def size = params.specifobject.textFields?.size as Integer
+    if (size) {
+      size.times {
+        specifobject.textFields << new TextField()
+      }
     }
-
-    /**
-     * Action "supprimeAttachement"
-     */
-    def supprimeAttachement() {
-        GraphicMatchSpecification spec = getSpecificationObjectFromParams(params)
-        spec.attachmentId = null
-        spec.fichier = null
-        render(template: "/question/GraphicMatch/GraphicMatchEditionFichier", model: [specifobject: spec])
-    }
+    bindData(specifobject, params, "specifobject")
+  }
 }

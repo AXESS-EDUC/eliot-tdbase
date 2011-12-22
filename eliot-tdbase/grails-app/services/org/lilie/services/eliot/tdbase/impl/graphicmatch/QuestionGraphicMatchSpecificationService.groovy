@@ -38,39 +38,35 @@ import org.lilie.services.eliot.tdbase.*
  */
 class QuestionGraphicMatchSpecificationService extends QuestionSpecificationService<GraphicMatchSpecification> {
 
-    /**
-     * Le service qui gère les pieces jointes à une question.
-     */
-    QuestionAttachementService questionAttachementService
+  /**
+   * Le service qui gère les pieces jointes à une question.
+   */
+  QuestionAttachementService questionAttachementService
 
-    @Override
-    def createSpecification(Object map) {
-        new GraphicMatchSpecification(map)
+  @Override
+  def createSpecification(Object map) {
+    new GraphicMatchSpecification(map)
+  }
+
+  @Transactional
+  @Override
+  def updateQuestionSpecificationForObject(Question question, GraphicMatchSpecification spec) {
+
+    def oldQuestAttId = question.specificationObject?.attachmentId
+    if (spec.fichier && !spec.fichier.empty) {
+      def questionAttachement = questionAttachementService.createAttachementForQuestion(
+              spec.fichier, question)
+
+      if (oldQuestAttId) {
+        questionAttachementService.deleteQuestionAttachement(
+                QuestionAttachement.get(oldQuestAttId))
+      }
+
+      spec.attachmentId = questionAttachement.id
     }
 
-    @Transactional
-    @Override
-    def updateQuestionSpecificationForObject(Question question, GraphicMatchSpecification spec) {
-
-        def oldQuestAttId = question.specificationObject?.attachmentId
-        if (spec.fichier && !spec.fichier.empty) {
-            def questionAttachement = questionAttachementService.createAttachementForQuestion(
-                    spec.fichier, question)
-
-            if (oldQuestAttId) {
-                questionAttachementService.deleteQuestionAttachement(
-                        QuestionAttachement.get(oldQuestAttId))
-            }
-
-            spec.attachmentId = questionAttachement.id
-        } else {
-            throw new IllegalArgumentException("question.document.fichier.vide")
-        }
-
-        question.specification = getSpecificationFromObject(spec)
-        question.specificationNormalise = getSpecificationNormaliseFromObject(spec)
-        question.save()
-    }
+    super.updateQuestionSpecificationForObject(question, spec)
+  }
 }
 
 /**
@@ -78,69 +74,69 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
  */
 class GraphicMatchSpecification implements QuestionSpecification {
 
-    /**
-     * Le libellé.
-     */
-    String libelle
+  /**
+   * Le libellé.
+   */
+  String libelle
 
-    /**
-     * La correction.
-     */
-    String correction
+  /**
+   * La correction.
+   */
+  String correction
 
-    /**
-     * La liste des text fields.
-     */
-    List<TextField> textFields = []
+  /**
+   * La liste des text fields.
+   */
+  List<TextField> textFields = []
 
-    /**
-     * Identifiant de l'attachement de fichier graphique à la question.
-     */
-    Long attachmentId
+  /**
+   * Identifiant de l'attachement de fichier graphique à la question.
+   */
+  Long attachmentId
 
-    /**
-     * L'objet du fichier. Le fichier n'est pas mappé. 
-     * Il ne sert que pour l'echange entre IHM et controlleur. 
-     */
-    MultipartFile fichier // dont map this
+  /**
+   * L'objet du fichier. Le fichier n'est pas mappé.
+   * Il ne sert que pour l'echange entre IHM et controlleur.
+   */
+  MultipartFile fichier // dont map this
 
-    /**
-     * Constructeur par defaut.
-     */
-    GraphicMatchSpecification() {
-        super()
+  /**
+   * Constructeur par defaut.
+   */
+  GraphicMatchSpecification() {
+    super()
+  }
+
+  /**
+   * Constructeur prennant une map de paramètres.
+   */
+  GraphicMatchSpecification(Map params) {
+    libelle = params.libelle
+    correction = params.correction
+    textFields = params.textFields.collect {new TextField(it)}
+    attachmentId = params.attachmentId
+  }
+
+  @Override
+  Map toMap() {
+    [
+            libelle: libelle,
+            correction: correction,
+            textFields: textFields.collect {it.toMap()},
+            attachmentId: attachmentId
+    ]
+  }
+
+  /**
+   * Retourne l'attachement correspondant
+   * @return l'attachement
+   */
+  Attachement getAttachement() {
+    if (attachmentId) {
+      return QuestionAttachement.get(attachmentId).attachement
     }
-
-    /**
-     * Constructeur prennant une map de paramètres.
-     */
-    GraphicMatchSpecification(Map params) {
-        libelle = params.libelle
-        correction = params.correction
-        textFields = params.textFields.collect {new TextField(it)}
-        attachmentId = params.attachmentId
-    }
-
-    @Override
-    Map toMap() {
-        [
-                libelle: libelle,
-                correction: correction,
-                textFields: textFields.collect {it.toMap()},
-                attachmentId: attachmentId
-        ]
-    }
-
-    /**
-     * Retourne l'attachement correspondant
-     * @return l'attachement
-     */
-    Attachement getAttachement() {
-        if (attachmentId) {
-            return QuestionAttachement.get(attachmentId).attachement
-        }
-        null
-    }
+    null
+  }
 }
 
 /**
@@ -149,47 +145,47 @@ class GraphicMatchSpecification implements QuestionSpecification {
  */
 class TextField {
 
-    /**
-     * La distance de la bordure en haut de l'image.
-     */
-    int topDistance = 0
+  /**
+   * La distance de la bordure en haut de l'image.
+   */
+  int topDistance = 0
 
-    /**
-     * La distance de la bordure à la gauche de l'image.
-     */
-    int leftDistance = 0
+  /**
+   * La distance de la bordure à la gauche de l'image.
+   */
+  int leftDistance = 0
 
-    /**
-     * La taille horizontale.
-     */
-    int hSize = 100
+  /**
+   * La taille horizontale.
+   */
+  int hSize = 100
 
-    /**
-     * La taille verticale.
-     */
-    int vSize = 50
+  /**
+   * La taille verticale.
+   */
+  int vSize = 50
 
-    /**
-     * Le texte de l'element.
-     */
-    String text
+  /**
+   * Le texte de l'element.
+   */
+  String text
 
-    Map toMap() {
-        [topDistance: topDistance, leftDistance: leftDistance, hSize: hSize, vSize: vSize, text: text]
+  Map toMap() {
+    [topDistance: topDistance, leftDistance: leftDistance, hSize: hSize, vSize: vSize, text: text]
+  }
+
+  @Override
+  boolean equals(Object object) {
+    if (object != null && object instanceof TextField) {
+      TextField theOther = object
+      return text == theOther.text
     }
+    false
+  }
 
-    @Override
-    boolean equals(Object object) {
-        if (object != null && object instanceof TextField) {
-            TextField theOther = object
-            return text == theOther.text
-        }
-        false
-    }
-
-    @Override
-    int hashCode() {
-        31 + (text == null ? 0 : text.hashCode())
-    }
+  @Override
+  int hashCode() {
+    31 + (text == null ? 0 : text.hashCode())
+  }
 
 }
