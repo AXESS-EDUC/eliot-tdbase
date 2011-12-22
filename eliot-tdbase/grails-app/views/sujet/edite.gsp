@@ -54,7 +54,10 @@
       <g:link action="ajouteElement" controller="sujet"
               id="${sujet.id}">Ajouter un élément</g:link> |
       <g:link action="editeProprietes" controller="sujet"
-              id="${sujet.id}">Éditer les propriétés du sujet</g:link>
+              id="${sujet.id}">Éditer les propriétés du sujet</g:link> |
+      <g:link action="teste" controller="sujet" id="${sujet.id}">
+        Tester le sujet
+      </g:link>
     </span>
     <span class="portal-tabs-famille-liens">
       Exporter | Partager

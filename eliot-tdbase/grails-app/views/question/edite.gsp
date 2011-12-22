@@ -61,7 +61,35 @@
 
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
             model="[liens: liens]"/>
+<g:if test="${questionEnEdition}">
+  <div class="portal-tabs">
 
+    <span class="portal-tabs-famille-liens">
+      Exporter | Partager
+    </span>
+
+    <span class="portal-tabs-famille-liens">
+      <g:if test="${peutSupprimer}">
+        <g:link action="supprime"
+                id="${question.id}">Supprimer</g:link>
+      </g:if>
+      <g:else>
+        Supprimer
+      </g:else>
+    </span>
+
+  </div>
+</g:if>
+<g:else>
+  <div class="portal-tabs">
+    <span class="portal-tabs-famille-liens">
+      Exporter | Partager
+    </span>
+    <span class="portal-tabs-famille-liens">
+      Supprimer
+    </span>
+  </div>
+</g:else>
   <g:hasErrors bean="${question}">
     <div class="portal-messages">
       <g:eachError>
@@ -167,9 +195,6 @@
                         title="Enregistrer et insérer dans le sujet"/>
       </g:if>
       <g:else>
-        <g:if test="${peutSupprimer}">
-            <g:link action="supprime" id="${question.id}">Supprimer</g:link> |
-        </g:if>
         <g:actionSubmit value="Enregistrer"
                         action="enregistre"
                         title="Enregistrer"/>

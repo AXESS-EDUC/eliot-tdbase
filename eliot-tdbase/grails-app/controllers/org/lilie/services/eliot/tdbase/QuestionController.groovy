@@ -65,6 +65,7 @@ class QuestionController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.edite.titre"))
     Question question
     boolean peutSupprimerQuestion = false
+    boolean questionEnEdition = false
     Personne personne = authenticatedPersonne
     if (params.creation) {
       QuestionType questionType = QuestionType.get(params.questionTypeId)
@@ -72,6 +73,7 @@ class QuestionController {
     } else {
       question = Question.get(params.id)
       peutSupprimerQuestion = artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question)
+      questionEnEdition = true
     }
     Sujet sujet = null
     if (params.sujetId) {
@@ -84,7 +86,8 @@ class QuestionController {
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,
-            peutSupprimer : peutSupprimerQuestion
+            peutSupprimer : peutSupprimerQuestion,
+            questionEnEdition : questionEnEdition
     ])
   }
 
