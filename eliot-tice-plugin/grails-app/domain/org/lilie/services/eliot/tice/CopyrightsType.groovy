@@ -73,3 +73,27 @@ class CopyrightsType {
   }
 }
 
+/**
+ * Enumération des types de copyright
+ * <ul>
+ *  <li>TousDroitsReserves - Tous droits réservés </li>
+ *  <li>CC_BY_NC_SA - Creative Commons, partage viral non commercial</li>
+ *  <li>CC_BY_NC - Creative Commons, partage non viral non commercial</li>
+ * </ul>
+ */
+enum CopyrightsTypeEnum {
+  TousDroitsReserves(1),
+  CC_BY_NC_SA(2),
+  CC_BY_NC(3)
+  
+  private Long id ;
+  
+  private CopyrightsTypeEnum(Long id) {
+    this.id = id
+  }
+  
+  CopyrightsType getCopyrightsType() {
+    CopyrightsType.get(id)
+  }
+  
+}

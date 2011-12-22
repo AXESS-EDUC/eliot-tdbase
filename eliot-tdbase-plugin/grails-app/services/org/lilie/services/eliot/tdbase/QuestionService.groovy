@@ -37,6 +37,8 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 import static org.lilie.services.eliot.tdbase.QuestionTypeEnum.*
+import org.lilie.services.eliot.tice.CopyrightsTypeEnum
+import org.lilie.services.eliot.tice.Publication
 
 /**
  * Service de gestion des questions
@@ -74,7 +76,7 @@ class QuestionService implements ApplicationContextAware {
             titreNormalise: StringUtils.normalise(proprietes.titre),
             publie: false,
             versionQuestion: 1,
-            copyrightsType: CopyrightsType.getDefault(),
+            copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
             specification: "{}"
     )
     question.properties = proprietes
@@ -213,6 +215,9 @@ class QuestionService implements ApplicationContextAware {
   def supprimeQuestion(Question laQuestion, Personne supprimeur) {
     assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
             supprimeur, laQuestion))
+    
+    Reponse.executeUpdate('DELETE FROM Reponse as reponse where reponse.sujetQuestion = (select sujetQuestion from SujetSequenceQuestions as sujetQuestion where sujetQuestion.question = :question)',
+                          [question: laQuestion])
     def sujetQuests = SujetSequenceQuestions.where {
       question == laQuestion
     }
@@ -222,7 +227,31 @@ class QuestionService implements ApplicationContextAware {
 //      question == laQuestion || questionFille == laQuestion
 //    }
 //    questionQuests.deleteAll()
+
+    // supprimer la publication si nécessaire
+    if (laQuestion.estPartage()) {
+      laQuestion.publication.delete()
+    }
+
     laQuestion.delete()
+  }
+
+  /**
+   *  Partage une question
+   * @param laQuestion la question à partager
+   * @param partageur  la personne souhaitant partager
+   */
+  @Transactional
+  def partageQuestion(Question laQuestion, Personne partageur) {
+    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(
+                partageur, laQuestion))
+    CopyrightsType ct =  CopyrightsTypeEnum.CC_BY_NC.copyrightsType
+    Publication publication = new Publication(dateDebut: new Date(),
+                                              copyrightsType: ct)
+    publication.save()
+    laQuestion.copyrightsType = ct
+    laQuestion.publication = publication
+    laQuestion.save()
   }
 
   /**

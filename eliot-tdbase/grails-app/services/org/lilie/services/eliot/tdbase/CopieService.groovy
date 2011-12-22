@@ -58,7 +58,8 @@ class CopieService {
       if (copie == null) {
         copie = new Copie(
                 eleve: personne,
-                sujet: sujet
+                sujet: sujet,
+                estJetable: true
         )
         if (!copie.save() || copie.hasErrors()) {
           return copie

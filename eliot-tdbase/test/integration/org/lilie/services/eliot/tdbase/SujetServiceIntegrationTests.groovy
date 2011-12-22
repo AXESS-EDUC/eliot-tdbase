@@ -3,7 +3,7 @@ package org.lilie.services.eliot.tdbase
 import org.hibernate.SessionFactory
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
-import org.lilie.services.eliot.tice.CopyrightsType
+import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
@@ -84,7 +84,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     assertFalse(sujet.accesPublic)
     assertFalse(sujet.accesSequentiel)
     assertFalse(sujet.ordreQuestionsAleatoire)
-    assertEquals(CopyrightsType.default, sujet.copyrightsType)
+    assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
   }
 
   void testFindSujetsForProprietaire() {
@@ -192,13 +192,45 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     assertFalse(quest1.hasErrors())
     sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
 
-    assertEquals(1,sujet1.questionsSequences.size())
+    assertEquals(1, sujet1.questionsSequences.size())
 
     sujetService.supprimeSujet(sujet1, personne1)
-    
+
     def sujetQuests = SujetSequenceQuestions.findAllByQuestion(quest1)
     assertEquals(0, sujetQuests.size())
     assertNull(Sujet.get(sujet1.id))
+  }
+
+  void testPartageSujet() {
+    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    Question quest1 = questionService.createQuestion(
+            [
+                    titre: "Question 1",
+                    type: QuestionTypeEnum.Decimal.questionType,
+                    estAutonome: true
+            ],
+            new DecimalSpecification(),
+            personne1,
+            )
+    assertFalse(quest1.hasErrors())
+    sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+
+    assertEquals(1, sujet1.questionsSequences.size())
+
+    assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet1.copyrightsType)
+    assertNull(sujet1.publication)
+
+    sujetService.partageSujet(sujet1, personne1)
+
+    assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.copyrightsType)
+    assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.publication.copyrightsType)
+    assertNotNull(quest1.publication)
+
+    assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, sujet1.copyrightsType)
+    assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, sujet1.publication.copyrightsType)
+    assertNotNull(sujet1.publication)
+
+
   }
 
 }

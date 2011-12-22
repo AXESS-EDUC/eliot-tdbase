@@ -32,151 +32,195 @@
   <g:external dir="js/eliot/tiny_mce/tiny_mce.js" plugin="eliot-tice-plugin"/>
   <script type="text/javascript">
     tinyMCE.init({
-      // General options
-      language:'fr',
-      mode:"none",
-      theme:"advanced",
-      plugins:"pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+                   // General options
+                   language:'fr',
+                   mode:"none",
+                   theme:"advanced",
+                   plugins:"pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
-      // Theme options
-      theme_advanced_buttons1:"bold,italic,underline,strikethrough,|,forecolor,backcolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect,|,preview",
-      theme_advanced_buttons2:"cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,cleanup,help,code",
-      theme_advanced_buttons3:"tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap,iespell,media,advhr",
+                   // Theme options
+                   theme_advanced_buttons1:"bold,italic,underline,strikethrough,|,forecolor,backcolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect,|,preview",
+                   theme_advanced_buttons2:"cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,cleanup,help,code",
+                   theme_advanced_buttons3:"tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap,iespell,media,advhr",
 
-      theme_advanced_toolbar_location:"top",
-      theme_advanced_toolbar_align:"left",
-      theme_advanced_statusbar_location:"bottom",
-      theme_advanced_resizing:true
-    });
+                   theme_advanced_toolbar_location:"top",
+                   theme_advanced_toolbar_align:"left",
+                   theme_advanced_statusbar_location:"bottom",
+                   theme_advanced_resizing:true
+                 });
   </script>
   <r:script>
-      $(document).ready(function() {
-        $('#menu-item-contributions').addClass('actif');
-      });
-    </r:script>
+    $(document).ready(function () {
+      $('#menu-item-contributions').addClass('actif');
+    });
+  </r:script>
   <title>TDBase - Edition d'une question</title>
 </head>
 
 <body>
 
-  <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
-            model="[liens: liens]"/>
+<g:render template="/breadcrumps" plugin="eliot-tice-plugin"
+          model="[liens: liens]"/>
+<g:if test="${questionEnEdition}">
+  <div class="portal-tabs">
 
-  <g:hasErrors bean="${question}">
-    <div class="portal-messages">
-      <g:eachError>
-        <li class="error"><g:message error="${it}"/></li>
-      </g:eachError>
-    </div>
-  </g:hasErrors>
-  <g:if test="${request.messageCode}">
-    <div class="portal-messages">
-      <li class="success"><g:message code="${request.messageCode}"
-                     class="portal-messages success"/></li>
-    </div>
-  </g:if>
-
-  <g:if test="${sujet}">
-    <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
-  </g:if>
-
-  <g:form method="post" controller="question${question.type.code}">
-    <div class="portal-form_container" style="width: 70%;margin-left: 15px;">
-      <table>
-
-        <tr>
-          <td class="label">Titre:</td>
-          <td>
-            <input size="75" type="text" value="${question.titre}"
-                   name="titre"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Type :</td>
-          <td>
-            ${question.type.nom}
-          </td>
-        </tr>
-        <g:if test="${!question.id && sujet}">
-          <tr>
-            <td class="label">Mati&egrave;re :</td>
-            <td>
-              <g:select name="matiere.id" value="${sujet.matiereId}"
-                        noSelection="${['null':'Sélectionner une matière...']}"
-                        from="${matieres}"
-                        optionKey="id"
-                        optionValue="libelleLong"/>
-            </td>
-          </tr>
-          <tr>
-            <td class="label">Niveau :</td>
-            <td>
-              <g:select name="niveau.id" value="${sujet.niveauId}"
-                        noSelection="${['null':'Sélectionner un niveau...']}"
-                        from="${niveaux}"
-                        optionKey="id"
-                        optionValue="libelleLong"/>
-            </td>
-          </tr>
-        </g:if>
-        <g:else>
-          <tr>
-            <td class="label">Mati&egrave;re :</td>
-            <td>
-              <g:select name="matiere.id" value="${question.matiereId}"
-                        noSelection="${['null':'Sélectionner une matière...']}"
-                        from="${matieres}"
-                        optionKey="id"
-                        optionValue="libelleLong"/>
-            </td>
-          </tr>
-          <tr>
-            <td class="label">Niveau :</td>
-            <td>
-              <g:select name="niveau.id" value="${question.niveauId}"
-                        noSelection="${['null':'Sélectionner un niveau...']}"
-                        from="${niveaux}"
-                        optionKey="id"
-                        optionValue="libelleLong"/>
-            </td>
-          </tr>
-        </g:else>
-        <tr>
-          <td class="label">Autonome&nbsp;:</td>
-          <td>
-            <g:checkBox name="estAutonome" title="Autonome"
-                        checked="${question.estAutonome}"/>
-          </td>
-        </tr>
-        <g:render
-                template="/question/${question.type.code}/${question.type.code}Edition"
-                model="[question:question]"/>
-      </table>
-    </div>
-    <g:hiddenField name="id" value="${question.id}"/>
-    <g:hiddenField name="type.id" value="${question.typeId}"/>
-
-    <div class="form_actions" style="width: 70%;margin-left: 15px;">
-      <g:link action="${lienRetour.action}"
-              controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link> |
-      <g:if test="${sujet}">
-        <g:hiddenField name="sujetId" value="${sujet.id}"/>
-        <g:actionSubmit value="Enregistrer et insérer dans le sujet"
-                        action="enregistreInsert"
-                        title="Enregistrer et insérer dans le sujet"/>
+    <span class="portal-tabs-famille-liens">
+      Exporter |
+      <g:if test="${peutPartagerQuestion && !question.estPartage()}">
+        <g:link action="partage"
+                id="${question.id}">Partager</g:link>
       </g:if>
       <g:else>
-        <g:if test="${peutSupprimer}">
-            <g:link action="supprime" id="${question.id}">Supprimer</g:link> |
-        </g:if>
-        <g:actionSubmit value="Enregistrer"
-                        action="enregistre"
-                        title="Enregistrer"/>
-
+        Partager
       </g:else>
-    </div>
-  </g:form>
+    </span>
+
+    <span class="portal-tabs-famille-liens">
+      <g:if test="${peutSupprimer}">
+        <g:link action="supprime"
+                id="${question.id}">Supprimer</g:link>
+      </g:if>
+      <g:else>
+        Supprimer
+      </g:else>
+    </span>
+
+  </div>
+</g:if>
+<g:else>
+  <div class="portal-tabs">
+    <span class="portal-tabs-famille-liens">
+      Exporter | Partager
+    </span>
+    <span class="portal-tabs-famille-liens">
+      Supprimer
+    </span>
+  </div>
+</g:else>
+<g:hasErrors bean="${question}">
+  <div class="portal-messages">
+    <g:eachError>
+      <li class="error"><g:message error="${it}"/></li>
+    </g:eachError>
+  </div>
+</g:hasErrors>
+<g:if test="${request.messageCode}">
+  <div class="portal-messages">
+    <li class="success"><g:message code="${request.messageCode}"
+                                   args="${request.messageArgs}"
+                                   class="portal-messages success"/></li>
+  </div>
+</g:if>
+
+<g:if test="${sujet}">
+  <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
+</g:if>
+
+<g:form method="post" controller="question${question.type.code}">
+  <div class="portal-form_container" style="width: 70%;margin-left: 15px;">
+    <table>
+
+      <tr>
+        <td class="label">Titre:</td>
+        <td>
+          <input size="75" type="text" value="${question.titre}"
+                 name="titre"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Type :</td>
+        <td>
+          ${question.type.nom}
+        </td>
+      </tr>
+      <g:if test="${!question.id && sujet}">
+        <tr>
+          <td class="label">Mati&egrave;re :</td>
+          <td>
+            <g:select name="matiere.id" value="${sujet.matiereId}"
+                      noSelection="${['null':'Sélectionner une matière...']}"
+                      from="${matieres}"
+                      optionKey="id"
+                      optionValue="libelleLong"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">Niveau :</td>
+          <td>
+            <g:select name="niveau.id" value="${sujet.niveauId}"
+                      noSelection="${['null':'Sélectionner un niveau...']}"
+                      from="${niveaux}"
+                      optionKey="id"
+                      optionValue="libelleLong"/>
+          </td>
+        </tr>
+      </g:if>
+      <g:else>
+        <tr>
+          <td class="label">Mati&egrave;re :</td>
+          <td>
+            <g:select name="matiere.id" value="${question.matiereId}"
+                      noSelection="${['null':'Sélectionner une matière...']}"
+                      from="${matieres}"
+                      optionKey="id"
+                      optionValue="libelleLong"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">Niveau :</td>
+          <td>
+            <g:select name="niveau.id" value="${question.niveauId}"
+                      noSelection="${['null':'Sélectionner un niveau...']}"
+                      from="${niveaux}"
+                      optionKey="id"
+                      optionValue="libelleLong"/>
+          </td>
+        </tr>
+      </g:else>
+      <tr>
+        <td class="label">Autonome&nbsp;:</td>
+        <td>
+          <g:checkBox name="estAutonome" title="Autonome"
+                      checked="${question.estAutonome}"/>
+        </td>
+      </tr>
+      <g:render
+              template="/question/${question.type.code}/${question.type.code}Edition"
+              model="[question:question]"/>
+      <tr>
+            <td class="label">Partage :</td>
+            <td>
+              <g:if test="${question.estPartage()}">
+                <a href="${question.copyrightsType.lien}" target="_blank">${question.copyrightsType.presentation}</a>
+              </g:if>
+              <g:else>
+                 cette question n'est pas partagée
+              </g:else>
+            </td>
+          </tr>
+    </table>
+  </div>
+  <g:hiddenField name="id" value="${question.id}"/>
+  <g:hiddenField name="type.id" value="${question.typeId}"/>
+
+  <div class="form_actions" style="width: 70%;margin-left: 15px;">
+    <g:link action="${lienRetour.action}"
+            controller="${lienRetour.controller}"
+            params="${lienRetour.params}">Annuler</g:link> |
+    <g:if test="${sujet}">
+      <g:hiddenField name="sujetId" value="${sujet.id}"/>
+      <g:actionSubmit value="Enregistrer et insérer dans le sujet"
+                      action="enregistreInsert"
+                      title="Enregistrer et insérer dans le sujet"/>
+    </g:if>
+    <g:else>
+      <g:actionSubmit value="Enregistrer"
+                      action="enregistre"
+                      title="Enregistrer"/>
+
+    </g:else>
+  </div>
+</g:form>
 
 </body>
 </html>

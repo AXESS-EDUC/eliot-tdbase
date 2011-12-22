@@ -54,10 +54,20 @@
       <g:link action="ajouteElement" controller="sujet"
               id="${sujet.id}">Ajouter un élément</g:link> |
       <g:link action="editeProprietes" controller="sujet"
-              id="${sujet.id}">Éditer les propriétés du sujet</g:link>
+              id="${sujet.id}">Éditer les propriétés du sujet</g:link> |
+      <g:link action="teste" controller="sujet" id="${sujet.id}">
+        Tester le sujet
+      </g:link>
     </span>
     <span class="portal-tabs-famille-liens">
-      Exporter | Partager
+      Exporter |
+      <g:if test="${peutPartagerSujet && !sujet.estPartage()}">
+        <g:link action="partage" controller="sujet"
+                id="${sujet.id}">Partager</g:link>
+      </g:if>
+      <g:else>
+        Partager
+      </g:else>
     </span>
 
     <span class="portal-tabs-famille-liens">
@@ -95,7 +105,7 @@
 </g:hasErrors>
 <g:if test="${request.messageCode}">
   <div class="portal-messages">
-    <li class="success"><g:message code="${request.messageCode}"
+    <li class="success"><g:message code="${request.messageCode}" args="${request.messageArgs}"
                                    class="portal-messages success"/></li>
   </div>
 </g:if>

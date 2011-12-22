@@ -33,7 +33,7 @@
   <meta name="layout" content="eliot-tdbase"/>
   <r:require modules="jquery"/>
   <r:script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('#menu-item-contributions').addClass('actif');
     });
   </r:script>
@@ -42,75 +42,90 @@
 
 <body>
 
-  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
+<g:render template="/breadcrumps" plugin="eliot-tice-plugin"
+          model="[liens: liens]"/>
 
-  <g:if test="${request.messageCode}">
-    <div class="portal-messages">
-      <li class="success"><g:message code="${request.messageCode}"/></li>
-    </div>
+<g:if test="${request.messageCode}">
+  <div class="portal-messages">
+    <li class="success"><g:message code="${request.messageCode}"/></li>
+  </div>
+</g:if>
+
+<g:if test="${sujet}">
+  <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
+</g:if>
+
+
+<div class="portal-form_container">
+  <table>
+
+    <tr>
+      <td class="label">Titre:</td>
+      <td>
+        ${question.titre}
+      </td>
+    </tr>
+    <tr>
+      <td class="label">Auteur :</td>
+      <td>
+        ${question.proprietaire.prenom} ${question.proprietaire.nom}
+      </td>
+    </tr>
+    <tr>
+      <td class="label">Partage :</td>
+      <td>
+        <g:if test="${question.estPartage()}">
+          <a href="${question.copyrightsType.lien}" target="_blank">${question.copyrightsType.presentation}</a>
+        </g:if>
+        <g:else>
+           cette question n'est pas partagée
+        </g:else>
+      </td>
+    </tr>
+    <tr>
+      <td class="label">Type :</td>
+      <td>
+        ${question.type.nom}
+      </td>
+    </tr>
+
+    <tr>
+      <td class="label">Mati&egrave;re :</td>
+      <td>
+        ${question.matiere?.libelleLong}
+      </td>
+    </tr>
+    <tr>
+      <td class="label">Niveau :</td>
+      <td>
+        ${question.niveau?.libelleLong}
+      </td>
+    </tr>
+
+    <tr>
+      <td class="label">Autonome&nbsp;:</td>
+      <td>
+        <span>${question.estAutonome ? "oui" : "non"}</span>
+      </td>
+    </tr>
+    <g:render
+            template="/question/${question.type.code}/${question.type.code}Detail"
+            model="[question:question]"/>
+  </table>
+</div>
+
+<div class="form_actions">
+  <g:link action="${lienRetour.action}"
+          controller="${lienRetour.controller}"
+          params="${lienRetour.params}">Retour</g:link>&nbsp;
+  <g:if test="${sujet}">|
+    <g:link action="insert"
+            title="Insérer dans le sujet" id="${question.id}"
+            params="[sujetId: sujet?.id]">
+      Insérer dans le sujet &nbsp;
+    </g:link>
   </g:if>
-
-  <g:if test="${sujet}">
-    <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
-  </g:if>
-
-
-    <div class="portal-form_container">
-      <table>
-
-        <tr>
-          <td class="label">Titre:</td>
-          <td>
-            ${question.titre}
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Auteur :</td>
-          <td>
-            ${question.proprietaire.prenom} ${question.proprietaire.nom}
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Type :</td>
-          <td>
-            ${question.type.nom}
-          </td>
-        </tr>
-
-        <tr>
-          <td class="label">Mati&egrave;re :</td>
-          <td>
-            ${question.matiere?.libelleLong}
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Niveau :</td>
-          <td>
-            ${question.niveau?.libelleLong}
-          </td>
-        </tr>
-
-        <tr>
-          <td class="label">Autonome&nbsp;:</td>
-          <td>
-            <span>${question.estAutonome ? "oui" : "non"}</span>
-          </td>
-        </tr>
-        <g:render
-                template="/question/${question.type.code}/${question.type.code}Detail" model="[question:question]"/>
-      </table>
-    </div>
-    <div class="form_actions">
-      <g:link action="${lienRetour.action}"
-              controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Retour</g:link>&nbsp;
-      <g:if test="${sujet}">|
-        <g:link action="insert"
-                        title="Insérer dans le sujet" id="${question.id}" params="[sujetId: sujet?.id]">
-          Insérer dans le sujet &nbsp;
-        </g:link>
-      </g:if>
-    </div>
+</div>
 
 </body>
 </html>

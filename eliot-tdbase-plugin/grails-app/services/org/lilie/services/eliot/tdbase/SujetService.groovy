@@ -29,6 +29,8 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.CopyrightsType
+import org.lilie.services.eliot.tice.CopyrightsTypeEnum
+import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
@@ -59,7 +61,7 @@ class SujetService {
             ordreQuestionsAleatoire: false,
             publie: false,
             versionSujet: 1,
-            copyrightsType: CopyrightsType.getDefault()
+            copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType
     )
     sujet.save()
     return sujet
@@ -81,7 +83,7 @@ class SujetService {
   @Transactional
   Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
     // verification securité
-    assert (sujet.proprietaire == proprietaire || sujet.publie)
+    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire,sujet))
 
     def versionSujet = sujet.versionSujet + 1
     def sujetDepartBranche = sujet.sujetDepartBranche
@@ -122,17 +124,14 @@ class SujetService {
    * @param nouveauTitre le titre
    * @return le sujet
    */
-  Sujet updateTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
+  Sujet updateTitreSujet(Sujet leSujet, String nouveauTitre, Personne proprietaire) {
     // verif securite
-    assert (sujet.proprietaire == proprietaire || sujet.publie)
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,leSujet))
 
-    // verifie que c'est sur la derniere version du sujet editable que l'on
-    // travaille
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
     leSujet.titre = nouveauTitre
     leSujet.titreNormalise = StringUtils.normalise(nouveauTitre)
     leSujet.save()
-    return sujet
+    return leSujet
   }
 
   /**
@@ -142,13 +141,9 @@ class SujetService {
    * @param proprietaire le proprietaire
    * @return le sujet
    */
-  Sujet updateProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
+  Sujet updateProprietes(Sujet leSujet, Map proprietes, Personne proprietaire) {
     // verif securite
-    assert (sujet.proprietaire == proprietaire || sujet.publie)
-
-    // verifie que c'est sur la derniere version du sujet editable que l'on
-    // travaille
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,leSujet))
 
     if (proprietes.titre && leSujet.titre != proprietes.titre) {
       leSujet.titreNormalise = StringUtils.normalise(proprietes.titre)
@@ -162,20 +157,48 @@ class SujetService {
   }
 
   /**
-     * Supprime un sujet
-     * @param sujet la question à supprimer
-     * @param supprimeur la personne tentant la suppression
-     */
-    @Transactional
-    def supprimeSujet(Sujet leSujet, Personne supprimeur) {
-      assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
-              supprimeur, leSujet))
-      def sujetQuests = SujetSequenceQuestions.where {
-        sujet == leSujet
-      }
-      sujetQuests.deleteAll()
-      leSujet.delete()
+   * Supprime un sujet
+   * @param sujet la question à supprimer
+   * @param supprimeur la personne tentant la suppression
+   */
+  @Transactional
+  def supprimeSujet(Sujet leSujet, Personne supprimeur) {
+    assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
+            supprimeur, leSujet))
+    def sujetQuests = SujetSequenceQuestions.where {
+      sujet == leSujet
     }
+    sujetQuests.deleteAll()
+    if (leSujet.estPartage()) {
+      leSujet.publication.delete()
+    }
+    leSujet.delete()
+  }
+
+  /**
+   *  Partage un sujet
+   * @param leSujet le sujet à partager
+   * @param partageur la personne souhaitant partager
+   */
+  @Transactional
+  def partageSujet(Sujet leSujet, Personne partageur) {
+    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(
+            partageur, leSujet))
+    CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
+    Publication publication = new Publication(dateDebut: new Date(),
+                                              copyrightsType: ct)
+    publication.save()
+    leSujet.copyrightsType = ct
+    leSujet.publication = publication
+    // il faut partager les questions qui ne sont pas partagées
+    leSujet.questionsSequences.each {
+      def question = it.question
+      if (!question.estPartage()) {
+        questionService.partageQuestion(question,partageur)
+      }
+    }
+    leSujet.save()
+  }
 
   /**
    * Recherche de sujets
@@ -278,15 +301,17 @@ class SujetService {
    * @return le sujet modifié
    */
   @Transactional
-  Sujet insertQuestionInSujet(Question question, Sujet sujet,
+  Sujet insertQuestionInSujet(Question question, Sujet leSujet,
                               Personne proprietaire, Integer rang = null) {
 
     // verif securite
-    assert ((sujet.proprietaire == proprietaire || sujet.publie) &&
-            (question.proprietaire == proprietaire || question.publie))
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,leSujet))
+    assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(proprietaire,question))
 
+    if (!question.estPartage() && leSujet.estPartage()) {
+      questionService.partageQuestion(question,proprietaire)
+    }
 
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujet, proprietaire)
     def sequence = new SujetSequenceQuestions(
             question: question,
             sujet: leSujet,
@@ -319,9 +344,10 @@ class SujetService {
   @Transactional
   Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
+
+    Sujet leSujet =  sujetQuestion.sujet
     // verif securite
-    assert (sujetQuestion.sujet.proprietaire == proprietaire ||
-            sujetQuestion.sujet.publie)
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,leSujet))
 
 
     def idx = sujetQuestion.rang
@@ -329,8 +355,6 @@ class SujetService {
       return sujetQuestion.sujet
     }
     def idxPrec = sujetQuestion.rang - 1
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet,
-                                                           proprietaire)
 
     def squestPrec = leSujet.questionsSequences[idxPrec]
     def squest = leSujet.questionsSequences[idx]
@@ -353,17 +377,15 @@ class SujetService {
   @Transactional
   Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
                                       Personne proprietaire) {
-    // verif securite
-    assert (sujetQuestion.sujet.proprietaire == proprietaire ||
-            sujetQuestion.sujet.publie)
+    Sujet leSujet =  sujetQuestion.sujet
+        // verif securite
+        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,leSujet))
 
     def idx = sujetQuestion.rang
     if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) { // on ne fait rien
       return sujetQuestion.sujet
     }
     def idxSuiv = sujetQuestion.rang + 1
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet,
-                                                           proprietaire)
     def squestSuiv = leSujet.questionsSequences[idxSuiv]
     def squest = leSujet.questionsSequences[idx]
     leSujet.questionsSequences[idx] = squestSuiv
@@ -384,12 +406,17 @@ class SujetService {
   Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
                                   Personne proprietaire) {
     // verif securite
-    assert (sujetQuestion.sujet.proprietaire == proprietaire ||
-            sujetQuestion.sujet.publie)
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(
+            proprietaire, sujetQuestion.sujet
+    ))
 
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
+    Sujet leSujet = sujetQuestion.sujet
     SujetSequenceQuestions squest = leSujet.questionsSequences[sujetQuestion.rang]
     leSujet.removeFromQuestionsSequences(squest)
+    def reponsesFiltre = Reponse.where {
+      sujetQuestion == squest
+    }
+    reponsesFiltre.deleteAll()
     squest.delete()
     leSujet.lastUpdated = new Date()
     leSujet.save()
@@ -418,18 +445,6 @@ class SujetService {
     return sujetQuestion
   }
 
-  /**
-   * Retourne la dernière version éditable d'un sujet pour un proprietaire donné
-   * @param sujet le sujet
-   * @param proprietaire le proprietaire
-   * @return le sujet éditable
-   */
-  private Sujet getDerniereVersionSujetForProprietaire(Sujet sujet, Personne proprietaire) {
-    if (sujet.proprietaire == proprietaire && !sujet.publie) {
-      return sujet
-    } else {
-      return recopieSujet(sujet, proprietaire)
-    }
-  }
+
 
 }

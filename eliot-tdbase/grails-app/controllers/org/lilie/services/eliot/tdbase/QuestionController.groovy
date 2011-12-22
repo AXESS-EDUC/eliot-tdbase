@@ -46,16 +46,16 @@ class QuestionController {
   ArtefactAutorisationService artefactAutorisationService
 
   /**
-    *
-    * Action ajoute element
-    */
-   def nouvelle() {
-     breadcrumpsService.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
-     [
-             liens: breadcrumpsService.liens,
-             typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes
-     ]
-   }
+   *
+   * Action ajoute element
+   */
+  def nouvelle() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
+    [
+            liens: breadcrumpsService.liens,
+            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes
+    ]
+  }
 
 /**
  *
@@ -65,6 +65,8 @@ class QuestionController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.edite.titre"))
     Question question
     boolean peutSupprimerQuestion = false
+    boolean peutPartagerQuestion = false
+    boolean questionEnEdition = false
     Personne personne = authenticatedPersonne
     if (params.creation) {
       QuestionType questionType = QuestionType.get(params.questionTypeId)
@@ -72,6 +74,8 @@ class QuestionController {
     } else {
       question = Question.get(params.id)
       peutSupprimerQuestion = artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question)
+      peutPartagerQuestion =  artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
+      questionEnEdition = true
     }
     Sujet sujet = null
     if (params.sujetId) {
@@ -84,7 +88,9 @@ class QuestionController {
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,
-            peutSupprimer : peutSupprimerQuestion
+            peutSupprimer: peutSupprimerQuestion,
+            questionEnEdition: questionEnEdition,
+            peutPartagerQuestion : peutPartagerQuestion
     ])
   }
 
@@ -123,25 +129,21 @@ class QuestionController {
   }
 
   /**
-   *
-   * Action "enregistre"
+   * Action "Partager"
    */
-  def enregistre() {
-    Question question
+  def partage() {
     Personne personne = authenticatedPersonne
-    def specifObject = getSpecificationObjectFromParams(params)
-    if (params.id) {
-      question = Question.get(params.id as Long)
-      questionService.updateProprietes(question, params, specifObject, personne)
-    } else {
-      question = questionService.createQuestion(params, specifObject, personne)
+    Question question = Question.get(params.id)
+    if (!question.estPartage())  {
+      questionService.partageQuestion(question, personne)
     }
     Sujet sujet = null
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId as Long)
     }
     if (!question.hasErrors()) {
-      request.messageCode = "question.enregistre.succes"
+      request.messageCode = "question.partage.succes"
+      request.messageArgs = [question.copyrightsType.presentation]
     }
     render(view: '/question/edite', model: [
             liens: breadcrumpsService.liens,
@@ -149,7 +151,48 @@ class QuestionController {
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            sujet: sujet
+            sujet: sujet,
+            peutSupprimer: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question),
+            questionEnEdition: true,
+            peutPartagerQuestion : artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
+    ])
+
+  }
+
+  /**
+   *
+   * Action "enregistre"
+   */
+  def enregistre() {
+    Question question
+    Personne personne = authenticatedPersonne
+    def specifObject = getSpecificationObjectFromParams(params)
+    boolean questionEnEdition = true
+    if (params.id) {
+      question = Question.get(params.id)
+      questionService.updateProprietes(question, params, specifObject, personne)
+    } else {
+      question = questionService.createQuestion(params, specifObject, personne)
+      questionEnEdition = false
+    }
+    Sujet sujet = null
+    if (params.sujetId) {
+      sujet = Sujet.get(params.sujetId as Long)
+    }
+    if (!question.hasErrors()) {
+      request.messageCode = "question.enregistre.succes"
+      questionEnEdition = true
+    }
+    render(view: '/question/edite', model: [
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            question: question,
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujet: sujet,
+            peutSupprimer: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question),
+            questionEnEdition: questionEnEdition,
+            peutPartagerQuestion : artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
     ])
   }
 
@@ -165,11 +208,11 @@ class QuestionController {
     Integer rang = breadcrumpsService.getValeurPropriete(
             SujetController.PROP_RANG_INSERTION)
     Question question = questionService.createQuestionAndInsertInSujet(
-              params,
-              specifObject,
-              sujet,
-              personne,
-              rang)
+            params,
+            specifObject,
+            sujet,
+            personne,
+            rang)
 
     if (!question.hasErrors()) {
       request.messageCode = "question.enregistreinsert.succes"
