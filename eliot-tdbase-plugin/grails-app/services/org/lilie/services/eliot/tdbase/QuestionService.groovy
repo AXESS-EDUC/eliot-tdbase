@@ -213,6 +213,9 @@ class QuestionService implements ApplicationContextAware {
   def supprimeQuestion(Question laQuestion, Personne supprimeur) {
     assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
             supprimeur, laQuestion))
+    
+    Reponse.executeUpdate('DELETE FROM Reponse as reponse where reponse.sujetQuestion = (select sujetQuestion from SujetSequenceQuestions as sujetQuestion where sujetQuestion.question = :question)',
+                          [question: laQuestion])
     def sujetQuests = SujetSequenceQuestions.where {
       question == laQuestion
     }

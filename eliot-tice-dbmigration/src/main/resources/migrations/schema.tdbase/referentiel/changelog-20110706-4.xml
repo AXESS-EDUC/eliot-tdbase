@@ -151,4 +151,34 @@
         </sql>
     </changeSet>
 
+    <changeSet id="6" author="fsil">
+            <comment>
+                Complément sur type de copyrights
+            </comment>
+            <sql>
+                INSERT INTO tice.copyrights_type (
+                code,
+                presentation,
+                lien,
+                logo,
+                option_cc_paternite,
+                option_cc_pas_utilisation_commerciale,
+                option_cc_pas_modification,
+                option_cc_partage_viral,
+                option_tous_droits_reserves,
+                id)
+                VALUES
+                ('(CC) BY-NC',
+                 'Ce(tte) oeuvre est mise à disposition selon les termes de la Licence Creative Commons Paternité - Pas d''Utilisation Commerciale - France',
+                 'http://creativecommons.org/licenses/by-nc/2.0/fr/',
+                  'CC-BY-NC.png',
+                  true,
+                  true,
+                  false,
+                  false,
+                  false,
+                3)
+            </sql>
+        </changeSet>
+
 </databaseChangeLog>

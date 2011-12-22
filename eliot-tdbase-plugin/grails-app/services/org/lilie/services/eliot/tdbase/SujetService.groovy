@@ -384,12 +384,17 @@ class SujetService {
   Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
                                   Personne proprietaire) {
     // verif securite
-    assert (sujetQuestion.sujet.proprietaire == proprietaire ||
-            sujetQuestion.sujet.publie)
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(
+            proprietaire, sujetQuestion.sujet
+    ))
 
-    Sujet leSujet = getDerniereVersionSujetForProprietaire(sujetQuestion.sujet, proprietaire)
+    Sujet leSujet = sujetQuestion.sujet
     SujetSequenceQuestions squest = leSujet.questionsSequences[sujetQuestion.rang]
     leSujet.removeFromQuestionsSequences(squest)
+    def reponsesFiltre = Reponse.where {
+      sujetQuestion == squest
+    }
+    reponsesFiltre.deleteAll()
     squest.delete()
     leSujet.lastUpdated = new Date()
     leSujet.save()
