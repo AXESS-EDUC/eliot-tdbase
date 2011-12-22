@@ -91,7 +91,8 @@ class SujetController {
     render(view: "edite", model: [
             liens: breadcrumpsService.liens,
             titreSujet: message(code: "sujet.nouveau.titre"),
-            peutSupprimerSujet: false
+            peutSupprimerSujet: false,
+            peutPartagerSujet: false
     ])
   }
 
@@ -108,23 +109,49 @@ class SujetController {
             titreSujet: sujet.titre,
             sujet: sujet,
             sujetEnEdition: true,
-            peutSupprimerSujet : artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet)
+            peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
+            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet)
     ]
   }
 
   /**
-     * Action "Supprimer"
-     */
-    def supprime() {
-      Personne personne = authenticatedPersonne
-      Sujet sujet = Sujet.get(params.id)
-      sujetService.supprimeSujet(sujet, personne)
-      def lien = breadcrumpsService.lienRetour()
-      forward(action: lien.action,
-              controller: lien.controller,
-              params: lien.params)
-
+   * Action "Partager"
+   */
+  def partage() {
+    Personne personne = authenticatedPersonne
+    Sujet sujet = Sujet.get(params.id)
+    if (!sujet.estPartage()) {
+      sujetService.partageSujet(sujet, personne)
     }
+
+    if (!sujet.hasErrors()) {
+      request.messageCode = "sujet.partage.succes"
+      request.messageArgs = [sujet.copyrightsType.presentation]
+    }
+    render(view: '/sujet/edite', model: [
+            liens: breadcrumpsService.liens,
+            titreSujet: sujet.titre,
+            sujet: sujet,
+            sujetEnEdition: true,
+            peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
+            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet)
+    ])
+
+  }
+
+  /**
+   * Action "Supprimer"
+   */
+  def supprime() {
+    Personne personne = authenticatedPersonne
+    Sujet sujet = Sujet.get(params.id)
+    sujetService.supprimeSujet(sujet, personne)
+    def lien = breadcrumpsService.lienRetour()
+    forward(action: lien.action,
+            controller: lien.controller,
+            params: lien.params)
+
+  }
 
   /**
    * Action "teste"
@@ -208,8 +235,6 @@ class SujetController {
             liens: breadcrumpsService.liens
     ])
   }
-
-
 
 /**
  *
@@ -324,7 +349,6 @@ class SujetController {
             typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes
     ]
   }
-
 
   /**
    * Action ajoute séance

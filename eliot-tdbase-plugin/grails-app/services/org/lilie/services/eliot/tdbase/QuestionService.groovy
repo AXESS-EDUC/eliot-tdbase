@@ -227,6 +227,12 @@ class QuestionService implements ApplicationContextAware {
 //      question == laQuestion || questionFille == laQuestion
 //    }
 //    questionQuests.deleteAll()
+
+    // supprimer la publication si nécessaire
+    if (laQuestion.estPartage()) {
+      laQuestion.publication.delete()
+    }
+
     laQuestion.delete()
   }
 

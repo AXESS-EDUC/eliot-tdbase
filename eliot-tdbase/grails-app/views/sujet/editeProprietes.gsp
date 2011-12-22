@@ -32,7 +32,7 @@
   <meta name="layout" content="eliot-tdbase"/>
   <r:require modules="jquery"/>
   <r:script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
     });
   </r:script>
@@ -40,109 +40,126 @@
 </head>
 
 <body>
-  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
+<g:render template="/breadcrumps" plugin="eliot-tice-plugin"
+          model="[liens: liens]"/>
 
-  <g:hasErrors bean="${sujet}">
-    <div class="portal-messages">
-      <g:eachError>
-        <li class="error"><g:message error="${it}"/></li>
-      </g:eachError>
-    </div>
-  </g:hasErrors>
-  <g:if test="${request.messageCode}">
-    <div class="portal-messages">
-      <li class="success"><g:message code="${request.messageCode}"
-                     class="portal-messages success"/></li>
-    </div>
-  </g:if>
+<g:hasErrors bean="${sujet}">
+  <div class="portal-messages">
+    <g:eachError>
+      <li class="error"><g:message error="${it}"/></li>
+    </g:eachError>
+  </div>
+</g:hasErrors>
+<g:if test="${request.messageCode}">
+  <div class="portal-messages">
+    <li class="success"><g:message code="${request.messageCode}"
+                                   class="portal-messages success"/></li>
+  </div>
+</g:if>
 
-  <form method="post"
-        action="#">
-    <div class="portal-form_container">
-      <table>
-        <tr>
-          <td class="label">Titre:</td>
-          <td>
-            <input size="80" type="text" value="${sujet.titre}" name="titre"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Type&nbsp;:</td>
-          <td>
-             <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
-                      noSelection="${['null':'Sélectionner un type...']}"
-                      from="${typesSujet}"
-                      optionKey="id"
-                      optionValue="nom" />
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Mati&egrave;re&nbsp;:</td>
-          <td>
-            <g:select name="matiere.id" value="${sujet.matiere?.id}"
-                      noSelection="${['null':'Sélectionner une matière...']}"
-                      from="${matieres}"
-                      optionKey="id"
-                      optionValue="libelleLong" />
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Niveau&nbsp;:</td>
-          <td>
-            <g:select name="niveau.id" value="${sujet.niveau?.id}"
-                      noSelection="${['null':'Sélectionner un niveau...']}"
-                      from="${niveaux}"
-                      optionKey="id"
-                      optionValue="libelleLong" />
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Dur&eacute;e&nbsp;:</td>
-          <td>
-            <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}"/>
-            <i>(en minutes)</i>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Accessible&nbsp;:</td>
-          <td>
-            <g:checkBox name="accesPublic" checked="${sujet.accesPublic}"/>
-            via lien public</td>
-        </tr>
-        <tr>
-          <td class="label">Présentation&nbsp;:</td>
-          <td>
-            <g:checkBox name="accesSequentiel" checked="${sujet.accesSequentiel}"/>
-            1 seule question par écran</td>
-        </tr>
-        <tr>
-          <td class="label">Ordre&nbsp;questions&nbsp;:</td>
-          <td>
-            <g:checkBox name="ordreQuestionsAleatoire" checked="${sujet.ordreQuestionsAleatoire}"/>
-            Al&eacute;atoire</td>
-        </tr>
-        <tr>
-          <td class="label">S&eacute;lection&nbsp;:</td>
-          <td>
-            <input type="text" name="nbQuestions" value="${sujet.nbQuestions}"/>
-            <i>(le nombre de questions &agrave; selectionner)</i>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Description&nbsp;:</td>
-          <td>
-            <g:textArea cols="56" rows="10" name="presentation" value="${sujet.presentation}"/>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <g:hiddenField name="id" value="${sujet.id}"/>
-    <div class="form_actions">
-      <g:link action="${lienRetour.action}" controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link> |
-      <g:actionSubmit value="Enregistrer" action="enregistrePropriete" title="Enregistrer"/>
-    </div>
-  </form>
+<form method="post"
+      action="#">
+  <div class="portal-form_container">
+    <table>
+      <tr>
+        <td class="label">Titre:</td>
+        <td>
+          <input size="80" type="text" value="${sujet.titre}" name="titre"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Type&nbsp;:</td>
+        <td>
+          <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
+                    noSelection="${['null':'Sélectionner un type...']}"
+                    from="${typesSujet}"
+                    optionKey="id"
+                    optionValue="nom"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Mati&egrave;re&nbsp;:</td>
+        <td>
+          <g:select name="matiere.id" value="${sujet.matiere?.id}"
+                    noSelection="${['null':'Sélectionner une matière...']}"
+                    from="${matieres}"
+                    optionKey="id"
+                    optionValue="libelleLong"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Niveau&nbsp;:</td>
+        <td>
+          <g:select name="niveau.id" value="${sujet.niveau?.id}"
+                    noSelection="${['null':'Sélectionner un niveau...']}"
+                    from="${niveaux}"
+                    optionKey="id"
+                    optionValue="libelleLong"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Dur&eacute;e&nbsp;:</td>
+        <td>
+          <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}"/>
+          <i>(en minutes)</i>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Accessible&nbsp;:</td>
+        <td>
+          <g:checkBox name="accesPublic" checked="${sujet.accesPublic}"/>
+          via lien public</td>
+      </tr>
+      <tr>
+        <td class="label">Présentation&nbsp;:</td>
+        <td>
+          <g:checkBox name="accesSequentiel"
+                      checked="${sujet.accesSequentiel}"/>
+          1 seule question par écran</td>
+      </tr>
+      <tr>
+        <td class="label">Ordre&nbsp;questions&nbsp;:</td>
+        <td>
+          <g:checkBox name="ordreQuestionsAleatoire"
+                      checked="${sujet.ordreQuestionsAleatoire}"/>
+          Al&eacute;atoire</td>
+      </tr>
+      <tr>
+        <td class="label">S&eacute;lection&nbsp;:</td>
+        <td>
+          <input type="text" name="nbQuestions" value="${sujet.nbQuestions}"/>
+          <i>(le nombre de questions &agrave; selectionner)</i>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Description&nbsp;:</td>
+        <td>
+          <g:textArea cols="56" rows="10" name="presentation"
+                      value="${sujet.presentation}"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Partage :</td>
+        <td>
+          <g:if test="${sujet.estPartage()}">
+            <a href="${sujet.copyrightsType.lien}"
+               target="_blank">${sujet.copyrightsType.presentation}</a>
+          </g:if>
+          <g:else>
+            ce sujet n'est pas partagé
+          </g:else>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <g:hiddenField name="id" value="${sujet.id}"/>
+  <div class="form_actions">
+    <g:link action="${lienRetour.action}" controller="${lienRetour.controller}"
+            params="${lienRetour.params}">Annuler</g:link> |
+    <g:actionSubmit value="Enregistrer" action="enregistrePropriete"
+                    title="Enregistrer"/>
+  </div>
+</form>
 
 </body>
 </html>

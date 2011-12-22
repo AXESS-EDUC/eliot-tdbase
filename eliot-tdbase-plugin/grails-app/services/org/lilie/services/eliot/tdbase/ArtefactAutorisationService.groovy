@@ -85,10 +85,7 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutDupliquerArtefact(Personne utilisateur, Artefact artefact) {
-    if (utilisateur == artefact.proprietaire) {
-      return true
-    }
-    return artefact.estPartage()
+    return utilisateurPeutReutiliserArtefact(utilisateur, artefact)
   }
 
   /**
@@ -99,6 +96,19 @@ class ArtefactAutorisationService {
    */
   boolean utilisateurPeutPartageArtefact(Personne utilisateur, Artefact artefact) {
     return utilisateur == artefact.proprietaire
+  }
+
+  /**
+   * Vérifie qu'un utilisateur peut réutiliser un artefact
+   * @param utilisateur l'utilisateur sur lequel on vérifie l'autorisation
+   * @param artefact l'artefact sur lequel on vérifie l'autorisation
+   * @return true si l'autorisation est vérifiée
+   */
+  boolean utilisateurPeutReutiliserArtefact(Personne utilisateur, Artefact artefact) {
+    if (utilisateur == artefact.proprietaire) {
+      return true
+    }
+    return artefact.estPartage()
   }
 
 

@@ -35,6 +35,7 @@ import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
+import org.lilie.services.eliot.tice.Publication
 
 /**
  *
@@ -149,10 +150,43 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
     assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, quest1.copyrightsType)
     assertNull(quest1.publication)
 
-    questionService.partageQuestion(quest1,personne1)
+    questionService.partageQuestion(quest1, personne1)
     assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.copyrightsType)
     assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.publication.copyrightsType)
     assertNotNull(quest1.publication)
+  }
+
+  void testSupprimeQuestionAvecPartage() {
+
+    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    Question quest1 = questionService.createQuestion(
+            [
+                    titre: "Question 1",
+                    type: QuestionTypeEnum.Decimal.questionType,
+                    estAutonome: true
+            ],
+            new DecimalSpecification(),
+            personne1,
+            )
+    assertFalse(quest1.hasErrors())
+    questionService.partageQuestion(quest1, personne1)
+    assertNotNull(quest1.publication)
+    sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+
+    assertNotNull(sujet1.questionsSequences)
+    def quest2 = Question.findById(quest1.id)
+    def idPub = quest2.publication.id
+    questionService.supprimeQuestion(quest2, personne1)
+
+    def quest3 = Question.findById(quest1.id)
+    assertNull(quest3)
+    def sujetQuests = SujetSequenceQuestions.findAllBySujet(sujet1)
+    assertEquals(0, sujetQuests.size())
+    
+    def publi = Publication.findById(idPub)
+    assertNull(publi)
+    
+
   }
 
 }
