@@ -90,6 +90,18 @@ class ArtefactAutorisationService {
     }
     return artefact.estPartage()
   }
+
+  /**
+   * Vérifie qu'un utilisateur peut partager un artefact
+   * @param utilisateur l'utilisateur sur lequel on vérifie l'autorisation
+   * @param artefact l'artefact sur lequel on vérifie l'autorisation
+   * @return true si l'autorisation est vérifiée
+   */
+  boolean utilisateurPeutPartageArtefact(Personne utilisateur, Artefact artefact) {
+    return utilisateur == artefact.proprietaire
+  }
+
+
 }
 
 

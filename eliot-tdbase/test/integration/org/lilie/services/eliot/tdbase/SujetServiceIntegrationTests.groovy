@@ -7,6 +7,7 @@ import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
+import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -84,7 +85,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     assertFalse(sujet.accesPublic)
     assertFalse(sujet.accesSequentiel)
     assertFalse(sujet.ordreQuestionsAleatoire)
-    assertEquals(CopyrightsType.default, sujet.copyrightsType)
+    assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
   }
 
   void testFindSujetsForProprietaire() {

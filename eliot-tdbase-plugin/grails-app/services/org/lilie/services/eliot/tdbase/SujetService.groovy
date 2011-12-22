@@ -34,6 +34,7 @@ import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
+import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 
 class SujetService {
 
@@ -59,7 +60,7 @@ class SujetService {
             ordreQuestionsAleatoire: false,
             publie: false,
             versionSujet: 1,
-            copyrightsType: CopyrightsType.getDefault()
+            copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType
     )
     sujet.save()
     return sujet
