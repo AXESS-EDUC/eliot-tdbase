@@ -188,16 +188,21 @@
               template="/question/${question.type.code}/${question.type.code}Edition"
               model="[question:question]"/>
       <tr>
-            <td class="label">Partage :</td>
-            <td>
-              <g:if test="${question.estPartage()}">
-                <a href="${question.copyrightsType.lien}" target="_blank">${question.copyrightsType.presentation}</a>
-              </g:if>
-              <g:else>
-                 cette question n'est pas partagée
-              </g:else>
-            </td>
-          </tr>
+        <td class="label">Partage :</td>
+        <td>
+          <g:if test="${question.estPartage()}">
+            <a href="${question.copyrightsType.lien}"
+               target="_blank">${question.copyrightsType.presentation}</a>
+          </g:if>
+          <g:else>
+            cette question n'est pas partagée
+          </g:else>
+        </td>
+      </tr>
+      <g:if test="${question.paternite}">
+        <g:render template="/artefact/paternite"
+                  model="[paternite:question.paternite]"/>
+      </g:if>
     </table>
   </div>
   <g:hiddenField name="id" value="${question.id}"/>

@@ -111,6 +111,9 @@
     <g:render
             template="/question/${question.type.code}/${question.type.code}Detail"
             model="[question:question]"/>
+    <g:if test="${question.paternite}">
+    <g:render template="/artefact/paternite" model="[paternite:question.paternite]"/>
+    </g:if>
   </table>
 </div>
 
