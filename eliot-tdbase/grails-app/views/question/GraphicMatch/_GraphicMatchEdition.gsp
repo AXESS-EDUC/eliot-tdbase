@@ -25,31 +25,34 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-<%--
-  Created by IntelliJ IDEA.
-  User: bert
-  Date: 20/12/11
-  Time: 17:47
-  To change this template use File | Settings | File Templates.
---%>
 <r:script>
-    $(document).ready(function () {
-        $("form").attr('enctype', 'multipart/form-data');
-    });
+  $(document).ready(function () {
+    $("form").attr('enctype', 'multipart/form-data');
+  });
 </r:script>
+
 <g:set var="specifobject" value="${question.specificationObject}"/>
+
 <tr>
-    <td class="label">Lib&eacute;ll&eacute;:</td>
-    <td>
-        <input size="75" type="text" value="${specifobject.libelle}"
-               name="specifobject.libelle"/>
-    </td>
+  <td class="label">Lib&eacute;ll&eacute;:</td>
+  <td>
+    <g:textField name="specifobject.libelle" value="${specifobject.libelle}"
+                 size="75"/>
+  </td>
 </tr>
 <tr>
-    <td class="label">Fichier&nbsp;:</td>
-    <td id="specifobject_fichier">
-        <g:render template="/question/GraphicMatch/GraphicMatchEditionFichier"
-                  model="[specifobject:specifobject]"/>
-    </td>
+  <td class="label">R&eacute;ponse:</td>
+  <td id="specifobject_fichier">
+    <g:render template="/question/GraphicMatch/GraphicMatchEditionReponses"
+              model="[specifobject:specifobject]"/>
+  </td>
+</tr>
+<tr>
+  <td class="label">Correction:</td>
+  <td>
+    <g:textArea
+            name="specifobject.correction"
+            rows="10" cols="55"
+            value="${specifobject.correction}"/>
+  </td>
 </tr>

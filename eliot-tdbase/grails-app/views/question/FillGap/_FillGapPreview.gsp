@@ -30,11 +30,14 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 ${specifobject.libelle} <br/>
 
-<g:each in="${specifobject.texteATrousStructure}" var="texteATrouElement" status="i">
-    ${texteATrouElement.valeur}
+<g:each in="${specifobject.texteATrousStructure}" var="texteATrouElement"
+        status="i">
+  ${texteATrouElement.valeur}
 </g:each>
 
 <br>
 <g:if test="${specifobject.montrerLesMots}">
-    Mots sugeres : ${specifobject.motsSugeres}
+  Mots sugeres : ${specifobject.motsSugeres}
 </g:if>
+
+Correction : ${specifobject.correction}

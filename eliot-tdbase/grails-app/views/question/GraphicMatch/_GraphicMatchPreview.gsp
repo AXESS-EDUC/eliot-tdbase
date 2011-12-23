@@ -27,8 +27,10 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
+${specifobject.libelle} <br/>
 <g:if test="${specifobject.attachement}">
-    <br/>
-    <et:viewAttachement attachement="${specifobject.attachement}"/> <br/>
-    <br/>
+  <br/>
+  <et:viewAttachement attachement="${specifobject.attachement}"/> <br/>
+  <br/>
 </g:if>
+Correction : ${specifobject.correction}
