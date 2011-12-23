@@ -62,6 +62,9 @@ class Sujet implements Artefact {
   Boolean accesSequentiel
   Boolean ordreQuestionsAleatoire
 
+  String paternite
+  
+  
   Personne proprietaire
 
   Sujet sujetDepartBranche
@@ -95,6 +98,7 @@ class Sujet implements Artefact {
     noteMax(nullable: true)
     noteAutoMax(nullable: true)
     noteEnseignantMax(nullable: true)
+    paternite(nullable: true)
   }
 
   static mapping = {

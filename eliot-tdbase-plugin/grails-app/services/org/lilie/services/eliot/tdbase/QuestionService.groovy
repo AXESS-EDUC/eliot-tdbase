@@ -89,13 +89,6 @@ class QuestionService implements ApplicationContextAware {
 
   /**
    * Recopie une question
-   * - si le proprietaire de la copie est le proprietaire de l'original, on
-   * incrémente la version ; on ne crée pas de nouvelle branche :
-   * la question départ branche de la nouvelle version
-   * est la question départ branche de la version précédente
-   * - si le proprietaire de la copie est différent de l'original, on n'incrémente
-   * pas la version ; on créé une nouvelle branche : la question départ branche de la
-   * copie est la question recopié
    * @param question la question à recopier
    * @param proprietaire le proprietaire
    * @return la copie de la question
@@ -103,13 +96,8 @@ class QuestionService implements ApplicationContextAware {
   @Transactional
   Question recopieQuestion(Question question, Personne proprietaire) {
 
-    assert (question.proprietaire == proprietaire || question.publie)
+    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(question, proprietaire))
 
-    def versionQuestion = question.versionQuestion + 1
-    def questionDepartBranche = question.questionDepartBranche
-    if (question.proprietaire != proprietaire) {
-      questionDepartBranche = question
-    }
     Question questionCopie = new Question(
             proprietaire: proprietaire,
             titre: question.titre,
@@ -117,18 +105,15 @@ class QuestionService implements ApplicationContextAware {
             specification: question.specification,
             specificationNormalise: question.specificationNormalise,
             publie: false,
-            versionQuestion: versionQuestion,
-            questionDepartBranche: questionDepartBranche,
-            copyrightsType: question.copyrightsType,
+            copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
             estAutonome: question.estAutonome,
             type: question.type,
-            etablissement: question.etablissement,
             matiere: question.matiere,
             niveau: question.niveau,
             )
     questionCopie.save()
 
-    // recopie les attachements
+    // recopie les attachements (on ne duplique pas les attachements)
     question.questionAttachements.each { QuestionAttachement questionAttachement ->
       QuestionAttachement copieQuestionAttachement = new QuestionAttachement(
               question: questionCopie,
@@ -149,6 +134,9 @@ class QuestionService implements ApplicationContextAware {
       questionCopie.addToQuestionArborescenceFilles(copieQuestionArborescence)
       questionCopie.save()
     }
+
+    // repertorie l'anteriorite
+    questionCopie.paternite = question.paternite
 
     return questionCopie
   }
@@ -215,18 +203,33 @@ class QuestionService implements ApplicationContextAware {
   def supprimeQuestion(Question laQuestion, Personne supprimeur) {
     assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
             supprimeur, laQuestion))
-    
-    Reponse.executeUpdate('DELETE FROM Reponse as reponse where reponse.sujetQuestion = (select sujetQuestion from SujetSequenceQuestions as sujetQuestion where sujetQuestion.question = :question)',
-                          [question: laQuestion])
-    def sujetQuests = SujetSequenceQuestions.where {
-      question == laQuestion
-    }
-    sujetQuests.deleteAll()
-    // todofsil tester si ceci fonctionne correctement en 2.0
-//    def questionQuests = QuestionArborescence.where {
-//      question == laQuestion || questionFille == laQuestion
-//    }
-//    questionQuests.deleteAll()
+
+    // supression des réponses
+    Reponse.executeUpdate(" \
+    DELETE FROM Reponse as reponse \
+    where reponse.sujetQuestion = \
+          (select sujetQuestion from \
+           SujetSequenceQuestions as sujetQuestion where \
+           sujetQuestion.question = :question)",
+    [question: laQuestion])
+
+    // suppression des sujetQuestions
+    SujetSequenceQuestions.executeUpdate(" \
+                DELETE FROM SujetSequenceQuestions as sujetQuest \
+                where sujetQuest.question = :question",
+                [question: laQuestion])
+
+    // suppression des questions arborescences
+    QuestionArborescence.executeUpdate(" \
+        DELETE FROM QuestionArborescence as questArb \
+        where questArb.question = :question  or questArb.questionFille = :question",
+        [question: laQuestion])
+
+    // supprimer les attachements si nécessaire
+    QuestionAttachement.executeUpdate(" \
+            DELETE FROM QuestionAttachement as questAtt \
+            where questAtt.question = :question",
+            [question: laQuestion])
 
     // supprimer la publication si nécessaire
     if (laQuestion.estPartage()) {
@@ -251,6 +254,8 @@ class QuestionService implements ApplicationContextAware {
     publication.save()
     laQuestion.copyrightsType = ct
     laQuestion.publication = publication
+    // mise à jour de la paternite
+
     laQuestion.save()
   }
 
@@ -382,4 +387,8 @@ class QuestionService implements ApplicationContextAware {
 
 }
 
+class PaterniteSpecification {
+
+
+}
 

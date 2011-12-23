@@ -56,6 +56,8 @@ class Question implements Artefact {
   Boolean estAutonome
   Boolean publie
 
+  String paternite
+  
   Personne proprietaire
   QuestionType type
   Question questionDepartBranche
@@ -88,6 +90,7 @@ class Question implements Artefact {
     matiere(nullable: true)
     niveau(nullable: true)
     publication(nullable: true)
+    paternite(nullable: true)
   }
 
   static mapping = {
