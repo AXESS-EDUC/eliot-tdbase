@@ -60,7 +60,6 @@ class Question implements Artefact {
   
   Personne proprietaire
   QuestionType type
-  Question questionDepartBranche
 
   Etablissement etablissement
   Matiere matiere
@@ -84,7 +83,6 @@ class Question implements Artefact {
   ]
 
   static constraints = {
-    questionDepartBranche(nullable: true)
     specificationNormalise(nullable: true)
     etablissement(nullable: true)
     matiere(nullable: true)

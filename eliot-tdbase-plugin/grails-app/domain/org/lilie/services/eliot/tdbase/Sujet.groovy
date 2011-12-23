@@ -67,7 +67,6 @@ class Sujet implements Artefact {
   
   Personne proprietaire
 
-  Sujet sujetDepartBranche
   SujetType sujetType
   Etablissement etablissement
   Matiere matiere
@@ -84,7 +83,6 @@ class Sujet implements Artefact {
 
   static constraints = {
     titre(blank: false, nullable: false)
-    sujetDepartBranche(nullable: true)
     sujetType(nullable: true)
     etablissement(nullable: true)
     matiere(nullable: true)

@@ -29,6 +29,8 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.CopyrightsType
+import org.lilie.services.eliot.tice.CopyrightsTypeEnum
+import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
@@ -37,8 +39,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 import static org.lilie.services.eliot.tdbase.QuestionTypeEnum.*
-import org.lilie.services.eliot.tice.CopyrightsTypeEnum
-import org.lilie.services.eliot.tice.Publication
+
 
 /**
  * Service de gestion des questions
@@ -211,25 +212,25 @@ class QuestionService implements ApplicationContextAware {
           (select sujetQuestion from \
            SujetSequenceQuestions as sujetQuestion where \
            sujetQuestion.question = :question)",
-    [question: laQuestion])
+                          [question: laQuestion])
 
     // suppression des sujetQuestions
     SujetSequenceQuestions.executeUpdate(" \
                 DELETE FROM SujetSequenceQuestions as sujetQuest \
                 where sujetQuest.question = :question",
-                [question: laQuestion])
+                                         [question: laQuestion])
 
     // suppression des questions arborescences
     QuestionArborescence.executeUpdate(" \
         DELETE FROM QuestionArborescence as questArb \
         where questArb.question = :question  or questArb.questionFille = :question",
-        [question: laQuestion])
+                                       [question: laQuestion])
 
     // supprimer les attachements si nécessaire
     QuestionAttachement.executeUpdate(" \
             DELETE FROM QuestionAttachement as questAtt \
             where questAtt.question = :question",
-            [question: laQuestion])
+                                      [question: laQuestion])
 
     // supprimer la publication si nécessaire
     if (laQuestion.estPartage()) {
@@ -242,13 +243,13 @@ class QuestionService implements ApplicationContextAware {
   /**
    *  Partage une question
    * @param laQuestion la question à partager
-   * @param partageur  la personne souhaitant partager
+   * @param partageur la personne souhaitant partager
    */
   @Transactional
   def partageQuestion(Question laQuestion, Personne partageur) {
     assert (artefactAutorisationService.utilisateurPeutPartageArtefact(
-                partageur, laQuestion))
-    CopyrightsType ct =  CopyrightsTypeEnum.CC_BY_NC.copyrightsType
+            partageur, laQuestion))
+    CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
     Publication publication = new Publication(dateDebut: new Date(),
                                               copyrightsType: ct)
     publication.save()
@@ -387,8 +388,4 @@ class QuestionService implements ApplicationContextAware {
 
 }
 
-class PaterniteSpecification {
-
-
-}
 
