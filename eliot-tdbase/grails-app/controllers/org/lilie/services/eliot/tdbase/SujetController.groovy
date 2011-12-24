@@ -114,7 +114,9 @@ class SujetController {
             sujet: sujet,
             sujetEnEdition: true,
             peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet)
+            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ]
   }
 
@@ -149,7 +151,9 @@ class SujetController {
             sujet: sujet,
             sujetEnEdition: true,
             peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet)
+            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ])
 
   }
@@ -247,7 +251,9 @@ class SujetController {
             sujet: sujet,
             titreSujet: sujet.titre,
             sujetEnEdition: true,
-            liens: breadcrumpsService.liens
+            liens: breadcrumpsService.liens,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: proprietaire
     ])
   }
 
@@ -263,7 +269,9 @@ class SujetController {
             sujet: sujet,
             titreSujet: sujet.titre,
             sujetEnEdition: true,
-            liens: breadcrumpsService.liens
+            liens: breadcrumpsService.liens,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: proprietaire
     ])
   }
 
@@ -279,7 +287,9 @@ class SujetController {
             sujet: sujet,
             titreSujet: sujet.titre,
             sujetEnEdition: true,
-            liens: breadcrumpsService.liens
+            liens: breadcrumpsService.liens,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: proprietaire
     ])
   }
 
@@ -315,7 +325,9 @@ class SujetController {
             liens: breadcrumpsService.liens,
             titreSujet: sujet.titre,
             sujet: sujet,
-            sujetEnEdition: sujetEnEdition
+            sujetEnEdition: sujetEnEdition,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ])
   }
 

@@ -95,10 +95,15 @@
         </g:link>
       </li>
       <li>
-        <g:link action="recherche" controller="question"
-                params="[typeId:QuestionTypeEnum.MultipleChoice.id, sujetId:sujet.id]">
-          Une question de type QCM
-        </g:link>
+        <g:form method="get" action="recherche"
+                          controller="question">
+                    <g:hiddenField name="sujetId" value="${sujet.id}"/>
+                    Une question de type <g:select name="typeId"
+                                                   noSelection="${['null':'Sélectionnez...']}"
+                                                   from="${typesQuestionSupportes}"
+                                                   optionKey="id"
+                                                   optionValue="nom"/>
+                  </g:form>
       </li>
     </ul>
 
