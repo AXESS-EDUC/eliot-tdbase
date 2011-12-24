@@ -26,34 +26,15 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-modules = {
-
-  'eliot-tdbase' {
-    dependsOn 'eliot-tice'
-    resource url: [dir: 'images/eliot', file: 'tdbasefavicon.ico']
-    resource url: [dir: 'css/eliot', file: 'tdbase.css']
-  }
-
-  'eliot-tdbase-ui' {
-    dependsOn 'eliot-tdbase', 'eliot-tice-ui'
-    resource url: [dir: 'js/eliot', file: 'eliot-tdbase-ui.js']
-  }
-
-  modernizr {
-    resource url: [dir: 'js/lib', file: 'modernizr.js']
-  }
-
-  associateJS {
-    dependsOn "modernizr", "eliot-tice-ui"
-    resource url: [dir: 'js/associate', file: 'load.js']
-    resource url: [dir: 'js/associate', file: 'dragNDrop.polyfill.js']
-    resource url: [dir: 'js/associate', file: 'dragNDrop.js']
-  }
-
-  orderJS {
-    dependsOn "modernizr", "eliot-tice-ui"
-    resource url: [dir: 'js/order', file: 'load.js']
-    resource url: [dir: 'js/order', file: 'dragNDrop.polyfill.js']
-    resource url: [dir: 'js/order', file: 'dragNDrop.js']
-  }
+function initButtons() {
+    $('button').button({
+          icons:{
+                 primary:"ui-icon-gear",
+                 secondary:"ui-icon-triangle-1-s"
+          },
+          text:false
+    }).click(function () {
+          var currentIdButt = "#menu_actions_" + (this).id;
+          $(currentIdButt).toggle();
+       });
 }

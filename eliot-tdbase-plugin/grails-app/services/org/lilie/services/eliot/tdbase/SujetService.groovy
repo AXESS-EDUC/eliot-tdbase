@@ -69,13 +69,6 @@ class SujetService {
 
   /**
    * Recopie un sujet
-   * - si le proprietaire de la copie est le proprietaire de l'original, on
-   * incrémente la version ; on ne crée pas de nouvelle branche :
-   * le sujet départ branche de la nouvelle version
-   * est le sujet départ branche de la version précédente
-   * - si le proprietaire de la copie est différent de l'original, on incrémente
-   *  la version ; on créé une nouvelle branche : le sujet départ branche de la
-   * copie est le sujet recopié
    * @param sujet le sujet à recopier
    * @param proprietaire le proprietaire
    * @return la copie du sujet
@@ -85,14 +78,9 @@ class SujetService {
     // verification securité
     assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire,sujet))
 
-    def versionSujet = sujet.versionSujet + 1
-    def sujetDepartBranche = sujet.sujetDepartBranche
-    if (sujet.proprietaire != proprietaire) {
-      sujetDepartBranche = sujet
-    }
     Sujet sujetCopie = new Sujet(
             proprietaire: proprietaire,
-            titre: sujet.titre,
+            titre: sujet.titre + " (Copie)",
             titreNormalise: sujet.titreNormalise,
             presentation: sujet.presentation,
             presentationNormalise: sujet.presentationNormalise,
@@ -100,12 +88,10 @@ class SujetService {
             accesSequentiel: sujet.accesSequentiel,
             ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
             publie: false,
-            versionSujet: versionSujet,
-            sujetDepartBranche: sujetDepartBranche,
             copyrightsType: sujet.copyrightsType
     )
     sujetCopie.save()
-    // recopie de la séquence de questions
+    // recopie de la séquence de questions (ce n'est pas une copie en profondeur)
     sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
       SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
               question: sujetQuestion.question,
@@ -115,6 +101,8 @@ class SujetService {
       sujetCopie.addToQuestionsSequences(copieSujetSequence)
       sujetCopie.save()
     }
+    // repertorie l'ateriorité
+    sujetCopie.paternite = sujet.paternite
     return sujetCopie
   }
 

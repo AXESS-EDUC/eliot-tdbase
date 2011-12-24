@@ -55,7 +55,9 @@ class SujetController {
                 matieres: profilScolariteService.findMatieresForPersonne(personne),
                 niveaux: profilScolariteService.findNiveauxForPersonne(personne),
                 sujets: sujets,
-                rechercheCommand: rechCmd
+                rechercheCommand: rechCmd,
+                artefactHelper: artefactAutorisationService,
+                utilisateur: personne
         ]
       }
       js {
@@ -77,7 +79,9 @@ class SujetController {
             afficheFormulaire: false,
             sujets: sujetService.findSujetsForProprietaire(
                     personne,
-                    params)
+                    params),
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ]
     render(view: "recherche", model: model)
   }
@@ -113,6 +117,17 @@ class SujetController {
             peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet)
     ]
   }
+
+  /**
+     *
+     * Action "Dupliquer"
+     */
+    def duplique() {
+      Personne personne = authenticatedPersonne
+      Sujet sujet = Sujet.get(params.id)
+      Sujet nveauSujet = sujetService.recopieSujet(sujet,personne)
+      redirect(action: 'edite', id: nveauSujet.id)
+    }
 
   /**
    * Action "Partager"

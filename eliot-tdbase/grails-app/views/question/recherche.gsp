@@ -30,20 +30,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="eliot-tice-ui"/>
+  <r:require modules="eliot-tdbase-ui"/>
   <r:script>
     $(document).ready(function () {
       $('#menu-item-contributions').addClass('actif');
-      $('button').button({
-                           icons:{
-                             primary:"ui-icon-gear",
-                             secondary:"ui-icon-triangle-1-s"
-                           },
-                           text:false
-                         }).click(function () {
-                                    var currentIdButt = "#menu_actions_" + (this).id;
-                                    $(currentIdButt).toggle();
-                                  });
+      initButtons();
     });
   </r:script>
   <title>TDBase - Recherche de contributions</title>
@@ -172,7 +163,6 @@
             ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}
           </td>
           <td>
-
             <button id="${questionInstance.id}">Actions</button>
             <ul id="menu_actions_${questionInstance.id}"
                 class="tdbase-menu-actions">

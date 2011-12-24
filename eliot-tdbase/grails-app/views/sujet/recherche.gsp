@@ -28,10 +28,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="jquery"/>
+  <r:require modules="eliot-tdbase-ui"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-sujets').addClass('actif');
+      initButtons();
     });
   </r:script>
   <title>TDBase - Recherche de sujets</title>
@@ -122,11 +123,9 @@
           <g:if test="${afficheFormulaire}">
             <th>Auteur</th>
           </g:if>
-          <th>Accès public</th>
-          <th>Tester</th>
-          <th>Modifier</th>
-          <th>Séance</th>
+          <th>Partagé</th>
           <th>Mise à jour le</th>
+          <th>Actions</th>
         </tr>
         </thead>
 
@@ -149,36 +148,54 @@
               <td>${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}</td>
             </g:if>
             <td>
-              ${sujetInstance.accesPublic ? 'oui' : 'non'}
-            </td>
-            <td>
-              <g:link action="teste"
-                                    id="${sujetInstance.id}">
-                              <img border="0"
-                                   src="/eliot-tdbase/images/eliot/magglass-btn.gif"
-                                   width="18" height="16"/>
-               </g:link>
-            </td>
-            <td>
-              <g:link action="edite"
-                      id="${sujetInstance.id}">
-                <img border="0"
-                     src="/eliot-tdbase/images/eliot/write-btn.gif"
-                     width="18" height="16"/>
-              </g:link>
-            </td>
-            <td>
-
-               <g:link action="ajouteSeance"
-                      id="${sujetInstance.id}">
-                <img border="0"
-                     src="/eliot-tdbase/images/eliot/ActionIconAdd.gif"
-                     width="20" height="19"/>
-              </g:link>
-
+              ${sujetInstance.estPartage() ? 'oui' : 'non'}
             </td>
             <td>
               ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}
+            </td>
+            <td>
+              <button id="${sujetInstance.id}">Actions</button>
+              <ul id="menu_actions_${sujetInstance.id}"
+                              class="tdbase-menu-actions">
+                            <li><g:link action="teste" id="${sujetInstance.id}">
+                              Tester
+                            </g:link>
+                            </li>
+                            <li><g:link action="ajouteSeance" id="${sujetInstance.id}">
+                                Nouvelle&nbsp;séance
+                            </g:link>
+                            </li>
+                            <li><hr/></li>
+                            <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur,sujetInstance)}">
+                              <li><g:link action="edite"
+                                                    id="${sujetInstance.id}">Modifier</g:link></li>
+                            </g:if>
+                            <g:else>
+                              <li>Modifier</li>
+                            </g:else>
+                            <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur,sujetInstance)}">
+                              <li><g:link action="duplique"
+                                          id="${sujetInstance.id}">Dupliquer</g:link></li>
+                            </g:if>
+                            <g:else>
+                              <li>Dupliquer</li>
+                            </g:else>
+                            <li><hr/></li>
+                            <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur,sujetInstance)}">
+                              <li><g:link action="partage" id="${sujetInstance.id}">Partager</g:link></li>
+                            </g:if>
+                            <g:else>
+                              <li>Partager</li>
+                            </g:else>
+                            <li><hr/></li>
+                            <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur,sujetInstance)}">
+                              <li><g:link action="supprime" id="${sujetInstance.id}">Supprimer</g:link></li>
+                            </g:if>
+                            <g:else>
+                              <li>Supprimer</li>
+                            </g:else>
+
+                          </ul>
             </td>
           </tr>
         </g:each>
