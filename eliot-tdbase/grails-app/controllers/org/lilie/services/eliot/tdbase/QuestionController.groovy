@@ -129,6 +129,17 @@ class QuestionController {
   }
 
   /**
+   *
+   * Action "Dupliquer"
+   */
+  def duplique() {
+    Personne personne = authenticatedPersonne
+    Question question = Question.get(params.id)
+    Question nvelleQuestion = questionService.recopieQuestion(question,personne)
+    redirect(action: 'edite', id: nvelleQuestion.id)
+  }
+
+  /**
    * Action "Partager"
    */
   def partage() {
@@ -267,6 +278,11 @@ class QuestionController {
             QuestionType.get(rechCmd.typeId),
             params
     )
+    Sujet sujet = Sujet.get(rechCmd.sujetId)
+    boolean afficheLiensModifier = true
+    if (sujet) {
+       afficheLiensModifier = false
+    }
     [
             liens: breadcrumpsService.liens,
             afficheFormulaire: true,
@@ -275,7 +291,10 @@ class QuestionController {
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             questions: questions,
             rechercheCommand: rechCmd,
-            sujet: Sujet.get(rechCmd.sujetId)
+            sujet: sujet,
+            afficheLiensModifier: afficheLiensModifier,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ]
   }
 

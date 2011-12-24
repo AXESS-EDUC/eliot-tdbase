@@ -42,11 +42,12 @@ $(document).ready(function () {
     var strPub2 = " a publié cette oeuvre le "
     for (i = 0 ; i < nbItems ; i++) {
        var strPub = strPub1 ;
-       if (i == nbItems - 1 ) {
+       var paterniteItem = paterniteObj.paterniteItems[i];
+       if (paterniteItem.oeuvreEnCours == true ) {
         strPub = strPub2 ;
        }
-       paterniteHtml += paterniteObj.paterniteItems[i].auteur + strPub
-       var datePub = new Date(paterniteObj.paterniteItems[i].datePublication)
+       paterniteHtml += paterniteItem.auteur + strPub  ;
+       var datePub = new Date(paterniteItem.datePublication)
        paterniteHtml +=  datePub.getDate() +"/" + (datePub.getMonth()+1) + "/" + datePub.getFullYear() + "<br/>"
     }
     $("#paternite").html(paterniteHtml) ;

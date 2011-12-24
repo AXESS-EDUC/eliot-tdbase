@@ -95,6 +95,9 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutPartageArtefact(Personne utilisateur, Artefact artefact) {
+    if (artefact.estPartage()) {
+      return false
+    }
     return utilisateur == artefact.proprietaire
   }
 
