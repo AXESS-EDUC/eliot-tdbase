@@ -121,7 +121,7 @@
   <g:link action="${lienRetour.action}"
           controller="${lienRetour.controller}"
           params="${lienRetour.params}">Retour</g:link>&nbsp;
-  <g:if test="${sujet}">|
+  <g:if test="${sujet && afficheLienInserer}">|
     <g:link action="insert"
             title="Insérer dans le sujet" id="${question.id}"
             params="[sujetId: sujet?.id]">

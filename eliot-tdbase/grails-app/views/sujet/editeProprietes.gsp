@@ -150,6 +150,9 @@
           </g:else>
         </td>
       </tr>
+      <g:if test="${sujet.paternite}">
+          <g:render template="/artefact/paternite" model="[paternite:sujet.paternite]"/>
+          </g:if>
     </table>
   </div>
   <g:hiddenField name="id" value="${sujet.id}"/>

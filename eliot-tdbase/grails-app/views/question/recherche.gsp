@@ -173,6 +173,14 @@
                 Aperçu
               </g:link>
               </li>
+              <g:if test="${sujet}">
+                <li><g:link action="insert" controller="question${questionInstance.type.code}"
+                                          id="${questionInstance.id}"
+                                          params="[sujetId:sujet?.id]">
+                                Insérer&nbsp;dans&nbsp;le&nbsp;sujet
+                    </g:link>
+                </li>
+              </g:if>
               <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur,questionInstance) && afficheLiensModifier}">
                 <li><g:link action="edite"
                             controller="question${questionInstance.type.code}"

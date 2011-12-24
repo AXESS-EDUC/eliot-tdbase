@@ -99,10 +99,11 @@ class SujetService {
               noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
       )
       sujetCopie.addToQuestionsSequences(copieSujetSequence)
-      sujetCopie.save()
+      copieSujetSequence.save()
     }
     // repertorie l'ateriorité
     sujetCopie.paternite = sujet.paternite
+    sujetCopie.save()
     return sujetCopie
   }
 
@@ -185,6 +186,20 @@ class SujetService {
         questionService.partageQuestion(question, partageur)
       }
     }
+    // mise à jour de la paternite
+    PaterniteItem paterniteItem = new PaterniteItem(
+            auteur: "${partageur.nomAffichage}",
+            copyrightDescription: "${ct.presentation}",
+            copyrighLien: "${ct.lien}",
+            datePublication: publication.dateDebut,
+            oeuvreEnCours: true
+    )
+    Paternite paternite = new Paternite(leSujet.paternite)
+    paternite.paterniteItems.each {
+      it.oeuvreEnCours = false
+    }
+    paternite.addPaterniteItem(paterniteItem)
+    leSujet.paternite = paternite.toString()
     leSujet.save()
   }
 
