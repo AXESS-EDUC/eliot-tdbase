@@ -74,7 +74,7 @@ class QuestionController {
     } else {
       question = Question.get(params.id)
       peutSupprimerQuestion = artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question)
-      peutPartagerQuestion =  artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
+      peutPartagerQuestion = artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
       questionEnEdition = true
     }
     Sujet sujet = null
@@ -90,7 +90,7 @@ class QuestionController {
             sujet: sujet,
             peutSupprimer: peutSupprimerQuestion,
             questionEnEdition: questionEnEdition,
-            peutPartagerQuestion : peutPartagerQuestion
+            peutPartagerQuestion: peutPartagerQuestion
     ])
   }
 
@@ -135,7 +135,18 @@ class QuestionController {
   def duplique() {
     Personne personne = authenticatedPersonne
     Question question = Question.get(params.id)
-    Question nvelleQuestion = questionService.recopieQuestion(question,personne)
+    Question nvelleQuestion = questionService.recopieQuestion(question, personne)
+    redirect(action: 'edite', id: nvelleQuestion.id)
+  }
+
+  /**
+     *
+     * Action "Dupliquer" depuis un sujet
+     */
+  def dupliqueDansSujet() {
+    Personne personne = authenticatedPersonne
+    SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
+    Question nvelleQuestion = questionService.recopieQuestionDansSujet(sujetQuestion, personne)
     redirect(action: 'edite', id: nvelleQuestion.id)
   }
 
@@ -145,7 +156,7 @@ class QuestionController {
   def partage() {
     Personne personne = authenticatedPersonne
     Question question = Question.get(params.id)
-    if (!question.estPartage())  {
+    if (!question.estPartage()) {
       questionService.partageQuestion(question, personne)
     }
     Sujet sujet = null
@@ -165,7 +176,7 @@ class QuestionController {
             sujet: sujet,
             peutSupprimer: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question),
             questionEnEdition: true,
-            peutPartagerQuestion : artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
+            peutPartagerQuestion: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
     ])
 
   }
@@ -203,7 +214,7 @@ class QuestionController {
             sujet: sujet,
             peutSupprimer: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question),
             questionEnEdition: questionEnEdition,
-            peutPartagerQuestion : artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
+            peutPartagerQuestion: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
     ])
   }
 
@@ -281,7 +292,7 @@ class QuestionController {
     Sujet sujet = Sujet.get(rechCmd.sujetId)
     boolean afficheLiensModifier = true
     if (sujet) {
-       afficheLiensModifier = false
+      afficheLiensModifier = false
     }
     [
             liens: breadcrumpsService.liens,

@@ -89,6 +89,29 @@ class QuestionService implements ApplicationContextAware {
   }
 
   /**
+     * Recopie une question dans un sujet
+     * @param sujetQuestion la question à recopier et son sujet associé
+     * @param proprietaire le proprietaire
+     * @return la copie de la question
+     */
+    @Transactional
+    Question recopieQuestionDansSujet(SujetSequenceQuestions sujetQuestion, Personne proprietaire) {
+
+      def question = sujetQuestion.question
+      def sujet = sujetQuestion.sujet
+
+      assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, question))
+      assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
+
+      Question questionCopie = recopieQuestion(question, proprietaire)
+
+      sujetQuestion.question = questionCopie
+      sujetQuestion.save()
+
+      return questionCopie
+    }
+
+  /**
    * Recopie une question
    * @param question la question à recopier
    * @param proprietaire le proprietaire

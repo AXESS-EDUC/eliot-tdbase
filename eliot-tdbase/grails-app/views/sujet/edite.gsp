@@ -149,12 +149,12 @@
           <li>Modifier</li>
         </g:else>
         <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur,sujetQuestion.question)}">
-          <li><g:link action="duplique"
+          <li><g:link action="dupliqueDansSujet"
                       controller="question${sujetQuestion.question.type.code}"
-                      id="${sujetQuestion.question.id}">Dupliquer</g:link></li>
+                      id="${sujetQuestion.id}">Modifier&nbsp;(copie)</g:link></li>
         </g:if>
         <g:else>
-          <li>Dupliquer</li>
+          <li>Modifier&nbsp;(copie)</li>
         </g:else>
         <li><hr/></li>
         <li>
