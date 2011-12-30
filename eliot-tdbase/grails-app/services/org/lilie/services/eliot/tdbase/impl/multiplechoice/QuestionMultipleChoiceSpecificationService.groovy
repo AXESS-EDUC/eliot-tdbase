@@ -30,9 +30,9 @@
 
 package org.lilie.services.eliot.tdbase.impl.multiplechoice
 
+import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import grails.validation.Validateable
 
 /**
  *
@@ -40,10 +40,10 @@ import grails.validation.Validateable
  */
 class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationService<MultipleChoiceSpecification> {
 
-    @Override
-    def createSpecification(map) {
-        new MultipleChoiceSpecification(map)
-    }
+  @Override
+  def createSpecification(map) {
+    new MultipleChoiceSpecification(map)
+  }
 
 }
 
@@ -52,39 +52,44 @@ class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationSe
  */
 @Validateable
 class MultipleChoiceSpecification implements QuestionSpecification {
-    String libelle
-    String correction
-    List<MultipleChoiceSpecificationReponsePossible> reponses = []
+  String libelle
+  String correction
+  List<MultipleChoiceSpecificationReponsePossible> reponses = []
 
 
-    MultipleChoiceSpecification() {
-        super()
+  MultipleChoiceSpecification() {
+    super()
+  }
+
+  /**
+   * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  MultipleChoiceSpecification(Map map) {
+    libelle = map.libelle
+    correction = map.correction
+    reponses = map.reponses.collect {
+      if (it instanceof MultipleChoiceSpecificationReponsePossible) {
+        it
+      } else {
+        new MultipleChoiceSpecificationReponsePossible(it)
+      }
     }
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    MultipleChoiceSpecification(Map map) {
-        libelle = map.libelle
-        correction = map.correction
-        reponses = map.reponses.collect {
-            if (it instanceof MultipleChoiceSpecificationReponsePossible) {
-                it
-            } else {
-                new MultipleChoiceSpecificationReponsePossible(it)
-            }
-        }
-    }
+  def Map toMap() {
+    [
+            libelle: libelle,
+            correction: correction,
+            reponses: reponses*.toMap()
+    ]
+  }
 
-    def Map toMap() {
-        [
-                libelle: libelle,
-                correction: correction,
-                reponses: reponses*.toMap()
-        ]
-    }
+  static constraints = {
+    libelle blank: false
+    reponses minSize: 2
+  }
 
 }
 
@@ -93,30 +98,30 @@ class MultipleChoiceSpecification implements QuestionSpecification {
  * type MultipleChoice
  */
 class MultipleChoiceSpecificationReponsePossible {
-    String libelleReponse
-    boolean estUneBonneReponse
-    Float rang
+  String libelleReponse
+  boolean estUneBonneReponse
+  Float rang
 
-    MultipleChoiceSpecificationReponsePossible() {
-        super()
-    }
+  MultipleChoiceSpecificationReponsePossible() {
+    super()
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type MultipleChoiceSpecificationReponsePossible
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    MultipleChoiceSpecificationReponsePossible(Map map) {
-        libelleReponse = map.libelleReponse
-        estUneBonneReponse = map.estUneBonneReponse
-        rang = map.rang
-    }
+  /**
+   * Créer et initialise un nouvel objet de type MultipleChoiceSpecificationReponsePossible
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  MultipleChoiceSpecificationReponsePossible(Map map) {
+    libelleReponse = map.libelleReponse
+    estUneBonneReponse = map.estUneBonneReponse
+    rang = map.rang
+  }
 
-    def toMap() {
-        [
-                libelleReponse: libelleReponse,
-                estUneBonneReponse: estUneBonneReponse,
-                rang: rang
-        ]
-    }
+  def toMap() {
+    [
+            libelleReponse: libelleReponse,
+            estUneBonneReponse: estUneBonneReponse,
+            rang: rang
+    ]
+  }
 }

@@ -32,9 +32,9 @@
 
 package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 
+import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import grails.validation.Validateable
 
 /**
  *
@@ -42,10 +42,10 @@ import grails.validation.Validateable
  */
 class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationService<ExclusiveChoiceSpecification> {
 
-    @Override
-    def createSpecification(Object map) {
-        new ExclusiveChoiceSpecification(map)
-    }
+  @Override
+  def createSpecification(Object map) {
+    new ExclusiveChoiceSpecification(map)
+  }
 
 }
 
@@ -54,41 +54,46 @@ class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationS
  */
 @Validateable
 class ExclusiveChoiceSpecification implements QuestionSpecification {
-    String libelle
-    String correction
-    List<ExclusiveChoiceSpecificationReponsePossible> reponses = []
-    Integer indexBonneReponse
+  String libelle
+  String correction
+  List<ExclusiveChoiceSpecificationReponsePossible> reponses = []
+  Integer indexBonneReponse
 
-    ExclusiveChoiceSpecification() {
-        super()
-    }
+  ExclusiveChoiceSpecification() {
+    super()
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecification
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    ExclusiveChoiceSpecification(Map map) {
-        libelle = map.libelle
-        correction = map.correction
-        indexBonneReponse = map.indexBonneReponse
-        reponses = map.reponses.collect {
-            if (it instanceof ExclusiveChoiceSpecificationReponsePossible) {
-                it
-            } else {
-                new ExclusiveChoiceSpecificationReponsePossible(it)
-            }
-        }
+  /**
+   * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecification
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  ExclusiveChoiceSpecification(Map map) {
+    libelle = map.libelle
+    correction = map.correction
+    indexBonneReponse = map.indexBonneReponse
+    reponses = map.reponses.collect {
+      if (it instanceof ExclusiveChoiceSpecificationReponsePossible) {
+        it
+      } else {
+        new ExclusiveChoiceSpecificationReponsePossible(it)
+      }
     }
+  }
 
-    def Map toMap() {
-        [
-                libelle: libelle,
-                correction: correction,
-                reponses: reponses*.toMap(),
-                indexBonneReponse: indexBonneReponse
-        ]
-    }
+  def Map toMap() {
+    [
+            libelle: libelle,
+            correction: correction,
+            reponses: reponses*.toMap(),
+            indexBonneReponse: indexBonneReponse
+    ]
+  }
+
+  static constraints = {
+    libelle blank: false
+    reponses minSize: 2
+  }
 
 }
 
@@ -97,27 +102,27 @@ class ExclusiveChoiceSpecification implements QuestionSpecification {
  * type MultipleChoice
  */
 class ExclusiveChoiceSpecificationReponsePossible {
-    String libelleReponse
-    Float rang
+  String libelleReponse
+  Float rang
 
-    ExclusiveChoiceSpecificationReponsePossible() {
-        super()
-    }
+  ExclusiveChoiceSpecificationReponsePossible() {
+    super()
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecificationReponsePossible
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    ExclusiveChoiceSpecificationReponsePossible(Map map) {
-        libelleReponse = map.libelleReponse
-        rang = map.rang
-    }
+  /**
+   * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecificationReponsePossible
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  ExclusiveChoiceSpecificationReponsePossible(Map map) {
+    libelleReponse = map.libelleReponse
+    rang = map.rang
+  }
 
-    def toMap() {
-        [
-                libelleReponse: libelleReponse,
-                rang: rang
-        ]
-    }
+  def toMap() {
+    [
+            libelleReponse: libelleReponse,
+            rang: rang
+    ]
+  }
 }

@@ -86,6 +86,11 @@ class FillGapSpecification implements QuestionSpecification {
         ]
     }
 
+  static constraints = {
+    libelle blank: false
+    texteATrousStructure minSize: 2
+  }
+
     /**
      * Implementation du getter pour l'attribut virtuel 'texteATrous'. Se repose sur la structure de données
      * texteATrousStructure pour sa génération.

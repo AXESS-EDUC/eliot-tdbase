@@ -104,6 +104,11 @@ class AssociateSpecification implements QuestionSpecification {
         associactionList.each {participants << it.participant1; participants << it.participant2}
         Collections.shuffle(participants)
     }
+
+  static constraints = {
+    libelle blank: false
+    associations minSize: 2
+  }
 }
 
 /**
