@@ -179,6 +179,7 @@ class SujetService {
     publication.save()
     leSujet.copyrightsType = ct
     leSujet.publication = publication
+    leSujet.publie = true
     // il faut partager les questions qui ne sont pas partagées
     leSujet.questionsSequences.each {
       def question = it.question

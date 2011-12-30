@@ -36,7 +36,8 @@
     $(document).ready(function() {
       $('#menu-item-sujets').addClass('actif');
       $("select").change(function() {
-        $("form").submit();
+        var currentForm = "#form_" + (this).id
+        $(currentForm).submit();
       })
     });
   </r:script>
@@ -66,11 +67,11 @@
       </li>
       <li>
 
-          <g:form method="get" action="edite"
+          <g:form method="get" action="edite" name="form_select_creation"
                   controller="question">
             <g:hiddenField name="sujetId" value="${sujet.id}"/>
             <g:hiddenField name="creation" value="true"/>
-            Une question de type <g:select name="questionTypeId"
+            Une question de type <g:select name="questionTypeId" id="select_creation"
                                            noSelection="${['null':'Sélectionnez...']}"
                                            from="${typesQuestionSupportes}"
                                            optionKey="id"
@@ -96,9 +97,9 @@
       </li>
       <li>
         <g:form method="get" action="recherche"
-                          controller="question">
+                          controller="question" name="form_select_recherche">
                     <g:hiddenField name="sujetId" value="${sujet.id}"/>
-                    Une question de type <g:select name="typeId"
+                    Une question de type <g:select name="typeId" id="select_recherche"
                                                    noSelection="${['null':'Sélectionnez...']}"
                                                    from="${typesQuestionSupportes}"
                                                    optionKey="id"

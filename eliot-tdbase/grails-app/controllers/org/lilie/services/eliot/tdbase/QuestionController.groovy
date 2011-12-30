@@ -110,7 +110,8 @@ class QuestionController {
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             question: question,
-            sujet: sujet
+            sujet: sujet,
+            afficheLienInserer:true
     ])
   }
 

@@ -274,6 +274,7 @@ class QuestionService implements ApplicationContextAware {
     publication.save()
     laQuestion.copyrightsType = ct
     laQuestion.publication = publication
+    laQuestion.publie = true
     // mise à jour de la paternite
     PaterniteItem paterniteItem = new PaterniteItem(
             auteur: "${partageur.nomAffichage}",
