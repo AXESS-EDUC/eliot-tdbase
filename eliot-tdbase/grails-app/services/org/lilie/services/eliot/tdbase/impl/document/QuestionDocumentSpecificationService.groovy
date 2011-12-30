@@ -44,106 +44,111 @@ import org.lilie.services.eliot.tdbase.*
  */
 class QuestionDocumentSpecificationService extends QuestionSpecificationService<DocumentSpecification> {
 
-    QuestionAttachementService questionAttachementService
+  QuestionAttachementService questionAttachementService
 
-    @Override
-    def createSpecification(Object map) {
-        return new DocumentSpecification(map);
+  @Override
+  def createSpecification(Object map) {
+    return new DocumentSpecification(map);
+  }
+
+  String getSpecificationNormaliseFromObject(DocumentSpecification specification) {
+    specification?.presentation ? StringUtils.normalise(specification.presentation) : null
+  }
+
+  @Transactional
+  @Override
+  def updateQuestionSpecificationForObject(Question question, DocumentSpecification spec) {
+
+    def oldQuestAttId = question.specificationObject?.questionAttachementId
+    if (spec.fichier && !spec.fichier.empty) {
+      def questionAttachement = questionAttachementService.createAttachementForQuestion(
+              spec.fichier, question)
+      if (oldQuestAttId) {
+        questionAttachementService.deleteQuestionAttachement(
+                QuestionAttachement.get(oldQuestAttId))
+      }
+      spec.questionAttachementId = questionAttachement.id
+      spec.urlExterne = null
+    } else if (spec.urlExterne) {
+      if (oldQuestAttId) {
+        questionAttachementService.deleteQuestionAttachement(
+                QuestionAttachement.get(oldQuestAttId))
+      }
+    }
+    if (documentIsNotSet(question,spec)) {
+      throw new IllegalArgumentException("question.document.fichier.vide")
     }
 
-    String getSpecificationNormaliseFromObject(DocumentSpecification specification) {
-        specification?.presentation ? StringUtils.normalise(specification.presentation) : null
-    }
+    super.updateQuestionSpecificationForObject(question, spec)
+  }
 
-    @Transactional
-    @Override
-    def updateQuestionSpecificationForObject(Question question, DocumentSpecification spec) {
-
-        def oldQuestAttId = question.specificationObject?.questionAttachementId
-        if (spec.fichier && !spec.fichier.empty) {
-            def questionAttachement = questionAttachementService.createAttachementForQuestion(
-                    spec.fichier, question)
-            if (oldQuestAttId) {
-                questionAttachementService.deleteQuestionAttachement(
-                        QuestionAttachement.get(oldQuestAttId))
-            }
-            spec.questionAttachementId = questionAttachement.id
-        } else if (spec.urlExterne) {
-            if (oldQuestAttId) {
-                questionAttachementService.deleteQuestionAttachement(
-                        QuestionAttachement.get(oldQuestAttId))
-            }
-        } else {
-            throw new IllegalArgumentException("question.document.fichier.vide")
-        }
-
-        super.updateQuestionSpecificationForObject(question, spec)
-    }
-
-
+  private boolean documentIsNotSet(Question question, DocumentSpecification spec) {
+    def oldQuestAttId = question.specificationObject?.questionAttachementId
+    return !oldQuestAttId && !spec.urlExterne && !(spec.fichier && !spec.fichier.empty);
+  }
 }
 
 /**
  * Représente un objet spécification pour une question de type Document
  */
 class DocumentSpecification implements QuestionSpecification {
-    String auteur
-    String source
-    String presentation
-    String type
-    String urlExterne
-    Long questionAttachementId
-    boolean estInsereDansLeSujet
-    MultipartFile fichier
+  String auteur
+  String source
+  String presentation
+  String type
+  String urlExterne
+  Long questionAttachementId
+  boolean estInsereDansLeSujet
+  MultipartFile fichier
 
-    DocumentSpecification() {
-        super()
-    }
+  DocumentSpecification() {
+    super()
+  }
 
-    DocumentSpecification(Map map) {
-        this.auteur = map.auteur
-        this.source = map.source
-        this.presentation = map.presentation
-        this.type = map.type
-        this.urlExterne = map.urlExterne
-        this.questionAttachementId = map.questionAttachementId
-        this.estInsereDansLeSujet = map.estInsereDansLeSujet
-    }
+  DocumentSpecification(Map map) {
+    this.auteur = map.auteur
+    this.source = map.source
+    this.presentation = map.presentation
+    this.type = map.type
+    this.urlExterne = map.urlExterne
+    this.questionAttachementId = map.questionAttachementId
+    this.estInsereDansLeSujet = map.estInsereDansLeSujet
+  }
 
-    Map toMap() {
-        [
-                auteur: auteur,
-                source: source,
-                presentation: presentation,
-                type: type,
-                urlExterne: urlExterne,
-                questionAttachementId: questionAttachementId,
-                estInsereDansLeSujet: estInsereDansLeSujet
-        ]
-    }
+  Map toMap() {
+    [
+            auteur: auteur,
+            source: source,
+            presentation: presentation,
+            type: type,
+            urlExterne: urlExterne,
+            questionAttachementId: questionAttachementId,
+            estInsereDansLeSujet: estInsereDansLeSujet
+    ]
+  }
 
-    /**
-     * Retourne l'attachement correspondant
-     * @return l'attachement
-     */
-    Attachement getAttachement() {
-        if (questionAttachementId) {
-            QuestionAttachement questionAttachement = QuestionAttachement.get(questionAttachementId)
-            return questionAttachement.attachement
-        } else {
-            return null
-        }
+  /**
+   * Retourne l'attachement correspondant
+   * @return l'attachement
+   */
+  Attachement getAttachement() {
+    if (questionAttachementId) {
+      QuestionAttachement questionAttachement = QuestionAttachement.get(questionAttachementId)
+      return questionAttachement.attachement
+    } else {
+      return null
     }
+  }
 
 }
 
 enum DocumentTypeEnum {
-    TEXTE,
-    GRAPHIQUE,
-    TABLEAU,
-    APPLET
+  TEXTE,
+  GRAPHIQUE,
+  TABLEAU,
+  APPLET
 
-    String getName() {
-        return name()
-    }
+  String getName() {
+    return name()
+  }
 }
