@@ -31,6 +31,7 @@
 
 package org.lilie.services.eliot.tdbase.impl.integer
 
+import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 
@@ -40,50 +41,55 @@ import org.lilie.services.eliot.tdbase.QuestionSpecificationService
  */
 class QuestionIntegerSpecificationService extends QuestionSpecificationService<IntegerSpecification> {
 
-    /**
-     *
-     * @see QuestionSpecificationService
-     */
-    @Override
-    def createSpecification(Object map) {
-        return new IntegerSpecification(map)
-    }
+  /**
+   *
+   * @see QuestionSpecificationService
+   */
+  @Override
+  def createSpecification(Object map) {
+    return new IntegerSpecification(map)
+  }
 }
 
 /**
  * Représente un objet spécification pour une question de type Integer
  */
+@Validateable
 class IntegerSpecification implements QuestionSpecification {
-    String libelle
-    Integer valeur
-    String unite
-    String correction
+  String libelle
+  Integer valeur
+  String unite
+  String correction
 
 
-    IntegerSpecification() {
-        super()
-    }
+  IntegerSpecification() {
+    super()
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    IntegerSpecification(Map map) {
-        libelle = map.libelle
-        valeur = map.valeur
-        unite = map.unite
-        correction = map.correction
-    }
+  /**
+   * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  IntegerSpecification(Map map) {
+    libelle = map.libelle
+    valeur = map.valeur
+    unite = map.unite
+    correction = map.correction
+  }
 
-    def Map toMap() {
-        [
-                libelle: libelle,
-                valeur: valeur,
-                unite: unite,
-                correction: correction
-        ]
-    }
+  def Map toMap() {
+    [
+            libelle: libelle,
+            valeur: valeur,
+            unite: unite,
+            correction: correction
+    ]
+  }
 
+  static constraints = {
+    libelle blank:false
+    valeur nullable:false
+  }
 
 }

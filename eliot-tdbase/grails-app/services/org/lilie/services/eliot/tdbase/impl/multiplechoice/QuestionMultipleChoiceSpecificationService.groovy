@@ -32,6 +32,7 @@ package org.lilie.services.eliot.tdbase.impl.multiplechoice
 
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import grails.validation.Validateable
 
 /**
  *
@@ -49,6 +50,7 @@ class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationSe
 /**
  * Représente un objet spécification pour une question de type MultipleChoice
  */
+@Validateable
 class MultipleChoiceSpecification implements QuestionSpecification {
     String libelle
     String correction

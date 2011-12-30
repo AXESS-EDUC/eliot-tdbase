@@ -31,6 +31,7 @@ package org.lilie.services.eliot.tdbase.impl.fillgap
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import static java.util.Collections.shuffle
+import grails.validation.Validateable
 
 /**
  * Service des specifications de questions de type texte à trou.
@@ -47,6 +48,7 @@ class QuestionFillGapSpecificationService extends QuestionSpecificationService<F
 /**
  * Specification de question de type texte à trou
  */
+@Validateable
 class FillGapSpecification implements QuestionSpecification {
 
     /**

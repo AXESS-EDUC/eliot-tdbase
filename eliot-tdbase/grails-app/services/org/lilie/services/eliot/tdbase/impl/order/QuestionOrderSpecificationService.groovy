@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.impl.order
 
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import grails.validation.Validateable
 
 /**
  * Service des specifications de questios de type 'ordre à retablir'.
@@ -47,6 +48,7 @@ class QuestionOrderSpecificationService extends QuestionSpecificationService<Ord
 /**
  * Specification d'une question de type 'ordre à retablir'.
  */
+@Validateable
 class OrderSpecification implements QuestionSpecification {
 
     /**

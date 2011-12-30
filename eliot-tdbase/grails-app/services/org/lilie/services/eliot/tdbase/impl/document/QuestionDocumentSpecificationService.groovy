@@ -37,6 +37,7 @@ import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
+import grails.validation.Validateable
 
 /**
  *
@@ -58,8 +59,11 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
   @Transactional
   @Override
   def updateQuestionSpecificationForObject(Question question, DocumentSpecification spec) {
+    spec.fichierEstVide = false
+    super.updateQuestionSpecificationForObject(question, spec)
 
     def oldQuestAttId = question.specificationObject?.questionAttachementId
+    
     if (spec.fichier && !spec.fichier.empty) {
       def questionAttachement = questionAttachementService.createAttachementForQuestion(
               spec.fichier, question)
@@ -75,22 +79,19 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
                 QuestionAttachement.get(oldQuestAttId))
       }
     }
-    if (documentIsNotSet(question,spec)) {
-      throw new IllegalArgumentException("question.document.fichier.vide")
+
+    if (!spec.urlExterne && !spec.questionAttachementId) {
+      spec.fichierEstVide = true
     }
 
     super.updateQuestionSpecificationForObject(question, spec)
-  }
-
-  private boolean documentIsNotSet(Question question, DocumentSpecification spec) {
-    def oldQuestAttId = question.specificationObject?.questionAttachementId
-    return !oldQuestAttId && !spec.urlExterne && !(spec.fichier && !spec.fichier.empty);
   }
 }
 
 /**
  * Représente un objet spécification pour une question de type Document
  */
+@Validateable
 class DocumentSpecification implements QuestionSpecification {
   String auteur
   String source
@@ -100,6 +101,7 @@ class DocumentSpecification implements QuestionSpecification {
   Long questionAttachementId
   boolean estInsereDansLeSujet
   MultipartFile fichier
+  boolean fichierEstVide
 
   DocumentSpecification() {
     super()
@@ -113,6 +115,7 @@ class DocumentSpecification implements QuestionSpecification {
     this.urlExterne = map.urlExterne
     this.questionAttachementId = map.questionAttachementId
     this.estInsereDansLeSujet = map.estInsereDansLeSujet
+    this.fichierEstVide = map.fichierEstVide
   }
 
   Map toMap() {
@@ -123,7 +126,8 @@ class DocumentSpecification implements QuestionSpecification {
             type: type,
             urlExterne: urlExterne,
             questionAttachementId: questionAttachementId,
-            estInsereDansLeSujet: estInsereDansLeSujet
+            estInsereDansLeSujet: estInsereDansLeSujet,
+            fichierEstVide: fichierEstVide
     ]
   }
 
@@ -138,6 +142,16 @@ class DocumentSpecification implements QuestionSpecification {
     } else {
       return null
     }
+  }
+
+  static constraints = {
+    auteur blank:false
+    source blank:false
+    fichierEstVide (validator: { val ->
+       if (val) {
+         return "question.document.fichier.vide"
+       }
+    })
   }
 
 }

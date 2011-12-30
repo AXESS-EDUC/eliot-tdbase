@@ -28,10 +28,10 @@
 
 package org.lilie.services.eliot.tdbase.impl.statement
 
-import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tdbase.Specification
-import org.lilie.services.eliot.tice.utils.StringUtils
+import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
+import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tice.utils.StringUtils
 
 /**
  *
@@ -39,21 +39,26 @@ import org.lilie.services.eliot.tdbase.QuestionSpecification
  */
 class QuestionStatementSpecificationService extends QuestionSpecificationService<StatementSpecification> {
 
-    def createSpecification(Object map) {
-        return new StatementSpecification(map)
-    }
+  def createSpecification(Object map) {
+    return new StatementSpecification(map)
+  }
 
-    @Override
-    String getSpecificationNormaliseFromObject(StatementSpecification specification) {
-        specification.enonce ? StringUtils.normalise(specification.enonce) : null
-    }
+  @Override
+  String getSpecificationNormaliseFromObject(StatementSpecification specification) {
+    specification.enonce ? StringUtils.normalise(specification.enonce) : null
+  }
 
 }
 
+@Validateable
 class StatementSpecification implements QuestionSpecification {
-    String enonce
+  String enonce
 
-    Map toMap() {
-        return [enonce: enonce]
-    }
+  Map toMap() {
+    return [enonce: enonce]
+  }
+
+  static constraints = {
+    enonce(blank: false)
+  }
 }

@@ -81,7 +81,6 @@ class QuestionService implements ApplicationContextAware {
             specification: "{}"
     )
     question.properties = proprietes
-    question.save()
     def specService = questionSpecificationServiceForQuestionType(question.type)
     specService.updateQuestionSpecificationForObject(question, specificationObject)
     question.save(flush: true)
@@ -184,7 +183,7 @@ class QuestionService implements ApplicationContextAware {
     }
 
     laQuestion.properties = proprietes
-    laQuestion.save()
+
     def specService = questionSpecificationServiceForQuestionType(laQuestion.type)
     specService.updateQuestionSpecificationForObject(laQuestion, specificationObject)
     laQuestion.save(flush: true)
@@ -210,7 +209,9 @@ class QuestionService implements ApplicationContextAware {
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,sujet))
 
     Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
-    sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
+    if (!question.hasErrors()) {
+      sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
+    }
     return question
   }
 

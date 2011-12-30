@@ -34,6 +34,7 @@ package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import grails.validation.Validateable
 
 /**
  *
@@ -51,6 +52,7 @@ class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationS
 /**
  * Représente un objet spécification pour une question de type MultipleChoice
  */
+@Validateable
 class ExclusiveChoiceSpecification implements QuestionSpecification {
     String libelle
     String correction

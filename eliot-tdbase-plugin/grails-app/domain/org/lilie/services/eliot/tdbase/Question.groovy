@@ -57,7 +57,7 @@ class Question implements Artefact {
   Boolean publie
 
   String paternite
-  
+
   Personne proprietaire
   QuestionType type
 
@@ -89,6 +89,14 @@ class Question implements Artefact {
     niveau(nullable: true)
     publication(nullable: true)
     paternite(nullable: true)
+    specification(validator: { val, obj, errors ->
+      def objSpec = obj.getSpecificationObjectForJson(val)
+      if (!objSpec.validate()) {
+        objSpec.errors.allErrors.each {
+          errors.reject(it.code, it.arguments, it.defaultMessage)
+        }
+      }
+    })
   }
 
   static mapping = {
@@ -123,8 +131,16 @@ class Question implements Artefact {
    * @return l'objet encapsulant la spécification
    */
   def getSpecificationObject() {
+    return getSpecificationObjectForJson(specification)
+  }
+
+  /**
+   *
+   * @return l'objet encapsulant la spécification pour un Json donné
+   */
+  def getSpecificationObjectForJson(String jsonSpec) {
     def specService = questionService.questionSpecificationServiceForQuestionType(type)
-    specService.getObjectFromSpecification(specification)
+    specService.getObjectFromSpecification(jsonSpec)
   }
 
   /**

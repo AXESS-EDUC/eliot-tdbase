@@ -31,6 +31,7 @@ package org.lilie.services.eliot.tdbase.impl.associate
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
+import grails.validation.Validateable
 
 /**
  * Service des specifications de questios de type associate.
@@ -47,6 +48,7 @@ class QuestionAssociateSpecificationService extends QuestionSpecificationService
 /**
  * Specification de question de type associate
  */
+@Validateable
 class AssociateSpecification implements QuestionSpecification {
 
     /**
