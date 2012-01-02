@@ -103,7 +103,8 @@ class CopieService {
       copie = new Copie(
               modaliteActivite: seance,
               eleve: eleve,
-              sujet: seance.sujet
+              sujet: seance.sujet,
+              estJetable: false
       )
       if (!copie.save() || copie.hasErrors()) {
         return copie
@@ -125,7 +126,7 @@ class CopieService {
         }
       }
     }
-
+    copie.save(flush: true)
     return copie
   }
 
@@ -184,6 +185,33 @@ class CopieService {
     copie.save()
     return copie
   }
+
+  /**
+     * Met à jour la notation de la copie
+     * @param copie la copie
+     * @param enseignant l'enseignant qui corrige
+     * @return la copie mise à jour
+     */
+    @Transactional
+    Copie updateNoteForReponse(Float points,
+            Reponse reponse,
+            Personne enseignant) {
+      def copie = reponse.copie
+      assert (copie.modaliteActivite.enseignant == enseignant)
+      def ancienneNote = reponse.correctionNoteCorrecteur
+      reponse.correctionNoteCorrecteur = points
+      if (copie.correctionNoteCorrecteur != null) {
+        if (ancienneNote != null) {
+          copie.correctionNoteCorrecteur -= ancienneNote
+        }
+        copie.correctionNoteCorrecteur += points
+      } else {
+        copie.correctionNoteCorrecteur = points
+      }
+      copie.correctionNoteFinale = copie.recalculeNoteFinale()
+      copie.save()
+      return copie
+    }
 
   /**
    * Met à jour la notation de la copie

@@ -342,3 +342,17 @@ Style custom eliot-tdbase
     list-style: none;
     margin-left: 0;
 }
+
+.editinplace {
+    float: left;
+    padding: 0.1em ;
+    border:1px solid;
+    width: 5em;
+    text-align: center;
+}
+
+.editinplace input {
+    width: 5em;
+    padding: 0;
+    border: none;
+}

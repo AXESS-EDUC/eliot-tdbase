@@ -201,6 +201,27 @@ class SeanceController {
     ])
   }
 
+  /**
+   *
+   * Action pour mettre à jour la note d'une réponse
+   */
+  def updateReponseNote() {
+    Personne enseignant = authenticatedPersonne
+    try {
+      // deduit l'id de l'objet réponse à modifier
+      def id = params.element_id as Long
+      def reponse = Reponse.get(id)
+      // récupère la nouvelle valeur
+      def points = params.update_value as Float
+      // met à jour
+      copieService.updateNoteForReponse(points, reponse, enseignant)
+      render points
+    } catch (Exception e) {
+      log.info(e.message)
+      render params.original_html
+    }
+  }
+
 
 }
 

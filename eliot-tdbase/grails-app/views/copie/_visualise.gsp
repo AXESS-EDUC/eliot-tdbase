@@ -89,8 +89,14 @@
           <div id="SujetSequenceQuestions-${sujetQuestion.id}"
                style="float: left;width: 60px;">
             <g:if test="${reponse}">
+              <g:if test="${reponse.estEnNotationManuelle()}">
+                  <g:formatNumber number="${reponse.correctionNoteCorrecteur}"
+                                                                format="##0.00"/>
+              </g:if>
+              <g:else>
               <g:formatNumber number="${reponse.correctionNoteAutomatique}"
                               format="##0.00"/>
+              </g:else>
             </g:if>
             <g:else>
               <span title="Copie rendue après ajout de cette question.">Non&nbsp;notée&nbsp;</span>

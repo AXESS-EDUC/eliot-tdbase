@@ -72,7 +72,15 @@ class Reponse {
     cache(true)
   }
 
-  static transients = ['reponseService']
+  static transients = ['reponseService', 'estEnNotationManuelle']
+
+  /**
+   *
+   * @return true si la question induit une  notation  manuelle
+   */
+  boolean estEnNotationManuelle() {
+    return sujetQuestion.question.estEnNotationManuelle()
+  }
 
   /**
    *

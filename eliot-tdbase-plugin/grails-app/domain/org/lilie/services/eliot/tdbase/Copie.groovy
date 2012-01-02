@@ -47,7 +47,7 @@ class Copie {
     Float maxPointsCorrecteur
     Float pointsModulation = 0
     String correctionNoteNonNumerique
-    Boolean estJetable
+    Boolean estJetable = false
 
     Sujet sujet
     Personne eleve

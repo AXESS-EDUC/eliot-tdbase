@@ -205,12 +205,10 @@
              style="margin-right:90%;float: right;">
           <div class="editinplace"
                id="SujetSequenceQuestions-${sujetQuestion.id}"
-               title="Cliquez pour modifier le nombre de points..."
-               style="float: left;padding: 0.5em; border:1px solid ">
+               title="Cliquez pour modifier le nombre de points...">
             ${sujetQuestion.points}
           </div>
-
-          <div style="padding:0.5em; ">&nbsp;point(s)</div>
+          &nbsp;point(s)
         </div>
       </g:if>
       <div class="tdbase-sujet-edition-question-preview">

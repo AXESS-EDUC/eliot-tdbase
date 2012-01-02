@@ -108,8 +108,17 @@ class Question implements Artefact {
     questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
   }
 
-  static transients = ['questionService', 'specificationObject']
+  static transients = ['questionService', 'specificationObject', 'estEnNotationManuelle']
 
+  /**
+   *
+   * @return  true si la question induit une  notation  manuelle
+   */
+  boolean estEnNotationManuelle() {
+    return type.code == QuestionTypeEnum.Open.name() ||
+           type.code == QuestionTypeEnum.FileUpload.name()
+  }
+  
   /**
    *
    * @return la liste des questions filles de la question courante
