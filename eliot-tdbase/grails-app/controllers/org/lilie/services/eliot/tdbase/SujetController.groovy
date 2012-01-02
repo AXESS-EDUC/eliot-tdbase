@@ -8,6 +8,7 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.Breadcrumps
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+import org.lilie.services.eliot.tice.utils.NumberUtils
 
 class SujetController {
 
@@ -400,24 +401,29 @@ class SujetController {
    *
    * Action pour mettre à jour le nombre de  points associé à une question
    */
-  def updatePoints() {
+  def updatePoints(UpdatePointsCommand pointsCommand) {
     try {
       // deduit l'id de l'objet SujetSequenceQuestions à modifier
-      def id = params.element_id - "SujetSequenceQuestions-" as Long
+      def id = pointsCommand.element_id - "SujetSequenceQuestions-" as Long
       def sujetQuestion = SujetSequenceQuestions.get(id)
       // récupère la nouvelle valeur
-      def points = params.update_value as Float
+      def points = pointsCommand.update_value
       // met à jour
       sujetService.updatePointsForQuestion(points,
                                            sujetQuestion,
                                            authenticatedPersonne)
-      render points
+      render NumberUtils.formatFloat(points)
     } catch (Exception e) {
       log.info(e.message)
       render params.original_html
     }
   }
 
+}
+
+class UpdatePointsCommand {
+  String element_id
+  Float update_value
 }
 
 class NouveauSujetCommand {

@@ -34,6 +34,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+import org.lilie.services.eliot.tice.utils.NumberUtils
 
 class SeanceController {
 
@@ -205,17 +206,16 @@ class SeanceController {
    *
    * Action pour mettre à jour la note d'une réponse
    */
-  def updateReponseNote() {
+  def updateReponseNote(UpdateReponseNoteCommand nvelleNote) {
     Personne enseignant = authenticatedPersonne
     try {
       // deduit l'id de l'objet réponse à modifier
-      def id = params.element_id as Long
-      def reponse = Reponse.get(id)
+      def reponse = Reponse.get(nvelleNote.element_id)
       // récupère la nouvelle valeur
-      def points = params.update_value as Float
+      def points = nvelleNote.update_value
       // met à jour
       copieService.updateNoteForReponse(points, reponse, enseignant)
-      render points
+      render NumberUtils.formatFloat(points)
     } catch (Exception e) {
       log.info(e.message)
       render params.original_html
@@ -230,4 +230,9 @@ class CopieNotationCommand {
   Long copieId
   String copieAnnotation
   Float copiePointsModulation
+}
+
+class  UpdateReponseNoteCommand {
+  Long element_id
+  Float update_value
 }

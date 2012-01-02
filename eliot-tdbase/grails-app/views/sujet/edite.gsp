@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -206,7 +207,7 @@
           <div class="editinplace"
                id="SujetSequenceQuestions-${sujetQuestion.id}"
                title="Cliquez pour modifier le nombre de points...">
-            ${sujetQuestion.points}
+            ${NumberUtils.formatFloat(sujetQuestion.points)}
           </div>
           &nbsp;point(s)
         </div>
