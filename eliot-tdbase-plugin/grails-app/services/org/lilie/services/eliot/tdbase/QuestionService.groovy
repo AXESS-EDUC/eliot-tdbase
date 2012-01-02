@@ -389,7 +389,8 @@ class QuestionService implements ApplicationContextAware {
             FillGap.questionType,
             Associate.questionType,
             Order.questionType,
-            GraphicMatch.questionType
+            GraphicMatch.questionType,
+            Open.questionType
     ]
   }
 

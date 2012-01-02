@@ -176,7 +176,11 @@ class CopieService {
     } else {
       copie.correctionNoteFinale = copie.correctionNoteAutomatique
     }
-    copie.correctionNoteFinale += copie.pointsModulation
+    if (copie.correctionNoteFinale != null) {
+      copie.correctionNoteFinale += copie.pointsModulation
+    } else {
+      copie.correctionNoteFinale = copie.pointsModulation
+    }
     copie.save()
     return copie
   }
