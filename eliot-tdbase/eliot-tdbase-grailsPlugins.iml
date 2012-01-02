@@ -4,8 +4,8 @@
     <facet type="web" name="GrailsWeb">
       <configuration>
         <webroots>
-          <root url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/web-app" relative="/" />
-          <root url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/jquery-1.6.1.1/web-app" relative="/" />
+          <root url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-1.6.1.1/web-app" relative="/" />
+          <root url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/web-app" relative="/" />
         </webroots>
         <sourceRoots />
       </configuration>
@@ -20,43 +20,43 @@
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/codenarc-0.15" />
-    <content url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/gmetrics-0.3.1" />
-    <content url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/hibernate-2.0.0.RC1" />
-    <content url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/jquery-1.6.1.1">
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/jquery-1.6.1.1/src/groovy" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/jquery-1.6.1.1/grails-app/i18n" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/jquery-1.6.1.1/grails-app/services" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/jquery-1.6.1.1/grails-app/taglib" isTestSource="false" />
+    <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/codenarc-0.15" />
+    <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/gmetrics-0.3.1" />
+    <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/hibernate-2.0.0" />
+    <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-1.6.1.1">
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-1.6.1.1/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-1.6.1.1/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-1.6.1.1/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-1.6.1.1/grails-app/taglib" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/jquery-ui-1.8.15">
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/grails-app/i18n" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/grails-app/taglib" isTestSource="false" />
+    <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-ui-1.8.15">
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/grails-app/taglib" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/resources-1.1.1">
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/resources-1.1.1/src/java" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/resources-1.1.1/src/groovy" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/resources-1.1.1/grails-app/i18n" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/resources-1.1.1/grails-app/taglib" isTestSource="false" />
+    <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/resources-1.1.1">
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/resources-1.1.1/src/java" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/resources-1.1.1/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/resources-1.1.1/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/resources-1.1.1/grails-app/taglib" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/spring-security-core-1.2">
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/spring-security-core-1.2/src/java" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/spring-security-core-1.2/src/groovy" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/spring-security-core-1.2/grails-app/i18n" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/spring-security-core-1.2/grails-app/services" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/spring-security-core-1.2/grails-app/taglib" isTestSource="false" />
+    <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/spring-security-core-1.2">
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/spring-security-core-1.2/src/java" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/spring-security-core-1.2/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/spring-security-core-1.2/grails-app/i18n" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/spring-security-core-1.2/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/spring-security-core-1.2/grails-app/taglib" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/svn-1.0.0.M1">
-      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/svn-1.0.0.M1/src/groovy" isTestSource="false" />
+    <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/svn-1.0.0.M1">
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/svn-1.0.0.M1/src/groovy" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/tomcat-2.0.0.RC1" />
+    <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/tomcat-2.0.0" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="grails-2.0.0.RC1" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="grails-2.0.0" level="application" />
     <orderEntry type="module-library" exported="">
       <library name="Grails User Library (eliot-tdbase-grailsPlugins)">
         <CLASSES>
-          <root url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/svn-1.0.0.M1/lib" />
+          <root url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/svn-1.0.0.M1/lib" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.springframework.security/spring-security-web/jars/spring-security-web-3.0.5.RELEASE.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.aspectj/aspectjweaver/jars/aspectjweaver-1.6.8.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.aspectj/aspectjrt/jars/aspectjrt-1.6.8.jar!/" />
@@ -69,12 +69,13 @@
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.gmetrics/GMetrics/jars/GMetrics-0.3.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.codenarc/CodeNarc/jars/CodeNarc-0.15.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.lilie.services.eliot/eliot-tice-dbmigration/jars/eliot-tice-dbmigration-0.4a-SNAPSHOT.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/antlr/antlr/jars/antlr-2.7.6.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
           <root url="jar://$MODULE_DIR$/../groovy-all-1.6.9-sources.jar!/" />
         </SOURCES>
-        <jarDirectory url="file://$USER_HOME$/.grails/2.0.0.RC1/projects/eliot-tdbase/plugins/svn-1.0.0.M1/lib" recursive="false" />
+        <jarDirectory url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/svn-1.0.0.M1/lib" recursive="false" />
       </library>
     </orderEntry>
   </component>

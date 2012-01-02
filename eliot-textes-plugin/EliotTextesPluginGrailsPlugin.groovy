@@ -32,7 +32,7 @@ class EliotTextesPluginGrailsPlugin {
   // the plugin version
   def version = "0.4a-SNAPSHOT"
   // the version or versions of Grails the plugin is designed for
-  def grailsVersion = "1.4 > *"
+  def grailsVersion = "2.0.0 > *"
   // the other plugins this plugin depends on
   def dependsOn = ['eliot-tice-plugin':'0.4a-SNAPSHOT > *']
   // resources that are excluded from plugin packaging
