@@ -25,11 +25,48 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<r:script>
-  $(document).ready(function () {
-    $("form").attr('enctype', 'multipart/form-data');
-  });
+
+<style type="text/css">
+
+.participant {
+  float: left;
+  margin: 0 2px 0 2px;
+  border: solid 1px #FFD324;
+  background: #FFF6BF;
+  color: #817134;
+  display: inline-block;
+  height: 1em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  text-decoration: none;
+}
+
+.associationCell {
+  float: left;
+  margin: 5px 5px 5px 5px;
+  border: solid 1px #808080;
+  background: #f5f5f5;
+  display: inline-block;
+  height: 1.5em;
+  width: 17em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+}
+
+.highlighted {
+  background: #b5bdff;
+}
+
+</style>
+
+<r:require module="modernizr"/>
+<r:script disposition="head">
+  Modernizr.load({
+            test: Modernizr.touch,
+            yep:"${r.resource(uri: '/static/dragNDrop.js')}",
+            nope:"${r.resource(uri: '/static/dragNDrop.polyfill.js')}"
+
+          });
 </r:script>
+
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
@@ -42,9 +79,48 @@
 </tr>
 <tr>
   <td class="label">R&eacute;ponse:</td>
-  <td id="specifobject_fichier">
-    <g:render template="/question/GraphicMatch/GraphicMatchEditionReponses"
-              model="[specifobject:specifobject]"/>
+  <td>
+    <g:hiddenField name="specifobject.attachmentId"
+                   value="${specifobject.attachmentId}"/>
+
+    <g:if test="${specifobject.attachmentId}">
+      <et:viewAttachement
+              attachement="${specifobject.attachement}"/>
+      <br>
+    </g:if>
+
+    <input type="file" name="specifobject.fichier"
+           onchange="$('#imageUpload').trigger('click');"/>
+
+    <g:actionSubmit value="upload" action="enregistre" title="Upload"
+                    hidden="true"
+                    id="imageUpload"/>
+
+    <table>
+      <tr>
+        <td id="textfields">
+          <g:render
+                  template="/question/GraphicMatch/GraphicMatchEditionReponses"
+                  model="[specifobject:specifobject]"/>
+        </td>
+        <td style="vertical-align: bottom;">
+          <g:submitToRemote title="Ajouter une textfield" value="Ajouter"
+                            action="ajouteTextField"
+                            controller="questionGraphicMatch"
+                            update="textfields"
+                            after="afterTextFieldAdded();"/>
+
+          <g:submitToRemote value="Suppr" title="Supprimer le textField"
+                            action="supprimeTextField"
+                            controller="questionGraphicMatch"
+                            update="textfields"
+                            after="afterTextfieldDeleted();"/>
+          <br/>
+
+        </td>
+      </tr>
+    </table>
+
   </td>
 </tr>
 <tr>

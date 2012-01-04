@@ -25,17 +25,27 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<g:hiddenField name="specifobject.attachmentId"
-               value="${specifobject.attachmentId}"/>
 
-<g:if test="${specifobject.attachmentId}">
-  <et:viewAttachement
-          attachement="${specifobject.attachement}"/>
+<g:each status="i" in="${specifobject.textFields}" var="textField">
+
+  <input type="radio" name="selectedTextField" value="${i}"/>
+
+  <g:textArea name="specifobject.textFields[${i}].text" rows="3" cols="25"
+              value="${textField.text}"/>
+  Top:
+  <g:textField name="specifobject.textFields[${i}].topDistance"
+               value="${textField.topDistance}" size="2"/>
+  Left:
+  <g:textField name="specifobject.textFields[${i}].leftDistance"
+               value="${textField.topDistance}" size="2"/>
+
+  <g:hiddenField name="specifobject.textFields[${i}].hSize"
+                 value="${textField.hSize}"/>
+
+  <g:hiddenField name="specifobject.textFields[${i}].vSize"
+                 value="${textField.vSize}"/>
   <br>
-</g:if>
+</g:each>
 
-<input type="file" name="specifobject.fichier"
-       onchange="$('#imageUpload').trigger('click');"/>
-
-<g:actionSubmit value="upload" action="enregistre" title="Upload" hidden="true"
-                id="imageUpload"/>
+<g:hiddenField name="specifobject.textFields.size"
+               value="${specifobject.textFields?.size()}"/>

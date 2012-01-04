@@ -31,6 +31,8 @@ package org.lilie.services.eliot.tdbase.impl
 import org.lilie.services.eliot.tdbase.QuestionController
 import org.lilie.services.eliot.tdbase.impl.graphicmatch.GraphicMatchSpecification
 import org.lilie.services.eliot.tdbase.impl.graphicmatch.TextField
+import org.lilie.services.eliot.tdbase.impl.associate.AssociateSpecification
+import org.lilie.services.eliot.tdbase.impl.associate.Association
 
 /**
  * Controlleur pour la saisie des questions de type graphique à compléter
@@ -48,5 +50,31 @@ class QuestionGraphicMatchController extends QuestionController {
       }
     }
     bindData(specifobject, params, "specifobject")
+  }
+
+  /**
+   *
+   * Action "ajouteTextField"
+   */
+  def ajouteTextField() {
+    GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params) ?: new GraphicMatchSpecification()
+    specifobject.textFields << new TextField()
+    render(
+            template: "/question/GraphicMatch/GraphicMatchEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
+
+  /**
+   *
+   * Action "supprimeTextField"
+   */
+  def supprimeTextField() {
+    GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.textFields.remove(params.selectedTextField as Integer)
+    render(
+            template: "/question/GraphicMatch/GraphicMatchEditionReponses",
+            model: [specifobject: specifobject]
+    )
   }
 }

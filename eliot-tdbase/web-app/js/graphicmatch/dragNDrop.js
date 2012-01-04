@@ -26,37 +26,27 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-modules = {
+function initDragNDrop() {
+    initWidgets();
+    registerEventHandlers();
 
-  'eliot-tdbase' {
-    dependsOn 'eliot-tice'
-    resource url: [dir: 'images/eliot', file: 'tdbasefavicon.ico']
-    resource url: [dir: 'css/eliot', file: 'tdbase.css']
-  }
+    alert('DnD Full Style');
 
-  modernizr {
-    resource id: 'js', url: [dir: 'js/lib', file: 'modernizr.js'],
-             disposition: 'head', nominify: true
-  }
 
-  associateJS {
-    dependsOn "modernizr", "eliot-tice-ui"
-    resource url: [dir: 'js/associate', file: 'load.js']
-    resource url: [dir: 'js/associate', file: 'dragNDrop.polyfill.js']
-    resource url: [dir: 'js/associate', file: 'dragNDrop.js']
-  }
+    function initWidgets() {
+        $("form").attr('enctype', 'multipart/form-data');
+    }
 
-  orderJS {
-    dependsOn "modernizr", "eliot-tice-ui"
-    resource url: [dir: 'js/order', file: 'load.js']
-    resource url: [dir: 'js/order', file: 'dragNDrop.polyfill.js']
-    resource url: [dir: 'js/order', file: 'dragNDrop.js']
-  }
+    function registerEventHandlers() {
+    }
 
-  graphicMatchJS {
-    dependsOn "modernizr", "eliot-tice-ui"
-    //resource url: [dir: 'js/graphicmatch', file: 'load.js']
-    resource url: [dir: 'js/graphicmatch', file: 'dragNDrop.polyfill.js']
-    resource url: [dir: 'js/graphicmatch', file: 'dragNDrop.js']
-  }
 }
+
+function afterTextFieldAdded() {
+    alert("After text field added");
+}
+
+function afterTextfieldDeleted() {
+    alert("After text field deleted");
+}
+

@@ -26,37 +26,19 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-modules = {
+Modernizr.load({
+                   test:Modernizr.touch,
+                   yep:'http://localhost:8080/eliot-tdbase/static/js/graphicmatch/dragNDrop.js',
+                   nope:'http://localhost:8080/eliot-tdbase/static/js/graphicmatch/dragNDrop.polyfill.js',
+                   complete:function () {
+                       initDragNDrop();
+                   }
+               });
 
-  'eliot-tdbase' {
-    dependsOn 'eliot-tice'
-    resource url: [dir: 'images/eliot', file: 'tdbasefavicon.ico']
-    resource url: [dir: 'css/eliot', file: 'tdbase.css']
-  }
+/*
 
-  modernizr {
-    resource id: 'js', url: [dir: 'js/lib', file: 'modernizr.js'],
-             disposition: 'head', nominify: true
-  }
-
-  associateJS {
-    dependsOn "modernizr", "eliot-tice-ui"
-    resource url: [dir: 'js/associate', file: 'load.js']
-    resource url: [dir: 'js/associate', file: 'dragNDrop.polyfill.js']
-    resource url: [dir: 'js/associate', file: 'dragNDrop.js']
-  }
-
-  orderJS {
-    dependsOn "modernizr", "eliot-tice-ui"
-    resource url: [dir: 'js/order', file: 'load.js']
-    resource url: [dir: 'js/order', file: 'dragNDrop.polyfill.js']
-    resource url: [dir: 'js/order', file: 'dragNDrop.js']
-  }
-
-  graphicMatchJS {
-    dependsOn "modernizr", "eliot-tice-ui"
-    //resource url: [dir: 'js/graphicmatch', file: 'load.js']
-    resource url: [dir: 'js/graphicmatch', file: 'dragNDrop.polyfill.js']
-    resource url: [dir: 'js/graphicmatch', file: 'dragNDrop.js']
-  }
-}
+ if (Modernizr.touch) {
+ initDragNDropPolyFill();
+ } else {
+ initDragNDrop();
+ }*/
