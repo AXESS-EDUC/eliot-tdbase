@@ -26,9 +26,8 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-import grails.util.Environment
-import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
+import org.lilie.services.eliot.tice.utils.BootstrapService
 
 class BootStrap {
 
@@ -37,12 +36,17 @@ class BootStrap {
 
   def init = { servletContext ->
 
-    switch (Environment.current) {
-      case Environment.DEVELOPMENT:
+    environments {
+      demo {
         dbMigrationService.updateDb()
         bootstrapService.bootstrapForDevelopment()
-        break
+      }
+      development {
+        dbMigrationService.updateDb()
+        bootstrapService.bootstrapForDevelopment()
+      }
     }
+
 
   }
 

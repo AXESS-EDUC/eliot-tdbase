@@ -31,77 +31,84 @@ package org.lilie.services.eliot.tdbase.impl.associate
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
+import grails.validation.Validateable
 
 /**
  * Service des specifications de questios de type associate.
  */
 class QuestionAssociateSpecificationService extends QuestionSpecificationService<AssociateSpecification> {
 
-    @Override
-    def createSpecification(Object map) {
-        new AssociateSpecification(map)
-    }
+  @Override
+  def createSpecification(Object map) {
+    new AssociateSpecification(map)
+  }
 
 }
 
 /**
  * Specification de question de type associate
  */
+@Validateable
 class AssociateSpecification implements QuestionSpecification {
 
-    /**
-     * Le libellé.
-     */
-    String libelle
-    /**
-     * La correction.
-     */
-    String correction
+  /**
+   * Le libellé.
+   */
+  String libelle
+  /**
+   * La correction.
+   */
+  String correction
 
-    /**
-     * La liste d'associations.
-     */
-    List<Association> associations = []
+  /**
+   * La liste d'associations.
+   */
+  List<Association> associations = []
 
-    /**
-     * La liste de tous les participants de toutes les associations.
-     */
-    List<String> participants = []
+  /**
+   * La liste de tous les participants de toutes les associations.
+   */
+  List<String> participants = []
 
-    /**
-     * Constructeur par défaut.
-     */
-    AssociateSpecification() {
-        super()
-    }
+  /**
+   * Constructeur par défaut.
+   */
+  AssociateSpecification() {
+    super()
+  }
 
-    /**
-     * Constructeur.
-     * @param params map de paramètres sous format de chaine de charactères.
-     */
-    AssociateSpecification(Map params) {
-        libelle = params.libelle
-        correction = params.correction
-        associations = params.associations.collect {new Association(it)}
-        sauverParticipants(associations)
-    }
+  /**
+   * Constructeur.
+   * @param params map de paramètres sous format de chaine de charactères.
+   */
+  AssociateSpecification(Map params) {
+    libelle = params.libelle
+    correction = params.correction
+    associations = params.associations.collect {new Association(it)}
+    sauverParticipants(associations)
+  }
 
-    @Override
-    Map toMap() {
-        [libelle: libelle,
-                correction: correction,
-                associations: associations.collect {it.toMap()}]
-    }
+  @Override
+  Map toMap() {
+    [libelle: libelle,
+            correction: correction,
+            associations: associations.collect {it.toMap()}]
+  }
 
-    /**
-     * Setter polymorphique pour la liste des Participants à partir d'une liste d'associations.
-     * @param associactionList
-     */
-    void sauverParticipants(List<Association> associactionList) {
-        participants = []
-        associactionList.each {participants << it.participant1; participants << it.participant2}
-        Collections.shuffle(participants)
-    }
+  /**
+   * Setter polymorphique pour la liste des Participants à partir d'une liste d'associations.
+   * @param associactionList
+   */
+  void sauverParticipants(List<Association> associactionList) {
+    participants = []
+    associactionList.each {participants << it.participant1; participants << it.participant2}
+    Collections.shuffle(participants)
+  }
+
+  static constraints = {
+    libelle blank: false
+    associations minSize: 2
+  }
 }
 
 /**
@@ -109,41 +116,41 @@ class AssociateSpecification implements QuestionSpecification {
  */
 class Association {
 
-    /**
-     * Le premier participant.
-     */
-    String participant1
-    /**
-     * Le deuxieme participant.
-     */
-    String participant2
+  /**
+   * Le premier participant.
+   */
+  String participant1
+  /**
+   * Le deuxieme participant.
+   */
+  String participant2
 
-    /**
-     * Marshalling des membres de la classe dans une map.
-     * @return map des valeurs des membres de la classe.
-     */
-    Map toMap() {
-        return [participant1: participant1,
-                participant2: participant2]
+  /**
+   * Marshalling des membres de la classe dans une map.
+   * @return map des valeurs des membres de la classe.
+   */
+  Map toMap() {
+    return [participant1: participant1,
+            participant2: participant2]
+  }
+
+  /**
+   * Evalue l'égalité de deux associations.
+   * @param object l'associate à comparer.
+   * @return vrai si l'intersection des ensembles de participants des deux associations est vide.
+   */
+  @Override
+  boolean equals(Object object) {
+    if (object == null || !(object instanceof Association)) {
+      return false
     }
 
-    /**
-     * Evalue l'égalité de deux associations.
-     * @param object l'associate à comparer.
-     * @return vrai si l'intersection des ensembles de participants des deux associations est vide.
-     */
-    @Override
-    boolean equals(Object object) {
-        if (object == null || !(object instanceof Association)) {
-            return false
-        }
-
-        def meParticipants = [StringUtils.normalise(participant1), StringUtils.normalise(participant2)]
-        def lesAutresParticipants = [StringUtils.normalise(object.participant1), StringUtils.normalise(object.participant2)]
+    def meParticipants = [StringUtils.normalise(participant1), StringUtils.normalise(participant2)]
+    def lesAutresParticipants = [StringUtils.normalise(object.participant1), StringUtils.normalise(object.participant2)]
 
 
-        (meParticipants - lesAutresParticipants).isEmpty()
-    }
+    (meParticipants - lesAutresParticipants).isEmpty()
+  }
 
 
 }

@@ -52,7 +52,7 @@
 </g:if>
 
 <g:if test="${sujet}">
-  <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
+  <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
 </g:if>
 
 
@@ -75,10 +75,11 @@
       <td class="label">Partage :</td>
       <td>
         <g:if test="${question.estPartage()}">
-          <a href="${question.copyrightsType.lien}" target="_blank">${question.copyrightsType.presentation}</a>
+          <a href="${question.copyrightsType.lien}"
+             target="_blank">${question.copyrightsType.presentation}</a>
         </g:if>
         <g:else>
-           cette question n'est pas partagée
+          cette question n'est pas partagée
         </g:else>
       </td>
     </tr>
@@ -110,7 +111,11 @@
     </tr>
     <g:render
             template="/question/${question.type.code}/${question.type.code}Detail"
-            model="[question:question]"/>
+            model="[question: question]"/>
+    <g:if test="${question.paternite}">
+      <g:render template="/artefact/paternite"
+                model="[paternite: question.paternite]"/>
+    </g:if>
   </table>
 </div>
 
@@ -118,7 +123,7 @@
   <g:link action="${lienRetour.action}"
           controller="${lienRetour.controller}"
           params="${lienRetour.params}">Retour</g:link>&nbsp;
-  <g:if test="${sujet}">|
+  <g:if test="${sujet && afficheLienInserer}">|
     <g:link action="insert"
             title="Insérer dans le sujet" id="${question.id}"
             params="[sujetId: sujet?.id]">

@@ -37,6 +37,7 @@ import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
+import grails.validation.Validateable
 
 /**
  *
@@ -44,106 +45,124 @@ import org.lilie.services.eliot.tdbase.*
  */
 class QuestionDocumentSpecificationService extends QuestionSpecificationService<DocumentSpecification> {
 
-    QuestionAttachementService questionAttachementService
+  QuestionAttachementService questionAttachementService
 
-    @Override
-    def createSpecification(Object map) {
-        return new DocumentSpecification(map);
+  @Override
+  def createSpecification(Object map) {
+    return new DocumentSpecification(map);
+  }
+
+  String getSpecificationNormaliseFromObject(DocumentSpecification specification) {
+    specification?.presentation ? StringUtils.normalise(specification.presentation) : null
+  }
+
+  @Transactional
+  @Override
+  def updateQuestionSpecificationForObject(Question question, DocumentSpecification spec) {
+    spec.fichierEstVide = false
+    super.updateQuestionSpecificationForObject(question, spec)
+
+    def oldQuestAttId = question.specificationObject?.questionAttachementId
+
+    if (spec.fichier && !spec.fichier.empty) {
+      def questionAttachement = questionAttachementService.createAttachementForQuestion(
+              spec.fichier, question)
+      if (oldQuestAttId) {
+        questionAttachementService.deleteQuestionAttachement(
+                QuestionAttachement.get(oldQuestAttId))
+      }
+      spec.questionAttachementId = questionAttachement.id
+      spec.urlExterne = null
+    } else if (spec.urlExterne) {
+      if (oldQuestAttId) {
+        questionAttachementService.deleteQuestionAttachement(
+                QuestionAttachement.get(oldQuestAttId))
+      }
     }
 
-    String getSpecificationNormaliseFromObject(DocumentSpecification specification) {
-        specification?.presentation ? StringUtils.normalise(specification.presentation) : null
+    if (!spec.urlExterne && !spec.questionAttachementId) {
+      spec.fichierEstVide = true
     }
 
-    @Transactional
-    @Override
-    def updateQuestionSpecificationForObject(Question question, DocumentSpecification spec) {
-
-        def oldQuestAttId = question.specificationObject?.questionAttachementId
-        if (spec.fichier && !spec.fichier.empty) {
-            def questionAttachement = questionAttachementService.createAttachementForQuestion(
-                    spec.fichier, question)
-            if (oldQuestAttId) {
-                questionAttachementService.deleteQuestionAttachement(
-                        QuestionAttachement.get(oldQuestAttId))
-            }
-            spec.questionAttachementId = questionAttachement.id
-        } else if (spec.urlExterne) {
-            if (oldQuestAttId) {
-                questionAttachementService.deleteQuestionAttachement(
-                        QuestionAttachement.get(oldQuestAttId))
-            }
-        } else {
-            throw new IllegalArgumentException("question.document.fichier.vide")
-        }
-
-        super.updateQuestionSpecificationForObject(question, spec)
-    }
-
-
+    super.updateQuestionSpecificationForObject(question, spec)
+  }
 }
 
 /**
  * Représente un objet spécification pour une question de type Document
  */
+@Validateable
 class DocumentSpecification implements QuestionSpecification {
-    String auteur
-    String source
-    String presentation
-    String type
-    String urlExterne
-    Long questionAttachementId
-    boolean estInsereDansLeSujet
-    MultipartFile fichier
+  String auteur
+  String source
+  String presentation
+  String type
+  String urlExterne
+  Long questionAttachementId
+  boolean estInsereDansLeSujet
+  MultipartFile fichier
+  boolean fichierEstVide
 
-    DocumentSpecification() {
-        super()
-    }
+  DocumentSpecification() {
+    super()
+  }
 
-    DocumentSpecification(Map map) {
-        this.auteur = map.auteur
-        this.source = map.source
-        this.presentation = map.presentation
-        this.type = map.type
-        this.urlExterne = map.urlExterne
-        this.questionAttachementId = map.questionAttachementId
-        this.estInsereDansLeSujet = map.estInsereDansLeSujet
-    }
+  DocumentSpecification(Map map) {
+    this.auteur = map.auteur
+    this.source = map.source
+    this.presentation = map.presentation
+    this.type = map.type
+    this.urlExterne = map.urlExterne
+    this.questionAttachementId = map.questionAttachementId
+    this.estInsereDansLeSujet = map.estInsereDansLeSujet
+    this.fichierEstVide = map.fichierEstVide
+  }
 
-    Map toMap() {
-        [
-                auteur: auteur,
-                source: source,
-                presentation: presentation,
-                type: type,
-                urlExterne: urlExterne,
-                questionAttachementId: questionAttachementId,
-                estInsereDansLeSujet: estInsereDansLeSujet
-        ]
-    }
+  Map toMap() {
+    [
+            auteur: auteur,
+            source: source,
+            presentation: presentation,
+            type: type,
+            urlExterne: urlExterne,
+            questionAttachementId: questionAttachementId,
+            estInsereDansLeSujet: estInsereDansLeSujet,
+            fichierEstVide: fichierEstVide
+    ]
+  }
 
-    /**
-     * Retourne l'attachement correspondant
-     * @return l'attachement
-     */
-    Attachement getAttachement() {
-        if (questionAttachementId) {
-            QuestionAttachement questionAttachement = QuestionAttachement.get(questionAttachementId)
-            return questionAttachement.attachement
-        } else {
-            return null
-        }
+  /**
+   * Retourne l'attachement correspondant
+   * @return l'attachement
+   */
+  Attachement getAttachement() {
+    if (questionAttachementId) {
+      QuestionAttachement questionAttachement = QuestionAttachement.get(questionAttachementId)
+      return questionAttachement.attachement
+    } else {
+      return null
     }
+  }
+
+  static constraints = {
+    auteur blank: false
+    source blank: false
+    fichierEstVide(validator: { val ->
+      if (val) {
+        return "question.document.fichier.vide"
+      }
+    })
+  }
 
 }
 
 enum DocumentTypeEnum {
-    TEXTE,
-    GRAPHIQUE,
-    TABLEAU,
-    APPLET
+  TEXTE,
+  GRAPHIQUE,
+  TABLEAU,
+  APPLET
 
-    String getName() {
-        return name()
-    }
+  String getName() {
+    return name()
+  }
 }

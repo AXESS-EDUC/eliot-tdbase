@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.impl.order
 
+import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 
@@ -37,107 +38,113 @@ import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 class QuestionOrderSpecificationService extends QuestionSpecificationService<OrderSpecification> {
 
 
-    @Override
-    def createSpecification(Object map) {
-        new OrderSpecification(map)
+  @Override
+  def createSpecification(Object map) {
+    new OrderSpecification(map)
 
-    }
+  }
 }
 
 /**
  * Specification d'une question de type 'ordre à retablir'.
  */
+@Validateable
 class OrderSpecification implements QuestionSpecification {
 
-    /**
-     * Le libellé.
-     */
-    String libelle
+  /**
+   * Le libellé.
+   */
+  String libelle
 
-    /**
-     * La correction.
-     */
-    String correction
+  /**
+   * La correction.
+   */
+  String correction
 
-    /**
-     * Les elements dans leur ordre.
-     */
-    List<Item> orderedItems = []
+  /**
+   * Les elements dans leur ordre.
+   */
+  List<Item> orderedItems = []
 
-    /**
-     * Constructeur par defaut.
-     */
-    OrderSpecification() {
-        super()
-    }
+  /**
+   * Constructeur par defaut.
+   */
+  OrderSpecification() {
+    super()
+  }
 
-    /**
-     * Constructeur
-     * @param params map des paramètres pour l'initialisation de l'objet
-     */
-    OrderSpecification(Map params) {
-        libelle = params.libelle
-        correction = params.correction
-        orderedItems = params.orderedItems.collect {new Item(it)}
-    }
+  /**
+   * Constructeur
+   * @param params map des paramètres pour l'initialisation de l'objet
+   */
+  OrderSpecification(Map params) {
+    libelle = params.libelle
+    correction = params.correction
+    orderedItems = params.orderedItems.collect {new Item(it)}
+  }
 
-    @Override
-    Map toMap() {
-        [
-                libelle: libelle,
-                correction: correction,
-                orderedItems: orderedItems.collect {it.toMap()}
-        ]
-    }
+  @Override
+  Map toMap() {
+    [
+            libelle: libelle,
+            correction: correction,
+            orderedItems: orderedItems.collect {it.toMap()}
+    ]
+  }
 
-    /**
-     * Genère une liste des ordinals que l'on peut selectionner lors de l'edition d'une question de type
-     * ordre à retablir.
-     * @return
-     */
-    def getSelectableOrdinalList() {
-        def ordinal = 1
-        def selectableOrdinalList = []
-        orderedItems.size().times {selectableOrdinalList << ordinal++}
-        selectableOrdinalList
-    }
+  /**
+   * Genère une liste des ordinals que l'on peut selectionner lors de l'edition d'une question de type
+   * ordre à retablir.
+   * @return
+   */
+  def getSelectableOrdinalList() {
+    def ordinal = 1
+    def selectableOrdinalList = []
+    orderedItems.size().times {selectableOrdinalList << ordinal++}
+    selectableOrdinalList
+  }
+
+  static constraints = {
+    libelle blank: false
+    orderedItems minSize: 2
+  }
 }
 
 /**
  * Un element de la liste des elements à remettre en ordre.
  */
 class Item {
-    /**
-     * Le texte.
-     */
-    String text
-    /**
-     * La position dans la liste.
-     */
-    String ordinal
+  /**
+   * Le texte.
+   */
+  String text
+  /**
+   * La position dans la liste.
+   */
+  String ordinal
 
-    /**
-     * Marshalling sous forme d'une map.
-     * @return la presentation map de l'Item.
-     */
-    Map toMap() {
-        [text: text, ordinal: ordinal]
-    }
+  /**
+   * Marshalling sous forme d'une map.
+   * @return la presentation map de l'Item.
+   */
+  Map toMap() {
+    [text: text, ordinal: ordinal]
+  }
 
-    @Override
-    boolean equals(Object object) {
-        if (object != null && object instanceof Item) {
-            Item theOther = object
-            return text == theOther.text && ordinal == theOther.ordinal
-        }
-        false
+  @Override
+  boolean equals(Object object) {
+    if (object != null && object instanceof Item) {
+      Item theOther = object
+      return text == theOther.text && ordinal == theOther.ordinal
     }
+    false
+  }
 
-    @Override
-    int hashCode() {
-        int hash = 1
-        hash = hash * 31 + (text == null ? 0 : text.hashCode())
-        hash = hash * 31 + (ordinal == null ? 0 : ordinal.hashCode())
-        hash
-    }
+  @Override
+  int hashCode() {
+    int hash = 1
+    hash = hash * 31 + (text == null ? 0 : text.hashCode())
+    hash = hash * 31 + (ordinal == null ? 0 : ordinal.hashCode())
+    hash
+  }
 }

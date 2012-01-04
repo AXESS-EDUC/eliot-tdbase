@@ -74,7 +74,7 @@ class QuestionController {
     } else {
       question = Question.get(params.id)
       peutSupprimerQuestion = artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question)
-      peutPartagerQuestion =  artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
+      peutPartagerQuestion = artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
       questionEnEdition = true
     }
     Sujet sujet = null
@@ -90,7 +90,7 @@ class QuestionController {
             sujet: sujet,
             peutSupprimer: peutSupprimerQuestion,
             questionEnEdition: questionEnEdition,
-            peutPartagerQuestion : peutPartagerQuestion
+            peutPartagerQuestion: peutPartagerQuestion
     ])
   }
 
@@ -110,7 +110,8 @@ class QuestionController {
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             question: question,
-            sujet: sujet
+            sujet: sujet,
+            afficheLienInserer: true
     ])
   }
 
@@ -129,12 +130,34 @@ class QuestionController {
   }
 
   /**
+   *
+   * Action "Dupliquer"
+   */
+  def duplique() {
+    Personne personne = authenticatedPersonne
+    Question question = Question.get(params.id)
+    Question nvelleQuestion = questionService.recopieQuestion(question, personne)
+    redirect(action: 'edite', id: nvelleQuestion.id)
+  }
+
+  /**
+   *
+   * Action "Dupliquer" depuis un sujet
+   */
+  def dupliqueDansSujet() {
+    Personne personne = authenticatedPersonne
+    SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
+    Question nvelleQuestion = questionService.recopieQuestionDansSujet(sujetQuestion, personne)
+    redirect(action: 'edite', id: nvelleQuestion.id)
+  }
+
+  /**
    * Action "Partager"
    */
   def partage() {
     Personne personne = authenticatedPersonne
     Question question = Question.get(params.id)
-    if (!question.estPartage())  {
+    if (!question.estPartage()) {
       questionService.partageQuestion(question, personne)
     }
     Sujet sujet = null
@@ -154,7 +177,7 @@ class QuestionController {
             sujet: sujet,
             peutSupprimer: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question),
             questionEnEdition: true,
-            peutPartagerQuestion : artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
+            peutPartagerQuestion: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
     ])
 
   }
@@ -164,12 +187,14 @@ class QuestionController {
    * Action "enregistre"
    */
   def enregistre() {
-    Question question
+
     Personne personne = authenticatedPersonne
     def specifObject = getSpecificationObjectFromParams(params)
     boolean questionEnEdition = true
-    if (params.id) {
-      question = Question.get(params.id)
+    boolean peutSupprimer = false
+    boolean peutPartager = false
+    Question question = Question.get(params.id)
+    if (question) {
       questionService.updateProprietes(question, params, specifObject, personne)
     } else {
       question = questionService.createQuestion(params, specifObject, personne)
@@ -183,6 +208,10 @@ class QuestionController {
       request.messageCode = "question.enregistre.succes"
       questionEnEdition = true
     }
+    if (questionEnEdition) {
+      peutSupprimer = artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question)
+      peutPartager = artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
+    }
     render(view: '/question/edite', model: [
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
@@ -190,9 +219,9 @@ class QuestionController {
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,
-            peutSupprimer: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question),
+            peutSupprimer: peutSupprimer,
             questionEnEdition: questionEnEdition,
-            peutPartagerQuestion : artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
+            peutPartagerQuestion: peutPartager
     ])
   }
 
@@ -207,6 +236,7 @@ class QuestionController {
     Sujet sujet = Sujet.get(sujetId)
     Integer rang = breadcrumpsService.getValeurPropriete(
             SujetController.PROP_RANG_INSERTION)
+    boolean questionEnEdition = false
     Question question = questionService.createQuestionAndInsertInSujet(
             params,
             specifObject,
@@ -216,12 +246,19 @@ class QuestionController {
 
     if (!question.hasErrors()) {
       request.messageCode = "question.enregistreinsert.succes"
+      questionEnEdition = true
     }
     render(view: '/question/edite', model: [
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             question: question,
-            sujet: sujet
+            sujet: sujet,
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujet: sujet,
+            peutSupprimer: false,
+            questionEnEdition: questionEnEdition,
+            peutPartagerQuestion: false
     ])
 
   }
@@ -243,7 +280,8 @@ class QuestionController {
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             question: question,
-            sujet: sujet
+            sujet: sujet,
+            afficheLienInserer: false
     ])
 
   }
@@ -267,6 +305,11 @@ class QuestionController {
             QuestionType.get(rechCmd.typeId),
             params
     )
+    Sujet sujet = Sujet.get(rechCmd.sujetId)
+    boolean afficheLiensModifier = true
+    if (sujet) {
+      afficheLiensModifier = false
+    }
     [
             liens: breadcrumpsService.liens,
             afficheFormulaire: true,
@@ -275,7 +318,10 @@ class QuestionController {
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             questions: questions,
             rechercheCommand: rechCmd,
-            sujet: Sujet.get(rechCmd.sujetId)
+            sujet: sujet,
+            afficheLiensModifier: afficheLiensModifier,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ]
   }
 

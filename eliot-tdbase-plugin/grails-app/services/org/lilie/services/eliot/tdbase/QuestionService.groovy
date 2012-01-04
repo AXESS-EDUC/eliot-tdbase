@@ -40,7 +40,6 @@ import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 import static org.lilie.services.eliot.tdbase.QuestionTypeEnum.*
 
-
 /**
  * Service de gestion des questions
  * @author franck silvestre
@@ -81,11 +80,33 @@ class QuestionService implements ApplicationContextAware {
             specification: "{}"
     )
     question.properties = proprietes
-    question.save()
     def specService = questionSpecificationServiceForQuestionType(question.type)
     specService.updateQuestionSpecificationForObject(question, specificationObject)
     question.save(flush: true)
     return question
+  }
+
+  /**
+   * Recopie une question dans un sujet
+   * @param sujetQuestion la question à recopier et son sujet associé
+   * @param proprietaire le proprietaire
+   * @return la copie de la question
+   */
+  @Transactional
+  Question recopieQuestionDansSujet(SujetSequenceQuestions sujetQuestion, Personne proprietaire) {
+
+    def question = sujetQuestion.question
+    def sujet = sujetQuestion.sujet
+
+    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, question))
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
+
+    Question questionCopie = recopieQuestion(question, proprietaire)
+
+    sujetQuestion.question = questionCopie
+    sujetQuestion.save()
+
+    return questionCopie
   }
 
   /**
@@ -97,11 +118,11 @@ class QuestionService implements ApplicationContextAware {
   @Transactional
   Question recopieQuestion(Question question, Personne proprietaire) {
 
-    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(question, proprietaire))
+    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, question))
 
     Question questionCopie = new Question(
             proprietaire: proprietaire,
-            titre: question.titre,
+            titre: question.titre + " (Copie)",
             titreNormalise: question.titreNormalise,
             specification: question.specification,
             specificationNormalise: question.specificationNormalise,
@@ -151,24 +172,20 @@ class QuestionService implements ApplicationContextAware {
    * @return la question
    */
   @Transactional
-  Question updateProprietes(Question question, Map proprietes, def specificationObject,
+  Question updateProprietes(Question laQuestion, Map proprietes, def specificationObject,
                             Personne proprietaire) {
 
-    assert (question.proprietaire == proprietaire || question.publie)
-
-    // verifie que c'est sur la derniere version du sujet editable que l'on
-    // travaille
-    Question laQuestion = getDerniereVersionQuestionForProprietaire(question, proprietaire)
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, laQuestion))
 
     if (proprietes.titre && laQuestion.titre != proprietes.titre) {
       laQuestion.titreNormalise = StringUtils.normalise(proprietes.titre)
     }
 
     laQuestion.properties = proprietes
-    laQuestion.save()
+
     def specService = questionSpecificationServiceForQuestionType(laQuestion.type)
-    specService.updateQuestionSpecificationForObject(question, specificationObject)
-    question.save(flush: true)
+    specService.updateQuestionSpecificationForObject(laQuestion, specificationObject)
+    laQuestion.save(flush: true)
     return laQuestion
   }
 
@@ -188,10 +205,12 @@ class QuestionService implements ApplicationContextAware {
                                           Personne proprietaire,
                                           Integer rang = null) {
 
-    assert (sujet?.proprietaire == proprietaire || sujet?.publie)
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
     Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
-    sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
+    if (!question.hasErrors()) {
+      sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
+    }
     return question
   }
 
@@ -255,8 +274,21 @@ class QuestionService implements ApplicationContextAware {
     publication.save()
     laQuestion.copyrightsType = ct
     laQuestion.publication = publication
+    laQuestion.publie = true
     // mise à jour de la paternite
-
+    PaterniteItem paterniteItem = new PaterniteItem(
+            auteur: "${partageur.nomAffichage}",
+            copyrightDescription: "${ct.presentation}",
+            copyrighLien: "${ct.lien}",
+            datePublication: publication.dateDebut,
+            oeuvreEnCours: true
+    )
+    Paternite paternite = new Paternite(laQuestion.paternite)
+    paternite.paterniteItems.each {
+      it.oeuvreEnCours = false
+    }
+    paternite.addPaterniteItem(paterniteItem)
+    laQuestion.paternite = paternite.toString()
     laQuestion.save()
   }
 
@@ -356,7 +388,8 @@ class QuestionService implements ApplicationContextAware {
             FillGap.questionType,
             Associate.questionType,
             Order.questionType,
-            GraphicMatch.questionType
+            GraphicMatch.questionType,
+            Open.questionType
     ]
   }
 
@@ -372,20 +405,5 @@ class QuestionService implements ApplicationContextAware {
     ]
   }
 
-  /**
-   * Retourne la dernière version éditable d'une question pour un proprietaire donné
-   * @param question la question
-   * @param proprietaire le proprietaire
-   * @return la question editable
-   */
-  private Question getDerniereVersionQuestionForProprietaire(Question question, Personne proprietaire) {
-    if (question.proprietaire == proprietaire && !question.publie) {
-      return question
-    } else {
-      return recopieQuestion(question, proprietaire)
-    }
-  }
 
 }
-
-

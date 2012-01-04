@@ -34,6 +34,11 @@ modules = {
     resource url: [dir: 'css/eliot', file: 'tdbase.css']
   }
 
+  'eliot-tdbase-ui' {
+    dependsOn 'eliot-tdbase', 'eliot-tice-ui'
+    resource url: [dir: 'js/eliot', file: 'eliot-tdbase-ui.js']
+  }
+
   modernizr {
     resource id: 'js', url: [dir: 'js/lib', file: 'modernizr.js'],
              disposition: 'head', nominify: true

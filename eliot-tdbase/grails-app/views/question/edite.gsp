@@ -113,7 +113,7 @@
 </g:if>
 
 <g:if test="${sujet}">
-  <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
+  <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
 </g:if>
 
 <g:form method="post" controller="question${question.type.code}">
@@ -138,7 +138,7 @@
           <td class="label">Mati&egrave;re :</td>
           <td>
             <g:select name="matiere.id" value="${sujet.matiereId}"
-                      noSelection="${['null':'Sélectionner une matière...']}"
+                      noSelection="${['null': 'Sélectionner une matière...']}"
                       from="${matieres}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -148,7 +148,7 @@
           <td class="label">Niveau :</td>
           <td>
             <g:select name="niveau.id" value="${sujet.niveauId}"
-                      noSelection="${['null':'Sélectionner un niveau...']}"
+                      noSelection="${['null': 'Sélectionner un niveau...']}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -160,7 +160,7 @@
           <td class="label">Mati&egrave;re :</td>
           <td>
             <g:select name="matiere.id" value="${question.matiereId}"
-                      noSelection="${['null':'Sélectionner une matière...']}"
+                      noSelection="${['null': 'Sélectionner une matière...']}"
                       from="${matieres}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -170,7 +170,7 @@
           <td class="label">Niveau :</td>
           <td>
             <g:select name="niveau.id" value="${question.niveauId}"
-                      noSelection="${['null':'Sélectionner un niveau...']}"
+                      noSelection="${['null': 'Sélectionner un niveau...']}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -186,18 +186,23 @@
       </tr>
       <g:render
               template="/question/${question.type.code}/${question.type.code}Edition"
-              model="[question:question]"/>
+              model="[question: question]"/>
       <tr>
-            <td class="label">Partage :</td>
-            <td>
-              <g:if test="${question.estPartage()}">
-                <a href="${question.copyrightsType.lien}" target="_blank">${question.copyrightsType.presentation}</a>
-              </g:if>
-              <g:else>
-                 cette question n'est pas partagée
-              </g:else>
-            </td>
-          </tr>
+        <td class="label">Partage :</td>
+        <td>
+          <g:if test="${question.estPartage()}">
+            <a href="${question.copyrightsType.lien}"
+               target="_blank">${question.copyrightsType.presentation}</a>
+          </g:if>
+          <g:else>
+            cette question n'est pas partagée
+          </g:else>
+        </td>
+      </tr>
+      <g:if test="${question.paternite}">
+        <g:render template="/artefact/paternite"
+                  model="[paternite: question.paternite]"/>
+      </g:if>
     </table>
   </div>
   <g:hiddenField name="id" value="${question.id}"/>

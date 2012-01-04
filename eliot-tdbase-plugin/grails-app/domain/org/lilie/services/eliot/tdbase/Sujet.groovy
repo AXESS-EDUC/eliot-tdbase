@@ -63,8 +63,8 @@ class Sujet implements Artefact {
   Boolean ordreQuestionsAleatoire
 
   String paternite
-  
-  
+
+
   Personne proprietaire
 
   SujetType sujetType
@@ -103,6 +103,7 @@ class Sujet implements Artefact {
     table('td.sujet')
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
+    questionsSequences(cascade: 'refresh')
     cache(true)
   }
 

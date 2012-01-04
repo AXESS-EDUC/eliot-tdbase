@@ -8,6 +8,7 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.Breadcrumps
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+import org.lilie.services.eliot.tice.utils.NumberUtils
 
 class SujetController {
 
@@ -55,7 +56,9 @@ class SujetController {
                 matieres: profilScolariteService.findMatieresForPersonne(personne),
                 niveaux: profilScolariteService.findNiveauxForPersonne(personne),
                 sujets: sujets,
-                rechercheCommand: rechCmd
+                rechercheCommand: rechCmd,
+                artefactHelper: artefactAutorisationService,
+                utilisateur: personne
         ]
       }
       js {
@@ -77,7 +80,9 @@ class SujetController {
             afficheFormulaire: false,
             sujets: sujetService.findSujetsForProprietaire(
                     personne,
-                    params)
+                    params),
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ]
     render(view: "recherche", model: model)
   }
@@ -110,8 +115,21 @@ class SujetController {
             sujet: sujet,
             sujetEnEdition: true,
             peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet)
+            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ]
+  }
+
+  /**
+   *
+   * Action "Dupliquer"
+   */
+  def duplique() {
+    Personne personne = authenticatedPersonne
+    Sujet sujet = Sujet.get(params.id)
+    Sujet nveauSujet = sujetService.recopieSujet(sujet, personne)
+    redirect(action: 'edite', id: nveauSujet.id)
   }
 
   /**
@@ -134,7 +152,9 @@ class SujetController {
             sujet: sujet,
             sujetEnEdition: true,
             peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet)
+            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ])
 
   }
@@ -232,7 +252,9 @@ class SujetController {
             sujet: sujet,
             titreSujet: sujet.titre,
             sujetEnEdition: true,
-            liens: breadcrumpsService.liens
+            liens: breadcrumpsService.liens,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: proprietaire
     ])
   }
 
@@ -248,7 +270,9 @@ class SujetController {
             sujet: sujet,
             titreSujet: sujet.titre,
             sujetEnEdition: true,
-            liens: breadcrumpsService.liens
+            liens: breadcrumpsService.liens,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: proprietaire
     ])
   }
 
@@ -264,7 +288,9 @@ class SujetController {
             sujet: sujet,
             titreSujet: sujet.titre,
             sujetEnEdition: true,
-            liens: breadcrumpsService.liens
+            liens: breadcrumpsService.liens,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: proprietaire
     ])
   }
 
@@ -300,7 +326,9 @@ class SujetController {
             liens: breadcrumpsService.liens,
             titreSujet: sujet.titre,
             sujet: sujet,
-            sujetEnEdition: sujetEnEdition
+            sujetEnEdition: sujetEnEdition,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ])
   }
 
@@ -373,24 +401,29 @@ class SujetController {
    *
    * Action pour mettre à jour le nombre de  points associé à une question
    */
-  def updatePoints() {
+  def updatePoints(UpdatePointsCommand pointsCommand) {
     try {
       // deduit l'id de l'objet SujetSequenceQuestions à modifier
-      def id = params.element_id - "SujetSequenceQuestions-" as Long
+      def id = pointsCommand.element_id - "SujetSequenceQuestions-" as Long
       def sujetQuestion = SujetSequenceQuestions.get(id)
       // récupère la nouvelle valeur
-      def points = params.update_value as Float
+      def points = pointsCommand.update_value
       // met à jour
       sujetService.updatePointsForQuestion(points,
                                            sujetQuestion,
                                            authenticatedPersonne)
-      render points
+      render NumberUtils.formatFloat(points)
     } catch (Exception e) {
       log.info(e.message)
       render params.original_html
     }
   }
 
+}
+
+class UpdatePointsCommand {
+  String element_id
+  Float update_value
 }
 
 class NouveauSujetCommand {

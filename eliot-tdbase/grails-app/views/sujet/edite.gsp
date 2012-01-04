@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -30,7 +31,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require module="eliot-tice-ui"/>
+  <r:require module="eliot-tdbase-ui"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-sujets').addClass('actif');
@@ -38,7 +39,7 @@
       $(".editinplace").editInPlace({
         url: "${g.createLink(controller: 'sujet', action: 'updatePoints')}"
       });
-
+      initButtons();
     });
   </r:script>
   <title>TDBase - Edition du sujet</title>
@@ -105,7 +106,8 @@
 </g:hasErrors>
 <g:if test="${request.messageCode}">
   <div class="portal-messages">
-    <li class="success"><g:message code="${request.messageCode}" args="${request.messageArgs}"
+    <li class="success"><g:message code="${request.messageCode}"
+                                   args="${request.messageArgs}"
                                    class="portal-messages success"/></li>
   </div>
 </g:if>
@@ -134,73 +136,87 @@
   <g:each in="${sujet.questionsSequences}" var="sujetQuestion"
           status="indexQuestion">
     <div class="tdbase-sujet-edition-question">
-      <div class="tdbase-sujet-edition-question-boutons">
-        <g:link action="edite"
-                controller="question${sujetQuestion.question.type.code}"
-                id="${sujetQuestion.question.id}"
-                style="text-decoration: none;">
-          <r:img uri="/images/eliot/write-btn.gif"
-                 style="border-style:solid;border-width:1px;border-color:#AAAAAA"
-                 alt="Modifier l'élément..."
-                 title="Modifier l'élément..."/>
-        </g:link>
-        <g:link action="remonteElement" controller="sujet"
-                id="${sujetQuestion.id}" style="text-decoration: none;">
-          <img src="/eliot-tdbase/images/eliot/24-em-up.png"
-               width="22"
-               height="18"
-               style="border-style:solid;border-width:1px;border-color:#AAAAAA"
-               alt="Déplacer vers le haut..."
-               title="Déplacer vers le haut..."/>
-        </g:link>
-        <g:link action="descendElement" controller="sujet"
-                id="${sujetQuestion.id}" style="text-decoration: none;">
-          <img src="/eliot-tdbase/images/eliot/24-em-down.png"
-               width="22"
-               height="18"
-               style="border-style:solid;border-width:1px;border-color:#AAAAAA"
-               alt="Déplacer vers le bas..." title="Déplacer vers le bas..."/>
-        </g:link>
-        <g:link action="ajouteElement" controller="sujet"
-                id="${sujet.id}" params="[direction:'avant',
-                                          rang: sujetQuestion.rang]">
-          <img src="/eliot-tdbase/images/eliot/btnInsertRowBefore.png"
-               style="border-style:solid;border-width:1px;border-color:#AAAAAA"
-               alt="Insérer un élément avant..."
-               title="Insérer un élément avant..."/>
-        </g:link>
-        <g:link action="ajouteElement" controller="sujet"
-                id="${sujet.id}" params="[rang: sujetQuestion.rang]">
-          <img src="/eliot-tdbase/images/eliot/btnInsertRowAfter.png"
-               style="border-style:solid;border-width:1px;border-color:#AAAAAA"
-               alt="Insérer un élément après..."
-               title="Insérer un élément après..."/>
-        </g:link>
-        <g:link action="supprimeFromSujet" controller="sujet"
-                id="${sujetQuestion.id}" style="text-decoration: none;">
-          <img src="/eliot-tdbase/images/eliot/btnDeleteRow.png"
-               style="border-style:solid;border-width:1px;border-color:#AAAAAA"
-               alt="Supprimer l'élément du sujet..."
-               title="Supprimer l'élément du sujet..."/>
-        </g:link>
-      </div>
+
+      <button id="${sujetQuestion.id}">Actions</button>
+      <ul id="menu_actions_${sujetQuestion.id}"
+          class="tdbase-menu-actions">
+        <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetQuestion.question)}">
+          <li><g:link action="edite"
+                      controller="question${sujetQuestion.question.type.code}"
+                      id="${sujetQuestion.question.id}">Modifier
+          </g:link></li>
+        </g:if>
+        <g:else>
+          <li>Modifier</li>
+        </g:else>
+        <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetQuestion.question)}">
+          <li><g:link action="dupliqueDansSujet"
+                      controller="question${sujetQuestion.question.type.code}"
+                      id="${sujetQuestion.id}">Modifier&nbsp;(copie)</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Modifier&nbsp;(copie)</li>
+        </g:else>
+        <li><hr/></li>
+        <li>
+          <g:if test="${indexQuestion > 0}">
+            <g:link action="remonteElement" controller="sujet"
+                    id="${sujetQuestion.id}">
+              Déplacer&nbsp;vers&nbsp;le&nbsp;haut
+            </g:link>
+          </g:if>
+          <g:else>
+            Déplacer&nbsp;vers&nbsp;le&nbsp;haut
+          </g:else>
+        </li>
+        <li>
+          <g:if test="${indexQuestion < sujet.questionsSequences.size() - 1}">
+            <g:link action="descendElement" controller="sujet"
+                    id="${sujetQuestion.id}">
+              Déplacer&nbsp;vers&nbsp;le&nbsp;bas
+            </g:link>
+          </g:if>
+          <g:else>
+            Déplacer&nbsp;vers&nbsp;le&nbsp;bas
+          </g:else>
+        </li>
+        <li><hr/></li>
+        <li>
+          <g:link action="ajouteElement" controller="sujet"
+                  id="${sujet.id}" params="[direction: 'avant',
+                  rang: indexQuestion]">
+            Insérer&nbsp;un&nbsp;élément&nbsp;avant
+          </g:link>
+        </li>
+        <li>
+          <g:link action="ajouteElement" controller="sujet"
+                  id="${sujet.id}" params="[rang: indexQuestion]">
+            Insérer&nbsp;un&nbsp;élément&nbsp;après
+          </g:link>
+        </li>
+        <li><hr/></li>
+        <li><g:link action="supprimeFromSujet" controller="sujet"
+                    id="${sujetQuestion.id}">
+          Retirer</g:link></li>
+
+      </ul>
+
       <g:if test="${sujetQuestion.question.type.interaction}">
         <div class="tdbase-sujet-edition-question-points"
-             style="margin-bottom: 15px">
+             style="margin-right:90%;float: right;">
           <div class="editinplace"
                id="SujetSequenceQuestions-${sujetQuestion.id}"
-               title="Cliquez pour modifier le nombre de points..."
-               style="float: left">
-            ${sujetQuestion.points}
+               title="Cliquez pour modifier le nombre de points...">
+            ${NumberUtils.formatFloat(sujetQuestion.points)}
           </div>
-
-          &nbsp;point(s)</div>
+          &nbsp;point(s)
+        </div>
       </g:if>
       <div class="tdbase-sujet-edition-question-preview">
         <g:set var="question" value="${sujetQuestion.question}"/>
         <g:render
                 template="/question/${question.type.code}/${question.type.code}Preview"
-                model="[question:question, indexQuestion:indexQuestion]"/>
+                model="[question: question, indexQuestion: indexQuestion]"/>
       </div>
 
     </div>

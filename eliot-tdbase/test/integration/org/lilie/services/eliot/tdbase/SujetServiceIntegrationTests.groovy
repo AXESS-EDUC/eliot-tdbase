@@ -186,7 +186,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
                     type: QuestionTypeEnum.Decimal.questionType,
                     estAutonome: true
             ],
-            new DecimalSpecification(),
+            new DecimalSpecification(libelle: "question", valeur: 15),
             personne1,
             )
     assertFalse(quest1.hasErrors())
@@ -209,7 +209,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
                     type: QuestionTypeEnum.Decimal.questionType,
                     estAutonome: true
             ],
-            new DecimalSpecification(),
+            new DecimalSpecification(libelle: "question", valeur: 15),
             personne1,
             )
     assertFalse(quest1.hasErrors())

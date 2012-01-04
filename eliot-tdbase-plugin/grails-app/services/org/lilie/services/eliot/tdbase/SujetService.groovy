@@ -69,13 +69,6 @@ class SujetService {
 
   /**
    * Recopie un sujet
-   * - si le proprietaire de la copie est le proprietaire de l'original, on
-   * incrémente la version ; on ne crée pas de nouvelle branche :
-   * le sujet départ branche de la nouvelle version
-   * est le sujet départ branche de la version précédente
-   * - si le proprietaire de la copie est différent de l'original, on incrémente
-   *  la version ; on créé une nouvelle branche : le sujet départ branche de la
-   * copie est le sujet recopié
    * @param sujet le sujet à recopier
    * @param proprietaire le proprietaire
    * @return la copie du sujet
@@ -83,16 +76,11 @@ class SujetService {
   @Transactional
   Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
     // verification securité
-    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire,sujet))
+    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, sujet))
 
-    def versionSujet = sujet.versionSujet + 1
-    def sujetDepartBranche = sujet.sujetDepartBranche
-    if (sujet.proprietaire != proprietaire) {
-      sujetDepartBranche = sujet
-    }
     Sujet sujetCopie = new Sujet(
             proprietaire: proprietaire,
-            titre: sujet.titre,
+            titre: sujet.titre + " (Copie)",
             titreNormalise: sujet.titreNormalise,
             presentation: sujet.presentation,
             presentationNormalise: sujet.presentationNormalise,
@@ -100,12 +88,10 @@ class SujetService {
             accesSequentiel: sujet.accesSequentiel,
             ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
             publie: false,
-            versionSujet: versionSujet,
-            sujetDepartBranche: sujetDepartBranche,
             copyrightsType: sujet.copyrightsType
     )
     sujetCopie.save()
-    // recopie de la séquence de questions
+    // recopie de la séquence de questions (ce n'est pas une copie en profondeur)
     sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
       SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
               question: sujetQuestion.question,
@@ -113,8 +99,11 @@ class SujetService {
               noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
       )
       sujetCopie.addToQuestionsSequences(copieSujetSequence)
-      sujetCopie.save()
+      copieSujetSequence.save()
     }
+    // repertorie l'ateriorité
+    sujetCopie.paternite = sujet.paternite
+    sujetCopie.save()
     return sujetCopie
   }
 
@@ -126,7 +115,7 @@ class SujetService {
    */
   Sujet updateTitreSujet(Sujet leSujet, String nouveauTitre, Personne proprietaire) {
     // verif securite
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,leSujet))
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
 
     leSujet.titre = nouveauTitre
     leSujet.titreNormalise = StringUtils.normalise(nouveauTitre)
@@ -143,7 +132,7 @@ class SujetService {
    */
   Sujet updateProprietes(Sujet leSujet, Map proprietes, Personne proprietaire) {
     // verif securite
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,leSujet))
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
 
     if (proprietes.titre && leSujet.titre != proprietes.titre) {
       leSujet.titreNormalise = StringUtils.normalise(proprietes.titre)
@@ -190,13 +179,28 @@ class SujetService {
     publication.save()
     leSujet.copyrightsType = ct
     leSujet.publication = publication
+    leSujet.publie = true
     // il faut partager les questions qui ne sont pas partagées
     leSujet.questionsSequences.each {
       def question = it.question
       if (!question.estPartage()) {
-        questionService.partageQuestion(question,partageur)
+        questionService.partageQuestion(question, partageur)
       }
     }
+    // mise à jour de la paternite
+    PaterniteItem paterniteItem = new PaterniteItem(
+            auteur: "${partageur.nomAffichage}",
+            copyrightDescription: "${ct.presentation}",
+            copyrighLien: "${ct.lien}",
+            datePublication: publication.dateDebut,
+            oeuvreEnCours: true
+    )
+    Paternite paternite = new Paternite(leSujet.paternite)
+    paternite.paterniteItems.each {
+      it.oeuvreEnCours = false
+    }
+    paternite.addPaterniteItem(paterniteItem)
+    leSujet.paternite = paternite.toString()
     leSujet.save()
   }
 
@@ -305,11 +309,11 @@ class SujetService {
                               Personne proprietaire, Integer rang = null) {
 
     // verif securite
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,leSujet))
-    assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(proprietaire,question))
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
+    assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(proprietaire, question))
 
     if (!question.estPartage() && leSujet.estPartage()) {
-      questionService.partageQuestion(question,proprietaire)
+      questionService.partageQuestion(question, proprietaire)
     }
 
     def sequence = new SujetSequenceQuestions(
@@ -317,8 +321,10 @@ class SujetService {
             sujet: leSujet,
             rang: leSujet.questionsSequences?.size()
     )
+
     leSujet.addToQuestionsSequences(sequence)
     leSujet.lastUpdated = new Date()
+    sequence.save()
     leSujet.save(flush: true)
     if (rang != null && rang < leSujet.questionsSequences.size() - 1) {
       // il faut insérer au rang correct
@@ -333,6 +339,7 @@ class SujetService {
       }
       leSujet.save(flush: true)
     }
+    leSujet.refresh()
   }
 
   /**
@@ -345,11 +352,11 @@ class SujetService {
   Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
 
-    Sujet leSujet =  sujetQuestion.sujet
+    Sujet leSujet = sujetQuestion.sujet
     // verif securite
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,leSujet))
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
 
-
+    sujetQuestion.refresh()
     def idx = sujetQuestion.rang
     if (idx == 0) { // on ne fait rien
       return sujetQuestion.sujet
@@ -377,10 +384,11 @@ class SujetService {
   @Transactional
   Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
                                       Personne proprietaire) {
-    Sujet leSujet =  sujetQuestion.sujet
-        // verif securite
-        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,leSujet))
+    Sujet leSujet = sujetQuestion.sujet
+    // verif securite
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
 
+    sujetQuestion.refresh()
     def idx = sujetQuestion.rang
     if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) { // on ne fait rien
       return sujetQuestion.sujet
@@ -411,15 +419,15 @@ class SujetService {
     ))
 
     Sujet leSujet = sujetQuestion.sujet
-    SujetSequenceQuestions squest = leSujet.questionsSequences[sujetQuestion.rang]
-    leSujet.removeFromQuestionsSequences(squest)
+    leSujet.removeFromQuestionsSequences(sujetQuestion)
     def reponsesFiltre = Reponse.where {
-      sujetQuestion == squest
+      sujetQuestion == sujetQuestion
     }
     reponsesFiltre.deleteAll()
-    squest.delete()
+    sujetQuestion.delete()
     leSujet.lastUpdated = new Date()
-    leSujet.save()
+    leSujet.save(flush: true)
+    leSujet.refresh()
     return leSujet
   }
 
@@ -444,7 +452,6 @@ class SujetService {
     }
     return sujetQuestion
   }
-
 
 
 }
