@@ -28,11 +28,11 @@
 
 package org.lilie.services.eliot.tdbase.impl.graphicmatch
 
+import grails.validation.Validateable
 import org.lilie.services.eliot.tice.Attachement
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
-import grails.validation.Validateable
 
 /**
  * Service des specifications de questions de type graphique à compléter. 
@@ -54,17 +54,30 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
   def updateQuestionSpecificationForObject(Question question, GraphicMatchSpecification spec) {
 
     question.save()
-    def oldQuestAttId = question.specificationObject?.attachmentId
+    def oldImageId = question.specificationObject?.attachmentId
     if (spec.fichier && !spec.fichier.empty) {
       def questionAttachement = questionAttachementService.createAttachementForQuestion(
               spec.fichier, question)
 
-      if (oldQuestAttId) {
+      if (oldImageId) {
         questionAttachementService.deleteQuestionAttachement(
-                QuestionAttachement.get(oldQuestAttId))
+                QuestionAttachement.get(oldImageId))
       }
-
       spec.attachmentId = questionAttachement.id
+    }
+
+    spec.icons.each {
+      def iconImageId = it.id
+      if (it.fichier && !it.fichier.empty) {
+        def questionAttachement = questionAttachementService.createAttachementForQuestion(
+                it.fichier, question)
+
+        if (iconImageId) {
+          questionAttachementService.deleteQuestionAttachement(
+                  QuestionAttachement.get(iconImageId))
+        }
+        it.id = questionAttachement.id
+      }
     }
 
     super.updateQuestionSpecificationForObject(question, spec)
@@ -72,7 +85,7 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
 }
 
 /**
- * Représente un objet de spécification pour une question de type graphique à completer
+ * Représente un objet de spécification pour une question de type graphique
  */
 @Validateable
 class GraphicMatchSpecification implements QuestionSpecification {
@@ -88,12 +101,23 @@ class GraphicMatchSpecification implements QuestionSpecification {
   String correction
 
   /**
-   * La liste des text fields.
+   * La liste des hotspots.
    */
-  List<TextField> textFields = []
+  List<Hotspot> hotspots = []
 
   /**
-   * Identifiant de l'attachement de fichier graphique à la question.
+   * La liste des icones associés à la question.
+   */
+  List<MatchIcon> icons = []
+
+  /**
+   * Un map qui lie les icones avec les hotspots.
+   * [matchIconId:hotspotId]
+   */
+  Map<Long, String> graphicMatches = [:]
+
+  /**
+   * Identifiant du fichier de l'image d'arrière plan joint à la question.
    */
   Long attachmentId
 
@@ -101,7 +125,7 @@ class GraphicMatchSpecification implements QuestionSpecification {
    * L'objet du fichier. Le fichier n'est pas mappé.
    * Il ne sert que pour l'echange entre IHM et controlleur.
    */
-  MultipartFile fichier // dont map this
+  MultipartFile fichier
 
   /**
    * Constructeur par defaut.
@@ -116,8 +140,10 @@ class GraphicMatchSpecification implements QuestionSpecification {
   GraphicMatchSpecification(Map params) {
     libelle = params.libelle
     correction = params.correction
-    textFields = params.textFields.collect {new TextField(it)}
+    graphicMatches = params.graphicMatches
     attachmentId = params.attachmentId
+    hotspots = params.hotspots.collect {new Hotspot(it)}
+    icons = params.icons.collect {new MatchIcon(it)}
   }
 
   @Override
@@ -125,8 +151,10 @@ class GraphicMatchSpecification implements QuestionSpecification {
     [
             libelle: libelle,
             correction: correction,
-            textFields: textFields.collect {it.toMap()},
-            attachmentId: attachmentId
+            graphicMatches: graphicMatches,
+            attachmentId: attachmentId,
+            hotspots: hotspots.collect {it.toMap()},
+            icons: icons.collect {it.toMap()},
     ]
   }
 
@@ -143,52 +171,69 @@ class GraphicMatchSpecification implements QuestionSpecification {
 }
 
 /**
- * Class qui represente un champ de text au sein d'un graphique 
- * à compléter.
+ * Un hotspot dans lequel une icone peut-être glissée.
  */
-class TextField {
+class Hotspot {
+
+  String id
 
   /**
-   * La distance de la bordure en haut de l'image.
+   * La distance du hotspot de la bordure en haut de l'image d'arrière plan.
    */
   int topDistance = 0
 
   /**
-   * La distance de la bordure à la gauche de l'image.
+   * La distance du hotspot de la bordure à la gauche de l'image d'arrière plan.
    */
   int leftDistance = 0
 
-  /**
-   * La taille horizontale.
-   */
-  int hSize = 100
+  Hotspot() {
+    super()
+  }
 
   /**
-   * La taille verticale.
+   * Conversion de l'objet en map.
+   * @return une map des attributs de l'objet.
    */
-  int vSize = 50
-
-  /**
-   * Le texte de l'element.
-   */
-  String text
-
   Map toMap() {
-    [topDistance: topDistance, leftDistance: leftDistance, hSize: hSize, vSize: vSize, text: text]
+    [
+            topDistance: topDistance,
+            leftDistance: leftDistance,
+            id: id
+    ]
   }
+}
 
-  @Override
-  boolean equals(Object object) {
-    if (object != null && object instanceof TextField) {
-      TextField theOther = object
-      return text == theOther.text
+/**
+ * Une icone que l'on peut glisser dans un hotspot.
+ */
+class MatchIcon {
+
+  /**
+   * L'identifiant de l'icone.
+   */
+  Long id
+
+  /**
+   * L'objet du fichier de l'image. Cet attribut n'est pas mappé.
+   * Il ne sert que pour l'echange entre IHM et controlleur.
+   */
+  MultipartFile fichier
+
+  /**
+   * Conversion de l'objet en map.
+   * @return une map des attributs de l'objet.
+   */
+  Map toMap() {[id: id]}
+
+  /**
+   * Retourne l'attachement correspondant
+   * @return l'attachement
+   */
+  Attachement getAttachment() {
+    if (id) {
+      return QuestionAttachement.get(id).attachement
     }
-    false
+    null
   }
-
-  @Override
-  int hashCode() {
-    31 + (text == null ? 0 : text.hashCode())
-  }
-
 }

@@ -30,9 +30,8 @@ package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
 import org.lilie.services.eliot.tdbase.impl.graphicmatch.GraphicMatchSpecification
-import org.lilie.services.eliot.tdbase.impl.graphicmatch.TextField
-import org.lilie.services.eliot.tdbase.impl.associate.AssociateSpecification
-import org.lilie.services.eliot.tdbase.impl.associate.Association
+import org.lilie.services.eliot.tdbase.impl.graphicmatch.Hotspot
+import org.lilie.services.eliot.tdbase.impl.graphicmatch.MatchIcon
 
 /**
  * Controlleur pour la saisie des questions de type graphique à compléter
@@ -43,22 +42,59 @@ class QuestionGraphicMatchController extends QuestionController {
   def getSpecificationObjectFromParams(Map params) {
 
     def specifobject = new GraphicMatchSpecification()
-    def size = params.specifobject.textFields?.size as Integer
+    def size = params.specifobject.hotspots?.size
     if (size) {
+
+      println("Hotspotssize" + size)
+
+      size = size as Integer
       size.times {
-        specifobject.textFields << new TextField()
+        specifobject.hotspots << new Hotspot()
       }
     }
+
+    size = params.specifobject.icons?.size
+    if (size) {
+
+      println("iconsssize" + size)
+
+      size = size as Integer
+      size.times {
+        specifobject.icons << new MatchIcon()
+      }
+    }
+
     bindData(specifobject, params, "specifobject")
   }
 
   /**
    *
-   * Action "ajouteTextField"
+   * Action "ajouteHotspot"
    */
-  def ajouteTextField() {
+  def ajouteHotspot() {
     GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params) ?: new GraphicMatchSpecification()
-    specifobject.textFields << new TextField()
+    specifobject.hotspots << new Hotspot([id: createId(specifobject.hotspots)])
+    render(
+            template: "/question/GraphicMatch/GraphicMatchEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
+
+  private int createId(List<Hotspot> hotspots) {
+    def idList = hotspots*.id
+    if (idList) {
+      return idList.max().toInteger() + 1
+    }
+    1
+  }
+
+  /**
+   *
+   * Action "ajouteIcon"
+   */
+  def ajouteIcon() {
+    GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params) ?: new GraphicMatchSpecification()
+    specifobject.icons << new MatchIcon()
     render(
             template: "/question/GraphicMatch/GraphicMatchEditionReponses",
             model: [specifobject: specifobject]
@@ -67,14 +103,30 @@ class QuestionGraphicMatchController extends QuestionController {
 
   /**
    *
-   * Action "supprimeTextField"
+   * Action "supprimerHotSpot"
    */
-  def supprimeTextField() {
+  def supprimeHotspot() {
     GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params)
-    specifobject.textFields.remove(params.selectedTextField as Integer)
+    if (params.selectedHotspot) {
+      specifobject.hotspots.remove(params.selectedHotspot as Integer)
+    }
     render(
             template: "/question/GraphicMatch/GraphicMatchEditionReponses",
             model: [specifobject: specifobject]
     )
   }
+
+  /**
+   *
+   * Action "supprimerIcon"
+   */
+  def supprimeIcon() {
+    GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.icons.remove(params.id as Integer)
+    render(
+            template: "/question/GraphicMatch/GraphicMatchEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
+
 }

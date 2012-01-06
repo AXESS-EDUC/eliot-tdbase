@@ -44,7 +44,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="eliot-tice-plugin" exported="" />
     <orderEntry type="library" scope="PROVIDED" name="grails-2.0.0" level="application" />
     <orderEntry type="module-library" exported="">
       <library name="Grails User Library (eliot-notes-plugin)">
@@ -78,6 +77,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="eliot-tdbase-grailsPlugins" />
+    <orderEntry type="module" module-name="eliot-tice-plugin" exported="" />
   </component>
 </module>
 

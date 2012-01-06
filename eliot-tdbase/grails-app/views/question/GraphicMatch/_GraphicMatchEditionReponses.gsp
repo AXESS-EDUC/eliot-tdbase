@@ -25,27 +25,66 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+<g:each status="i" in="${specifobject.hotspots}" var="hotspot">
 
-<g:each status="i" in="${specifobject.textFields}" var="textField">
+  <input type="radio" name="selectedHotspot" value="${i}"/>
 
-  <input type="radio" name="selectedTextField" value="${i}"/>
+  Id:
+  <g:textField name="specifobject.hotspots[${i}].id"
+               value="${hotspot.id}" disabled="true"/>
+  <g:hiddenField name="specifobject.hotspots[${i}].id"
+                 value="${hotspot.id}"/>
 
-  <g:textArea name="specifobject.textFields[${i}].text" rows="3" cols="25"
-              value="${textField.text}"/>
   Top:
-  <g:textField name="specifobject.textFields[${i}].topDistance"
-               value="${textField.topDistance}" size="2"/>
+  <g:textField name="specifobject.hotspots[${i}].topDistance"
+               value="${hotspot.topDistance}" size="3"/>
   Left:
-  <g:textField name="specifobject.textFields[${i}].leftDistance"
-               value="${textField.topDistance}" size="2"/>
-
-  <g:hiddenField name="specifobject.textFields[${i}].hSize"
-                 value="${textField.hSize}"/>
-
-  <g:hiddenField name="specifobject.textFields[${i}].vSize"
-                 value="${textField.vSize}"/>
+  <g:textField name="specifobject.hotspots[${i}].leftDistance"
+               value="${hotspot.leftDistance}" size="3"/>
   <br>
 </g:each>
 
-<g:hiddenField name="specifobject.textFields.size"
-               value="${specifobject.textFields?.size()}"/>
+<g:hiddenField name="specifobject.hotspots.size"
+               value="${specifobject.hotspots?.size()}"/>
+
+<table>
+  <g:each status="i" in="${specifobject.icons}" var="icon">
+    <tr>
+      <td>
+        <g:submitToRemote id="${i}"
+                          title="Supprimer un icon"
+                          value="X"
+                          action="supprimeIcon"
+                          controller="questionGraphicMatch"
+                          update="hotspotsEtIcons"/>
+      </td>
+
+      <td>
+        <g:hiddenField name="specifobject.icons[${i}].id"
+                       value="${icon.id}"/>
+
+        <g:if test="${icon.id}">
+          <et:viewAttachement attachement="${icon.attachment}" width="30"
+                              height="30"/>
+        </g:if>
+      </td>
+      <td>
+        <input type="file" name="specifobject.icons[${i}].fichier"
+               onchange="$('#iconUpload${i}').trigger('click');"/>
+
+        <g:actionSubmit value="upload" action="enregistre" title="Upload"
+                        hidden="true"
+                        id="iconUpload${i}"/>
+      </td>
+      <td>
+        <g:select name="specifobject.graphicMatches[${icon.id}]"
+                  from="${specifobject.hotspots*.id}"
+                  noSelection="['0': 'avec Hotspot...']"
+                  value="${specifobject.graphicMatches[icon.id.toString()]}"/>
+      </td>
+    </tr>
+  </g:each>
+</table>
+
+<g:hiddenField name="specifobject.icons.size"
+               value="${specifobject.icons?.size()}"/>

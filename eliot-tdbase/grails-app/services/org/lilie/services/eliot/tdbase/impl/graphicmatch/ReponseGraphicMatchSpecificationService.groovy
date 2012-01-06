@@ -33,84 +33,71 @@ import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 
 /**
- * Created by IntelliJ IDEA.
- * User: bert
- * Date: 20/12/11
- * Time: 14:02
- * To change this template use File | Settings | File Templates.
+ *   Service pour les specifications de reponses de type 'glisser-déposer'.
  */
-class ReponseGraphicMatchSpecificationService extends ReponseSpecificationService<ReponseGraphicMatchSpecification> {
+class ReponseGraphicMatchSpecificationService extends
+        ReponseSpecificationService<ReponseGraphicMatchSpecification> {
 
-    @Override
-    ReponseGraphicMatchSpecification createSpecification(Map map) {
-        new ReponseGraphicMatchSpecification(map)
-    }
+  @Override
+  ReponseGraphicMatchSpecification createSpecification(Map map) {
+    new ReponseGraphicMatchSpecification(map)
+  }
 
-    @Override
-    Float evalueReponse(Reponse reponse) {
-        ReponseGraphicMatchSpecification repSpecObj = reponse.specificationObject
-        reponse.correctionNoteAutomatique = repSpecObj.evaluate(reponse.sujetQuestion.points)
-        reponse.save()
-        reponse.correctionNoteAutomatique
-    }
+  @Override
+  Float evalueReponse(Reponse reponse) {
+    ReponseGraphicMatchSpecification repSpecObj = reponse.specificationObject
+    reponse.correctionNoteAutomatique = repSpecObj.evaluate(reponse.sujetQuestion.points)
+    reponse.save()
+    reponse.correctionNoteAutomatique
+  }
 }
 
 /**
- * Specifications de reponses de type graphique à compléter.
+ * Specifications de reponses de type 'glisser-déposer'.
  */
 class ReponseGraphicMatchSpecification implements ReponseSpecification {
 
-    /**
-     * Liste d'elements fournis comme reponse à la question.
-     */
-    List<TextField> valeursDeReponse = []
+  /**
+   * Liste d'elements fournis comme reponse à la question.
+   */
+  Map<String, Long> valeursDeReponse = [:]
 
-    /**
-     * Liste d'elements qui forment une reponse correcte.
-     */
-    List<TextField> reponsesPossibles = []
+  /**
+   * Liste d'elements qui forment une reponse correcte.
+   */
+  Map<String, Long> reponsesPossibles = [:]
 
-    /**
-     * Constructeur par defaut
-     */
-    ReponseGraphicMatchSpecification() {
-        super()
-    }
+  /**
+   * Constructeur par defaut
+   */
+  ReponseGraphicMatchSpecification() {
+    super()
+  }
 
-    /**
-     * Constructeur
-     * @param params map des paramètres pour l'initialisation de l'objet
-     */
-    ReponseGraphicMatchSpecification(Map params) {
-        valeursDeReponse = params.valeursDeReponse.collect {createTextField(it)}
-        reponsesPossibles = params.reponsesPossibles.collect {createTextField(it)}
-    }
+  /**
+   * Constructeur
+   * @param params map des paramètres pour l'initialisation de l'objet
+   */
+  ReponseGraphicMatchSpecification(Map params) {
+    valeursDeReponse = params.valeursDeReponse
+    reponsesPossibles = params.reponsesPossibles
+  }
 
-    @Override
-    Map toMap() {
-        [
-                valeursDeReponse: valeursDeReponse.collect {it.toMap()},
-                reponsesPossibles: reponsesPossibles.collect {it.toMap()}
-        ]
-    }
+  @Override
+  Map toMap() {
+    [valeursDeReponse: valeursDeReponse, reponsesPossibles: reponsesPossibles]
+  }
 
-    /**
-     * Logique d'evaluation.
-     * @param maximumPoints les points maximum que l'on peut atteindre si la reponse est bonne.
-     * @return les points correspondants à l'evaluation.
-     */
-    def evaluate(float maximumPoints) {
-        def differenceCount = (reponsesPossibles - valeursDeReponse).size()
-        def totalFieldCount = reponsesPossibles.size()
-        def validFieldCount = totalFieldCount - differenceCount
-        maximumPoints * validFieldCount / totalFieldCount
-    }
-
-    def createTextField(TextField field) {
-        field
-    }
-
-    def createTextField(Map params) {
-        new TextField(params)
-    }
+  /**
+   * Logique d'evaluation.
+   * @param maximumPoints les points maximum que l'on peut atteindre si la
+   * reponse est bonne.
+   * @return les points correspondants à l'evaluation.
+   */
+  def evaluate(float maximumPoints) {
+    def differenceCount = (reponsesPossibles - valeursDeReponse).size()
+    def totalFieldCount = reponsesPossibles.size()
+    def validFieldCount = totalFieldCount - differenceCount
+    maximumPoints * validFieldCount / totalFieldCount
+  }
 }
