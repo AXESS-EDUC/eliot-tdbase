@@ -25,16 +25,7 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-
-function initButtons() {
-    $('button').button({
-                           icons:{
-                               primary:"ui-icon-gear",
-                               secondary:"ui-icon-triangle-1-s"
-                           },
-                           text:false
-                       }).click(function () {
-                                    var currentIdButt = "#menu_actions_" + (this).id;
-                                    $(currentIdButt).toggle();
-                                });
+function initDragNDrop() {
+    $("form").attr('enctype', 'multipart/form-data');
+    alert('DnD Polyfill');
 }

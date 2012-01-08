@@ -232,7 +232,7 @@ class CopieNotationCommand {
   Float copiePointsModulation
 }
 
-class  UpdateReponseNoteCommand {
+class UpdateReponseNoteCommand {
   Long element_id
   Float update_value
 }

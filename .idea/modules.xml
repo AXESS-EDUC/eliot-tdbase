@@ -9,7 +9,8 @@
       <module fileurl="file://$PROJECT_DIR$/eliot-textes-plugin/eliot-textes-plugin.iml" filepath="$PROJECT_DIR$/eliot-textes-plugin/eliot-textes-plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/eliot-tice-dbmigration/eliot-tice-dbmigration.iml" filepath="$PROJECT_DIR$/eliot-tice-dbmigration/eliot-tice-dbmigration.iml" />
       <module fileurl="file://$PROJECT_DIR$/eliot-tice-plugin/eliot-tice-plugin.iml" filepath="$PROJECT_DIR$/eliot-tice-plugin/eliot-tice-plugin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/eliot-tice-qti/eliot-tice-qti.iml" filepath="$PROJECT_DIR$/eliot-tice-qti/eliot-tice-qti.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eliot-notes-plugin/eliotTicePlugin-inplacePlugin.iml" filepath="$PROJECT_DIR$/eliot-notes-plugin/eliotTicePlugin-inplacePlugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eliot-notes-plugin/eliotTicePlugin-inplacePlugin-grailsPlugins.iml" filepath="$PROJECT_DIR$/eliot-notes-plugin/eliotTicePlugin-inplacePlugin-grailsPlugins.iml" />
     </modules>
   </component>
 </project>

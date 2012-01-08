@@ -39,10 +39,10 @@ import grails.validation.Validateable
  */
 class QuestionFillGapSpecificationService extends QuestionSpecificationService<FillGapSpecification> {
 
-    @Override
-    def createSpecification(map) {
-        new FillGapSpecification(map)
-    }
+  @Override
+  def createSpecification(map) {
+    new FillGapSpecification(map)
+  }
 }
 
 /**
@@ -51,170 +51,170 @@ class QuestionFillGapSpecificationService extends QuestionSpecificationService<F
 @Validateable
 class FillGapSpecification implements QuestionSpecification {
 
-    /**
-     * Le libellé.
-     */
-    String libelle
+  /**
+   * Le libellé.
+   */
+  String libelle
 
-    /**
-     * Indique si la suggestion des reponses doit être activée.
-     */
-    boolean montrerLesMots
+  /**
+   * Indique si la suggestion des reponses doit être activée.
+   */
+  boolean montrerLesMots
 
-    /**
-     * La correction de la question.
-     */
-    String correction
+  /**
+   * La correction de la question.
+   */
+  String correction
 
-    /**
-     * Structure de donnée qui contient le texte à trous.
-     */
-    List<TextATrouElement> texteATrousStructure = []
+  /**
+   * Structure de donnée qui contient le texte à trous.
+   */
+  List<TextATrouElement> texteATrousStructure = []
 
-    /**
-     * Liste des elements decrivant les reponses possibles pour un trou.
-     */
-    List<TrouElement> trouElements = []
+  /**
+   * Liste des elements decrivant les reponses possibles pour un trou.
+   */
+  List<TrouElement> trouElements = []
 
-    @Override
-    Map toMap() {
-        [
-                libelle: libelle,
-                montrerLesMots: montrerLesMots,
-                texteATrous: texteATrous,
-                correction: correction,
-        ]
-    }
+  @Override
+  Map toMap() {
+    [
+            libelle: libelle,
+            montrerLesMots: montrerLesMots,
+            texteATrous: texteATrous,
+            correction: correction,
+    ]
+  }
 
   static constraints = {
     libelle blank: false
     texteATrousStructure minSize: 2
   }
 
-    /**
-     * Implementation du getter pour l'attribut virtuel 'texteATrous'. Se repose sur la structure de données
-     * texteATrousStructure pour sa génération.
-     * @return String du texte à trou.
-     */
-    def String getTexteATrous() {
-        def texte = ""
-        texteATrousStructure.each { texte += it.valeurAsText()}
-        texte
+  /**
+   * Implementation du getter pour l'attribut virtuel 'texteATrous'. Se repose sur la structure de données
+   * texteATrousStructure pour sa génération.
+   * @return String du texte à trou.
+   */
+  def String getTexteATrous() {
+    def texte = ""
+    texteATrousStructure.each { texte += it.valeurAsText()}
+    texte
+  }
+  /**
+   * Implementation du setter pour l'attribut virtuel 'texteATrous'. Parse le paramètre 'texteATrous' et l'organise
+   * dans les attributs texteATrousStructure et trouElements.
+   * @param texteATrous le String qui est parsé.
+   */
+  void setTexteATrous(String texteATrous) {
+    def texte = texteATrous ?: ""
+    def index = 0
+    while (!texte.isEmpty()) {
+
+      if (!extractText(texte).isEmpty()) {
+        texteATrousStructure << new TextElement([index: index, valeur: extractText(texte)])
+        texte = eatText(texte)
+      } else {
+        def trou = new TrouElement([index: index, valeur: extractGap(texte)])
+        texteATrousStructure << trou
+        trouElements << trou
+        texte = eatGap(texte)
+      }
+      index++
     }
-    /**
-     * Implementation du setter pour l'attribut virtuel 'texteATrous'. Parse le paramètre 'texteATrous' et l'organise
-     * dans les attributs texteATrousStructure et trouElements.
-     * @param texteATrous le String qui est parsé.
-     */
-    void setTexteATrous(String texteATrous) {
-        def texte = texteATrous ?: ""
-        def index = 0
-        while (!texte.isEmpty()) {
+  }
 
-            if (!extractText(texte).isEmpty()) {
-                texteATrousStructure << new TextElement([index: index, valeur: extractText(texte)])
-                texte = eatText(texte)
-            } else {
-                def trou = new TrouElement([index: index, valeur: extractGap(texte)])
-                texteATrousStructure << trou
-                trouElements << trou
-                texte = eatGap(texte)
-            }
-            index++
-        }
+  /**
+   * Genère une liste des mots suggerés comme reponses. Utilise l'attribut trouElements. Parmi les possibilité de
+   * reponse pour un trouElement, le premier est choisi pour la suggestion de reponse. Les suggestions de reponse sont
+   * melangés pour que le candidat qui passe le teste ne trouve pas de correlation entre les trous à remplir et le
+   * reponses suggerés.
+   * @return une liste des reponses suggerés.
+   */
+  def List getMotsSugeres() {
+    def mots = []
+    trouElements.each {
+      if (it.valeur.size() > 0) { mots << it.valeur[0]}
+    }
+    shuffle(mots, new Random())
+    mots
+  }
+
+  /**
+   * Enlèvement d'un token de type "texte" du debut du texte à trou.
+   * @param texte le texte à trou
+   * @return le texte moins le token de type "texte" au debut. Si aucun token de type "trou" existe, une chaine vide
+   * est retournée.
+   */
+  private String eatText(String texte) {
+    if (texte.indexOf("#{") > -1) {
+      texte.substring(texte.indexOf("#{"), texte.length())
+    } else ""
+  }
+
+  /**
+   * Extraction d'un token de type "texte" du debut du texte à trou jusqu'à la première occurrence d'un token de
+   * type "trou".
+   * @param texte le texte à trou
+   * @return l'extrait du token ou la chaine entière, si aucun token de type "trou" existe.
+   */
+  private String extractText(String texte) {
+    if (texte.indexOf("#{") > -1) {
+      texte.substring(0, texte.indexOf("#{"))
+    } else texte
+  }
+
+  /**
+   * Enlèvement d'un token de type "trou" du debut du texte à trou.
+   * @param texte le texte à trou.
+   * @return le texte moins le token de type "trou" au debut.
+   */
+  private String eatGap(String texte) {
+    texte.substring(texte.indexOf("}") + 1, texte.length())
+  }
+
+  /**
+   * Extraction d'un token de type "trou" du debut du texte à trou jusqu'à la première occurrence d'un token de
+   * type "texte".
+   * @param texte le texte à trou.
+   * @return Liste des reponses valides pour le trou.
+   */
+  private List<String> extractGap(String texte) {
+
+    def List<String> reponseList = []
+
+    if (texte.indexOf("#{") > -1) {
+      def gapText = texte.substring(0, texte.indexOf("}") + 1)
+      gapText = (gapText =~ /#/).replaceAll("")
+      gapText = (gapText =~ /\{/).replaceAll("")
+      gapText = (gapText =~ /\}/).replaceAll("")
+
+      reponseList = gapText.split(",")
+      reponseList = reponseList.collect {it.trim()}
     }
 
-    /**
-     * Genère une liste des mots suggerés comme reponses. Utilise l'attribut trouElements. Parmi les possibilité de
-     * reponse pour un trouElement, le premier est choisi pour la suggestion de reponse. Les suggestions de reponse sont
-     * melangés pour que le candidat qui passe le teste ne trouve pas de correlation entre les trous à remplir et le
-     * reponses suggerés.
-     * @return une liste des reponses suggerés.
-     */
-    def List getMotsSugeres() {
-        def mots = []
-        trouElements.each {
-            if (it.valeur.size() > 0) { mots << it.valeur[0]}
-        }
-        shuffle(mots, new Random())
-        mots
-    }
-
-    /**
-     * Enlèvement d'un token de type "texte" du debut du texte à trou.
-     * @param texte le texte à trou
-     * @return le texte moins le token de type "texte" au debut. Si aucun token de type "trou" existe, une chaine vide
-     * est retournée.
-     */
-    private String eatText(String texte) {
-        if (texte.indexOf("#{") > -1) {
-            texte.substring(texte.indexOf("#{"), texte.length())
-        } else ""
-    }
-
-    /**
-     * Extraction d'un token de type "texte" du debut du texte à trou jusqu'à la première occurrence d'un token de
-     * type "trou".
-     * @param texte le texte à trou
-     * @return l'extrait du token ou la chaine entière, si aucun token de type "trou" existe.
-     */
-    private String extractText(String texte) {
-        if (texte.indexOf("#{") > -1) {
-            texte.substring(0, texte.indexOf("#{"))
-        } else texte
-    }
-
-    /**
-     * Enlèvement d'un token de type "trou" du debut du texte à trou.
-     * @param texte le texte à trou.
-     * @return le texte moins le token de type "trou" au debut.
-     */
-    private String eatGap(String texte) {
-        texte.substring(texte.indexOf("}") + 1, texte.length())
-    }
-
-    /**
-     * Extraction d'un token de type "trou" du debut du texte à trou jusqu'à la première occurrence d'un token de
-     * type "texte".
-     * @param texte le texte à trou.
-     * @return Liste des reponses valides pour le trou.
-     */
-    private List<String> extractGap(String texte) {
-
-        def List<String> reponseList = []
-
-        if (texte.indexOf("#{") > -1) {
-            def gapText = texte.substring(0, texte.indexOf("}") + 1)
-            gapText = (gapText =~ /#/).replaceAll("")
-            gapText = (gapText =~ /\{/).replaceAll("")
-            gapText = (gapText =~ /\}/).replaceAll("")
-
-            reponseList = gapText.split(",")
-            reponseList = reponseList.collect {it.trim()}
-        }
-
-        reponseList
-    }
+    reponseList
+  }
 }
 /**
  * Classe abstraite d'un constituant d'un texte à trou.
- * @param < V >     le type de la valeur du constituant.
+ * @param < V >       le type de la valeur du constituant.
  */
 abstract class TextATrouElement<V> {
-    int index
-    V valeur
+  int index
+  V valeur
 
-    /**
-     * Retourne le presentation textuelle de la valeur du constituant de texte à trou.
-     * @return la valeur sous forme de texte.
-     */
-    abstract String valeurAsText()
+  /**
+   * Retourne le presentation textuelle de la valeur du constituant de texte à trou.
+   * @return la valeur sous forme de texte.
+   */
+  abstract String valeurAsText()
 
-    /**
-     * Indique si le constituant du texte à trou est de type "Texte".
-     * @return boolen
-     */
-    abstract boolean isTexte()
+  /**
+   * Indique si le constituant du texte à trou est de type "Texte".
+   * @return boolen
+   */
+  abstract boolean isTexte()
 }
 
 /**
@@ -222,15 +222,15 @@ abstract class TextATrouElement<V> {
  */
 class TextElement extends TextATrouElement<String> {
 
-    @Override
-    String valeurAsText() {
-        valeur
-    }
+  @Override
+  String valeurAsText() {
+    valeur
+  }
 
-    @Override
-    boolean isTexte() {
-        true
-    }
+  @Override
+  boolean isTexte() {
+    true
+  }
 }
 
 /**
@@ -238,27 +238,27 @@ class TextElement extends TextATrouElement<String> {
  */
 class TrouElement extends TextATrouElement<List<String>> {
 
-    @Override
-    String valeurAsText() {
+  @Override
+  String valeurAsText() {
 
-        def texte = ""
+    def texte = ""
 
-        if (valeur.size() > 0) {
-            texte += "#{" + valeur[0]
-        }
-
-        if (valeur.size() > 1) {
-            for (def i in 1..valeur.size() - 1) {
-                texte += ", ${valeur[i]}"
-            }
-        }
-
-        texte += "}"
-        texte
+    if (valeur.size() > 0) {
+      texte += "#{" + valeur[0]
     }
 
-    @Override
-    boolean isTexte() {
-        false
+    if (valeur.size() > 1) {
+      for (def i in 1..valeur.size() - 1) {
+        texte += ", ${valeur[i]}"
+      }
     }
+
+    texte += "}"
+    texte
+  }
+
+  @Override
+  boolean isTexte() {
+    false
+  }
 }

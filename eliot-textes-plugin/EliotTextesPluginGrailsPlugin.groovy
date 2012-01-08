@@ -28,13 +28,13 @@
 
 class EliotTextesPluginGrailsPlugin {
   // the group id
-    def groupId = "org.lilie.services.eliot"
+  def groupId = "org.lilie.services.eliot"
   // the plugin version
   def version = "0.4a-SNAPSHOT"
   // the version or versions of Grails the plugin is designed for
   def grailsVersion = "2.0.0 > *"
   // the other plugins this plugin depends on
-  def dependsOn = ['eliot-tice-plugin':'0.4a-SNAPSHOT > *']
+  def dependsOn = ['eliot-tice-plugin': '0.4a-SNAPSHOT > *']
   // resources that are excluded from plugin packaging
   def pluginExcludes = [
           "grails-app/views/error.gsp"

@@ -182,10 +182,10 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
     assertNull(quest3)
     def sujetQuests = SujetSequenceQuestions.findAllBySujet(sujet1)
     assertEquals(0, sujetQuests.size())
-    
+
     def publi = Publication.findById(idPub)
     assertNull(publi)
-    
+
 
   }
 

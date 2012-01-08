@@ -42,7 +42,7 @@ class Paternite {
 
   Paternite(String jsonString = null) {
     if (jsonString) {
-      def res =  new JsonSlurper().parseText(jsonString)
+      def res = new JsonSlurper().parseText(jsonString)
       paterniteItems = res.paterniteItems
     }
   }

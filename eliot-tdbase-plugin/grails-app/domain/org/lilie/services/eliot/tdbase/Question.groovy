@@ -112,13 +112,13 @@ class Question implements Artefact {
 
   /**
    *
-   * @return  true si la question induit une  notation  manuelle
+   * @return true si la question induit une  notation  manuelle
    */
   boolean estEnNotationManuelle() {
     return type.code == QuestionTypeEnum.Open.name() ||
            type.code == QuestionTypeEnum.FileUpload.name()
   }
-  
+
   /**
    *
    * @return la liste des questions filles de la question courante

@@ -44,7 +44,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="eliot-tice-plugin" exported="" />
     <orderEntry type="module" module-name="eliot-notes-plugin" exported="" />
     <orderEntry type="module" module-name="eliot-textes-plugin" exported="" />
     <orderEntry type="module" module-name="eliot-tdbase-grailsPlugins" />
@@ -66,6 +65,12 @@
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.codenarc/CodeNarc/jars/CodeNarc-0.15.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.lilie.services.eliot/eliot-tice-dbmigration/jars/eliot-tice-dbmigration-0.4a-SNAPSHOT.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/antlr/antlr/jars/antlr-2.7.6.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/ant/ant/jars/ant-1.6.5.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/log4j/log4j/jars/log4j-1.2.13.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.7.1.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.ant/ant/jars/ant-1.7.1.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/junit/junit/jars/junit-3.8.2.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.codehaus.groovy/groovy-all/jars/groovy-all-1.6.9.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
@@ -74,6 +79,7 @@
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="eliot-tice-plugin" exported="" />
   </component>
 </module>
 

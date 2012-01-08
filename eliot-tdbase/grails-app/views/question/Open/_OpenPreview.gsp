@@ -34,6 +34,8 @@
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
 ${specifobject.libelle} <br/>
-<g:textArea cols="55" rows="${specifobject.nombreLignesReponse}" name="listeQuestions[${indexQuestion}].specifobject.correction" value="Champ saisie de la réponse"  disabled="true"/>
+<g:textArea cols="55" rows="${specifobject.nombreLignesReponse}"
+            name="listeQuestions[${indexQuestion}].specifobject.correction"
+            value="Champ saisie de la réponse" disabled="true"/>
 <p>Correction&nbsp;:</p>${specifobject.correction}
 

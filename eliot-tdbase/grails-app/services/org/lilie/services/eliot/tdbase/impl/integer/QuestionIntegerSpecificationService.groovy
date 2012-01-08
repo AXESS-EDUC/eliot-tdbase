@@ -88,8 +88,8 @@ class IntegerSpecification implements QuestionSpecification {
   }
 
   static constraints = {
-    libelle blank:false
-    valeur nullable:false
+    libelle blank: false
+    valeur nullable: false
   }
 
 }

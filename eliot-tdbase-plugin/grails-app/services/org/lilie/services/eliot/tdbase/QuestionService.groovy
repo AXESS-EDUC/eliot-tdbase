@@ -40,7 +40,6 @@ import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 import static org.lilie.services.eliot.tdbase.QuestionTypeEnum.*
 
-
 /**
  * Service de gestion des questions
  * @author franck silvestre
@@ -88,27 +87,27 @@ class QuestionService implements ApplicationContextAware {
   }
 
   /**
-     * Recopie une question dans un sujet
-     * @param sujetQuestion la question à recopier et son sujet associé
-     * @param proprietaire le proprietaire
-     * @return la copie de la question
-     */
-    @Transactional
-    Question recopieQuestionDansSujet(SujetSequenceQuestions sujetQuestion, Personne proprietaire) {
+   * Recopie une question dans un sujet
+   * @param sujetQuestion la question à recopier et son sujet associé
+   * @param proprietaire le proprietaire
+   * @return la copie de la question
+   */
+  @Transactional
+  Question recopieQuestionDansSujet(SujetSequenceQuestions sujetQuestion, Personne proprietaire) {
 
-      def question = sujetQuestion.question
-      def sujet = sujetQuestion.sujet
+    def question = sujetQuestion.question
+    def sujet = sujetQuestion.sujet
 
-      assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, question))
-      assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
+    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, question))
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
-      Question questionCopie = recopieQuestion(question, proprietaire)
+    Question questionCopie = recopieQuestion(question, proprietaire)
 
-      sujetQuestion.question = questionCopie
-      sujetQuestion.save()
+    sujetQuestion.question = questionCopie
+    sujetQuestion.save()
 
-      return questionCopie
-    }
+    return questionCopie
+  }
 
   /**
    * Recopie une question
@@ -176,7 +175,7 @@ class QuestionService implements ApplicationContextAware {
   Question updateProprietes(Question laQuestion, Map proprietes, def specificationObject,
                             Personne proprietaire) {
 
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,laQuestion))
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, laQuestion))
 
     if (proprietes.titre && laQuestion.titre != proprietes.titre) {
       laQuestion.titreNormalise = StringUtils.normalise(proprietes.titre)
@@ -206,7 +205,7 @@ class QuestionService implements ApplicationContextAware {
                                           Personne proprietaire,
                                           Integer rang = null) {
 
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,sujet))
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
     Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
     if (!question.hasErrors()) {

@@ -47,44 +47,43 @@ class CopieService {
   ReponseService reponseService
 
   /**
-     * Récupère la copie de teste d'une personne pour un sujet
-     * @param sujet le sujet
-     * @param personne la personne
-     * @return la copie
-     */
-    @Transactional
-    Copie getCopieTestForSujetAndPersonne(Sujet sujet, Personne personne) {
-      Copie copie = Copie.findBySujetAndEleve(sujet, personne)
-      if (copie == null) {
-        copie = new Copie(
-                eleve: personne,
-                sujet: sujet,
-                estJetable: true
-        )
-        if (!copie.save() || copie.hasErrors()) {
-          return copie
+   * Récupère la copie de teste d'une personne pour un sujet
+   * @param sujet le sujet
+   * @param personne la personne
+   * @return la copie
+   */
+  @Transactional
+  Copie getCopieTestForSujetAndPersonne(Sujet sujet, Personne personne) {
+    Copie copie = Copie.findBySujetAndEleve(sujet, personne)
+    if (copie == null) {
+      copie = new Copie(
+              eleve: personne,
+              sujet: sujet,
+              estJetable: true
+      )
+      if (!copie.save() || copie.hasErrors()) {
+        return copie
+      }
+    }
+    // pour chaque question du sujet, on crée un obejt de type réponse ;
+    // on test la nécessité de creer la réponse car si le sujet a été modifié
+    // alors que la copie a déjà été créé, il faut créé la réponse adhoc pour
+    // la ou les questions ajoutées
+    sujet.questionsSequences.each {
+      if (it.question.type.interaction) {
+        Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
+        if (reponse == null) {
+          reponseService.createReponse(
+                  copie,
+                  it,
+                  personne
+          )
         }
       }
-      // pour chaque question du sujet, on crée un obejt de type réponse ;
-      // on test la nécessité de creer la réponse car si le sujet a été modifié
-      // alors que la copie a déjà été créé, il faut créé la réponse adhoc pour
-      // la ou les questions ajoutées
-      sujet.questionsSequences.each {
-        if (it.question.type.interaction) {
-          Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
-          if (reponse == null) {
-            reponseService.createReponse(
-                    copie,
-                    it,
-                    personne
-            )
-          }
-        }
-      }
-
-      return copie
     }
 
+    return copie
+  }
 
   /**
    * Récupère la copie d'un élève pour une séance
@@ -96,7 +95,7 @@ class CopieService {
   Copie getCopieForModaliteActiviteAndEleve(ModaliteActivite seance, Personne eleve) {
 
     assert (seance.structureEnseignement in
-        profilScolariteService.findStructuresEnseignementForPersonne(eleve))
+            profilScolariteService.findStructuresEnseignementForPersonne(eleve))
 
     Copie copie = Copie.findByModaliteActiviteAndEleve(seance, eleve)
     if (copie == null) {
@@ -130,8 +129,6 @@ class CopieService {
     return copie
   }
 
-
-
   /**
    * Met à jour la copie en prenant en compte la liste de réponses soumises
    * @param copie la copie
@@ -141,8 +138,8 @@ class CopieService {
    */
   @Transactional
   Copie updateCopieForListeReponsesCopie(Copie copie,
-                                       List<ReponseCopie> reponsesCopie,
-                                       Personne eleve) {
+                                         List<ReponseCopie> reponsesCopie,
+                                         Personne eleve) {
 
     assert (copie.eleve == eleve && copie.estModifiable())
 
@@ -187,31 +184,31 @@ class CopieService {
   }
 
   /**
-     * Met à jour la notation de la copie
-     * @param copie la copie
-     * @param enseignant l'enseignant qui corrige
-     * @return la copie mise à jour
-     */
-    @Transactional
-    Copie updateNoteForReponse(Float points,
-            Reponse reponse,
-            Personne enseignant) {
-      def copie = reponse.copie
-      assert (copie.modaliteActivite.enseignant == enseignant)
-      def ancienneNote = reponse.correctionNoteCorrecteur
-      reponse.correctionNoteCorrecteur = points
-      if (copie.correctionNoteCorrecteur != null) {
-        if (ancienneNote != null) {
-          copie.correctionNoteCorrecteur -= ancienneNote
-        }
-        copie.correctionNoteCorrecteur += points
-      } else {
-        copie.correctionNoteCorrecteur = points
+   * Met à jour la notation de la copie
+   * @param copie la copie
+   * @param enseignant l'enseignant qui corrige
+   * @return la copie mise à jour
+   */
+  @Transactional
+  Copie updateNoteForReponse(Float points,
+                             Reponse reponse,
+                             Personne enseignant) {
+    def copie = reponse.copie
+    assert (copie.modaliteActivite.enseignant == enseignant)
+    def ancienneNote = reponse.correctionNoteCorrecteur
+    reponse.correctionNoteCorrecteur = points
+    if (copie.correctionNoteCorrecteur != null) {
+      if (ancienneNote != null) {
+        copie.correctionNoteCorrecteur -= ancienneNote
       }
-      copie.correctionNoteFinale = copie.recalculeNoteFinale()
-      copie.save()
-      return copie
+      copie.correctionNoteCorrecteur += points
+    } else {
+      copie.correctionNoteCorrecteur = points
     }
+    copie.correctionNoteFinale = copie.recalculeNoteFinale()
+    copie.save()
+    return copie
+  }
 
   /**
    * Met à jour la notation de la copie
@@ -276,15 +273,15 @@ class CopieService {
    * la pagination
    * @return la liste des copies
    */
-    List<Copie> findCopiesEnVisualisationForResponsableAndApprenant(Personne chercheur,
-                                                      Personne apprenant,
-                                                      Map paginationAndSortingSpec = [:]) {
+  List<Copie> findCopiesEnVisualisationForResponsableAndApprenant(Personne chercheur,
+                                                                  Personne apprenant,
+                                                                  Map paginationAndSortingSpec = [:]) {
 
-      assert (profilScolariteService.personneEstResponsableEleve(chercheur,apprenant))
+    assert (profilScolariteService.personneEstResponsableEleve(chercheur, apprenant))
 
-      def copies = findCopiesEnVisualisationForApprenant(apprenant,paginationAndSortingSpec)
-      return copies
-    }
+    def copies = findCopiesEnVisualisationForApprenant(apprenant, paginationAndSortingSpec)
+    return copies
+  }
 
   /**
    *

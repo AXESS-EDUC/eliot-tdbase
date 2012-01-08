@@ -46,7 +46,14 @@ class AttachementTagLib {
                                  controller: 'attachement',
                                  id: attachement.id)
       if (attachement.estUneImageAffichable()) {
-        out << '<img src="' << link << '"//>'
+        out << '<img src="' << link << '"'
+        if (attrs.width) {
+          out << ' witdh="' << attrs.width << '"'
+        }
+        if (attrs.height) {
+          out << ' height="' << attrs.height << '"'
+        }
+        out << '/>'
       } else if (attachement.estUnTexteAffichable()) {
         File fichier = attachementService.getFileForAttachement(attachement)
         out << fichier.text.encodeAsHTML()

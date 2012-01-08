@@ -40,8 +40,7 @@
     <g:textArea
             name="specifobject.libelle"
             rows="3" cols="55"
-            value="${specifobject.libelle}"
-    />
+            value="${specifobject.libelle}"/>
   </td>
 </tr>
 <tr>
@@ -49,7 +48,9 @@
     R&eacute;ponse:
   </td>
   <td>
-    <g:textField name="specifobject.nombreLignesReponse" value="${specifobject.nombreLignesReponse}" size="5"/> (Nombre de lignes du champ texte)
+    <g:textField name="specifobject.nombreLignesReponse"
+                 value="${specifobject.nombreLignesReponse}"
+                 size="5"/> (Nombre de lignes du champ texte)
   </td>
 </tr>
 <tr>
@@ -57,14 +58,13 @@
     Correction:
   </td>
   <td>
-     <g:textArea
+    <g:textArea
             name="specifobject.correction"
             rows="5" cols="55"
-            value="${specifobject.correction}"
-    />
+            value="${specifobject.correction}"/>
   </td>
 </tr>
 
 <r:script>
-    tinyMCE.execCommand("mceAddControl", true, "specifobject.correction");
+  tinyMCE.execCommand("mceAddControl", true, "specifobject.correction");
 </r:script>

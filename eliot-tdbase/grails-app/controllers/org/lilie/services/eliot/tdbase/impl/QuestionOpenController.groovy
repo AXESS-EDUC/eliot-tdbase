@@ -40,7 +40,7 @@ class QuestionOpenController extends QuestionController {
 
   /**
    *
-   * @param params  les paramètres de la requête
+   * @param params les paramètres de la requête
    * @return l'objet représentant la spécification
    */
   def getSpecificationObjectFromParams(Map params) {

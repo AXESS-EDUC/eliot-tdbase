@@ -36,93 +36,93 @@ import org.lilie.services.eliot.tice.annuaire.Personne
  */
 class Copie {
 
-    Date dateRemise
-    String correctionAnnotation
-    Date correctionDate
-    Float correctionNoteAutomatique
-    Float correctionNoteFinale
-    Float correctionNoteCorrecteur
-    Float maxPoints
-    Float maxPointsAutomatique
-    Float maxPointsCorrecteur
-    Float pointsModulation = 0
-    String correctionNoteNonNumerique
-    Boolean estJetable = false
+  Date dateRemise
+  String correctionAnnotation
+  Date correctionDate
+  Float correctionNoteAutomatique
+  Float correctionNoteFinale
+  Float correctionNoteCorrecteur
+  Float maxPoints
+  Float maxPointsAutomatique
+  Float maxPointsCorrecteur
+  Float pointsModulation = 0
+  String correctionNoteNonNumerique
+  Boolean estJetable = false
 
-    Sujet sujet
-    Personne eleve
+  Sujet sujet
+  Personne eleve
 
-    Personne correcteur
-    ModaliteActivite modaliteActivite
+  Personne correcteur
+  ModaliteActivite modaliteActivite
 
-    static constraints = {
-        dateRemise(nullable: true)
-        correctionAnnotation(nullable: true)
-        correctionDate(nullable: true)
-        correctionNoteAutomatique(nullable: true)
-        correctionNoteFinale(nullable: true)
-        correctionNoteCorrecteur(nullable: true)
-        correctionNoteNonNumerique(nullable: true)
-        maxPoints(nullable: true)
-        maxPointsAutomatique(nullable: true)
-        maxPointsCorrecteur(nullable: true)
-        eleve(nullable: true)
-        correcteur(nullable: true)
-        modaliteActivite(nullable: true)
+  static constraints = {
+    dateRemise(nullable: true)
+    correctionAnnotation(nullable: true)
+    correctionDate(nullable: true)
+    correctionNoteAutomatique(nullable: true)
+    correctionNoteFinale(nullable: true)
+    correctionNoteCorrecteur(nullable: true)
+    correctionNoteNonNumerique(nullable: true)
+    maxPoints(nullable: true)
+    maxPointsAutomatique(nullable: true)
+    maxPointsCorrecteur(nullable: true)
+    eleve(nullable: true)
+    correcteur(nullable: true)
+    modaliteActivite(nullable: true)
+  }
+
+  static mapping = {
+    table('td.copie')
+    version(false)
+    id(column: 'id', generator: 'sequence', params: [sequence: 'td.copie_id_seq'])
+    cache(true)
+  }
+
+  static transients = ['estModifiable', 'recalculeNoteFinale']
+
+  /**
+   *  Retourne la réponse correspondant à la question donnée
+   * @param sujetQuestion la question (objet type SujetSequenceQuestions)
+   * @return la réponse
+   */
+  Reponse getReponseForSujetQuestion(SujetSequenceQuestions sujetQuestion) {
+    Reponse.findByCopieAndSujetQuestion(this, sujetQuestion)
+  }
+
+  /**
+   *
+   * @return true si la copie est modifiable, false, sinon
+   */
+  boolean estModifiable() {
+    if (!modaliteActivite) {
+      return true
     }
-
-    static mapping = {
-        table('td.copie')
-        version(false)
-        id(column: 'id', generator: 'sequence', params: [sequence: 'td.copie_id_seq'])
-        cache(true)
+    def now = new Date()
+    if (now.after(modaliteActivite.dateFin) ||
+        now.before(modaliteActivite.dateDebut)) {
+      return false
     }
-
-    static transients = ['estModifiable', 'recalculeNoteFinale']
-
-    /**
-     *  Retourne la réponse correspondant à la question donnée
-     * @param sujetQuestion la question (objet type SujetSequenceQuestions)
-     * @return la réponse
-     */
-    Reponse getReponseForSujetQuestion(SujetSequenceQuestions sujetQuestion) {
-        Reponse.findByCopieAndSujetQuestion(this, sujetQuestion)
+    def copieAmeliorable = modaliteActivite.copieAmeliorable
+    if (dateRemise && !copieAmeliorable) {
+      return false
     }
+    return true
+  }
 
-    /**
-     *
-     * @return true si la copie est modifiable, false, sinon
-     */
-    boolean estModifiable() {
-        if (!modaliteActivite) {
-            return true
-        }
-        def now = new Date()
-        if (now.after(modaliteActivite.dateFin) ||
-                now.before(modaliteActivite.dateDebut)) {
-            return false
-        }
-        def copieAmeliorable = modaliteActivite.copieAmeliorable
-        if (dateRemise && !copieAmeliorable) {
-            return false
-        }
-        return true
+  /**
+   *
+   * @return la nouvelle valeur de la note finale
+   */
+  Float recalculeNoteFinale() {
+    def note = 0
+    if (correctionNoteAutomatique != null) {
+      note += correctionNoteAutomatique
     }
-
-    /**
-     *
-     * @return la nouvelle valeur de la note finale
-     */
-    Float recalculeNoteFinale() {
-        def note = 0
-        if (correctionNoteAutomatique != null) {
-            note += correctionNoteAutomatique
-        }
-        if (correctionNoteCorrecteur != null) {
-            note += correctionNoteCorrecteur
-        }
-        note + pointsModulation
+    if (correctionNoteCorrecteur != null) {
+      note += correctionNoteCorrecteur
     }
+    note + pointsModulation
+  }
 
 
 }

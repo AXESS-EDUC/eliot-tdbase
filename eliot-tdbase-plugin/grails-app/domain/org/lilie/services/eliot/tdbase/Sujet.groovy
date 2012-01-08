@@ -63,8 +63,8 @@ class Sujet implements Artefact {
   Boolean ordreQuestionsAleatoire
 
   String paternite
-  
-  
+
+
   Personne proprietaire
 
   SujetType sujetType

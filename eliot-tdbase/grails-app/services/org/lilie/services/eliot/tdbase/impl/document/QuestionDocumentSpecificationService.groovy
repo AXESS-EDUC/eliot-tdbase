@@ -63,7 +63,7 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
     super.updateQuestionSpecificationForObject(question, spec)
 
     def oldQuestAttId = question.specificationObject?.questionAttachementId
-    
+
     if (spec.fichier && !spec.fichier.empty) {
       def questionAttachement = questionAttachementService.createAttachementForQuestion(
               spec.fichier, question)
@@ -145,12 +145,12 @@ class DocumentSpecification implements QuestionSpecification {
   }
 
   static constraints = {
-    auteur blank:false
-    source blank:false
-    fichierEstVide (validator: { val ->
-       if (val) {
-         return "question.document.fichier.vide"
-       }
+    auteur blank: false
+    source blank: false
+    fichierEstVide(validator: { val ->
+      if (val) {
+        return "question.document.fichier.vide"
+      }
     })
   }
 

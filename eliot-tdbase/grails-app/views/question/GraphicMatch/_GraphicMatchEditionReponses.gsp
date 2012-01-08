@@ -25,17 +25,66 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<g:hiddenField name="specifobject.attachmentId"
-               value="${specifobject.attachmentId}"/>
+<g:each status="i" in="${specifobject.hotspots}" var="hotspot">
 
-<g:if test="${specifobject.attachmentId}">
-  <et:viewAttachement
-          attachement="${specifobject.attachement}"/>
+  <input type="radio" name="selectedHotspot" value="${i}"/>
+
+  Id:
+  <g:textField name="specifobject.hotspots[${i}].id"
+               value="${hotspot.id}" disabled="true"/>
+  <g:hiddenField name="specifobject.hotspots[${i}].id"
+                 value="${hotspot.id}"/>
+
+  Top:
+  <g:textField name="specifobject.hotspots[${i}].topDistance"
+               value="${hotspot.topDistance}" size="3"/>
+  Left:
+  <g:textField name="specifobject.hotspots[${i}].leftDistance"
+               value="${hotspot.leftDistance}" size="3"/>
   <br>
-</g:if>
+</g:each>
 
-<input type="file" name="specifobject.fichier"
-       onchange="$('#imageUpload').trigger('click');"/>
+<g:hiddenField name="specifobject.hotspots.size"
+               value="${specifobject.hotspots?.size()}"/>
 
-<g:actionSubmit value="upload" action="enregistre" title="Upload" hidden="true"
-                id="imageUpload"/>
+<table>
+  <g:each status="i" in="${specifobject.icons}" var="icon">
+    <tr>
+      <td>
+        <g:submitToRemote id="${i}"
+                          title="Supprimer un icon"
+                          value="X"
+                          action="supprimeIcon"
+                          controller="questionGraphicMatch"
+                          update="hotspotsEtIcons"/>
+      </td>
+
+      <td>
+        <g:hiddenField name="specifobject.icons[${i}].id"
+                       value="${icon.id}"/>
+
+        <g:if test="${icon.id}">
+          <et:viewAttachement attachement="${icon.attachment}" width="30"
+                              height="30"/>
+        </g:if>
+      </td>
+      <td>
+        <input type="file" name="specifobject.icons[${i}].fichier"
+               onchange="$('#iconUpload${i}').trigger('click');"/>
+
+        <g:actionSubmit value="upload" action="enregistre" title="Upload"
+                        hidden="true"
+                        id="iconUpload${i}"/>
+      </td>
+      <td>
+        <g:select name="specifobject.graphicMatches[${icon.id}]"
+                  from="${specifobject.hotspots*.id}"
+                  noSelection="['0': 'avec Hotspot...']"
+                  value="${specifobject.graphicMatches[icon.id.toString()]}"/>
+      </td>
+    </tr>
+  </g:each>
+</table>
+
+<g:hiddenField name="specifobject.icons.size"
+               value="${specifobject.icons?.size()}"/>

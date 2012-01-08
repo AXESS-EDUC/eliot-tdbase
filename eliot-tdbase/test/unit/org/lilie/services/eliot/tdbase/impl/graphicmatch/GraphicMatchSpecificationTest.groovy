@@ -37,34 +37,16 @@ package org.lilie.services.eliot.tdbase.impl.graphicmatch
  */
 class GraphicMatchSpecificationTest extends GroovyTestCase {
 
-    void testItemEquals() {
-        def field1 = new TextField([topDistance: 2, leftDistance: 2, hSize: 100, vSize: 50, text: "Hi Dude"])
-        def field2 = new TextField([topDistance: 2, leftDistance: 2, hSize: 100, vSize: 50, text: "Hi Dude"])
-        assertEquals(field1, field2)
+  void testEvaluate() {
 
-        field1 = new TextField([topDistance: 2])
-        field2 = new TextField([topDistance: 2])
-        assertEquals(field1, field2)
+    def valuesReponse = ["UUID1": 1l, "UUID2": 2l]
+    def reponsesPossibles = ["UUID1": 1l, "UUID2": 2l]
+    def spec = new ReponseGraphicMatchSpecification(reponsesPossibles: reponsesPossibles, valeursDeReponse: valuesReponse)
+    assertEquals(1.0f, spec.evaluate(1.0f), 0.0f)
 
-        field1 = new TextField([topDistance: 2, text: "Hello"])
-        field2 = new TextField([topDistance: 1, text: "Hello"])
-        assertEquals(field1, field2)
-
-        field1 = new TextField([topDistance: 2, text: "Hello"])
-        field2 = new TextField([topDistance: 1, text: "Hello Dude"])
-        assertNotSame(field1, field2)
-    }
-
-    void testEvaluate() {
-
-        def valuesReponse = [[text: "Wie"], [text: "Wo"]]
-        def reponsesPossibles = [[text: "Wie"], [text: "Wo"]]
-        def spec = new ReponseGraphicMatchSpecification(reponsesPossibles: reponsesPossibles, valeursDeReponse: valuesReponse)
-        assertEquals(1.0f, spec.evaluate(1.0f), 0.0f)
-
-        valuesReponse = [[text: "Wie"], [text: "Wer"]];
-        reponsesPossibles = [[text: "Wie"], [text: "Wo"]];;
-        spec = new ReponseGraphicMatchSpecification(reponsesPossibles: reponsesPossibles, valeursDeReponse: valuesReponse)
-        assertEquals(0.5f, spec.evaluate(1.0f), 0.0f)
-    }
+    valuesReponse = ["UUID1": 1l, "UUID2": 3l]
+    reponsesPossibles = ["UUID1": 1l, "UUID2": 2l]
+    spec = new ReponseGraphicMatchSpecification(reponsesPossibles: reponsesPossibles, valeursDeReponse: valuesReponse)
+    assertEquals(0.5f, spec.evaluate(1.0f), 0.0f)
+  }
 }

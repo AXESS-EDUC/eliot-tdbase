@@ -42,23 +42,23 @@ import org.springframework.transaction.annotation.Transactional
  */
 class ReponseOpenSpecificationService extends ReponseSpecificationService<ReponseOpenSpecification> {
 
-    /**
-     *
-     * @see ReponseSpecificationService
-     */
-    @Override
-    ReponseOpenSpecification createSpecification(Map map) {
-        new ReponseOpenSpecification(map)
-    }
+  /**
+   *
+   * @see ReponseSpecificationService
+   */
+  @Override
+  ReponseOpenSpecification createSpecification(Map map) {
+    new ReponseOpenSpecification(map)
+  }
 
-    /**
-     * Pas de notation automatique
-     *
-     * @see ReponseSpecificationService
-     */
-    Float evalueReponse(Reponse reponse) {
-        return null
-    }
+  /**
+   * Pas de notation automatique
+   *
+   * @see ReponseSpecificationService
+   */
+  Float evalueReponse(Reponse reponse) {
+    return null
+  }
 }
 
 /**
@@ -66,12 +66,12 @@ class ReponseOpenSpecificationService extends ReponseSpecificationService<Repons
  */
 class ReponseOpenSpecification implements ReponseSpecification {
 
-    String valeurReponse
+  String valeurReponse
 
-    Map toMap() {
-        [
-                valeurReponse: valeurReponse
-        ]
-    }
+  Map toMap() {
+    [
+            valeurReponse: valeurReponse
+    ]
+  }
 
 }

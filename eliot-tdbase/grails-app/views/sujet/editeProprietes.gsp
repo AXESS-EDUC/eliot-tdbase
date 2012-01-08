@@ -71,7 +71,7 @@
         <td class="label">Type&nbsp;:</td>
         <td>
           <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
-                    noSelection="${['null':'Sélectionner un type...']}"
+                    noSelection="${['null': 'Sélectionner un type...']}"
                     from="${typesSujet}"
                     optionKey="id"
                     optionValue="nom"/>
@@ -81,7 +81,7 @@
         <td class="label">Mati&egrave;re&nbsp;:</td>
         <td>
           <g:select name="matiere.id" value="${sujet.matiere?.id}"
-                    noSelection="${['null':'Sélectionner une matière...']}"
+                    noSelection="${['null': 'Sélectionner une matière...']}"
                     from="${matieres}"
                     optionKey="id"
                     optionValue="libelleLong"/>
@@ -91,7 +91,7 @@
         <td class="label">Niveau&nbsp;:</td>
         <td>
           <g:select name="niveau.id" value="${sujet.niveau?.id}"
-                    noSelection="${['null':'Sélectionner un niveau...']}"
+                    noSelection="${['null': 'Sélectionner un niveau...']}"
                     from="${niveaux}"
                     optionKey="id"
                     optionValue="libelleLong"/>
@@ -151,8 +151,9 @@
         </td>
       </tr>
       <g:if test="${sujet.paternite}">
-          <g:render template="/artefact/paternite" model="[paternite:sujet.paternite]"/>
-          </g:if>
+        <g:render template="/artefact/paternite"
+                  model="[paternite: sujet.paternite]"/>
+      </g:if>
     </table>
   </div>
   <g:hiddenField name="id" value="${sujet.id}"/>

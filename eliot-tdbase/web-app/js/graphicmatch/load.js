@@ -26,15 +26,19 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-function initButtons() {
-    $('button').button({
-                           icons:{
-                               primary:"ui-icon-gear",
-                               secondary:"ui-icon-triangle-1-s"
-                           },
-                           text:false
-                       }).click(function () {
-                                    var currentIdButt = "#menu_actions_" + (this).id;
-                                    $(currentIdButt).toggle();
-                                });
-}
+Modernizr.load({
+                   test:Modernizr.touch,
+                   yep:'http://localhost:8080/eliot-tdbase/static/js/graphicmatch/dragNDrop.js',
+                   nope:'http://localhost:8080/eliot-tdbase/static/js/graphicmatch/dragNDrop.polyfill.js',
+                   complete:function () {
+                       initDragNDrop();
+                   }
+               });
+
+/*
+
+ if (Modernizr.touch) {
+ initDragNDropPolyFill();
+ } else {
+ initDragNDrop();
+ }*/

@@ -140,7 +140,7 @@
       <button id="${sujetQuestion.id}">Actions</button>
       <ul id="menu_actions_${sujetQuestion.id}"
           class="tdbase-menu-actions">
-        <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur,sujetQuestion.question)}">
+        <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetQuestion.question)}">
           <li><g:link action="edite"
                       controller="question${sujetQuestion.question.type.code}"
                       id="${sujetQuestion.question.id}">Modifier
@@ -149,7 +149,7 @@
         <g:else>
           <li>Modifier</li>
         </g:else>
-        <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur,sujetQuestion.question)}">
+        <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetQuestion.question)}">
           <li><g:link action="dupliqueDansSujet"
                       controller="question${sujetQuestion.question.type.code}"
                       id="${sujetQuestion.id}">Modifier&nbsp;(copie)</g:link></li>
@@ -183,8 +183,8 @@
         <li><hr/></li>
         <li>
           <g:link action="ajouteElement" controller="sujet"
-                  id="${sujet.id}" params="[direction:'avant',
-                                                      rang: indexQuestion]">
+                  id="${sujet.id}" params="[direction: 'avant',
+                  rang: indexQuestion]">
             Insérer&nbsp;un&nbsp;élément&nbsp;avant
           </g:link>
         </li>
@@ -216,7 +216,7 @@
         <g:set var="question" value="${sujetQuestion.question}"/>
         <g:render
                 template="/question/${question.type.code}/${question.type.code}Preview"
-                model="[question:question, indexQuestion:indexQuestion]"/>
+                model="[question: question, indexQuestion: indexQuestion]"/>
       </div>
 
     </div>

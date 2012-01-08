@@ -90,12 +90,12 @@
                style="float: left;width: 60px;">
             <g:if test="${reponse}">
               <g:if test="${reponse.estEnNotationManuelle()}">
-                  <g:formatNumber number="${reponse.correctionNoteCorrecteur}"
-                                                                format="##0.00"/>
+                <g:formatNumber number="${reponse.correctionNoteCorrecteur}"
+                                format="##0.00"/>
               </g:if>
               <g:else>
-              <g:formatNumber number="${reponse.correctionNoteAutomatique}"
-                              format="##0.00"/>
+                <g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                                format="##0.00"/>
               </g:else>
             </g:if>
             <g:else>
@@ -112,12 +112,12 @@
 
           <g:render
                   template="/question/${question.type.code}/${question.type.code}Interaction"
-                  model="[question:question, reponse:reponse, indexReponse:indexReponse++]"/>
+                  model="[question: question, reponse: reponse, indexReponse: indexReponse++]"/>
 
           <g:if test="${copie.modaliteActivite.estPerimee()}">
             <g:render
                     template="/question/${question.type.code}/${question.type.code}Correction"
-                    model="[question:question]"/>
+                    model="[question: question]"/>
           </g:if>
 
         </g:if>
@@ -125,7 +125,7 @@
 
           <g:render
                   template="/question/${question.type.code}/${question.type.code}Preview"
-                  model="[question:question]"/>
+                  model="[question: question]"/>
 
         </g:else>
       </div>

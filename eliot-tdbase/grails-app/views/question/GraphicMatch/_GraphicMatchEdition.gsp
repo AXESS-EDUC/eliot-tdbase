@@ -25,10 +25,53 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+
+<style type="text/css">
+
+.participant {
+  float: left;
+  margin: 0 2px 0 2px;
+  border: solid 1px #FFD324;
+  background: #FFF6BF;
+  color: #817134;
+  display: inline-block;
+  height: 1em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  text-decoration: none;
+}
+
+.associationCell {
+  float: left;
+  margin: 5px 5px 5px 5px;
+  border: solid 1px #808080;
+  background: #f5f5f5;
+  display: inline-block;
+  height: 1.5em;
+  width: 17em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+}
+
+.highlighted {
+  background: #b5bdff;
+}
+
+</style>
+
+%{--
+<r:require module="modernizr"/>
+<r:script disposition="head">
+  Modernizr.load({
+            test: Modernizr.touch,
+            yep:"${r.resource(uri: '/static/dragNDrop.js')}",
+            nope:"${r.resource(uri: '/static/dragNDrop.polyfill.js')}"
+
+          });
+</r:script>
+--}%
+
 <r:script>
-  $(document).ready(function () {
-    $("form").attr('enctype', 'multipart/form-data');
-  });
+  $("form").attr('enctype', 'multipart/form-data');
+
 </r:script>
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
@@ -41,10 +84,54 @@
   </td>
 </tr>
 <tr>
+  <td class="label">Image d'arrière plan:</td>
+  <td>
+    <g:hiddenField name="specifobject.attachmentId"
+                   value="${specifobject.attachmentId}"/>
+
+    <g:if test="${specifobject.attachmentId}">
+      <et:viewAttachement
+              attachement="${specifobject.attachement}"
+              width="500"
+              height="500"/>
+      <br>
+    </g:if>
+
+    <input type="file" name="specifobject.fichier"
+           onchange="$('#imageUpload').trigger('click');"/>
+
+    <g:actionSubmit value="upload" action="enregistre" title="Upload"
+                    hidden="true"
+                    id="imageUpload"/>
+  </td>
+</tr>
+<tr>
   <td class="label">R&eacute;ponse:</td>
-  <td id="specifobject_fichier">
-    <g:render template="/question/GraphicMatch/GraphicMatchEditionReponses"
-              model="[specifobject:specifobject]"/>
+  <td>
+    <g:submitToRemote title="Ajouter un hotspot" value="Ajouter Hotspot"
+                      action="ajouteHotspot"
+                      controller="questionGraphicMatch"
+                      update="hotspotsEtIcons"/>
+    %{--after="afterTextFieldAdded();--}%
+
+    <g:submitToRemote value="Supprimer Hotspot"
+                      title="Supprimer un hotspot"
+                      action="supprimeHotspot"
+                      controller="questionGraphicMatch"
+                      update="hotspotsEtIcons"/>
+    %{--after="afterTextfieldDeleted();"--}%
+    <g:submitToRemote title="Ajouter un icon" value="Ajouter Icon"
+                      action="ajouteIcon"
+                      controller="questionGraphicMatch"
+                      update="hotspotsEtIcons"/>
+  </td>
+</tr>
+<tr>
+  <td></td>
+  <td id="hotspotsEtIcons">
+    <g:render
+            template="/question/GraphicMatch/GraphicMatchEditionReponses"
+            model="[specifobject: specifobject]"/>
   </td>
 </tr>
 <tr>

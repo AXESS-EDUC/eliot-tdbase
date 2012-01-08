@@ -40,7 +40,8 @@ modules = {
   }
 
   modernizr {
-    resource url: [dir: 'js/lib', file: 'modernizr.js']
+    resource id: 'js', url: [dir: 'js/lib', file: 'modernizr.js'],
+             disposition: 'head', nominify: true
   }
 
   associateJS {
@@ -55,5 +56,12 @@ modules = {
     resource url: [dir: 'js/order', file: 'load.js']
     resource url: [dir: 'js/order', file: 'dragNDrop.polyfill.js']
     resource url: [dir: 'js/order', file: 'dragNDrop.js']
+  }
+
+  graphicMatchJS {
+    dependsOn "modernizr", "eliot-tice-ui"
+    //resource url: [dir: 'js/graphicmatch', file: 'load.js']
+    resource url: [dir: 'js/graphicmatch', file: 'dragNDrop.polyfill.js']
+    resource url: [dir: 'js/graphicmatch', file: 'dragNDrop.js']
   }
 }

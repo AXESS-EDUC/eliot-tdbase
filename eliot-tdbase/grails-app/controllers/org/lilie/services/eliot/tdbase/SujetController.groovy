@@ -122,15 +122,15 @@ class SujetController {
   }
 
   /**
-     *
-     * Action "Dupliquer"
-     */
-    def duplique() {
-      Personne personne = authenticatedPersonne
-      Sujet sujet = Sujet.get(params.id)
-      Sujet nveauSujet = sujetService.recopieSujet(sujet,personne)
-      redirect(action: 'edite', id: nveauSujet.id)
-    }
+   *
+   * Action "Dupliquer"
+   */
+  def duplique() {
+    Personne personne = authenticatedPersonne
+    Sujet sujet = Sujet.get(params.id)
+    Sujet nveauSujet = sujetService.recopieSujet(sujet, personne)
+    redirect(action: 'edite', id: nveauSujet.id)
+  }
 
   /**
    * Action "Partager"

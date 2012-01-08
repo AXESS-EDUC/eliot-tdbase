@@ -46,7 +46,7 @@
           model="[liens: liens]"/>
 
 <g:if test="${sujet}">
-  <g:render template="/sujet/listeElements" model="[sujet:sujet]"/>
+  <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
 </g:if>
 
 <form>
@@ -65,7 +65,7 @@
         </td>
         <td>
           <g:select name="typeId" value="${rechercheCommand.typeId}"
-                    noSelection="${['null':'Tous']}"
+                    noSelection="${['null': 'Tous']}"
                     from="${typesQuestion}"
                     optionKey="id"
                     optionValue="nom"/>
@@ -84,7 +84,7 @@
         </td>
         <td>
           <g:select name="matiereId" value="${rechercheCommand.matiereId}"
-                    noSelection="${['null':'Toutes']}"
+                    noSelection="${['null': 'Toutes']}"
                     from="${matieres}"
                     optionKey="id"
                     optionValue="libelleLong"/>
@@ -102,7 +102,7 @@
         </td>
         <td>
           <g:select name="niveauId" value="${rechercheCommand.niveauId}"
-                    noSelection="${['null':'Tous']}"
+                    noSelection="${['null': 'Tous']}"
                     from="${niveaux}"
                     optionKey="id"
                     optionValue="libelleLong"/>
@@ -169,19 +169,20 @@
               <li><g:link action="detail"
                           controller="question${questionInstance.type.code}"
                           id="${questionInstance.id}"
-                          params="[sujetId:sujet?.id]">
+                          params="[sujetId: sujet?.id]">
                 Aperçu
               </g:link>
               </li>
               <g:if test="${sujet}">
-                <li><g:link action="insert" controller="question${questionInstance.type.code}"
-                                          id="${questionInstance.id}"
-                                          params="[sujetId:sujet?.id]">
-                                Insérer&nbsp;dans&nbsp;le&nbsp;sujet
-                    </g:link>
+                <li><g:link action="insert"
+                            controller="question${questionInstance.type.code}"
+                            id="${questionInstance.id}"
+                            params="[sujetId: sujet?.id]">
+                  Insérer&nbsp;dans&nbsp;le&nbsp;sujet
+                </g:link>
                 </li>
               </g:if>
-              <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur,questionInstance) && afficheLiensModifier}">
+              <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
                 <li><g:link action="edite"
                             controller="question${questionInstance.type.code}"
                             id="${questionInstance.id}">Modifier</g:link></li>
@@ -189,7 +190,7 @@
               <g:else>
                 <li>Modifier</li>
               </g:else>
-              <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur,questionInstance) && afficheLiensModifier}">
+              <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
                 <li><g:link action="duplique"
                             controller="question${questionInstance.type.code}"
                             id="${questionInstance.id}">Dupliquer</g:link></li>
@@ -198,7 +199,7 @@
                 <li>Dupliquer</li>
               </g:else>
               <li><hr/></li>
-              <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur,questionInstance) && afficheLiensModifier}">
+              <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
                 <li><g:link action="partage"
                             controller="question${questionInstance.type.code}"
                             id="${questionInstance.id}">Partager</g:link></li>
@@ -207,7 +208,7 @@
                 <li>Partager</li>
               </g:else>
               <li><hr/></li>
-              <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur,questionInstance) && afficheLiensModifier}">
+              <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
                 <li><g:link action="supprime"
                             controller="question${questionInstance.type.code}"
                             id="${questionInstance.id}">Supprimer</g:link></li>

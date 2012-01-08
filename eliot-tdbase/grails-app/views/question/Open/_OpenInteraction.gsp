@@ -34,6 +34,8 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 ${questionspecifobject.libelle} <br/>
-<g:textArea cols="55" rows="${questionspecifobject.nombreLignesReponse}" name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse" value="${reponsespecifobject?.valeurReponse}" />
+<g:textArea cols="55" rows="${questionspecifobject.nombreLignesReponse}"
+            name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse"
+            value="${reponsespecifobject?.valeurReponse}"/>
 <br/>
 

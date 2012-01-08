@@ -24,7 +24,6 @@ textarea {
     width: auto;
 }
 
-
 .label {
     color: #3F61A0;
     font-weight: bold;
@@ -345,8 +344,8 @@ Style custom eliot-tdbase
 
 .editinplace {
     float: left;
-    padding: 0.1em ;
-    border:1px solid;
+    padding: 0.1em;
+    border: 1px solid;
     width: 5em;
     text-align: center;
 }

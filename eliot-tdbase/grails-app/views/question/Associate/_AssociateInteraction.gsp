@@ -26,34 +26,33 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-
 <style type="text/css">
 
 .participant {
-    float: left;
-    margin: 0 2px 0 2px;
-    border: solid 1px #FFD324;
-    background: #FFF6BF;
-    color: #817134;
-    display: inline-block;
-    height: 1em;
-    padding: 0.5em 0.5em 0.5em 0.5em;
-    text-decoration: none;
+  float: left;
+  margin: 0 2px 0 2px;
+  border: solid 1px #FFD324;
+  background: #FFF6BF;
+  color: #817134;
+  display: inline-block;
+  height: 1em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  text-decoration: none;
 }
 
 .associationCell {
-    float: left;
-    margin: 5px 5px 5px 5px;
-    border: solid 1px #808080;
-    background: #f5f5f5;
-    display: inline-block;
-    height: 1.5em;
-    width: 17em;
-    padding: 0.5em 0.5em 0.5em 0.5em;
+  float: left;
+  margin: 5px 5px 5px 5px;
+  border: solid 1px #808080;
+  background: #f5f5f5;
+  display: inline-block;
+  height: 1.5em;
+  width: 17em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
 }
 
 .highlighted {
-    background: #b5bdff;
+  background: #b5bdff;
 }
 
 </style>
@@ -64,33 +63,35 @@
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
 <div id="associateQuestion_${indexReponse}">
-    ${questionspecifobject.libelle} <br/>
+  ${questionspecifobject.libelle} <br/>
 
-    <table>
-        <g:each status="i" in="${questionspecifobject.associations}" var="association">
-            <tr>
-                <td id="association${indexReponse}_${i}left" class="associationCell">
-                    <g:textField id="association${indexReponse}_${i}left_field"
-                                 name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant1"
-                                 value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant1}"/>
-                </td>
-                <td>------</td>
-                <td id="association${indexReponse}_${i}right" class="associationCell">
-                    <g:textField id="association${indexReponse}_${i}right_field"
-                                 name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant2"
-                                 value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant2}"/>
-                </td>
-            </tr>
-        </g:each>
-    </table>
+  <table>
+    <g:each status="i" in="${questionspecifobject.associations}"
+            var="association">
+      <tr>
+        <td id="association${indexReponse}_${i}left" class="associationCell">
+          <g:textField id="association${indexReponse}_${i}left_field"
+                       name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant1"
+                       value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant1}"/>
+        </td>
+        <td>------</td>
+        <td id="association${indexReponse}_${i}right" class="associationCell">
+          <g:textField id="association${indexReponse}_${i}right_field"
+                       name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant2"
+                       value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant2}"/>
+        </td>
+      </tr>
+    </g:each>
+  </table>
 
-    <table>
-        <tr id="participants">
-            <g:each status="i" in="${questionspecifobject.participants}" var="participant">
-                <td id="participant${indexReponse}_${i}" class="participant">
-                    <p>${participant}</p>
-                </td>
-            </g:each>
-        </tr>
-    </table>
+  <table>
+    <tr id="participants">
+      <g:each status="i" in="${questionspecifobject.participants}"
+              var="participant">
+        <td id="participant${indexReponse}_${i}" class="participant">
+          <p>${participant}</p>
+        </td>
+      </g:each>
+    </tr>
+  </table>
 </div>

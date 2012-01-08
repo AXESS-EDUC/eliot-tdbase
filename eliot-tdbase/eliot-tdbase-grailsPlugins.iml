@@ -12,9 +12,7 @@
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
-        <datasource-map>
-          <unit-entry name="Gorm" />
-        </datasource-map>
+        <datasource-map />
       </configuration>
     </facet>
   </component>
@@ -56,7 +54,6 @@
     <orderEntry type="module-library" exported="">
       <library name="Grails User Library (eliot-tdbase-grailsPlugins)">
         <CLASSES>
-          <root url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/svn-1.0.0.M1/lib" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.springframework.security/spring-security-web/jars/spring-security-web-3.0.5.RELEASE.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.aspectj/aspectjweaver/jars/aspectjweaver-1.6.8.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.aspectj/aspectjrt/jars/aspectjrt-1.6.8.jar!/" />
@@ -70,11 +67,16 @@
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.codenarc/CodeNarc/jars/CodeNarc-0.15.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.lilie.services.eliot/eliot-tice-dbmigration/jars/eliot-tice-dbmigration-0.4a-SNAPSHOT.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/antlr/antlr/jars/antlr-2.7.6.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/ant/ant/jars/ant-1.6.5.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/log4j/log4j/jars/log4j-1.2.13.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.7.1.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.ant/ant/jars/ant-1.7.1.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/junit/junit/jars/junit-3.8.2.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.codehaus.groovy/groovy-all/jars/groovy-all-1.6.9.jar!/" />
+          <root url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/svn-1.0.0.M1/lib" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/../groovy-all-1.6.9-sources.jar!/" />
-        </SOURCES>
+        <SOURCES />
         <jarDirectory url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/svn-1.0.0.M1/lib" recursive="false" />
       </library>
     </orderEntry>

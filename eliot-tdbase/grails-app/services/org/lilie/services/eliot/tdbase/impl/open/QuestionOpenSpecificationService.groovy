@@ -87,8 +87,8 @@ class OpenSpecification implements QuestionSpecification {
   }
 
   static constraints = {
-    libelle blank:false
-    nombreLignesReponse nullable:false
+    libelle blank: false
+    nombreLignesReponse nullable: false
   }
 
 }
