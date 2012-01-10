@@ -27,4 +27,32 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
-Hello Titi!
+Correction: ${specifobject.correction}
+<br>
+<br>
+<g:if test="${specifobject.attachmentId}">
+  <et:viewAttachement
+          attachement="${specifobject.attachement}"
+          width="500"
+          height="500"/>
+  <br>
+</g:if>
+
+<g:each status="i" in="${specifobject.hotspots}" var="hotspot">
+  <div id="hotspot_${indexReponse}_${hotspot.id}" class="hotspot"
+       topDistance="${hotspot.topDistance}"
+       leftDistance="${hotspot.leftDistance}">
+    ${hotspot.id}
+  </div>
+</g:each>
+
+<g:each status="i" in="${specifobject.icons}" var="icon">
+  <div id="icon_${indexReponse}_${icon.id}" class="icon">
+    <et:viewAttachement attachement="${icon.attachment}" width="30"
+                        height="30"/>
+
+    <g:textField id="icon_${indexReponse}_${icon.id}_graphicMatch"
+                 name="icon_${indexReponse}_${icon.id}_graphicMatch"
+                 value="${specifobject?.graphicMatches.get(icon.id.toString())}"/>
+  </div>
+</g:each>

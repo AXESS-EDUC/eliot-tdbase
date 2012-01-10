@@ -36,4 +36,36 @@
   To change this template use File | Settings | File Templates.
 --%>
 <g:set var="specifobject" value="${question.specificationObject}"/>
-Hello Titi!
+<g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
+
+${specifobject.libelle} <br/>
+
+<div id="image_frame">
+  <g:if test="${specifobject.attachmentId}">
+    <et:viewAttachement
+            attachement="${specifobject.attachement}"
+            width="500"
+            height="500"/>
+    <br>
+  </g:if>
+
+  <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
+    <div id="hotspot_${indexReponse}_${hotspot.id}" class="hotspot"
+         topDistance="${hotspot.topDistance}"
+         leftDistance="${hotspot.leftDistance}">
+      ${hotspot.id}
+    </div>
+  </g:each>
+
+  <g:each status="i" in="${specifobject.icons}" var="icon">
+    <div id="icon_${indexReponse}_${icon.id}" class="icon">
+      <et:viewAttachement attachement="${icon.attachment}" width="30"
+                          height="30"/>
+
+      <g:textField id="icon_${indexReponse}_${icon.id}_graphicMatch"
+                   name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${icon.id}]"
+                   value="${reponsespecifobject?.valeursDeReponse.get(icon.id.toString())}"/>
+    </div>
+  </g:each>
+</div>
+<br>
