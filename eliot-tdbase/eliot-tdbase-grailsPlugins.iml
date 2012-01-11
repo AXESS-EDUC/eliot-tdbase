@@ -6,6 +6,7 @@
         <webroots>
           <root url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-1.6.1.1/web-app" relative="/" />
           <root url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/web-app" relative="/" />
+          <root url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/modernizr-2.0.6/web-app" relative="/" />
         </webroots>
         <sourceRoots />
       </configuration>
@@ -30,6 +31,10 @@
     <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-ui-1.8.15">
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/grails-app/i18n" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/jquery-ui-1.8.15/grails-app/taglib" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/modernizr-2.0.6">
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/modernizr-2.0.6/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/modernizr-2.0.6/grails-app/taglib" isTestSource="false" />
     </content>
     <content url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/resources-1.1.1">
       <sourceFolder url="file://$USER_HOME$/.grails/2.0.0/projects/eliot-tdbase/plugins/resources-1.1.1/src/java" isTestSource="false" />

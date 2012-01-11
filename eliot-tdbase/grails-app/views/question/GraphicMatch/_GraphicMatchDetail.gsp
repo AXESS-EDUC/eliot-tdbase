@@ -26,5 +26,31 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<g:set var="specifobject" value="${question.specificationObject}"/>
-Hello Titi!
+<tr>
+  <td class="label">Détail :</td>
+  <td>
+    <g:set var="specifobject" value="${question.specificationObject}"/>
+    ${specifobject.libelle}
+    <br/><br/>
+    <g:if test="${specifobject.attachement}">
+      <et:viewAttachement attachement="${specifobject.attachement}"
+                          width="500" height="500"/>
+      <br/><br/>
+    </g:if>
+
+    <g:each status="i" in="${specifobject.icons}" var="icon">
+
+      <g:if test="${icon.id}">
+        <et:viewAttachement attachement="${icon.attachment}" width="30"
+                            height="30"/>
+      </g:if>
+      &nbsp;avec hotspot&nbsp;
+      <g:textField name="hotpot"
+                   value="${specifobject.graphicMatches[icon.id.toString()]}"/>
+      <br/>
+      <br/>
+    </g:each>
+
+    Correction : ${specifobject.correction}
+  </td>
+</tr>

@@ -54,26 +54,9 @@
 .highlighted {
   background: #b5bdff;
 }
-
 </style>
 
-%{--
-<r:require module="modernizr"/>
-<r:script disposition="head">
-  Modernizr.load({
-            test: Modernizr.touch,
-            yep:"${r.resource(uri: '/static/dragNDrop.js')}",
-            nope:"${r.resource(uri: '/static/dragNDrop.polyfill.js')}"
-
-          });
-</r:script>
---}%
-
-<r:script>
-  $("form").attr('enctype', 'multipart/form-data');
-
-</r:script>
-
+<r:require module="graphicMatchJS"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 <tr>
@@ -84,18 +67,8 @@
   </td>
 </tr>
 <tr>
-  <td class="label">Image d'arrière plan:</td>
+  <td class="label">R&eacute;ponse:</td>
   <td>
-    <g:hiddenField name="specifobject.attachmentId"
-                   value="${specifobject.attachmentId}"/>
-
-    <g:if test="${specifobject.attachmentId}">
-      <et:viewAttachement
-              attachement="${specifobject.attachement}"
-              width="500"
-              height="500"/>
-      <br>
-    </g:if>
 
     <input type="file" name="specifobject.fichier"
            onchange="$('#imageUpload').trigger('click');"/>
@@ -103,35 +76,37 @@
     <g:actionSubmit value="upload" action="enregistre" title="Upload"
                     hidden="true"
                     id="imageUpload"/>
-  </td>
-</tr>
-<tr>
-  <td class="label">R&eacute;ponse:</td>
-  <td>
-    <g:submitToRemote title="Ajouter un hotspot" value="Ajouter Hotspot"
-                      action="ajouteHotspot"
-                      controller="questionGraphicMatch"
-                      update="hotspotsEtIcons"/>
-    %{--after="afterTextFieldAdded();--}%
 
-    <g:submitToRemote value="Supprimer Hotspot"
-                      title="Supprimer un hotspot"
-                      action="supprimeHotspot"
-                      controller="questionGraphicMatch"
-                      update="hotspotsEtIcons"/>
-    %{--after="afterTextfieldDeleted();"--}%
-    <g:submitToRemote title="Ajouter un icon" value="Ajouter Icon"
-                      action="ajouteIcon"
-                      controller="questionGraphicMatch"
-                      update="hotspotsEtIcons"/>
-  </td>
-</tr>
-<tr>
-  <td></td>
-  <td id="hotspotsEtIcons">
-    <g:render
-            template="/question/GraphicMatch/GraphicMatchEditionReponses"
-            model="[specifobject: specifobject]"/>
+    <g:hiddenField name="specifobject.attachmentId"
+                   value="${specifobject.attachmentId}"/>
+
+    <g:if test="${specifobject.attachmentId}">
+
+      <g:submitToRemote title="Ajouter un hotspot" value="Ajouter Hotspot"
+                        action="ajouteHotspot"
+                        controller="questionGraphicMatch"
+                        update="hotspotsEtIcons"
+                        onComplete="afterHotspotAdded()"/>
+
+      <g:submitToRemote title="Ajouter un icon" value="Ajouter Icon"
+                        action="ajouteIcon"
+                        controller="questionGraphicMatch"
+                        update="hotspotsEtIcons"/>
+
+      <div id="imageContainer">
+        <et:viewAttachement
+                attachement="${specifobject.attachement}"
+                width="500"
+                height="500"
+                id="theImage"/>
+
+        <div id="hotspotsEtIcons">
+          <g:render
+                  template="/question/GraphicMatch/GraphicMatchEditionReponses"
+                  model="[specifobject: specifobject]"/>
+        </div>
+      </div>
+    </g:if>
   </td>
 </tr>
 <tr>

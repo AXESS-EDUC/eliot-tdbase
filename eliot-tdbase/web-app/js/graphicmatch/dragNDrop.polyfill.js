@@ -25,7 +25,9 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-function initDragNDrop() {
-    $("form").attr('enctype', 'multipart/form-data');
-    alert('DnD Polyfill');
+function initDragNDropPolyFill() {
+
+// do nothing.
+// on utilise l'html de base.
+
 }

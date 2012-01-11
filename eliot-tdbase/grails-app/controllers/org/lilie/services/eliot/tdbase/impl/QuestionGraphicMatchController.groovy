@@ -44,9 +44,6 @@ class QuestionGraphicMatchController extends QuestionController {
     def specifobject = new GraphicMatchSpecification()
     def size = params.specifobject.hotspots?.size
     if (size) {
-
-      println("Hotspotssize" + size)
-
       size = size as Integer
       size.times {
         specifobject.hotspots << new Hotspot()
@@ -55,9 +52,6 @@ class QuestionGraphicMatchController extends QuestionController {
 
     size = params.specifobject.icons?.size
     if (size) {
-
-      println("iconsssize" + size)
-
       size = size as Integer
       size.times {
         specifobject.icons << new MatchIcon()
@@ -107,9 +101,8 @@ class QuestionGraphicMatchController extends QuestionController {
    */
   def supprimeHotspot() {
     GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params)
-    if (params.selectedHotspot) {
-      specifobject.hotspots.remove(params.selectedHotspot as Integer)
-    }
+    specifobject.hotspots.remove(params.id as Integer)
+
     render(
             template: "/question/GraphicMatch/GraphicMatchEditionReponses",
             model: [specifobject: specifobject]

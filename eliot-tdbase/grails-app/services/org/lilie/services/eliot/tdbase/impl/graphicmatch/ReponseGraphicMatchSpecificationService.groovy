@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.impl.graphicmatch
 
+import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
@@ -41,6 +42,18 @@ class ReponseGraphicMatchSpecificationService extends
   @Override
   ReponseGraphicMatchSpecification createSpecification(Map map) {
     new ReponseGraphicMatchSpecification(map)
+  }
+
+  @Override
+  ReponseGraphicMatchSpecification getObjectInitialiseFromSpecification(Question question) {
+
+    def valeursDeReponse = [:]
+    question.specificationObject.graphicMatches.each {
+      valeursDeReponse[it.key] = ""
+    }
+
+    new ReponseGraphicMatchSpecification(valeursDeReponse: [:],
+                                         reponsesPossibles: question.specificationObject.graphicMatches)
   }
 
   @Override
@@ -60,12 +73,12 @@ class ReponseGraphicMatchSpecification implements ReponseSpecification {
   /**
    * Liste d'elements fournis comme reponse à la question.
    */
-  Map<String, Long> valeursDeReponse = [:]
+  Map<Long, String> valeursDeReponse = [:]
 
   /**
    * Liste d'elements qui forment une reponse correcte.
    */
-  Map<String, Long> reponsesPossibles = [:]
+  Map<Long, String> reponsesPossibles = [:]
 
   /**
    * Constructeur par defaut
