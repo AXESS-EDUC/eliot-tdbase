@@ -54,7 +54,7 @@
       $('#menu-item-contributions').addClass('actif');
     });
   </r:script>
-  <title>TDBase - Edition d'une question</title>
+  <title>TDBase - Edition d'un item</title>
 </head>
 
 <body>
@@ -195,7 +195,7 @@
                target="_blank">${question.copyrightsType.presentation}</a>
           </g:if>
           <g:else>
-            cette question n'est pas partagée
+            cet item n'est pas partagé
           </g:else>
         </td>
       </tr>

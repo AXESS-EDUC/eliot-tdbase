@@ -37,7 +37,7 @@
       $('#menu-item-contributions').addClass('actif');
     });
   </r:script>
-  <title>TDBase - Edition d'une question</title>
+  <title>TDBase - Détail d'un item</title>
 </head>
 
 <body>

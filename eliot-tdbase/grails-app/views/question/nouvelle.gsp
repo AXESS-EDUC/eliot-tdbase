@@ -49,7 +49,7 @@
             model="[liens: liens]"/>
 
   <div style="width:80%; padding:15px; margin: auto;">
-    <h4>Créer une nouvelle contribution</h4>
+    <h4>Créer un nouvel item</h4>
     <ul>
       <li>
         <g:link action="edite"

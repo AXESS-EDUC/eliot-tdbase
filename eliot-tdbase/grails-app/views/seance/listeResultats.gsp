@@ -86,7 +86,7 @@
 
             </td>
             <td>
-              ${copie.dateRemise.format('dd/MM/yy  à HH:mm')}
+              ${copie.dateRemise?.format('dd/MM/yy  à HH:mm')}
             </td>
              <td>
               <g:link action="visualiseCopie" controller="seance"

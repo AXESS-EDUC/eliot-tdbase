@@ -135,8 +135,8 @@
         <th>Niveau</th>
         <th>Matière</th>
         <th>Autonome</th>
-        <th>Partagée</th>
-        <th>Mise à jour le</th>
+        <th>Partagé</th>
+        <th>Mis à jour le</th>
         <th>Actions</th>
       </tr>
       </thead>

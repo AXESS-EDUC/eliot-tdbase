@@ -71,12 +71,12 @@
           <ul>
             <li title="Nouveau">
               <g:link controller="sujet" action="nouveau"
-                      title="Pour créer un nouveau sujet"
+                      title="Créer un nouveau sujet"
                       params="[bcInit:true]">Nouveau</g:link>
             </li>
             <li title="Rechercher">
               <g:link controller="sujet" action="recherche"
-                      title="Pour rechercher des sujets"
+                      title="Rechercher des sujets"
                       params="[bcInit:true]">Rechercher</g:link>
             </li>
             <li title="Mes sujets">
@@ -87,19 +87,19 @@
           </ul>
         </li>
         <li id="menu-item-contributions">
-          <a title="Mes contributions">Mes contributions</a>
+          <a title="Mes contributions">Items</a>
           <ul>
             <li title="Nouvelle">
               <g:link controller="question"
                       action="nouvelle"
-                      title="Pour créer une nouvelle contribution"
+                      title="Créer un nouvel item"
                       params="[bcInit:true]">
-                Nouvelle contribution
+                Nouveau
               </g:link>
             </li>
             <li title="Rechercher">
               <g:link controller="question" action="recherche"
-                      title="Rechercher dans mes contributions"
+                      title="Rechercher des items"
                       params="[bcInit:true]">Rechercher</g:link>
 
             </li>
