@@ -25,22 +25,65 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+
+<style type="text/css">
+
+.hotspotSupressButton {
+  background-color: transparent;
+  -moz-border-radius: 1px;
+  -webkit-border-radius: 1px;
+  border-radius: 1px;
+  border: 0;
+  display: inline-block;
+  color: #777777;
+  font-family: arial;
+  font-size: 9px;
+  font-weight: bold;
+  padding: 2px 4px;
+  text-decoration: none;
+}
+
+.hotspot {
+  float: left;
+  border: solid 1px #FFD324;
+  background: #FFF6BF;
+  background: rgba(255, 246, 191, 0.9);
+  color: #817134;
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  text-decoration: none;
+}
+
+</style>
+
 <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
 
-  <input type="radio" name="selectedHotspot" value="${i}"/>
+  <div id="hotspot_${i}" class="hotspot">
 
-  Id:
-  <g:textField name="specifobject.hotspots[${i}].id"
-               value="${hotspot.id}" disabled="true"/>
-  <g:hiddenField name="specifobject.hotspots[${i}].id"
-                 value="${hotspot.id}"/>
+    <g:submitToRemote id="${i}"
+                      name="hotspotSupressButton"
+                      title="Supprimer un hotspot"
+                      value="X"
+                      action="supprimeHotspot"
+                      controller="questionGraphicMatch"
+                      update="hotspotsEtIcons"
+                      onComplete="afterHotspotDeleted()"/>
 
-  Top:
-  <g:textField name="specifobject.hotspots[${i}].topDistance"
-               value="${hotspot.topDistance}" size="3"/>
-  Left:
-  <g:textField name="specifobject.hotspots[${i}].leftDistance"
-               value="${hotspot.leftDistance}" size="3"/>
+    <span class="hotspotLabel">Hotspot: ${hotspot.id}</span>
+    <g:hiddenField name="specifobject.hotspots[${i}].id"
+                   value="${hotspot.id}"/>
+
+    <span class="hotspotLabel">Top:</span>
+    <g:textField class="offTop"
+                 name="specifobject.hotspots[${i}].topDistance"
+                 value="${hotspot.topDistance}" size="3"/>
+
+    <span class="hotspotLabel">Left:</span>
+    <g:textField class="offLeft"
+                 name="specifobject.hotspots[${i}].leftDistance"
+                 value="${hotspot.leftDistance}" size="3"/>
+  </div>
   <br>
 </g:each>
 

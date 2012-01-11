@@ -30,23 +30,35 @@ function initDragNDrop() {
     initWidgets();
     registerEventHandlers();
 
-    alert('DnD Full Style');
-
-
     function initWidgets() {
-        $("form").attr('enctype', 'multipart/form-data');
+        //hide html tags
+        $(".hotspotLabel").hide();
+        $(".offLeft").hide();
+        $(".offTop").hide();
+
+        // style html tags
+        $('[name="hotspotSupressButton"]').each(function () {
+            $(this).addClass('hotspotSupressButton');
+        });
+
+        // make hotspots draggable
+        $(".hotspot").draggable({containment:'#theImage'});
+
+        positionHotspots();
     }
 
     function registerEventHandlers() {
+
     }
 
+    function positionHotspots() {
+        $(".hotspot").each(function () {
+            var offLeft = $(this).children('.offLeft').val();
+            var offTop = $(this).children('.offTop').val();
+            $(this).position({
+                                 of:$("#theImage"), my:"left top", at:"left top",
+                                 offset:offLeft + " " + offTop, collision:"none"
+                             });
+        });
+    }
 }
-
-function afterTextFieldAdded() {
-    alert("After text field added");
-}
-
-function afterTextfieldDeleted() {
-    alert("After text field deleted");
-}
-

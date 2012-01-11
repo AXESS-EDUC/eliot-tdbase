@@ -53,6 +53,9 @@ class AttachementTagLib {
         if (attrs.height) {
           out << ' height="' << attrs.height << '"'
         }
+        if (attrs.id) {
+          out << ' id="' << attrs.id << '"'
+        }
         out << '/>'
       } else if (attachement.estUnTexteAffichable()) {
         File fichier = attachementService.getFileForAttachement(attachement)

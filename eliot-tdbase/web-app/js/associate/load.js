@@ -28,7 +28,6 @@
 
 if (Modernizr.touch) {
     initDragNDropPolyFill();
-}
-else {
+} else {
     initDragNDrop();
 }

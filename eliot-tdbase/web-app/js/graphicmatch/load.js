@@ -25,20 +25,21 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
+$("form").attr('enctype', 'multipart/form-data');
+initPolyFill();
 
-Modernizr.load({
-                   test:Modernizr.touch,
-                   yep:'http://localhost:8080/eliot-tdbase/static/js/graphicmatch/dragNDrop.js',
-                   nope:'http://localhost:8080/eliot-tdbase/static/js/graphicmatch/dragNDrop.polyfill.js',
-                   complete:function () {
-                       initDragNDrop();
-                   }
-               });
+function afterHotspotDeleted() {
+    initPolyFill();
+}
 
-/*
+function afterHotspotAdded() {
+    initPolyFill();
+}
 
- if (Modernizr.touch) {
- initDragNDropPolyFill();
- } else {
- initDragNDrop();
- }*/
+function initPolyFill() {
+    if (Modernizr.touch) {
+        initDragNDropPolyFill();
+    } else {
+        initDragNDrop();
+    }
+}
