@@ -49,6 +49,9 @@ function initDragNDrop() {
 
     function registerEventHandlers() {
 
+        $(".hotspot").bind("dragstop", function () {
+            onDragStop($(this));
+        })
     }
 
     function positionHotspots() {
@@ -60,5 +63,18 @@ function initDragNDrop() {
                                  offset:offLeft + " " + offTop, collision:"none"
                              });
         });
+    }
+
+    function onDragStop(hotspot) {
+        var hotspotId = hotspot.attr("id");
+
+        var imageLeft = $('#theImage').position().left;
+        var imageTop = $('#theImage').position().top;
+
+        var hotspotLeft = $('#' + hotspotId).position().left - imageLeft;
+        var hotspotTop = $('#' + hotspotId).position().top - imageTop;
+
+        $("#" + hotspotId + ">input.offLeft").val(hotspotLeft);
+        $("#" + hotspotId + ">input.offTop").val(hotspotTop);
     }
 }
