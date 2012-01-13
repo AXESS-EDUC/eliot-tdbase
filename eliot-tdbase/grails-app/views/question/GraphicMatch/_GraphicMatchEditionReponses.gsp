@@ -1,3 +1,4 @@
+<%@ page import="grails.converters.JSON" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -43,7 +44,7 @@
   text-decoration: none;
 }
 
-.hotspot {
+.hotspotStyle {
   float: left;
   border: solid 1px #FFD324;
   background: #FFF6BF;
@@ -55,10 +56,15 @@
   text-decoration: none;
 }
 
+.hotspotStyle {
+  font-family: arial;
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
 </style>
 
 <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-
   <div id="hotspot_${i}" class="hotspot">
 
     <g:submitToRemote id="${i}"
@@ -71,7 +77,7 @@
                       onComplete="afterHotspotDeleted()"/>
 
     <span class="hotspotLabel">Hotspot: ${hotspot.id}</span>
-    <g:hiddenField name="specifobject.hotspots[${i}].id"
+    <g:hiddenField class="idField" name="specifobject.hotspots[${i}].id"
                    value="${hotspot.id}"/>
 
     <span class="hotspotLabel">Top:</span>
@@ -84,7 +90,6 @@
                  name="specifobject.hotspots[${i}].leftDistance"
                  value="${hotspot.leftDistance}" size="3"/>
   </div>
-  <br>
 </g:each>
 
 <g:hiddenField name="specifobject.hotspots.size"
@@ -94,36 +99,29 @@
   <g:each status="i" in="${specifobject.icons}" var="icon">
     <tr>
       <td>
-        <g:submitToRemote id="${i}"
-                          title="Supprimer un icon"
-                          value="X"
-                          action="supprimeIcon"
-                          controller="questionGraphicMatch"
-                          update="hotspotsEtIcons"/>
+        <span class="label">Hotspot ${specifobject.graphicMatches.getAt(icon.id)}:</span>
+        <g:hiddenField id="graphicMatch_${icon.id}"
+                       name="specifobject.graphicMatches[${icon.id}]"
+                       value="${specifobject.graphicMatches.getAt(icon.id)}"/>
       </td>
-
       <td>
+        <g:hiddenField name="specifobject.icons[${i}].attachmentId"
+                       value="${icon.attachmentId}"/>
         <g:hiddenField name="specifobject.icons[${i}].id"
                        value="${icon.id}"/>
 
-        <g:if test="${icon.id}">
+        <g:if test="${icon.attachmentId}">
           <et:viewAttachement attachement="${icon.attachment}" width="30"
                               height="30"/>
         </g:if>
       </td>
       <td>
+
         <input type="file" name="specifobject.icons[${i}].fichier"
                onchange="$('#iconUpload${i}').trigger('click');"/>
 
-        <g:actionSubmit value="upload" action="enregistre" title="Upload"
-                        hidden="true"
+        <g:actionSubmit value="upload" action="enregistre" hidden="true"
                         id="iconUpload${i}"/>
-      </td>
-      <td>
-        <g:select name="specifobject.graphicMatches[${icon.id}]"
-                  from="${specifobject.hotspots*.id}"
-                  noSelection="['0': 'avec Hotspot...']"
-                  value="${specifobject.graphicMatches[icon.id.toString()]}"/>
       </td>
     </tr>
   </g:each>

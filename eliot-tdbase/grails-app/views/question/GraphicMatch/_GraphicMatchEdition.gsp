@@ -26,37 +26,9 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<style type="text/css">
-
-.participant {
-  float: left;
-  margin: 0 2px 0 2px;
-  border: solid 1px #FFD324;
-  background: #FFF6BF;
-  color: #817134;
-  display: inline-block;
-  height: 1em;
-  padding: 0.5em 0.5em 0.5em 0.5em;
-  text-decoration: none;
-}
-
-.associationCell {
-  float: left;
-  margin: 5px 5px 5px 5px;
-  border: solid 1px #808080;
-  background: #f5f5f5;
-  display: inline-block;
-  height: 1.5em;
-  width: 17em;
-  padding: 0.5em 0.5em 0.5em 0.5em;
-}
-
-.highlighted {
-  background: #b5bdff;
-}
-</style>
-
 <r:require module="graphicMatchJS"/>
+<r:script> $("form").attr('enctype', 'multipart/form-data');</r:script>
+
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 <tr>
@@ -87,11 +59,6 @@
                         controller="questionGraphicMatch"
                         update="hotspotsEtIcons"
                         onComplete="afterHotspotAdded()"/>
-
-      <g:submitToRemote title="Ajouter un icon" value="Ajouter Icon"
-                        action="ajouteIcon"
-                        controller="questionGraphicMatch"
-                        update="hotspotsEtIcons"/>
 
       <div id="imageContainer">
         <et:viewAttachement

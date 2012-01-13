@@ -25,7 +25,6 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-$("form").attr('enctype', 'multipart/form-data');
 initPolyFill();
 
 function afterHotspotDeleted() {

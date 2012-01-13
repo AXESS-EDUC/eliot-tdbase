@@ -47,6 +47,7 @@ function initDragNDrop() {
         $(".hotspot").draggable({containment:'#theImage', stack:'div'});
 
         positionHotspots();
+        addHotpotIds();
     }
 
     function registerEventHandlers() {
@@ -78,5 +79,15 @@ function initDragNDrop() {
 
         $("#" + hotspotId + ">input.offLeft").val(hotspotLeft);
         $("#" + hotspotId + ">input.offTop").val(hotspotTop);
+    }
+
+    function addHotpotIds() {
+        $(".hotspot").each(function () {
+
+            var id = $(this).children(".idField").val();
+
+            $(this).append("<span class='hotspotId'>" + id + "</span>");
+
+        });
     }
 }

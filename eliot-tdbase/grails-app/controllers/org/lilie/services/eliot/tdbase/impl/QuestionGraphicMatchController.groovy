@@ -67,28 +67,14 @@ class QuestionGraphicMatchController extends QuestionController {
    */
   def ajouteHotspot() {
     GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params) ?: new GraphicMatchSpecification()
-    specifobject.hotspots << new Hotspot([id: createId(specifobject.hotspots)])
-    render(
-            template: "/question/GraphicMatch/GraphicMatchEditionReponses",
-            model: [specifobject: specifobject]
-    )
-  }
 
-  private int createId(List<Hotspot> hotspots) {
-    def idList = hotspots*.id
-    if (idList) {
-      return idList.max().toInteger() + 1
-    }
-    1
-  }
+    def hotspotId = createId(specifobject.hotspots)
+    def iconId = createId(specifobject.icons)
 
-  /**
-   *
-   * Action "ajouteIcon"
-   */
-  def ajouteIcon() {
-    GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params) ?: new GraphicMatchSpecification()
-    specifobject.icons << new MatchIcon()
+    specifobject.hotspots << new Hotspot([id: hotspotId])
+    specifobject.icons << new MatchIcon([id: iconId])
+    specifobject.graphicMatches[iconId] = hotspotId
+
     render(
             template: "/question/GraphicMatch/GraphicMatchEditionReponses",
             model: [specifobject: specifobject]
@@ -101,7 +87,15 @@ class QuestionGraphicMatchController extends QuestionController {
    */
   def supprimeHotspot() {
     GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params)
+    def hotspotId = specifobject.hotspots[params.id.toInteger()].id
+
+    Long matchingIconId = lookupIconId(specifobject.graphicMatches, hotspotId)
+
     specifobject.hotspots.remove(params.id as Integer)
+    specifobject.graphicMatches.remove(matchingIconId)
+    specifobject.icons.remove(specifobject.icons.find {
+      icon -> icon.id == matchingIconId
+    })
 
     render(
             template: "/question/GraphicMatch/GraphicMatchEditionReponses",
@@ -109,17 +103,22 @@ class QuestionGraphicMatchController extends QuestionController {
     )
   }
 
-  /**
-   *
-   * Action "supprimerIcon"
-   */
-  def supprimeIcon() {
-    GraphicMatchSpecification specifobject = getSpecificationObjectFromParams(params)
-    specifobject.icons.remove(params.id as Integer)
-    render(
-            template: "/question/GraphicMatch/GraphicMatchEditionReponses",
-            model: [specifobject: specifobject]
-    )
+  private Long lookupIconId(Map<Long, String> graphicMatches, String hotspotId) {
+
+    Long matchingIconId
+
+    graphicMatches.each {entry ->
+      if (entry.value == hotspotId) {matchingIconId = entry.key}
+    }
+
+    matchingIconId
   }
 
+  private createId(List items) {
+    def idList = items*.id
+    if (idList && !idList.isEmpty()) {
+      return (idList.max().toInteger() + 1).toString()
+    }
+    "1"
+  }
 }

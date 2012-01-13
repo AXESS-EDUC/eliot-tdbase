@@ -67,7 +67,7 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
     }
 
     spec.icons.each {
-      def iconImageId = it.id
+      def iconImageId = it.attachmentId
       if (it.fichier && !it.fichier.empty) {
         def questionAttachement = questionAttachementService.createAttachementForQuestion(
                 it.fichier, question)
@@ -76,7 +76,7 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
           questionAttachementService.deleteQuestionAttachement(
                   QuestionAttachement.get(iconImageId))
         }
-        it.id = questionAttachement.id
+        it.attachmentId = questionAttachement.id
       }
     }
 
@@ -114,7 +114,7 @@ class GraphicMatchSpecification implements QuestionSpecification {
    * Un map qui lie les icones avec les hotspots.
    * [matchIconId:hotspotId]
    */
-  Map<Long, String> graphicMatches = [:]
+  Map<String, String> graphicMatches = [:]
 
   /**
    * Identifiant du fichier de l'image d'arrière plan joint à la question.
@@ -212,7 +212,9 @@ class MatchIcon {
   /**
    * L'identifiant de l'icone.
    */
-  Long id
+  String id
+
+  Long attachmentId
 
   /**
    * L'objet du fichier de l'image. Cet attribut n'est pas mappé.
@@ -224,15 +226,15 @@ class MatchIcon {
    * Conversion de l'objet en map.
    * @return une map des attributs de l'objet.
    */
-  Map toMap() {[id: id]}
+  Map toMap() {[id: id, attachmentId: attachmentId]}
 
   /**
    * Retourne l'attachement correspondant
    * @return l'attachement
    */
   Attachement getAttachment() {
-    if (id) {
-      return QuestionAttachement.get(id).attachement
+    if (attachmentId) {
+      return QuestionAttachement.get(attachmentId).attachement
     }
     null
   }
