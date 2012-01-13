@@ -27,6 +27,7 @@
  */
 
 function initDragNDrop() {
+
     initWidgets();
     registerEventHandlers();
 
@@ -40,9 +41,10 @@ function initDragNDrop() {
         $('[name="hotspotSupressButton"]').each(function () {
             $(this).addClass('hotspotSupressButton');
         });
+        $('.hotspot').addClass('hotspotStyle');
 
         // make hotspots draggable
-        $(".hotspot").draggable({containment:'#theImage'});
+        $(".hotspot").draggable({containment:'#theImage', stack:'div'});
 
         positionHotspots();
     }
