@@ -27,43 +27,6 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<style type="text/css">
-
-.hotspotSupressButton {
-  background-color: transparent;
-  -moz-border-radius: 1px;
-  -webkit-border-radius: 1px;
-  border-radius: 1px;
-  border: 0;
-  display: inline-block;
-  color: #777777;
-  font-family: arial;
-  font-size: 9px;
-  font-weight: bold;
-  padding: 2px 4px;
-  text-decoration: none;
-}
-
-.hotspotStyle {
-  float: left;
-  border: solid 1px #FFD324;
-  background: #FFF6BF;
-  background: rgba(255, 246, 191, 0.9);
-  color: #817134;
-  display: inline-block;
-  height: 50px;
-  width: 50px;
-  text-decoration: none;
-}
-
-.hotspotStyle {
-  font-family: arial;
-  font-size: 2.5em;
-  font-weight: bold;
-}
-
-</style>
-
 <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
   <div id="hotspot_${i}" class="hotspot">
 

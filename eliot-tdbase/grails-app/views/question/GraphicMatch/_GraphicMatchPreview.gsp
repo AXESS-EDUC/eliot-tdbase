@@ -25,27 +25,45 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+<r:require module="graphicMatch_PreviewJS"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 ${specifobject.libelle}
-<br/><br/>
-<g:if test="${specifobject.attachement}">
-  <et:viewAttachement attachement="${specifobject.attachement}"
-                      width="500" height="500"/>
-  <br/><br/>
-</g:if>
+<br/>
+<br/>
 
-<g:each status="i" in="${specifobject.icons}" var="icon">
+<div id="imageContainer">
+  <div id="theImage" style="position: relative;">
+    <g:if test="${specifobject.attachement}">
+      <et:viewAttachement attachement="${specifobject.attachement}"
+                          width="500" height="500"/>
+    </g:if>
+  </div>
+</div>
 
-  <g:if test="${icon.id}">
-    <et:viewAttachement attachement="${icon.attachment}" width="30"
-                        height="30"/>
-  </g:if>
-  &nbsp;avec hotspot&nbsp;
-  <g:textField name="hotpot"
-               value="${specifobject.graphicMatches[icon.id.toString()]}"/>
-  <br/>
-  <br/>
-</g:each>
+<ul class="hotspots">
+  <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
+    <li>
+      <span class="hotspotLabel">Hotspot:</span>
+      <span class="idField">${hotspot.id}</span>
+      <span class="hotspotLabel">Top:</span>
+      <span class="offTop">${hotspot.topDistance}</span>
+      <span class="hotspotLabel">Left:</span>
+      <span class="offLeft">${hotspot.leftDistance}</span>
+    </li>
+  </g:each>
+</ul>
+
+<ul class="icons">
+  <g:each status="i" in="${specifobject.icons}" var="icon">
+    <li class="icon">
+      Hotspot ${specifobject.graphicMatches[icon.id]} :
+      <g:if test="${icon.attachment}">
+        <et:viewAttachement attachement="${icon.attachment}"
+                            width="30" height="30"/>
+      </g:if>
+    </li>
+  </g:each>
+</ul>
 
 Correction : ${specifobject.correction}

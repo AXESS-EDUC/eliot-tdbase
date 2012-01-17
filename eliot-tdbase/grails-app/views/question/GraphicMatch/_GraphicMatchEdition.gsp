@@ -26,7 +26,7 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<r:require module="graphicMatchJS"/>
+<r:require module="graphicMatch_EditionJS"/>
 <r:script> $("form").attr('enctype', 'multipart/form-data');</r:script>
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
