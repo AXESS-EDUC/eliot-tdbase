@@ -25,60 +25,21 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-.hotspotSupressButton {
-    background-color: transparent;
-    -moz-border-radius: 1px;
-    -webkit-border-radius: 1px;
-    border-radius: 1px;
-    border: 0;
-    display: inline-block;
-    color: #777777;
-    font-family: arial;
-    font-size: 9px;
-    font-weight: bold;
-    padding: 2px 4px;
-    text-decoration: none;
+
+function initDragNDrop() {
+
+    initWidgets();
+    registerEventHandlers();
+
+    function initWidgets() {
+
+    }
+
+    function registerEventHandlers() {
+
+    }
+
+    function positionHotspots() {
+    }
+
 }
-
-.hotspotStyle {
-    float: left;
-    border: solid 1px #808080;
-    background: rgba(245, 245, 245, 0.9);
-    color: #817134;
-    display: inline-block;
-    height: 50px;
-    width: 50px;
-    text-decoration: none;
-    font-family: arial;
-    font-size: 2.1em;
-    font-weight: bold;
-}
-
-#imageContainer {
-    position: relative;
-}
-
-.hotspot {
-    list-style: none;
-}
-
-.icons {
-    list-style-type: none;
-    width: 500px;
-    height: 100px;
-    border: solid 1px #808080;
-}
-
-.icon {
-    list-style: none;
-    float: left;
-    border: solid 1px #FFD324;
-    background: #FFF6BF;
-    color: #817134;
-}
-
-.editIcon {
-    list-style: none;
-}
-
-

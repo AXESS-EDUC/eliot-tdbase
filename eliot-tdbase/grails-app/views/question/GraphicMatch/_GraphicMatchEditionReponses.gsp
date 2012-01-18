@@ -60,7 +60,7 @@
 
 <ul>
   <g:each status="i" in="${specifobject.icons}" var="icon">
-    <li>
+    <li class="editIcon">
       <span>Hotspot ${specifobject.graphicMatches.getAt(icon.id)}:</span>
 
       <g:if test="${icon.attachmentId}">

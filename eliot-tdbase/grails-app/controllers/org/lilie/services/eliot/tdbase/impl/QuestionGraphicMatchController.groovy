@@ -115,9 +115,9 @@ class QuestionGraphicMatchController extends QuestionController {
   }
 
   private createId(List items) {
-    def idList = items*.id
+    def idList = items*.id.collect {it.toInteger()}
     if (idList && !idList.isEmpty()) {
-      return (idList.max().toInteger() + 1).toString()
+      return (idList.max() + 1).toString()
     }
     "1"
   }

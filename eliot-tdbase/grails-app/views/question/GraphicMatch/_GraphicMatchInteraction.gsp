@@ -25,22 +25,15 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
-
-<%--
-  Created by IntelliJ IDEA.
-  User: bert
-  Date: 20/12/11
-  Time: 17:47
-  To change this template use File | Settings | File Templates.
---%>
+<r:require module="graphicMatch_InteractionJS"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-${specifobject.libelle} <br/>
+${specifobject.libelle}
 
-<div id="image_frame">
+<br>
+
+<div id="imageContainer">
   <g:if test="${specifobject.attachmentId}">
     <et:viewAttachement
             attachement="${specifobject.attachement}"
@@ -49,23 +42,31 @@ ${specifobject.libelle} <br/>
     <br>
   </g:if>
 
-  <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-    <div id="hotspot_${indexReponse}_${hotspot.id}" class="hotspot"
-         topDistance="${hotspot.topDistance}"
-         leftDistance="${hotspot.leftDistance}">
-      ${hotspot.id}
-    </div>
-  </g:each>
+  <ul class="hotspots">
+    <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
+      <li topDistance="${hotspot.topDistance}"
+          leftDistance="${hotspot.leftDistance}"
+          id="hotspot_${indexReponse}_${hotspot.id}"
+          class="hotspot">
+      </li>
+    </g:each>
+  </ul>
 
-  <g:each status="i" in="${specifobject.icons}" var="icon">
-    <div id="icon_${indexReponse}_${icon.id}" class="icon">
-      <et:viewAttachement attachement="${icon.attachment}" width="30"
-                          height="30"/>
+  <ul class="icons">
+    <g:each status="i" in="${specifobject.icons}" var="icon">
 
-      <g:textField id="icon_${indexReponse}_${icon.id}_graphicMatch"
-                   name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${icon.id}]"
-                   value="${reponsespecifobject?.valeursDeReponse.get(icon.id.toString())}"/>
-    </div>
-  </g:each>
+      <li id="icon_${indexReponse}_${icon.id}" class="icon">
+
+        <et:viewAttachement attachement="${icon.attachment}"
+                            width="30"
+                            height="30"/>
+
+        <g:hiddenField id="icon_${indexReponse}_${icon.id}_graphicMatch"
+                       name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${icon.id}]"
+                       value="${reponsespecifobject?.valeursDeReponse.get(icon.id)}"/>
+      </li>
+    </g:each>
+  </ul>
 </div>
+
 <br>

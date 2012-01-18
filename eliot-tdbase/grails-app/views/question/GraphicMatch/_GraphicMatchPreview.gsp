@@ -43,26 +43,23 @@ ${specifobject.libelle}
 
 <ul class="hotspots">
   <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-    <li>
-      <span class="hotspotLabel">Hotspot:</span>
-      <span class="idField">${hotspot.id}</span>
-      <span class="hotspotLabel">Top:</span>
-      <span class="offTop">${hotspot.topDistance}</span>
-      <span class="hotspotLabel">Left:</span>
-      <span class="offLeft">${hotspot.leftDistance}</span>
+    <li topDistance="${hotspot.topDistance}"
+        leftDistance="${hotspot.leftDistance}" id="${hotspot.id}">
     </li>
   </g:each>
 </ul>
 
 <ul class="icons">
   <g:each status="i" in="${specifobject.icons}" var="icon">
-    <li class="icon">
-      Hotspot ${specifobject.graphicMatches[icon.id]} :
-      <g:if test="${icon.attachment}">
+
+    <g:if test="${icon.attachment}">
+      <li class="icon">
         <et:viewAttachement attachement="${icon.attachment}"
                             width="30" height="30"/>
-      </g:if>
-    </li>
+        <br>
+        avec Hotspot ${specifobject.graphicMatches[icon.id]}
+      </li>
+    </g:if>
   </g:each>
 </ul>
 

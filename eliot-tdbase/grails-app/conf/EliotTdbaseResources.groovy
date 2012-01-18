@@ -69,6 +69,13 @@ modules = {
     resource url: [dir: 'js/graphicmatch/edition', file: 'dragNDrop.js']
   }
 
+  graphicMatch_InteractionJS {
+    dependsOn "modernizr", "eliot-tice-ui", "graphicMatch_Style"
+    resource url: [dir: 'js/graphicmatch/interaction', file: 'load.js']
+    resource url: [dir: 'js/graphicmatch/interaction', file: 'dragNDrop.polyfill.js']
+    resource url: [dir: 'js/graphicmatch/interaction', file: 'dragNDrop.js']
+  }
+
   graphicMatch_PreviewJS {
     dependsOn "modernizr", "eliot-tice-ui", "graphicMatch_Style"
     resource url: [dir: 'js/graphicmatch/preview', file: 'load.js']
