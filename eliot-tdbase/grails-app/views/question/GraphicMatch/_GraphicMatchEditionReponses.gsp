@@ -58,37 +58,33 @@
 <g:hiddenField name="specifobject.hotspots.size"
                value="${specifobject.hotspots?.size()}"/>
 
-<table>
+<ul>
   <g:each status="i" in="${specifobject.icons}" var="icon">
-    <tr>
-      <td>
-        <span class="label">Hotspot ${specifobject.graphicMatches.getAt(icon.id)}:</span>
-        <g:hiddenField id="graphicMatch_${icon.id}"
-                       name="specifobject.graphicMatches[${icon.id}]"
-                       value="${specifobject.graphicMatches.getAt(icon.id)}"/>
-      </td>
-      <td>
-        <g:hiddenField name="specifobject.icons[${i}].attachmentId"
-                       value="${icon.attachmentId}"/>
-        <g:hiddenField name="specifobject.icons[${i}].id"
-                       value="${icon.id}"/>
+    <li>
+      <span>Hotspot ${specifobject.graphicMatches.getAt(icon.id)}:</span>
 
-        <g:if test="${icon.attachmentId}">
-          <et:viewAttachement attachement="${icon.attachment}" width="30"
-                              height="30"/>
-        </g:if>
-      </td>
-      <td>
+      <g:if test="${icon.attachmentId}">
+        <et:viewAttachement attachement="${icon.attachment}" width="30"
+                            height="30"/>
+      </g:if>
 
-        <input type="file" name="specifobject.icons[${i}].fichier"
-               onchange="$('#iconUpload${i}').trigger('click');"/>
 
-        <g:actionSubmit value="upload" action="enregistre" hidden="true"
-                        id="iconUpload${i}"/>
-      </td>
-    </tr>
+      <g:actionSubmit value="upload" action="enregistre" hidden="true"
+                      id="iconUpload${i}"/>
+
+      <input type="file" name="specifobject.icons[${i}].fichier"
+             onchange="$('#iconUpload${i}').trigger('click');"/>
+
+      <g:hiddenField id="graphicMatch_${icon.id}"
+                     name="specifobject.graphicMatches[${icon.id}]"
+                     value="${specifobject.graphicMatches.getAt(icon.id)}"/>
+      <g:hiddenField name="specifobject.icons[${i}].attachmentId"
+                     value="${icon.attachmentId}"/>
+      <g:hiddenField name="specifobject.icons[${i}].id"
+                     value="${icon.id}"/>
+    </li>
   </g:each>
-</table>
+</ul>
 
 <g:hiddenField name="specifobject.icons.size"
                value="${specifobject.icons?.size()}"/>
