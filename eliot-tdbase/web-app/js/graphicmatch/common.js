@@ -30,19 +30,22 @@ function Common() {
 
     this.positionHotspots = function () {
         $(".hotspots>li").each(function () {
+            var id = $(this).attr('id');
+            var hotspotId = $(this).attr('hotspotId');
+            var hotspotDiv = $("<div>" + hotspotId + "</div>");
 
-            console.log($(this));
-
-            var id = $(this).attr('hotspotId');
-            var hotspotDiv = $("<div>" + id + "</div>");
+            hotspotDiv.attr('id', id);
+            hotspotDiv.attr('hotspotId', hotspotId);
 
             hotspotDiv.addClass('hotspotStyle');
-            hotspotDiv.css('position', 'absolute');
-            hotspotDiv.appendTo("#imageContainer");
+            hotspotDiv.addClass('unHighlightedHotspot');
+
+            hotspotDiv.appendTo(".imageContainer");
 
             var offLeft = $(this).attr('leftdistance');
             var offTop = $(this).attr('topdistance');
 
+            hotspotDiv.css('position', 'absolute');
             hotspotDiv.css('top', offTop + 'px');
             hotspotDiv.css('left', offLeft + 'px');
         });

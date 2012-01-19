@@ -33,7 +33,8 @@ ${specifobject.libelle}
 
 <br>
 
-<div id="imageContainer">
+<div class="imageContainer" id="imageContainer_${indexReponse}"
+     indexReponse="${indexReponse}">
   <g:if test="${specifobject.attachmentId}">
     <et:viewAttachement
             attachement="${specifobject.attachement}"
@@ -63,6 +64,7 @@ ${specifobject.libelle}
                               height="30"/>
 
           <g:select id="icon_${indexReponse}_${icon.id}_graphicMatch"
+                    class="hotspotSelector"
                     name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${icon.id}]"
                     value="${reponsespecifobject?.valeursDeReponse.get(icon.id)}"
                     from="${specifobject.hotspots*.id}"

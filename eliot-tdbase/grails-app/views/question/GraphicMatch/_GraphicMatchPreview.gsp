@@ -32,7 +32,7 @@ ${specifobject.libelle}
 <br/>
 <br/>
 
-<div id="imageContainer">
+<div class="imageContainer">
   <div id="theImage" style="position: relative;">
     <g:if test="${specifobject.attachement}">
       <et:viewAttachement attachement="${specifobject.attachement}"

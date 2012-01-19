@@ -25,6 +25,7 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
+
 .hotspotSupressButton {
     background-color: transparent;
     -moz-border-radius: 1px;
@@ -40,10 +41,17 @@
     text-decoration: none;
 }
 
+.highlightedHotspot {
+    background: rgba(181, 189, 255, 0.9);
+}
+
+.unHighlightedHotspot {
+    background: rgba(245, 245, 245, 0.9);
+}
+
 .hotspotStyle {
     float: left;
     border: solid 1px #808080;
-    background: rgba(245, 245, 245, 0.9);
     color: #817134;
     display: inline-block;
     height: 50px;
@@ -54,7 +62,7 @@
     font-weight: bold;
 }
 
-#imageContainer {
+.imageContainer {
     position: relative;
 }
 
