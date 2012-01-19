@@ -58,26 +58,28 @@ modules = {
     resource url: [dir: 'js/order', file: 'dragNDrop.js']
   }
 
-  graphicMatch_Style {
+  graphicMatch_Common {
+    dependsOn "modernizr", "eliot-tice-ui"
+    resource url: [dir: 'js/graphicmatch', file: 'common.js'], disposition: 'head'
     resource url: [dir: 'css/graphicmatch', file: 'style.css']
   }
 
   graphicMatch_EditionJS {
-    dependsOn "modernizr", "eliot-tice-ui", "graphicMatch_Style"
+    dependsOn "graphicMatch_Common"
     resource url: [dir: 'js/graphicmatch/edition', file: 'load.js']
     resource url: [dir: 'js/graphicmatch/edition', file: 'dragNDrop.polyfill.js']
     resource url: [dir: 'js/graphicmatch/edition', file: 'dragNDrop.js']
   }
 
   graphicMatch_InteractionJS {
-    dependsOn "modernizr", "eliot-tice-ui", "graphicMatch_Style"
+    dependsOn "graphicMatch_Common"
     resource url: [dir: 'js/graphicmatch/interaction', file: 'load.js']
     resource url: [dir: 'js/graphicmatch/interaction', file: 'dragNDrop.polyfill.js']
     resource url: [dir: 'js/graphicmatch/interaction', file: 'dragNDrop.js']
   }
 
   graphicMatch_PreviewJS {
-    dependsOn "modernizr", "eliot-tice-ui", "graphicMatch_Style"
+    dependsOn "graphicMatch_Common"
     resource url: [dir: 'js/graphicmatch/preview', file: 'load.js']
   }
 }

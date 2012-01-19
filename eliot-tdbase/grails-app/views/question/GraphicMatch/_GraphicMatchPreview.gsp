@@ -44,7 +44,7 @@ ${specifobject.libelle}
 <ul class="hotspots">
   <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
     <li topDistance="${hotspot.topDistance}"
-        leftDistance="${hotspot.leftDistance}" id="${hotspot.id}">
+        leftDistance="${hotspot.leftDistance}" hotspotId="${hotspot.id}">
     </li>
   </g:each>
 </ul>

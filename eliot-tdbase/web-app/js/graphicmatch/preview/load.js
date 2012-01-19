@@ -25,28 +25,4 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-
-initWidgets();
-
-function initWidgets() {
-
-    $(".hotspots>li").each(function () {
-
-        console.log($(this));
-
-        var id = $(this).attr('id');
-        var hotspotDiv = $("<div>" + id + "</div>");
-
-        hotspotDiv.addClass('hotspotStyle');
-        hotspotDiv.css('position', 'absolute');
-        hotspotDiv.appendTo("#imageContainer");
-
-        var offLeft = $(this).attr('leftdistance');
-        var offTop = $(this).attr('topdistance');
-
-        hotspotDiv.css('top', offTop + 'px');
-        hotspotDiv.css('left', offLeft + 'px');
-    });
-
-    $(".hotspots").remove();
-}
+new Common().positionHotspots();

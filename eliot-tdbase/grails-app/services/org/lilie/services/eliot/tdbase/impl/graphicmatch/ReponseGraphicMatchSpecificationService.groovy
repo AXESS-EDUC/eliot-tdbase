@@ -53,7 +53,19 @@ class ReponseGraphicMatchSpecificationService extends
     }
 
     new ReponseGraphicMatchSpecification(valeursDeReponse: [:],
-                                         reponsesPossibles: question.specificationObject.graphicMatches)
+                                         reponsesPossibles: calculateResponsesPossibles(question.specificationObject))
+  }
+
+  private calculateResponsesPossibles(GraphicMatchSpecification specification) {
+    def reponsesPossibles = specification.graphicMatches
+
+    specification.icons.each {icon ->
+      if (!icon.attachmentId) {
+        reponsesPossibles.remove(icon.id)
+      }
+    }
+
+    reponsesPossibles
   }
 
   @Override
