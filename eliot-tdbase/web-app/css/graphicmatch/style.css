@@ -79,10 +79,11 @@
 
 .icon {
     list-style: none;
-    float: left;
     border: solid 1px #FFD324;
     background: #FFF6BF;
     color: #817134;
+    margin: 5px;
+    float: left;
 }
 
 .editIcon {

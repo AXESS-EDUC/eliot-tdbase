@@ -48,7 +48,7 @@ class AttachementTagLib {
       if (attachement.estUneImageAffichable()) {
         out << '<img src="' << link << '"'
         if (attrs.width) {
-          out << ' witdh="' << attrs.width << '"'
+          out << ' width="' << attrs.width << '"'
         }
         if (attrs.height) {
           out << ' height="' << attrs.height << '"'

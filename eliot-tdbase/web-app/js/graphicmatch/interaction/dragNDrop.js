@@ -45,7 +45,9 @@ function initDragNDrop() {
 
         // make elements draggable and droppable
         var imageContainer = '#' + $('.hotspotStyle').parent().attr('id');
-        $('.icon').draggable({containment:imageContainer, stack:".imageContainer" });
+        console.log(imageContainer);
+        $('.icon').draggable({containment:imageContainer});
+        $('.icon').css('z-index', '1');
         $('.hotspotStyle').droppable();
 
         positionIcons();
@@ -94,7 +96,7 @@ function initDragNDrop() {
 
         for (var dropTargetId in droppedItems) {
             if (droppedItems[dropTargetId] == draggableId) {
-                putDraggableIntoDroppable(draggableId, dropTargetId, "0 0");
+                putDraggableIntoDroppable(draggableId, dropTargetId);
             }
         }
     }
@@ -109,9 +111,28 @@ function initDragNDrop() {
         dropTarget.addClass("unHighlightedHotspot");
     }
 
-    function putDraggableIntoDroppable(draggableId, droppableId, offSet) {
-        $("#" + draggableId).position({my:"center center", at:"center center", of:$("#" + droppableId), collision:"none", offset:offSet});
-        droppedItems[droppableId] = draggableId;
+    function putDraggableIntoDroppable(draggableId, droppableId) {
+        var droppableCenter = {top:0, left:0};
+        var draggablePosition = {top:0, left:0};
+        var droppableDimension = {width:0, height:0};
+        var draggableDimension = {width:0, height:0};
+        var droppablePosition = $('#' + droppableId).position();
+
+        droppableDimension.width = $('#' + droppableId).outerWidth(true);
+        droppableDimension.height = $('#' + droppableId).outerHeight(true);
+
+        draggableDimension.width = $('#' + draggableId).outerWidth(true);
+        draggableDimension.height = $('#' + draggableId).outerHeight(true);
+
+        droppableCenter.top = Math.round(droppablePosition.top + droppableDimension.height / 2);
+        droppableCenter.left = Math.round(droppablePosition.left + droppableDimension.width / 2);
+
+        draggablePosition.top = Math.round(droppableCenter.top - draggableDimension.height / 2);
+        draggablePosition.left = Math.round(droppableCenter.left - draggableDimension.width / 2);
+
+        $('#' + draggableId).css('position', 'absolute');
+        $('#' + draggableId).css('top', draggablePosition.top);
+        $('#' + draggableId).css('left', draggablePosition.left);
     }
 
     function setFieldValue(fieldId, value) {
@@ -122,21 +143,20 @@ function initDragNDrop() {
         $('#' + fieldId + '_graphicMatch').prop('selectedIndex', 0);
     }
 
+    /**
+     * For each graphic between an icon and an hotspot, stored in
+     * '.hotspotSelector',position the icon inside the corresponding hotspot.
+     */
     function positionIcons() {
         $(".hotspotSelector").each(function () {
-            var hotspotId = $(this).val();
+            var selectedHotspot = $(this).val();
             var icon = $(this).parent('.icon');
 
-            if (hotspotId && hotspotId != "-1") {
+            if (selectedHotspot && selectedHotspot != "-1") {
                 var indexReponse = $(this).parents('.imageContainer').attr('indexreponse');
-                hotspotId = 'hotspot_' + indexReponse + '_' + hotspotId;
-                var hotspot = $("#" + hotspotId);
-                var hotspotPositon = hotspot.position();
-                icon.css('position', 'absolute');
-                icon.css('z-index', '1');
-                putDraggableIntoDroppable(icon.attr('id'), hotspotId, "-23 0");
-
-                highlight(hotspot);
+                var hotspotId = 'hotspot_' + indexReponse + '_' + selectedHotspot;
+                putDraggableIntoDroppable(icon.attr('id'), hotspotId);
+                highlight($('#' + hotspotId));
             }
         });
     }
