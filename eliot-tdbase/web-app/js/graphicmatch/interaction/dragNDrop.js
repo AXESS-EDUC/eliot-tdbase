@@ -44,8 +44,7 @@ function initDragNDrop() {
         $('div[indexReponse]>.hotspotStyle').html('');
 
         // make elements draggable and droppable
-
-        $(".icon").each(function () {
+        $("div[indexReponse]>.icons>.icon").each(function () {
             var containmentObjectId = '#' + $(this).parents('.imageContainer').attr('id');
             $(this).draggable({containment:containmentObjectId});
             $(this).css('z-index', '1');
