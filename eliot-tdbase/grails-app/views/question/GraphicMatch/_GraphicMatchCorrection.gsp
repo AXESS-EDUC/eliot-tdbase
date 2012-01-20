@@ -25,34 +25,38 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+<r:require module="graphicMatch_CorrectionJS"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 Correction: ${specifobject.correction}
 <br>
 <br>
-<g:if test="${specifobject.attachmentId}">
-  <et:viewAttachement
-          attachement="${specifobject.attachement}"
-          width="500"
-          height="500"/>
-  <br>
-</g:if>
 
-<g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-  <div id="hotspot_${indexReponse}_${hotspot.id}" class="hotspot"
-       topDistance="${hotspot.topDistance}"
-       leftDistance="${hotspot.leftDistance}">
-    ${hotspot.id}
-  </div>
-</g:each>
+<div class="imageContainer">
+  <g:if test="${specifobject.attachement}">
+    <et:viewAttachement attachement="${specifobject.attachement}"
+                        width="500" height="500"/>
+  </g:if>
 
-<g:each status="i" in="${specifobject.icons}" var="icon">
-  <div id="icon_${indexReponse}_${icon.id}" class="icon">
-    <et:viewAttachement attachement="${icon.attachment}" width="30"
-                        height="30"/>
+  <ul class="hotspots">
+    <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
+      <li topDistance="${hotspot.topDistance}"
+          leftDistance="${hotspot.leftDistance}" hotspotId="${hotspot.id}">
+      </li>
+    </g:each>
+  </ul>
 
-    <g:textField id="icon_${indexReponse}_${icon.id}_graphicMatch"
-                 name="icon_${indexReponse}_${icon.id}_graphicMatch"
-                 value="${specifobject?.graphicMatches.get(icon.id.toString())}"/>
-  </div>
-</g:each>
+  <ul class="icons">
+    <g:each status="i" in="${specifobject.icons}" var="icon">
+
+      <g:if test="${icon.attachment}">
+        <li class="icon">
+          <et:viewAttachement attachement="${icon.attachment}"
+                              width="30" height="30"/>
+          <br>
+          avec Zone ${specifobject.graphicMatches[icon.id]}
+        </li>
+      </g:if>
+    </g:each>
+  </ul>
+</div>

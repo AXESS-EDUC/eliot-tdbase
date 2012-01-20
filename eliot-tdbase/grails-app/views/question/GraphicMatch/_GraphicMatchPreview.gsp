@@ -33,34 +33,32 @@ ${specifobject.libelle}
 <br/>
 
 <div class="imageContainer">
-  <div id="theImage" style="position: relative;">
-    <g:if test="${specifobject.attachement}">
-      <et:viewAttachement attachement="${specifobject.attachement}"
-                          width="500" height="500"/>
-    </g:if>
-  </div>
-</div>
+  <g:if test="${specifobject.attachement}">
+    <et:viewAttachement attachement="${specifobject.attachement}"
+                        width="500" height="500"/>
+  </g:if>
 
-<ul class="hotspots">
-  <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-    <li topDistance="${hotspot.topDistance}"
-        leftDistance="${hotspot.leftDistance}" hotspotId="${hotspot.id}">
-    </li>
-  </g:each>
-</ul>
-
-<ul class="icons">
-  <g:each status="i" in="${specifobject.icons}" var="icon">
-
-    <g:if test="${icon.attachment}">
-      <li class="icon">
-        <et:viewAttachement attachement="${icon.attachment}"
-                            width="30" height="30"/>
-        <br>
-        avec Hotspot ${specifobject.graphicMatches[icon.id]}
+  <ul class="hotspots">
+    <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
+      <li topDistance="${hotspot.topDistance}"
+          leftDistance="${hotspot.leftDistance}" hotspotId="${hotspot.id}">
       </li>
-    </g:if>
-  </g:each>
-</ul>
+    </g:each>
+  </ul>
+
+  <ul class="icons">
+    <g:each status="i" in="${specifobject.icons}" var="icon">
+
+      <g:if test="${icon.attachment}">
+        <li class="icon">
+          <et:viewAttachement attachement="${icon.attachment}"
+                              width="30" height="30"/>
+          <br>
+          avec Zone ${specifobject.graphicMatches[icon.id]}
+        </li>
+      </g:if>
+    </g:each>
+  </ul>
+</div>
 
 Correction : ${specifobject.correction}

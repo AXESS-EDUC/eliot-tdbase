@@ -41,11 +41,10 @@ function initDragNDrop() {
 
         //hide html elements
         $('.hotspotSelector').hide();
-        $('.hotspotStyle').html('');
+        $('div[indexReponse]>.hotspotStyle').html('');
 
         // make elements draggable and droppable
         var imageContainer = '#' + $('.hotspotStyle').parent().attr('id');
-        console.log(imageContainer);
         $('.icon').draggable({containment:imageContainer});
         $('.icon').css('z-index', '1');
         $('.hotspotStyle').droppable();

@@ -26,29 +26,4 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-function Common() {
-
-    this.positionHotspots = function () {
-        $(".hotspots>li").each(function () {
-            var id = $(this).attr('id');
-            var hotspotId = $(this).attr('hotspotId');
-            var hotspotDiv = $("<div>" + hotspotId + "</div>");
-
-            hotspotDiv.attr('id', id);
-            hotspotDiv.attr('hotspotId', hotspotId);
-
-            hotspotDiv.addClass('hotspotStyle');
-            hotspotDiv.addClass('unHighlightedHotspot');
-
-            $(this).parents('.imageContainer').append(hotspotDiv);
-
-            var offLeft = $(this).attr('leftdistance');
-            var offTop = $(this).attr('topdistance');
-
-            hotspotDiv.css('position', 'absolute');
-            hotspotDiv.css('top', offTop + 'px');
-            hotspotDiv.css('left', offLeft + 'px');
-            $(this).remove();
-        });
-    }
-}
+new Common().positionHotspots('hotspots_correction', '');
