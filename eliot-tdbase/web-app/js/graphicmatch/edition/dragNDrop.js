@@ -42,7 +42,7 @@ function initDragNDrop() {
             $(this).addClass('hotspotSupressButton');
         });
         $('.hotspot').addClass('hotspotStyle');
-
+        $('.hotspot').addClass('unHighlightedHotspot');
         // make hotspots draggable
         $(".hotspot").draggable({containment:'#theImage', stack:'div'});
 
@@ -79,6 +79,10 @@ function initDragNDrop() {
 
         $("#" + hotspotId + ">input.offLeft").val(hotspotLeft);
         $("#" + hotspotId + ">input.offTop").val(hotspotTop);
+
+
+        console.log($('#imageContainer').css('zoom'));
+
     }
 
     function addHotpotIds() {
