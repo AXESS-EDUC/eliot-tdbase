@@ -52,7 +52,7 @@ Correction: ${specifobject.correction}
       <g:if test="${icon.attachment}">
         <li class="icon">
           <et:viewAttachement attachement="${icon.attachment}"
-                              width="30" height="30"/>
+                              class="iconImage"/>
           <br>
           avec Zone ${specifobject.graphicMatches[icon.id]}
         </li>

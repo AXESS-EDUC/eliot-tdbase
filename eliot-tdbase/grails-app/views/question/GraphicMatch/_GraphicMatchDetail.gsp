@@ -41,8 +41,7 @@
     <g:each status="i" in="${specifobject.icons}" var="icon">
 
       <g:if test="${icon.id}">
-        <et:viewAttachement attachement="${icon.attachment}" width="30"
-                            height="30"/>
+        <et:viewAttachement attachement="${icon.attachment}" class="iconImage"/>
       </g:if>
       &nbsp;avec hotspot&nbsp;
       <g:textField name="hotpot"

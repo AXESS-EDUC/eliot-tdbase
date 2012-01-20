@@ -86,6 +86,11 @@
     float: left;
 }
 
+.iconImage {
+    width: 40px;
+    height: 40px;
+}
+
 .editIcon {
     list-style: none;
 }

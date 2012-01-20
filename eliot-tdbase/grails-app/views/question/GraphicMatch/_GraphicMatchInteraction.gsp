@@ -60,8 +60,7 @@ ${specifobject.libelle}
         <li id="icon_${indexReponse}_${icon.id}" class="icon">
 
           <et:viewAttachement attachement="${icon.attachment}"
-                              width="30"
-                              height="30"/>
+                              class="iconImage"/>
 
           <g:select id="icon_${indexReponse}_${icon.id}_graphicMatch"
                     class="hotspotSelector"

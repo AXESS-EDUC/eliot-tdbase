@@ -47,8 +47,6 @@ function initDragNDrop() {
 
         $(".icon").each(function () {
             var containmentObjectId = '#' + $(this).parents('.imageContainer').attr('id');
-
-            console.log(containmentObjectId);
             $(this).draggable({containment:containmentObjectId});
             $(this).css('z-index', '1');
         });

@@ -64,8 +64,7 @@
       <span>Hotspot ${specifobject.graphicMatches.getAt(icon.id)}:</span>
 
       <g:if test="${icon.attachmentId}">
-        <et:viewAttachement attachement="${icon.attachment}" width="30"
-                            height="30"/>
+        <et:viewAttachement attachement="${icon.attachment}" class="iconImage"/>
       </g:if>
 
 
