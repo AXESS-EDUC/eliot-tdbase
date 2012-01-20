@@ -33,7 +33,7 @@ ${specifobject.libelle}
 
 <br>
 
-<div class="imageContainer" id="imageContainer_${indexReponse}"
+<div class="imageContainer" qualifier="interaction"
      indexReponse="${indexReponse}">
   <g:if test="${specifobject.attachmentId}">
     <et:viewAttachement
@@ -47,7 +47,7 @@ ${specifobject.libelle}
     <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
       <li topDistance="${hotspot.topDistance}"
           leftDistance="${hotspot.leftDistance}"
-          id="hotspot_${indexReponse}_${hotspot.id}"
+          id="hotspot_interaction_${indexReponse}_${hotspot.id}"
           hotspotId="${hotspot.id}"
           class="hotspot">
       </li>
@@ -57,17 +57,18 @@ ${specifobject.libelle}
   <ul class="icons">
     <g:each status="i" in="${specifobject.icons}" var="icon">
       <g:if test="${icon.attachmentId}">
-        <li id="icon_${indexReponse}_${icon.id}" class="icon">
+        <li id="icon_interaction_${indexReponse}_${icon.id}" class="icon">
 
           <et:viewAttachement attachement="${icon.attachment}"
                               class="iconImage"/>
 
-          <g:select id="icon_${indexReponse}_${icon.id}_graphicMatch"
-                    class="hotspotSelector"
-                    name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${icon.id}]"
-                    value="${reponsespecifobject?.valeursDeReponse.get(icon.id)}"
-                    from="${specifobject.hotspots*.id}"
-                    noSelection="['-1': 'Hotspot']"/>
+          <g:select
+                  id="icon_interaction_${indexReponse}_${icon.id}_graphicMatch"
+                  class="hotspotSelector"
+                  name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${icon.id}]"
+                  value="${reponsespecifobject?.valeursDeReponse.get(icon.id)}"
+                  from="${specifobject.hotspots*.id}"
+                  noSelection="['-1': 'Hotspot']"/>
         </li>
       </g:if>
     </g:each>

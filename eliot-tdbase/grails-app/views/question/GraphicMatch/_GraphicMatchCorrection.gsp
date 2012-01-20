@@ -32,7 +32,8 @@ Correction: ${specifobject.correction}
 <br>
 <br>
 
-<div class="imageContainer">
+<div class="imageContainer" qualifier="correction"
+     indexReponse="${indexReponse}">
   <g:if test="${specifobject.attachement}">
     <et:viewAttachement attachement="${specifobject.attachement}"
                         width="500" height="500"/>
@@ -41,7 +42,10 @@ Correction: ${specifobject.correction}
   <ul class="hotspots">
     <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
       <li topDistance="${hotspot.topDistance}"
-          leftDistance="${hotspot.leftDistance}" hotspotId="${hotspot.id}">
+          leftDistance="${hotspot.leftDistance}"
+          id="hotspot_correction_${indexReponse}_${hotspot.id}"
+          hotspotId="${hotspot.id}"
+          class="hotspot">
       </li>
     </g:each>
   </ul>
@@ -50,11 +54,12 @@ Correction: ${specifobject.correction}
     <g:each status="i" in="${specifobject.icons}" var="icon">
 
       <g:if test="${icon.attachment}">
-        <li class="icon">
+        <li class="icon" id="icon_correction_${indexReponse}_${icon.id}">
           <et:viewAttachement attachement="${icon.attachment}"
                               class="iconImage"/>
-          <br>
-          avec Zone ${specifobject.graphicMatches[icon.id]}
+          <span class="zoneLabel"><br>avec Zone</span>
+          <span
+                  class="hotspotSelector">${specifobject.graphicMatches[icon.id]}</span>
         </li>
       </g:if>
     </g:each>

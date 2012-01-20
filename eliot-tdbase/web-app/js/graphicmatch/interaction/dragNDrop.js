@@ -32,28 +32,27 @@ function initDragNDrop() {
      * Items that are currently dropped in a drop target.
      */
     var droppedItems = {};
+    var common = new Common();
 
     initWidgets();
     registerEventHandlers();
 
     function initWidgets() {
-        new Common().positionHotspots();
+        common.positionHotspots();
 
         //hide html elements
         $('.hotspotSelector').hide();
-        $('div[indexReponse]>.hotspotStyle').html('');
-
+        $('.imageContainer>.hotspotStyle').html('');
         // make elements draggable and droppable
-        $("div[indexReponse]>.icons>.icon").each(function () {
+        $(".imageContainer[qualifier=interaction]>.icons>.icon").each(function () {
             var containmentObjectId = '#' + $(this).parents('.imageContainer').attr('id');
             $(this).draggable({containment:containmentObjectId});
-            $(this).css('z-index', '1');
         });
 
 
         $('.hotspotStyle').droppable();
 
-        positionIcons();
+        common.positionIcons();
     }
 
     function registerEventHandlers() {
@@ -76,7 +75,7 @@ function initDragNDrop() {
         var draggableId = draggable.attr('id');
 
         if (dropTargetId in droppedItems && droppedItems[dropTargetId] == draggableId) {
-            unHighlight(dropTarget);
+            common.unHighlight(dropTarget);
             resetFieldValue(draggableId);
             delete droppedItems[dropTargetId];
         }
@@ -88,7 +87,7 @@ function initDragNDrop() {
         var draggableId = draggable.attr('id');
 
         if (!(dropTargetId in droppedItems)) {
-            highlight(dropTarget);
+            common.highlight(dropTarget);
             setFieldValue(draggableId, hotspotId);
             droppedItems[dropTargetId] = draggableId;
         }
@@ -99,43 +98,9 @@ function initDragNDrop() {
 
         for (var dropTargetId in droppedItems) {
             if (droppedItems[dropTargetId] == draggableId) {
-                putDraggableIntoDroppable(draggableId, dropTargetId);
+                common.putDraggableIntoDroppable(draggableId, dropTargetId);
             }
         }
-    }
-
-    function highlight(dropTarget) {
-        dropTarget.removeClass("unHighlightedHotspot");
-        dropTarget.addClass("highlightedHotspot");
-    }
-
-    function unHighlight(dropTarget) {
-        dropTarget.removeClass("highlightedHotspot");
-        dropTarget.addClass("unHighlightedHotspot");
-    }
-
-    function putDraggableIntoDroppable(draggableId, droppableId) {
-        var droppableCenter = {top:0, left:0};
-        var draggablePosition = {top:0, left:0};
-        var droppableDimension = {width:0, height:0};
-        var draggableDimension = {width:0, height:0};
-        var droppablePosition = $('#' + droppableId).position();
-
-        droppableDimension.width = $('#' + droppableId).outerWidth(true);
-        droppableDimension.height = $('#' + droppableId).outerHeight(true);
-
-        draggableDimension.width = $('#' + draggableId).outerWidth(true);
-        draggableDimension.height = $('#' + draggableId).outerHeight(true);
-
-        droppableCenter.top = Math.round(droppablePosition.top + droppableDimension.height / 2);
-        droppableCenter.left = Math.round(droppablePosition.left + droppableDimension.width / 2);
-
-        draggablePosition.top = Math.round(droppableCenter.top - draggableDimension.height / 2);
-        draggablePosition.left = Math.round(droppableCenter.left - draggableDimension.width / 2);
-
-        $('#' + draggableId).css('position', 'absolute');
-        $('#' + draggableId).css('top', draggablePosition.top);
-        $('#' + draggableId).css('left', draggablePosition.left);
     }
 
     function setFieldValue(fieldId, value) {
@@ -144,23 +109,5 @@ function initDragNDrop() {
 
     function resetFieldValue(fieldId) {
         $('#' + fieldId + '_graphicMatch').prop('selectedIndex', 0);
-    }
-
-    /**
-     * For each graphic between an icon and an hotspot, stored in
-     * '.hotspotSelector',position the icon inside the corresponding hotspot.
-     */
-    function positionIcons() {
-        $(".hotspotSelector").each(function () {
-            var selectedHotspot = $(this).val();
-            var icon = $(this).parent('.icon');
-
-            if (selectedHotspot && selectedHotspot != "-1") {
-                var indexReponse = $(this).parents('.imageContainer').attr('indexreponse');
-                var hotspotId = 'hotspot_' + indexReponse + '_' + selectedHotspot;
-                putDraggableIntoDroppable(icon.attr('id'), hotspotId);
-                highlight($('#' + hotspotId));
-            }
-        });
     }
 }

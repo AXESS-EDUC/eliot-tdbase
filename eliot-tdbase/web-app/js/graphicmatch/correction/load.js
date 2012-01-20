@@ -25,5 +25,13 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
+var common = new Common();
 
-new Common().positionHotspots('hotspots_correction', '');
+
+//hide text
+$('.zoneLabel').remove();
+$('.imageContainer>.hotspotStyle').html('');
+
+common.positionHotspots();
+common.positionIcons();
+

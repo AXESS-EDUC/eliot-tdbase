@@ -51,4 +51,61 @@ function Common() {
             $(this).remove();
         });
     }
+
+    /**
+     * For each graphic between an icon and an hotspot, stored in
+     * '.hotspotSelector',position the icon inside the corresponding hotspot.
+     */
+    this.positionIcons = function () {
+        $(".hotspotSelector").each(function () {
+
+            var selectedHotspot = $(this).val();
+
+            if (!selectedHotspot) {
+                selectedHotspot = $(this).html();
+            }
+
+            if (selectedHotspot && selectedHotspot != "-1") {
+                var hotspotId = $(this).parents(".imageContainer").children("[hotspotid=" + selectedHotspot + "]").attr('id');
+                var iconId = $(this).parents('.icon').attr('id');
+                new Common().putDraggableIntoDroppable(iconId, hotspotId);
+                new Common().highlight($('#' + hotspotId));
+            }
+        });
+    }
+
+    this.putDraggableIntoDroppable = function (draggableId, droppableId) {
+        var droppableCenter = {top:0, left:0};
+        var draggablePosition = {top:0, left:0};
+        var droppableDimension = {width:0, height:0};
+        var draggableDimension = {width:0, height:0};
+        var droppablePosition = $('#' + droppableId).position();
+
+        droppableDimension.width = $('#' + droppableId).outerWidth(true);
+        droppableDimension.height = $('#' + droppableId).outerHeight(true);
+
+        draggableDimension.width = $('#' + draggableId).outerWidth(true);
+        draggableDimension.height = $('#' + draggableId).outerHeight(true);
+
+        droppableCenter.top = Math.round(droppablePosition.top + droppableDimension.height / 2);
+        droppableCenter.left = Math.round(droppablePosition.left + droppableDimension.width / 2);
+
+        draggablePosition.top = Math.round(droppableCenter.top - draggableDimension.height / 2);
+        draggablePosition.left = Math.round(droppableCenter.left - draggableDimension.width / 2);
+
+        $('#' + draggableId).css('position', 'absolute');
+        $('#' + draggableId).css('top', draggablePosition.top);
+        $('#' + draggableId).css('left', draggablePosition.left);
+    }
+
+    this.highlight = function (dropTarget) {
+        dropTarget.removeClass("unHighlightedHotspot");
+        dropTarget.addClass("highlightedHotspot");
+    }
+
+    this.unHighlight = function (dropTarget) {
+        dropTarget.removeClass("highlightedHotspot");
+        dropTarget.addClass("unHighlightedHotspot");
+    }
+
 }
