@@ -25,31 +25,40 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+<r:require module="graphicMatch_DetailsJS"/>
+<g:set var="specifobject" value="${question.specificationObject}"/>
 
-<tr>
-  <td class="label">Détail :</td>
-  <td>
-    <g:set var="specifobject" value="${question.specificationObject}"/>
-    ${specifobject.libelle}
-    <br/><br/>
-    <g:if test="${specifobject.attachement}">
-      <et:viewAttachement attachement="${specifobject.attachement}"
-                          width="500" height="500"/>
-      <br/><br/>
-    </g:if>
+${specifobject.libelle}
+<br/>
+<br/>
 
+<div class="imageContainer">
+  <g:if test="${specifobject.attachement}">
+    <et:viewAttachement attachement="${specifobject.attachement}"
+                        width="500" height="500"/>
+  </g:if>
+
+  <ul class="hotspots">
+    <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
+      <li topDistance="${hotspot.topDistance}"
+          leftDistance="${hotspot.leftDistance}" hotspotId="${hotspot.id}">
+      </li>
+    </g:each>
+  </ul>
+
+  <ul class="icons">
     <g:each status="i" in="${specifobject.icons}" var="icon">
 
-      <g:if test="${icon.id}">
-        <et:viewAttachement attachement="${icon.attachment}" class="iconImage"/>
+      <g:if test="${icon.attachment}">
+        <li class="icon">
+          <et:viewAttachement attachement="${icon.attachment}"
+                              class="iconImage"/>
+          <br>
+          avec Zone ${specifobject.graphicMatches[icon.id]}
+        </li>
       </g:if>
-      &nbsp;avec hotspot&nbsp;
-      <g:textField name="hotpot"
-                   value="${specifobject.graphicMatches[icon.id.toString()]}"/>
-      <br/>
-      <br/>
     </g:each>
+  </ul>
+</div>
 
-    Correction : ${specifobject.correction}
-  </td>
-</tr>
+Correction : ${specifobject.correction}

@@ -83,6 +83,10 @@ modules = {
     resource url: [dir: 'js/graphicmatch/preview', file: 'load.js']
   }
 
+  graphicMatch_DetailsJS {
+    dependsOn "graphicMatch_PreviewJS"
+  }
+
   graphicMatch_CorrectionJS {
     dependsOn "graphicMatch_Common"
     resource url: [dir: 'js/graphicmatch/correction', file: 'load.js']
