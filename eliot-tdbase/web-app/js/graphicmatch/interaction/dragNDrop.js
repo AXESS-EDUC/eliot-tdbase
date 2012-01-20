@@ -44,9 +44,16 @@ function initDragNDrop() {
         $('div[indexReponse]>.hotspotStyle').html('');
 
         // make elements draggable and droppable
-        var imageContainer = '#' + $('.hotspotStyle').parent().attr('id');
-        $('.icon').draggable({containment:imageContainer});
-        $('.icon').css('z-index', '1');
+
+        $(".icon").each(function () {
+            var containmentObjectId = '#' + $(this).parents('.imageContainer').attr('id');
+
+            console.log(containmentObjectId);
+            $(this).draggable({containment:containmentObjectId});
+            $(this).css('z-index', '1');
+        });
+
+
         $('.hotspotStyle').droppable();
 
         positionIcons();
