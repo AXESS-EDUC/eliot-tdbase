@@ -106,15 +106,32 @@ function initDragNDrop() {
     }
 
     function findMatchingDraggableIdByDroppableValue(droppableValue) {
-        var theParentId;
 
-        $(".participant p").each(function () {
-            if (droppableValue == $(this).text()) {
-                theParentId = $(this).parent(".participant").attr("id");
+        var result = null;
+
+        $(".participant").each(function () {
+            var draggableId = $(this).attr("id");
+            var participantValue = $(this).children('p').text();
+            if (droppableValue == participantValue && !isAlreadyPlaced(draggableId)) {
+                result = draggableId;
+                //break out of loop
+                return false;
             }
         });
+        return result;
+    }
 
-        return theParentId;
+    function isAlreadyPlaced(draggableId) {
+
+        var result = false;
+
+        for (var dropTargetId in droppedItems) {
+            if (droppedItems[dropTargetId] == draggableId) {
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     function putDraggableIntoDroppable(draggableId, droppableId) {
