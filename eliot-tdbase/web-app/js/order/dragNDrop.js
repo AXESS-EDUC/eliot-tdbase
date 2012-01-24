@@ -135,8 +135,9 @@ function initDragNDrop() {
 
         for (var droppableId in setItems) {
 
-            if (setItems[droppableId] == draggableId)
+            if (setItems[droppableId] == draggableId) {
                 return droppableId;
+            }
         }
 
         return null;
@@ -164,14 +165,21 @@ function initDragNDrop() {
             var currentDroppableId = $(this).attr('id');
             var draggableId = $(this).children('.orderedItemCell').attr('id');
             var droppableTargetId = getDroppableFromSelectValue(draggableId);
-            move(draggableId, droppableTargetId);
-            setItems[droppableTargetId] = draggableId;
+
+            if (droppableTargetId) {
+                move(draggableId, droppableTargetId);
+                setItems[droppableTargetId] = draggableId;
+            }
         });
     }
 
     function getDroppableFromSelectValue(draggableId) {
         var selectValue = parseInt($('#' + draggableId + ' select').val()) - 1;
-        return 'dropTarget' + parseIndexReponse(draggableId) + '_' + selectValue;
+        if (selectValue == -1) {
+            return null;
+        } else {
+            return 'dropTarget' + parseIndexReponse(draggableId) + '_' + selectValue;
+        }
     }
 
     function parseIndexReponse(draggableId) {
