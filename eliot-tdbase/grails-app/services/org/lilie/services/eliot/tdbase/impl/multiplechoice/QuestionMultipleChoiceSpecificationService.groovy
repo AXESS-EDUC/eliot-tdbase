@@ -124,4 +124,14 @@ class MultipleChoiceSpecificationReponsePossible {
             rang: rang
     ]
   }
+  /**
+   * Genére un identifiant stable par rapport aux attributs de l'objet.
+   */
+  int getId() {
+    int hash = 1
+    hash = hash * 17 + (libelleReponse == null ? 0 : libelleReponse.hashCode())
+    hash = hash * 17 + (estUneBonneReponse == null ? 0 : estUneBonneReponse.hashCode())
+    hash = hash * 17 + (rang == null ? 0 : rang.hashCode())
+    hash
+  }
 }

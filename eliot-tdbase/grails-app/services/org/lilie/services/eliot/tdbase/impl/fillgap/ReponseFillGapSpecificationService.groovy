@@ -39,40 +39,40 @@ import static org.lilie.services.eliot.tice.utils.StringUtils.normalise
  */
 class ReponseFillGapSpecificationService extends ReponseSpecificationService<ReponseFillGapSpecification> {
 
-    @Override
-    ReponseFillGapSpecification createSpecification(Map map) {
-        new ReponseFillGapSpecification(map)
+  @Override
+  ReponseFillGapSpecification createSpecification(Map map) {
+    new ReponseFillGapSpecification(map)
+  }
+
+  @Override
+  ReponseFillGapSpecification getObjectInitialiseFromSpecification(Question question) {
+    new ReponseFillGapSpecification(reponsesPossibles: question.specificationObject.trouElements)
+  }
+
+  @Transactional
+  @Override
+  Float evalueReponse(org.lilie.services.eliot.tdbase.Reponse reponse) {
+    int reponsesCorrects = 0
+    ReponseFillGapSpecification repSpecObj = reponse.specificationObject
+    int numberRes = repSpecObj.valeursDeReponse.size()
+
+
+    for (i in 0..numberRes - 1) {
+
+      def valeurDeReponse = normalise(repSpecObj.valeursDeReponse[i].trim())
+      def validReponseList = repSpecObj.reponsesPossibles[i].valeur.collect {normalise(it)}
+
+      if (validReponseList.contains(valeurDeReponse)) {
+        reponsesCorrects++
+      }
     }
 
-    @Override
-    ReponseFillGapSpecification getObjectInitialiseFromSpecification(Question question) {
-        new ReponseFillGapSpecification(reponsesPossibles: question.specificationObject.trouElements)
-    }
+    float points = (reponsesCorrects / numberRes) * reponse.sujetQuestion.points
 
-    @Transactional
-    @Override
-    Float evalueReponse(org.lilie.services.eliot.tdbase.Reponse reponse) {
-        int reponsesCorrects = 0
-        ReponseFillGapSpecification repSpecObj = reponse.specificationObject
-        int numberRes = repSpecObj.valeursDeReponse.size()
-
-
-        for (i in 0..numberRes - 1) {
-
-            def valeurDeReponse = normalise(repSpecObj.valeursDeReponse[i].trim())
-            def validReponseList = repSpecObj.reponsesPossibles[i].valeur.collect {normalise(it)}
-
-            if (validReponseList.contains(valeurDeReponse)) {
-                reponsesCorrects++
-            }
-        }
-
-        float points = (reponsesCorrects / numberRes) * reponse.sujetQuestion.points
-
-        reponse.correctionNoteAutomatique = points
-        reponse.save()
-        points
-    }
+    reponse.correctionNoteAutomatique = points
+    reponse.save()
+    points
+  }
 }
 
 /**
@@ -80,22 +80,22 @@ class ReponseFillGapSpecificationService extends ReponseSpecificationService<Rep
  */
 class ReponseFillGapSpecification implements ReponseSpecification {
 
-    /**
-     * les valeurs de reponse.
-     */
-    List<String> valeursDeReponse = []
+  /**
+   * les valeurs de reponse.
+   */
+  List<String> valeursDeReponse = []
 
-    /**
-     * Liste des reponses possibles. Structurés par TrouElement
-     */
-    List<TrouElement> reponsesPossibles = []
+  /**
+   * Liste des reponses possibles. Structurés par TrouElement.
+   */
+  List<TrouElement> reponsesPossibles = []
 
-    @Override
-    Map toMap() {
-        [
-                valeursDeReponse: valeursDeReponse,
-                reponsesPossibles: reponsesPossibles
-        ]
-    }
+  @Override
+  Map toMap() {
+    [
+            valeursDeReponse: valeursDeReponse,
+            reponsesPossibles: reponsesPossibles
+    ]
+  }
 
 }
