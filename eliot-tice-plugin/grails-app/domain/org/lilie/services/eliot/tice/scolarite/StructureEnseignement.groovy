@@ -86,7 +86,7 @@ public class StructureEnseignement {
     table('ent.structure_enseignement')
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.structure_enseignement_id_seq']
     etablissement column: 'etablissement_id', fetch: 'join'
-    anneeScolaire column: 'id_annee_scolaire', fetch: 'join'
+    anneeScolaire column: 'annee_scolaire_id', fetch: 'join'
     groupes joinTable: [name: 'ent.rel_classe_groupe', key: 'id_classe', column: 'id_groupe']
     classes joinTable: [name: 'ent.rel_classe_groupe', key: 'id_groupe', column: 'id_classe']
     filieres joinTable: [name: 'ent.rel_classe_filiere', key: 'id_classe', column: 'id_filiere']

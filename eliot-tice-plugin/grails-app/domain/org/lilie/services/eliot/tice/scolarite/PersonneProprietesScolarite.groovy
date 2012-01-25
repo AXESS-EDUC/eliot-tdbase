@@ -55,10 +55,10 @@ class PersonneProprietesScolarite {
   }
 
   static mapping = {
-    table('ent.personne_proprietes_scolarite')
-    id column: 'id', generator: 'sequence', params: [sequence: 'ent.personne_proprietes_scolarite_id_seq']
+    table('ent.personne_propriete_scolarite')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.personne_propriete_scolarite_id_seq']
     version false
-    proprietesScolarite(fetch: 'join')
+    proprietesScolarite(fetch: 'join', column: 'propriete_scolarite_id' )
   }
 
 }

@@ -92,6 +92,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     assertFalse(sujet1.hasErrors())
     Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
     assertFalse(sujet2.hasErrors())
+    assertEquals(2, Sujet.count())
     def sujets1 = sujetService.findSujetsForProprietaire(personne1)
     assertEquals(2, sujets1.size())
 

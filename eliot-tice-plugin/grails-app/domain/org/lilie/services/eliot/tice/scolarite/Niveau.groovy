@@ -33,14 +33,11 @@ package org.lilie.services.eliot.tice.scolarite
  * @author othe
  */
 class Niveau {
-  String codeMefstat4
   String libelleCourt
   String libelleLong
   String libelleEdition
 
   static constraints = {
-    codeMefstat4(nullable: false)
-    libelleCourt(nullable: true)
     libelleLong(nullable: true)
     libelleEdition(nullable: true)
   }

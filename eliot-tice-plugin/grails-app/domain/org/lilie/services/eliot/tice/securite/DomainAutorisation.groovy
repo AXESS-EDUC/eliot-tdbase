@@ -74,10 +74,7 @@ class DomainAutorisation implements Autorisation {
 
   static mapping = {
     table ('securite.autorisation')
-    item column:'id_item'
-    autorite column:'id_autorite'
-    autorisationHeritee column:'id_autorisation_heritee'
-    id column:'id', generator: 'sequence', params: [sequence: 'securite.seq_autorisation']
+    id column:'id', generator: 'sequence', params: [sequence: 'securite.autorisation_id_seq']
   }
 
   static transients = ['valeurPermissions']

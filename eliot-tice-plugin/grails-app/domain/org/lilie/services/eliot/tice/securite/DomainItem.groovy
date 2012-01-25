@@ -145,11 +145,12 @@ class DomainItem implements Item {
     importId(nullable: true)
     dateDesactivation(nullable: true)
     nomEntiteCible(nullable: true)
-    idEnregistrementCible(nullable: true)    
+    idEnregistrementCible(nullable: true)
   }
 
   static mapping = {
     table('securite.item')
-    id column: 'id', generator: 'sequence', params: [sequence: 'securite.seq_item']
+    id column: 'id', generator: 'sequence', params: [sequence: 'securite.item_id_seq']
+    idEnregistrementCible column: 'enregistrement_cible_id'
   }
 }

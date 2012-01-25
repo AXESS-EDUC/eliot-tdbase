@@ -30,25 +30,22 @@ package org.lilie.services.eliot.tice.scolarite
 
 class Matiere {
   Long id
-  String idExterne
   String libelleLong
   String libelleCourt
   String codeGestion
   String libelleEdition
   String codeSts
   Etablissement etablissement
+  OrigineEnum origine = OrigineEnum.AUTO
 
   static belongsTo = [
           etablissement: Etablissement
   ]
   
   static constraints = {
-    idExterne(nullable:true, maxSize:128)
     codeSts nullable: true
-    libelleCourt(nullable : true)
-    libelleEdition(nullable : true)
     codeGestion(nullable : false, blank:false)
-    etablissement(nullable: false)
+    origine(nullable: true)
     libelleLong(nullable: false, blank:false)
   }
 
@@ -58,5 +55,12 @@ class Matiere {
     etablissement column: 'etablissement_id'
     cache(true)
   }
+
+  String toString() {
+      return "Matiere{" +
+          "id=" + id +
+          ", libelleLong='" + libelleLong + '\'' +
+          '}';
+    }
 
 }

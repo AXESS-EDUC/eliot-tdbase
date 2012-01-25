@@ -42,7 +42,7 @@ class BootStrap {
         bootstrapService.bootstrapForDevelopment()
       }
       development {
-        dbMigrationService.updateDb()
+        //dbMigrationService.updateDb()
         bootstrapService.bootstrapForDevelopment()
       }
     }

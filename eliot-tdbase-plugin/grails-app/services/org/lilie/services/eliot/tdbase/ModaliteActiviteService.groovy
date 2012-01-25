@@ -55,7 +55,7 @@ class ModaliteActiviteService {
                 enseignant: proprietaire
         )
         modaliteActivite.properties = proprietes
-        modaliteActivite.save()
+        modaliteActivite.save(flush: true)
         return modaliteActivite
     }
 
@@ -73,7 +73,7 @@ class ModaliteActiviteService {
         assert (modaliteActivite.enseignant == proprietaire)
 
         modaliteActivite.properties = proprietes
-        modaliteActivite.save()
+        modaliteActivite.save(flush: true)
         return modaliteActivite
     }
 

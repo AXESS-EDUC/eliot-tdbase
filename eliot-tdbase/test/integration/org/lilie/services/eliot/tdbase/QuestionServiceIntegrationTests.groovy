@@ -46,6 +46,7 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
   private static final String SUJET_1_TITRE = "Sujet test 1"
   private static final String SUJET_2_TITRE = "Sujet test 2"
 
+
   Utilisateur utilisateur1
   Personne personne1
   Utilisateur utilisateur2
@@ -105,6 +106,7 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
             props,
             personne1
     )
+    assertFalse(seance1.hasErrors())
     assertTrue(quest1.estDistribue())
     modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
     assertFalse(quest1.estDistribue())
@@ -128,7 +130,8 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
     assertNotNull(sujet1.questionsSequences)
     def quest2 = Question.findById(quest1.id)
     questionService.supprimeQuestion(quest2, personne1)
-
+    // flush necessaire sinon suppression non visible
+    sessionFactory.currentSession.flush()
     def quest3 = Question.findById(quest1.id)
     assertNull(quest3)
     def sujetQuests = SujetSequenceQuestions.findAllBySujet(sujet1)
@@ -177,7 +180,8 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
     def quest2 = Question.findById(quest1.id)
     def idPub = quest2.publication.id
     questionService.supprimeQuestion(quest2, personne1)
-
+    // flush necessaire sinon suppression non visible
+    sessionFactory.currentSession.flush()
     def quest3 = Question.findById(quest1.id)
     assertNull(quest3)
     def sujetQuests = SujetSequenceQuestions.findAllBySujet(sujet1)

@@ -47,7 +47,7 @@ class PerimetreSecurite {
 
   static mapping = {
     table('securite.perimetre_securite')
-    id column: 'id', generator: 'sequence', params: [sequence: 'ent.seq_perimetre_securite']
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.perimetre_securite_id_seq']
     version false
   }
 

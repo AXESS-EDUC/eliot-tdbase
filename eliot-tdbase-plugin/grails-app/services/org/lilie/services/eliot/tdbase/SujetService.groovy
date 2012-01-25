@@ -63,7 +63,7 @@ class SujetService {
             versionSujet: 1,
             copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType
     )
-    sujet.save()
+    sujet.save(flush: true)
     return sujet
   }
 
@@ -141,7 +141,7 @@ class SujetService {
       leSujet.presentationNormalise = StringUtils.normalise(proprietes.presentation)
     }
     leSujet.properties = proprietes
-    leSujet.save()
+    leSujet.save(flush: true)
     return leSujet
   }
 

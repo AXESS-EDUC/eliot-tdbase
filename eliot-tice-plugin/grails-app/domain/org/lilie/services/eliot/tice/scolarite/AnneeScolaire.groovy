@@ -31,14 +31,10 @@ package org.lilie.services.eliot.tice.scolarite
 class AnneeScolaire {
 
   String code
-  Date dateDebut // TODO supprimer - date par établissement définie dans Calendrier
-  Date dateFin // TODO supprimer - date par établissement définie dans Calendrier
   Boolean anneeEnCours
 
   static constraints = {
     code(maxSize: 30, unique: true)
-    dateDebut(nullable: true) // TODO supprimer - date par établissement définie dans Calendrier
-    dateFin(nullable: true) // TODO supprimer - date par établissement définie dans Calendrier
     anneeEnCours(nullable: true)
   }
 

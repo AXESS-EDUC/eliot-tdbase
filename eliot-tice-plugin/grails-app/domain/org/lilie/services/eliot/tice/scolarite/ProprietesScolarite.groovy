@@ -80,8 +80,8 @@ class ProprietesScolarite {
   }
 
   static mapping = {
-    table('ent.proprietes_scolarite')
-    id column: 'id', generator: 'sequence', params: [sequence: 'ent.proprietes_scolarite_id_seq']
+    table('ent.propriete_scolarite')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.propriete_scolarite_id_seq']
     version false
     mef column: 'mef_id'
   }

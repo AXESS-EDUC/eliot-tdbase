@@ -68,15 +68,15 @@ class BootstrapService {
 
 
     private static final String DEFAULT_CODE_PORTEUR_ENT = "ENT"
-    private static final String UAI_LYCEE = '****L'
-    private static final String UAI_COLLEGE = '****C'
-    private static final String UAI_PREFIXE = '****'
+    private static final String UAI_LYCEE = 'TEST_L'
+    private static final String UAI_COLLEGE = 'TEST_C'
+    private static final String UAI_PREFIXE = 'TEST_'
 
-    private static final String CODE_GESTION_PREFIXE = '****'
-    private static final String CODE_MEFSTAT4_PREFIXE = '**'
+    private static final String CODE_GESTION_PREFIXE = 'TEST_'
+    private static final String CODE_MEFSTAT4_PREFIXE = 'TEST_'
 
-    private static final String CODE_ANNEE_SCOLAIRE_PREFIXE = '****'
-    private static final String CODE_STRUCTURE_PREFIXE = '****'
+    private static final String CODE_ANNEE_SCOLAIRE_PREFIXE = 'TEST_'
+    private static final String CODE_STRUCTURE_PREFIXE = 'TEST_'
 
 
     private List<ProprietesScolarite> proprietesScolariteListUtilisateur1 = []
@@ -230,22 +230,26 @@ class BootstrapService {
             new Matiere(
                     codeGestion: "${CODE_GESTION_PREFIXE}_1",
                     etablissement: lycee,
-                    libelleLong: "Mathématiques"
+                    libelleLong: "Mathématiques",
+                    libelleCourt: "Mathématiques"
             ).save()
             new Matiere(
                     codeGestion: "${CODE_GESTION_PREFIXE}_2",
                     etablissement: lycee,
-                    libelleLong: "SES"
+                    libelleLong: "SES",
+                    libelleCourt: "SES"
             ).save()
             new Matiere(
                     codeGestion: "${CODE_GESTION_PREFIXE}_3",
                     etablissement: lycee,
-                    libelleLong: "SES Spécialité"
+                    libelleLong: "SES Spécialité",
+                    libelleCourt: "SES Spécialité"
             ).save()
             new Matiere(
                     codeGestion: "${CODE_GESTION_PREFIXE}_4",
                     etablissement: college,
-                    libelleLong: "Histoire"
+                    libelleLong: "Histoire",
+                    libelleCourt: "Hitsoire"
             ).save()
             new Matiere(
                     codeGestion: "${CODE_GESTION_PREFIXE}_5",
@@ -255,36 +259,38 @@ class BootstrapService {
             new Matiere(
                     codeGestion: "${CODE_GESTION_PREFIXE}_6",
                     etablissement: lycee,
-                    libelleLong: "Communication"
+                    libelleLong: "Communication",
+                    libelleCourt: "Communication"
             ).save()
             new Matiere(
                     codeGestion: "${CODE_GESTION_PREFIXE}_7",
                     etablissement: lycee,
-                    libelleLong: "Anglais"
+                    libelleLong: "Anglais",
+                    libelleCourt: "Anglais"
             ).save(flush: true)
         }
     }
 
     private def initialiseNiveauxEnvDevelopmentTest() {
-        if (!Niveau.findAllByCodeMefstat4Like("${CODE_MEFSTAT4_PREFIXE}%")) {
+        if (!Niveau.findAllByLibelleCourtLike("${CODE_MEFSTAT4_PREFIXE}%")) {
             new Niveau(
-                    codeMefstat4: "${CODE_MEFSTAT4_PREFIXE}_1",
+                    libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_1",
                     libelleLong: "Première"
             ).save()
             new Niveau(
-                    codeMefstat4: "${CODE_MEFSTAT4_PREFIXE}_2",
+                    libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_2",
                     libelleLong: "Terminale"
             ).save()
             new Niveau(
-                    codeMefstat4: "${CODE_MEFSTAT4_PREFIXE}_3",
+                    libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_3",
                     libelleLong: "BTS 1"
             ).save()
             new Niveau(
-                    codeMefstat4: "${CODE_MEFSTAT4_PREFIXE}_4",
+                    libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_4",
                     libelleLong: "BTS 2"
             ).save()
             new Niveau(
-                    codeMefstat4: "${CODE_MEFSTAT4_PREFIXE}_5",
+                    libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_5",
                     libelleLong: "6ème"
             ).save(flush: true)
 
@@ -297,9 +303,9 @@ class BootstrapService {
         if (!ProprietesScolarite.findAllByEtablissementAndFonction(lycee, fonctionService.fonctionEnseignant())) {
             Etablissement college = Etablissement.findByUai(UAI_COLLEGE)
             AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
-            Niveau niveau6 = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_5")
-            Niveau niveauPrem = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_1")
-            Niveau niveauTerm = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_2")
+            Niveau niveau6 = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_5")
+            Niveau niveauPrem = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
+            Niveau niveauTerm = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_2")
             Matiere matiereMaths = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_1")
             Matiere matiereSES = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_2")
             Matiere matiereHistoire = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_4")
@@ -378,9 +384,9 @@ class BootstrapService {
         if (!ProprietesScolarite.findAllByEtablissementAndFonction(lycee, fonctionService.fonctionEleve())) {
             Etablissement college = Etablissement.findByUai(UAI_COLLEGE)
             AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
-            Niveau niveau6 = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_5")
-            Niveau niveauPrem = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_1")
-            Niveau niveauTerm = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_2")
+            Niveau niveau6 = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_5")
+            Niveau niveauPrem = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
+            Niveau niveauTerm = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_2")
             Matiere matiereMaths = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_1")
             Matiere matiereSES = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_2")
             Matiere matiereHistoire = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_4")
@@ -437,7 +443,7 @@ class BootstrapService {
     private def initialiseProfilsScolaritesEleve1EnvDevelopment() {
         Utilisateur elv1 = utilisateurService.findUtilisateur(ELEVE_1_LOGIN)
         Personne pers1 = Personne.get(elv1.personneId)
-        Niveau niveauPrem = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_1")
+        Niveau niveauPrem = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
 
         if (!profilScolariteService.findProprietesScolaritesForPersonne(pers1)) {
             def props = ProprietesScolarite.findAllByFonctionAndNiveau(fonctionService.fonctionEleve(), niveauPrem)
@@ -455,7 +461,7 @@ class BootstrapService {
             )
             Utilisateur elv2 = utilisateurService.findUtilisateur(ELEVE_2_LOGIN)
             Personne pers = Personne.get(elv2.personneId)
-            Niveau niveauPrem = Niveau.findByCodeMefstat4("${CODE_MEFSTAT4_PREFIXE}_1")
+            Niveau niveauPrem = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
 
             def props = ProprietesScolarite.findAllByFonctionAndNiveau(fonctionService.fonctionEleve(), niveauPrem)
             addProprietesScolariteToPersonne(props, pers)

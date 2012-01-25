@@ -58,7 +58,8 @@ class DomainAutorite implements Autorite {
   static mapping = {
     table('securite.autorite')
     cache usage:'read-write'
-    id column: 'id', generator: 'sequence', params: [sequence: 'securite.seq_autorite']
+    id column: 'id', generator: 'sequence', params: [sequence: 'securite.autorite_id_seq']
+    idEnregistrementCible column: 'enregistrement_cible_id'
     identifiant column: 'id_externe'
   }
 
