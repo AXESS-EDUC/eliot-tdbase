@@ -29,7 +29,6 @@
 package org.lilie.services.eliot.tdbase.impl.graphicmatch
 
 import org.lilie.services.eliot.tdbase.Question
-import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 
@@ -66,14 +65,6 @@ class ReponseGraphicMatchSpecificationService extends
     }
 
     reponsesPossibles
-  }
-
-  @Override
-  Float evalueReponse(Reponse reponse) {
-    ReponseGraphicMatchSpecification repSpecObj = reponse.specificationObject
-    reponse.correctionNoteAutomatique = repSpecObj.evaluate(reponse.sujetQuestion.points)
-    reponse.save()
-    reponse.correctionNoteAutomatique
   }
 }
 
@@ -119,7 +110,7 @@ class ReponseGraphicMatchSpecification implements ReponseSpecification {
    * reponse est bonne.
    * @return les points correspondants à l'evaluation.
    */
-  def evaluate(float maximumPoints) {
+  float evaluate(float maximumPoints) {
     def differenceCount = (reponsesPossibles - valeursDeReponse).size()
     def totalFieldCount = reponsesPossibles.size()
     def validFieldCount = totalFieldCount - differenceCount

@@ -40,6 +40,5 @@ class MultipleChoiceSpecificationTest extends GroovyTestCase {
   void testGetId() {
     def multipleChoiceReponse = new MultipleChoiceSpecificationReponsePossible(libelleReponse: "Yet another Choice", estUneBonneReponse: false, rang: 23.4F)
     assertEquals(35749663, multipleChoiceReponse.id)
-
   }
 }
