@@ -31,7 +31,6 @@ package org.lilie.services.eliot.tdbase.impl.fillgap
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
-import org.springframework.transaction.annotation.Transactional
 import static org.lilie.services.eliot.tice.utils.StringUtils.normalise
 
 /**
@@ -46,32 +45,7 @@ class ReponseFillGapSpecificationService extends ReponseSpecificationService<Rep
 
   @Override
   ReponseFillGapSpecification getObjectInitialiseFromSpecification(Question question) {
-    new ReponseFillGapSpecification(reponsesPossibles: question.specificationObject.trouElements)
-  }
-
-  @Transactional
-  @Override
-  Float evalueReponse(org.lilie.services.eliot.tdbase.Reponse reponse) {
-    int reponsesCorrects = 0
-    ReponseFillGapSpecification repSpecObj = reponse.specificationObject
-    int numberRes = repSpecObj.valeursDeReponse.size()
-
-
-    for (i in 0..numberRes - 1) {
-
-      def valeurDeReponse = normalise(repSpecObj.valeursDeReponse[i].trim())
-      def validReponseList = repSpecObj.reponsesPossibles[i].valeur.collect {normalise(it)}
-
-      if (validReponseList.contains(valeurDeReponse)) {
-        reponsesCorrects++
-      }
-    }
-
-    float points = (reponsesCorrects / numberRes) * reponse.sujetQuestion.points
-
-    reponse.correctionNoteAutomatique = points
-    reponse.save()
-    points
+    createSpecification(reponsesPossibles: question.specificationObject.trouElements)
   }
 }
 
@@ -98,4 +72,21 @@ class ReponseFillGapSpecification implements ReponseSpecification {
     ]
   }
 
+  @Override
+  float evaluate(float maximumPoints) {
+    int reponsesCorrects = 0
+    int numberRes = valeursDeReponse.size()
+
+    for (i in 0..numberRes - 1) {
+
+      def valeurDeReponse = normalise(valeursDeReponse[i].trim())
+      def validReponseList = reponsesPossibles[i].valeur.collect {normalise(it)}
+
+      if (validReponseList.contains(valeurDeReponse)) {
+        reponsesCorrects++
+      }
+    }
+
+    reponsesCorrects / numberRes * maximumPoints
+  }
 }

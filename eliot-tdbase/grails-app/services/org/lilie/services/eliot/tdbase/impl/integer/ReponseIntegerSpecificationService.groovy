@@ -28,10 +28,9 @@
 
 package org.lilie.services.eliot.tdbase.impl.integer
 
-import org.lilie.services.eliot.tdbase.Reponse
+import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
-import org.springframework.transaction.annotation.Transactional
 
 /**
  *
@@ -39,35 +38,15 @@ import org.springframework.transaction.annotation.Transactional
  */
 class ReponseIntegerSpecificationService extends ReponseSpecificationService<ReponseIntegerSpecification> {
 
-    /**
-     *
-     * @see ReponseSpecificationService
-     */
-    @Override
-    ReponseIntegerSpecification createSpecification(Map map) {
-        new ReponseIntegerSpecification(map)
-    }
+  @Override
+  ReponseIntegerSpecification createSpecification(Map map) {
+    new ReponseIntegerSpecification(map)
+  }
 
-    /**
-     * Si il n'y a pas de réponse la note vaut 0
-     * Si la valeur attendue est égale à la réponse la note vaut 1 sinon 0
-     * On effectue une règle de trois pour ramener la note correspondant au barême
-     *
-     * @see ReponseSpecificationService
-     */
-    @Transactional
-    Float evalueReponse(Reponse reponse) {
-        def res = 0
-        ReponseIntegerSpecification repSpecObj = reponse.specificationObject
-        def val = repSpecObj.valeurReponse
-        IntegerSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
-        if (val == questSpecObj.valeur) {
-            res = reponse.sujetQuestion.points
-        }
-        reponse.correctionNoteAutomatique = res
-        reponse.save()
-        return res
-    }
+  @Override
+  ReponseIntegerSpecification getObjectInitialiseFromSpecification(Question question) {
+    return createSpecification(valeurCorrecte: question.specificationObject.valeur)
+  }
 }
 
 /**
@@ -75,12 +54,34 @@ class ReponseIntegerSpecificationService extends ReponseSpecificationService<Rep
  */
 class ReponseIntegerSpecification implements ReponseSpecification {
 
-    Integer valeurReponse
+  /**
+   * La valeur correcte.
+   */
+  Integer valeurCorrecte
 
-    Map toMap() {
-        [
-                valeurReponse: valeurReponse
-        ]
+  /**
+   * La la valeur de la reponse.
+   */
+  Integer valeurReponse
+
+  Map toMap() {
+    [
+            valeurCorrecte: valeurCorrecte,
+            valeurReponse: valeurReponse
+    ]
+  }
+
+  /**
+   * Si il n'y a pas de réponse la note vaut 0
+   * Si la valeur attendue est égale à la réponse la note vaut 1 sinon 0
+   * On effectue une règle de trois pour ramener la note correspondant au barême
+   *
+   * @see ReponseSpecificationService
+   */
+  float evaluate(float maximumPoints) {
+    if (valeurReponse != null) {
+      return valeurCorrecte == valeurReponse ? maximumPoints : 0F;
     }
-
+    0F;
+  }
 }

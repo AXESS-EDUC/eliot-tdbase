@@ -32,11 +32,11 @@ package org.lilie.services.eliot.tdbase
  * Interface de Specifications.
  */
 public interface Specification {
-    /**
-     * Marshalling des membres de la classe vers une map
-     * @return map des valeurs sous forme des Strings
-     */
-    Map toMap()
+  /**
+   * Marshalling des membres de la classe vers une map
+   * @return map des valeurs sous forme des Strings
+   */
+  Map toMap()
 }
 
 /**
@@ -47,4 +47,14 @@ public interface QuestionSpecification extends Specification {}
 /**
  * Interface de marquage.
  */
-public interface ReponseSpecification extends Specification {}
+public interface ReponseSpecification extends Specification {
+
+  /**
+   * Evalue la reponse.
+   * @param maximumPoints le points maximals que l'on peut
+   * atteindre si la reponse est correcte.
+   * @return le points en fonction de la qualité de la reponse.
+   */
+  float evaluate(float maximumPoints);
+
+}

@@ -41,77 +41,67 @@ import org.springframework.transaction.annotation.Transactional
  */
 class ReponseDecimalSpecificationService extends ReponseSpecificationService<ReponseDecimalSpecification> {
 
-    @Override
-    ReponseDecimalSpecification createSpecification(Map map) {
-        new ReponseDecimalSpecification(map)
-    }
+  @Override
+  ReponseDecimalSpecification createSpecification(Map map) {
+    new ReponseDecimalSpecification(map)
+  }
 
-    /**
-     * Si il n'y a pas de réponse la note vaut 0
-     * Si la valeur attendue est comprise entre la réponse - la précision et la
-     * réponse + la précision, la note vaut 1
-     * On effectue une règle de trois pour ramener la note correspondant au barême
-     *
-     * @see ReponseSpecificationService
-     */
-    @Transactional
-    Float evalueReponse(Reponse reponse) {
-        def res = 0
-        ReponseDecimalSpecification repSpecObj = reponse.specificationObject
-        def val = repSpecObj.valeurReponse
-        DecimalSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
-        Float precision = questSpecObj.precision
-        if (precision == null) {
-            precision = 0
-        }
-        if (val != null && val instanceof Float) {
-            if (val - precision <= questSpecObj.valeur &&
-                    val + precision >= questSpecObj.valeur) {
-                res = 1
-            }
-            res = res * reponse.sujetQuestion.points
-        }
-        reponse.correctionNoteAutomatique = res
-        reponse.save()
-        return res
-    }
-
-
+  @Override
+  ReponseDecimalSpecification getObjectInitialiseFromSpecification(Question question) {
+    return createSpecification(valeurCorrecte: question.specificationObject.valeur,
+                               precision: question.specificationObject.precision)
+  }
 }
 
 /**
- * Représente un objet spécification pour une question de type Decimal
+ * Représente un objet spécification pour une question de type Decimal.
  */
 class ReponseDecimalSpecification implements ReponseSpecification {
 
-    Float valeurReponse
+  /**
+   * La valeur de la reponse.
+   */
+  Float valeurReponse
 
-    ReponseDecimalSpecification() {
-        super()
+  /**
+   * La valeur correcte de la reponse.
+   */
+  Float valeurCorrecte
+
+  /**
+   *    La plage de tollerance par rapport de laquelle la reponse peut être
+   *    considerée comme correcte.
+   */
+  Float precision = 0F
+
+  Map toMap() {
+    [
+            valeurReponse: valeurReponse,
+            valeurCorrecte: valeurCorrecte,
+            precision: precision
+    ]
+  }
+
+  String getValeurReponseAffichage() {
+    if (valeurReponse != null) {
+      return NumberUtils.formatFloat(valeurReponse)
     }
+    return null
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type RepoonseDecimalSpecification
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    ReponseDecimalSpecification(Map map) {
-        valeurReponse = map.valeurReponse
+  /*Si il n'y a pas de réponse la note vaut 0
+  * Si la valeur attendue est comprise entre la réponse - la précision et la
+  * réponse + la précision, la note vaut 1
+  * On effectue une règle de trois pour ramener la note correspondant au barême
+  */
+
+  float evaluate(float maximumPoints) {
+    if (valeurReponse != null && valeurCorrecte != null) {
+      if (valeurReponse - precision <= valeurCorrecte &&
+          valeurReponse + precision >= valeurCorrecte) {
+        return maximumPoints
+      }
     }
-
-
-
-    Map toMap() {
-        [
-                valeurReponse: valeurReponse
-        ]
-    }
-
-    String getValeurReponseAffichage() {
-        if (valeurReponse != null) {
-            return NumberUtils.formatFloat(valeurReponse)
-        }
-        return null
-    }
-
+    0F
+  }
 }

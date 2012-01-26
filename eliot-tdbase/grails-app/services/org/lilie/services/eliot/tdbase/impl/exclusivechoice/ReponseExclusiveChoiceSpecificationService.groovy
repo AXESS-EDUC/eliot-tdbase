@@ -25,20 +25,11 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-
-
-
-
-
-
-
 package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 
 import org.lilie.services.eliot.tdbase.Question
-import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
-import org.springframework.transaction.annotation.Transactional
 
 /**
  *
@@ -46,38 +37,20 @@ import org.springframework.transaction.annotation.Transactional
  */
 class ReponseExclusiveChoiceSpecificationService extends ReponseSpecificationService<ReponseExclusiveChoiceSpecification> {
 
-    @Override
-    ReponseExclusiveChoiceSpecification createSpecification(Map map) {
-        new ReponseExclusiveChoiceSpecification(map)
-    }
+  @Override
+  ReponseExclusiveChoiceSpecification createSpecification(Map map) {
+    new ReponseExclusiveChoiceSpecification(map)
+  }
 
-    /**
-     * Si il n'y a aucune réponse explicite (pas de bouton coché), la notes est 0.
-     * Si il y a au moins une réponse explicite (un bouton cochée), alors :
-     * - si réponse juste on ajoute un point
-     * - si réponse fausse on retranche un point
-     * On effectue une règle de trois pour ramener la note correspondant au barême
-     *
-     * @see ReponseSpecificationService
-     */
-    @Transactional
-    Float evalueReponse(Reponse reponse) {
-        def res = 0
-        ReponseExclusiveChoiceSpecification repSpecObj = reponse.specificationObject
-        ExclusiveChoiceSpecification questSpecObj = reponse.sujetQuestion.question.specificationObject
-        if (repSpecObj.indexReponse == questSpecObj.indexBonneReponse) {
-            res = reponse.sujetQuestion.points
-        } else if (repSpecObj.indexReponse != null) {
-            def nbRepPos = questSpecObj.reponses.size()
-            // on décompte avec points positifs et/ou négatifs
-            res = (-1 / nbRepPos) * reponse.sujetQuestion.points
-        }
-        reponse.correctionNoteAutomatique = res
-        reponse.save()
-        return res
-    }
+  @Override
+  ReponseExclusiveChoiceSpecification getObjectInitialiseFromSpecification(Question question) {
 
+    def specObj = question.specificationObject
 
+    return createSpecification(indexBonneReponse: specObj.indexBonneReponse,
+                               indexReponse: specObj.indexBonneReponse,
+                               numberReponsesPossibles: specObj.reponses.size())
+  }
 }
 
 /**
@@ -85,27 +58,48 @@ class ReponseExclusiveChoiceSpecificationService extends ReponseSpecificationSer
  */
 class ReponseExclusiveChoiceSpecification implements ReponseSpecification {
 
-    Integer indexReponse
+  /**
+   * L'indexe de la reponse
+   */
+  Integer indexReponse
 
-    ReponseExclusiveChoiceSpecification() {
-        super()
+  /**
+   * L'indexe de la bonne reponse
+   */
+  Integer indexBonneReponse
+
+  /**
+   * Le nombre de reponses possibles 
+   */
+  Integer numberReponsesPossibles = 0
+
+  @Override
+  Map toMap() {
+    [
+            indexReponse: indexReponse,
+            indexBonneReponse: indexBonneReponse,
+            numberReponsesPossibles: numberReponsesPossibles
+    ]
+  }
+
+  /**
+   * Si il n'y a aucune réponse explicite (pas de bouton coché), la notes est 0.
+   * Si il y a au moins une réponse explicite (un bouton cochée), alors :
+   * - si réponse juste on ajoute un point
+   * - si réponse fausse on retranche un point
+   * On effectue une règle de trois pour ramener la note correspondant au barême
+   * @param maximumPoints
+   * @return
+   */
+  float evaluate(float maximumPoints) {
+    def res = 0
+    if (indexReponse == indexBonneReponse) {
+      res = maximumPoints
+    } else if (indexReponse != null) {
+
+      // on décompte avec points positifs et/ou négatifs
+      res = (-1 / numberReponsesPossibles) * maximumPoints
     }
-
-    /**
-     * Créer et initialise un nouvel objet de type RepoonseMultipleChoiceSpecification
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    ReponseExclusiveChoiceSpecification(Map map) {
-        indexReponse = map.indexReponse
-    }
-
-
-
-    Map toMap() {
-        [
-                indexReponse: indexReponse
-        ]
-    }
-
+    res
+  }
 }

@@ -25,51 +25,27 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-package org.lilie.services.eliot.tdbase.impl.open
 
-import org.lilie.services.eliot.tdbase.Reponse
-import org.lilie.services.eliot.tdbase.ReponseSpecification
-import org.lilie.services.eliot.tdbase.ReponseSpecificationService
+package org.lilie.services.eliot.tdbase.impl.multiplechoice
 
 /**
- *
- * @author franck Silvestre
+ * Created by IntelliJ IDEA.
+ * User: bert
+ * Date: 26/01/12
+ * Time: 16:11
+ * To change this template use File | Settings | File Templates.
  */
-class ReponseOpenSpecificationService extends ReponseSpecificationService<ReponseOpenSpecification> {
+class ReponseMultipleChoiceSpecificationTest extends GroovyTestCase {
 
-  /**
-   *
-   * @see ReponseSpecificationService
-   */
-  @Override
-  ReponseOpenSpecification createSpecification(Map map) {
-    new ReponseOpenSpecification(map)
-  }
+  void testEvaluate() {
 
-  /**
-   * Pas de notation automatique
-   *
-   * @see ReponseSpecificationService
-   */
-  Float evalueReponse(Reponse reponse) {
-    return null
-  }
-}
+    def params = [labelsReponsesCorrects: ['a', 'c', 'd'],
+            labelsReponsesCoches: ['a', 'c']]
+    def result = new ReponseMultipleChoiceSpecification(params).evaluate(3F)
+    assertEquals(1F, result, 0F)
 
-/**
- * Représente un objet spécification pour une question de type Decimal
- */
-class ReponseOpenSpecification implements ReponseSpecification {
-
-  String valeurReponse
-
-  Map toMap() {
-    [
-            valeurReponse: valeurReponse
-    ]
-  }
-
-  float evaluate(float maximumPoints) {
-    return 0F
+    params = [labelsReponsesCorrects: ['a', 'c', 'd'], labelsReponsesCoches: []]
+    result = new ReponseMultipleChoiceSpecification(params).evaluate(3F)
+    assertEquals(0F, result, 0F)
   }
 }

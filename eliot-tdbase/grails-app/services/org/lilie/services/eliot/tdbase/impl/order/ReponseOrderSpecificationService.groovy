@@ -38,32 +38,23 @@ import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 class ReponseOrderSpecificationService extends ReponseSpecificationService<ReponseOrderSpecification> {
 
 
-    @Override
-    ReponseOrderSpecification createSpecification(Map map) {
-        new ReponseOrderSpecification(map)
+  @Override
+  ReponseOrderSpecification createSpecification(Map map) {
+    new ReponseOrderSpecification(map)
+  }
+
+  @Override
+  ReponseOrderSpecification getObjectInitialiseFromSpecification(Question question) {
+
+    List<Item> valeursReponse = []
+
+    question.specificationObject.orderedItems.each {
+      valeursReponse << new Item(text: it.text)
     }
 
-    @Override
-    ReponseOrderSpecification getObjectInitialiseFromSpecification(Question question) {
-
-        List<Item> valeursReponse = []
-
-        question.specificationObject.orderedItems.each {
-            valeursReponse << new Item(text: it.text)
-        }
-
-        new ReponseOrderSpecification(valeursDeReponse: valeursReponse,
-                reponsesPossibles: question.specificationObject.orderedItems)
-    }
-
-    @Override
-    Float evalueReponse(org.lilie.services.eliot.tdbase.Reponse reponse) {
-
-        ReponseOrderSpecification repSpecObj = reponse.specificationObject
-        reponse.correctionNoteAutomatique = repSpecObj.evaluate(reponse.sujetQuestion.points)
-        reponse.save()
-        reponse.correctionNoteAutomatique
-    }
+    new ReponseOrderSpecification(valeursDeReponse: valeursReponse,
+                                  reponsesPossibles: question.specificationObject.orderedItems)
+  }
 }
 
 /**
@@ -71,59 +62,55 @@ class ReponseOrderSpecificationService extends ReponseSpecificationService<Repon
  */
 class ReponseOrderSpecification implements ReponseSpecification {
 
-    /**
-     * Liste d'elements fournis comme reponse à la question.
-     */
-    List<Item> valeursDeReponse = []
+  /**
+   * Liste d'elements fournis comme reponse à la question.
+   */
+  List<Item> valeursDeReponse = []
 
-    /**
-     * Liste d'elements qui forment une reponse correcte.
-     */
-    List<Item> reponsesPossibles = []
+  /**
+   * Liste d'elements qui forment une reponse correcte.
+   */
+  List<Item> reponsesPossibles = []
 
-    /**
-     * Constructeur par defaut
-     */
-    ReponseOrderSpecification() {
-        super()
+  /**
+   * Constructeur par defaut
+   */
+  ReponseOrderSpecification() {
+    super()
+  }
+
+  /**
+   * Constructeur
+   * @param params map des paramètres pour l'initialisation de l'objet
+   */
+  ReponseOrderSpecification(Map params) {
+    valeursDeReponse = params.valeursDeReponse.collect {createItem(it)}
+    reponsesPossibles = params.reponsesPossibles.collect {createItem(it)}
+  }
+
+  @Override
+  Map toMap() {
+    [
+            valeursDeReponse: valeursDeReponse.collect {it.toMap()},
+            reponsesPossibles: reponsesPossibles.collect {it.toMap()}
+    ]
+  }
+
+  @Override
+  float evaluate(float maximumPoints) {
+    float points = maximumPoints
+    def difference = valeursDeReponse - reponsesPossibles
+    if (!difference.isEmpty()) {
+      points = 0.0f
     }
+    points
+  }
 
-    /**
-     * Constructeur
-     * @param params map des paramètres pour l'initialisation de l'objet
-     */
-    ReponseOrderSpecification(Map params) {
-        valeursDeReponse = params.valeursDeReponse.collect {createItem(it)}
-        reponsesPossibles = params.reponsesPossibles.collect {createItem(it)}
-    }
+  def createItem(Item item) {
+    item
+  }
 
-    @Override
-    Map toMap() {
-        [
-                valeursDeReponse: valeursDeReponse.collect {it.toMap()},
-                reponsesPossibles: reponsesPossibles.collect {it.toMap()}
-        ]
-    }
-
-    /**
-     * Logique d'evaluation.
-     * @param maximumPoints les points maximum que l'on peut atteindre si la reponse est bonne.
-     * @return les points correspondants à l'evaluation.
-     */
-    def evaluate(float maximumPoints) {
-        float points = maximumPoints
-        def difference = valeursDeReponse - reponsesPossibles
-        if (!difference.isEmpty()) {
-            points = 0.0f
-        }
-        points
-    }
-
-    def createItem(Item item) {
-        item
-    }
-
-    def createItem(Map params) {
-        new Item(params)
-    }
+  def createItem(Map params) {
+    new Item(params)
+  }
 }
