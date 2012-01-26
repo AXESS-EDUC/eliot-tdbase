@@ -26,16 +26,22 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.annuaire
+package org.lilie.services.eliot.tice.annuaire.impl
 
+import org.lilie.services.eliot.tice.annuaire.UtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.springframework.security.core.GrantedAuthority
+import org.lilie.services.eliot.tice.securite.DomainAutorite
+import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
+import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
-public interface UtilisateurService {
+class LilieUtilisateurService implements UtilisateurService {
+
+  static transactional = false
+
 
   /**
    * Creer un nouvel utilisateur
@@ -53,17 +59,45 @@ public interface UtilisateurService {
           String nom,
           String prenom,
           String email,
-          Date dateNaissance)
+          Date dateNaissance) {
+    throw new UnsupportedOperationException("Eliot in Lilie : operation non supportee")
+  }
 
   /**
    * Recherche l'utilisateur correspondant au  login ou alias de login passé
    * en paramètre
    *
-   * @param loginOrLoginAlias le login ou l'alias de login de l'utilisateur
+   * @param login l'identifiant de l'utilisateur retourne par CAS
    * recherché
-   * @return  l'utilisateur trouvé ou null
+   * @return l'utilisateur trouvé ou null
    */
-  Utilisateur findUtilisateur(String loginOrLoginAlias)
+  Utilisateur findUtilisateur(String login) {
+    // todofsil : le login cas est de la forme UTnnnnnnnnnnnn
+    // il faut donc parser...
+    // on considere que la demande CD, AL,... est OK puisque CAS est passé
+    // les CD sont ils dans notre base ?
+    if (!login) {
+      throw new IllegalStateException(
+              "annuaire.login_null_ou_vide")
+    }
+    def autorite = DomainAutorite.findByIdentifiantAndType(login,TypeAutorite.PERSONNE)
+    if (autorite == null) {
+      throw new IllegalStateException(
+                    "annuaire.no_user_avec_login : ${login}")
+    }
+    Date now = new Date() ;
+    if (now.after(autorite.dateDesactivation)) {
+      throw new IllegalStateException(
+                          "annuaire.user_no_more_activ : ${login}")
+    }
+    Personne personne = Personne.findByAutorite(autorite)
+    if (personne == null) {
+      throw new IllegalStateException(
+              "annuaire.no_personne_fot_autorite : ${login}"
+      )
+    }
+    return utilisateurForPersonne(personne)
+  }
 
   /**
    * Retourne la liste des utilisateurs correspondants aux critères spécifiés
@@ -78,29 +112,37 @@ public interface UtilisateurService {
   List<Utilisateur> findUtilisateurs(String patternNom, String patternPrenom,
                                      Date dateAvantNaissance, Date dateApresNaissance,
                                      Map paginationAndSortingSpec
-  )
+  ) {
+    throw new UnsupportedOperationException("Eliot in Lilie : operation non supportee")
+  }
 
   /**
    * Met à jour l'alias de login de l'utilisateur caractérisé par le login passé
    * en paramètre
    * @param login le login de l'utilisateur
-   * @param aliasLogin  l'alias du login de l'utilisateur concerné
+   * @param aliasLogin l'alias du login de l'utilisateur concerné
    */
-  void setAliasLogin(String login, String loginAlias)
+  void setAliasLogin(String login, String loginAlias) {
+    throw new UnsupportedOperationException("Eliot in Lilie : operation non supportee")
+  }
 
   /**
    * Desactive le compte d'un utilisateur
    * @param login le login de l'utilisateur
-   * @return  l'utilisateur suspendu
+   * @return l'utilisateur suspendu
    */
-  Utilisateur desactiveUtilisateur(String login)
+  Utilisateur desactiveUtilisateur(String login) {
+    throw new UnsupportedOperationException("Eliot in Lilie : operation non supportee")
+  }
 
   /**
    * Reactive le compte d'un utilisateur
    * @param login le login de l'utilisateur
-   * @return  l'utilisateur suspendu
+   * @return l'utilisateur suspendu
    */
-  Utilisateur reactiveUtilisateur(String login)
+  Utilisateur reactiveUtilisateur(String login) {
+    throw new UnsupportedOperationException("Eliot in Lilie : operation non supportee")
+  }
 
   /**
    * Met à jour les données d'un utilisateur.
@@ -113,9 +155,39 @@ public interface UtilisateurService {
    * @param utilisateurModel l'utilisateur contenant les nouvelles valeurs
    * @return l'utilisateur avec ses nouvelles valeurs
    */
-  Utilisateur updateUtilisateur(String login, Utilisateur utilisateur)
+  Utilisateur updateUtilisateur(String login, Utilisateur utilisateur) {
+    throw new UnsupportedOperationException("Eliot in Lilie : operation non supportee")
+  }
 
+  /**
+     * Retourne l'utilisateur correspondant à un compte utilisateur
+     * @param compteUtilisateur le compte utilisateur
+     * @return l'utilisateur
+     */
+    private Utilisateur utilisateurForPersonne(Personne personne) {
+      // creer l'utilisateur à retourner
 
+      DomainAutorite autorite = personne.autorite
+
+      Utilisateur utilisateur = new Utilisateur(
+              login: autorite.identifiant,
+              loginAlias: null,
+              password: null,
+              dateDerniereConnexion: null,
+              compteActive: true,
+              compteExpire: false,
+              compteVerrouille: false,
+              passwordExpire: null,
+              compteUtilisateurId: null,
+              nom: personne.nom,
+              prenom: personne.prenom,
+              dateNaissance: personne.dateNaissance,
+              email: personne.email,
+              sexe: personne.sexe,
+              personneId: personne.id,
+              autoriteId: autorite.id
+      )
+      return utilisateur
+    }
 
 }
-

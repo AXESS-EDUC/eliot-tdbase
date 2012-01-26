@@ -2,6 +2,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
 import org.lilie.services.eliot.tice.securite.DomainAutorite
+import org.lilie.services.eliot.tice.annuaire.impl.DefaultRoleUtilisateurService
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -56,6 +57,10 @@ class EliotTicePluginGrailsPlugin {
 
     utilisateurService(DefaultUtilisateurService) {
       springSecurityService = ref("springSecurityService")
+    }
+
+    roleUtilisateurService(DefaultRoleUtilisateurService) {
+      profilScolariteService = ref("profilScolariteService")
     }
 
   }

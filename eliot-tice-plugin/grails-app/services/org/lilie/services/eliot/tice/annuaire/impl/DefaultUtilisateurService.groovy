@@ -31,8 +31,7 @@
  */
 package org.lilie.services.eliot.tice.annuaire.impl
 
-import org.hibernate.SessionFactory
-import org.hibernate.metadata.ClassMetadata
+import grails.plugins.springsecurity.SpringSecurityService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.UtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
@@ -40,8 +39,8 @@ import org.lilie.services.eliot.tice.securite.CompteUtilisateur
 import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
 import org.lilie.services.eliot.tice.utils.StringUtils
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.transaction.annotation.Transactional
-import grails.plugins.springsecurity.SpringSecurityService
 
 /**
  * Classe de service pour gestion les utilisateurs
@@ -51,7 +50,6 @@ class DefaultUtilisateurService implements UtilisateurService {
   static transactional = false
 
   SpringSecurityService springSecurityService
-
 
   /**
    * Creer un nouvel utilisateur
@@ -98,7 +96,7 @@ class DefaultUtilisateurService implements UtilisateurService {
 
     // cree le compte utilisateur
     String encodedPassword = springSecurityService.encodePassword(
-                    password, login)
+            password, login)
     CompteUtilisateur compteUtilisateur = new CompteUtilisateur(
             login: login,
             password: encodedPassword,
@@ -271,7 +269,7 @@ class DefaultUtilisateurService implements UtilisateurService {
               "annuaire.no_user_avec_login : ${login}")
     }
     String encodedPassword = springSecurityService.encodePassword(
-                    utilisateur.password, login)
+            utilisateur.password, login)
     if (compteUtilisateur.password != encodedPassword) {
       compteUtilisateur.password = encodedPassword
       compteUtilisateur.save(failOnError: true)
@@ -345,6 +343,8 @@ class DefaultUtilisateurService implements UtilisateurService {
     }
     return utilisateurs
   }
+
+
 
   // -------------- private methods --------------------------------------------
 

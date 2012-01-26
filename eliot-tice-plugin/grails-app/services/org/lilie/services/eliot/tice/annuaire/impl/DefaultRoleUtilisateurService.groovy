@@ -26,46 +26,27 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.securite.rbac
+package org.lilie.services.eliot.tice.annuaire.impl
 
-import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
+import org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
 import org.springframework.security.core.GrantedAuthority
-import org.lilie.services.eliot.tice.securite.CompteUtilisateur
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 
 /**
- * Classe représentant l'objet de type UserDetail nécessaire à SpringSecurity
- * pour créer un Security Context
+ * 
  * @author franck Silvestre
  */
-class EliotTiceUser extends GrailsUser {
+class DefaultRoleUtilisateurService implements RoleUtilisateurService {
 
-  Long personneId
-  Long compteUtilisateurId
-  Long autoriteId
-  String nomAffichage
+  ProfilScolariteService profilScolariteService
 
   /**
-   *
-   * @param utilisateur les données utilisateur
-   * @param authorities liste des objets de type GrantedAuthorities correspondant
-   *        aux fonctions de l'utilisateur connecté
-   */
-  EliotTiceUser(Utilisateur utilisateur,
-                Collection<GrantedAuthority> authorities) {
-    super(
-            utilisateur.login,
-            utilisateur.password,
-            utilisateur.compteActive,
-            !utilisateur.compteExpire,
-            !utilisateur.passwordExpire,
-            !utilisateur.compteVerrouille,
-            authorities,
-            utilisateur.compteUtilisateurId
-    )
-    personneId = utilisateur.personneId
-    autoriteId = utilisateur.autoriteId
-    compteUtilisateurId = utilisateur.compteUtilisateurId
-    nomAffichage = "${utilisateur.personne.nomAffichage} (${utilisateur.login})"
-  }
+     *
+     * @see org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
+     */
+    List<GrantedAuthority> findRolesForUtilisateur(Utilisateur utilisateur) {
+      profilScolariteService.findFonctionsForPersonne(utilisateur.personne)
+    }
+
 }

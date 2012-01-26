@@ -35,8 +35,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.lilie.services.eliot.tice.annuaire.UtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
-import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
 
 /**
  *
@@ -45,7 +44,7 @@ import org.lilie.services.eliot.tice.scolarite.Fonction
 class EliotTiceUserDetailsService implements GrailsUserDetailsService {
 
   UtilisateurService utilisateurService
-  ProfilScolariteService profilScolariteService
+  RoleUtilisateurService roleUtilisateurService
 
 /**
  * Some Spring Security classes (e.g. RoleHierarchyVoter) expect at least one role, so
@@ -62,8 +61,7 @@ class EliotTiceUserDetailsService implements GrailsUserDetailsService {
   UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Utilisateur utilisateur = utilisateurService.findUtilisateur(username)
     if (utilisateur) {
-      List<Fonction> fonctions = profilScolariteService.findFonctionsForPersonne(utilisateur.personne)
-      List roles =  fonctions ?: NO_ROLES
+      def roles = roleUtilisateurService.findRolesForUtilisateur(utilisateur)  ?: NO_ROLES
       return new EliotTiceUser(utilisateur, roles)
     }
     return null

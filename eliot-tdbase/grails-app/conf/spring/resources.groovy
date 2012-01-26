@@ -35,7 +35,7 @@ beans = {
   // bean orientés sécurité
   userDetailsService(EliotTiceUserDetailsService) {
     utilisateurService = ref("utilisateurService")
-    profilScolariteService = ref("profilScolariteService")
+    roleUtilisateurService = ref("roleUtilisateurService")
   }
 
   //bean orientés gestion des formulaires
