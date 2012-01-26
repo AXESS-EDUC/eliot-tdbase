@@ -34,7 +34,8 @@ grails.project.test.reports.dir = "target/test-reports"
 
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
-
+versionSchemaEliot = "2.7.1-A1"
+classifierSchemaEliot = "A1"
 
 grails.project.dependency.resolution = {
 
@@ -49,13 +50,18 @@ grails.project.dependency.resolution = {
   repositories {
     grailsCentral()
     mavenRepo "http://www.ticetime.com/nexus/content/repositories/snapshots/"
+    mavenRepo "http://www.ticetime.com/nexus/content/repositories/releases/"
   }
   dependencies {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
     runtime "postgresql:postgresql:8.4-702.jdbc4"
-    compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.3'
+    compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.1'
     runtime group: 'org.lilie.services.eliot', name:'eliot-tice-dbmigration', version:'0.4a-SNAPSHOT'
+    runtime group: 'org.lilie.services.eliot', name:'eliot-securite-commons', version:"${versionSchemaEliot}", classifier:"${classifierSchemaEliot}"
+    runtime group: 'org.lilie.services.eliot', name:'eliot-demon-commons', version:"${versionSchemaEliot}", classifier:"${classifierSchemaEliot}"
+    runtime group: 'org.lilie.services.eliot', name:'eliot-scolarite-commons', version:"${versionSchemaEliot}", classifier:"${classifierSchemaEliot}"
+
   }
 
   plugins {
