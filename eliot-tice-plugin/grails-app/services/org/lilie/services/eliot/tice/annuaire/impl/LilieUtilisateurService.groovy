@@ -41,7 +41,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 class LilieUtilisateurService implements UtilisateurService {
 
   static transactional = false
-
+  static final int LONGUEUR_PREFIXE_LOGIN = 2
 
   /**
    * Creer un nouvel utilisateur
@@ -72,15 +72,15 @@ class LilieUtilisateurService implements UtilisateurService {
    * @return l'utilisateur trouvé ou null
    */
   Utilisateur findUtilisateur(String login) {
-    // todofsil : le login cas est de la forme UTnnnnnnnnnnnn
+    // e login cas est de la forme UTnnnnnnnnnnnn
     // il faut donc parser...
-    // on considere que la demande CD, AL,... est OK puisque CAS est passé
-    // les CD sont ils dans notre base ?
+    // on considere que la declaration CD, AL,... est OK puisque CAS est passé
     if (!login) {
       throw new IllegalStateException(
               "annuaire.login_null_ou_vide")
     }
-    def autorite = DomainAutorite.findByIdentifiantAndType(login,TypeAutorite.PERSONNE)
+    def idExterne = login.substring(LONGUEUR_PREFIXE_LOGIN)
+    def autorite = DomainAutorite.findByIdentifiantAndType(idExterne,TypeAutorite.PERSONNE)
     if (autorite == null) {
       throw new IllegalStateException(
                     "annuaire.no_user_avec_login : ${login}")
@@ -96,7 +96,7 @@ class LilieUtilisateurService implements UtilisateurService {
               "annuaire.no_personne_fot_autorite : ${login}"
       )
     }
-    return utilisateurForPersonne(personne)
+    return utilisateurForLoginAndPersonne(login,personne)
   }
 
   /**
@@ -164,13 +164,13 @@ class LilieUtilisateurService implements UtilisateurService {
      * @param compteUtilisateur le compte utilisateur
      * @return l'utilisateur
      */
-    private Utilisateur utilisateurForPersonne(Personne personne) {
+    private Utilisateur utilisateurForPersonne(String login,Personne personne) {
       // creer l'utilisateur à retourner
 
       DomainAutorite autorite = personne.autorite
 
       Utilisateur utilisateur = new Utilisateur(
-              login: autorite.identifiant,
+              login: login,
               loginAlias: null,
               password: null,
               dateDerniereConnexion: null,
