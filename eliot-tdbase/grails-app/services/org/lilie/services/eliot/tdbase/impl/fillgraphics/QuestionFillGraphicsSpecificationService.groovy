@@ -25,19 +25,17 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-
-package org.lilie.services.eliot.tdbase.impl.graphicmatch
+package org.lilie.services.eliot.tdbase.impl.fillgraphics
 
 import grails.validation.Validateable
-import org.lilie.services.eliot.tice.Attachement
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
 
 /**
- * Service des specifications de questions de type glisser-déposer.
+ * Service des specifications de questions de type graphique à compléter. 
  */
-class QuestionGraphicMatchSpecificationService extends QuestionSpecificationService<GraphicMatchSpecification> {
+class QuestionFillGraphicsSpecificationService extends QuestionSpecificationService<FillGraphicsSpecification> {
 
   /**
    * Le service qui gère les pieces jointes à une question.
@@ -46,13 +44,12 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
 
   @Override
   def createSpecification(Object map) {
-    new GraphicMatchSpecification(map)
+    new FillGraphicsSpecification(map)
   }
 
   @Transactional
   @Override
-  def updateQuestionSpecificationForObject(Question question, GraphicMatchSpecification spec) {
-
+  def updateQuestionSpecificationForObject(Question question, FillGraphicsSpecification spec) {
     question.save()
     def oldImageId = question.specificationObject?.attachmentId
     if (spec.fichier && !spec.fichier.empty) {
@@ -66,29 +63,15 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
       spec.attachmentId = questionAttachement.id
     }
 
-    spec.icons.each {
-      def iconImageId = it.attachmentId
-      if (it.fichier && !it.fichier.empty) {
-        def questionAttachement = questionAttachementService.createAttachementForQuestion(
-                it.fichier, question)
-
-        if (iconImageId) {
-          questionAttachementService.deleteQuestionAttachement(
-                  QuestionAttachement.get(iconImageId))
-        }
-        it.attachmentId = questionAttachement.id
-      }
-    }
-
     super.updateQuestionSpecificationForObject(question, spec)
   }
 }
 
 /**
- * Représente un objet de spécification pour une question de type glisser-déposer.
+ * Représente un objet de spécification pour une question de graphique à compléter.
  */
 @Validateable
-class GraphicMatchSpecification implements QuestionSpecification {
+class FillGraphicsSpecification implements QuestionSpecification {
 
   /**
    * Le libellé.
@@ -101,20 +84,9 @@ class GraphicMatchSpecification implements QuestionSpecification {
   String correction
 
   /**
-   * La liste des hotspots.
+   * La liste des zones de texte.
    */
-  List<Hotspot> hotspots = []
-
-  /**
-   * La liste des icones associés à la question.
-   */
-  List<MatchIcon> icons = []
-
-  /**
-   * Un map qui lie les icones avec les hotspots.
-   * [matchIconId:hotspotId]
-   */
-  Map<String, String> graphicMatches = [:]
+  List<TextZone> textZones = []
 
   /**
    * Identifiant du fichier de l'image d'arrière plan joint à la question.
@@ -130,20 +102,18 @@ class GraphicMatchSpecification implements QuestionSpecification {
   /**
    * Constructeur par defaut.
    */
-  GraphicMatchSpecification() {
+  FillGraphicsSpecification() {
     super()
   }
 
   /**
    * Constructeur prennant une map de paramètres.
    */
-  GraphicMatchSpecification(Map params) {
+  FillGraphicsSpecification(Map params) {
     libelle = params.libelle
     correction = params.correction
-    graphicMatches = params.graphicMatches
     attachmentId = params.attachmentId
-    hotspots = params.hotspots.collect {new Hotspot(it)}
-    icons = params.icons.collect {new MatchIcon(it)}
+    textZones = params.textZones.collect {new TextZone(it)}
   }
 
   @Override
@@ -151,34 +121,29 @@ class GraphicMatchSpecification implements QuestionSpecification {
     [
             libelle: libelle,
             correction: correction,
-            graphicMatches: graphicMatches,
-            attachmentId: attachmentId,
-            hotspots: hotspots.collect {it.toMap()},
-            icons: icons.collect {it.toMap()},
+            textZones: textZones.collect {it.toMap()}
     ]
   }
 
   /**
-   * Retourne l'attachement correspondant
-   * @return l'attachement
+   * Contraintes de validation.
    */
-  Attachement getAttachement() {
-    if (attachmentId) {
-      return QuestionAttachement.get(attachmentId).attachement
-    }
-    null
+  static constraints = {
+    libelle blank: false
+    textZones minSize: 1
   }
 }
 
 /**
- * Un hotspot dans lequel une icone peut-être glissée.
+ * Text zone qui est calqué sur l'image d'arrière plan.
  */
-class Hotspot {
+@Validateable
+class TextZone {
 
   /**
-   * L'identifiant.
+   * L'identifiant. 
    */
-  String id
+  String id = ""
 
   /**
    * La distance du hotspot de la bordure en haut de l'image d'arrière plan.
@@ -191,9 +156,24 @@ class Hotspot {
   int leftDistance = 0
 
   /**
+   * La largeur de la zone de text.
+   */
+  int width = 50
+
+  /**
+   * La hauteur de la zone de text.
+   */
+  int height = 30
+
+  /**
+   * Le texte que cette zone doit afficher.
+   */
+  String text = ""
+
+  /**
    * Constructeur par defaut.
    */
-  Hotspot() { super()}
+  TextZone() {super()}
 
   /**
    * Conversion de l'objet en map.
@@ -201,45 +181,19 @@ class Hotspot {
    */
   Map toMap() {
     [
+            id: id,
             topDistance: topDistance,
             leftDistance: leftDistance,
-            id: id
+            width: width,
+            height: height,
+            text: text
     ]
   }
-}
-
-/**
- * Une icone que l'on peut glisser dans un hotspot.
- */
-class MatchIcon {
 
   /**
-   * L'identifiant de l'icone.
+   * Contraintes de validation.
    */
-  String id
-
-  Long attachmentId
-
-  /**
-   * L'objet du fichier de l'image. Cet attribut n'est pas mappé.
-   * Il ne sert que pour l'echange entre IHM et controlleur.
-   */
-  MultipartFile fichier
-
-  /**
-   * Conversion de l'objet en map.
-   * @return une map des attributs de l'objet.
-   */
-  Map toMap() {[id: id, attachmentId: attachmentId]}
-
-  /**
-   * Retourne l'attachement correspondant
-   * @return l'attachement
-   */
-  Attachement getAttachment() {
-    if (attachmentId) {
-      return QuestionAttachement.get(attachmentId).attachement
-    }
-    null
+  static constraints = {
+    id blank: false
   }
 }

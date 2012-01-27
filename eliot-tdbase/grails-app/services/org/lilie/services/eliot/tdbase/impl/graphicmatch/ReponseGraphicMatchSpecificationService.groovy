@@ -45,26 +45,18 @@ class ReponseGraphicMatchSpecificationService extends
 
   @Override
   ReponseGraphicMatchSpecification getObjectInitialiseFromSpecification(Question question) {
-
-    def valeursDeReponse = [:]
-    question.specificationObject.graphicMatches.each {
-      valeursDeReponse[it.key] = ""
-    }
-
-    new ReponseGraphicMatchSpecification(valeursDeReponse: [:],
-                                         reponsesPossibles: calculateResponsesPossibles(question.specificationObject))
-  }
-
-  private calculateResponsesPossibles(GraphicMatchSpecification specification) {
-    def reponsesPossibles = specification.graphicMatches
+    def specification = question.specificationObject
+    def reponsesPossibles = [:]
+    reponsesPossibles << specification.graphicMatches
 
     specification.icons.each {icon ->
+      // si l'objet icone n'a pas un image attaché
       if (!icon.attachmentId) {
         reponsesPossibles.remove(icon.id)
       }
     }
 
-    reponsesPossibles
+    createSpecification(valeursDeReponse: [:], reponsesPossibles: reponsesPossibles)
   }
 }
 
