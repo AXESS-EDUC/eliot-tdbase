@@ -30,7 +30,6 @@ package org.lilie.services.eliot.tice.securite.rbac
 
 import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
 import org.springframework.security.core.GrantedAuthority
-import org.lilie.services.eliot.tice.securite.CompteUtilisateur
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 
 /**

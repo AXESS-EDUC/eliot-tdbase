@@ -72,8 +72,7 @@ grails.project.dependency.resolution = {
       export = false
     }
 
-    compile(":spring-security-core:1.2")
-    //compile(":spring-security-cas:1.??")
+    compile(":spring-security-core:1.2.7.1")
 
     compile(":hibernate:$grailsVersion") {
       export = false
