@@ -45,6 +45,9 @@ class BootStrap {
         dbMigrationService.updateDb()
         bootstrapService.bootstrapForDevelopment()
       }
+      testlilie {
+        dbMigrationService.updateDb()
+      }
     }
 
 

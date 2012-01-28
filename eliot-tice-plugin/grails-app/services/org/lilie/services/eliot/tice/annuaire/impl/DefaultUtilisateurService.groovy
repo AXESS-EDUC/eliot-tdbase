@@ -117,8 +117,7 @@ class DefaultUtilisateurService implements UtilisateurService {
   @Transactional
   Utilisateur findUtilisateur(String login) {
     if (!login) {
-      throw new IllegalStateException(
-              "annuaire.login_null_ou_vide")
+      return null
     }
     // cherche le compte utilisateur avec personne et autorite associée
     def criteria = CompteUtilisateur.createCriteria()

@@ -60,7 +60,7 @@ class EliotTiceUser extends GrailsUser {
             !utilisateur.passwordExpire,
             !utilisateur.compteVerrouille,
             authorities,
-            utilisateur.compteUtilisateurId
+            utilisateur.personneId
     )
     personneId = utilisateur.personneId
     autoriteId = utilisateur.autoriteId

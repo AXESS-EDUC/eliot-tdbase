@@ -1,8 +1,11 @@
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.impl.DefaultRoleUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
 import org.lilie.services.eliot.tice.securite.DomainAutorite
-import org.lilie.services.eliot.tice.annuaire.impl.DefaultRoleUtilisateurService
+import org.lilie.services.eliot.tice.annuaire.impl.LilieUtilisateurService
+import org.lilie.services.eliot.tice.annuaire.impl.LilieRoleUtilisateurService
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -55,12 +58,25 @@ class EliotTicePluginGrailsPlugin {
 
   def doWithSpring = {
 
-    utilisateurService(DefaultUtilisateurService) {
-      springSecurityService = ref("springSecurityService")
-    }
+    if (ConfigurationHolder.config.eliot.portail.lilie) {
 
-    roleUtilisateurService(DefaultRoleUtilisateurService) {
-      profilScolariteService = ref("profilScolariteService")
+      utilisateurService(LilieUtilisateurService) {
+        springSecurityService = ref("springSecurityService")
+      }
+
+      roleUtilisateurService(LilieRoleUtilisateurService) {
+        profilScolariteService = ref("profilScolariteService")
+      }
+
+    } else {
+
+      utilisateurService(DefaultUtilisateurService) {
+        springSecurityService = ref("springSecurityService")
+      }
+
+      roleUtilisateurService(DefaultRoleUtilisateurService) {
+        profilScolariteService = ref("profilScolariteService")
+      }
     }
 
   }

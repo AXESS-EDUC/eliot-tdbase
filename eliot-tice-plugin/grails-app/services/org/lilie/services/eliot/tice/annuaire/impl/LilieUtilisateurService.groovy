@@ -33,6 +33,7 @@ import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
 import org.lilie.services.eliot.tice.annuaire.Personne
+import grails.plugins.springsecurity.SpringSecurityService
 
 /**
  *
@@ -42,6 +43,8 @@ class LilieUtilisateurService implements UtilisateurService {
 
   static transactional = false
   static final int LONGUEUR_PREFIXE_LOGIN = 2
+
+  SpringSecurityService springSecurityService
 
   /**
    * Creer un nouvel utilisateur
@@ -76,20 +79,14 @@ class LilieUtilisateurService implements UtilisateurService {
     // il faut donc parser...
     // on considere que la declaration CD, AL,... est OK puisque CAS est passé
     if (!login) {
-      throw new IllegalStateException(
-              "annuaire.login_null_ou_vide")
+      return null
     }
     def idExterne = login.substring(LONGUEUR_PREFIXE_LOGIN)
-    def autorite = DomainAutorite.findByIdentifiantAndType(idExterne,TypeAutorite.PERSONNE)
-    if (autorite == null) {
-      throw new IllegalStateException(
-                    "annuaire.no_user_avec_login : ${login}")
+    def autorite = DomainAutorite.findByIdentifiantAndType(idExterne,TypeAutorite.PERSONNE.libelle)
+    if (!autorite) {
+      return null
     }
-    Date now = new Date() ;
-    if (now.after(autorite.dateDesactivation)) {
-      throw new IllegalStateException(
-                          "annuaire.user_no_more_activ : ${login}")
-    }
+
     Personne personne = Personne.findByAutorite(autorite)
     if (personne == null) {
       throw new IllegalStateException(
@@ -164,20 +161,24 @@ class LilieUtilisateurService implements UtilisateurService {
      * @param compteUtilisateur le compte utilisateur
      * @return l'utilisateur
      */
-    private Utilisateur utilisateurForPersonne(String login,Personne personne) {
+    private Utilisateur utilisateurForLoginAndPersonne(String login,Personne personne) {
       // creer l'utilisateur à retourner
 
       DomainAutorite autorite = personne.autorite
+      // le login est le password : utilisee uniquement quand CAS n'est pas actif
+      // en mode Lilie quand on est en mode non CAS
+      String encodedPassword = springSecurityService.encodePassword(
+                  login, login)
 
       Utilisateur utilisateur = new Utilisateur(
               login: login,
               loginAlias: null,
-              password: null,
+              password: encodedPassword,
               dateDerniereConnexion: null,
               compteActive: true,
               compteExpire: false,
               compteVerrouille: false,
-              passwordExpire: null,
+              passwordExpire: false,
               compteUtilisateurId: null,
               nom: personne.nom,
               prenom: personne.prenom,

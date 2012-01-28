@@ -96,7 +96,9 @@ environments {
   demo {
     grails.serverURL = "http://www.ticetime.com/${appName}"
   }
-
+  testlilie {
+    grails.serverURL = "http://localhost:8080/${appName}"
+  }
 }
 
 // log4j configuration
@@ -242,6 +244,7 @@ environments {
                     'IS_AUTHENTICATED_REMEMBERED'
             ]
     ]
+
   }
   test {
     grails.plugins.springsecurity.interceptUrlMap = [
@@ -279,6 +282,49 @@ environments {
             ]
     ]
   }
+  testlilie {
+    grails.plugins.springsecurity.interceptUrlMap = [
+            '/': [
+                    'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/sujet/**': [
+                    "${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
+                    "${FonctionEnum.CTR.toRole()}",
+                    "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/question/**': [
+                    "${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
+                    "${FonctionEnum.CTR.toRole()}",
+                    "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/seance/**': [
+                    "${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
+                    "${FonctionEnum.CTR.toRole()}",
+                    "${FonctionEnum.DIR.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/activite/**': [
+                    "${FonctionEnum.ELEVE.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
+            ],
+            '/resultats/**': [
+                    "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+                    'IS_AUTHENTICATED_REMEMBERED'
+            ]
+    ]
+    // cas is not activated by default
+    grails.plugins.springsecurity.cas.active = true
+    grails.plugins.springsecurity.cas.loginUri = '/login'
+    grails.plugins.springsecurity.cas.serviceUrl = "http://localhost:8080/${appName}/j_spring_cas_security_check"
+    grails.plugins.springsecurity.cas.serverUrlPrefix = 'http://localhost:8181/cas-server-webapp-3.4.11'
+    grails.plugins.springsecurity.cas.proxyCallbackUrl = "http://localhost:8080/${appName}/secure/receptor"
+    grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
+  }
 }
 
 
@@ -300,6 +346,8 @@ environments {
             ]
     ]
     eliot.portail.news = [
+            "Environnement DEVELOPPEMENT",
+            "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
             "Login / mot de passe enseignant : ens1 / ens1",
             "Login / mot de passe élève 1 : elv1 / elv1",
             "Login / mot de passe élève 2 : elv2 / elv2",
@@ -323,12 +371,35 @@ environments {
             ]
     ]
     eliot.portail.news = [
-            "Le projet est disponible sur Github !",
+            "Environnement DEMO",
+            "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
             "Login / mot de passe enseignant : ens1 / ens1",
             "Login / mot de passe élève 1 : elv1 / elv1",
             "Login / mot de passe élève 2 : elv2 / elv2",
             "Login / mot de passe parent 1 : resp1 / resp1"
     ]
+  }
+  testlilie {
+    // configuration de la racine de l'espace de fichier
+    eliot.fichiers.racine = '/Users/Shared/eliot-root'
+    eliot.fichiers.maxsize.mega = 10
+    // configuration des liens du menu portail et des annonces portail
+    eliot.portail.menu.affichage = true
+    eliot.portail.menu.liens = [
+            [
+                    url: "http://wwww.ticetime.com",
+                    libelle: "ticetime"
+            ],
+            [
+                    url: "https://github.com/ticetime/eliot-tdbase/wiki",
+                    libelle: "eliot-tdbase sur Github"
+            ]
+    ]
+    eliot.portail.news = [
+            "Environnement TESTLILIE",
+            "Login / mot de passe : voir base de test eliot/lilie"
+    ]
+    eliot.portail.lilie = true
   }
 }
 
