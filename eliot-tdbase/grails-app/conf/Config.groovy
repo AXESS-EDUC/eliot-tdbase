@@ -29,17 +29,23 @@ import org.lilie.services.eliot.tice.scolarite.FonctionEnum
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-// locations to search for config files that get merged into the main config
-// config files can either be Java properties files or ConfigSlurper scripts
+/**
+ * Chargement des configurations externalisées
+ */
+grails.config.locations = []
 
-// grails.config.locations = [ "classpath:${appName}-config.properties",
-//                             "classpath:${appName}-config.groovy",
-//                             "file:${userHome}/.grails/${appName}-config.properties",
-//                             "file:${userHome}/.grails/${appName}-config.groovy"]
+// Fichier de configuration externe commun à toutes les applications Eliot
+def eliotcommonsConfigLocation = System.properties["eliot-commons.config.location"]
+if (eliotcommonsConfigLocation) {
+  grails.config.locations << ("file:" + eliotcommonsConfigLocation)
+}
 
-// if(System.properties["${appName}.config.location"]) {
-//    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
-// }
+// Fichier de configuration externe propre à l'application
+def appConfigLocation = System.properties["${appName}.config.location"]
+if (appConfigLocation) {
+  grails.config.locations << "file:" + appConfigLocation
+}
+
 
 grails.project.groupId = "org.lilie.services.eliot" // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
