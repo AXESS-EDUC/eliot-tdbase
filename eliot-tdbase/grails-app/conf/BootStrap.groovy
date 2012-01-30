@@ -36,17 +36,16 @@ class BootStrap {
 
   def init = { servletContext ->
 
+    if (servletContext.grailsApplication.config.eliot.migration.bootstrap)  {
+      dbMigrationService.updateDb()
+    }
+
     environments {
       demo {
-        dbMigrationService.updateDb()
         bootstrapService.bootstrapForDemo()
       }
       development {
-        dbMigrationService.updateDb()
         bootstrapService.bootstrapForDevelopment()
-      }
-      testlilie {
-        dbMigrationService.updateDb()
       }
     }
 

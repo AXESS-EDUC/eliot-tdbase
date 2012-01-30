@@ -336,6 +336,8 @@ environments {
 
 environments {
   development {
+    // application de la migration  (définie par eliot-tice-dbmigration)
+    eliot.migration.bootstrap = true
     // configuration de la racine de l'espace de fichier
     eliot.fichiers.racine = '/Users/Shared/eliot-root'
     eliot.fichiers.maxsize.mega = 10
@@ -361,6 +363,8 @@ environments {
     ]
   }
   demo {
+    // application de la migration  (définie par eliot-tice-dbmigration)
+    eliot.migration.bootstrap = true
     // configuration de la racine de l'espace de fichier
     eliot.fichiers.racine = '/usr/share/eliot-root'
     eliot.fichiers.maxsize.mega = 10
@@ -386,6 +390,8 @@ environments {
     ]
   }
   testlilie {
+    // application de la migration  (définie par eliot-tice-dbmigration)
+    eliot.migration.bootstrap = true
     // configuration de la racine de l'espace de fichier
     eliot.fichiers.racine = '/Users/Shared/eliot-root'
     eliot.fichiers.maxsize.mega = 10
