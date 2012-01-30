@@ -39,11 +39,14 @@ class BootStrap {
     environments {
       demo {
         dbMigrationService.updateDb()
-        bootstrapService.bootstrapForDevelopment()
+        bootstrapService.bootstrapForDemo()
       }
       development {
         dbMigrationService.updateDb()
         bootstrapService.bootstrapForDevelopment()
+      }
+      testlilie {
+        dbMigrationService.updateDb()
       }
     }
 

@@ -39,7 +39,7 @@ import org.lilie.services.eliot.tice.securite.DomainAutorite
  * @author franck Silvestre
  */
 @ToString(includeNames = true, includeFields=true)
-@EqualsAndHashCode(excludes = 'dateDerniereConnexion compteActive compteExpire compteVerrouille passwordExpire' )
+@EqualsAndHashCode(excludes = 'compteUtilisateurId dateDerniereConnexion compteActive compteExpire compteVerrouille passwordExpire' )
 class Utilisateur {
 
   // information compte utilisateur

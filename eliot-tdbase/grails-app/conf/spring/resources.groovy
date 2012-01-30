@@ -32,15 +32,15 @@ import org.lilie.services.eliot.tice.utils.LiquibaseWrapper
 
 beans = {
 
-  // bean orientés sécurité
   userDetailsService(EliotTiceUserDetailsService) {
     utilisateurService = ref("utilisateurService")
     roleUtilisateurService = ref("roleUtilisateurService")
   }
 
+  // bean orientés sécurité
+
   //bean orientés gestion des formulaires
   customPropertyEditorRegistrar(EliotEditeurRegistrar)
-
 
   // beans pour la migration des données
   liquibase(LiquibaseWrapper) {

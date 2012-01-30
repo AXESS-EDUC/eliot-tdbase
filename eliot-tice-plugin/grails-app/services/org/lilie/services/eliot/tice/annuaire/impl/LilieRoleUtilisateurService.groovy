@@ -33,49 +33,59 @@ package org.lilie.services.eliot.tice.annuaire.impl
 import org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.springframework.security.core.GrantedAuthority
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.springframework.security.core.authority.GrantedAuthorityImpl
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 class LilieRoleUtilisateurService implements RoleUtilisateurService {
 
+  public static final String ROLE_EN_ACTIVITE = "ROLE_EN_ACTIVITE"
+  ProfilScolariteService profilScolariteService
+
   /**
-     *
-     * @see org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
-     */
-    List<GrantedAuthority> findRolesForUtilisateur(Utilisateur utilisateur) {
-      String login = utilisateur.login
-      def roles = []
-      def iterator = RoleFromLoginPrefix.values().iterator()
-      while (iterator.hasNext()) {
-        RoleFromLoginPrefix roleFromLoginPrefix = iterator.next()
-        if (login.startsWith(roleFromLoginPrefix)) {
-          roles << roleFromLoginPrefix
-
-        }
+   *
+   * @see org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
+   */
+  List<GrantedAuthority> findRolesForUtilisateur(Utilisateur utilisateur) {
+    String login = utilisateur.login
+    def roles = []
+    def iterator = RoleFromLoginPrefix.values().iterator()
+    while (iterator.hasNext()) {
+      RoleFromLoginPrefix roleFromLoginPrefix = iterator.next()
+      if (login.startsWith(roleFromLoginPrefix.prefix)) {
+        roles << roleFromLoginPrefix
+        break
       }
-
     }
+    roles += profilScolariteService.findFonctionsForPersonne(utilisateur.personne)
+    if (utilisateur.autorite.estActive) {
+      roles += new GrantedAuthorityImpl(ROLE_EN_ACTIVITE)
+    }
+    return roles
+  }
 
 }
 
-
-enum RoleFromLoginPrefix implements GrantedAuthority{
-  // todofsil : reprendre tranquillement architecture propre
+/**
+ * Représente un rôle déduit du préfixe du login renvoyé par CAS
+ */
+enum RoleFromLoginPrefix implements GrantedAuthority {
   // le CAS retourne UTnnnnnnn ALnnnnnnnn ...
-//  public static final String TYPE_UTILISATEUR_NORMAL = "UT";
-//      /** Type de l'utilisateur connecté : administrateur local */
-//      public static final String TYPE_UTILISATEUR_ADMIN_LOCAL = "AL";
-//      /** Type de l'utilisateur connecté : administrateur de la console d'admin */
-//      public static final String TYPE_UTILISATEUR_ADMIN_CONSOLE_ADMIN = "SA";
-//      /** Type de l'utilisateur connecté : administrateur de la console d'admin */
-//      public static final String TYPE_UTILISATEUR_CORRESPONDANT = "CD";
+  // Extrait code CAS de Lilie
+  //  public static final String TYPE_UTILISATEUR_NORMAL = "UT";
+  //      /** Type de l'utilisateur connecté : administrateur local */
+  //      public static final String TYPE_UTILISATEUR_ADMIN_LOCAL = "AL";
+  //      /** Type de l'utilisateur connecté : administrateur de la console d'admin */
+  //      public static final String TYPE_UTILISATEUR_ADMIN_CONSOLE_ADMIN = "SA";
+  //      /** Type de l'utilisateur connecté : administrateur de la console d'admin */
+  //      public static final String TYPE_UTILISATEUR_CORRESPONDANT = "CD";
 
 
-  ADMIN_LOCAL("admin."),
-  ADMIN_CENTRAL("admincentral."),
-  CORRESPONDANT_DEPLOIEMENT("cd.")
+  ADMIN_LOCAL("AL"),
+  CORRESPONDANT_DEPLOIEMENT("CD")
 
   private String prefix
 
