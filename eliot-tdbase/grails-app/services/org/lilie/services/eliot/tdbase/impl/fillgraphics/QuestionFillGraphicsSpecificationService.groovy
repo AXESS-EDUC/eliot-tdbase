@@ -31,6 +31,7 @@ import grails.validation.Validateable
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
+import org.lilie.services.eliot.tice.Attachement
 
 /**
  * Service des specifications de questions de type graphique à compléter. 
@@ -121,8 +122,20 @@ class FillGraphicsSpecification implements QuestionSpecification {
     [
             libelle: libelle,
             correction: correction,
+            attachmentId: attachmentId,
             textZones: textZones.collect {it.toMap()}
     ]
+  }
+
+  /**
+   * Retourne l'attachement correspondant
+   * @return l'attachement
+   */
+  Attachement getAttachement() {
+    if (attachmentId) {
+      return QuestionAttachement.get(attachmentId).attachement
+    }
+    null
   }
 
   /**
@@ -130,7 +143,6 @@ class FillGraphicsSpecification implements QuestionSpecification {
    */
   static constraints = {
     libelle blank: false
-    textZones minSize: 1
   }
 }
 

@@ -35,7 +35,7 @@ import org.lilie.services.eliot.tdbase.impl.fillgraphics.TextZone
 /**
  * Controlleur pour questions de type graphique à complèter.
  */
-class QuestionFillgraphicsController extends QuestionController {
+class QuestionFillGraphicsController extends QuestionController {
 
   @Override
   def getSpecificationObjectFromParams(Map params) {
