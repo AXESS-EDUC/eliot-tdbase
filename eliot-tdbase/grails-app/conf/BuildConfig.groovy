@@ -37,6 +37,13 @@ grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
 
 grails.project.war.file = "target/${appName}.war"
 
+// This closure is passed the location of the staging directory that
+// is zipped up to make the WAR file, and the command line arguments.
+grails.war.resources = { stagingDir, args ->
+    copy(file: "src/templates/eliot-tdbase-config.groovy",
+         tofile: "${stagingDir}/WEB-INF/classes/eliot-tdbase-config.groovy")
+}
+
 grails.project.dependency.resolution = {
   // inherit Grails' default dependencies
   inherits("global") {
@@ -64,6 +71,7 @@ grails.project.dependency.resolution = {
     compile ":jquery-ui:1.8.15"
     compile ":resources:1.1.1"
 
+
     //compile ":spring-security-cas:1.0.2"
     
 
@@ -72,6 +80,7 @@ grails.project.dependency.resolution = {
       excludes "groovy-all"
     }
 
-    build ":tomcat:$grailsVersion"
+    build(":tomcat:$grailsVersion",
+          ":release:1.0.0")
   }
 }

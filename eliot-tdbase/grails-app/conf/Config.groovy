@@ -32,7 +32,7 @@ import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 /**
  * Chargement des configurations externalisées
  */
-grails.config.locations = []
+grails.config.locations = ["classpath:${appName}-config.groovy"]
 
 // Fichier de configuration externe commun à toutes les applications Eliot
 def eliotcommonsConfigLocation = System.properties["eliot-commons.config.location"]
@@ -90,9 +90,6 @@ grails.exceptionresolver.params.exclude = ['password']
 
 // set per-environment serverURL stem for creating absolute links
 environments {
-  production {
-    grails.serverURL = "http://www.changeme.com"
-  }
   development {
     grails.serverURL = "http://localhost:8080/${appName}"
   }
@@ -133,9 +130,6 @@ log4j = {
 
 grails.controllers.defaultScope = "session"
 
-grails.plugin.databasemigration.changelogFileName = "changelog.xml"
-grails.plugin.databasemigration.updateOnStart = false
-grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.xml']
 
 grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
@@ -336,8 +330,10 @@ environments {
 
 environments {
   development {
-    // application de la migration  (définie par eliot-tice-dbmigration)
-    eliot.migration.bootstrap = true
+    // application de la migration  définie dans eliot-tice-dbmigration
+    eliot.bootstrap.migration = true
+    // creation d'un jeu de test
+    eliot.bootstrap.jeudetest = true
     // configuration de la racine de l'espace de fichier
     eliot.fichiers.racine = '/Users/Shared/eliot-root'
     eliot.fichiers.maxsize.mega = 10
@@ -363,8 +359,10 @@ environments {
     ]
   }
   demo {
-    // application de la migration  (définie par eliot-tice-dbmigration)
-    eliot.migration.bootstrap = true
+    // application de la migration  définie dans eliot-tice-dbmigration
+    eliot.bootstrap.migration = true
+        // creation d'un jeu de test
+    eliot.bootstrap.jeudetest = true
     // configuration de la racine de l'espace de fichier
     eliot.fichiers.racine = '/usr/share/eliot-root'
     eliot.fichiers.maxsize.mega = 10
@@ -390,8 +388,9 @@ environments {
     ]
   }
   testlilie {
-    // application de la migration  (définie par eliot-tice-dbmigration)
-    eliot.migration.bootstrap = true
+    // application de la migration  définie dans eliot-tice-dbmigration
+    eliot.bootstrap.migration = true
+
     // configuration de la racine de l'espace de fichier
     eliot.fichiers.racine = '/Users/Shared/eliot-root'
     eliot.fichiers.maxsize.mega = 10
@@ -411,6 +410,8 @@ environments {
             "Environnement TESTLILIE",
             "Login / mot de passe : voir base de test eliot/lilie"
     ]
+
+    // determine si eliot-tdbase doit s'executer en mode intégration Lilie
     eliot.portail.lilie = true
   }
 }

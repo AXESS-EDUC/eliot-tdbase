@@ -95,9 +95,9 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
 
   void testFindUtilisateur() {
 
-    shouldFail {
-      defaultUtilisateurService.findUtilisateur("")
-    }
+    
+    assertNull(defaultUtilisateurService.findUtilisateur(""))
+
 
     Utilisateur utilisateur1 = defaultUtilisateurService.createUtilisateur(
             UTILISATEUR_1_LOGIN,
