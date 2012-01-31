@@ -32,6 +32,9 @@ import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 /**
  * Chargement des configurations externalisées
  */
+
+// Fichier charge si present dans le classpath : utile pour déploiement
+// d'une application de démonstration après téléchargement
 grails.config.locations = ["classpath:${appName}-config.groovy"]
 
 // Fichier de configuration externe commun à toutes les applications Eliot
@@ -96,9 +99,6 @@ environments {
   test {
     grails.serverURL = "http://localhost:8080/${appName}"
   }
-  demo {
-    grails.serverURL = "http://www.ticetime.com/${appName}"
-  }
   testlilie {
     grails.serverURL = "http://localhost:8080/${appName}"
   }
@@ -135,197 +135,43 @@ grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 
-// set per-environment security rbac
-environments {
-  production {
-    grails.plugins.springsecurity.interceptUrlMap = [
-            '/': [
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/sujet/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/question/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/seance/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/activite/**': [
-                    "${FonctionEnum.ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/resultats/**': [
-                    "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
-            ]
-    ]
-  }
-  demo {
-    grails.plugins.springsecurity.interceptUrlMap = [
-            '/': [
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/sujet/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/question/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/seance/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/activite/**': [
-                    "${FonctionEnum.ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/resultats/**': [
-                    "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'
-            ]
-    ]
-  }
-  development {
-    grails.plugins.springsecurity.interceptUrlMap = [
-            '/': [
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/sujet/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/question/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/seance/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/activite/**': [
-                    "${FonctionEnum.ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/resultats/**': [
-                    "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ]
-    ]
+// set security rbac
+//
+grails.plugins.springsecurity.interceptUrlMap = [
+        '/': [
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/sujet/**': [
+                "${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
+                "${FonctionEnum.CTR.toRole()}",
+                "${FonctionEnum.DIR.toRole()}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/question/**': [
+                "${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
+                "${FonctionEnum.CTR.toRole()}",
+                "${FonctionEnum.DIR.toRole()}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/seance/**': [
+                "${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
+                "${FonctionEnum.CTR.toRole()}",
+                "${FonctionEnum.DIR.toRole()}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/activite/**': [
+                "${FonctionEnum.ELEVE.toRole()}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/resultats/**': [
+                "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+                'IS_AUTHENTICATED_FULLY'
+        ]
+]
 
-  }
-  test {
-    grails.plugins.springsecurity.interceptUrlMap = [
-            '/': [
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/sujet/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/question/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/seance/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/activite/**': [
-                    "${FonctionEnum.ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/resultats/**': [
-                    "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ]
-    ]
-  }
-  testlilie {
-    grails.plugins.springsecurity.interceptUrlMap = [
-            '/': [
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/sujet/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/question/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/seance/**': [
-                    "${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    "${FonctionEnum.CTR.toRole()}",
-                    "${FonctionEnum.DIR.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/activite/**': [
-                    "${FonctionEnum.ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ],
-            '/resultats/**': [
-                    "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_REMEMBERED'
-            ]
-    ]
-    // cas is not activated by default
-    grails.plugins.springsecurity.cas.active = true
-    grails.plugins.springsecurity.cas.loginUri = '/login'
-    grails.plugins.springsecurity.cas.serviceUrl = "http://localhost:8080/${appName}/j_spring_cas_security_check"
-    grails.plugins.springsecurity.cas.serverUrlPrefix = 'http://localhost:8181/cas-server-webapp-3.4.11'
-    grails.plugins.springsecurity.cas.proxyCallbackUrl = "http://localhost:8080/${appName}/secure/receptor"
-    grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
-  }
-}
 
 
 environments {
@@ -358,36 +204,17 @@ environments {
             "Login / mot de passe parent 1 : resp1 / resp1"
     ]
   }
-  demo {
-    // application de la migration  définie dans eliot-tice-dbmigration
-    eliot.bootstrap.migration = true
-        // creation d'un jeu de test
-    eliot.bootstrap.jeudetest = true
-    // configuration de la racine de l'espace de fichier
-    eliot.fichiers.racine = '/usr/share/eliot-root'
-    eliot.fichiers.maxsize.mega = 10
-    // configuration des liens du menu portail et des annonces portail
-    eliot.portail.menu.affichage = true
-    eliot.portail.menu.liens = [
-            [
-                    url: "http://wwww.ticetime.com",
-                    libelle: "ticetime"
-            ],
-            [
-                    url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                    libelle: "eliot-tdbase sur Github"
-            ]
-    ]
-    eliot.portail.news = [
-            "Environnement DEMO",
-            "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
-            "Login / mot de passe enseignant : ens1 / ens1",
-            "Login / mot de passe élève 1 : elv1 / elv1",
-            "Login / mot de passe élève 2 : elv2 / elv2",
-            "Login / mot de passe parent 1 : resp1 / resp1"
-    ]
-  }
   testlilie {
+    // determine si eliot-tdbase doit s'executer en mode intégration Lilie
+    eliot.portail.lilie = true
+    // cas is not activated by default
+    grails.plugins.springsecurity.cas.active = true
+    grails.plugins.springsecurity.cas.loginUri = '/login'
+    grails.plugins.springsecurity.cas.serviceUrl = "http://localhost:8080/${appName}/j_spring_cas_security_check"
+    grails.plugins.springsecurity.cas.serverUrlPrefix = 'http://localhost:8181/cas-server-webapp-3.4.11'
+    grails.plugins.springsecurity.cas.proxyCallbackUrl = "http://localhost:8080/${appName}/secure/receptor"
+    grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
+
     // application de la migration  définie dans eliot-tice-dbmigration
     eliot.bootstrap.migration = true
 
@@ -410,9 +237,6 @@ environments {
             "Environnement TESTLILIE",
             "Login / mot de passe : voir base de test eliot/lilie"
     ]
-
-    // determine si eliot-tdbase doit s'executer en mode intégration Lilie
-    eliot.portail.lilie = true
   }
 }
 
