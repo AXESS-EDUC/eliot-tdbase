@@ -58,7 +58,7 @@ Correction: ${specifobject.correction}
       <g:if test="${icon.attachment}">
         <li class="icon" id="icon_correction_${indexReponse}_${icon.id}">
           <et:viewAttachement attachement="${icon.attachment}"
-                              class="iconImage"/>
+                              width="40" height="40"/>
           <span class="zoneLabel"><br>avec Zone</span>
           <span
                   class="hotspotSelector">${specifobject.graphicMatches[icon.id]}</span>

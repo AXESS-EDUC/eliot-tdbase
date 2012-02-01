@@ -1042,17 +1042,17 @@
         </comment>
         <addColumn tableName="sujet" schemaName="td">
             <column name="date_created"
-                    type="timestamp without time zone"></column>
+                    type="timestamp without time zone"/>
             <column name="last_updated"
-                    type="timestamp without time zone"></column>
+                    type="timestamp without time zone"/>
             <column name="sujet_derniere_version_id" type="bigint"/>
         </addColumn>
 
         <addColumn tableName="question" schemaName="td">
             <column name="date_created"
-                    type="timestamp without time zone"></column>
+                    type="timestamp without time zone"/>
             <column name="last_updated"
-                    type="timestamp without time zone"></column>
+                    type="timestamp without time zone"/>
             <column name="question_derniere_version_id" type="bigint"/>
         </addColumn>
 
@@ -1084,12 +1084,12 @@
 
         <createIndex tableName="sujet" schemaName="td"
                      indexName="idx_sujet_sujet_derniere_version_id">
-            <column name="sujet_derniere_version_id"></column>
+            <column name="sujet_derniere_version_id"/>
         </createIndex>
 
         <createIndex tableName="question" schemaName="td"
                      indexName="idx_question_question_derniere_version_id">
-            <column name="question_derniere_version_id"></column>
+            <column name="question_derniere_version_id"/>
         </createIndex>
 
     </changeSet>
@@ -1464,6 +1464,16 @@
                     schemaName="td"/>
         <addColumn tableName="sujet" schemaName="td">
             <column name="paternite" type="text"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="35" author="bpoller">
+        <comment>Ajout des colonnes hauteur et largeur dans table attachement
+        </comment>
+        <addColumn tableName="attachement"
+                   schemaName="tice">
+            <column name="dimension_hauteur" type="BIGINT"/>
+            <column name="dimension_largeur" type="BIGINT"/>
         </addColumn>
     </changeSet>
 

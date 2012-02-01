@@ -52,7 +52,7 @@ ${specifobject.libelle}
       <g:if test="${icon.attachment}">
         <li class="icon">
           <et:viewAttachement attachement="${icon.attachment}"
-                              class="iconImage"/>
+                              width="40" height="40"/>
           <br>
           avec Zone ${specifobject.graphicMatches[icon.id]}
         </li>
