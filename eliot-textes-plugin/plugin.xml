@@ -1,4 +1,4 @@
-<plugin name='eliot-textes-plugin' version='0.4a-SNAPSHOT' grailsVersion='2.0.0.RC1 &gt; *'>
+<plugin name='eliot-textes-plugin' version='0.4a-SNAPSHOT' grailsVersion='2.0.0 &gt; *'>
   <author>Franck Silvestre - Fylab</author>
   <title>Eliot Textes  Plugin</title>
   <description>Plugin contenant les services métiers relatifs au cahier de textes"
@@ -24,6 +24,38 @@
     <resource>org.lilie.services.eliot.tice.textes.TypeActivite</resource>
     <resource>org.lilie.services.eliot.tice.textes.Visa</resource>
   </resources>
-  <dependencies />
+  <repositories>
+    <repository name='grailsCentral' url='http://plugins.grails.org' />
+    <repository name='http://repo.grails.org/grails/plugins' url='http://repo.grails.org/grails/plugins/' />
+    <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
+    <repository name='grailsCore' url='http://svn.codehaus.org/grails/trunk/grails-plugins' />
+    <repository name='http://www.ticetime.com/nexus/content/repositories/snapshots/' url='http://www.ticetime.com/nexus/content/repositories/snapshots/' />
+    <repository name='http://www.ticetime.com/nexus/content/repositories/releases/' url='http://www.ticetime.com/nexus/content/repositories/releases/' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+  </repositories>
+  <dependencies>
+    <runtime>
+      <dependency group='postgresql' name='postgresql' version='8.4-702.jdbc4' />
+    </runtime>
+  </dependencies>
+  <plugins>
+    <compile>
+      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
+      <plugin group='org.grails.plugins' name='resources' version='1.1.1' />
+      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.0.0' />
+      <plugin group='org.grails.plugins' name='jquery' version='1.6.1.1' />
+      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
+    </compile>
+    <runtime>
+      <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
+      <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
+    </runtime>
+    <build>
+      <plugin group='org.grails.plugins' name='release' version='1.0.0' />
+      <plugin group='org.grails.plugins' name='tomcat' version='2.0.0' />
+    </build>
+  </plugins>
+  <runtimePluginRequirements />
   <behavior />
 </plugin>

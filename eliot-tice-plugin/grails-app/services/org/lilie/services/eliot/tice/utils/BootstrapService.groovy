@@ -82,27 +82,11 @@ class BootstrapService {
 
   private List<ProprietesScolarite> proprietesScolariteListUtilisateur1 = []
 
-  /**
-   * Initialise l'application au lancement en mode développement
-   */
-  def bootstrapForDevelopment() {
-    if (Environment.current == Environment.DEVELOPMENT) {
-      bootstrapDevDemo()
-    }
-
-  }
 
   /**
-   * Initialise l'application au lancement en mode développement
+   * Initialise l'application au lancement avec un jeu de test
    */
-  def bootstrapForDemo() {
-    if (Environment.current.name == DEMO_ENVIRONMENT) {
-      bootstrapDevDemo()
-    }
-
-  }
-
-  private bootstrapDevDemo() {
+  def bootstrapJeuDeTestDevDemo() {
     initialiseEtablissementsEnvDevelopmentTest()
     initialiseMatieresEnvDevelopmentTest()
     initialiseNiveauxEnvDevelopmentTest()
