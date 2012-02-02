@@ -38,7 +38,8 @@
 </g:if>
 
 <g:each status="i" in="${specifobject.textZones}" var="textZone">
-  <div id="textZone_${i}" class="textZone" style="z-index: 1; position: absolute; top: 30; left: 30;">
+  <div id="textZone_${i}" class="textZone"
+       style="z-index: 1; position: absolute; top: 30; left: 30;">
     <div>
       <g:submitToRemote id="${i}"
                         name="textZoneSupressButton"
@@ -50,7 +51,8 @@
     </div>
 
     <div>
-      <g:textField name="text" value="tititototo"/>
+      <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="10"
+                  value="${textZone.text}"/>
     </div>
 
     <g:hiddenField class="idField" name="specifobject.textZones[${i}].id"
