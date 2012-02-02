@@ -71,8 +71,8 @@
            style="position: absolute; top: 0; left: 0;">
         <et:viewAttachement
                 attachement="${specifobject.attachement}"
-                maxWidth="500"
-                maxHeight="500"/>
+                width="500"
+                height="500"/>
       </div>
 
       <div style="position: absolute; top: 10px; left: 30px;">

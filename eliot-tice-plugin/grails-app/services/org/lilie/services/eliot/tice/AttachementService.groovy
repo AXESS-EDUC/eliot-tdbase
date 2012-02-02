@@ -30,6 +30,9 @@
 
 package org.lilie.services.eliot.tice
 
+import javax.imageio.ImageIO
+import javax.imageio.ImageReader
+import javax.imageio.stream.FileImageInputStream
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.utils.ServiceEliotEnum
@@ -93,6 +96,7 @@ class AttachementService {
     File fichierDest = new File(cheminDest)
     fichier.transferTo(fichierDest)
     attachement.chemin = cheminRel
+    attachement.dimension = determinerDimension(fichierDest)
     attachement.save()
     return attachement
   }
@@ -111,4 +115,31 @@ class AttachementService {
     new File(chemin)
   }
 
+  /**
+   * Determine les dimensions d'un image.
+   * @param imageFile objet du fichier de l'image à analyser
+   * @param fileName non d'origine du fichier.
+   * @return les dimensions du fichier.
+   */
+  private Dimension determinerDimension(File imageFile) {
+
+    ImageReader reader
+
+    try {
+      def fileInputStream = new FileImageInputStream(imageFile)
+      def imageReaders = ImageIO.getImageReaders(fileInputStream)
+
+      if (imageReaders.hasNext()) {
+        reader = imageReaders.next()
+        reader.input = fileInputStream
+        return new Dimension(
+                largeur: reader.getWidth(reader.minIndex),
+                hauteur: reader.getHeight(reader.minIndex)
+        )
+      }
+
+    } finally {
+      reader?.dispose()
+    }
+  }
 }
