@@ -27,3 +27,9 @@
 ehthumbs.db
 Icon?
 Thumbs.db
+
+eliot-tdbase.esproj/Project.espressostorage
+
+eliot-tdbase.esproj/user.ssigur.espressostorage
+
+.gitignore
