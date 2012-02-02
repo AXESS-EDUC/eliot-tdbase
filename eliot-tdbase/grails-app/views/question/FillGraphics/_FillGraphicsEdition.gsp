@@ -25,8 +25,6 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-%{--<r:require module="fillGraphics_EditionJS"/>--}%
 <r:script> $("form").attr('enctype', 'multipart/form-data');</r:script>
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
@@ -38,6 +36,7 @@
                  size="75"/>
   </td>
 </tr>
+
 <tr>
   <td class="label">R&eacute;ponse:</td>
   <td>
@@ -57,32 +56,22 @@
                         value="Ajouter Zone de texte"
                         action="ajouteTextZone"
                         controller="questionFillGraphics"
-                        update="textZones"/>
+                        update="fillgraphicsEditor"/>
     </g:if>
   </td>
 </tr>
+
 <tr>
   <td></td>
   <td>
+
     <div id="fillgraphicsEditor"
          style="position: relative; width: 500px; height: 500px;">
-
-      <div id="imageContainer"
-           style="position: absolute; top: 0; left: 0;">
-        <et:viewAttachement
-                attachement="${specifobject.attachement}"
-                width="500"
-                height="500"/>
-      </div>
-
-      <div style="position: absolute; top: 10px; left: 30px;">
-        Hello Bello
-      </div>
-
-      %{--  <g:render
-     template="/question/Fillgraphics/FillGraphicsReponses"
-     model="[specifobject: specifobject]"/>--}%
+      <g:render
+              template="/question/FillGraphics/FillGraphicsReponses"
+              model="[specifobject: specifobject]"/>
     </div>
+
   </td>
 </tr>
 <tr>

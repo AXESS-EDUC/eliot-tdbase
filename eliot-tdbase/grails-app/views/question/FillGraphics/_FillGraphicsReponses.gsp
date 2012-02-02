@@ -27,63 +27,36 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-  <div id="hotspot_${i}" class="hotspot">
+<g:if test="${specifobject.attachmentId}">
+  <div id="imageContainer"
+       style="position: absolute; top: 0; left: 0;">
+    <et:viewAttachement
+            attachement="${specifobject.attachement}"
+            width="500"
+            height="500"/>
+  </div>
+</g:if>
 
-    <g:submitToRemote id="${i}"
-                      name="hotspotSupressButton"
-                      title="Supprimer un hotspot"
-                      value="X"
-                      action="supprimeHotspot"
-                      controller="questionGraphicMatch"
-                      update="hotspotsEtIcons"
-                      onComplete="afterHotspotDeleted()"/>
+<g:each status="i" in="${specifobject.textZones}" var="textZone">
+  <div id="textZone_${i}" class="textZone" style="z-index: 1; position: absolute; top: 30; left: 30;">
+    <div>
+      <g:submitToRemote id="${i}"
+                        name="textZoneSupressButton"
+                        title="Supprimer une zone de text"
+                        value="X"
+                        action="supprimeTextZone"
+                        controller="questionFillGraphics"
+                        update="fillgraphicsEditor"/>
+    </div>
 
-    <span class="hotspotLabel">Hotspot: ${hotspot.id}</span>
-    <g:hiddenField class="idField" name="specifobject.hotspots[${i}].id"
-                   value="${hotspot.id}"/>
+    <div>
+      <g:textField name="text" value="tititototo"/>
+    </div>
 
-    <span class="hotspotLabel">Top:</span>
-    <g:textField class="offTop"
-                 name="specifobject.hotspots[${i}].topDistance"
-                 value="${hotspot.topDistance}" size="3"/>
-
-    <span class="hotspotLabel">Left:</span>
-    <g:textField class="offLeft"
-                 name="specifobject.hotspots[${i}].leftDistance"
-                 value="${hotspot.leftDistance}" size="3"/>
+    <g:hiddenField class="idField" name="specifobject.textZones[${i}].id"
+                   value="${textZone.id}"/>
   </div>
 </g:each>
 
-<g:hiddenField name="specifobject.hotspots.size"
-               value="${specifobject.hotspots?.size()}"/>
-
-<ul>
-  <g:each status="i" in="${specifobject.icons}" var="icon">
-    <li class="editIcon">
-      <span>Hotspot ${specifobject.graphicMatches.getAt(icon.id)}:</span>
-
-      <g:if test="${icon.attachmentId}">
-        <et:viewAttachement attachement="${icon.attachment}" width="40" height="40"/>
-      </g:if>
-
-
-      <g:actionSubmit value="upload" action="enregistre" hidden="true"
-                      id="iconUpload${i}"/>
-
-      <input type="file" name="specifobject.icons[${i}].fichier"
-             onchange="$('#iconUpload${i}').trigger('click');"/>
-
-      <g:hiddenField id="graphicMatch_${icon.id}"
-                     name="specifobject.graphicMatches[${icon.id}]"
-                     value="${specifobject.graphicMatches.getAt(icon.id)}"/>
-      <g:hiddenField name="specifobject.icons[${i}].attachmentId"
-                     value="${icon.attachmentId}"/>
-      <g:hiddenField name="specifobject.icons[${i}].id"
-                     value="${icon.id}"/>
-    </li>
-  </g:each>
-</ul>
-
-<g:hiddenField name="specifobject.icons.size"
-               value="${specifobject.icons?.size()}"/>
+<g:hiddenField name="specifobject.textZones.size"
+               value="${specifobject.textZones?.size()}"/>

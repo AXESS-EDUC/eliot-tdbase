@@ -28,10 +28,10 @@
 package org.lilie.services.eliot.tdbase.impl.fillgraphics
 
 import grails.validation.Validateable
+import org.lilie.services.eliot.tice.Attachement
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
-import org.lilie.services.eliot.tice.Attachement
 
 /**
  * Service des specifications de questions de type graphique à compléter. 
@@ -51,7 +51,9 @@ class QuestionFillGraphicsSpecificationService extends QuestionSpecificationServ
   @Transactional
   @Override
   def updateQuestionSpecificationForObject(Question question, FillGraphicsSpecification spec) {
-    question.save()
+
+    super.updateQuestionSpecificationForObject(question, spec)
+
     def oldImageId = question.specificationObject?.attachmentId
     if (spec.fichier && !spec.fichier.empty) {
       def questionAttachement = questionAttachementService.createAttachementForQuestion(
