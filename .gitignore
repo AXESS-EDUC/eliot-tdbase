@@ -33,4 +33,7 @@ Thumbs.db
 ##############################
 
 out
+**/.gradle
+**/build
+**/build.gradle
 eliot-tdbase.esproj
