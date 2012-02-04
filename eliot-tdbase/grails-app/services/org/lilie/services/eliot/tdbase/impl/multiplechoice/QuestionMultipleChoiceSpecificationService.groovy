@@ -40,8 +40,6 @@ import org.lilie.services.eliot.tdbase.QuestionSpecificationService
  */
 class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationService<MultipleChoiceSpecification> {
 
-  // todofsil corriger alogo
-
   @Override
   def createSpecification(map) {
     new MultipleChoiceSpecification(map)
