@@ -44,6 +44,7 @@ class Attachement {
   String nom
   String nomFichierOriginal
   Integer taille
+  Dimension dimension
   String typeMime
   boolean aSupprimer
 
@@ -60,7 +61,9 @@ class Attachement {
     cache(true)
   }
 
-  static transients = ['estUneImageAffichable','estUnTexteAffichable']
+  static transients = ['estUneImageAffichable', 'estUnTexteAffichable']
+
+  static embedded = ['dimension']
 
   boolean estUneImageAffichable() {
     return typeMime in TYPES_MIME_IMG_AFFICHABLE
@@ -70,4 +73,31 @@ class Attachement {
     return typeMime?.startsWith('text/')
   }
 
+  /**
+   * Calcule la dimension rendu en fonction d'une dimension max donnée.
+   * @param dimMax
+   * @return
+   */
+  Dimension calculeDimensionRendu(Dimension dimMax) {
+    def l = dimension.largeur
+    def h = dimension.hauteur
+    def ratio = [l / dimMax.largeur, h / dimMax.hauteur].max()
+
+    if (ratio > 1) {
+      l = (l / ratio as Double).trunc()
+      h = (h / ratio as Double).trunc()
+    }
+    assert (l <= dimMax.largeur && h <= dimMax.hauteur)
+    new Dimension(largeur: l, hauteur: h)
+  }
+
+}
+
+class Dimension {
+  Integer largeur
+  Integer hauteur
+
+  String toString() {
+    "dim    h: $hauteur     l: $largeur"
+  }
 }

@@ -57,24 +57,21 @@ grails.project.dependency.resolution = {
     grailsCentral()
     mavenRepo "http://www.ticetime.com/nexus/content/repositories/snapshots/"
   }
+
+  /**
+   *   specify dependencies here under either 'build', 'compile', 'runtime',
+   *   'test' or 'provided' scopes eg.
+   */
   dependencies {
-    // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
     runtime "postgresql:postgresql:8.4-702.jdbc4"
-
-
   }
 
   plugins {
     compile ":hibernate:$grailsVersion"
-    compile ":jquery:1.6.1.1"
+    compile ":jquery:1.7.1"
     compile ":jquery-ui:1.8.15"
-    compile ":resources:1.1.1"
-
-
+    compile ":resources:1.1.5"
     //compile ":spring-security-cas:1.0.2"
-    
-
     compile ":codenarc:0.15"
     compile(":gmetrics:0.3.1") {
       excludes "groovy-all"

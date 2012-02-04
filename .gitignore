@@ -28,8 +28,9 @@ ehthumbs.db
 Icon?
 Thumbs.db
 
+
 # fichiers propres au projet #
 ##############################
 
 out
-
+eliot-tdbase.esproj
