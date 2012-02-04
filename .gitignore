@@ -36,4 +36,5 @@ out
 **/.gradle
 **/build
 **/build.gradle
+**/specifications
 eliot-tdbase.esproj
