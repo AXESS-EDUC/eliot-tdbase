@@ -33,6 +33,8 @@ Thumbs.db
 ##############################
 
 out
+.idea
+**/*.iml
 **/.gradle
 **/build
 **/target
