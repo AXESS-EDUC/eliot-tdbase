@@ -325,6 +325,26 @@ class QuestionController {
     ]
   }
 
+  def mesItems() {
+    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
+        Personne personne = authenticatedPersonne
+        def questions = questionService.findQuestionsForProprietaire(
+                personne,
+                params
+        )
+        boolean afficheLiensModifier = true
+        def model = [
+                liens: breadcrumpsService.liens,
+                afficheFormulaire: false,
+                questions: questions,
+                afficheLiensModifier: afficheLiensModifier,
+                artefactHelper: artefactAutorisationService,
+                utilisateur: personne
+        ]
+        render(view: "recherche", model:  model)
+  }
+
   /**
    *
    * @param params les paramètres de la requête

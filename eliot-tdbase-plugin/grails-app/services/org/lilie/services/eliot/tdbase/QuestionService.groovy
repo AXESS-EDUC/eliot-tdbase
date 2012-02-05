@@ -302,7 +302,7 @@ class QuestionService implements ApplicationContextAware {
    * @param niveau le niveau
    * @param paginationAndSortingSpec les specifications pour l'ordre et
    * la pagination
-   * @return la liste des sujets
+   * @return la liste des questions
    */
   List<Question> findQuestions(Personne chercheur,
                                String patternTitre,
@@ -355,6 +355,37 @@ class QuestionService implements ApplicationContextAware {
         eq 'proprietaire', chercheur
         eq 'publie', true
       }
+      if (paginationAndSortingSpec) {
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+        if (sortArg) {
+          order "${sortArg}", orderArg
+        }
+
+      }
+    }
+    return questions
+  }
+
+  /**
+   * Recherche de questions d'un proprietaire donné
+   * @param proprietaire la personne effectuant la recherche
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @return la liste des questions
+   */
+  List<Question> findQuestionsForProprietaire(Personne proprietaire,
+                                              Map paginationAndSortingSpec = null) {
+    if (!proprietaire) {
+      throw new IllegalArgumentException("question.recherche.chercheur.null")
+    }
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
+    }
+
+    def criteria = Question.createCriteria()
+    List<Question> questions = criteria.list(paginationAndSortingSpec) {
+      eq 'proprietaire', proprietaire
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
         def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
