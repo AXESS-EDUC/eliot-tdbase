@@ -39,6 +39,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 import static org.lilie.services.eliot.tdbase.QuestionTypeEnum.*
+import org.hibernate.SessionFactory
 
 /**
  * Service de gestion des questions
@@ -224,20 +225,12 @@ class QuestionService implements ApplicationContextAware {
     assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
             supprimeur, laQuestion))
 
-    // supression des réponses
-    Reponse.executeUpdate(" \
-    DELETE FROM Reponse as reponse \
-    where reponse.sujetQuestion = \
-          (select sujetQuestion from \
-           SujetSequenceQuestions as sujetQuestion where \
-           sujetQuestion.question = :question)",
-                          [question: laQuestion])
+    // supression des réponses et des sujetQuestions
+    def sujetQuestions = SujetSequenceQuestions.findAllByQuestion(laQuestion)
+    sujetQuestions.each {
+      sujetService.supprimeQuestionFromSujet(it, supprimeur)
+    }
 
-    // suppression des sujetQuestions
-    SujetSequenceQuestions.executeUpdate(" \
-                DELETE FROM SujetSequenceQuestions as sujetQuest \
-                where sujetQuest.question = :question",
-                                         [question: laQuestion])
 
     // suppression des questions arborescences
     QuestionArborescence.executeUpdate(" \
