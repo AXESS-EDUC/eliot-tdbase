@@ -307,6 +307,22 @@ class CopieService {
     return copies
   }
 
+  /**
+   * Supprime les copies pour une seance d'activité donnée
+   * @param seance  la modalite activite
+   * @param personne la personne déclenchant la suppression
+   */
+  def supprimeCopiesForModaliteActivite(ModaliteActivite seance,
+                                              Personne personne) {
+    assert (seance?.enseignant == personne)
+    def copies = findCopiesForModaliteActivite(seance, personne)
+    copies.each {
+      Reponse.executeUpdate('DELETE FROM Reponse WHERE copie=:copie',
+                            [copie: it])
+      it.delete()
+    }
+  }
+
 }
 
 class ReponseCopie {

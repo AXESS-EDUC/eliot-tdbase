@@ -42,6 +42,7 @@ class ModaliteActiviteService {
 
     static transactional = false
     ProfilScolariteService profilScolariteService
+    CopieService copieService
 
     /**
      * Créé une séance (modaliteActivite)
@@ -151,8 +152,7 @@ class ModaliteActiviteService {
 
         assert (modaliteActivite?.enseignant == personne)
 
-        Copie.executeUpdate('DELETE FROM Copie WHERE modaliteActivite=:modActivite',
-                [modActivite: modaliteActivite])
+        copieService.supprimeCopiesForModaliteActivite(modaliteActivite,personne)
         modaliteActivite.delete()
     }
 
