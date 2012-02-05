@@ -53,9 +53,9 @@
   <div class="portal-tabs">
     <span class="portal-tabs-famille-liens">
       <g:link action="ajouteElement" controller="sujet"
-              id="${sujet.id}">Ajouter un élément</g:link> |
+              id="${sujet.id}">Ajouter un item</g:link> |
       <g:link action="editeProprietes" controller="sujet"
-              id="${sujet.id}">Éditer les propriétés du sujet</g:link> |
+              id="${sujet.id}">Modifier les propriétés du sujet</g:link> |
       <g:link action="teste" controller="sujet" id="${sujet.id}">
         Tester le sujet
       </g:link>
@@ -86,8 +86,8 @@
 <g:else>
   <div class="portal-tabs">
     <span class="portal-tabs-famille-liens">
-      Ajouter un élément |
-      Éditer les propriétés du sujet
+      Ajouter un item |
+      Modifier les propriétés du sujet
     </span>
     <span class="portal-tabs-famille-liens">
       Exporter | Partager
@@ -152,10 +152,10 @@
         <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetQuestion.question)}">
           <li><g:link action="dupliqueDansSujet"
                       controller="question${sujetQuestion.question.type.code}"
-                      id="${sujetQuestion.id}">Modifier&nbsp;(copie)</g:link></li>
+                      id="${sujetQuestion.id}">Dupliquer&nbsp;et&nbsp;modifier</g:link></li>
         </g:if>
         <g:else>
-          <li>Modifier&nbsp;(copie)</li>
+          <li>Dupliquer&nbsp;et&nbsp;modifier</li>
         </g:else>
         <li><hr/></li>
         <li>
@@ -185,13 +185,13 @@
           <g:link action="ajouteElement" controller="sujet"
                   id="${sujet.id}" params="[direction: 'avant',
                   rang: indexQuestion]">
-            Insérer&nbsp;un&nbsp;élément&nbsp;avant
+            Insérer&nbsp;un&nbsp;item&nbsp;avant
           </g:link>
         </li>
         <li>
           <g:link action="ajouteElement" controller="sujet"
                   id="${sujet.id}" params="[rang: indexQuestion]">
-            Insérer&nbsp;un&nbsp;élément&nbsp;après
+            Insérer&nbsp;un&nbsp;item&nbsp;après
           </g:link>
         </li>
         <li><hr/></li>
@@ -206,7 +206,7 @@
              style="margin-right:90%;float: right;">
           <div class="editinplace"
                id="SujetSequenceQuestions-${sujetQuestion.id}"
-               title="Cliquez pour modifier le nombre de points...">
+               title="Cliquez pour modifier le barème...">
             ${NumberUtils.formatFloat(sujetQuestion.points)}
           </div>
           &nbsp;point(s)
