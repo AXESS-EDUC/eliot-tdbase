@@ -34,7 +34,20 @@ function initButtons() {
                            },
                            text:false
                        }).click(function () {
-                                    var currentIdButt = "#menu_actions_" + (this).id;
-                                    $(currentIdButt).toggle();
+                                    var currentIdMenu = "#menu_actions_" + this.id;
+                                    $(currentIdMenu).css("left", this.offsetLeft);
+                                    // calcul de l'offsetTop
+
+                                    var hauteurMenu = $(currentIdMenu).height() ;
+                                    var hauteurBouton =  $(this).height() ;
+                                    var offsetTopDefaut = $(this).offset().top + hauteurBouton;
+                                    if (offsetTopDefaut + hauteurMenu > $(window).height()) {
+                                       var offsetTopCible = offsetTopDefaut - hauteurMenu - hauteurBouton ;
+                                        $(currentIdMenu).css("top", offsetTopCible) ;
+                                    } else {
+                                        $(currentIdMenu).css("top", offsetTopDefaut)
+                                    }
+
+                                    $(currentIdMenu).toggle();
                                 });
 }

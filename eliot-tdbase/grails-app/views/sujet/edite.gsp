@@ -50,50 +50,77 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <g:if test="${sujetEnEdition}">
-  <div class="portal-tabs">
+  <div class="portal-tabs" style="text-align: left">
     <span class="portal-tabs-famille-liens">
       <g:link action="ajouteElement" controller="sujet"
               id="${sujet.id}">Ajouter un item</g:link> |
       <g:link action="editeProprietes" controller="sujet"
-              id="${sujet.id}">Modifier les propriétés du sujet</g:link> |
-      <g:link action="teste" controller="sujet" id="${sujet.id}">
-        Tester le sujet
-      </g:link>
+              id="${sujet.id}">Modifier les propriétés du sujet</g:link>
     </span>
     <span class="portal-tabs-famille-liens">
-      Exporter |
-      <g:if test="${peutPartagerSujet && !sujet.estPartage()}">
-        <g:link action="partage" controller="sujet"
-                id="${sujet.id}">Partager</g:link>
-      </g:if>
-      <g:else>
-        Partager
-      </g:else>
+      <button id="${sujet.id}">Actions</button>
+      <ul id="menu_actions_${sujet.id}"
+          class="tdbase-menu-actions">
+        <li><g:link action="teste" id="${sujet.id}">
+          Tester
+        </g:link>
+        </li>
+        <li><g:link action="ajouteSeance" id="${sujet.id}">
+          Nouvelle&nbsp;séance
+        </g:link>
+        </li>
+        <li><hr/></li>
+        <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
+          <li><g:link action="duplique"
+                      id="${sujet.id}">Dupliquer</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Dupliquer</li>
+        </g:else>
+        <li><hr/></li>
+        <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
+          <li><g:link action="partage"
+                      id="${sujet.id}">Partager</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Partager</li>
+        </g:else>
+        <li><hr/></li>
+        <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
+          <li><g:link action="supprime"
+                      id="${sujet.id}">Supprimer</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Supprimer</li>
+        </g:else>
+      </ul>
     </span>
-
-    <span class="portal-tabs-famille-liens">
-      <g:if test="${peutSupprimerSujet}">
-        <g:link action="supprime" controller="sujet"
-                id="${sujet.id}">Supprimer</g:link>
-      </g:if>
-      <g:else>
-        Supprimer
-      </g:else>
-    </span>
-
   </div>
 </g:if>
 <g:else>
   <div class="portal-tabs">
     <span class="portal-tabs-famille-liens">
       Ajouter un item |
-      Modifier les propriétés du sujet
-    </span>
-    <span class="portal-tabs-famille-liens">
-      Exporter | Partager
-    </span>
-    <span class="portal-tabs-famille-liens">
-      Supprimer
+      Modifier les propriétés du sujet|
+      <button id="${sujet.id}">Actions</button>
+      <ul id="menu_actions_${sujet.id}"
+          class="tdbase-menu-actions">
+        <li><g:link action="teste" id="${sujet.id}">
+          Tester
+        </g:link>
+        </li>
+        <li>
+          Nouvelle&nbsp;séance
+        </li>
+        <li><hr/></li>
+        <li>Dupliquer</li>
+
+        <li><hr/></li>
+        <li>Partager</li>
+
+        <li><hr/></li>
+        <li>Supprimer</li>
+      </ul>
     </span>
   </div>
 </g:else>
