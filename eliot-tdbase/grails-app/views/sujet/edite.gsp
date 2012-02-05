@@ -98,16 +98,15 @@
   </div>
 </g:if>
 <g:else>
-  <div class="portal-tabs">
+  <div class="portal-tabs" style="text-align: left">
     <span class="portal-tabs-famille-liens">
       Ajouter un item |
       Modifier les propriétés du sujet|
-      <button id="${sujet.id}">Actions</button>
-      <ul id="menu_actions_${sujet.id}"
+      <button id="sujet_nouveau">Actions</button>
+      <ul id="menu_actions_sujet_nouveau"
           class="tdbase-menu-actions">
-        <li><g:link action="teste" id="${sujet.id}">
+        <li>
           Tester
-        </g:link>
         </li>
         <li>
           Nouvelle&nbsp;séance

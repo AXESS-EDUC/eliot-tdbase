@@ -43,6 +43,7 @@ class SujetService {
 
   QuestionService questionService
   ArtefactAutorisationService artefactAutorisationService
+  CopieService copieService
 
   /**
    * Créé un sujet
@@ -154,13 +155,18 @@ class SujetService {
   def supprimeSujet(Sujet leSujet, Personne supprimeur) {
     assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
             supprimeur, leSujet))
+    // suppression des copies jetables attachees au sujet
+    copieService.supprimeCopiesJetablesForSujet(leSujet)
+    // suppression des sujetQuestions
     def sujetQuests = SujetSequenceQuestions.where {
       sujet == leSujet
     }
     sujetQuests.deleteAll()
+    // suppression de la publication si necessaire
     if (leSujet.estPartage()) {
       leSujet.publication.delete()
     }
+    // on supprime enfin le sujet
     leSujet.delete()
   }
 
