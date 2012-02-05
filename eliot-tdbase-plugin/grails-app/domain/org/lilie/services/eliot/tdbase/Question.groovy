@@ -53,7 +53,7 @@ class Question implements Artefact {
   int versionQuestion
   String specification
   String specificationNormalise
-  Boolean estAutonome
+  Boolean estAutonome = true
   Boolean publie
 
   String paternite

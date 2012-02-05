@@ -52,6 +52,12 @@
   <r:script>
     $(document).ready(function () {
       $('#menu-item-contributions').addClass('actif');
+      $('#question\\.titre').focus();
+      $("#question\\.titre").blur(function() {
+            if ($("#specifobject\\.libelle").val() == "") {
+              $("#specifobject\\.libelle").val($("#question\\.titre").val());
+            }
+          });
     });
   </r:script>
   <title>TDBase - Edition d'un item</title>
@@ -124,7 +130,7 @@
         <td class="label">Titre:</td>
         <td>
           <input size="75" type="text" value="${question.titre}"
-                 name="titre"/>
+                 name="titre" id="question.titre"/>
         </td>
       </tr>
       <tr>

@@ -90,10 +90,9 @@
             </td>
              <td>
               <g:link action="visualiseCopie" controller="seance"
-                      id="${seance.id}" title="Visualiser la copie"
+                      id="${seance.id}" title="Corriger la copie"
                       params="[max:1,offset:i]">
-                <img src="/eliot-tdbase/images/eliot/magglass-btn.gif"
-                     width="18" height="16"/>
+                Corriger
               </g:link>
             </td>
           </tr>

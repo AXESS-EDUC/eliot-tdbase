@@ -46,12 +46,13 @@ class AttachementTagLib {
                                  controller: 'attachement',
                                  id: attachement.id)
       if (attachement.estUneImageAffichable()) {
+
         out << '<img src="' << link << '"'
-        if (attrs.width) {
-          out << ' width="' << attrs.width << '"'
-        }
-        if (attrs.height) {
-          out << ' height="' << attrs.height << '"'
+        if (attrs.width && attrs.height) {
+          def dimInitial = new Dimension(largeur: attrs.width, hauteur: attrs.height)
+          def dimensionRendu = attachement.calculeDimensionRendu(dimInitial)
+          out << ' width="' << dimensionRendu.largeur << '"'
+          out << ' height="' << dimensionRendu.hauteur << '"'
         }
         if (attrs.id) {
           out << ' id="' << attrs.id << '"'

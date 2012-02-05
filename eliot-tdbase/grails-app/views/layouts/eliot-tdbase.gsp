@@ -50,21 +50,9 @@
     <div class="portal-menu">
       <ul id="portal-hz-menu">
         <li id="menu-item-seances">
-          <a title="Séances">Séances</a>
-          <ul>
-            <li title="Nouvelle">
-              <g:link controller="seance" action="edite"
-                      title="Pour créer une nouvelle séance"
-                      params="[bcInit:true, creation:true]">Nouvelle
-              </g:link>
-            </li>
-            <li title="Liste des séances">
-              <g:link controller="seance" action="liste"
-                      title="Liste des séances"
-                      params="[bcInit:true]">Liste des séances
-              </g:link>
-            </li>
-          </ul>
+          <g:link controller="seance" action="liste"
+                                title="Liste des séances"
+                                params="[bcInit:true]">Séances</g:link>
         </li>
         <li id="menu-item-sujets">
           <a title="Sujets">Sujets</a>
@@ -103,6 +91,11 @@
                       params="[bcInit:true]">Rechercher</g:link>
 
             </li>
+            <li title="Mes items">
+                          <g:link controller="question" action="mesItems"
+                                  title="Mes items"
+                                  params="[bcInit:true]">Mes items</g:link>
+                        </li>
 
           </ul>
         </li>

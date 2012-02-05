@@ -48,7 +48,7 @@
 <g:if test="${sujet}">
   <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
 </g:if>
-
+<g:if test="${afficheFormulaire}">
 <form>
   <div class="portal-form_container">
     <table>
@@ -118,8 +118,7 @@
                     title="Lancer la recherche"/>
   </div>
 </form>
-
-
+</g:if>
 <g:if test="${questions}">
   <div class="portal_pagination">
     ${questions.totalCount} résultat(s) <g:paginate

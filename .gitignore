@@ -27,3 +27,16 @@
 ehthumbs.db
 Icon?
 Thumbs.db
+
+
+# fichiers propres au projet #
+##############################
+
+out
+.idea
+*.iml
+.gradle
+build
+target
+specifications
+eliot-tdbase.esproj

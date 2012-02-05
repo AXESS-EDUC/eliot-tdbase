@@ -50,6 +50,7 @@ class ReponseMultipleChoiceSpecificationService extends ReponseSpecificationServ
     ReponseMultipleChoiceSpecification specObj = new ReponseMultipleChoiceSpecification()
 
     reponsesPossibles.each {
+      specObj.labelsReponses << it.libelleReponse
       if (it.estUneBonneReponse) {
         specObj.labelsReponsesCorrects << it.libelleReponse
       }
@@ -64,6 +65,11 @@ class ReponseMultipleChoiceSpecificationService extends ReponseSpecificationServ
 class ReponseMultipleChoiceSpecification implements ReponseSpecification {
 
   /**
+   *  Toutes les réponses possibles
+   */
+  List<String> labelsReponses = []
+
+  /**
    * Les réponses cochés.
    */
   List<String> labelsReponsesCoches = []
@@ -76,8 +82,9 @@ class ReponseMultipleChoiceSpecification implements ReponseSpecification {
   @Override
   Map toMap() {
     [
+            labelsReponses: labelsReponses,
             labelsReponsesCoches: labelsReponsesCoches,
-            labelsReponsesCorrects: labelsReponsesCorrects,
+            labelsReponsesCorrects: labelsReponsesCorrects
     ]
   }
 
@@ -95,12 +102,21 @@ class ReponseMultipleChoiceSpecification implements ReponseSpecification {
     }
 
     def points = 0
-    labelsReponsesCorrects.each {
-      if (labelsReponsesCoches.contains(it)) { points++ } else {points--}
+    labelsReponses.each {
+      if (reponseEleveEstJuste(it)) {
+        points++
+      } else {
+        points--
+      }
     }
+    points / labelsReponses.size() * maximumPoints;
+  }
 
-
-
-    points / labelsReponsesCorrects.size() * maximumPoints;
+  private boolean reponseEleveEstJuste(String label) {
+    def res = (labelsReponsesCorrects.contains(label) &&
+               labelsReponsesCoches.contains(label)) ||
+              (!labelsReponsesCorrects.contains(label) &&
+               !labelsReponsesCoches.contains(label))
+    return res
   }
 }

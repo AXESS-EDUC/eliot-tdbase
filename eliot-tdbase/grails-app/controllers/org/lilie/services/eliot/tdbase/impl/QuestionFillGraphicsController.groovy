@@ -51,4 +51,37 @@ class QuestionFillGraphicsController extends QuestionController {
 
     bindData(specifobject, params, "specifobject")
   }
+
+  /**
+   * Ajouter une zone de texte.
+   */
+  def ajouteTextZone() {
+    FillGraphicsSpecification specifobject = getSpecificationObjectFromParams(params) ?: new FillGraphicsSpecification()
+    specifobject.textZones << new TextZone(id: createId(specifobject.textZones))
+    render(
+            template: "/question/FillGraphics/FillGraphicsReponses",
+            model: [specifobject: specifobject]
+    )
+  }
+
+  /**
+   * Supprimer une zone de texte.
+   */
+  def supprimeTextZone() {
+    FillGraphicsSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.textZones.remove(params.id as Integer)
+    render(
+            template: "/question/FillGraphics/FillGraphicsReponses",
+            model: [specifobject: specifobject]
+    )
+  }
+
+  private createId(List items) {
+    def idList = items*.id.collect {it.toInteger()}
+    if (idList && !idList.isEmpty()) {
+      return (idList.max() + 1).toString()
+    }
+    "1"
+  }
+
 }

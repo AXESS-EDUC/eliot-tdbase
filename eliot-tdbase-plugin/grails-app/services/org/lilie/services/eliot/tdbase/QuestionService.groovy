@@ -39,6 +39,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 import static org.lilie.services.eliot.tdbase.QuestionTypeEnum.*
+import org.hibernate.SessionFactory
 
 /**
  * Service de gestion des questions
@@ -224,20 +225,12 @@ class QuestionService implements ApplicationContextAware {
     assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
             supprimeur, laQuestion))
 
-    // supression des réponses
-    Reponse.executeUpdate(" \
-    DELETE FROM Reponse as reponse \
-    where reponse.sujetQuestion = \
-          (select sujetQuestion from \
-           SujetSequenceQuestions as sujetQuestion where \
-           sujetQuestion.question = :question)",
-                          [question: laQuestion])
+    // supression des réponses et des sujetQuestions
+    def sujetQuestions = SujetSequenceQuestions.findAllByQuestion(laQuestion)
+    sujetQuestions.each {
+      sujetService.supprimeQuestionFromSujet(it, supprimeur)
+    }
 
-    // suppression des sujetQuestions
-    SujetSequenceQuestions.executeUpdate(" \
-                DELETE FROM SujetSequenceQuestions as sujetQuest \
-                where sujetQuest.question = :question",
-                                         [question: laQuestion])
 
     // suppression des questions arborescences
     QuestionArborescence.executeUpdate(" \
@@ -302,7 +295,7 @@ class QuestionService implements ApplicationContextAware {
    * @param niveau le niveau
    * @param paginationAndSortingSpec les specifications pour l'ordre et
    * la pagination
-   * @return la liste des sujets
+   * @return la liste des questions
    */
   List<Question> findQuestions(Personne chercheur,
                                String patternTitre,
@@ -355,6 +348,37 @@ class QuestionService implements ApplicationContextAware {
         eq 'proprietaire', chercheur
         eq 'publie', true
       }
+      if (paginationAndSortingSpec) {
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+        if (sortArg) {
+          order "${sortArg}", orderArg
+        }
+
+      }
+    }
+    return questions
+  }
+
+  /**
+   * Recherche de questions d'un proprietaire donné
+   * @param proprietaire la personne effectuant la recherche
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @return la liste des questions
+   */
+  List<Question> findQuestionsForProprietaire(Personne proprietaire,
+                                              Map paginationAndSortingSpec = null) {
+    if (!proprietaire) {
+      throw new IllegalArgumentException("question.recherche.chercheur.null")
+    }
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
+    }
+
+    def criteria = Question.createCriteria()
+    List<Question> questions = criteria.list(paginationAndSortingSpec) {
+      eq 'proprietaire', proprietaire
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
         def orderArg = paginationAndSortingSpec['order'] ?: 'desc'

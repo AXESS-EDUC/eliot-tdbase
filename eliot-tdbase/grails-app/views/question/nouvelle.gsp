@@ -40,7 +40,7 @@
       })
     });
   </r:script>
-  <title>TDBase - Nouvelle contribution</title>
+  <title>TDBase - Nouvel item</title>
 </head>
 
 <body>

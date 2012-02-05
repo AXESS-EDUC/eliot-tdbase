@@ -57,66 +57,9 @@
 
 
 <div class="portal-form_container">
-  <table>
+      <g:render template="/question/detail_commun"
+                          model="[question: question]"/>
 
-    <tr>
-      <td class="label">Titre:</td>
-      <td>
-        ${question.titre}
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Auteur :</td>
-      <td>
-        ${question.proprietaire.prenom} ${question.proprietaire.nom}
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Partage :</td>
-      <td>
-        <g:if test="${question.estPartage()}">
-          <a href="${question.copyrightsType.lien}"
-             target="_blank">${question.copyrightsType.presentation}</a>
-        </g:if>
-        <g:else>
-          cette question n'est pas partagée
-        </g:else>
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Type :</td>
-      <td>
-        ${question.type.nom}
-      </td>
-    </tr>
-
-    <tr>
-      <td class="label">Mati&egrave;re :</td>
-      <td>
-        ${question.matiere?.libelleLong}
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Niveau :</td>
-      <td>
-        ${question.niveau?.libelleLong}
-      </td>
-    </tr>
-
-    <tr>
-      <td class="label">Autonome&nbsp;:</td>
-      <td>
-        <span>${question.estAutonome ? "oui" : "non"}</span>
-      </td>
-    </tr>
-    <g:render
-            template="/question/${question.type.code}/${question.type.code}Detail"
-            model="[question: question]"/>
-    <g:if test="${question.paternite}">
-      <g:render template="/artefact/paternite"
-                model="[paternite: question.paternite]"/>
-    </g:if>
-  </table>
 </div>
 
 <div class="form_actions">

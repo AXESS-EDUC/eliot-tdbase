@@ -41,7 +41,7 @@
       })
     });
   </r:script>
-  <title>TDBase - Ajout d'un élément</title>
+  <title>TDBase - Ajout d'un item</title>
 </head>
 
 <body>
@@ -50,7 +50,7 @@
           model="[liens: liens]"/>
 <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
 <div style="width:80%; padding:15px; margin: auto;">
-  <h4>Créer et ajouter un élément</h4>
+  <h4>Créer et ajouter un item</h4>
   <ul>
     <li>
       <g:link action="edite"
@@ -82,7 +82,7 @@
     </li>
   </ul>
 
-  <h4>Rechercher et ajouter un élément</h4>
+  <h4>Rechercher et ajouter un item</h4>
   <ul>
     <li>
       <g:link action="recherche" controller="question"
@@ -109,7 +109,7 @@
     </li>
   </ul>
 
-  <h4>Importer et ajouter un élément</h4>
+  <h4>Importer et ajouter un item</h4>
   <ul>
     <li>Un élément d'énoncé</li>
     <li>Un document</li>

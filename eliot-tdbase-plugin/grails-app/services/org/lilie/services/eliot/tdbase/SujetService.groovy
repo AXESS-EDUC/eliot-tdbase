@@ -43,6 +43,7 @@ class SujetService {
 
   QuestionService questionService
   ArtefactAutorisationService artefactAutorisationService
+  CopieService copieService
 
   /**
    * Créé un sujet
@@ -154,13 +155,18 @@ class SujetService {
   def supprimeSujet(Sujet leSujet, Personne supprimeur) {
     assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
             supprimeur, leSujet))
+    // suppression des copies jetables attachees au sujet
+    copieService.supprimeCopiesJetablesForSujet(leSujet)
+    // suppression des sujetQuestions
     def sujetQuests = SujetSequenceQuestions.where {
       sujet == leSujet
     }
     sujetQuests.deleteAll()
+    // suppression de la publication si necessaire
     if (leSujet.estPartage()) {
       leSujet.publication.delete()
     }
+    // on supprime enfin le sujet
     leSujet.delete()
   }
 
@@ -277,15 +283,33 @@ class SujetService {
 
   /**
    * Recherche de tous les sujet pour un proprietaire donné
-   * @param chercheur la personne effectuant la recherche
+   * @param proprietaire la personne effectuant la recherche
    * @param paginationAndSortingSpec les specifications pour l'ordre et
    * la pagination
    * @return la liste des sujets
    */
   List<Sujet> findSujetsForProprietaire(Personne proprietaire,
                                         Map paginationAndSortingSpec = null) {
-    return findSujets(proprietaire, null, null, null, null, null, null,
-                      paginationAndSortingSpec)
+    if (!proprietaire) {
+      throw new IllegalArgumentException("sujet.recherche.chercheur.null")
+    }
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
+    }
+
+    def criteria = Sujet.createCriteria()
+    List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
+      eq 'proprietaire', proprietaire
+      if (paginationAndSortingSpec) {
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+        if (sortArg) {
+          order "${sortArg}", orderArg
+        }
+
+      }
+    }
+    return sujets
   }
 
   /**

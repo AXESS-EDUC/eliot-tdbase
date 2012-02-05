@@ -36,15 +36,6 @@
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
       $(".datepicker").datetimepicker();
-      $( "#sujetsTitres" ).autocomplete({
-			source: "${createLink(controller:'sujet', action:'recherche', params:[format:'js'])}",
-			minLength: 3,
-			select: function( event, ui ) {
-			    if(ui.item) {
-                    $("#sujetId").attr('value',ui.item.id)
-                }
-			}
-		});
     });
   </r:script>
   <title>TDBase - Edition d'une séance</title>
@@ -95,14 +86,7 @@
         <tr>
           <td class="label">Sujet&nbsp;:</td>
           <td>
-            <g:if test="${modaliteActivite.sujet}">
               <strong>${modaliteActivite.sujet.titre}</strong> <br/>
-              Changer de sujet...
-            </g:if>
-            <g:else>
-              Rechercher un sujet...
-            </g:else>
-            <input size="45" id="sujetsTitres" />
           </td>
         </tr>
         <tr>
