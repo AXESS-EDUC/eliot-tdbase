@@ -34,12 +34,16 @@ function initDragNDrop() {
     function initWidgets() {
         $(".textZone").draggable({containment:'#fillgraphicsEditor', stack:'div'});
         positionTextZones();
+
+        $(".textArea").resizable({handles:"se", stop:function (event, ui) {
+            onResize($(this), ui)
+        }});
     }
 
     function registerEventHandlers() {
         $(".textZone").bind("dragstop", function () {
             onDragStop($(this));
-        })
+        });
     }
 
     function onDragStop(textZone) {
@@ -48,6 +52,12 @@ function initDragNDrop() {
         var textZoneTop = $('#' + textZoneId).position().top;
         $("#" + textZoneId + ">input.offLeft").val(textZoneLeft);
         $("#" + textZoneId + ">input.offTop").val(textZoneTop);
+    }
+
+    function onResize(textArea, ui) {
+        var textZoneId = $(textArea).parents('.textZone').attr("id");
+        $("#" + textZoneId + ">input.textWidth").val(ui.size.width);
+        $("#" + textZoneId + ">input.textHeight").val(ui.size.height);
     }
 
     function positionTextZones() {

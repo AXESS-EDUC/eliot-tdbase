@@ -50,14 +50,18 @@
         </div>
 
         <div>
-            <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="5"
-                        value="${textZone.text}"/>
+            <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="3"
+                        style="width: ${textZone.width}px; height: ${textZone.height}px;"
+                        value="${textZone.text}" class="textArea"/>
         </div>
 
         <g:hiddenField class="idField" name="specifobject.textZones[${i}].id" value="${textZone.id}"/>
         <g:hiddenField class="offTop" name="specifobject.textZones[${i}].topDistance" value="${textZone.topDistance}"/>
         <g:hiddenField class="offLeft" name="specifobject.textZones[${i}].leftDistance"
                        value="${textZone.leftDistance}"/>
+
+        <g:hiddenField class="textWidth" name="specifobject.textZones[${i}].width" value="${textZone.width}"/>
+        <g:hiddenField class="textHeight" name="specifobject.textZones[${i}].height" value="${textZone.height}"/>
     </div>
 </g:each>
 
