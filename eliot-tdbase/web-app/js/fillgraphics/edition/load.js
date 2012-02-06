@@ -25,9 +25,20 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-if (Modernizr.touch) {
-    initDragNDropPolyFill();
-} else {
-    initDragNDrop();
+initPolyFill();
+
+function afterTextZoneDeleted() {
+    initPolyFill();
 }
 
+function afterTextZoneAdded() {
+    initPolyFill();
+}
+
+function initPolyFill() {
+    if (Modernizr.touch) {
+        initDragNDropPolyFill();
+    } else {
+        initDragNDrop();
+    }
+}

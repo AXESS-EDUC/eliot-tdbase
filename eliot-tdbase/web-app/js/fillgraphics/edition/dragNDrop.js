@@ -32,11 +32,32 @@ function initDragNDrop() {
     registerEventHandlers();
 
     function initWidgets() {
-        //hide html tags
-        // style html tags
-        // make hotspots draggable
+        $(".textZone").draggable({containment:'#fillgraphicsEditor', stack:'div'});
+        positionTextZones();
     }
 
     function registerEventHandlers() {
+        $(".textZone").bind("dragstop", function () {
+            onDragStop($(this));
+        })
+    }
+
+    function onDragStop(textZone) {
+        var textZoneId = textZone.attr("id");
+        var textZoneLeft = $('#' + textZoneId).position().left;
+        var textZoneTop = $('#' + textZoneId).position().top;
+        $("#" + textZoneId + ">input.offLeft").val(textZoneLeft);
+        $("#" + textZoneId + ">input.offTop").val(textZoneTop);
+    }
+
+    function positionTextZones() {
+        $(".textZone").each(function () {
+            var offLeft = $(this).children('.offLeft').val();
+            var offTop = $(this).children('.offTop').val();
+            $(this).position({
+                of:$("#fillgraphicsEditor"), my:"left top", at:"left top",
+                offset:offLeft + " " + offTop, collision:"none"
+            });
+        });
     }
 }

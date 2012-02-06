@@ -25,6 +25,7 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+<r:require module="fillGraphics_EditionJS"/>
 <r:script> $("form").attr('enctype', 'multipart/form-data');</r:script>
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
@@ -56,7 +57,8 @@
                         value="Ajouter Zone de texte"
                         action="ajouteTextZone"
                         controller="questionFillGraphics"
-                        update="fillgraphicsEditor"/>
+                        update="fillgraphicsEditor"
+                        onComplete="afterTextZoneAdded()"/>
     </g:if>
   </td>
 </tr>

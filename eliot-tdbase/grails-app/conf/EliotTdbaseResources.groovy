@@ -100,5 +100,7 @@ modules = {
     fillGraphics_EditionJS{
         dependsOn "fillGraphics_Common"
         resource url: [dir: 'js/fillgraphics/edition', file: 'load.js']
+        resource url: [dir: 'js/fillgraphics/edition', file: 'dragNDrop.polyfill.js']
+        resource url: [dir: 'js/fillgraphics/edition', file: 'dragNDrop.js']
     }
 }

@@ -79,10 +79,6 @@ function initDragNDrop() {
 
         $("#" + hotspotId + ">input.offLeft").val(hotspotLeft);
         $("#" + hotspotId + ">input.offTop").val(hotspotTop);
-
-
-        console.log($('#imageContainer').css('zoom'));
-
     }
 
     function addHotpotIds() {

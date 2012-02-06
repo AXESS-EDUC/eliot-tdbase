@@ -26,8 +26,6 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<r:require module="fillGraphics_EditionJS"/>
-
 <g:if test="${specifobject.attachmentId}">
     <div class="imageContainer">
         <et:viewAttachement
@@ -47,16 +45,19 @@
                               value="X"
                               action="supprimeTextZone"
                               controller="questionFillGraphics"
-                              update="fillgraphicsEditor"/>
+                              update="fillgraphicsEditor"
+                              onComplete="afterTextZoneDeleted()"/>
         </div>
 
         <div>
-            <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="10"
+            <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="5"
                         value="${textZone.text}"/>
         </div>
 
-        <g:hiddenField class="idField" name="specifobject.textZones[${i}].id"
-                       value="${textZone.id}"/>
+        <g:hiddenField class="idField" name="specifobject.textZones[${i}].id" value="${textZone.id}"/>
+        <g:hiddenField class="offTop" name="specifobject.textZones[${i}].topDistance" value="${textZone.topDistance}"/>
+        <g:hiddenField class="offLeft" name="specifobject.textZones[${i}].leftDistance"
+                       value="${textZone.leftDistance}"/>
     </div>
 </g:each>
 
