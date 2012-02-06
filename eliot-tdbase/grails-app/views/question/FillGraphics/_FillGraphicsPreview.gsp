@@ -26,13 +26,31 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-
-<r:require module="graphicMatch_PreviewJS"/>
+<r:require module="fillGraphics_Common"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 ${specifobject.libelle}
 <br/>
+
+<div class="fillgraphicsEditor">
+    <g:if test="${specifobject.attachmentId}">
+        <div class="imageContainer">
+            <et:viewAttachement
+                    attachement="${specifobject.attachement}"
+                    width="500"
+                    height="500"/>
+        </div>
+    </g:if>
+
+    <g:each status="i" in="${specifobject.textZones}" var="textZone">
+        <div id="textZone_${i}" class="textZone" style=" top: ${textZone.topDistance}px; left: ${textZone.leftDistance}px;">
+            <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="3"
+                        style="width: ${textZone.width}px; height: ${textZone.height}px;"
+                        value="${textZone.text}" readonly="true" class="nonResizableTextArea"/>
+        </div>
+    </g:each>
+
+</div>
+
 <br/>
-
-
 Correction : ${specifobject.correction}

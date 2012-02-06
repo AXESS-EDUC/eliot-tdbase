@@ -37,7 +37,7 @@
 
 <g:each status="i" in="${specifobject.textZones}" var="textZone">
     <div id="textZone_${i}" class="textZone" style=" top: ${textZone.topDistance}; left: ${textZone.leftDistance};">
-        <div>
+        <div class="deleteButton">
             <g:submitToRemote id="${i}"
                               class="textZoneSupressButton"
                               name="textZoneSupressButton"

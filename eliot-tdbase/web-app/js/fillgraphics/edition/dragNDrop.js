@@ -48,10 +48,11 @@ function initDragNDrop() {
 
     function onDragStop(textZone) {
         var textZoneId = textZone.attr("id");
-        var textZoneLeft = $('#' + textZoneId).position().left;
-        var textZoneTop = $('#' + textZoneId).position().top;
-        $("#" + textZoneId + ">input.offLeft").val(textZoneLeft);
-        $("#" + textZoneId + ">input.offTop").val(textZoneTop);
+        var deleteButtonHeight = $('#' + textZoneId + '>.deleteButton').height();
+        var leftOffset = $('#' + textZoneId).position().left;
+        var topOffset = $('#' + textZoneId).position().top + deleteButtonHeight;
+        $("#" + textZoneId + ">input.offLeft").val(leftOffset);
+        $("#" + textZoneId + ">input.offTop").val(topOffset);
     }
 
     function onResize(textArea, ui) {

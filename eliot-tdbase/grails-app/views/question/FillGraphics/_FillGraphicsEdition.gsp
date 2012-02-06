@@ -31,57 +31,54 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 <tr>
-  <td class="label">Lib&eacute;ll&eacute;:</td>
-  <td>
-    <g:textField name="specifobject.libelle" value="${specifobject.libelle}"
-                 size="75"/>
-  </td>
+    <td class="label">Lib&eacute;ll&eacute;:</td>
+    <td>
+        <g:textField name="specifobject.libelle" value="${specifobject.libelle}"
+                     size="75"/>
+    </td>
 </tr>
 
 <tr>
-  <td class="label">R&eacute;ponse:</td>
-  <td>
-    <input type="file" name="specifobject.fichier"
-           onchange="$('#imageUpload').trigger('click');"/>
+    <td class="label">R&eacute;ponse:</td>
+    <td>
+        <input type="file" name="specifobject.fichier"
+               onchange="$('#imageUpload').trigger('click');"/>
 
-    <g:actionSubmit value="upload" action="enregistre" title="Upload"
-                    hidden="true"
-                    id="imageUpload"/>
+        <g:actionSubmit value="upload" action="enregistre" title="Upload"
+                        hidden="true"
+                        id="imageUpload"/>
 
-    <g:hiddenField name="specifobject.attachmentId"
-                   value="${specifobject.attachmentId}"/>
+        <g:hiddenField name="specifobject.attachmentId"
+                       value="${specifobject.attachmentId}"/>
 
-    <g:if test="${specifobject.attachmentId}">
+        <g:if test="${specifobject.attachmentId}">
 
-      <g:submitToRemote title="Ajouter une zone de text"
-                        value="Ajouter Zone de texte"
-                        action="ajouteTextZone"
-                        controller="questionFillGraphics"
-                        update="fillgraphicsEditor"
-                        onComplete="afterTextZoneAdded()"/>
-    </g:if>
-  </td>
+            <g:submitToRemote title="Ajouter une zone de text"
+                              value="Ajouter Zone de texte"
+                              action="ajouteTextZone"
+                              controller="questionFillGraphics"
+                              update="fillgraphicsEditor"
+                              onComplete="afterTextZoneAdded()"/>
+        </g:if>
+    </td>
 </tr>
 
 <tr>
-  <td></td>
-  <td>
-
-    <div id="fillgraphicsEditor"
-         style="position: relative; width: 500px; height: 500px;">
-      <g:render
-              template="/question/FillGraphics/FillGraphicsReponses"
-              model="[specifobject: specifobject]"/>
-    </div>
-
-  </td>
+    <td></td>
+    <td>
+        <div id="fillgraphicsEditor" class="fillgraphicsEditor">
+            <g:render
+                    template="/question/FillGraphics/FillGraphicsReponses"
+                    model="[specifobject: specifobject]"/>
+        </div>
+    </td>
 </tr>
 <tr>
-  <td class="label">Correction:</td>
-  <td>
-    <g:textArea
-            name="specifobject.correction"
-            rows="10" cols="55"
-            value="${specifobject.correction}"/>
-  </td>
+    <td class="label">Correction:</td>
+    <td>
+        <g:textArea
+                name="specifobject.correction"
+                rows="10" cols="55"
+                value="${specifobject.correction}"/>
+    </td>
 </tr>
