@@ -27,43 +27,30 @@
   --}%
 
 
-<r:require module="graphicMatch_CorrectionJS"/>
+
+<r:require module="fillGraphics_Common"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 Correction: ${specifobject.correction}
 <br>
 <br>
 
-<div class="imageContainer" qualifier="correction"
-     indexReponse="${indexReponse}">
-  <g:if test="${specifobject.attachement}">
-    <et:viewAttachement attachement="${specifobject.attachement}"
-                        width="500" height="500"/>
-  </g:if>
+<div class="fillgraphicsEditor">
+    <g:if test="${specifobject.attachmentId}">
+        <div class="imageContainer">
+            <et:viewAttachement
+                    attachement="${specifobject.attachement}"
+                    width="500"
+                    height="500"/>
+        </div>
+    </g:if>
 
-  <ul class="hotspots">
-    <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-      <li topDistance="${hotspot.topDistance}"
-          leftDistance="${hotspot.leftDistance}"
-          id="hotspot_correction_${indexReponse}_${hotspot.id}"
-          hotspotId="${hotspot.id}"
-          class="hotspot">
-      </li>
+    <g:each status="i" in="${specifobject.textZones}" var="textZone">
+        <div id="textZone_${i}" class="textZone" style=" top: ${textZone.topDistance}px; left: ${textZone.leftDistance}px;">
+            <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="3"
+                        style="width: ${textZone.width}px; height: ${textZone.height}px;"
+                        value="${textZone.text}" readonly="true" class="nonResizableTextArea"/>
+        </div>
     </g:each>
-  </ul>
 
-  <ul class="icons">
-    <g:each status="i" in="${specifobject.icons}" var="icon">
-
-      <g:if test="${icon.attachment}">
-        <li class="icon" id="icon_correction_${indexReponse}_${icon.id}">
-          <et:viewAttachement attachement="${icon.attachment}"
-                              width="40" height="40"/>
-          <span class="zoneLabel"><br>avec Zone</span>
-          <span
-                  class="hotspotSelector">${specifobject.graphicMatches[icon.id]}</span>
-        </li>
-      </g:if>
-    </g:each>
-  </ul>
 </div>

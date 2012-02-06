@@ -26,7 +26,8 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-%{--<r:require module="fillGraphics_InteractionJS"/>--}%
+<r:require module="fillGraphics_Common"/>
+
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
@@ -34,26 +35,32 @@ ${specifobject.libelle}
 
 <br>
 
-<div class="imageContainer" qualifier="interaction"
-     indexReponse="${indexReponse}">
+<div class="fillgraphicsEditor">
+    <g:if test="${specifobject.attachmentId}">
+        <div class="imageContainer">
+            <et:viewAttachement
+                    attachement="${specifobject.attachement}"
+                    width="500"
+                    height="500"/>
+        </div>
+    </g:if>
 
-<g:if test="${specifobject.attachmentId}">
-  <et:viewAttachement
-          attachement="${specifobject.attachement}"
-          width="500"
-          height="500"/>
-  <br>
-</g:if>
+    <g:each status="i" in="${specifobject.textZones}" var="textZone">
+        <div id="textZone_${indexReponse}_${i}" class="textZone"
+             style=" top: ${textZone.topDistance}px; left: ${textZone.leftDistance}px;">
+            <g:textArea
+            name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].text"
+            rows="3" cols="3"
+            style="width: ${textZone.width}px; height: ${textZone.height}px;"
+            value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}"
+            class="nonResizableTextArea"/>
 
-<g:each status="i" in="${specifobject.textZones}" var="textZone">
-  <div id="textZone_interaction_${indexReponse}_${textZone.id}"
-         class="textZone"
-  <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="50"
-              value="${textZone.text}"/>
-  <g:hiddenField name="specifobject.textZones[${i}].id" value="${textZone.id}"/>
-  </div>
+    <g:hiddenField
+            name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].id"
+            value="${textZone.id}"/>
 
-</g:each>
+        </div>
+    </g:each>
 </div>
 
 <br>
