@@ -25,40 +25,32 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<r:require module="graphicMatch_DetailsJS"/>
+
+<r:require module="fillGraphics_Common"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 ${specifobject.libelle}
 <br/>
-<br/>
 
-<div class="imageContainer">
-  <g:if test="${specifobject.attachement}">
-    <et:viewAttachement attachement="${specifobject.attachement}"
-                        width="500" height="500"/>
-  </g:if>
+<div class="fillgraphicsEditor">
+    <g:if test="${specifobject.attachmentId}">
+        <div class="imageContainer">
+            <et:viewAttachement
+                    attachement="${specifobject.attachement}"
+                    width="500"
+                    height="500"/>
+        </div>
+    </g:if>
 
-  <ul class="hotspots">
-    <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-      <li topDistance="${hotspot.topDistance}"
-          leftDistance="${hotspot.leftDistance}" hotspotId="${hotspot.id}">
-      </li>
+    <g:each status="i" in="${specifobject.textZones}" var="textZone">
+        <div id="textZone_${i}" class="textZone" style=" top: ${textZone.topDistance}px; left: ${textZone.leftDistance}px;">
+            <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="3"
+                        style="width: ${textZone.width}px; height: ${textZone.height}px;"
+                        value="${textZone.text}" readonly="true" class="nonResizableTextArea"/>
+        </div>
     </g:each>
-  </ul>
 
-  <ul class="icons">
-    <g:each status="i" in="${specifobject.icons}" var="icon">
-
-      <g:if test="${icon.attachment}">
-        <li class="icon">
-          <et:viewAttachement attachement="${icon.attachment}"
-                              width="40" height="40"/>
-          <br>
-          avec Zone ${specifobject.graphicMatches[icon.id]}
-        </li>
-      </g:if>
-    </g:each>
-  </ul>
 </div>
 
+<br/>
 Correction : ${specifobject.correction}
