@@ -1,0 +1,28 @@
+.imageContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.textZone {
+    z-index: 1;
+    position: absolute;
+    border: solid 1px #808080;
+    background: rgba(245, 245, 245, 0.9);
+}
+
+.textZoneSupressButton {
+    background-color: transparent;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    border-radius: 1px;
+    border: 0;
+    display: inline-block;
+    color: #777777;
+    font-family: arial,serif;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 2px 4px;
+    text-decoration: none;
+}
+

@@ -1,4 +1,3 @@
-<%@ page import="grails.converters.JSON" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -27,37 +26,38 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
+<r:require module="fillGraphics_EditionJS"/>
+
 <g:if test="${specifobject.attachmentId}">
-  <div id="imageContainer"
-       style="position: absolute; top: 0; left: 0;">
-    <et:viewAttachement
-            attachement="${specifobject.attachement}"
-            width="500"
-            height="500"/>
-  </div>
+    <div class="imageContainer">
+        <et:viewAttachement
+                attachement="${specifobject.attachement}"
+                width="500"
+                height="500"/>
+    </div>
 </g:if>
 
 <g:each status="i" in="${specifobject.textZones}" var="textZone">
-  <div id="textZone_${i}" class="textZone"
-       style="z-index: 1; position: absolute; top: 30; left: 30;">
-    <div>
-      <g:submitToRemote id="${i}"
-                        name="textZoneSupressButton"
-                        title="Supprimer une zone de text"
-                        value="X"
-                        action="supprimeTextZone"
-                        controller="questionFillGraphics"
-                        update="fillgraphicsEditor"/>
-    </div>
+    <div id="textZone_${i}" class="textZone" style=" top: ${textZone.topDistance}; left: ${textZone.leftDistance};">
+        <div>
+            <g:submitToRemote id="${i}"
+                              class="textZoneSupressButton"
+                              name="textZoneSupressButton"
+                              title="Supprimer une zone de text"
+                              value="X"
+                              action="supprimeTextZone"
+                              controller="questionFillGraphics"
+                              update="fillgraphicsEditor"/>
+        </div>
 
-    <div>
-      <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="10"
-                  value="${textZone.text}"/>
-    </div>
+        <div>
+            <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="10"
+                        value="${textZone.text}"/>
+        </div>
 
-    <g:hiddenField class="idField" name="specifobject.textZones[${i}].id"
-                   value="${textZone.id}"/>
-  </div>
+        <g:hiddenField class="idField" name="specifobject.textZones[${i}].id"
+                       value="${textZone.id}"/>
+    </div>
 </g:each>
 
 <g:hiddenField name="specifobject.textZones.size"

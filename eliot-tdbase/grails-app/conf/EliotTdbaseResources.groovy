@@ -91,4 +91,14 @@ modules = {
     dependsOn "graphicMatch_Common"
     resource url: [dir: 'js/graphicmatch/correction', file: 'load.js']
   }
+
+  fillGraphics_Common {
+      dependsOn "modernizr", "eliot-tice-ui"
+      resource url: [dir: 'css/fillgraphics', file: 'style.css']
+  }
+
+    fillGraphics_EditionJS{
+        dependsOn "fillGraphics_Common"
+        resource url: [dir: 'js/fillgraphics/edition', file: 'load.js']
+    }
 }
