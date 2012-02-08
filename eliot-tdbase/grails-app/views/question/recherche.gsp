@@ -126,8 +126,78 @@
             total="${questions.totalCount}"
             params="${rechercheCommand?.toParams()}"></g:paginate>
   </div>
+  
+<div class="portal-default_results-list question">	
+	<g:each in="${questions}" status="i" var="questionInstance">
+	  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+	  	<button id="${questionInstance.id}">Actions</button>
+        <ul id="menu_actions_${questionInstance.id}"
+            class="tdbase-menu-actions">
+          <li><g:link action="detail"
+                      controller="question${questionInstance.type.code}"
+                      id="${questionInstance.id}"
+                      params="[sujetId: sujet?.id]">
+            Aperçu
+          </g:link>
+          </li>
+          <g:if test="${sujet}">
+            <li><g:link action="insert"
+                        controller="question${questionInstance.type.code}"
+                        id="${questionInstance.id}"
+                        params="[sujetId: sujet?.id]">
+              Insérer&nbsp;dans&nbsp;le&nbsp;sujet
+            </g:link>
+            </li>
+          </g:if>
+          <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+            <li><g:link action="edite"
+                        controller="question${questionInstance.type.code}"
+                        id="${questionInstance.id}">Modifier</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Modifier</li>
+          </g:else>
+          <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+            <li><g:link action="duplique"
+                        controller="question${questionInstance.type.code}"
+                        id="${questionInstance.id}">Dupliquer</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Dupliquer</li>
+          </g:else>
+          <li><hr/></li>
+          <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+            <li><g:link action="partage"
+                        controller="question${questionInstance.type.code}"
+                        id="${questionInstance.id}">Partager</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Partager</li>
+          </g:else>
+          <li><hr/></li>
+          <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+            <li><g:link action="supprime"
+                        controller="question${questionInstance.type.code}"
+                        id="${questionInstance.id}">Supprimer</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Supprimer</li>
+          </g:else>
+	  	</ul>
+	  	<h1> ${fieldValue(bean: questionInstance, field: "titre")}</h1>
+	  	<ul class="feature">
+	  		<li><strong>Niveau :</strong> ${questionInstance.niveau?.libelleLong}</li>
+	  		<li><strong>Matière :</strong> ${questionInstance.matiere?.libelleLong}</li> 
+	  		<li><strong>Autonome :</strong>  ${questionInstance.estAutonome ? 'oui' : 'non'}</li>
+	  		<li><strong>Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}</li>
+	  		<li><strong>Mise à jour le :</strong> ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</li>
+	  	</ul>
+	  	
+	  </div>
+	</g:each>
+</div>
 
-  <div class="portal-default_table">
+  <!--<div class="portal-default_table">
     <table>
       <thead>
       <tr>
@@ -224,7 +294,7 @@
       </g:each>
       </tbody>
     </table>
-  </div>
+  </div>-->
 </g:if>
 <g:else>
   <div class="portal_pagination">

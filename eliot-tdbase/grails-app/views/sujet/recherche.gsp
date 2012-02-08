@@ -119,7 +119,7 @@
 	<g:paginate total="${sujets.totalCount}" params="${rechercheCommand?.toParams()}"></g:paginate>
 </div>
   
-<div class="portal-default_results-list">	
+<div class="portal-default_results-list sujet">	
 	<g:each in="${sujets}" status="i" var="sujetInstance">
 	  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
 	  	<button class="n0o-js" id="${sujetInstance.id}">Actions</button>
