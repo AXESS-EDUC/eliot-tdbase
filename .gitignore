@@ -50,3 +50,5 @@ eliot-tdbase.esproj/user.ssigur.espressostorage
 >>>>>>> Ignore fichiers expresso
 
 .DS_Store
+
+eliot-tdbase/target/classes/application.properties
