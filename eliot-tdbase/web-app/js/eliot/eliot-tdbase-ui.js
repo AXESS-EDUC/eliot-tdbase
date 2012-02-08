@@ -27,6 +27,7 @@
  */
 
 function initButtons() {
+	
     $('button').button({
                            icons:{
                                primary:"ui-icon-gear",
@@ -44,10 +45,18 @@ function initButtons() {
                                     if (offsetTopDefaut + hauteurMenu > $(window).height()) {
                                        var offsetTopCible = offsetTopDefaut - hauteurMenu - hauteurBouton ;
                                         $(currentIdMenu).css("top", offsetTopCible) ;
+                                        $(currentIdMenu).addClass("top");
                                     } else {
                                         $(currentIdMenu).css("top", offsetTopDefaut)
+                                        $(currentIdMenu).removeClass("top");
                                     }
-
+									
+									$('.tdbase-menu-actions').hide();
                                     $(currentIdMenu).toggle();
+                                    
+                                    event.stopPropagation();
                                 });
+      
+     //Hide the menus if visible                          
+	$('html').click(function() { $('.tdbase-menu-actions').hide();});
 }
