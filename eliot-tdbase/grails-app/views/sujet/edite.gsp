@@ -52,9 +52,9 @@
 <g:if test="${sujetEnEdition}">
   <div class="portal-tabs" style="text-align: left">
     <span class="portal-tabs-famille-liens">
-      <g:link action="ajouteElement" controller="sujet"
+      <g:link action="ajouteElement" controller="sujet" class="add"
               id="${sujet.id}">Ajouter un item</g:link> |
-      <g:link action="editeProprietes" controller="sujet"
+      <g:link action="editeProprietes" controller="sujet" class="modify"
               id="${sujet.id}">Modifier les propriétés du sujet</g:link>
     </span>
     <span class="portal-tabs-famille-liens">
@@ -139,20 +139,7 @@
 </g:if>
 <form method="post">
   <div class="portal-form_container" style="width: 80%;border: none;">
-    <table>
-      <tr>
-        <td class="label">
-          titre&nbsp;:
-        </td>
-        <td>
-          <g:textField name="sujetTitre" value="${titreSujet}" size="80"/>
-        </td>
-        <td>
-          <g:actionSubmit action="enregistre" value="Enregistrer"/>
-        </td>
-      </tr>
-    </table>
-
+  	<span class="label">Titre :</span> <g:textField name="sujetTitre" value="${titreSujet}" size="80"/> <g:actionSubmit action="enregistre" value="Enregistrer" class="button"/>
     <g:if test="${sujetEnEdition}">
       <g:hiddenField name="sujetId" value="${sujet.id}"/>
     </g:if>
@@ -226,7 +213,7 @@
           Retirer</g:link></li>
 
       </ul>
-
+		
       <g:if test="${sujetQuestion.question.type.interaction}">
         <div class="tdbase-sujet-edition-question-points"
              style="margin-right:90%;float: right;">

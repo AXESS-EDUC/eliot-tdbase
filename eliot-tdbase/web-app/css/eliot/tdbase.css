@@ -374,6 +374,7 @@ Style custom eliot-tdbase
 .tdbase-menu-actions li {
     list-style: none;
     margin-left: 0;
+    padding: 1px 0;
 	font-style: italic;
 	color: #ccc;
 }
@@ -407,6 +408,7 @@ styles for TDBase results list
 div.portal-default_results-list{margin-bottom: 50px;}
 div.portal-default_results-list .even{background-color: #f7f7f7;}
 
+tdbase-sujet-edition-question,
 div.portal-default_results-list>div{
 	padding:0 0 15px;
 	margin-bottom: -1px;
@@ -455,3 +457,70 @@ div.portal-default_results-list .feature li{
 		float: left;
 		color: #728CBD;
 	}
+
+
+
+/*******************************************************************************
+
+Style for the edition of a document or category
+
+********************************************************************************/
+.portal-tabs {
+    background-color:whiteSmoke;
+    color: #999999;
+    border: none;
+    
+    text-align:right;
+    margin: 25px 10px 0px;
+        
+    -moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	/*IE DOES NOT SUPPORT BORDER RADIUS*/
+}
+
+.portal-tabs a {margin-left: 10px;}
+	.portal-tabs a:first-child{margin-left: 0;}
+	.portal-tabs a.add{
+		padding: 4px 4px 4px 20px;
+		background: url("../../images/eliot/picto-add.png") no-repeat 0 4px;
+	}
+		.portal-tabs a.add:hover{background-position: 0 -22px;}
+	
+	.portal-tabs a.modify{
+		padding: 4px 4px 4px 20px;
+		background: url("../../images/eliot/picto-modif.png") no-repeat 0 4px;
+	}
+		.portal-tabs a.modify:hover{background-position: 0 -22px;}
+		
+.portal-form_container{	margin-top: 30px;margin-bottom: 20px;}
+.portal-form_container .label{
+	font-size: 1.6em;
+	margin-right: 10px;
+	padding:0px 0 4px 25px;
+	background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;
+}
+.portal-form_container input[type=text]{
+	border: 1px solid #ccc;
+	padding: 5px 2px;
+	margin-top: -2px;
+}
+.portal-form_container input[type=submit]{margin-top: -3px;margin-left: 10px;}
+
+.button{      
+    padding: 5px 12px 6px;
+    border: 1px solid #CCC;
+	background: whiteSmoke;
+	color: #333;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+	text-transform: uppercase;
+}
+
+.button:hover{
+	border: 1px solid #fbcb09; background: #fdf5ce;
+    color: #ec8e0c;
+    cursor: pointer;
+}
+
