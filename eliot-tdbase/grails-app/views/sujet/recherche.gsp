@@ -113,10 +113,11 @@
 </g:if>
 
 <g:if test="${sujets}">
-  <div class="portal_pagination">
-    ${sujets.totalCount} résultat(s) <g:paginate total="${sujets.totalCount}"
-                                                 params="${rechercheCommand?.toParams()}"></g:paginate>
-  </div>
+
+<div class="portal_pagination">
+	<p class="nb_result">${sujets.totalCount} résultat(s)</p>
+	<g:paginate total="${sujets.totalCount}" params="${rechercheCommand?.toParams()}"></g:paginate>
+</div>
   
 <div class="portal-default_results-list">	
 	<g:each in="${sujets}" status="i" var="sujetInstance">
@@ -274,7 +275,7 @@
 </g:if>
 <g:else>
   <div class="portal_pagination">
-    Aucun résultat
+    <p class="nb_result">Aucun résultat</p>
   </div>
 </g:else>
 

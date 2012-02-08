@@ -34,7 +34,7 @@ function initButtons() {
                                secondary:"ui-icon-triangle-1-s"
                            },
                            text:false
-                       }).click(function () {
+                       }).click(function (event) {
                                     var currentIdMenu = "#menu_actions_" + this.id;
                                     $(currentIdMenu).css("left", this.offsetLeft);
                                     // calcul de l'offsetTop

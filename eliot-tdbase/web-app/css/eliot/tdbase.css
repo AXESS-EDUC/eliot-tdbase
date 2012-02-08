@@ -367,6 +367,7 @@ div.portal-default_results-list .even{background-color: #f7f7f7;}
 
 div.portal-default_results-list>div{
 	padding:0 0 15px;
+	margin-bottom: 5px;
 	border-left: 10px solid white;
 	border-right: 10px solid white;
 	overflow: hidden;
@@ -385,20 +386,24 @@ div.portal-default_results-list>div{
 				margin-top: -8px;
 			}
 div.portal-default_results-list h1{
-	padding-bottom: 10px;
+	padding-left: 30px;
+	padding-bottom: 6px;
 	margin-bottom: 4px;
-	border-bottom: 1px dotted #728CBD;
+	border-bottom: 1px dotted #ccc;
+	background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;
 }
 div.portal-default_results-list .feature li{
 	padding: 2px 0 2px 20px;
-	margin: 4px 0;
+	margin: 2px 0;
 	display: block;
 	overflow: hidden;
 }
 	div.portal-default_results-list .feature li strong{
+		border: 10px solid red;
 		margin-right: 10px;
-		width: 8em;
+		width: 150em;
 		text-align: right;
 		display: block; 
 		float: left;
+		color: #728CBD;
 	}

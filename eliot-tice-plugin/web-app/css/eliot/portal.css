@@ -911,6 +911,10 @@ Styles relatives to pagination in tables
     margin-top: 15px;
     margin-bottom: 15px;
 }
+	.portal_pagination .nb_result{
+		text-align: left;
+		text-indent: 10px;
+	}
 
 
 a.prevLink {

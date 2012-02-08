@@ -121,7 +121,8 @@
 </g:if>
 <g:if test="${questions}">
   <div class="portal_pagination">
-    ${questions.totalCount} résultat(s) <g:paginate
+    <p class="nb_result">${questions.totalCount} résultat(s) </p>
+    <g:paginate
             total="${questions.totalCount}"
             params="${rechercheCommand?.toParams()}"></g:paginate>
   </div>
@@ -227,7 +228,7 @@
 </g:if>
 <g:else>
   <div class="portal_pagination">
-    Aucun résultat
+    <p class="nb_result">Aucun résultat</p>
   </div>
 </g:else>
 

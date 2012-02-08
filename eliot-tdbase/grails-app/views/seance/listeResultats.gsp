@@ -103,7 +103,7 @@
   </g:if>
   <g:else>
      <div class="portal_pagination">
-      Aucun résultat
+      <p class="nb_result">Aucun résultat</p>
     </div>
   </g:else>
 
