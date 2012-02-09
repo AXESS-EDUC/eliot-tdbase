@@ -441,19 +441,21 @@ div.portal-default_results-list>div{
 			
 div.portal-default_results-list h1{
 	padding-left: 30px;
-	margin-top: 8px;
+	padding-top: 2px;
 	padding-bottom: 4px;
-	margin-bottom: 0px;
-	/*border-bottom: 1px dotted #ccc;*/
-	color: #555;
+	margin-top: 6px;
+	margin-bottom: 10px;
+	/*border-bottom: 1px dotted #ccc;	color: #555;*/
+
 	font-size: 1.4em;
 }
 	div.portal-default_results-list.sujet h1{background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;}
 	div.portal-default_results-list.question h1{background: url("../../images/eliot/picto-question.png") no-repeat 0 2px;}
 
 div.portal-default_results-list .feature{
-	margin-left: 33px;
+	/*margin-left: 33px;*/
 	margin-top: -8px;
+	border-top:1px dotted rgb(203, 219, 234);
 }
 div.portal-default_results-list .feature li{
 	padding: 2px 20px 2px 0;
@@ -463,9 +465,6 @@ div.portal-default_results-list .feature li{
 	float: left;
 	min-width: 10em;
 
-}
-	div.portal-default_results-list .feature li.left{
-		float: left;
 }
 	div.portal-default_results-list .feature li strong{
 		margin:0 10px;
@@ -527,9 +526,9 @@ Style for the edition of a document or category (Content)
 	    margin-left:10px;
 	    margin-right:auto;
 	   
-	   background-color:whiteSmoke;
-	    color: #999999;
-	    border: none;
+	   background-color:whiteSmoke;background: #fdf5ce;
+	   color: #999999;
+	   border: none;
 	        
 	    -moz-border-radius:6px;
 		-webkit-border-radius:6px;

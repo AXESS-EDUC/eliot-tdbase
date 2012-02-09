@@ -43,7 +43,7 @@
           model="[liens: liens]"/>
 <g:if test="${afficheFormulaire}">
   <form>
-    <div class="portal-form_container">
+    <div class="portal-form_container recherche">
       <table>
         <tr>
           <td class="label">
@@ -105,8 +105,8 @@
       </table>
     </div>
 
-    <div class="form_actions">
-      <g:actionSubmit value="Rechercher" action="recherche"
+    <div class="form_actions recherche">
+      <g:actionSubmit value="Rechercher" action="recherche" class="button"
                       title="Lancer la recherche"/>
     </div>
   </form>
