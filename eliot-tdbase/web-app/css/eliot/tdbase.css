@@ -55,6 +55,9 @@ table table, table table td {
 .portal-form_container select{
 	width: 20em;
 }
+.portal-form_container  textarea{
+	border-color: #ccc;
+}
 
 /*******************************************************************************
 
@@ -416,7 +419,7 @@ styles for TDBase results list
 @author Stéphane SIGUR
 ********************************************************************************/
 div.portal-default_results-list{margin-bottom: 50px;}
-div.portal-default_results-list .even{background-color: #f7f7f7;}
+div.portal-default_results-list .even{background-color: #f8f8f8;}
 
 div.portal-default_results-list>div{
 	padding:5px 0 15px;
@@ -450,7 +453,7 @@ div.portal-default_results-list h1{
 	font-size: 1.4em;
 }
 	div.portal-default_results-list.sujet h1{background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;}
-	div.portal-default_results-list.question h1{background: url("../../images/eliot/picto-question.png") no-repeat 0 2px;}
+	div.portal-default_results-list.question h1{background: url("../../images/eliot/picto-question.png") no-repeat 0 0;}
 
 div.portal-default_results-list .feature{
 	/*margin-left: 33px;*/
@@ -478,19 +481,31 @@ div.portal-default_results-list .feature li{
 Style for the edition of a document or category (ToolBar)
 
 ********************************************************************************/
+.portal-messages .success {
+	/* Surcharge "portal.css" */
+    background-color: #f8ffeb;
+    background-position:5px 10px;
+    margin:  10px;
+    padding: 10px 25px;
+}
+
+
 .portal-tabs {
     background-color:whiteSmoke;
     color: #999999;
     border: none;
-    
-    text-align:right;
+    text-align:left;
     margin: 25px 10px 0px;
-        
+    padding: 12px 0;
     -moz-border-radius:6px;
 	-webkit-border-radius:6px;
 	border-radius:6px;
 	/*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
+	.portal-tabs-famille-liens button{
+		position: absolute;
+		margin-top:-6px;
+	}
 
 .portal-tabs a {margin-left: 10px;}
 	.portal-tabs a:hover{
@@ -509,6 +524,18 @@ Style for the edition of a document or category (ToolBar)
 		background: url("../../images/eliot/picto-modif.png") no-repeat 0 4px;
 	}
 		.portal-tabs a.modify:hover{background-position: 0 -22px;}
+	
+	.portal-tabs a.share{
+		padding: 4px 4px 4px 20px;
+		background: url("../../images/eliot/picto-share.png") no-repeat 0 4px;
+	}
+		.portal-tabs a.share:hover{background-position: 0 -23px;}
+	
+	.portal-tabs a.delete{
+		padding: 4px 4px 4px 20px;
+		background: url("../../images/eliot/picto-delete.png") no-repeat 0 4px;
+	}
+		.portal-tabs a.delete:hover{background-position: 0 -23px;}
 
 /*******************************************************************************
 
@@ -518,7 +545,7 @@ Style for the edition of a document or category (Content)
 .edite.portal-form_container{margin: 30px 20px;border: none;width: 100%;}
 
 .recherche.portal-form_container{
-	padding: 10px 0;
+	padding: 2px 0;
 }
 	.recherche.portal-form_container>table{margin: 10px 0;}
 	.recherche.portal-form_container {
@@ -546,6 +573,7 @@ Style for the edition of a document or category (Content)
     padding-bottom:0.5em;
     margin-left:10px;
     margin-right:auto;
+    margin-bottom: -20px;
     text-align: right;
     width:70%;
 }
@@ -562,6 +590,18 @@ Style for the edition of a document or category (Content)
 	font-weight: bold;
 	color: #3F61A0;
 }
+	.question .form_actions{
+		border: none;
+		border-top: 1px dotted #ccc;
+		background-color:whiteSmoke;
+		margin-bottom: 20px;
+	}
+		.question .form_actions .button{margin-right: 15px;color: #ec8e0c;}
+		#specifobject_reponses .button{color: #333;}
+		
+	.question .portal-form_container .title{background: url("../../images/eliot/picto-question.png") no-repeat 0 0;}
+	.question .portal-form_container td{border-bottom: 5px solid #fff;}
+	
 .portal-form_container input[type=text]{
 	border: 1px solid #ccc;
 	padding: 5px 2px;
@@ -572,20 +612,22 @@ Style for the edition of a document or category (Content)
 .button{      
     padding: 5px 12px 6px;
     border: 1px solid #CCC;
-	background: whiteSmoke;
-	color: #333;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
 	text-transform: uppercase;
 	color: #ec8e0c;
+	background:whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
 }
-
-.button:hover{
-	border: 1px solid #fbcb09; background: #fdf5ce;
+	.ui-button{background:#fdf5ce url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;}
+	
+.ui-button:hover, .button:hover{
+	border: 1px solid #fbcb09;
+	background:#fdf5ce url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
     color: #ec8e0c;
     cursor: pointer;
 }
+	
 
 .tdbase-sujet-edition{margin-bottom: 50px;}
 .tdbase-sujet-edition-question{
@@ -594,7 +636,7 @@ Style for the edition of a document or category (Content)
 	margin: 0 10px 10px;
 	overflow: hidden;
 	border: none;
-	background:#f7f7f7 url("../../images/eliot/picto-question.png") no-repeat 8px 10px;
+	background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 8px;
 }
 	.tdbase-sujet-edition-question button{
 		position: absolute;
@@ -608,7 +650,7 @@ Style for the edition of a document or category (Content)
 .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points{
 	position: absolute;
 	margin-top: -23px;
-	left: 120px;
+	left: 116px;
 }
 	.tdbase-sujet-edition-question .tdbase-sujet-edition-question-points .point{
 		font-weight: bold;

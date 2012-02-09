@@ -51,7 +51,7 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <g:if test="${sujetEnEdition}">
-  <div class="portal-tabs" style="text-align: left">
+  <div class="portal-tabs">
     <span class="portal-tabs-famille-liens">
       <g:link action="ajouteElement" controller="sujet" class="add"
               id="${sujet.id}">Ajouter un item</g:link> |
