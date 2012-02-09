@@ -37,6 +37,7 @@
       $('#menu-item-sujets').addClass('actif');
 
       $(".editinplace").editInPlace({
+      	bg_out: "#fff",
         url: "${g.createLink(controller: 'sujet', action: 'updatePoints')}"
       });
       initButtons();
@@ -139,13 +140,14 @@
 </g:if>
 <form method="post">
   <div class="portal-form_container" style="width: 80%;border: none;">
-  	<span class="label">Titre :</span> <g:textField name="sujetTitre" value="${titreSujet}" size="80"/> <g:actionSubmit action="enregistre" value="Enregistrer" class="button"/>
+  	<span class="title">Titre :</span> <g:textField name="sujetTitre" value="${titreSujet}" size="80"/> <g:actionSubmit action="enregistre" value="Enregistrer" class="button"/>
     <g:if test="${sujetEnEdition}">
       <g:hiddenField name="sujetId" value="${sujet.id}"/>
     </g:if>
   </div>
 </form>
 <g:if test="${sujet}">
+	<div class="tdbase-sujet-edition">
   <g:each in="${sujet.questionsSequences}" var="sujetQuestion"
           status="indexQuestion">
     <div class="tdbase-sujet-edition-question">
@@ -215,14 +217,13 @@
       </ul>
 		
       <g:if test="${sujetQuestion.question.type.interaction}">
-        <div class="tdbase-sujet-edition-question-points"
-             style="margin-right:90%;float: right;">
+        <div class="tdbase-sujet-edition-question-points">
           <div class="editinplace"
                id="SujetSequenceQuestions-${sujetQuestion.id}"
                title="Cliquez pour modifier le barème...">
             ${NumberUtils.formatFloat(sujetQuestion.points)}
           </div>
-          &nbsp;point(s)
+          <span class="point">point(s)</span>
         </div>
       </g:if>
       <div class="tdbase-sujet-edition-question-preview">
@@ -235,6 +236,7 @@
     </div>
 
   </g:each>
+  </div>
 </g:if>
 </body>
 </html>
