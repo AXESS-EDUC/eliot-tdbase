@@ -50,7 +50,7 @@
 </g:if>
 <g:if test="${afficheFormulaire}">
 <form>
-  <div class="portal-form_container">
+  <div class="portal-form_container recherche">
     <table>
       <tr>
         <td class="label">
@@ -60,7 +60,7 @@
           <g:textField name="patternTitre" title="titre"
                        value="${rechercheCommand.patternTitre}"/>
         </td>
-        <td width="20"/>
+       
         <td class="label">Type :
         </td>
         <td>
@@ -79,8 +79,7 @@
           <g:textField name="patternSpecification" title="titre"
                        value="${rechercheCommand.patternSpecification}"/>
         </td>
-        <td width="20"/>
-        <td class="label">Matière :
+               <td class="label">Matière :
         </td>
         <td>
           <g:select name="matiereId" value="${rechercheCommand.matiereId}"
@@ -97,7 +96,7 @@
           <g:checkBox name="estAutonome" title="Autonome"
                       checked="${rechercheCommand.estAutonome}"/>
         </td>
-        <td width="20"/>
+        
         <td class="label">Niveau :
         </td>
         <td>
@@ -112,10 +111,10 @@
     </table>
   </div>
 
-  <div class="form_actions">
+  <div class="form_actions recherche">
     <g:hiddenField name="sujetId" value="${sujet?.id}"/>
     <g:actionSubmit value="Rechercher" action="recherche"
-                    title="Lancer la recherche"/>
+                    title="Lancer la recherche" class="button"/>
   </div>
 </form>
 </g:if>

@@ -139,7 +139,7 @@
   </div>
 </g:if>
 <form method="post">
-  <div class="portal-form_container" style="width: 80%;border: none;">
+  <div class="portal-form_container edite">
   	<span class="title">Titre :</span> <g:textField name="sujetTitre" value="${titreSujet}" size="80"/> <g:actionSubmit action="enregistre" value="Enregistrer" class="button"/>
     <g:if test="${sujetEnEdition}">
       <g:hiddenField name="sujetId" value="${sujet.id}"/>
