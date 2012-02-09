@@ -418,14 +418,16 @@ Style custom eliot-tdbase
 styles for TDBase results list
 @author Stéphane SIGUR
 ********************************************************************************/
+.portal_pagination {margin-bottom: 0;}
+
 div.portal-default_results-list{margin-bottom: 50px;}
-div.portal-default_results-list .even{background-color: #f8f8f8;}
+
 
 div.portal-default_results-list>div{
-	padding:5px 0 15px;
+	padding:5px 0 10px;
 	margin: 0 10px;
 	overflow: hidden;
-	border-bottom: 1px solid #e5e5e5;
+	border-bottom: 1px dotted #e5e5e5;
 }
 	div.portal-default_results-list>div:first-child{
 		border-top: 1px solid #e5e5e5;
@@ -444,37 +446,24 @@ div.portal-default_results-list>div{
 			
 div.portal-default_results-list h1{
 	padding-left: 30px;
-	padding-top: 2px;
-	padding-bottom: 4px;
-	margin-top: 6px;
-	margin-bottom: 10px;
-	/*border-bottom: 1px dotted #ccc;	color: #555;*/
-
-	font-size: 1.4em;
+	margin: 6px 10px 2px;
+	font-size: 1.3em;
 }
-	div.portal-default_results-list.sujet h1{background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;}
-	div.portal-default_results-list.question h1{background: url("../../images/eliot/picto-question.png") no-repeat 0 0;}
+	div.portal-default_results-list.sujet>div{background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;}
+	div.portal-default_results-list.question>div{background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;}
+	
+	div.portal-default_results-list div.even{background-color: #f9f9f9;}
 
-div.portal-default_results-list .feature{
-	/*margin-left: 33px;*/
-	margin-top: -8px;
-	border-top:1px dotted rgb(203, 219, 234);
+div.portal-default_results-list p{
+	padding-left: 45px;
+	margin: 1px 0;
 }
-div.portal-default_results-list .feature li{
-	padding: 2px 20px 2px 0;
-	margin: 2px 0;
-	display: block;
-	text-align: left;
-	float: left;
-	min-width: 10em;
-
+	div.portal-default_results-list p em{color: #999;font-size: .89em;margin: 0;}
+	div.portal-default_results-list p strong{color: #728CBD;margin-left: 10px;}
+		div.portal-default_results-list p strong:first-child{
+	margin-left: 0;
 }
-	div.portal-default_results-list .feature li strong{
-		margin:0 10px;
-		color: #728CBD;
-	}
-
-
+	
 
 /*******************************************************************************
 
