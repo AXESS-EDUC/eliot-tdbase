@@ -183,15 +183,16 @@
             <li>Supprimer</li>
           </g:else>
 	  	</ul>
-	  	<h1> ${fieldValue(bean: questionInstance, field: "titre")}</h1>
-	  	<ul class="feature">
-	  		<li><strong>Niveau :</strong> ${questionInstance.niveau?.libelleLong}</li>
-	  		<li><strong>Matière :</strong> ${questionInstance.matiere?.libelleLong}</li> 
-	  		<li><strong>Autonome :</strong>  ${questionInstance.estAutonome ? 'oui' : 'non'}</li>
-	  		<li><strong>Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}</li>
-	  		<li><strong>Mise à jour le :</strong> ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</li>
-	  	</ul>
 	  	
+	  	<h1> ${fieldValue(bean: questionInstance, field: "titre")}</h1>
+	  	<p class="date">Mise à jour le ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
+	  	<p>
+	  		<g:if test="${questionInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${questionInstance.niveau?.libelleLong} </g:if>	 
+	  		<g:if test="${questionInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${questionInstance.matiere?.libelleLong} </g:if>
+	  		<strong>» Autonome :</strong>  ${questionInstance.estAutonome ? 'oui' : 'non'}
+	  		<strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
+	  	</p>
+	  	  	
 	  </div>
 	</g:each>
 </div>
