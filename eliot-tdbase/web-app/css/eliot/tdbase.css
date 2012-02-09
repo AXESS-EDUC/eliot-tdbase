@@ -36,7 +36,8 @@ textarea {
     border: 0;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 1em;
+    margin: 2em 0;
+    width: 100%;
 }
 
 .portal-form_container td {
@@ -50,6 +51,10 @@ table table, table table td {
 
 .portal-form_container table table {
     width: 100%;
+}
+
+.portal-form_container select{
+	width: 20em;
 }
 
 /*******************************************************************************
@@ -415,20 +420,19 @@ div.portal-default_results-list{margin-bottom: 50px;}
 div.portal-default_results-list .even{background-color: #f7f7f7;}
 
 div.portal-default_results-list>div{
-	padding:0 0 15px;
-	margin-bottom: -1px;
+	padding:5px 0 15px;
 	margin: 0 10px;
 	overflow: hidden;
-	border-bottom: 1px dotted #ccc;
+	border-bottom: 1px solid #e5e5e5;
 }
 	div.portal-default_results-list>div:first-child{
-		border-top: 1px dotted #ccc;
+		border-top: 1px solid #e5e5e5;
 	}
 	div.portal-default_results-list>div button{
 		position: absolute;
 		margin-right: 10px;
 		right: 15px;
-		margin-top: 10px;
+		margin-top: 4px;
 	}
 		div.portal-default_results-list .tdbase-menu-actions{
 			margin-top: 2px;
@@ -438,25 +442,28 @@ div.portal-default_results-list>div{
 			
 div.portal-default_results-list h1{
 	padding-left: 30px;
+	margin-top: 6px;
 	padding-bottom: 6px;
-	margin-bottom: 4px;
+	margin-bottom: 6px;
 	border-bottom: 1px dotted #ccc;
 }
 	div.portal-default_results-list.sujet h1{background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;}
 	div.portal-default_results-list.question h1{background: url("../../images/eliot/picto-question.png") no-repeat 0 3px;}
-	
+
+div.portal-default_results-list .feature{
+	margin-left: 35px;
+}
 div.portal-default_results-list .feature li{
-	padding: 2px 0 2px 20px;
+	padding: 2px 20px 2px 0;
 	margin: 2px 0;
-	display: block;
-	overflow: hidden;
+	display: inline;
+	text-align: left;
+}
+	div.portal-default_results-list .feature li.left{
+		float: left;
 }
 	div.portal-default_results-list .feature li strong{
-		margin-right: 10px;
-		width: 10em;
-		text-align: right;
-		display: block; 
-		float: left;
+		margin:0 10px;
 		color: #728CBD;
 	}
 
@@ -542,7 +549,7 @@ Style for the edition of a document or category (Content)
 .tdbase-sujet-edition-question{
 	padding:30px 10px 15px;
 	margin-bottom: -1px;
-	margin: 0 10px 20px;
+	margin: 0 10px 10px;
 	overflow: hidden;
 	border: none;
 	background:#f7f7f7 url("../../images/eliot/picto-question.png") no-repeat 8px 10px;

@@ -166,14 +166,14 @@
         </ul>
 	  	<h1> ${fieldValue(bean: sujetInstance, field: "titre")}</h1>
 	  	<ul class="feature">
-	  		<li><strong>Niveau :</strong> ${sujetInstance.niveau?.libelleLong}</li>
-	  		<li><strong>Matière :</strong> ${sujetInstance.matiere?.libelleLong}</li> 
-	  		<li><strong>Durée :</strong> ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</li>
+	  		<li><strong>Niveau :</strong>${sujetInstance.niveau?.libelleLong}</li>
+	  		<li><strong>Matière :</strong>${sujetInstance.matiere?.libelleLong}</li> 
+	  		<li><strong>Durée :</strong>${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</li>
 	  		<g:if test="${afficheFormulaire}">
-	  		  <li><strong>Auteur :</strong> ${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}</li>
+	  		  <li><strong>Auteur :</strong>${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}</li>
 	  		</g:if>
-	  		<li><strong>Partagé :</strong> ${sujetInstance.estPartage() ? 'oui' : 'non'}</li>
-	  		<li><strong>Mise à jour le :</strong> ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</li>
+	  		<li><strong>Partagé :</strong>${sujetInstance.estPartage() ? 'oui' : 'non'}</li>
+	  		<li><strong>Mise à jour le :</strong>${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</li>
 	  	</ul>
 	  	
 	  </div>

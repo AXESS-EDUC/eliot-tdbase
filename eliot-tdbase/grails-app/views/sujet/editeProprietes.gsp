@@ -57,104 +57,103 @@
   </div>
 </g:if>
 
-<form method="post"
-      action="#">
+<form method="post" action="#">
   <div class="portal-form_container">
-    <table>
-      <tr>
-        <td class="label">Titre:</td>
-        <td>
-          <input size="80" type="text" value="${sujet.titre}" name="titre"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Type&nbsp;:</td>
-        <td>
-          <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
-                    noSelection="${['null': 'Sélectionner un type...']}"
-                    from="${typesSujet}"
-                    optionKey="id"
-                    optionValue="nom"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Mati&egrave;re&nbsp;:</td>
-        <td>
-          <g:select name="matiere.id" value="${sujet.matiere?.id}"
-                    noSelection="${['null': 'Sélectionner une matière...']}"
-                    from="${matieres}"
-                    optionKey="id"
-                    optionValue="libelleLong"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Niveau&nbsp;:</td>
-        <td>
-          <g:select name="niveau.id" value="${sujet.niveau?.id}"
-                    noSelection="${['null': 'Sélectionner un niveau...']}"
-                    from="${niveaux}"
-                    optionKey="id"
-                    optionValue="libelleLong"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Dur&eacute;e&nbsp;:</td>
-        <td>
-          <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}"/>
-          <i>(en minutes)</i>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Accessible&nbsp;:</td>
-        <td>
-          <g:checkBox name="accesPublic" checked="${sujet.accesPublic}"/>
-          via lien public</td>
-      </tr>
-      <tr>
-        <td class="label">Présentation&nbsp;:</td>
-        <td>
-          <g:checkBox name="accesSequentiel"
-                      checked="${sujet.accesSequentiel}"/>
-          1 seule question par écran</td>
-      </tr>
-      <tr>
-        <td class="label">Ordre&nbsp;questions&nbsp;:</td>
-        <td>
-          <g:checkBox name="ordreQuestionsAleatoire"
-                      checked="${sujet.ordreQuestionsAleatoire}"/>
-          Al&eacute;atoire</td>
-      </tr>
-      <tr>
-        <td class="label">S&eacute;lection&nbsp;:</td>
-        <td>
-          <input type="text" name="nbQuestions" value="${sujet.nbQuestions}"/>
-          <i>(le nombre de questions &agrave; selectionner)</i>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Description&nbsp;:</td>
-        <td>
-          <g:textArea cols="56" rows="10" name="presentation"
-                      value="${sujet.presentation}"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Partage :</td>
-        <td>
-          <g:if test="${sujet.estPartage()}">
-            <a href="${sujet.copyrightsType.lien}"
-               target="_blank">${sujet.copyrightsType.presentation}</a>
-          </g:if>
-          <g:else>
-            ce sujet n'est pas partagé
-          </g:else>
-        </td>
-      </tr>
-      <g:if test="${sujet.paternite}">
-        <g:render template="/artefact/paternite"
-                  model="[paternite: sujet.paternite]"/>
-      </g:if>
-    </table>
+	<table>
+	      <tr>
+	        <td class="label">Titre:</td>
+	        <td>
+	          <input size="80" type="text" value="${sujet.titre}" name="titre"/>
+	        </td>
+	      </tr>
+	      <tr>
+	        <td class="label">Type&nbsp;:</td>
+	        <td>
+	          <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
+	                    noSelection="${['null': 'Sélectionner un type...']}"
+	                    from="${typesSujet}"
+	                    optionKey="id"
+	                    optionValue="nom"/>
+	        </td>
+	      </tr>
+	      <tr>
+	        <td class="label">Mati&egrave;re&nbsp;:</td>
+	        <td>
+	          <g:select name="matiere.id" value="${sujet.matiere?.id}"
+	                    noSelection="${['null': 'Sélectionner une matière...']}"
+	                    from="${matieres}"
+	                    optionKey="id"
+	                    optionValue="libelleLong"/>
+	        </td>
+	      </tr>
+	      <tr>
+	        <td class="label">Niveau&nbsp;:</td>
+	        <td>
+	          <g:select name="niveau.id" value="${sujet.niveau?.id}"
+	                    noSelection="${['null': 'Sélectionner un niveau...']}"
+	                    from="${niveaux}"
+	                    optionKey="id"
+	                    optionValue="libelleLong"/>
+	        </td>
+	      </tr>
+	      <tr>
+	        <td class="label">Dur&eacute;e&nbsp;:</td>
+	        <td>
+	          <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}"/>
+	          <i>(en minutes)</i>
+	        </td>
+	      </tr>
+	      <tr>
+	        <td class="label">Accessible&nbsp;:</td>
+	        <td>
+	          <g:checkBox name="accesPublic" checked="${sujet.accesPublic}"/>
+	          via lien public</td>
+	      </tr>
+	      <tr>
+	        <td class="label">Présentation&nbsp;:</td>
+	        <td>
+	          <g:checkBox name="accesSequentiel"
+	                      checked="${sujet.accesSequentiel}"/>
+	          1 seule question par écran</td>
+	      </tr>
+	      <tr>
+	        <td class="label">Ordre&nbsp;questions&nbsp;:</td>
+	        <td>
+	          <g:checkBox name="ordreQuestionsAleatoire"
+	                      checked="${sujet.ordreQuestionsAleatoire}"/>
+	          Al&eacute;atoire</td>
+	      </tr>
+	      <tr>
+	        <td class="label">S&eacute;lection&nbsp;:</td>
+	        <td>
+	          <input type="text" name="nbQuestions" value="${sujet.nbQuestions}"/>
+	          <i>(le nombre de questions &agrave; selectionner)</i>
+	        </td>
+	      </tr>
+	      <tr>
+	        <td class="label">Description&nbsp;:</td>
+	        <td>
+	          <g:textArea cols="56" rows="10" name="presentation"
+	                      value="${sujet.presentation}"/>
+	        </td>
+	      </tr>
+	      <tr>
+	        <td class="label">Partage :</td>
+	        <td>
+	          <g:if test="${sujet.estPartage()}">
+	            <a href="${sujet.copyrightsType.lien}"
+	               target="_blank">${sujet.copyrightsType.presentation}</a>
+	          </g:if>
+	          <g:else>
+	            ce sujet n'est pas partagé
+	          </g:else>
+	        </td>
+	      </tr>
+	      <g:if test="${sujet.paternite}">
+	        <g:render template="/artefact/paternite"
+	                  model="[paternite: sujet.paternite]"/>
+	      </g:if>
+	</table>
   </div>
   <g:hiddenField name="id" value="${sujet.id}"/>
   <div class="form_actions">
