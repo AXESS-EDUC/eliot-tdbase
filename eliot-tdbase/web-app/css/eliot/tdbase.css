@@ -424,22 +424,17 @@ styles for TDBase results list
     padding-left: 1em;
     margin-right: 0px;
     margin-top: 0;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     height: 20px;
+    font-weight: normal!important;
 }
 
 .portal-breadcrumbs a, .portal-breadcrumbs span {
     float: left;
-    font-size: 0.9em;
+    font-size: 1em;
+    
 }
-
-.portal-breadcrumbs .trail {
-    font-weight: bold;
-}
-
-.portal-breadcrumbs .actif {
-    font-weight: bold;
-}
+	.portal-breadcrumbs a:first-child{font-weight: bold;}
 
 .portal-bc-separator {
     background: transparent url(../../images/eliot/bg-breadcrumb.png) no-repeat scroll 0;
