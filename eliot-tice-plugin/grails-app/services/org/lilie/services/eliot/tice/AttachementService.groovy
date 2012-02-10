@@ -38,6 +38,10 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.utils.ServiceEliotEnum
 import org.lilie.services.eliot.tice.utils.ServicesEliotService
 import org.springframework.web.multipart.MultipartFile
+import org.lilie.services.eliot.tice.jackrabbit.core.data.DataStore
+import org.lilie.services.eliot.tice.jackrabbit.core.data.DataRecord
+import javax.imageio.stream.MemoryCacheImageInputStream
+import org.lilie.services.eliot.tice.jackrabbit.core.data.DataIdentifier
 
 /**
  * Classe fournissant le service de gestion de breadcrumps
@@ -47,6 +51,7 @@ class AttachementService {
 
   static transactional = false
   ServicesEliotService servicesEliotService
+  DataStore dataStore
 
   /**
    * Créer un objet de type Attachement à partir d'une requête HTTP
@@ -82,21 +87,9 @@ class AttachementService {
             nomFichierOriginal: fichier.originalFilename,
             aSupprimer: true
     )
-    String racine = servicesEliotService.getCheminRacineEspaceFichier(config)
-    String espaceFic = servicesEliotService.getCheminRelatifEspaceFichierForPersonneAndServiceEliot(
-            proprietaire, serviceEliotEnum
-    )
-    String fs = File.separator
-    Date now = new Date()
-    String espaceDest = espaceFic << now.format("yyyy") << fs << now.format("MM")
-    String racineDest = racine + espaceDest
-    new File(racineDest).mkdirs()
-    String cheminRel = espaceDest << fs << UUID.randomUUID()
-    String cheminDest = racine + cheminRel
-    File fichierDest = new File(cheminDest)
-    fichier.transferTo(fichierDest)
-    attachement.chemin = cheminRel
-    attachement.dimension = determinerDimension(fichierDest)
+    DataRecord dataRecord = dataStore.addRecord(fichier.inputStream)
+    attachement.chemin = dataRecord.identifier.toString()
+    attachement.dimension = determinerDimension(fichier.inputStream)
     attachement.save()
     return attachement
   }
@@ -110,9 +103,8 @@ class AttachementService {
    */
   File getFileForAttachement(Attachement attachement,
                              def config = ConfigurationHolder.config) {
-    String chemin = servicesEliotService.getCheminRacineEspaceFichier(config) <<
-                    attachement.chemin
-    new File(chemin)
+    DataRecord dataRecord = dataStore.getRecord(new DataIdentifier(attachement.chemin))
+    dataRecord.stream
   }
 
   /**
@@ -121,17 +113,17 @@ class AttachementService {
    * @param fileName non d'origine du fichier.
    * @return les dimensions du fichier.
    */
-  private Dimension determinerDimension(File imageFile) {
+  private Dimension determinerDimension(InputStream inputStream) {
 
     ImageReader reader
 
     try {
-      def fileInputStream = new FileImageInputStream(imageFile)
-      def imageReaders = ImageIO.getImageReaders(fileInputStream)
+      def memInputStream = new MemoryCacheImageInputStream(inputStream)
+      def imageReaders = ImageIO.getImageReaders(memInputStream)
 
       if (imageReaders.hasNext()) {
         reader = imageReaders.next()
-        reader.input = fileInputStream
+        reader.input = memInputStream
         return new Dimension(
                 largeur: reader.getWidth(reader.minIndex),
                 hauteur: reader.getHeight(reader.minIndex)
