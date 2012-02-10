@@ -27,7 +27,7 @@
  */
 
 function initButtons() {
-	
+	$('html').click(function() { $('.tdbase-menu-actions').hide();});
     $('button').button({
                            icons:{
                                primary:"ui-icon-gear",
@@ -43,7 +43,6 @@ function initButtons() {
                                     var hauteurBouton =  $(this).height() ;
                                     var offsetTopDefaut = $(this).offset().top + hauteurBouton;
                                     var marginTopDefaut = $(this).marginTop;
-                                    //alert("hauteurs : "+$(window).height() +" - "+(offsetTopDefaut + hauteurMenu));
                                     if (offsetTopDefaut + hauteurMenu > $(window).height()) {
                                        //var offsetTopCible = offsetTopDefaut - hauteurMenu - hauteurBouton ;
                                        var offsetTopCible = hauteurMenu + hauteurBouton;
@@ -51,7 +50,7 @@ function initButtons() {
                                         $(currentIdMenu).addClass("top");
                                     } else {
                                         //$(currentIdMenu).css("top", offsetTopDefaut)
-                                        $(currentIdMenu).css("marginTop", marginTopDefaut) ;
+                                        $(currentIdMenu).css("marginTop","0") ;
                                         $(currentIdMenu).removeClass("top");
                                     }
 									
@@ -62,5 +61,5 @@ function initButtons() {
                                 });
       
      //Hide the menus if visible                          
-	$('html').click(function() { $('.tdbase-menu-actions').hide();});
+	
 }

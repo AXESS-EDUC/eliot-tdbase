@@ -419,9 +419,10 @@ div.portal-default_results-list{margin-bottom: 50px;position: relative;}
 div.portal-default_results-list.partiel{width: 71.5%;}
 
 div.portal-default_results-list>div{
+	position: relative;
 	padding:5px 0 10px;
 	margin: 0 10px;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	/*border-bottom: 1px dotted #e5e5e5;*/
 }
 	div.portal-default_results-list>div:first-child{
@@ -436,10 +437,10 @@ div.portal-default_results-list>div{
 		div.portal-default_results-list.partiel>div button{right: 0;}
 		div.portal-default_results-list .tdbase-menu-actions{
 			position: absolute;
-			margin-top: 30px;
 			margin-left: -97px;
 		}
-			div.portal-default_results-list .tdbase-menu-actions.top{margin-top: 0;}
+			div.portal-default_results-list .tdbase-menu-actions{top: 32px;}
+			div.portal-default_results-list .tdbase-menu-actions.top{top: 8px;}
 			
 div.portal-default_results-list h1{
 	padding-left: 35px;
@@ -499,6 +500,8 @@ Style for the edition of a document or category (ToolBar)
 		position: absolute;
 		margin-top:-6px;
 	}
+		.portal-tabs .tdbase-menu-actions{top: 32px;}
+		.portal-tabs .tdbase-menu-actions.top{top:8px;}
 
 .portal-tabs a {margin-left: 10px;}
 	.portal-tabs a:hover{
