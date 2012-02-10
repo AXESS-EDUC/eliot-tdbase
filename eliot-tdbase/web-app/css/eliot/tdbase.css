@@ -413,6 +413,45 @@ Style custom eliot-tdbase
 styles for TDBase results list
 @author Stéphane SIGUR
 ********************************************************************************/
+/* breadcrumbs */
+.portal-breadcrumbs {
+    line-height: 20px;
+    background-color: #F3F6FB;
+    border: 1px solid #D0D0D0;
+    border-left: none;
+    border-right: none;
+    padding: 0;
+    padding-left: 1em;
+    margin-right: 0px;
+    margin-top: 0;
+    margin-bottom: 5px;
+    height: 20px;
+}
+
+.portal-breadcrumbs a, .portal-breadcrumbs span {
+    float: left;
+    font-size: 0.9em;
+}
+
+.portal-breadcrumbs .trail {
+    font-weight: bold;
+}
+
+.portal-breadcrumbs .actif {
+    font-weight: bold;
+}
+
+.portal-bc-separator {
+    background: transparent url(../../images/eliot/bg-breadcrumb.png) no-repeat scroll 0;
+    float: left;
+    margin-left: 1em;
+    margin-right: 1em;
+    width: 10px;
+    text-indent: 10px;
+    overflow: hidden;
+}
+
+/* Pagination */
 .portal_pagination {margin-bottom: 0;}
 
 div.portal-default_results-list{margin-bottom: 50px;position: relative;}

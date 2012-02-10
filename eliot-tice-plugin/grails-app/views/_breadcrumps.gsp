@@ -32,7 +32,7 @@
       <g:link action="${lien.action}" controller="${lien.controller}" params="${lien.params}">
         ${lien.libelle}
       </g:link>
-       &gt;
+       <span class="portal-bc-separator">&nbsp;</span>
     </g:if>
     <g:else>
        ${lien.libelle}
