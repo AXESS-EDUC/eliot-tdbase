@@ -628,29 +628,31 @@ Style for the edition of a document or category (Content)
 .tdbase-sujet-edition{margin-bottom: 50px;}
 .tdbase-sujet-edition-question{
 	position: relative;
-	padding:30px 10px 15px;
+	padding:0 10px 25px;
 	margin: 0 10px 10px;
 	/*overflow: hidden;*/
 	border: none;
 	background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 8px;
 }
-
+	.tdbase-sujet-edition-question h1{padding: 10px 0 0 15px;}
 
 	.tdbase-sujet-edition-question button{
 		position: absolute;
-		top: 6px;
+		top: 8px;
 		margin: 0 10px 0 0;
-		left: 50px;
-		float: right;
-	}
-		.tdbase-sujet-edition-question .tdbase-menu-actions{top: 32px;}
+		right: 0;
+	}	
+		.tdbase-sujet-edition-question .tdbase-menu-actions{top: 32px;margin-left: -97px;}
 		.tdbase-sujet-edition-question .tdbase-menu-actions.top{top:8px;}
 	
 .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points{
 	position: absolute;
-	margin-top: -23px;
-	left: 116px;
+	margin-top: -38px;
+	right: 70px;
+	width: 120px;
 }
+	.tdbase-sujet-edition-question .tdbase-sujet-edition-question-points .editinplace {float:left;}
+
 	.tdbase-sujet-edition-question .tdbase-sujet-edition-question-points .point{
 		font-weight: bold;
 		margin: 5px;
