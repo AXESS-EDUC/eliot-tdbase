@@ -123,7 +123,7 @@
 </g:if>
 
 <g:form method="post" controller="question${question.type.code}"  class="question">
-  <div class="portal-form_container edite" style="width: 70%;">
+  <div class="portal-form_container edite" style="width: 69%;">
     <table>
 
       <tr>
@@ -222,7 +222,8 @@
       <g:hiddenField name="sujetId" value="${sujet.id}"/>
       <g:actionSubmit value="Enregistrer et insérer dans le sujet"
                       action="enregistreInsert"
-                      title="Enregistrer et insérer dans le sujet"/>
+                      title="Enregistrer et insérer dans le sujet"
+                      class="button"/>
     </g:if>
     <g:else>
       <g:actionSubmit value="Enregistrer"

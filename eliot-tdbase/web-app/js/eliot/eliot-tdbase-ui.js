@@ -37,13 +37,13 @@ function initButtons() {
                        }).click(function (event) {
                                     var currentIdMenu = "#menu_actions_" + this.id;
                                     $(currentIdMenu).css("left", this.offsetLeft);
+                                    
                                     // calcul de l'offsetTop
-
                                     var hauteurMenu = $(currentIdMenu).height() ;
                                     var hauteurBouton =  $(this).height() ;
                                     var offsetTopDefaut = $(this).offset().top + hauteurBouton;
                                     var marginTopDefaut = $(this).marginTop;
-                                    if (offsetTopDefaut + hauteurMenu > $(window).height()) {
+                                    if (offsetTopDefaut + hauteurMenu - document.body.scrollTop  > $(window).innerHeight()) {
                                        //var offsetTopCible = offsetTopDefaut - hauteurMenu - hauteurBouton ;
                                        var offsetTopCible = hauteurMenu + hauteurBouton;
                                         $(currentIdMenu).css("marginTop", - offsetTopCible) ;

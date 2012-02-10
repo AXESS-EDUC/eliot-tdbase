@@ -423,7 +423,7 @@ div.portal-default_results-list>div{
 	padding:5px 0 10px;
 	margin: 0 10px;
 	/*overflow: hidden;*/
-	/*border-bottom: 1px dotted #e5e5e5;*/
+	border-bottom: 1px dotted #e5e5e5;
 }
 	div.portal-default_results-list>div:first-child{
 		border-top: 1px solid #e5e5e5;
@@ -612,7 +612,7 @@ Style for the edition of a document or category (Content)
     -webkit-border-radius: 4px;
     border-radius: 4px;
 	text-transform: uppercase;
-	color: #ec8e0c;
+	color: #ec8e0c!important;
 	background:whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
 }
 	.ui-button{background:#fdf5ce url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;}
