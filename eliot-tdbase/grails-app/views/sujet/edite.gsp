@@ -60,7 +60,7 @@
     </span>
     <span class="portal-tabs-famille-liens">
       <button id="${sujet.id}">Actions</button>
-      <ul id="menu_actions_${sujet.id}"
+      <ul id="toolbar_menu_actions_${sujet.id}"
           class="tdbase-menu-actions">
         <li><g:link action="teste" id="${sujet.id}">
           Tester

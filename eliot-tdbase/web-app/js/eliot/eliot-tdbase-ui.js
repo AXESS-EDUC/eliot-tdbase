@@ -42,12 +42,16 @@ function initButtons() {
                                     var hauteurMenu = $(currentIdMenu).height() ;
                                     var hauteurBouton =  $(this).height() ;
                                     var offsetTopDefaut = $(this).offset().top + hauteurBouton;
+                                    var marginTopDefaut = $(this).marginTop;
+                                    //alert("hauteurs : "+$(window).height() +" - "+(offsetTopDefaut + hauteurMenu));
                                     if (offsetTopDefaut + hauteurMenu > $(window).height()) {
-                                       var offsetTopCible = offsetTopDefaut - hauteurMenu - hauteurBouton ;
-                                        $(currentIdMenu).css("top", offsetTopCible) ;
+                                       //var offsetTopCible = offsetTopDefaut - hauteurMenu - hauteurBouton ;
+                                       var offsetTopCible = hauteurMenu + hauteurBouton;
+                                        $(currentIdMenu).css("marginTop", - offsetTopCible) ;
                                         $(currentIdMenu).addClass("top");
                                     } else {
-                                        $(currentIdMenu).css("top", offsetTopDefaut)
+                                        //$(currentIdMenu).css("top", offsetTopDefaut)
+                                        $(currentIdMenu).css("marginTop", marginTopDefaut) ;
                                         $(currentIdMenu).removeClass("top");
                                     }
 									

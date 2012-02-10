@@ -333,12 +333,7 @@ Style custom eliot-tdbase
 		}
 			.tdbase-sujet-liste-elements li:first-child{border: none;}
 
-.tdbase-sujet-edition-question {
-    margin: 5px;
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    border-color: #728CBD;
-}
+
 
 .tdbase-sujet-edition-question-boutons {
     text-align: right;
@@ -420,8 +415,8 @@ styles for TDBase results list
 ********************************************************************************/
 .portal_pagination {margin-bottom: 0;}
 
-div.portal-default_results-list{margin-bottom: 50px;}
-
+div.portal-default_results-list{margin-bottom: 50px;position: relative;}
+div.portal-default_results-list.partiel{width: 71.5%;}
 
 div.portal-default_results-list>div{
 	padding:5px 0 10px;
@@ -438,11 +433,13 @@ div.portal-default_results-list>div{
 		right: 15px;
 		margin-top: 1px;
 	}
+		div.portal-default_results-list.partiel>div button{right: 0;}
 		div.portal-default_results-list .tdbase-menu-actions{
-			margin-top: 2px;
+			position: absolute;
+			margin-top: 30px;
 			margin-left: -97px;
 		}
-			div.portal-default_results-list .tdbase-menu-actions.top{margin-top: -22px;}
+			div.portal-default_results-list .tdbase-menu-actions.top{margin-top: 0;}
 			
 div.portal-default_results-list h1{
 	padding-left: 35px;
@@ -484,6 +481,7 @@ Style for the edition of a document or category (ToolBar)
 
 
 .portal-tabs {
+	position: relative;
     background-color:whiteSmoke;
     color: #999999;
     border: none;
@@ -495,6 +493,8 @@ Style for the edition of a document or category (ToolBar)
 	border-radius:6px;
 	/*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
+	
+	
 	.portal-tabs-famille-liens button{
 		position: absolute;
 		margin-top:-6px;
@@ -624,21 +624,24 @@ Style for the edition of a document or category (Content)
 
 .tdbase-sujet-edition{margin-bottom: 50px;}
 .tdbase-sujet-edition-question{
+	position: relative;
 	padding:30px 10px 15px;
-	margin-bottom: -1px;
 	margin: 0 10px 10px;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	border: none;
 	background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 8px;
 }
+
+
 	.tdbase-sujet-edition-question button{
 		position: absolute;
-		margin: -24px 10px 0 0;
+		top: 6px;
+		margin: 0 10px 0 0;
 		left: 50px;
 		float: right;
 	}
-		.tdbase-sujet-edition-question .tdbase-menu-actions{margin-top: 2px;}
-		.tdbase-sujet-edition-question .tdbase-menu-actions.top{margin-top: -22px;}
+		.tdbase-sujet-edition-question .tdbase-menu-actions{top: 32px;}
+		.tdbase-sujet-edition-question .tdbase-menu-actions.top{top:8px;}
 	
 .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points{
 	position: absolute;
