@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.lilie.services.eliot.tice.jackrabbit.core.data;
+package org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0;
 
 /**
  * Abstract data record base class. This base class contains only

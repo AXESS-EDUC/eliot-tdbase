@@ -34,9 +34,9 @@ import javax.imageio.ImageIO
 import javax.imageio.ImageReader
 import javax.imageio.stream.MemoryCacheImageInputStream
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
-import org.lilie.services.eliot.tice.jackrabbit.core.data.DataIdentifier
-import org.lilie.services.eliot.tice.jackrabbit.core.data.DataRecord
-import org.lilie.services.eliot.tice.jackrabbit.core.data.DataStore
+import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataIdentifier
+import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataRecord
+import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataStore
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.transaction.annotation.Transactional
 

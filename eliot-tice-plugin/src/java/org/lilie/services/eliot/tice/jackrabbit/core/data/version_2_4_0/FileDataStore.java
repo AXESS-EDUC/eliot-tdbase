@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lilie.services.eliot.tice.jackrabbit.core.data;
+package org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  *
  * Configuration:
  * <pre>
- * &lt;DataStore class="org.lilie.services.eliot.tice.jackrabbit.core.data.FileDataStore">
+ * &lt;DataStore class="org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.FileDataStore">
  *     &lt;param name="{@link #setPath(String) path}" value="/data/datastore"/>
  *     &lt;param name="{@link #setMinRecordLength(int) minRecordLength}" value="1024"/>
  * &lt/DataStore>
