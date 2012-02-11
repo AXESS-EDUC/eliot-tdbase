@@ -50,7 +50,7 @@
 </g:if>
 <g:if test="${afficheFormulaire}">
 <form>
-  <div class="portal-form_container">
+  <div class="portal-form_container recherche">
     <table>
       <tr>
         <td class="label">
@@ -60,7 +60,7 @@
           <g:textField name="patternTitre" title="titre"
                        value="${rechercheCommand.patternTitre}"/>
         </td>
-        <td width="20"/>
+       
         <td class="label">Type :
         </td>
         <td>
@@ -79,8 +79,7 @@
           <g:textField name="patternSpecification" title="titre"
                        value="${rechercheCommand.patternSpecification}"/>
         </td>
-        <td width="20"/>
-        <td class="label">Matière :
+               <td class="label">Matière :
         </td>
         <td>
           <g:select name="matiereId" value="${rechercheCommand.matiereId}"
@@ -97,7 +96,7 @@
           <g:checkBox name="estAutonome" title="Autonome"
                       checked="${rechercheCommand.estAutonome}"/>
         </td>
-        <td width="20"/>
+        
         <td class="label">Niveau :
         </td>
         <td>
@@ -112,122 +111,96 @@
     </table>
   </div>
 
-  <div class="form_actions">
+  <div class="form_actions recherche">
     <g:hiddenField name="sujetId" value="${sujet?.id}"/>
     <g:actionSubmit value="Rechercher" action="recherche"
-                    title="Lancer la recherche"/>
+                    title="Lancer la recherche" class="button"/>
   </div>
 </form>
 </g:if>
 <g:if test="${questions}">
   <div class="portal_pagination">
-    ${questions.totalCount} résultat(s) <g:paginate
+    <p class="nb_result">${questions.totalCount} résultat(s) </p>
+    <g:paginate
             total="${questions.totalCount}"
             params="${rechercheCommand?.toParams()}"></g:paginate>
   </div>
+  
+<div class="portal-default_results-list question  ${sujet ? 'partiel' : ''}">	
+	<g:each in="${questions}" status="i" var="questionInstance">
+	  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+	  	<button id="${questionInstance.id}">Actions</button>
+        <ul id="menu_actions_${questionInstance.id}"
+            class="tdbase-menu-actions">
+          <li><g:link action="detail"
+                      controller="question${questionInstance.type.code}"
+                      id="${questionInstance.id}"
+                      params="[sujetId: sujet?.id]">
+            Aperçu
+          </g:link>
+          </li>
+          <g:if test="${sujet}">
+            <li><g:link action="insert"
+                        controller="question${questionInstance.type.code}"
+                        id="${questionInstance.id}"
+                        params="[sujetId: sujet?.id]">
+              Insérer&nbsp;dans&nbsp;le&nbsp;sujet
+            </g:link>
+            </li>
+          </g:if>
+          <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+            <li><g:link action="edite"
+                        controller="question${questionInstance.type.code}"
+                        id="${questionInstance.id}">Modifier</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Modifier</li>
+          </g:else>
+          <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+            <li><g:link action="duplique"
+                        controller="question${questionInstance.type.code}"
+                        id="${questionInstance.id}">Dupliquer</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Dupliquer</li>
+          </g:else>
+          <li><hr/></li>
+          <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+            <li><g:link action="partage"
+                        controller="question${questionInstance.type.code}"
+                        id="${questionInstance.id}">Partager</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Partager</li>
+          </g:else>
+          <li><hr/></li>
+          <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+            <li><g:link action="supprime"
+                        controller="question${questionInstance.type.code}"
+                        id="${questionInstance.id}">Supprimer</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Supprimer</li>
+          </g:else>
+	  	</ul>
+	  	
+	  	<h1> ${fieldValue(bean: questionInstance, field: "titre")}</h1>
+	  	<p class="date">Mise à jour le ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
+	  	<p>
+	  		<g:if test="${questionInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${questionInstance.niveau?.libelleLong} </g:if>	 
+	  		<g:if test="${questionInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${questionInstance.matiere?.libelleLong} </g:if>
+	  		<strong>» Autonome :</strong>  ${questionInstance.estAutonome ? 'oui' : 'non'}
+	  		<strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
+	  	</p>
+	  	  	
+	  </div>
+	</g:each>
+</div>
 
-  <div class="portal-default_table">
-    <table>
-      <thead>
-      <tr>
-        <th>Titre</th>
-        <th>Niveau</th>
-        <th>Matière</th>
-        <th>Autonome</th>
-        <th>Partagé</th>
-        <th>Mis à jour le</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <g:each in="${questions}" status="i" var="questionInstance">
-        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-          <td>
-            ${fieldValue(bean: questionInstance, field: "titre")}
-          </td>
-          <td>
-            ${questionInstance.niveau?.libelleLong}
-          </td>
-          <td>
-            ${questionInstance.matiere?.libelleLong}
-          </td>
-          <td>
-            ${questionInstance.estAutonome ? 'oui' : 'non'}
-          </td>
-          <td>
-            ${questionInstance.estPartage() ? 'oui' : 'non'}
-          </td>
-          <td>
-            ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}
-          </td>
-          <td>
-            <button id="${questionInstance.id}">Actions</button>
-            <ul id="menu_actions_${questionInstance.id}"
-                class="tdbase-menu-actions">
-              <li><g:link action="detail"
-                          controller="question${questionInstance.type.code}"
-                          id="${questionInstance.id}"
-                          params="[sujetId: sujet?.id]">
-                Aperçu
-              </g:link>
-              </li>
-              <g:if test="${sujet}">
-                <li><g:link action="insert"
-                            controller="question${questionInstance.type.code}"
-                            id="${questionInstance.id}"
-                            params="[sujetId: sujet?.id]">
-                  Insérer&nbsp;dans&nbsp;le&nbsp;sujet
-                </g:link>
-                </li>
-              </g:if>
-              <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
-                <li><g:link action="edite"
-                            controller="question${questionInstance.type.code}"
-                            id="${questionInstance.id}">Modifier</g:link></li>
-              </g:if>
-              <g:else>
-                <li>Modifier</li>
-              </g:else>
-              <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
-                <li><g:link action="duplique"
-                            controller="question${questionInstance.type.code}"
-                            id="${questionInstance.id}">Dupliquer</g:link></li>
-              </g:if>
-              <g:else>
-                <li>Dupliquer</li>
-              </g:else>
-              <li><hr/></li>
-              <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
-                <li><g:link action="partage"
-                            controller="question${questionInstance.type.code}"
-                            id="${questionInstance.id}">Partager</g:link></li>
-              </g:if>
-              <g:else>
-                <li>Partager</li>
-              </g:else>
-              <li><hr/></li>
-              <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
-                <li><g:link action="supprime"
-                            controller="question${questionInstance.type.code}"
-                            id="${questionInstance.id}">Supprimer</g:link></li>
-              </g:if>
-              <g:else>
-                <li>Supprimer</li>
-              </g:else>
-
-            </ul>
-
-          </td>
-        </tr>
-      </g:each>
-      </tbody>
-    </table>
-  </div>
 </g:if>
 <g:else>
   <div class="portal_pagination">
-    Aucun résultat
+    <p class="nb_result">Aucun résultat</p>
   </div>
 </g:else>
 

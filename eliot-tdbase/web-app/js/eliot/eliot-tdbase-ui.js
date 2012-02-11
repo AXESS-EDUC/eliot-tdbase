@@ -27,27 +27,37 @@
  */
 
 function initButtons() {
-    $('button').button({
+	    $('button').button({
                            icons:{
                                primary:"ui-icon-gear",
                                secondary:"ui-icon-triangle-1-s"
                            },
                            text:false
-                       }).click(function () {
+                       }).click(function (event) {
                                     var currentIdMenu = "#menu_actions_" + this.id;
                                     $(currentIdMenu).css("left", this.offsetLeft);
+                                    
                                     // calcul de l'offsetTop
-
                                     var hauteurMenu = $(currentIdMenu).height() ;
                                     var hauteurBouton =  $(this).height() ;
                                     var offsetTopDefaut = $(this).offset().top + hauteurBouton;
-                                    if (offsetTopDefaut + hauteurMenu > $(window).height()) {
-                                       var offsetTopCible = offsetTopDefaut - hauteurMenu - hauteurBouton ;
-                                        $(currentIdMenu).css("top", offsetTopCible) ;
+                                    var marginTopDefaut = $(this).marginTop;
+                                    if (offsetTopDefaut + hauteurMenu - document.body.scrollTop  > $(window).innerHeight()) {
+                                       var offsetTopCible = hauteurMenu + hauteurBouton;
+                                        $(currentIdMenu).css("marginTop", - offsetTopCible) ;
+                                        $(currentIdMenu).addClass("top");
                                     } else {
-                                        $(currentIdMenu).css("top", offsetTopDefaut)
+                                        $(currentIdMenu).css("marginTop","0") ;
+                                        $(currentIdMenu).removeClass("top");
                                     }
-
+									
+									$('.tdbase-menu-actions').hide();
                                     $(currentIdMenu).toggle();
+                                    
+                                    event.stopPropagation();
                                 });
+      
+    //Hide the menus if visible                          
+	$('html').click(function() { $('.tdbase-menu-actions').hide();});
+
 }

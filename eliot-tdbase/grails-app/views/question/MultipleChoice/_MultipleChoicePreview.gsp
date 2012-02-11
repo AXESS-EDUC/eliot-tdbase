@@ -26,12 +26,15 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle} <br/>
-<g:each in="${specifobject.reponses}" var="reponse" status="i">
-  &nbsp;
-  <g:checkBox name="listeQuestions[${indexQuestion}].specifobject.reponses[${i}].estUneBonneReponse"
-              checked="${reponse.estUneBonneReponse}" disabled="true"/>
-  ${reponse.libelleReponse}
-  <br/>
-</g:each>
-Correction : ${specifobject.correction}
+<div class="item">
+	<p class="title"><strong>${specifobject.libelle}</strong></p>
+	<g:each in="${specifobject.reponses}" var="reponse" status="i">
+	  &nbsp;
+	  <g:checkBox name="listeQuestions[${indexQuestion}].specifobject.reponses[${i}].estUneBonneReponse"
+	              checked="${reponse.estUneBonneReponse}" disabled="true"/>
+	  ${reponse.libelleReponse}
+	  <br/>
+	</g:each>
+	<br/>
+	<strong>Correction :</strong> <br/>${specifobject.correction}
+</div>

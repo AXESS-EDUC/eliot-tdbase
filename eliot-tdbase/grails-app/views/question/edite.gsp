@@ -71,10 +71,10 @@
   <div class="portal-tabs">
 
     <span class="portal-tabs-famille-liens">
-      Exporter |
+      Exporter | &nbsp;
       <g:if test="${peutPartagerQuestion && !question.estPartage()}">
-        <g:link action="partage"
-                id="${question.id}">Partager</g:link>
+        <g:link action="partage" class="share"
+                id="${question.id}">Partager</g:link>&nbsp; | 
       </g:if>
       <g:else>
         Partager
@@ -83,7 +83,7 @@
 
     <span class="portal-tabs-famille-liens">
       <g:if test="${peutSupprimer}">
-        <g:link action="supprime"
+        <g:link action="supprime" class="delete"
                 id="${question.id}">Supprimer</g:link>
       </g:if>
       <g:else>
@@ -122,15 +122,15 @@
   <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
 </g:if>
 
-<g:form method="post" controller="question${question.type.code}">
-  <div class="portal-form_container" style="width: 70%;margin-left: 15px;">
+<g:form method="post" controller="question${question.type.code}"  class="question">
+  <div class="portal-form_container edite" style="width: 69%;">
     <table>
 
       <tr>
-        <td class="label">Titre:</td>
+        <td class="label title">Titre :</td>
         <td>
           <input size="75" type="text" value="${question.titre}"
-                 name="titre" id="question.titre"/>
+                 name="titre" id="question.titre"/><br/><br/>
         </td>
       </tr>
       <tr>
@@ -214,7 +214,7 @@
   <g:hiddenField name="id" value="${question.id}"/>
   <g:hiddenField name="type.id" value="${question.typeId}"/>
 
-  <div class="form_actions" style="width: 70%;margin-left: 15px;">
+  <div class="form_actions">
     <g:link action="${lienRetour.action}"
             controller="${lienRetour.controller}"
             params="${lienRetour.params}">Annuler</g:link> |
@@ -222,12 +222,14 @@
       <g:hiddenField name="sujetId" value="${sujet.id}"/>
       <g:actionSubmit value="Enregistrer et insérer dans le sujet"
                       action="enregistreInsert"
-                      title="Enregistrer et insérer dans le sujet"/>
+                      title="Enregistrer et insérer dans le sujet"
+                      class="button"/>
     </g:if>
     <g:else>
       <g:actionSubmit value="Enregistrer"
                       action="enregistre"
-                      title="Enregistrer"/>
+                      title="Enregistrer" 
+                      class="button"/>
 
     </g:else>
   </div>

@@ -40,3 +40,6 @@ build
 target
 specifications
 eliot-tdbase.esproj
+
+.DS_Store
+

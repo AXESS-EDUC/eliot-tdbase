@@ -37,6 +37,7 @@
       $('#menu-item-sujets').addClass('actif');
 
       $(".editinplace").editInPlace({
+      	bg_out: "#fff",
         url: "${g.createLink(controller: 'sujet', action: 'updatePoints')}"
       });
       initButtons();
@@ -50,16 +51,16 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <g:if test="${sujetEnEdition}">
-  <div class="portal-tabs" style="text-align: left">
+  <div class="portal-tabs">
     <span class="portal-tabs-famille-liens">
-      <g:link action="ajouteElement" controller="sujet"
+      <g:link action="ajouteElement" controller="sujet" class="add"
               id="${sujet.id}">Ajouter un item</g:link> |
-      <g:link action="editeProprietes" controller="sujet"
+      <g:link action="editeProprietes" controller="sujet" class="modify"
               id="${sujet.id}">Modifier les propriétés du sujet</g:link>
     </span>
     <span class="portal-tabs-famille-liens">
-      <button id="${sujet.id}">Actions</button>
-      <ul id="menu_actions_${sujet.id}"
+      <button id="toolbar_${sujet.id}">Actions</button>
+      <ul id="menu_actions_toolbar_${sujet.id}"
           class="tdbase-menu-actions">
         <li><g:link action="teste" id="${sujet.id}">
           Tester
@@ -138,30 +139,19 @@
   </div>
 </g:if>
 <form method="post">
-  <div class="portal-form_container" style="width: 80%;border: none;">
-    <table>
-      <tr>
-        <td class="label">
-          titre&nbsp;:
-        </td>
-        <td>
-          <g:textField name="sujetTitre" value="${titreSujet}" size="80"/>
-        </td>
-        <td>
-          <g:actionSubmit action="enregistre" value="Enregistrer"/>
-        </td>
-      </tr>
-    </table>
-
+  <div class="portal-form_container edite">
+  	<span class="title">Titre :</span> <g:textField name="sujetTitre" value="${titreSujet}" size="80"/> <g:actionSubmit action="enregistre" value="Enregistrer" class="button"/>
     <g:if test="${sujetEnEdition}">
       <g:hiddenField name="sujetId" value="${sujet.id}"/>
     </g:if>
   </div>
 </form>
 <g:if test="${sujet}">
+	<div class="tdbase-sujet-edition">
   <g:each in="${sujet.questionsSequences}" var="sujetQuestion"
           status="indexQuestion">
     <div class="tdbase-sujet-edition-question">
+    	<h1>Question ${indexQuestion}</h1>
 
       <button id="${sujetQuestion.id}">Actions</button>
       <ul id="menu_actions_${sujetQuestion.id}"
@@ -226,16 +216,15 @@
           Retirer</g:link></li>
 
       </ul>
-
+		
       <g:if test="${sujetQuestion.question.type.interaction}">
-        <div class="tdbase-sujet-edition-question-points"
-             style="margin-right:90%;float: right;">
+        <div class="tdbase-sujet-edition-question-points">
           <div class="editinplace"
                id="SujetSequenceQuestions-${sujetQuestion.id}"
                title="Cliquez pour modifier le barème...">
             ${NumberUtils.formatFloat(sujetQuestion.points)}
           </div>
-          &nbsp;point(s)
+          <span class="point">point(s)</span>
         </div>
       </g:if>
       <div class="tdbase-sujet-edition-question-preview">
@@ -248,6 +237,7 @@
     </div>
 
   </g:each>
+  </div>
 </g:if>
 </body>
 </html>

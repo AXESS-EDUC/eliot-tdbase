@@ -15,3 +15,4 @@ A présent les committeurs sont :
 
 -	[Frank Silvestre](http://fr.linkedin.com/pub/franck-silvestre/22/737/107)
 -	[Bert Poller](http://www.linkedin.com/pub/bert-poller/21/5b8/880)
+- 	[Stéphane Sigur](http://www.linkedin.com/pub/st%C3%A9phane-sigur/2b/125/601)

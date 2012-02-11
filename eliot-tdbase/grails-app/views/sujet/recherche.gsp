@@ -43,7 +43,7 @@
           model="[liens: liens]"/>
 <g:if test="${afficheFormulaire}">
   <form>
-    <div class="portal-form_container">
+    <div class="portal-form_container recherche">
       <table>
         <tr>
           <td class="label">
@@ -105,115 +105,97 @@
       </table>
     </div>
 
-    <div class="form_actions">
-      <g:actionSubmit value="Rechercher" action="recherche"
+    <div class="form_actions recherche">
+      <g:actionSubmit value="Rechercher" action="recherche" class="button"
                       title="Lancer la recherche"/>
     </div>
   </form>
 </g:if>
 
 <g:if test="${sujets}">
-  <div class="portal_pagination">
-    ${sujets.totalCount} résultat(s) <g:paginate total="${sujets.totalCount}"
-                                                 params="${rechercheCommand?.toParams()}"></g:paginate>
-  </div>
 
-  <div class="portal-default_table">
-    <table>
-      <thead>
-      <tr>
-        <th>Titre</th>
-        <th>Niveau</th>
-        <th>Matière</th>
-        <th>Dur&eacute;e</th>
-        <g:if test="${afficheFormulaire}">
-          <th>Auteur</th>
-        </g:if>
-        <th>Partagé</th>
-        <th>Mise à jour le</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <g:each in="${sujets}" status="i" var="sujetInstance">
-        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-          <td>
-            ${fieldValue(bean: sujetInstance, field: "titre")}
-          </td>
-          <td>
-            ${sujetInstance.niveau?.libelleLong}
-          </td>
-          <td>
-            ${sujetInstance.matiere?.libelleLong}
-          </td>
-          <td>
-            ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}
-          </td>
-          <g:if test="${afficheFormulaire}">
-            <td>${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}</td>
-          </g:if>
-          <td>
-            ${sujetInstance.estPartage() ? 'oui' : 'non'}
-          </td>
-          <td>
-            ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}
-          </td>
-          <td>
-            <button id="${sujetInstance.id}">Actions</button>
-            <ul id="menu_actions_${sujetInstance.id}"
-                class="tdbase-menu-actions">
-              <li><g:link action="teste" id="${sujetInstance.id}">
-                Tester
-              </g:link>
-              </li>
-              <li><g:link action="ajouteSeance" id="${sujetInstance.id}">
-                Nouvelle&nbsp;séance
-              </g:link>
-              </li>
-              <li><hr/></li>
-              <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetInstance)}">
-                <li><g:link action="edite"
-                            id="${sujetInstance.id}">Modifier</g:link></li>
-              </g:if>
-              <g:else>
-                <li>Modifier</li>
-              </g:else>
-              <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetInstance)}">
-                <li><g:link action="duplique"
-                            id="${sujetInstance.id}">Dupliquer</g:link></li>
-              </g:if>
-              <g:else>
-                <li>Dupliquer</li>
-              </g:else>
-              <li><hr/></li>
-              <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujetInstance)}">
-                <li><g:link action="partage"
-                            id="${sujetInstance.id}">Partager</g:link></li>
-              </g:if>
-              <g:else>
-                <li>Partager</li>
-              </g:else>
-              <li><hr/></li>
-              <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujetInstance)}">
-                <li><g:link action="supprime"
-                            id="${sujetInstance.id}">Supprimer</g:link></li>
-              </g:if>
-              <g:else>
-                <li>Supprimer</li>
-              </g:else>
-
-            </ul>
-          </td>
-        </tr>
-      </g:each>
-      </tbody>
-    </table>
-  </div>
+<div class="portal_pagination">
+	<p class="nb_result">${sujets.totalCount} résultat(s)</p>
+	<g:paginate total="${sujets.totalCount}" params="${rechercheCommand?.toParams()}"></g:paginate>
+</div>
+  
+<div class="portal-default_results-list sujet">	
+	<g:each in="${sujets}" status="i" var="sujetInstance">
+	  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+	  	<button class="n0o-js" id="${sujetInstance.id}">Actions</button>
+        <ul id="menu_actions_${sujetInstance.id}" class="tdbase-menu-actions">
+	          <li><g:link action="teste" id="${sujetInstance.id}">
+	            Tester
+	          </g:link>
+	          </li>
+	          <li><g:link action="ajouteSeance" id="${sujetInstance.id}">
+	            Nouvelle&nbsp;séance
+	          </g:link>
+	          </li>
+	          <li><hr/></li>
+	          <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetInstance)}">
+	            <li><g:link action="edite"
+	                        id="${sujetInstance.id}">Modifier</g:link></li>
+	          </g:if>
+	          <g:else>
+	            <li>Modifier</li>
+	          </g:else>
+	          <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetInstance)}">
+	            <li><g:link action="duplique"
+	                        id="${sujetInstance.id}">Dupliquer</g:link></li>
+	          </g:if>
+	          <g:else>
+	            <li>Dupliquer</li>
+	          </g:else>
+	          <li><hr/></li>
+	          <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujetInstance)}">
+	            <li><g:link action="partage"
+	                        id="${sujetInstance.id}">Partager</g:link></li>
+	          </g:if>
+	          <g:else>
+	            <li>Partager</li>
+	          </g:else>
+	          <li><hr/></li>
+	          <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujetInstance)}">
+	            <li><g:link action="supprime"
+	                        id="${sujetInstance.id}">Supprimer</g:link></li>
+	          </g:if>
+	          <g:else>
+	            <li>Supprimer</li>
+	          </g:else>
+        </ul>
+        
+	  	<h1> ${fieldValue(bean: sujetInstance, field: "titre")}</h1>
+	  	<p class="date">Mise à jour le ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
+	  	<p>
+	  		<g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>	 
+	  		<g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière : </strong>${sujetInstance.matiere?.libelleLong} </g:if>
+	  		<g:if test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée : </strong>${fieldValue(bean: sujetInstance, field: "dureeMinutes")} </g:if>
+	  		<g:if test="${afficheFormulaire}">
+	  			<strong> » Auteur : </strong>${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom} 
+	  		</g:if> 
+	  		<strong> » Partagé : </strong>${sujetInstance.estPartage() ? 'oui' : 'non'}
+	  	</p>
+	  	
+	  	<!--<ul class="feature">
+	  		<li><strong>Niveau :</strong>${sujetInstance.niveau?.libelleLong}</li>
+	  		<li><strong>Matière :</strong>${sujetInstance.matiere?.libelleLong}</li> 
+	  		<li><strong>Durée :</strong>${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</li>
+	  		<g:if test="${afficheFormulaire}">
+	  		  <li><strong>Auteur :</strong>${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}</li>
+	  		</g:if>
+	  		<li><strong>Partagé :</strong>${sujetInstance.estPartage() ? 'oui' : 'non'}</li>
+	  		<li><strong>Mise à jour le :</strong>${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</li>
+	  	</ul>-->
+	  	
+	  </div>
+	</g:each>
+</div>
+	
 </g:if>
 <g:else>
   <div class="portal_pagination">
-    Aucun résultat
+    <p class="nb_result">Aucun résultat</p>
   </div>
 </g:else>
 

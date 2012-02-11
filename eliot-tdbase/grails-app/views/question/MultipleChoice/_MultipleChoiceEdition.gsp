@@ -51,7 +51,7 @@
                     model="[specifobject:specifobject]"/>
         </td>
         <td style="vertical-align: bottom;">
-          <g:submitToRemote title="Ajouter une réponse possible" value="Ajouter"
+          <g:submitToRemote title="Ajouter une réponse possible" value="Ajouter" class="button"
                             action="ajouteReponse"
                             controller="questionMultipleChoice"
                             update="specifobject_reponses"/>
