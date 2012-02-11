@@ -26,7 +26,10 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.jackrabbit.core.data;
+package org.lilie.services.eliot.tice.utils;
+
+import org.lilie.services.eliot.tice.jackrabbit.core.data.DataStoreException;
+import org.lilie.services.eliot.tice.jackrabbit.core.data.FileDataStore;
 
 import java.io.File;
 
@@ -45,7 +48,7 @@ public class EliotTiceFileDataStore extends FileDataStore {
      *  Classe initialisant le dataStore
      *  Si le dossier racine devant contenir les fichiers n'existe pas ou ne dispose
      *  pas des droits nécessaires alors la méthode lève une exception
-     * @throws DataStoreException
+     * @throws org.lilie.services.eliot.tice.jackrabbit.core.data.DataStoreException
      */
     public void initFileDataStore() throws DataStoreException {
         if (getPath() == null) {
