@@ -32,16 +32,13 @@ package org.lilie.services.eliot.tice
 
 import javax.imageio.ImageIO
 import javax.imageio.ImageReader
-import javax.imageio.stream.FileImageInputStream
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.utils.ServiceEliotEnum
-import org.lilie.services.eliot.tice.utils.ServicesEliotService
-import org.springframework.web.multipart.MultipartFile
-import org.lilie.services.eliot.tice.jackrabbit.core.data.DataStore
-import org.lilie.services.eliot.tice.jackrabbit.core.data.DataRecord
 import javax.imageio.stream.MemoryCacheImageInputStream
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.lilie.services.eliot.tice.jackrabbit.core.data.DataIdentifier
+import org.lilie.services.eliot.tice.jackrabbit.core.data.DataRecord
+import org.lilie.services.eliot.tice.jackrabbit.core.data.DataStore
+import org.springframework.web.multipart.MultipartFile
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Classe fournissant le service de gestion de breadcrumps
@@ -50,7 +47,6 @@ import org.lilie.services.eliot.tice.jackrabbit.core.data.DataIdentifier
 class AttachementService {
 
   static transactional = false
-  ServicesEliotService servicesEliotService
   DataStore dataStore
 
   /**
@@ -62,10 +58,9 @@ class AttachementService {
    * @param config le config object
    * @return l'objet Attachment
    */
+  @Transactional
   Attachement createAttachementForMultipartFile(
           MultipartFile fichier,
-          ServiceEliotEnum serviceEliotEnum,
-          Personne proprietaire,
           def config = ConfigurationHolder.config) {
     if (!fichier || fichier.isEmpty()) {
       throw new IllegalArgumentException("question.document.fichier.vide")
@@ -89,10 +84,13 @@ class AttachementService {
     )
     DataRecord dataRecord = dataStore.addRecord(fichier.inputStream)
     attachement.chemin = dataRecord.identifier.toString()
-    attachement.dimension = determinerDimension(fichier.inputStream)
+    if (attachement.estUneImageAffichable()) {
+      attachement.dimension = determinerDimension(fichier.inputStream)
+    }
     attachement.save()
     return attachement
   }
+
 
   /**
    * Retourne l'objet File correspondant à un attachement
@@ -101,8 +99,7 @@ class AttachementService {
    * @param config le config object
    * @return l'objet de type File
    */
-  File getFileForAttachement(Attachement attachement,
-                             def config = ConfigurationHolder.config) {
+  InputStream getInputStreamForAttachement(Attachement attachement) {
     DataRecord dataRecord = dataStore.getRecord(new DataIdentifier(attachement.chemin))
     dataRecord.stream
   }

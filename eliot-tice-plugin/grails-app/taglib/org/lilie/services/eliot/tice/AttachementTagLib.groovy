@@ -62,8 +62,8 @@ class AttachementTagLib {
         }
         out << '/>'
       } else if (attachement.estUnTexteAffichable()) {
-        File fichier = attachementService.getFileForAttachement(attachement)
-        out << fichier.text.encodeAsHTML()
+        def is = attachementService.getInputStreamForAttachement(attachement)
+        out << is.text.encodeAsHTML()
       } else {
         out << '<a target="_blank" href="' << link << '">' <<
         g.message(code: "attachement.acces") <<

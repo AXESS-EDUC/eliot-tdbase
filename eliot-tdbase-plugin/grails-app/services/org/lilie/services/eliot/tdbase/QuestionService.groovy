@@ -51,6 +51,7 @@ class QuestionService implements ApplicationContextAware {
   ApplicationContext applicationContext
 
   SujetService sujetService
+  QuestionAttachementService questionAttachementService
   ArtefactAutorisationService artefactAutorisationService
 
   /**
@@ -239,10 +240,10 @@ class QuestionService implements ApplicationContextAware {
                                        [question: laQuestion])
 
     // supprimer les attachements si nécessaire
-    QuestionAttachement.executeUpdate(" \
-            DELETE FROM QuestionAttachement as questAtt \
-            where questAtt.question = :question",
-                                      [question: laQuestion])
+    def questionAttachements = QuestionAttachement.findAllByQuestion(laQuestion)
+    questionAttachements.each {
+       questionAttachementService.deleteQuestionAttachement(it)
+    }
 
     // supprimer la publication si nécessaire
     if (laQuestion.estPartage()) {

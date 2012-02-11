@@ -42,8 +42,8 @@ class AttachementController {
     Attachement attachement = Attachement.get(params.id)
     response.setHeader("Content-disposition", "filename=${attachement.nomFichierOriginal}")
     response.contentType = attachement.typeMime
-    File fichier = attachementService.getFileForAttachement(attachement)
-    response.outputStream << fichier.newInputStream()
+    def is = attachementService.getInputStreamForAttachement(attachement)
+    response.outputStream << is
     response.outputStream.flush()
   }
 

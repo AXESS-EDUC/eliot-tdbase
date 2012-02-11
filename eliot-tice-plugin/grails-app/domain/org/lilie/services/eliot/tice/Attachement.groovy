@@ -52,6 +52,7 @@ class Attachement {
     taille(nullable: true)
     typeMime(nullable: true)
     nomFichierOriginal(nullable: true)
+    dimension(nullable: true)
   }
 
   static mapping = {

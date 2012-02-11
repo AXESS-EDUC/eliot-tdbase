@@ -67,7 +67,7 @@ class QuestionAttachementService {
                                    Question question,
                                    Integer rang = 1) {
     def attachement = attachementService.createAttachementForMultipartFile(
-            fichier, ServiceEliotEnum.tdbase, question.proprietaire
+            fichier
     )
     QuestionAttachement questionAttachement = new QuestionAttachement(
             question: question,
@@ -95,9 +95,8 @@ class QuestionAttachementService {
     questionAttachement.delete(flush: true)
     def refCount = QuestionAttachement.countByAttachement(questionAttachement.attachement)
     if (refCount == 0) {
-      attachement.aSupprimer = true
+      attachement.delete()
     }
-    attachement.save()
   }
 
 }

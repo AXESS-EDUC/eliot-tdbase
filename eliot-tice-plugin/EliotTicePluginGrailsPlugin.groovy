@@ -6,7 +6,7 @@ import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.annuaire.impl.LilieUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.impl.LilieRoleUtilisateurService
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
-import org.lilie.services.eliot.tice.jackrabbit.core.data.FileDataStore
+import org.lilie.services.eliot.tice.jackrabbit.core.data.EliotTiceFileDataStore
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -80,8 +80,9 @@ class EliotTicePluginGrailsPlugin {
       }
     }
 
-    dataStore(FileDataStore)  {
-      path = ConfigurationHolder.config.eliot.fichiers.racine
+    dataStore(EliotTiceFileDataStore)  { bean ->
+      path = ConfigurationHolder.config.eliot.fichiers.racine ?: null
+      bean.initMethod = 'initFileDataStore'
     }
   }
 

@@ -175,6 +175,9 @@ grails.plugins.springsecurity.interceptUrlMap = [
 
 
 environments {
+  test {
+    eliot.fichiers.racine = '/tmp'
+  }
   development {
     // application de la migration  définie dans eliot-tice-dbmigration
     eliot.bootstrap.migration = true
