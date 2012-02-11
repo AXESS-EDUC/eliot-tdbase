@@ -37,8 +37,30 @@ package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
 import org.lilie.services.eliot.tdbase.impl.fileupload.FileUploadSpecification
+import org.lilie.services.eliot.tdbase.impl.fileupload.ReponseFileUploadSpecification
 
 class QuestionFileUploadController extends QuestionController {
+
+  /**
+     * Action "supprimeAttachement"
+     */
+    def supprimeAttachement() {
+      FileUploadSpecification spec = getSpecificationObjectFromParams(params)
+      spec.questionAttachementId = null
+      spec.fichier = null
+      render(template: "/question/FileUpload/FileUploadEditionFichier", model: [specifobject: spec])
+    }
+
+  /**
+       * Action "supprimeReponseAttachement"
+       */
+      def supprimeReponseAttachement() {
+        ReponseFileUploadSpecification spec = getReponseSpecificationObjectFromParams(params)
+        spec.reponseAttachementId = null
+        spec.fichier = null
+        // todofsil : recuperer l'index en récupérant la valeur de l'update
+        render(template: "/question/FileUpload/FileUploadInteractionFichier", model: [specifobject: spec])
+      }
 
   /**
    *
@@ -50,6 +72,17 @@ class QuestionFileUploadController extends QuestionController {
     bindData(specifobject, params, "specifobject")
     return specifobject
   }
+
+  /**
+     *
+     * @param params les paramètres de la requête
+     * @return l'objet représentant la spécification
+     */
+    def getReponseSpecificationObjectFromParams(Map params) {
+      def specifobject = new ReponseFileUploadSpecification()
+      bindData(specifobject, params, "specifobject")
+      return specifobject
+    }
 }
 
 
