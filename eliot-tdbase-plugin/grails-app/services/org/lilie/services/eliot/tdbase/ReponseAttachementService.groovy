@@ -28,27 +28,20 @@
 
 
 
+
+
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.AttachementService
-import org.lilie.services.eliot.tice.CopyrightsType
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.utils.ServiceEliotEnum
-import org.lilie.services.eliot.tice.utils.StringUtils
-import org.springframework.context.ApplicationContext
-import org.springframework.context.ApplicationContextAware
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
-import org.springframework.transaction.annotation.Propagation
-import org.lilie.services.eliot.tice.Attachement
 
 /**
- * Service de gestion des attachements questions
+ * Service de gestion des attachements de réponse
  * @author franck silvestre
  */
-class QuestionAttachementService {
+class ReponseAttachementService {
 
   static transactional = false
 
@@ -57,43 +50,42 @@ class QuestionAttachementService {
   /**
    * Creer un attachement pour une question
    * @param fichier le fichier issu de la requête
-   * @param question la question
+   * @param reponse la reponse
    * @param proprietaire le proprietaire
    * @param rang le rang
-   * @return  l'objet de type QuestionAttachement
+   * @return  l'objet de type ReponseAttachement
    */
   @Transactional(propagation = Propagation.REQUIRED)
-  QuestionAttachement createAttachementForQuestion(MultipartFile fichier,
-                                   Question question,
+  ReponseAttachement createAttachementForResponse(MultipartFile fichier,
+                                   Reponse reponse,
                                    Integer rang = 1) {
     def attachement = attachementService.createAttachementForMultipartFile(
             fichier
     )
-    QuestionAttachement questionAttachement = new QuestionAttachement(
-            question: question,
+    ReponseAttachement reponseAttachement = new ReponseAttachement(
+            reponse: reponse,
             attachement: attachement,
             rang: rang
     )
-    questionAttachement.save()
+    reponseAttachement.save()
     // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
     attachement.aSupprimer = false
-    question.addToQuestionAttachements(questionAttachement)
-    question.lastUpdated = new Date()
-    question.save()
-    return questionAttachement
+    reponse.addToReponseAttachements(reponseAttachement)
+    reponse.save()
+    return reponseAttachement
   }
 
   /**
-   * Supprime le question attachement
-   * @param questionAttachement l'objet représentant l'attachement à la question
+   * Supprime le reponse attachement
+   * @param reponseAttachement l'objet représentant l'attachement à la reponse
    */
   @Transactional
-  def deleteQuestionAttachement(QuestionAttachement questionAttachement) {
-    def question = questionAttachement.question
-    def attachement = questionAttachement.attachement
-    question.removeFromQuestionAttachements(questionAttachement)
-    questionAttachement.delete(flush: true)
-    def refCount = QuestionAttachement.countByAttachement(questionAttachement.attachement)
+  def deleteReponseAttachement(ReponseAttachement reponseAttachement) {
+    def reponse = reponseAttachement.reponse
+    def attachement = reponseAttachement.attachement
+    reponse.removeFromReponseAttachements(reponseAttachement)
+    reponseAttachement.delete(flush: true)
+    def refCount = ReponseAttachement.countByAttachement(reponseAttachement.attachement)
     if (refCount == 0) {
       attachement.delete()
     }

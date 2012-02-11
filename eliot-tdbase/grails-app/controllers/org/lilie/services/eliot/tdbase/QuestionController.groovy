@@ -291,7 +291,7 @@ class QuestionController {
    * Action "recherche"
    */
   def recherche(RechercheQuestionCommand rechCmd) {
-    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    params.max = Math.min(params.max ? params.int('max') : 5, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
     Personne personne = authenticatedPersonne
     def questions = questionService.findQuestions(
@@ -326,7 +326,7 @@ class QuestionController {
   }
 
   def mesItems() {
-    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    params.max = Math.min(params.max ? params.int('max') : 5, 100)
         breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
         Personne personne = authenticatedPersonne
         def questions = questionService.findQuestionsForProprietaire(

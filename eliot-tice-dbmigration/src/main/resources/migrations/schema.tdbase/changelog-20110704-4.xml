@@ -1477,4 +1477,55 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="36" author="fsil">
+        <comment>
+            Ajout de la table nécessaire pour la gestion des attachements aux
+            réponses.
+        </comment>
+        <createTable tableName="reponse_attachement" schemaName="td">
+                    <column name="id" type="bigint">
+                        <constraints primaryKey="true"/>
+                    </column>
+                    <column name="reponse_id" type="bigint">
+                        <constraints nullable="false"/>
+                    </column>
+                    <column name="attachement_id" type="bigint">
+                        <constraints nullable="false"/>
+                    </column>
+                    <column name="rang" type="int" defaultValue="1"/>
+                </createTable>
+
+                <createSequence sequenceName="reponse_attachement_id_seq"
+                                schemaName="td"
+                                startValue="100"/>
+
+                <addForeignKeyConstraint baseTableName="reponse_attachement"
+                                         baseColumnNames="attachement_id"
+                                         baseTableSchemaName="td"
+                                         constraintName="fk_reponse_attachement_attachement_id"
+                                         referencedTableName="attachement"
+                                         referencedColumnNames="id"
+                                         referencedTableSchemaName="tice"/>
+
+                <createIndex tableName="reponse_attachement"
+                             indexName="idx_reponse_attachement_attachement_id"
+                             schemaName="td">
+                    <column name="attachement_id"/>
+                </createIndex>
+
+                <addForeignKeyConstraint baseTableName="reponse_attachement"
+                                         baseColumnNames="reponse_id"
+                                         baseTableSchemaName="td"
+                                         constraintName="fk_reponse_attachement_reponse_id"
+                                         referencedTableName="reponse"
+                                         referencedColumnNames="id"
+                                         referencedTableSchemaName="td"/>
+
+                <createIndex tableName="reponse_attachement"
+                             indexName="idx_reponse_attachement_reponse_id"
+                             schemaName="td">
+                    <column name="reponse_id"/>
+                </createIndex>
+    </changeSet>
+
 </databaseChangeLog>

@@ -30,7 +30,7 @@ class SujetController {
    * Action "recherche"
    */
   def recherche(RechercheSujetCommand rechCmd) {
-    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    params.max = Math.min(params.max ? params.int('max') : 5, 100)
     if (params.term) { // compatibilite avec autocomplete jquery
       rechCmd.patternTitre = params.term
     } else {
@@ -72,7 +72,7 @@ class SujetController {
    * Action "mesSujets"
    */
   def mesSujets() {
-    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    params.max = Math.min(params.max ? params.int('max') : 5, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.messujets.titre"))
     Personne personne = authenticatedPersonne
     def model = [

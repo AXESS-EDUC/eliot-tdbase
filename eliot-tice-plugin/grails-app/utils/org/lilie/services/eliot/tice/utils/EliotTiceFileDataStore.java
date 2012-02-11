@@ -56,13 +56,13 @@ public class EliotTiceFileDataStore extends FileDataStore {
         }
         File rootDir = new File(getPath());
         if (!rootDir.exists()) {
-            throw new DataStoreException("filedatastore.path.doesnotexist");
+            throw new DataStoreException("filedatastore.path.doesnotexist : "+getPath());
         }
         if (!rootDir.isDirectory()) {
-            throw new DataStoreException("filedatastore.path.isnotdirectory");
+            throw new DataStoreException("filedatastore.path.isnotdirectory : "+getPath());
         } 
         if (!rootDir.canWrite()) {
-            throw new DataStoreException("filedatastore.path.nowriteaccess");
+            throw new DataStoreException("filedatastore.path.nowriteaccess : "+getPath());
         }
         super.init("");
     }

@@ -52,6 +52,11 @@ class Reponse {
 
   Personne correcteur
   Personne eleve    // utile uniquement pour stats et securite
+  SortedSet<ReponseAttachement> reponseAttachements
+
+  static hasMany = [
+            reponseAttachements: ReponseAttachement
+    ]
 
   static constraints = {
     specification(nullable: true)
