@@ -34,7 +34,7 @@
     <g:link action="viewAttachement" controller="attachement"
                 id="${specifobject.attachement.id}" target="_blank">
           <g:message code="attachement.correction.acces"/>
-     </g:link>
+     </g:link> <br/>
     Correction&nbsp;:<br/>
     ${specifobject.correction}
   </td>

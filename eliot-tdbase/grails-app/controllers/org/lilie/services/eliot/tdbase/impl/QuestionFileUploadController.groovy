@@ -42,25 +42,25 @@ import org.lilie.services.eliot.tdbase.impl.fileupload.ReponseFileUploadSpecific
 class QuestionFileUploadController extends QuestionController {
 
   /**
-     * Action "supprimeAttachement"
-     */
-    def supprimeAttachement() {
-      FileUploadSpecification spec = getSpecificationObjectFromParams(params)
-      spec.questionAttachementId = null
-      spec.fichier = null
-      render(template: "/question/FileUpload/FileUploadEditionFichier", model: [specifobject: spec])
-    }
+   * Action "supprimeAttachement"
+   */
+  def supprimeAttachement() {
+    FileUploadSpecification spec = getSpecificationObjectFromParams(params)
+    spec.questionAttachementId = null
+    spec.fichier = null
+    render(template: "/question/FileUpload/FileUploadEditionFichier", model: [specifobject: spec])
+  }
 
   /**
-       * Action "supprimeReponseAttachement"
-       */
-      def supprimeReponseAttachement() {
-        ReponseFileUploadSpecification spec = getReponseSpecificationObjectFromParams(params)
-        spec.reponseAttachementId = null
-        spec.fichier = null
-        // todofsil : recuperer l'index en récupérant la valeur de l'update
-        render(template: "/question/FileUpload/FileUploadInteractionFichier", model: [specifobject: spec])
-      }
+   * Action "supprimeReponseAttachement"
+   */
+  def supprimeReponseAttachement() {
+    def indexReponse = (params.update - "specifobject_fichier_") as Integer
+    ReponseFileUploadSpecification spec = getReponseSpecificationObjectFromParams(params, indexReponse)
+    spec.reponseAttachementId = null
+    spec.fichier = null
+    render(template: "/question/FileUpload/FileUploadInteractionFichier", model: [specifobject: spec, indexReponse: indexReponse])
+  }
 
   /**
    *
@@ -74,15 +74,15 @@ class QuestionFileUploadController extends QuestionController {
   }
 
   /**
-     *
-     * @param params les paramètres de la requête
-     * @return l'objet représentant la spécification
-     */
-    def getReponseSpecificationObjectFromParams(Map params) {
-      def specifobject = new ReponseFileUploadSpecification()
-      bindData(specifobject, params, "specifobject")
-      return specifobject
-    }
+   *
+   * @param params les paramètres de la requête
+   * @return l'objet représentant la spécification
+   */
+  def getReponseSpecificationObjectFromParams(Map params, def indexReponse) {
+    def specifobject = new ReponseFileUploadSpecification()
+    bindData(specifobject, params, "reponsesCopie.listeReponses[${indexReponse}].specificationObject")
+    return specifobject
+  }
 }
 
 

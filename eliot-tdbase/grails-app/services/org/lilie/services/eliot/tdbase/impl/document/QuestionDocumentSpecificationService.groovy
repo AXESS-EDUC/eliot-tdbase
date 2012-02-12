@@ -59,10 +59,12 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
   @Transactional
   @Override
   def updateQuestionSpecificationForObject(Question question, DocumentSpecification spec) {
-    spec.fichierEstVide = false
-    super.updateQuestionSpecificationForObject(question, spec)
 
     def oldQuestAttId = question.specificationObject?.questionAttachementId
+    spec.fichierEstVide = false
+    // l'appel à "super" est necessaire avant pour la gestion d'une
+    // nouvelle question
+    super.updateQuestionSpecificationForObject(question, spec)
 
     if (spec.fichier && !spec.fichier.empty) {
       def questionAttachement = questionAttachementService.createAttachementForQuestion(
@@ -84,6 +86,8 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
       spec.fichierEstVide = true
     }
 
+    // l'appel à super est nécessaire après pour prise en compte du
+    // questionAttachementId
     super.updateQuestionSpecificationForObject(question, spec)
   }
 }

@@ -36,17 +36,18 @@
 package org.lilie.services.eliot.tdbase.impl.fileupload
 
 import grails.validation.Validateable
-import org.lilie.services.eliot.tdbase.QuestionAttachement
-import org.lilie.services.eliot.tdbase.QuestionSpecification
-import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.Attachement
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import org.lilie.services.eliot.tdbase.*
 
 /**
  *
  * @author franck Silvestre
  */
 class QuestionFileUploadSpecificationService extends QuestionSpecificationService<FileUploadSpecification> {
+
+  QuestionAttachementService questionAttachementService
 
   /**
    *
@@ -55,6 +56,29 @@ class QuestionFileUploadSpecificationService extends QuestionSpecificationServic
   @Override
   def createSpecification(Object map) {
     return new FileUploadSpecification(map)
+  }
+
+  @Transactional
+  @Override
+  def updateQuestionSpecificationForObject(Question question, FileUploadSpecification spec) {
+
+    def oldQuestAttId = question.specificationObject?.questionAttachementId
+    // l'appel à "super" est necessaire avant pour la gestion d'une
+    // nouvelle question
+    super.updateQuestionSpecificationForObject(question, spec)
+
+    if (spec.fichier && !spec.fichier.empty) {
+      def questionAttachement = questionAttachementService.createAttachementForQuestion(
+              spec.fichier, question)
+      if (oldQuestAttId) {
+        questionAttachementService.deleteQuestionAttachement(
+                QuestionAttachement.get(oldQuestAttId))
+      }
+      spec.questionAttachementId = questionAttachement.id
+    }
+    // l'appel à super est nécessaire après pour prise en compte du
+    // questionAttachementId
+    super.updateQuestionSpecificationForObject(question, spec)
   }
 }
 
