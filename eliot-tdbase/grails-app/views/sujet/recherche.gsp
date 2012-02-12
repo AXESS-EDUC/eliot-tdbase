@@ -122,6 +122,9 @@
 <div class="portal-default_results-list sujet">	
 	<g:each in="${sujets}" status="i" var="sujetInstance">
 	  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+	  
+	  	<h1> ${fieldValue(bean: sujetInstance, field: "titre")}</h1>
+	  	
 	  	<button class="n0o-js" id="${sujetInstance.id}">Actions</button>
         <ul id="menu_actions_${sujetInstance.id}" class="tdbase-menu-actions">
 	          <li><g:link action="teste" id="${sujetInstance.id}">
@@ -165,7 +168,6 @@
 	          </g:else>
         </ul>
         
-	  	<h1> ${fieldValue(bean: sujetInstance, field: "titre")}</h1>
 	  	<p class="date">Mise à jour le ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
 	  	<p>
 	  		<g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>	 

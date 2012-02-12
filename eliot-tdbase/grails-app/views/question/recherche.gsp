@@ -129,6 +129,8 @@
 <div class="portal-default_results-list question  ${sujet ? 'partiel' : ''}">	
 	<g:each in="${questions}" status="i" var="questionInstance">
 	  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+	  	<h1> ${fieldValue(bean: questionInstance, field: "titre")}</h1>
+	  	
 	  	<button id="${questionInstance.id}">Actions</button>
         <ul id="menu_actions_${questionInstance.id}"
             class="tdbase-menu-actions">
@@ -184,7 +186,6 @@
           </g:else>
 	  	</ul>
 	  	
-	  	<h1> ${fieldValue(bean: questionInstance, field: "titre")}</h1>
 	  	<p class="date">Mise à jour le ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
 	  	<p>
 	  		<g:if test="${questionInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${questionInstance.niveau?.libelleLong} </g:if>	 
