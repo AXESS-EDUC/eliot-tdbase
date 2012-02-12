@@ -47,9 +47,12 @@
     R&eacute;ponse:
   </td>
   <td>
-    <g:textField name="specifobject.valeur" value="${specifobject.valeurAffichage}" size="10"/> (Nombre décimal)
+    <g:textField name="specifobject.valeur" value="${specifobject.valeurAffichage}" size="10"/>
     &nbsp;&nbsp;Précision&nbsp;
-    <g:textField name="specifobject.precision" value="${specifobject.precisionAffichage}" size="10"/>
+    <g:textField name="specifobject.precision" value="${specifobject.precisionAffichage}" size="10"/> <br/>
+    <g:textField name="specifobject.valeurMin" value="${specifobject.valeurMinAffichage}" size="10"/> <br/>
+    <g:textField name="specifobject.valeurMax" value="${specifobject.valeurMaxAffichage}" size="10"/><br/>
+    <g:textField name="specifobject.pas" value="${specifobject.pasAffichage}" size="10"/>
   </td>
 </tr>
 <tr>
