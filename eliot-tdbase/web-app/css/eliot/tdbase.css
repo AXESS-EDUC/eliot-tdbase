@@ -463,7 +463,6 @@ div.portal-default_results-list>div{
 		border-top: 1px solid #e5e5e5;
 	}
 	div.portal-default_results-list>div button{
-		/*position: absolute;*/
 		margin:0 0 0 10px;
 		visibility: hidden;
 	}
@@ -473,22 +472,18 @@ div.portal-default_results-list>div{
 		div.portal-default_results-list.partiel>div button{right: 0;}
 		div.portal-default_results-list .tdbase-menu-actions{
 			position: absolute;
-			margin-left: -97px;
+			/*margin-left: -97px;*/
 		}
+			.tdbase-menu-actions{visibility: hidden;}
+			div.portal-default_results-list>div:hover .tdbase-menu-actions{visibility: visible;}
+			
 			div.portal-default_results-list .tdbase-menu-actions{top: 32px;}
 			div.portal-default_results-list .tdbase-menu-actions.top{top: 8px;}
-			
-div.portal-default_results-list h1{
-	padding-left: 35px;
-	margin: 6px 10px 2px;
-	font-size: 1.3em;
-	display: inline;
-}
 
 div.portal-default_results-list h1{
 	padding-left: 35px;
-	margin: 6px 10px 2px;
-	font-size: 1.3em;
+	margin: 6px 10px 0px;
+	font-size: 1.5em;
 	display: inline;
 }
 	div.portal-default_results-list.sujet>div{background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;}
@@ -502,7 +497,7 @@ div.portal-default_results-list p{
 }
 	div.portal-default_results-list p.date{
 		color: #999;font-size: .9em;
-		margin: 0;
+		margin: -4px 0 0;
 		font-style: italic;
 	}
 	div.portal-default_results-list p strong{color: #728CBD;margin-left: 10px;}

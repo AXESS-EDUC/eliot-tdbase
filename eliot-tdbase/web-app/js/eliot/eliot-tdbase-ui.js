@@ -57,7 +57,11 @@ function initButtons() {
                                     event.stopPropagation();
                                 });
       
-    //Hide the menus if visible                          
+    //Hide the menus if visible                        
 	$('html').click(function() { $('.tdbase-menu-actions').hide();});
+	// Hide on leave block
+	$('div.portal-default_results-list>div').mouseleave(function(){
+	  $('.tdbase-menu-actions').hide();
+	});
 
 }

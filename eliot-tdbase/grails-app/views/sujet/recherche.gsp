@@ -125,7 +125,7 @@
 	  
 	  	<h1> ${fieldValue(bean: sujetInstance, field: "titre")}</h1>
 	  	
-	  	<button class="n0o-js" id="${sujetInstance.id}">Actions</button>
+	  	<button id="${sujetInstance.id}">Actions</button>
         <ul id="menu_actions_${sujetInstance.id}" class="tdbase-menu-actions">
 	          <li><g:link action="teste" id="${sujetInstance.id}">
 	            Tester
