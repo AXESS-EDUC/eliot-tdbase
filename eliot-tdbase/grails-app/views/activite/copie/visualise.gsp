@@ -35,7 +35,9 @@
   <r:script>
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
-      $(':checkbox').attr('disabled',true)
+      $(':checkbox').attr('disabled',true);
+      $('textarea').attr('disabled', true);
+      $('.interaction').attr('disabled', true);
     });
   </r:script>
   <title>TDBase - Visualisation d'une copie</title>

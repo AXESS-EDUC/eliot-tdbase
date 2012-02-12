@@ -37,7 +37,9 @@
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
       <g:if test="${!copie.estModifiable()}">
-    $(':checkbox').attr('disabled',true)
+    $(':checkbox').attr('disabled',true);
+    $('textarea').attr('disabled', true);
+    $('.interaction').attr('disabled', true);
   </g:if>
     });
   </r:script>

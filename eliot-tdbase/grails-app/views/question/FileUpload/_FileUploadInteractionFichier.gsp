@@ -37,13 +37,15 @@
   <g:set var="reponseAttachement"
          value="${ReponseAttachement.get(specifobject.reponseAttachementId)}"/>
   <g:hiddenField name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.reponseAttachementId" value="${specifobject.reponseAttachementId}"/>
+  <g:link action="viewAttachement" controller="attachement"
+              id="${reponseAttachement.attachement.id}" target="_blank">
   ${reponseAttachement.attachement.nomFichierOriginal}&nbsp;
-
+  </g:link>
   <g:submitToRemote action="supprimeReponseAttachement"
                     controller="questionFileUpload"
                     id="${indexReponse}"
                     update="specifobject_fichier_${indexReponse}"
-                    value="Suppr"/>
+                    value="Suppr" class="button interaction"/>
   <br/>
 </g:if>
 <g:else>

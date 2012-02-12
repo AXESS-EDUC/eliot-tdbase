@@ -35,6 +35,7 @@
       $('#menu-item-seances').addClass('actif');
       $(':checkbox').attr('disabled', true);
       $('textarea').attr('disabled', true);
+      $('.interaction').attr('disabled', true);
       $('#copieAnnotation').removeAttr('disabled');
       $(".editinplace").editInPlace({
               url: "${g.createLink(controller: 'seance', action: 'updateReponseNote')}"
