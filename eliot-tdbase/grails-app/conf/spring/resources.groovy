@@ -1,6 +1,6 @@
 import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 import org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar
-import org.lilie.services.eliot.tice.utils.LiquibaseWrapper
+import org.lilie.services.eliot.tice.migrations.LiquibaseWrapper
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009

@@ -26,22 +26,16 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.migrations
-
-/**
- * 
- * @author franck Silvestre
- */
-class DbMigrationService {
-
-  static transactional = false
-
-  LiquibaseWrapper liquibase
-
-  def updateDb() {
-    liquibase.runUpdate()
-  }
 
 
+package org.lilie.services.eliot.tice.utils
 
+
+enum ServiceEliotEnum {
+  tdbase,
+  textes,
+  notes,
+  absences,
+  agenda,
+  docs
 }

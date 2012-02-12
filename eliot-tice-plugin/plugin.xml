@@ -77,7 +77,7 @@
     <resource>org.lilie.services.eliot.tice.utils.ServicesEliotService</resource>
     <resource>org.lilie.services.eliot.tice.AttachementTagLib</resource>
     <resource>org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar</resource>
-    <resource>org.lilie.services.eliot.tice.utils.LiquibaseWrapper</resource>
+    <resource>org.lilie.services.eliot.tice.migrations.LiquibaseWrapper</resource>
     <resource>org.lilie.services.eliot.tice.utils.NumberUtils</resource>
     <resource>org.lilie.services.eliot.tice.utils.StringUtils</resource>
   </resources>

@@ -26,7 +26,7 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.utils
+package org.lilie.services.eliot.tice.migrations
 
 import java.sql.Connection
 import java.sql.SQLException
