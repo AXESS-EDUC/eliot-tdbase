@@ -29,18 +29,18 @@
 
 package org.lilie.services.eliot.tdbase.impl.fileupload
 
-import org.lilie.services.eliot.tdbase.Reponse
-import org.lilie.services.eliot.tdbase.ReponseSpecification
-import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.lilie.services.eliot.tice.Attachement
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
-import org.lilie.services.eliot.tdbase.ReponseAttachement
+import org.lilie.services.eliot.tdbase.*
 
 /**
  *
  * @author franck Silvestre
  */
 class ReponseFileUploadSpecificationService extends ReponseSpecificationService<ReponseFileUploadSpecification> {
+
+  ReponseAttachementService reponseAttachementService
 
   /**
    *
@@ -49,6 +49,29 @@ class ReponseFileUploadSpecificationService extends ReponseSpecificationService<
   @Override
   ReponseFileUploadSpecification createSpecification(Map map) {
     new ReponseFileUploadSpecification(map)
+  }
+
+  @Transactional
+  @Override
+  Reponse updateReponseSpecificationForObject(Reponse reponse, ReponseFileUploadSpecification spec) {
+
+    def oldRepAttId = reponse.specificationObject?.reponseAttachementId
+    // l'appel à "super" est necessaire avant pour la gestion d'une
+    // nouvelle question
+    super.updateReponseSpecificationForObject(reponse, spec)
+
+    if (spec.fichier && !spec.fichier.empty) {
+      def reponseAttachement = reponseAttachementService.createAttachementForResponse(
+              spec.fichier, reponse)
+      if (oldRepAttId) {
+        reponseAttachementService.deleteReponseAttachement(
+                ReponseAttachement.get(oldRepAttId))
+      }
+      spec.reponseAttachementId = reponseAttachement.id
+    }
+    // l'appel à super est nécessaire après pour prise en compte du
+    // questionAttachementId
+    super.updateReponseSpecificationForObject(reponse, spec)
   }
 
   /**

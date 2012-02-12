@@ -41,6 +41,7 @@
 
   <g:submitToRemote action="supprimeReponseAttachement"
                     controller="questionFileUpload"
+                    id="${indexReponse}"
                     update="specifobject_fichier_${indexReponse}"
                     value="Suppr"/>
   <br/>

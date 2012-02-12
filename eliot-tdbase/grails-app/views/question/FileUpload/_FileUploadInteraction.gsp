@@ -35,12 +35,10 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 ${questionspecifobject.libelle} <br/>
-<tr>
-  <td class="label">Fichier&nbsp;:</td>
-  <td id="specifobject_fichier_${indexReponse}">
-    <g:render template="/question/FileUpload/FileUploadEditionFichier"
+Fichier&nbsp;:
+  <span id="specifobject_fichier_${indexReponse}">
+    <g:render template="/question/FileUpload/FileUploadInteractionFichier"
               model="[specifobject:reponsespecifobject, indexReponse:indexReponse]"/>
-  </td>
-</tr>
+  </span>
 <br/>
 
