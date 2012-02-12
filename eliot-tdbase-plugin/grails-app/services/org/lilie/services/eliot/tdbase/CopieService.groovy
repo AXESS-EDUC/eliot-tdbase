@@ -312,14 +312,17 @@ class CopieService {
    * @param seance la modalite activite
    * @param personne la personne déclenchant la suppression
    */
+  @Transactional
   def supprimeCopiesForModaliteActivite(ModaliteActivite seance,
                                         Personne personne) {
     assert (seance?.enseignant == personne)
     def copies = findCopiesForModaliteActivite(seance, personne)
-    copies.each {
-      Reponse.executeUpdate('DELETE FROM Reponse WHERE copie=:copie',
-                            [copie: it])
-      it.delete()
+    copies.each { copie ->
+      def reponses = Reponse.findByCopie(copie)
+      reponses.each { reponse ->
+        reponseService.supprimeReponse(reponse, personne)
+      }
+      copie.delete()
     }
   }
 
@@ -327,12 +330,15 @@ class CopieService {
    * Supprime les copies jetables pour un sujet
    * @param sujet le sujet
    */
+  @Transactional
   def supprimeCopiesJetablesForSujet(Sujet sujet) {
     def copies = Copie.findAllBySujetAndEstJetable(sujet, true)
-    copies.each {
-      Reponse.executeUpdate('DELETE FROM Reponse WHERE copie=:copie',
-                            [copie: it])
-      it.delete()
+    copies.each { copie ->
+      def reponses = Reponse.findAllByCopie(copie)
+      reponses.each { reponse ->
+        reponseService.supprimeReponse(reponse, null)
+      }
+      copie.delete()
     }
   }
 

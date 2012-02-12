@@ -44,6 +44,7 @@ class SujetService {
   QuestionService questionService
   ArtefactAutorisationService artefactAutorisationService
   CopieService copieService
+  ReponseService reponseService
 
   /**
    * Créé un sujet
@@ -441,13 +442,13 @@ class SujetService {
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(
             proprietaire, sujetQuestion.sujet
     ))
-
+   
     Sujet leSujet = sujetQuestion.sujet
     leSujet.removeFromQuestionsSequences(sujetQuestion)
-    def reponsesFiltre = Reponse.where {
-      sujetQuestion == sujetQuestion
+    def reponses = Reponse.findAllBySujetQuestion(sujetQuestion)
+    reponses.each {
+       reponseService.supprimeReponse(it, proprietaire)
     }
-    reponsesFiltre.deleteAll()
     sujetQuestion.delete()
     leSujet.lastUpdated = new Date()
     leSujet.save(flush: true)
