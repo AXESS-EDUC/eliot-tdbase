@@ -407,9 +407,10 @@ class QuestionService implements ApplicationContextAware {
   List<QuestionType> getTypesQuestionsInteractionSupportes() {
     [
             MultipleChoice.questionType,
-            Decimal.questionType,
-            QuestionTypeEnum.Integer.questionType,
             ExclusiveChoice.questionType,
+            QuestionTypeEnum.Integer.questionType,
+            Decimal.questionType,
+            Slider.questionType,
             FillGap.questionType,
             Associate.questionType,
             Order.questionType,

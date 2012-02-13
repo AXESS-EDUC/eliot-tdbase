@@ -69,7 +69,7 @@ class ReponseSliderSpecification implements ReponseSpecification {
   Float valeurCorrecte
 
   /**
-   *    La plage de tollerance par rapport de laquelle la reponse peut être
+   *    La plage de tolerance par rapport de laquelle la reponse peut être
    *    considerée comme correcte.
    */
   Float precision = 0F

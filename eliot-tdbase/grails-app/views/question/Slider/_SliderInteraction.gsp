@@ -26,12 +26,31 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-
+<r:require module="eliot-tice-ui"/>
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 ${questionspecifobject.libelle} <br/>
-<g:textField name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse" value="${reponsespecifobject?.valeurReponseAffichage}" size="10"/>
-&nbsp;&nbsp;
-<!-- todofsil mettre en place le slider jquery-->
-<br/>
+Valeur<g:textField id="valeur_slider_${indexReponse}" name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse" value="${reponsespecifobject?.valeurReponseAffichage}" size="10"/>
+
+<div id="slider_${indexReponse}" style="width: 50%"></div>
+
+<r:script>
+  $(document).ready( function() {
+  		$( "#slider_${indexReponse}" ).slider({
+  			value:${reponsespecifobject?.valeurReponse ? reponsespecifobject.valeurReponse : questionspecifobject.valeurMin},
+  			min: ${questionspecifobject.valeurMin},
+  			max: ${questionspecifobject.valeurMax},
+  			step: ${questionspecifobject.pas},
+  			slide: function( event, ui ) {
+  			    var valeurSlide =   new String(ui.value).replace('.',',');
+  				$( "#valeur_slider_${indexReponse}" ).val( valeurSlide );
+  			}
+  		});
+  		var valeur = new String($( "#slider_${indexReponse}" ).slider( "value" ))
+  		valeur = valeur. replace('.',',');
+  		$( "#valeur_slider_${indexReponse}" ).val( valeur );
+  	}
+
+  );
+</r:script>
 

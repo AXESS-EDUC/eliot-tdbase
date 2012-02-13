@@ -47,12 +47,12 @@
     R&eacute;ponse:
   </td>
   <td>
-    <g:textField name="specifobject.valeur" value="${specifobject.valeurAffichage}" size="10"/>
+    Valeur&nbsp;attendue&nbsp;<g:textField name="specifobject.valeur" value="${specifobject.valeurAffichage}" size="10"/>
     &nbsp;&nbsp;Précision&nbsp;
     <g:textField name="specifobject.precision" value="${specifobject.precisionAffichage}" size="10"/> <br/>
-    <g:textField name="specifobject.valeurMin" value="${specifobject.valeurMinAffichage}" size="10"/> <br/>
-    <g:textField name="specifobject.valeurMax" value="${specifobject.valeurMaxAffichage}" size="10"/><br/>
-    <g:textField name="specifobject.pas" value="${specifobject.pasAffichage}" size="10"/>
+    Valeur&nbsp;minimale&nbsp;<g:textField name="specifobject.valeurMin" value="${specifobject.valeurMinAffichage}" size="10"/> <br/>
+    Valeur&nbsp;maximale&nbsp;<g:textField name="specifobject.valeurMax" value="${specifobject.valeurMaxAffichage}" size="10"/><br/>
+    Pas&nbsp;<g:textField name="specifobject.pas" value="${specifobject.pasAffichage}" size="10"/>
   </td>
 </tr>
 <tr>

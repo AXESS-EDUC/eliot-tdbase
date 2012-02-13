@@ -109,15 +109,15 @@ class SliderSpecification implements QuestionSpecification {
   }
 
   String getValeurMinAffichage() {
-    valeurMin ? NumberUtils.formatFloat(valeurMin) : null
+    valeurMin != null ? NumberUtils.formatFloat(valeurMin) : null
   }
 
   String getValeurMaxAffichage() {
-    valeurMax ? NumberUtils.formatFloat(valeurMax) : null
+    valeurMax != null ? NumberUtils.formatFloat(valeurMax) : null
   }
 
   String getPasAffichage() {
-    pas ? NumberUtils.formatFloat(pas) : null
+    pas != null ? NumberUtils.formatFloat(pas) : null
   }
 
   static constraints = {
