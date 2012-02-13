@@ -476,7 +476,7 @@ div.portal-default_results-list>div{
 			position: absolute;
 			/*margin-left: -97px;*/
 		}
-			.tdbase-menu-actions{visibility: hidden;}
+			div.portal-default_results-list>div .tdbase-menu-actions{visibility: hidden;}
 			div.portal-default_results-list>div:hover .tdbase-menu-actions{visibility: visible;}
 			
 			div.portal-default_results-list .tdbase-menu-actions{top: 32px;}
