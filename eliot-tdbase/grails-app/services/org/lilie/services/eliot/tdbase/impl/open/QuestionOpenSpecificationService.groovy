@@ -48,7 +48,7 @@ class QuestionOpenSpecificationService extends QuestionSpecificationService<Open
    * @see QuestionSpecificationService
    */
   @Override
-  def createSpecification(Object map) {
+  def createSpecification(Map map) {
     return new OpenSpecification(map)
   }
 }

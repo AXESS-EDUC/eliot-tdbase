@@ -38,15 +38,20 @@ import static org.lilie.services.eliot.tice.utils.StringUtils.normalise
  */
 class ReponseFillGapSpecificationService extends ReponseSpecificationService<ReponseFillGapSpecification> {
 
-  @Override
-  ReponseFillGapSpecification createSpecification(Map map) {
-    new ReponseFillGapSpecification(map)
-  }
+    @Override
+    ReponseFillGapSpecification createSpecification(Map map) {
+        new ReponseFillGapSpecification(map)
+    }
 
-  @Override
-  ReponseFillGapSpecification getObjectInitialiseFromSpecification(Question question) {
-    createSpecification(reponsesPossibles: question.specificationObject.trouElements)
-  }
+    @Override
+    ReponseFillGapSpecification getObjectInitialiseFromSpecification(Question question) {
+
+        List<TextATrouElement> texteATrousStructure = question.specificationObject.texteATrousStructure
+
+
+
+        createSpecification(reponsesPossibles: texteATrousStructure.findAll {!it.isTextElement()})
+    }
 }
 
 /**
@@ -54,39 +59,39 @@ class ReponseFillGapSpecificationService extends ReponseSpecificationService<Rep
  */
 class ReponseFillGapSpecification implements ReponseSpecification {
 
-  /**
-   * les valeurs de reponse.
-   */
-  List<String> valeursDeReponse = []
+    /**
+     * les valeurs de reponse.
+     */
+    List<String> valeursDeReponse = []
 
-  /**
-   * Liste des reponses possibles. Structurés par TrouElement.
-   */
-  List<TrouElement> reponsesPossibles = []
+    /**
+     * Liste des reponses possibles. Structurés par TrouElement.
+     */
+    List<TrouElement> reponsesPossibles = []
 
-  @Override
-  Map toMap() {
-    [
-            valeursDeReponse: valeursDeReponse,
-            reponsesPossibles: reponsesPossibles
-    ]
-  }
-
-  @Override
-  float evaluate(float maximumPoints) {
-    int reponsesCorrects = 0
-    int numberRes = valeursDeReponse.size()
-
-    for (i in 0..numberRes - 1) {
-
-      def valeurDeReponse = normalise(valeursDeReponse[i].trim())
-      def validReponseList = reponsesPossibles[i].valeur.collect {normalise(it)}
-
-      if (validReponseList.contains(valeurDeReponse)) {
-        reponsesCorrects++
-      }
+    @Override
+    Map toMap() {
+        [
+                valeursDeReponse: valeursDeReponse,
+                reponsesPossibles: reponsesPossibles
+        ]
     }
 
-    reponsesCorrects / numberRes * maximumPoints
-  }
+    @Override
+    float evaluate(float maximumPoints) {
+        int reponsesCorrects = 0
+        int numberRes = valeursDeReponse.size()
+
+        for (i in 0..numberRes - 1) {
+
+            def valeurDeReponse = normalise(valeursDeReponse[i].trim())
+            def validReponseList = reponsesPossibles[i].valeur.findAll {it.correct}.collect {normalise(it.text)}
+
+            if (validReponseList.contains(valeurDeReponse)) {
+                reponsesCorrects++
+            }
+        }
+
+        reponsesCorrects / numberRes * maximumPoints
+    }
 }

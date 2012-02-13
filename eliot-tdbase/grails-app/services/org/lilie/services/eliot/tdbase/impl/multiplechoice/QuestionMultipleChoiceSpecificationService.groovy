@@ -41,7 +41,7 @@ import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationService<MultipleChoiceSpecification> {
 
   @Override
-  def createSpecification(map) {
+  def createSpecification(Map map) {
     new MultipleChoiceSpecification(map)
   }
 

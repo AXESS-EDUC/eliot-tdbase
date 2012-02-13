@@ -40,8 +40,8 @@ import static java.util.Collections.shuffle
 class QuestionFillGapSpecificationService extends QuestionSpecificationService<FillGapSpecification> {
 
     @Override
-    def createSpecification(map) {
-        new FillGapSpecification(map)
+    def createSpecification(Map params) {
+        new FillGapSpecification(params)
     }
 }
 
@@ -71,7 +71,6 @@ class FillGapSpecification implements QuestionSpecification {
      */
     List<TextATrouElement> texteATrousStructure = []
 
-
     @Override
     Map toMap() {
         [
@@ -97,6 +96,7 @@ class FillGapSpecification implements QuestionSpecification {
         texteATrousStructure.each { texte += it.valeurAsText()}
         texte
     }
+
     /**
      *
      * On imagine le text à trou comme un stack qui est une mélange des TextElements et TrouElements.
@@ -104,7 +104,7 @@ class FillGapSpecification implements QuestionSpecification {
      *
      * @param texteATrous le String qui est parsé.
      */
-    void setTexteATrous(String texteATrous) {
+    def setTexteATrous(String texteATrous) {
         def text = texteATrous ?: ""
         while (!text.isEmpty()) {
             if (peekedElementIsText(text)) {
@@ -117,7 +117,30 @@ class FillGapSpecification implements QuestionSpecification {
         }
     }
 
-    protected boolean peekedElementIsText(String text) {
+    /**
+     * Genère une liste des mots suggerés comme reponses. Utilise l'attribut trouElements. Parmi les possibilité de
+     * reponse pour un trouElement, le premier est choisi pour la suggestion de reponse. Les suggestions de reponse sont
+     * melangés pour que le candidat qui passe le teste ne trouve pas de correlation entre les trous à remplir et le
+     * reponses suggerés.
+     * @return une liste des reponses suggerés.
+     */
+    def List getMotsSugeres() {
+        def mots = []
+        texteATrousStructure.each {
+            if (!it.isTextElement()) {
+                TrouElement trouElement = (TrouElement) it
+                trouElement.valeur.each {
+                    if (it.correct) {
+                        mots << it.text
+                    }
+                }
+            }
+        }
+        shuffle(mots, new Random())
+        mots
+    }
+
+    private boolean peekedElementIsText(String text) {
         text.indexOf("{") != 0
     }
 
@@ -127,48 +150,32 @@ class FillGapSpecification implements QuestionSpecification {
      * @param text le text à trou
      * @return l'extrait du token ou la chaine entière, si aucun token de type "trou" existe.
      */
-    protected TextElement extractTextElement(String text) {
+    private TextElement extractTextElement(String text) {
         assert (peekedElementIsText(text))
-        def index = getIndexOfGapToken(text)
+        def index = getIndexOfToken('{', text)
 
         // s'il y a un token alors ...
         if (index) {
-            //...retourne un TextElement du texte avant le token.
+            //...retourne un TextElement du text avant le token.
             return new TextElement(valeur: text.substring(0, index).replaceAll("\\\\\\{", "{"))
         }
 
         else {
-            //sinon ...on retourne tous le texte.
+            //sinon ...on retourne tous le text.
             return new TextElement(valeur: text.replaceAll("\\\\\\{", "{"))
         }
     }
 
-/**
- * Genère une liste des mots suggerés comme reponses. Utilise l'attribut trouElements. Parmi les possibilité de
- * reponse pour un trouElement, le premier est choisi pour la suggestion de reponse. Les suggestions de reponse sont
- * melangés pour que le candidat qui passe le teste ne trouve pas de correlation entre les trous à remplir et le
- * reponses suggerés.
- * @return une liste des reponses suggerés.
- */
-    def List getMotsSugeres() {
-        def mots = []
-        trouElements.each {
-            if (it.valeur.size() > 0) { mots << it.valeur[0]}
-        }
-        shuffle(mots, new Random())
-        mots
-    }
-
-/**
- * Enlèvement d'un token de type "text" du debut du text à trou.
- * @param texte le text à trou
- * @return le text moins le token de type "text" au debut. Si aucun token de type "trou" existe, une chaine vide
- * est retournée.
- */
-    protected String eatText(String text) {
+    /**
+     * Enlèvement d'un token de type "text" du debut du text à trou.
+     * @param texte le text à trou
+     * @return le text moins le token de type "text" au debut. Si aucun token de type "trou" existe, une chaine vide
+     * est retournée.
+     */
+    private String eatText(String text) {
         assert (peekedElementIsText(text))
-        def index = getIndexOfGapToken(text)
-        index ? text.substring(index, text.length()) : text
+        def index = getIndexOfToken('{', text)
+        index ? text.substring(index, text.length()) : ""
     }
 
     /**
@@ -178,9 +185,7 @@ class FillGapSpecification implements QuestionSpecification {
      * @return
      */
     private Integer getIndexOfToken(String token, String text) {
-        Integer index
-
-        //
+        Integer index = null
         for (i in 0..text.length() - 1) {
             if (text[i].equals(token) && !text[i - 1].equals('\\')) {
                 index = i
@@ -190,22 +195,23 @@ class FillGapSpecification implements QuestionSpecification {
         index
     }
 
-/**
- * Enlèvement d'un token de type "trou" du debut du text à trou.
- * @param texte le text à trou.
- * @return le text moins le token de type "trou" au debut.
- */
-    private String eatGap(String texte) {
-        texte.substring(texte.indexOf("}") + 1, texte.length())
+    /**
+     * Enlèvement d'un token de type "trou" du debut du text à trou.
+     * @param text le text à trou.
+     * @return le text moins le token de type "trou" au debut.
+     */
+    private String eatGap(String text) {
+        assert (!peekedElementIsText(text))
+        text.substring(getIndexOfToken('}', text) + 1, text.length())
     }
 
-/**
- * Extraction d'un token de type "trou" du debut du text à trou jusqu'à la première occurrence d'un token de
- * type "text".
- * @param texte le text à trou.
- * @return Liste des reponses valides pour le trou.
- */
-    protected TrouElement extractGap(String texte) {
+    /**
+     * Extraction d'un token de type "trou" du debut du text à trou jusqu'à la première occurrence d'un token de
+     * type "text".
+     * @param texte le text à trou.
+     * @return Liste des reponses valides pour le trou.
+     */
+    private TrouElement extractGap(String texte) {
         def List<TrouText> reponseList = []
         def endTokenIndex = getIndexOfToken('}', texte)
         assert texte.indexOf("{") == 0 && endTokenIndex
@@ -213,22 +219,46 @@ class FillGapSpecification implements QuestionSpecification {
         def gapText = texte.substring(1, endTokenIndex)
 
         while (!gapText.isEmpty()) {
-            if (gapText[0] == '=') {
+            assert (gapText[0] == '=' || gapText[0] == '~')
 
-//>>>>>>>>>>Continue here
+            def isCorrect = gapText[0] == '='
 
-                reponseList << new TrouText(correct: true, text: 'toto')
+            gapText = gapText.substring(1)
+            Integer indexOfNextToken = getNextTrouTextBeginningToken(gapText)
+            def trouText = indexOfNextToken ? gapText.substring(0, indexOfNextToken) : gapText
 
-            }
-            else {
-                reponseList << new TrouText(correct: false, text: 'toto')
-            }
+            reponseList << new TrouText(correct: isCorrect, text: trouText)
+
+            gapText = indexOfNextToken ? gapText.substring(indexOfNextToken, gapText.length()) : ""
         }
 
         new TrouElement(valeur: reponseList)
     }
 
+    /**
+     * Trouve l'index du prochain token qui indique le debut d'une variante de reponse pour un trou.
+     *
+     * Pour un texte de 'titi=toto~tata' la reponse est 4.
+     *
+     * @param text
+     * @return
+     */
+    private Integer getNextTrouTextBeginningToken(String text) {
+        Integer correctTokenIndex = getIndexOfToken('=', text)
+        Integer inCorrectTokenIndex = getIndexOfToken('~', text)
+
+        if (correctTokenIndex && inCorrectTokenIndex) {
+            Math.min(correctTokenIndex, inCorrectTokenIndex)
+        } else if (correctTokenIndex) {
+            correctTokenIndex
+        } else if (inCorrectTokenIndex) {
+            inCorrectTokenIndex
+        } else {
+            null
+        }
+    }
 }
+
 /**
  * Interface d'un constituant d'un text à trou.
  */

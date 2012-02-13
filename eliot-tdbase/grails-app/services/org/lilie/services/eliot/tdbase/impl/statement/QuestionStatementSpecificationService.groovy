@@ -39,7 +39,7 @@ import org.lilie.services.eliot.tice.utils.StringUtils
  */
 class QuestionStatementSpecificationService extends QuestionSpecificationService<StatementSpecification> {
 
-  def createSpecification(Object map) {
+  def createSpecification(Map map) {
     return new StatementSpecification(map)
   }
 
