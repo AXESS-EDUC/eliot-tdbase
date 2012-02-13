@@ -97,8 +97,7 @@ class ReponseSliderSpecification implements ReponseSpecification {
 
   float evaluate(float maximumPoints) {
     if (valeurReponse != null && valeurCorrecte != null) {
-      if (valeurReponse - precision <= valeurCorrecte &&
-          valeurReponse + precision >= valeurCorrecte) {
+      if (NumberUtils.egaliteAvecPrecision(valeurCorrecte,valeurReponse, precision)) {
         return maximumPoints
       }
     }

@@ -45,12 +45,35 @@ class NumberUtils {
    */
   static String formatFloat(Float nb) {
     if (defaultDecimalFormat == null) {
-      synchronized(NumberUtils.class) {
+      synchronized (NumberUtils.class) {
         if (defaultDecimalFormat == null) {
-           defaultDecimalFormat = new DecimalFormat("##0.00")
+          defaultDecimalFormat = new DecimalFormat("##0.00")
         }
       }
     }
     defaultDecimalFormat.format(nb)
+  }
+
+  /**
+   * Verifie l'egalite de deux nombres f1 et f2 à la precision prêt :
+   * f2 = f1 +|- precision
+   * @param f1 le premier nombre
+   * @param f2 le second nombre auquel on compare le premier nombre
+   * @param precision la précision
+   * @return true en cas d'egalite
+   */
+  static boolean egaliteAvecPrecision(Float f1, Float f2, Float precision) {
+    if (f1 == null || f2 == null) {
+      throw new IllegalArgumentException("Un des deux nombres est null")
+    }
+    // l'ajout ou la soustraction de 0.000001 est pour detourner le pb
+    // du calcul sur nombre flottant en Java
+    def valMin = f1 - precision - 0.000001
+    def valMax = f1 + precision + 0.000001
+    if (f2 <= valMax &&
+        f2 >= valMin) {
+      return true
+    }
+    false
   }
 }
