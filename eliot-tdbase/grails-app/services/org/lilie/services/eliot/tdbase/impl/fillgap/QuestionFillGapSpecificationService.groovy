@@ -96,6 +96,7 @@ class FillGapSpecification implements QuestionSpecification {
         texteATrousStructure.each { texte += it.valeurAsText()}
         texte
     }
+
     /**
      *
      * On imagine le text à trou comme un stack qui est une mélange des TextElements et TrouElements.
