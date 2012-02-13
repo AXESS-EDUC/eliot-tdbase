@@ -32,8 +32,8 @@
 ${specifobject.libelle} <br/>
 <g:textField name="listeQuestions[${indexQuestion}].specifobject.valeur" value="${specifobject.valeurAffichage}" size="10" disabled="true"/>
 &nbsp;&nbsp;
-<g:if test="${specifobject.unite}">
-Unité&nbsp;:&nbsp;${specifobject.unite} &nbsp;&nbsp;
-</g:if>
 Précision&nbsp;:&nbsp;${specifobject.precisionAffichage}<br/>
+Valeur&nbsp;minimale&nbsp;:&nbsp;${specifobject.valeurMinAffichage}<br/>
+Valeur&nbsp;maximale&nbsp;:&nbsp;${specifobject.valeurMaxAffichage}<br/>
+Pas&nbsp;:&nbsp;${specifobject.pasAffichage}<br/>
 Correction : ${specifobject.correction}

@@ -32,9 +32,6 @@
 ${questionspecifobject.libelle} <br/>
 <g:textField name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse" value="${reponsespecifobject?.valeurReponseAffichage}" size="10"/>
 &nbsp;&nbsp;
-<g:if test="${questionspecifobject.unite}">
-${questionspecifobject.unite}&nbsp;&nbsp;
-</g:if>
-Entrez un nombre décimal.
+<!-- todofsil mettre en place le slider jquery-->
 <br/>
 

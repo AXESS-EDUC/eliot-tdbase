@@ -33,9 +33,5 @@
 <br/>
 Correction&nbsp;: <br/>
 ${specifobject.valeurAffichage}
-&nbsp;&nbsp;
-<g:if test="${specifobject.unite}">
-${specifobject.unite} &nbsp;&nbsp;
-</g:if>
 <br/>
 Remarque : ${specifobject.correction}
