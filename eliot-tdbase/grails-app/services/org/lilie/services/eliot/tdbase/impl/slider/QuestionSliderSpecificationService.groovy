@@ -43,7 +43,7 @@ import org.lilie.services.eliot.tice.utils.NumberUtils
 class QuestionSliderSpecificationService extends QuestionSpecificationService<SliderSpecification> {
 
   @Override
-  def createSpecification(Object map) {
+  def createSpecification(Map map) {
     new SliderSpecification(map)
   }
 
