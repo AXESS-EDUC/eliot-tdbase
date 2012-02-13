@@ -39,7 +39,7 @@ import grails.validation.Validateable
 class QuestionAssociateSpecificationService extends QuestionSpecificationService<AssociateSpecification> {
 
   @Override
-  def createSpecification(Object map) {
+  def createSpecification(Map map) {
     new AssociateSpecification(map)
   }
 

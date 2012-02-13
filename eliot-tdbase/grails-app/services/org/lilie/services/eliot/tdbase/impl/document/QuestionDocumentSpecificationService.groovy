@@ -48,7 +48,7 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
   QuestionAttachementService questionAttachementService
 
   @Override
-  def createSpecification(Object map) {
+  def createSpecification(Map map) {
     return new DocumentSpecification(map);
   }
 

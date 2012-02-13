@@ -41,7 +41,7 @@ import org.lilie.services.eliot.tice.utils.NumberUtils
 class QuestionDecimalSpecificationService extends QuestionSpecificationService<DecimalSpecification> {
 
   @Override
-  def createSpecification(Object map) {
+  def createSpecification(Map map) {
     new DecimalSpecification(map)
   }
 
