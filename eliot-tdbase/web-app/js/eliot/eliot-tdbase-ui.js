@@ -36,6 +36,8 @@ function initButtons() {
                        }).click(function (event) {
                                     var currentIdMenu = "#menu_actions_" + this.id;
                                     $(currentIdMenu).css("left", this.offsetLeft);
+                                  
+                                    $(this).addClass("active");
                                     
                                     // calcul de l'offsetTop
                                     var hauteurMenu = $(currentIdMenu).height() ;
@@ -62,6 +64,7 @@ function initButtons() {
 	// Hide on leave block
 	$('div.portal-default_results-list>div').mouseleave(function(){
 	  $('.tdbase-menu-actions').hide();
+	  $('button').removeClass("active");
 	});
 
 }
