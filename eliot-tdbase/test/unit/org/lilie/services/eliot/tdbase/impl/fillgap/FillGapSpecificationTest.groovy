@@ -155,4 +155,15 @@ class FillGapSpecificationTest extends GroovyTestCase {
 
         assertEquals('{=titi~toto\\~no=ti\\~bla}', fillGapSpecification.extractGap('{=titi~toto\\~no=ti\\~bla}sdfsdfdfsdf').valeurAsText())
     }
+
+    void testGetMotsSugeres() {
+        def texteATrous = "The color of blood is {=red}. Major blood vessels are {~feet=arteries=veins} and {=veins=arteries~hair~\\~moo\\}\\=\\{}."
+        def specification = new FillGapSpecification([texteATrous: texteATrous])
+        def motsSugeres = specification.motsSugeres
+
+        assertEquals(5, motsSugeres.size())
+        assertTrue(motsSugeres.contains('red'))
+        assertTrue(motsSugeres.contains('arteries'))
+        assertTrue(motsSugeres.contains('veins'))
+    }
 }

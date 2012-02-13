@@ -125,8 +125,15 @@ class FillGapSpecification implements QuestionSpecification {
      */
     def List getMotsSugeres() {
         def mots = []
-        trouElements.each {
-            if (it.valeur.size() > 0) { mots << it.valeur[0]}
+        texteATrousStructure.each {
+            if (!it.isTextElement()) {
+                TrouElement trouElement = (TrouElement) it
+                trouElement.valeur.each {
+                    if (it.correct) {
+                        mots << it.text
+                    }
+                }
+            }
         }
         shuffle(mots, new Random())
         mots
