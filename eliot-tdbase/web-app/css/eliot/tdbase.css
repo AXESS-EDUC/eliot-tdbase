@@ -333,8 +333,6 @@ Style custom eliot-tdbase
 		}
 			.tdbase-sujet-liste-elements li:first-child{border: none;}
 
-
-
 .tdbase-sujet-edition-question-boutons {
     text-align: right;
     margin-top: 3px;
@@ -458,6 +456,8 @@ div.portal-default_results-list>div{
 	margin: 0 10px;
 	border-bottom: 1px dotted #e5e5e5;
 }
+	div.portal-default_results-list>div:hover{background-color: #fdfdfd!important;}
+	
 	div.portal-default_results-list>div:first-child{
 		border-top: 1px solid #e5e5e5;
 	}
@@ -490,7 +490,8 @@ div.portal-default_results-list h1{
 }
 	div.portal-default_results-list.sujet>div{background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;}
 	div.portal-default_results-list.question>div{background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;}
-	
+	div.portal-default_results-list.sceance>div{background: url("../../images/eliot/picto-sceance.png") no-repeat 10px 8px;}
+		
 	div.portal-default_results-list div.even2{background-color: #f9f9f9;}
 
 div.portal-default_results-list p{
