@@ -122,7 +122,10 @@
 <div class="portal-default_results-list sujet">	
 	<g:each in="${sujets}" status="i" var="sujetInstance">
 	  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
-	  	<button class="n0o-js" id="${sujetInstance.id}">Actions</button>
+	  
+	  	<h1> ${fieldValue(bean: sujetInstance, field: "titre")}</h1>
+	  	
+	  	<button id="${sujetInstance.id}">Actions</button>
         <ul id="menu_actions_${sujetInstance.id}" class="tdbase-menu-actions">
 	          <li><g:link action="teste" id="${sujetInstance.id}">
 	            Tester
@@ -165,7 +168,6 @@
 	          </g:else>
         </ul>
         
-	  	<h1> ${fieldValue(bean: sujetInstance, field: "titre")}</h1>
 	  	<p class="date">Mise à jour le ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
 	  	<p>
 	  		<g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>	 
@@ -176,17 +178,6 @@
 	  		</g:if> 
 	  		<strong> » Partagé : </strong>${sujetInstance.estPartage() ? 'oui' : 'non'}
 	  	</p>
-	  	
-	  	<!--<ul class="feature">
-	  		<li><strong>Niveau :</strong>${sujetInstance.niveau?.libelleLong}</li>
-	  		<li><strong>Matière :</strong>${sujetInstance.matiere?.libelleLong}</li> 
-	  		<li><strong>Durée :</strong>${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</li>
-	  		<g:if test="${afficheFormulaire}">
-	  		  <li><strong>Auteur :</strong>${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}</li>
-	  		</g:if>
-	  		<li><strong>Partagé :</strong>${sujetInstance.estPartage() ? 'oui' : 'non'}</li>
-	  		<li><strong>Mise à jour le :</strong>${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</li>
-	  	</ul>-->
 	  	
 	  </div>
 	</g:each>

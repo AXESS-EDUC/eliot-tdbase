@@ -36,6 +36,9 @@ function initButtons() {
                        }).click(function (event) {
                                     var currentIdMenu = "#menu_actions_" + this.id;
                                     $(currentIdMenu).css("left", this.offsetLeft);
+                                  
+                                  	$('button').removeClass("active");
+                                    $(this).addClass("active");
                                     
                                     // calcul de l'offsetTop
                                     var hauteurMenu = $(currentIdMenu).height() ;
@@ -57,7 +60,15 @@ function initButtons() {
                                     event.stopPropagation();
                                 });
       
-    //Hide the menus if visible                          
-	$('html').click(function() { $('.tdbase-menu-actions').hide();});
+    //Hide the menus if visible                        
+	$('html').click(function() { 
+		$('.tdbase-menu-actions').hide();
+		$('button').removeClass("active");
+	});
+	// Hide on leave block
+	$('div.portal-default_results-list>div').mouseleave(function(){
+	  $('.tdbase-menu-actions').hide();
+	  $('button').removeClass("active");
+	});
 
 }

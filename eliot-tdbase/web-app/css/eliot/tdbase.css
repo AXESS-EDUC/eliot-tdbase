@@ -333,8 +333,6 @@ Style custom eliot-tdbase
 		}
 			.tdbase-sujet-liste-elements li:first-child{border: none;}
 
-
-
 .tdbase-sujet-edition-question-boutons {
     text-align: right;
     margin-top: 3px;
@@ -456,34 +454,44 @@ div.portal-default_results-list>div{
 	position: relative;
 	padding:5px 0 10px;
 	margin: 0 10px;
-	/*overflow: hidden;*/
 	border-bottom: 1px dotted #e5e5e5;
 }
+	div.portal-default_results-list>div:hover{background-color: #fdfdfd!important;}
+	
 	div.portal-default_results-list>div:first-child{
 		border-top: 1px solid #e5e5e5;
 	}
 	div.portal-default_results-list>div button{
-		position: absolute;
-		margin-right: 10px;
-		right: 15px;
-		margin-top: 1px;
+		top: -1px;
+		margin:0 0 0 10px;
+		visibility: hidden;
 	}
+		div.portal-default_results-list>div:hover button{visibility: visible;opacity: .6;}
+		div.portal-default_results-list>div:hover button:hover,
+		div.portal-default_results-list>div:hover button.active{visibility: visible;opacity: 1;}
+
+		
 		div.portal-default_results-list.partiel>div button{right: 0;}
 		div.portal-default_results-list .tdbase-menu-actions{
 			position: absolute;
-			margin-left: -97px;
+			/*margin-left: -97px;*/
 		}
+			div.portal-default_results-list>div .tdbase-menu-actions{visibility: hidden;}
+			div.portal-default_results-list>div:hover .tdbase-menu-actions{visibility: visible;}
+			
 			div.portal-default_results-list .tdbase-menu-actions{top: 32px;}
 			div.portal-default_results-list .tdbase-menu-actions.top{top: 8px;}
-			
+
 div.portal-default_results-list h1{
 	padding-left: 35px;
-	margin: 6px 10px 2px;
-	font-size: 1.3em;
+	margin: 6px 10px 0px;
+	font-size: 1.5em;
+	display: inline;
 }
 	div.portal-default_results-list.sujet>div{background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;}
 	div.portal-default_results-list.question>div{background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;}
-	
+	div.portal-default_results-list.sceance>div{background: url("../../images/eliot/picto-sceance.png") no-repeat 10px 8px;}
+		
 	div.portal-default_results-list div.even2{background-color: #f9f9f9;}
 
 div.portal-default_results-list p{
@@ -492,7 +500,7 @@ div.portal-default_results-list p{
 }
 	div.portal-default_results-list p.date{
 		color: #999;font-size: .9em;
-		margin: 0;
+		margin: -2px 0 2px;
 		font-style: italic;
 	}
 	div.portal-default_results-list p strong{color: #728CBD;margin-left: 10px;}
@@ -648,23 +656,19 @@ Style for the edition of a document or category (Content)
 	text-transform: uppercase;
 	color: #ec8e0c!important;
 	background:whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
-}
-	.ui-button{background:#fdf5ce url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;}
+}	
+	.ui-button:hover, .button:hover, .ui-button.active{
+		border: 1px solid #fbcb09;
+		background:#fdf5ce url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
+	    color: #ec8e0c;
+	    cursor: pointer;
+	}
 	
-.ui-button:hover, .button:hover{
-	border: 1px solid #fbcb09;
-	background:#fdf5ce url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
-    color: #ec8e0c;
-    cursor: pointer;
-}
-	
-
 .tdbase-sujet-edition{margin-bottom: 50px;}
 .tdbase-sujet-edition-question{
 	position: relative;
 	padding:0 10px 25px;
 	margin: 0 10px 10px;
-	/*overflow: hidden;*/
 	border: none;
 	background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 8px;
 }
