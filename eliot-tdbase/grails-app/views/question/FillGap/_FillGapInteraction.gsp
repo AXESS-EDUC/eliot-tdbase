@@ -34,12 +34,23 @@ ${questionspecifobject.libelle} <br/>
 <g:each in="${questionspecifobject.texteATrousStructure}" var="texteATrouElement" status="i">
     &nbsp;
 
-    <g:if test="${texteATrouElement.isTexte()}">
+    <g:if test="${texteATrouElement.isTextElement()}">
         ${texteATrouElement.valeur}
     </g:if>
     <g:else>
-        <g:textField value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
-                     name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index++}]"/>
+
+        <g:if test="${questionspecifobject.saisieLibre}">
+
+            <g:textField value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
+                         name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"/>
+        </g:if>
+        <g:else>
+            <g:select name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"
+                      from="${texteATrouElement.valeur*.text}"
+                      value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
+                      noSelection="['': 'Faite votre choix']"/>
+        </g:else>
+        <g:set var="index" value="${index.toInteger() + 1}"/>
     </g:else>
 </g:each>
 

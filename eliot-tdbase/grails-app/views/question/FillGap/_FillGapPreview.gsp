@@ -25,14 +25,12 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
 <g:set var="specifobject" value="${question.specificationObject}"/>
 ${specifobject.libelle} <br/>
 
 <g:each in="${specifobject.texteATrousStructure}" var="texteATrouElement"
         status="i">
-  ${texteATrouElement.valeur}
+  ${texteATrouElement.valeurAsText()}
 </g:each>
 
 <br>

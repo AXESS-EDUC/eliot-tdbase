@@ -59,7 +59,13 @@ class FillGapSpecification implements QuestionSpecification {
     /**
      * Indique si la suggestion des reponses doit être activée.
      */
-    boolean montrerLesMots
+    boolean montrerLesMots = false
+
+    /**
+     * Indique si les trous seront rendu en IHM sous forme de
+     * 'saisie libre' ou sous forme de 'choix dans le texte'.
+     */
+    boolean saisieLibre = true
 
     /**
      * La correction de la question.
@@ -76,6 +82,7 @@ class FillGapSpecification implements QuestionSpecification {
         [
                 libelle: libelle,
                 montrerLesMots: montrerLesMots,
+                saisieLibre: saisieLibre,
                 texteATrous: texteATrous,
                 correction: correction,
         ]

@@ -47,9 +47,6 @@ class ReponseFillGapSpecificationService extends ReponseSpecificationService<Rep
     ReponseFillGapSpecification getObjectInitialiseFromSpecification(Question question) {
 
         List<TextATrouElement> texteATrousStructure = question.specificationObject.texteATrousStructure
-
-
-
         createSpecification(reponsesPossibles: texteATrousStructure.findAll {!it.isTextElement()})
     }
 }

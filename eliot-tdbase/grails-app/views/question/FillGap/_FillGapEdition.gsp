@@ -45,7 +45,8 @@
         <g:textArea
                 name="specifobject.texteATrous"
                 rows="10" cols="55"
-                value="${specifobject.texteATrous}"><g:message code="question.fillgap.texteatrous"/>
+                value="${specifobject.texteATrous}">
+            <g:message code="question.fillgap.texteatrous"/>
         </g:textArea>
     </td>
 </tr>
@@ -54,6 +55,17 @@
     <td>
         <g:checkBox name="specifobject.montrerLesMots"
                     checked="${specifobject.montrerLesMots}"/>
+    </td>
+</tr>
+<tr>
+    <td class="label">Presentation des trous:</td>
+    <td>
+        <g:radioGroup name="specifobject.saisieLibre"
+                      labels="['Saisie Libre', 'Choix dans le texte']"
+                      values="[true, false]"
+                      value="${specifobject.saisieLibre}">
+            <span>${it.label} ${it.radio}</span>
+        </g:radioGroup>
     </td>
 </tr>
 <tr>
