@@ -30,13 +30,6 @@ function initDragNDrop() {
 
     initWidgets();
     registerEventHandlers();
-    resizeFillgraphicsEditor();
-
-    function resizeFillgraphicsEditor()
-    {
-        var height = $('.imageContainer').css('height');
-        $('.fillgraphicsEditor').css('height', height);
-    }
 
     function initWidgets() {
         $(".textZone").draggable({containment:'#fillgraphicsEditor', stack:'div'});
