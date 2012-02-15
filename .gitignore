@@ -1,6 +1,7 @@
 # Compiled source #
 ###################
 *.class
+bin
 
 # Packages #
 ############
@@ -31,7 +32,9 @@ Thumbs.db
 
 # fichiers propres au projet #
 ##############################
-
+.classpath
+.project
+.settings
 out
 .idea
 *.iml
