@@ -26,7 +26,7 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<r:require module="fillGraphics_Common"/>
+<r:require module="fillGraphics_PreviewJS"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 ${specifobject.libelle}
@@ -49,8 +49,14 @@ ${specifobject.libelle}
                         value="${textZone.text}" readonly="true" class="nonResizableTextArea"/>
         </div>
     </g:each>
-
 </div>
+<br>
+<g:if test="${specifobject.montrerLesMots}">
+    Montrer les mots : oui
+</g:if>
+<g:else>
+    Montrer les mots : non
+</g:else>
 
 <br/>
 Correction : ${specifobject.correction}

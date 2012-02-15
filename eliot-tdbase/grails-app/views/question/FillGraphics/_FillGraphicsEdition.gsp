@@ -74,6 +74,10 @@
     </td>
 </tr>
 <tr>
+    <td class="label">Montrer les mots:</td>
+    <td><g:checkBox name="specifobject.montrerLesMots" checked="${specifobject.montrerLesMots}"/></td>
+</tr>
+<tr>
     <td class="label">Correction:</td>
     <td>
         <g:textArea

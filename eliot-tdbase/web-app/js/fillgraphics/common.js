@@ -25,21 +25,17 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-initPolyFill();
+function Common() {
 
-function afterTextZoneDeleted() {
-    initPolyFill();
-}
+    /**
+     * Une fonction qui reajuste la taille du fillgraphicsEditor en
+     * fonction de la taille de l'image d'arrière plan.
+     */
+    this.resizeFillgraphicsEditor = function () {
 
-function afterTextZoneAdded() {
-    initPolyFill();
-}
-
-function initPolyFill() {
-    new Common().resizeFillgraphicsEditor();
-    if (Modernizr.touch) {
-        initDragNDropPolyFill();
-    } else {
-        initDragNDrop();
+        $('.imageContainer').each(function () {
+            var height = $(this).css('height');
+            $(this).parents('.fillgraphicsEditor').css('height', height);
+        });
     }
 }
