@@ -167,7 +167,7 @@ class SujetController {
     Sujet sujet = Sujet.get(params.id)
     sujetService.supprimeSujet(sujet, personne)
     def lien = breadcrumpsService.lienRetour()
-    forward(action: lien.action,
+    redirect(action: lien.action,
             controller: lien.controller,
             params: lien.params)
 

@@ -123,7 +123,7 @@ class QuestionController {
     Question question = Question.get(params.id)
     questionService.supprimeQuestion(question, personne)
     def lien = breadcrumpsService.lienRetour()
-    forward(action: lien.action,
+    redirect(action: lien.action,
             controller: lien.controller,
             params: lien.params)
 
