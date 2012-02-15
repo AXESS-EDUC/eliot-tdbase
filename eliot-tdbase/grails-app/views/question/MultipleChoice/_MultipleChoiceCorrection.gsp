@@ -26,11 +26,13 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<br/>
-Correction&nbsp;: <br/>
-<g:each in="${specifobject.reponses}" var="reponse">
-  <g:if test="${reponse.estUneBonneReponse}">
-${reponse.libelleReponse}<br/>
-  </g:if>
-</g:each>
-Remarque : ${specifobject.correction}
+<div class="item">
+	<strong>Correction&nbsp;:</strong> <br/>
+	<g:each in="${specifobject.reponses}" var="reponse">
+	  <g:if test="${reponse.estUneBonneReponse}">
+	${reponse.libelleReponse}<br/>
+	  </g:if>
+	</g:each>
+	<br/>
+	<strong>Remarque :</strong> ${specifobject.correction}
+</div>

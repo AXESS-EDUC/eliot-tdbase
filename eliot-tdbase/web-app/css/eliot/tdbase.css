@@ -353,7 +353,7 @@ Style custom eliot-tdbase
 }
 
 .tdbase-sujet-edition-question-interaction {
-    background-color: #F3F6FB;
+	margin:10px 0;
     padding: 3px;
 }
 
@@ -514,13 +514,23 @@ div.portal-default_results-list p{
 Style for the edition of a document or category (ToolBar)
 
 ********************************************************************************/
+/* Surcharge "portal.css" */
 .portal-messages .success {
-	/* Surcharge "portal.css" */
     background-color: #f8ffeb;
     background-position:5px 10px;
     margin:  10px;
     padding: 10px 25px;
 }
+
+.portal-messages .notice {
+    background-color: #fbffd9;
+    background-position:5px 10px;
+    color: #ec8e0c;
+    margin:  10px;
+    padding: 10px 25px;
+}
+
+/* Fin surcharge "portal.css" */
 
 
 .portal-tabs {
@@ -667,7 +677,7 @@ Style for the edition of a document or category (Content)
 .tdbase-sujet-edition{margin-bottom: 50px;}
 .tdbase-sujet-edition-question{
 	position: relative;
-	padding:0 10px 25px;
+	padding:0 10px 10px;
 	margin: 0 10px 10px;
 	border: none;
 	background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 8px;
@@ -703,4 +713,54 @@ Style for the edition of a document or category (Content)
 	.tdbase-sujet-edition-question .item .title{
 		color: #3F61A0;
 		font-size: 1.0em;
+	}
+	
+/***** Test sujet ****/
+.teste .bottom,
+.teste .top{
+	width: 98%;
+	padding: 0 1%;
+}
+.teste .form_actions{
+	border: none;
+	border-top: 1px dotted #ccc;
+	background-color:whiteSmoke;
+	margin: 20px 0 20px;
+	width: auto;
+	display: block;
+}
+	.teste .form_actions .button{margin-right:20px;}
+
+.teste .top .form_actions{border: none;}
+
+.teste .tdbase-sujet-titre {
+    text-align: left;
+    padding:10px 0 4px 30px;
+	background: url("../../images/eliot/picto-sujet.png") no-repeat 0 10px;
+}
+
+.teste h2{
+	font-size: 1.4em;
+}
+
+.tdbase-sujet-edition-question-interaction h1{
+	margin:10px 0;
+    padding: 3px;
+}
+	.tdbase-sujet-edition-question-interaction h2{
+		border-bottom: 1px dotted #CCC;
+		font-size: 1.2em;
+		margin-top: 5px;
+		padding:3px 0 12px 25px;
+	}
+.tdbase-sujet-edition-question-interaction .item{margin:10px 0 0 30px;}
+.teste .tdbase-sujet-edition-question-points{
+	margin-top: 15px;
+	text-align: right;
+	right: 15px;
+}
+	.teste .tdbase-sujet-edition-question-points em{
+		font-weight: normal;
+		font-style: normal;
+		color: #ec8e0c;
 	}
