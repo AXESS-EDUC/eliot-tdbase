@@ -69,33 +69,32 @@
            </div>
        </g:if>
 
-  <form method="post">
-    <div style="text-align: right;">
+  <form method="post" class="teste">
+    <!--<div class="top">
+    	<div class="form_actions">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link>&nbsp;
       |&nbsp;
-        <g:actionSubmit value="Rendre la copie" action="rendLaCopieTeste"
+        <g:actionSubmit value="Rendre la copie" action="rendLaCopieTeste" class="button"
                         title="Rendre la copie"/>
-
-    </div>
+		</div>
+    </div>-->
     <g:hiddenField name="copie.id" value="${copie.id}"/>
 
-    <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
+    <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
     <g:set var="indexReponse" value="0"/>
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">
         <g:if test="${sujetQuestion.question.type.interaction}">
           <g:set var="reponse"
                  value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
-          <div class="tdbase-sujet-edition-question-points"
-               style="margin-bottom: 15px">
-            <div id="SujetSequenceQuestions-${sujetQuestion.id}"
-                 style="float: left;width: 40px;">
-              <g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00" />
-            </div>
-             &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}" format="##0.00" />&nbsp;point(s)
-            </div>
+          <div class="tdbase-sujet-edition-question-points">
+            <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+              <em><g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00" /></em>
+            	&nbsp;/&nbsp;<strong><g:formatNumber number="${sujetQuestion.points}" format="##0.00" />&nbsp;point(s)</strong>
+             </div>
+           </div>
         </g:if>
         <g:set var="question" value="${sujetQuestion.question}"/>
 
@@ -130,12 +129,14 @@
 
     </g:each>
     <g:hiddenField name="nombreReponses" value="${indexReponse}"/>
-    <div style="text-align: right;margin-top: 20px;">
-      <g:link action="${lienRetour.action}"
-              controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link>&nbsp;
-            |&nbsp;<g:actionSubmit value="Rendre la copie" action="rendLaCopieTeste"
-                        title="Rendre la copie"/>
+    <div class="bottom">
+    	<div class="form_actions">
+	      <g:link action="${lienRetour.action}"
+	              controller="${lienRetour.controller}"
+	              params="${lienRetour.params}">Annuler</g:link>&nbsp;
+	            |&nbsp;<g:actionSubmit value="Rendre la copie" action="rendLaCopieTeste" class="button"
+	                        title="Rendre la copie"/>
+         </div>
     </div>
   </form>
 
