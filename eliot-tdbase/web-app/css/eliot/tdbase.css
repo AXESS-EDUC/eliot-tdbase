@@ -535,12 +535,13 @@ Style for the edition of a document or category (ToolBar)
 
 .portal-tabs {
 	position: relative;
-    background-color:whiteSmoke;
+    background-color: #f0f0f0;
     color: #999999;
     border: none;
     text-align:left;
     margin: 25px 10px 0px;
     padding: 12px 0;
+    
     -moz-border-radius:6px;
 	-webkit-border-radius:6px;
 	border-radius:6px;
@@ -584,6 +585,7 @@ Style for the edition of a document or category (ToolBar)
 		background: url("../../images/eliot/picto-delete.png") no-repeat 0 4px;
 	}
 		.portal-tabs a.delete:hover{background-position: 0 -23px;}
+
 
 /*******************************************************************************
 
@@ -721,10 +723,21 @@ Style for the edition of a document or category (Content)
 	width: 98%;
 	padding: 0 1%;
 }
+.teste .top{padding: 0;}
+	.teste .top .form_actions{
+		margin: 0;
+		
+		text-align: left;
+		padding-left: 10px;
+	    -moz-border-radius:6px;
+		-webkit-border-radius:6px;
+		border-radius:6px;
+		/*IE DOES NOT SUPPORT BORDER RADIUS*/
+	}
 .teste .form_actions{
 	border: none;
 	border-top: 1px dotted #ccc;
-	background-color:whiteSmoke;
+	background-color: #f0f0f0;
 	margin: 20px 0 20px;
 	width: auto;
 	display: block;
