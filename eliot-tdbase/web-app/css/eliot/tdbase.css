@@ -461,14 +461,18 @@ div.portal-default_results-list>div{
 	div.portal-default_results-list>div:first-child{
 		border-top: 1px solid #e5e5e5;
 	}
-	div.portal-default_results-list>div button{
+	div.portal-default_results-list>div button,
+	div.portal-default_results-list>div .button{
 		top: -1px;
 		margin:0 0 0 10px;
 		visibility: hidden;
 	}
-		div.portal-default_results-list>div:hover button{visibility: visible;opacity: .6;}
+		div.portal-default_results-list>div:hover button,
+		div.portal-default_results-list>div:hover .button{visibility: visible;opacity: .6;}
 		div.portal-default_results-list>div:hover button:hover,
-		div.portal-default_results-list>div:hover button.active{visibility: visible;opacity: 1;}
+		div.portal-default_results-list>div:hover button.active,
+		div.portal-default_results-list>div:hover .button:hover,
+		div.portal-default_results-list>div:hover .button.active{visibility: visible;opacity: 1;}
 
 		
 		div.portal-default_results-list.partiel>div button{right: 0;}
@@ -777,3 +781,17 @@ Style for the edition of a document or category (Content)
 		font-style: normal;
 		color: #ec8e0c;
 	}
+
+/***** Liste Sceance élève ****/
+
+.button.work:before{
+	content: url("../../images/eliot/picto-work.png") no-repeat 0 0;
+	position: relative;
+	top: 2px;
+}
+.button.voir:before{
+	content: url("../../images/eliot/picto-voir.png") no-repeat 0 0;
+	position: relative;
+	top: 2px;
+}
+

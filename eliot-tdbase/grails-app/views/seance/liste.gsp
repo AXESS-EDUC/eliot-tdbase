@@ -58,7 +58,8 @@
 		  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
 		  	<h1> ${seance.sujet.titre}</h1>
 		  	
-		  	<button id="${seance.id}">Actions</button><ul id="menu_actions_${seance.id}"
+		  	<button id="${seance.id}">Actions</button>
+		  	<ul id="menu_actions_${seance.id}"
 		  	    class="tdbase-menu-actions">
 		  	  <li><g:link action="listeResultats" controller="seance"
 		  	              id="${seance.id}">

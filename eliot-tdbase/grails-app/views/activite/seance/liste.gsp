@@ -32,10 +32,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase-activite"/>
-  <r:require modules="jquery"/>
+  <r:require modules="eliot-tdbase-ui"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
+      initButtons();
     });
   </r:script>
   <title>TDBase - Liste des séances</title>
@@ -47,52 +48,30 @@
 
   <g:if test="${seances}">
     <div class="portal_pagination">
-      ${seances.totalCount} résultat(s) <g:paginate total="${seances.totalCount}"></g:paginate>
+       <p class="nb_result">${seances.totalCount} résultat(s)</p> <g:paginate total="${seances.totalCount}"></g:paginate>
     </div>
-
-    <div class="portal-default_table">
-      <table>
-        <thead>
-        <tr>
-          <th>Groupe</th>
-          <th>Sujet</th>
-          <th>Matière</th>
-          <th>Début</th>
-          <th>Fin</th>
-          <th>Copie</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <g:each in="${seances}" status="i" var="seance">
-          <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-            <td>
-              ${seance.groupeLibelle}
-            </td>
-            <td>
-              ${seance.sujet.titre}
-            </td>
-            <td>
-              ${seance.matiere?.libelleLong}
-            </td>
-            <td>
-              ${seance.dateDebut.format('dd/MM/yy HH:mm')}
-            </td>
-            <td>
-              ${seance.dateFin.format('dd/MM/yy HH:mm')}
-            </td>
-            <td>
-              <g:link action="travailleCopie" controller="activite"
-                      id="${seance.id}" title="Travailler sa copie">
-                <img src="/eliot-tdbase/images/eliot/write-btn.gif"
-                     width="18" height="16"/>
-              </g:link>
-            </td>
-          </tr>
-        </g:each>
-        </tbody>
-      </table>
-    </div>
+    
+    <div class="portal-default_results-list sceance">
+    	<g:each in="${seances}" status="i" var="seance">
+    	  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+    	  	<h1> ${seance.sujet.titre}</h1>
+    	  	
+    	  	<!-- Pour les sceance déjà effectuées et non modifiable à la place de la classe "work" mettre "voir" -->
+    	  	<g:link action="travailleCopie" controller="activite" class="button work" 
+    	  	        id="${seance.id}" title="Travailler sa copie">
+    	  	</g:link>
+    	  	
+    	  	<p><strong> » Groupe : </strong><b>${seance.groupeLibelle}</b></p>
+  		  	<p>	
+  		  		<g:if test="${seance.matiere?.libelleLong}"><strong>» Matière : </strong>${seance.matiere?.libelleLong}</g:if>
+  		  		<strong> » Début de la séance : </strong>${seance.dateDebut.format('dd/MM/yy HH:mm')} 
+  		  		<strong> » Fin : </strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
+  		  	</p>
+  		  	
+  		  </div>
+  		</g:each> 
+  	</div>
+    
   </g:if>
   <g:else>
      <div class="portal_pagination">
