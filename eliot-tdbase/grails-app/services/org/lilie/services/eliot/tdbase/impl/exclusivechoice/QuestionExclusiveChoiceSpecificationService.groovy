@@ -25,11 +25,6 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-
-
-
-
-
 package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 
 import grails.validation.Validateable

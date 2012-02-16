@@ -40,78 +40,80 @@ import org.springframework.transaction.annotation.Transactional
  */
 public abstract class ReponseSpecificationService<R extends ReponseSpecification> {
 
-  static transactional = false
+    static transactional = false
 
-  /**
-   * Récupère la specification d'une réponse à partir d'un objet
-   * @param reponseSpecObject l'objet encapsulant la specification
-   * @return la specification
-   */
-  String getSpecificationFromObject(R reponseSpecObject) {
-    new JsonBuilder(reponseSpecObject.toMap()).toString()
-  }
-
-  /**
-   * Récupère l'objet encapsulant la specification d'une réponse à partir de
-   * la spécification
-   * @param specification la specification
-   * @return l'objet encapsulant la specification
-   */
-  R getObjectFromSpecification(String specification) {
-    if (!specification) {
-      createSpecification(new HashMap())
-    } else {
-      createSpecification new JsonSlurper().parseText(specification)
+    /**
+     * Récupère la specification d'une réponse à partir d'un objet
+     * @param reponseSpecObject l'objet encapsulant la specification
+     * @return la specification
+     */
+    String getSpecificationFromObject(R reponseSpecObject) {
+        new JsonBuilder(reponseSpecObject.toMap()).toString()
     }
-  }
 
-  /**
-   * Crée une spécification
-   * @return la spécification
-   */
-  abstract R createSpecification(Map map)
+    /**
+     * Récupère l'objet encapsulant la specification d'une réponse à partir de
+     * la spécification
+     * @param specification la specification
+     * @return l'objet encapsulant la specification
+     */
+    R getObjectFromSpecification(String specification) {
+        if (!specification) {
+            createSpecification(new HashMap())
+        } else {
+            createSpecification new JsonSlurper().parseText(specification)
+        }
+    }
 
-  /**
-   * Récupère un objet specification de réponse initialisé à partir d'une
-   * question
-   * @param question la question
-   * @return l'objet specification initialisé
-   */
-  R getObjectInitialiseFromSpecification(Question question) {
-    return createSpecification(new HashMap())
-  }
+    /**
+     * Crée une spécification
+     * @return la spécification
+     */
+    abstract R createSpecification(Map map)
 
-  /**
-   * Met à jour la specification de la question
-   * @param reponse la reponse
-   * @param reponseSpecObject l'objet encapsulant la specification
-   */
-  Reponse updateReponseSpecificationForObject(Reponse reponse, R reponseSpecObject) {
-    reponse.specification = getSpecificationFromObject(reponseSpecObject)
-    reponse.save()
-  }
+    /**
+     * Récupère un objet specification de réponse initialisé à partir d'une
+     * question
+     * @param question la question
+     * @return l'objet specification initialisé
+     */
+    R getObjectInitialiseFromSpecification(Question question) {
+        return createSpecification(new HashMap())
+    }
 
-  /**
-   * Initialisele spécification d'une réponse à partir d'une question
-   * @param reponse la réponse
-   * @param question la question
-   * @return
-   */
-  Reponse initialiseReponseSpecificationForQuestion(Reponse reponse,
-                                                    Question question) {
-    updateReponseSpecificationForObject(reponse, getObjectInitialiseFromSpecification(question))
-  }
+    /**
+     * Met à jour la specification de la question
+     * @param reponse la reponse
+     * @param reponseSpecObject l'objet encapsulant la specification
+     */
+    Reponse updateReponseSpecificationForObject(Reponse reponse, R reponseSpecObject) {
+        reponse.specification = getSpecificationFromObject(reponseSpecObject)
+        reponse.save()
+        return reponse
+    }
 
-  /**
-   * Calcule le nombre de points obtenu par la réponse et met à jour la note
-   * issue de la correction automatique de la réponse
-   * @param reponse la réponse à évaluer
-   * @return le nombre de points obtenus pour cette réponse
-   */
-  @Transactional
-  Float evalueReponse(Reponse reponse) {
-    R repSpecObj = reponse.specificationObject
-    reponse.correctionNoteAutomatique = repSpecObj.evaluate(reponse.sujetQuestion.points)
-    reponse.save().correctionNoteAutomatique
-  }
+    /**
+     * Initialisele spécification d'une réponse à partir d'une question
+     * @param reponse la réponse
+     * @param question la question
+     * @return
+     */
+    Reponse initialiseReponseSpecificationForQuestion(Reponse reponse,
+                                                      Question question) {
+        updateReponseSpecificationForObject(reponse, getObjectInitialiseFromSpecification(question))
+    }
+
+    /**
+     * Calcule le nombre de points obtenu par la réponse et met à jour la note
+     * issue de la correction automatique de la réponse
+     * @param reponse la réponse à évaluer
+     * @return le nombre de points obtenus pour cette réponse
+     */
+    @Transactional
+    Float evalueReponse(Reponse reponse) {
+        R repSpecObj = reponse.specificationObject
+        reponse.correctionNoteAutomatique = repSpecObj.evaluate(reponse.sujetQuestion.points)
+        reponse.save()
+        return reponse.correctionNoteAutomatique
+    }
 }

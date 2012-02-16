@@ -72,6 +72,7 @@ abstract class QuestionSpecificationService<QS extends QuestionSpecification> {
         question.specification = getSpecificationFromObject(specification)
         question.specificationNormalise = getSpecificationNormaliseFromObject(specification)
         question.save()
+        return question
     }
 
     /**
