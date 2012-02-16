@@ -25,7 +25,7 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<h3>${question.titre}</h3>
+<h1>${question.titre}</h1>
 <table><tr>
 <td style="width: 50%; vertical-align: top;">
   <table>
@@ -44,7 +44,7 @@
 <td style="width: 50%; vertical-align: top;">
   <table>
     <tr>
-      <td class="label">Titre:</td>
+      <td class="label">Titre :</td>
       <td>
         ${question.titre}
       </td>

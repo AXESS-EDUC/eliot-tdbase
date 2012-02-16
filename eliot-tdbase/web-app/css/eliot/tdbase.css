@@ -461,14 +461,18 @@ div.portal-default_results-list>div{
 	div.portal-default_results-list>div:first-child{
 		border-top: 1px solid #e5e5e5;
 	}
-	div.portal-default_results-list>div button{
+	div.portal-default_results-list>div button,
+	div.portal-default_results-list>div .button{
 		top: -1px;
 		margin:0 0 0 10px;
 		visibility: hidden;
 	}
-		div.portal-default_results-list>div:hover button{visibility: visible;opacity: .6;}
+		div.portal-default_results-list>div:hover button,
+		div.portal-default_results-list>div:hover .button{visibility: visible;opacity: .6;}
 		div.portal-default_results-list>div:hover button:hover,
-		div.portal-default_results-list>div:hover button.active{visibility: visible;opacity: 1;}
+		div.portal-default_results-list>div:hover button.active,
+		div.portal-default_results-list>div:hover .button:hover,
+		div.portal-default_results-list>div:hover .button.active{visibility: visible;opacity: 1;}
 
 		
 		div.portal-default_results-list.partiel>div button{right: 0;}
@@ -490,6 +494,7 @@ div.portal-default_results-list h1{
 }
 	div.portal-default_results-list.sujet>div{background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;}
 	div.portal-default_results-list.question>div{background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;}
+	
 	div.portal-default_results-list.sceance>div{background: url("../../images/eliot/picto-sceance.png") no-repeat 10px 8px;}
 		
 	div.portal-default_results-list div.even2{background-color: #f9f9f9;}
@@ -530,17 +535,24 @@ Style for the edition of a document or category (ToolBar)
     padding: 10px 25px;
 }
 
+.portal-messages .error {
+	background-position:5px 10px;
+	margin:  10px;
+    padding: 10px 25px;
+}
+
 /* Fin surcharge "portal.css" */
 
 
 .portal-tabs {
 	position: relative;
-    background-color:whiteSmoke;
+    background-color: #f0f0f0;
     color: #999999;
     border: none;
     text-align:left;
     margin: 25px 10px 0px;
     padding: 12px 0;
+    
     -moz-border-radius:6px;
 	-webkit-border-radius:6px;
 	border-radius:6px;
@@ -585,6 +597,7 @@ Style for the edition of a document or category (ToolBar)
 	}
 		.portal-tabs a.delete:hover{background-position: 0 -23px;}
 
+
 /*******************************************************************************
 
 Style for the edition of a document or category (Content)
@@ -593,10 +606,13 @@ Style for the edition of a document or category (Content)
 .edite.portal-form_container{margin: 30px 20px;border: none;width: 100%;}
 
 .recherche.portal-form_container{
-	padding: 2px 0;
+	
 }
 	.recherche.portal-form_container>table{margin: 10px 0;}
-	.recherche.portal-form_container {
+	.recherche.portal-form_container,
+	.corrige.portal-form_container,
+	.edite.portal-form_container{
+		padding: 5px 0;
 	    width:70%;
 	    margin-left:10px;
 	    margin-right:auto;
@@ -611,7 +627,9 @@ Style for the edition of a document or category (Content)
 		/*IE DOES NOT SUPPORT BORDER RADIUS*/
 	}
 
-.recherche.form_actions {
+.recherche.form_actions,
+.corrige.form_actions,
+.edite.form_actions{
     background: none;
     border: none;
     border-top-width: 0;
@@ -716,24 +734,44 @@ Style for the edition of a document or category (Content)
 	}
 	
 /***** Test sujet ****/
-.teste .bottom,
-.teste .top{
+.teste .bottom, .teste .top,
+.edite .bottom, .edite .top{
 	width: 98%;
 	padding: 0 1%;
 }
-.teste .form_actions{
+	.edite .bottom .form_actions{
+		padding: 10px 10px 10px 0;		
+}
+	
+.teste .top{padding: 0;}
+.edite .top{padding: 5px 0;}
+	.teste .top .form_actions,
+	.edite .top .form_actions{
+		margin: 0;
+		
+		text-align: left;
+		padding-left: 10px;
+	    -moz-border-radius:6px;
+		-webkit-border-radius:6px;
+		border-radius:6px;
+		/*IE DOES NOT SUPPORT BORDER RADIUS*/
+	}
+.teste .form_actions,
+.edite .form_actions{
 	border: none;
 	border-top: 1px dotted #ccc;
-	background-color:whiteSmoke;
+	background-color: #f0f0f0;
 	margin: 20px 0 20px;
 	width: auto;
 	display: block;
 }
 	.teste .form_actions .button{margin-right:20px;}
 
-.teste .top .form_actions{border: none;}
+.teste .top .form_actions,
+.edite .top .form_actions{border: none;}
 
-.teste .tdbase-sujet-titre {
+.teste .tdbase-sujet-titre,
+.edite .tdbase-sujet-titre{
     text-align: left;
     padding:10px 0 4px 30px;
 	background: url("../../images/eliot/picto-sujet.png") no-repeat 0 10px;
@@ -754,13 +792,54 @@ Style for the edition of a document or category (Content)
 		padding:3px 0 12px 25px;
 	}
 .tdbase-sujet-edition-question-interaction .item{margin:10px 0 0 30px;}
-.teste .tdbase-sujet-edition-question-points{
+
+.teste .tdbase-sujet-edition-question-points,
+.edite .tdbase-sujet-edition-question-points,
+.visualise .tdbase-sujet-edition-question-points{
 	margin-top: 15px;
 	text-align: right;
 	right: 15px;
 }
-	.teste .tdbase-sujet-edition-question-points em{
+	.teste .tdbase-sujet-edition-question-points em,
+	.edite .tdbase-sujet-edition-question-points em,
+	.visualise .tdbase-sujet-edition-question-points em{
 		font-weight: normal;
 		font-style: normal;
 		color: #ec8e0c;
 	}
+
+/***** Liste Sceance élève ****/
+.button.work:before{
+	content: url("../../images/eliot/picto-work.png") no-repeat 0 0;
+	position: relative;
+	top: 2px;
+}
+.button.voir:before{
+	content: url("../../images/eliot/picto-voir.png") no-repeat 0 0;
+	position: relative;
+	top: 2px;
+}
+
+/***** Aperçu Question ****/
+.edite.portal-form_container{padding-bottom: 20px;background-color: whitesmoke;}
+.edite.portal-form_container table td{padding: 2px 0;}
+.edite.portal-form_container h1{
+		padding-left: 50px;
+		padding-bottom: 10px;
+		background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
+		border-bottom: 1px dotted #ccc;
+}
+
+/**/
+.visualise.portal-form_container{padding: 10px 0;}
+.visualise.portal-form_container table{
+	width: 0;
+	margin-left:20px;
+}
+
+.visualise h1.tdbase-sujet-titre{
+    text-align: left;
+    padding:10px 0 4px 30px;
+	background: url("../../images/eliot/picto-sceance.png") no-repeat 0 10px;
+}
+

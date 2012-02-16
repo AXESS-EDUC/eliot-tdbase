@@ -30,17 +30,16 @@
 
 
 <g:set var="sujet" value="${copie.sujet}"/>
-<div class="portal-form_container">
+<div class="portal-form_container corrige visualise">
   <table>
     <tr>
       <td class="label">Élève :</td>
-      <td><strong>${copie.eleve.nomAffichage}</strong></td>
+      <td><strong>${copie.eleve.nomAffichage}</strong> <br/><br/></td>
     </tr>
-
     <tr>
       <td class="label">Appréciation :</td>
       <td>
-        ${copie.correctionAnnotation}
+        <p>${copie.correctionAnnotation}</p>
       </td>
     </tr>
     <tr>
@@ -74,9 +73,9 @@
     </div>
   </g:if>
 </g:if>
-<form method="post">
+<form method="post" class="visualise">
 
-  <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
+  <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
   <g:set var="indexReponse" value="0"/>
   <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
     <div class="tdbase-sujet-edition-question">
@@ -84,26 +83,25 @@
         <g:set var="reponse"
                value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
 
-        <div class="tdbase-sujet-edition-question-points"
-             style="margin-bottom: 15px">
-          <div id="SujetSequenceQuestions-${sujetQuestion.id}"
-               style="float: left;width: 60px;">
+        <div class="tdbase-sujet-edition-question-points">
+          <div id="SujetSequenceQuestions-${sujetQuestion.id}">
             <g:if test="${reponse}">
               <g:if test="${reponse.estEnNotationManuelle()}">
-                <g:formatNumber number="${reponse.correctionNoteCorrecteur}"
-                                format="##0.00"/>
+                <em><g:formatNumber number="${reponse.correctionNoteCorrecteur}"
+                                format="##0.00"/></em>
               </g:if>
               <g:else>
-                <g:formatNumber number="${reponse.correctionNoteAutomatique}"
-                                format="##0.00"/>
+                <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                                format="##0.00"/></em>
               </g:else>
             </g:if>
             <g:else>
               <span title="Copie rendue après ajout de cette question.">Non&nbsp;notée&nbsp;</span>
             </g:else>
+            &nbsp;/&nbsp;<strong><g:formatNumber number="${sujetQuestion.points}"
+                                       format="##0.00"/>&nbsp;point(s)</strong>
           </div>
-          &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}"
-                                       format="##0.00"/>&nbsp;point(s)
+          
         </div>
       </g:if>
       <g:set var="question" value="${sujetQuestion.question}"/>

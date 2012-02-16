@@ -56,23 +56,24 @@
 </g:if>
 
 
-<div class="portal-form_container">
+<div class="portal-form_container edite">
       <g:render template="/question/detail_commun"
                           model="[question: question]"/>
 
 </div>
 
-<div class="form_actions">
-  <g:link action="${lienRetour.action}"
+<div class="form_actions edite">
+  <g:link action="${lienRetour.action}" class="button"
           controller="${lienRetour.controller}"
           params="${lienRetour.params}">Retour</g:link>&nbsp;
   <g:if test="${sujet && afficheLienInserer}">|
     <g:link action="insert"
-            title="Insérer dans le sujet" id="${question.id}"
+            title="Insérer dans le sujet" id="${question.id}" 
             params="[sujetId: sujet?.id]">
       Insérer dans le sujet &nbsp;
     </g:link>
   </g:if>
+  <br/><br/><br/><br/><br/><br/>
 </div>
 
 </body>

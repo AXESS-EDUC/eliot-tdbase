@@ -70,7 +70,7 @@
        </g:if>
 
   <form method="post" class="teste">
-    <!--<div class="top">
+    <div class="top portal-tabs">
     	<div class="form_actions">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
@@ -79,7 +79,8 @@
         <g:actionSubmit value="Rendre la copie" action="rendLaCopieTeste" class="button"
                         title="Rendre la copie"/>
 		</div>
-    </div>-->
+    </div>
+    
     <g:hiddenField name="copie.id" value="${copie.id}"/>
 
     <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
