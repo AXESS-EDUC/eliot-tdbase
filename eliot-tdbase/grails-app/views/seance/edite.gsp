@@ -60,7 +60,7 @@
 
 
   <g:form method="post" controller="seance" action="edite">
-    <div class="portal-form_container" style="width: 70%;margin-left: 15px;">
+    <div class="portal-form_container edite" style="width: 70%;margin-left: 15px;">
       <table>
 
         <tr>
@@ -116,14 +116,15 @@
     </div>
     <g:hiddenField name="id" value="${modaliteActivite.id}"/>
     <g:hiddenField id="sujetId" name="sujet.id" value="${modaliteActivite.sujet?.id}"/>
-    <div class="form_actions" style="width: 70%;margin-left: 15px;">
+    <div class="form_actions edite" style="width: 70%;margin-left: 15px;">
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link> |
-      <g:actionSubmit value="Enregistrer"
+      <g:actionSubmit value="Enregistrer" class="button"
                       action="enregistre"
                       title="Enregistrer"/>
     </div>
+    <br/><br/><br/><br/><br/>
   </g:form>
 
 </body>

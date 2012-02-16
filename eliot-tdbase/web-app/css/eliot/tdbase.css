@@ -609,7 +609,8 @@ Style for the edition of a document or category (Content)
 }
 	.recherche.portal-form_container>table{margin: 10px 0;}
 	.recherche.portal-form_container,
-	.corrige.portal-form_container {
+	.corrige.portal-form_container,
+	.edite.portal-form_container{
 		padding: 5px 0;
 	    width:70%;
 	    margin-left:10px;
@@ -626,7 +627,8 @@ Style for the edition of a document or category (Content)
 	}
 
 .recherche.form_actions,
-.corrige.form_actions{
+.corrige.form_actions,
+.edite.form_actions{
     background: none;
     border: none;
     border-top-width: 0;
