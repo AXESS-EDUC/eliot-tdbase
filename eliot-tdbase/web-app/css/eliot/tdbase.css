@@ -794,13 +794,15 @@ Style for the edition of a document or category (Content)
 .tdbase-sujet-edition-question-interaction .item{margin:10px 0 0 30px;}
 
 .teste .tdbase-sujet-edition-question-points,
-.edite .tdbase-sujet-edition-question-points{
+.edite .tdbase-sujet-edition-question-points,
+.visualise .tdbase-sujet-edition-question-points{
 	margin-top: 15px;
 	text-align: right;
 	right: 15px;
 }
 	.teste .tdbase-sujet-edition-question-points em,
-	.edite .tdbase-sujet-edition-question-points em{
+	.edite .tdbase-sujet-edition-question-points em,
+	.visualise .tdbase-sujet-edition-question-points em{
 		font-weight: normal;
 		font-style: normal;
 		color: #ec8e0c;
@@ -818,7 +820,7 @@ Style for the edition of a document or category (Content)
 	top: 2px;
 }
 
-/**/
+/***** Aperçu Question ****/
 .edite.portal-form_container{padding-bottom: 20px;background-color: whitesmoke;}
 .edite.portal-form_container table td{padding: 2px 0;}
 .edite.portal-form_container h1{
@@ -827,3 +829,17 @@ Style for the edition of a document or category (Content)
 		background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
 		border-bottom: 1px dotted #ccc;
 }
+
+/**/
+.visualise.portal-form_container{padding: 10px 0;}
+.visualise.portal-form_container table{
+	width: 0;
+	margin-left:20px;
+}
+
+.visualise h1.tdbase-sujet-titre{
+    text-align: left;
+    padding:10px 0 4px 30px;
+	background: url("../../images/eliot/picto-sceance.png") no-repeat 0 10px;
+}
+
