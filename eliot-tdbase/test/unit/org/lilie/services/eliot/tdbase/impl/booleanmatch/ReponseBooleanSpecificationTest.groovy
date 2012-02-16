@@ -13,30 +13,30 @@ class ReponseBooleanSpecificationTest extends GroovyTestCase {
     void testEvaluate() {
 
         def reponsesPossibles = ['I', 'am', 'happy']
-        ReponseBooleanSpecification reponseBooleanSpecification
+        ReponseBooleanMatchSpecification reponseBooleanSpecification
 
-        reponseBooleanSpecification = new ReponseBooleanSpecification(
+        reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
                 valeurDeReponse: 'I am very happy',
                 reponsesPossibles: reponsesPossibles,
                 toutOuRien: false
         )
         assertEquals(3F, reponseBooleanSpecification.evaluate(3F), 0F)
 
-        reponseBooleanSpecification = new ReponseBooleanSpecification(
+        reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
                 valeurDeReponse: 'I am very happy',
                 reponsesPossibles: reponsesPossibles,
                 toutOuRien: true
         )
         assertEquals(3F, reponseBooleanSpecification.evaluate(3F), 0F)
 
-        reponseBooleanSpecification = new ReponseBooleanSpecification(
+        reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
                 valeurDeReponse: 'I am unhappy',
                 reponsesPossibles: reponsesPossibles,
                 toutOuRien: false
         )
         assertEquals(2F, reponseBooleanSpecification.evaluate(3F), 0F)
 
-        reponseBooleanSpecification = new ReponseBooleanSpecification(
+        reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
                 valeurDeReponse: 'I am unhappy',
                 reponsesPossibles: reponsesPossibles,
                 toutOuRien: true

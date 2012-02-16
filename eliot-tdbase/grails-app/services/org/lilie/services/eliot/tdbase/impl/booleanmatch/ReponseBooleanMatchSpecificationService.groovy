@@ -36,19 +36,19 @@ import org.lilie.services.eliot.tice.utils.StringUtils
 /**
  * Service pour les specifications de reponses de type booléenne.
  */
-class ReponseBooleanSpecificationService extends ReponseSpecificationService<ReponseBooleanSpecification> {
+class ReponseBooleanMatchSpecificationService extends ReponseSpecificationService<ReponseBooleanMatchSpecification> {
 
     @Override
-    ReponseBooleanSpecification createSpecification(Map map) {
-        new ReponseBooleanSpecification(map)
+    ReponseBooleanMatchSpecification createSpecification(Map map) {
+        new ReponseBooleanMatchSpecification(map)
     }
 
     @Override
-    ReponseBooleanSpecification getObjectInitialiseFromSpecification(Question question) {
+    ReponseBooleanMatchSpecification getObjectInitialiseFromSpecification(Question question) {
 
-        BooleanSpecification specification = question.specificationObject;
+        BooleanMatchSpecification specification = question.specificationObject;
 
-        return createSpecification(valeursPossibles: specification.valeursPossibles,
+        return createSpecification(reponsesPossibles: specification.reponses,
                 toutOuRien: specification.toutOuRien)
     }
 }
@@ -56,12 +56,12 @@ class ReponseBooleanSpecificationService extends ReponseSpecificationService<Rep
 /**
  * Représente un objet spécification pour une question de booléenne.
  */
-class ReponseBooleanSpecification implements ReponseSpecification {
+class ReponseBooleanMatchSpecification implements ReponseSpecification {
 
     /**
      * La valeur de la reponse.
      */
-    String valeurDeReponse = []
+    String valeurDeReponse
 
     /**
      * La valeur correcte de la reponse.

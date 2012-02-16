@@ -36,11 +36,11 @@ import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 /**
  * Service des specifications de questions de type booléenne.
  */
-class QuestionBooleanSpecificationService extends QuestionSpecificationService<BooleanSpecification> {
+class QuestionBooleanMatchSpecificationService extends QuestionSpecificationService<BooleanMatchSpecification> {
 
     @Override
     def createSpecification(Map map) {
-        new BooleanSpecification(map)
+        new BooleanMatchSpecification(map)
     }
 
 }
@@ -49,7 +49,7 @@ class QuestionBooleanSpecificationService extends QuestionSpecificationService<B
  * Représente un objet spécification pour une question de type booléenne.
  */
 @Validateable
-class BooleanSpecification implements QuestionSpecification {
+class BooleanMatchSpecification implements QuestionSpecification {
 
     /**
      * Le libellé.
@@ -62,19 +62,19 @@ class BooleanSpecification implements QuestionSpecification {
     String correction
 
     /**
-     * Les valeursPossibles
+     * Les reponses
      */
-    List<String> valeursPossibles = []
+    List<String> reponses = []
 
     /**
      * Si vrai, alors toutes les reponses donnéés
      */
-    boolean toutOuRien
+    boolean toutOuRien = false
 
     /**
      * Constructeur par défaut.
      */
-    BooleanSpecification() {
+    BooleanMatchSpecification() {
         super()
     }
 
@@ -83,10 +83,10 @@ class BooleanSpecification implements QuestionSpecification {
      * @param map la map permettant d'initialiser l'objet en cours
      * de création
      */
-    BooleanSpecification(Map map) {
+    BooleanMatchSpecification(Map map) {
         libelle = map.libelle
         correction = map.correction
-        valeursPossibles = map.valeursPossibles
+        reponses = map.reponses
         toutOuRien = map.toutOuRien
     }
 
@@ -94,7 +94,7 @@ class BooleanSpecification implements QuestionSpecification {
     Map toMap() {
         [
                 libelle: libelle,
-                valeursPossibles: valeursPossibles,
+                reponses: reponses,
                 correction: correction,
                 toutOuRien: toutOuRien
         ]
@@ -102,7 +102,7 @@ class BooleanSpecification implements QuestionSpecification {
 
     static constraints = {
         libelle blank: false
-        valeursPossibles nullable: false
+        reponses nullable: false
     }
 
 }
