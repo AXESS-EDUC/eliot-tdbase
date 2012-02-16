@@ -95,49 +95,61 @@
     </div>
   </g:if>
   <g:if test="${copie.modaliteActivite.estOuverte()}">
+  	<ul>
     <g:if test="${copie.dateRemise}">
-      <div class="portal-messages notice">
-        Note (correction automatique) :
-        <g:formatNumber number="${copie.correctionNoteAutomatique}"
-                        format="##0.00"/>
-        / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
-        &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+      <div class="portal-messages">
+        <li class="notice">
+        	Note (correction automatique) :
+	        <strong><g:formatNumber number="${copie.correctionNoteAutomatique}"
+	                        format="##0.00"/></strong>
+	        / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
+	        &nbsp;&nbsp;   &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+	        
+	        <g:if test="${!copie.estModifiable()}">
+	            <br/><br/><strong>La copie n'est plus modifiable.</strong>
+	        </g:if>
+	      </li>
       </div>
     </g:if>
-    <g:if test="${!copie.estModifiable()}">
-      <div class="portal-messages notice">
-        La copie n'est plus modifiable.
-      </div>
-    </g:if>
+    <g:else>
+	    <g:if test="${!copie.estModifiable()}">
+	      <div class="portal-messages">
+	      	<li class="notice">
+	        	<strong>La copie n'est plus modifiable.</strong>
+	       	</li>
+	      </div>
+	    </g:if>
+	 </g:else>
+  </ul>
   </g:if>
-  <form method="post">
-    <div style="text-align: right;">
+  <form method="post" class="edite">
+  	<div class="top portal-tabs">
+  		<div class="form_actions">
+   
       <g:link action="${lienRetour.action}"
               controller="${lienRetour.controller}"
               params="${lienRetour.params}">Annuler</g:link>&nbsp;
       <g:if test="${copie.estModifiable()}">|&nbsp;
-        <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
+        <g:actionSubmit value="Rendre la copie" action="rendLaCopie" class="button"
                         title="Rendre la copie"/>
       </g:if>
     </div>
+    </div>
     <g:hiddenField name="copie.id" value="${copie.id}"/>
 
-    <h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
+    <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
     <g:set var="indexReponse" value="0"/>
     <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
       <div class="tdbase-sujet-edition-question">
         <g:if test="${sujetQuestion.question.type.interaction}">
           <g:set var="reponse"
                  value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
-          <div class="tdbase-sujet-edition-question-points"
-               style="margin-bottom: 15px">
-            <div id="SujetSequenceQuestions-${sujetQuestion.id}"
-                 style="float: left;width: 60px;">
-              <g:formatNumber number="${reponse.correctionNoteAutomatique}"
-                              format="##0.00"/>
+          <div class="tdbase-sujet-edition-question-points">
+            <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+              <em><g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00"/></em> 
+              &nbsp;/&nbsp;<strong><g:formatNumber number="${sujetQuestion.points}" format="##0.00"/>&nbsp;point(s)</strong>
             </div>
-            &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}"
-                                         format="##0.00"/>&nbsp;point(s)
+           
           </div>
         </g:if>
         <g:set var="question" value="${sujetQuestion.question}"/>
@@ -170,15 +182,19 @@
 
     </g:each>
     <g:hiddenField name="nombreReponses" value="${indexReponse}"/>
-    <div style="text-align: right;margin-top: 20px;">
-      <g:link action="${lienRetour.action}"
-              controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link>&nbsp;
-      <g:if test="${copie.estModifiable()}">|&nbsp;
-        <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
-                        title="Rendre la copie"/>
-      </g:if>
+    <div class="bottom">
+    	<div class="form_actions">
+	      <g:link action="${lienRetour.action}"
+	              controller="${lienRetour.controller}" 
+	              params="${lienRetour.params}">Annuler</g:link>&nbsp;
+	      <g:if test="${copie.estModifiable()}">|&nbsp; 
+	        <g:actionSubmit value="Rendre la copie" action="rendLaCopie" class="button"
+	                        title="Rendre la copie"/>
+	      </g:if>
+	    </div>
+	    
     </div>
+     
   </form>
 
 </body>

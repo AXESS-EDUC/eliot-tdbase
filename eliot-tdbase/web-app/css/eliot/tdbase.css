@@ -534,6 +534,12 @@ Style for the edition of a document or category (ToolBar)
     padding: 10px 25px;
 }
 
+.portal-messages .error {
+	background-position:5px 10px;
+	margin:  10px;
+    padding: 10px 25px;
+}
+
 /* Fin surcharge "portal.css" */
 
 
@@ -722,13 +728,19 @@ Style for the edition of a document or category (Content)
 	}
 	
 /***** Test sujet ****/
-.teste .bottom,
-.teste .top{
+.teste .bottom, .teste .top,
+.edite .bottom, .edite .top{
 	width: 98%;
 	padding: 0 1%;
 }
+	.edite .bottom .form_actions{
+		padding: 10px 10px 10px 0;		
+}
+	
 .teste .top{padding: 0;}
-	.teste .top .form_actions{
+.edite .top{padding: 5px 0;}
+	.teste .top .form_actions,
+	.edite .top .form_actions{
 		margin: 0;
 		
 		text-align: left;
@@ -738,7 +750,8 @@ Style for the edition of a document or category (Content)
 		border-radius:6px;
 		/*IE DOES NOT SUPPORT BORDER RADIUS*/
 	}
-.teste .form_actions{
+.teste .form_actions,
+.edite .form_actions{
 	border: none;
 	border-top: 1px dotted #ccc;
 	background-color: #f0f0f0;
@@ -748,9 +761,11 @@ Style for the edition of a document or category (Content)
 }
 	.teste .form_actions .button{margin-right:20px;}
 
-.teste .top .form_actions{border: none;}
+.teste .top .form_actions,
+.edite .top .form_actions{border: none;}
 
-.teste .tdbase-sujet-titre {
+.teste .tdbase-sujet-titre,
+.edite .tdbase-sujet-titre{
     text-align: left;
     padding:10px 0 4px 30px;
 	background: url("../../images/eliot/picto-sujet.png") no-repeat 0 10px;
@@ -771,19 +786,21 @@ Style for the edition of a document or category (Content)
 		padding:3px 0 12px 25px;
 	}
 .tdbase-sujet-edition-question-interaction .item{margin:10px 0 0 30px;}
-.teste .tdbase-sujet-edition-question-points{
+
+.teste .tdbase-sujet-edition-question-points,
+.edite .tdbase-sujet-edition-question-points{
 	margin-top: 15px;
 	text-align: right;
 	right: 15px;
 }
-	.teste .tdbase-sujet-edition-question-points em{
+	.teste .tdbase-sujet-edition-question-points em,
+	.edite .tdbase-sujet-edition-question-points em{
 		font-weight: normal;
 		font-style: normal;
 		color: #ec8e0c;
 	}
 
 /***** Liste Sceance élève ****/
-
 .button.work:before{
 	content: url("../../images/eliot/picto-work.png") no-repeat 0 0;
 	position: relative;
