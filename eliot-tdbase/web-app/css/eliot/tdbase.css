@@ -605,10 +605,12 @@ Style for the edition of a document or category (Content)
 .edite.portal-form_container{margin: 30px 20px;border: none;width: 100%;}
 
 .recherche.portal-form_container{
-	padding: 2px 0;
+	
 }
 	.recherche.portal-form_container>table{margin: 10px 0;}
-	.recherche.portal-form_container {
+	.recherche.portal-form_container,
+	.corrige.portal-form_container {
+		padding: 5px 0;
 	    width:70%;
 	    margin-left:10px;
 	    margin-right:auto;
@@ -623,7 +625,8 @@ Style for the edition of a document or category (Content)
 		/*IE DOES NOT SUPPORT BORDER RADIUS*/
 	}
 
-.recherche.form_actions {
+.recherche.form_actions,
+.corrige.form_actions{
     background: none;
     border: none;
     border-top-width: 0;

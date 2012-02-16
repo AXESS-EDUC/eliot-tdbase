@@ -51,8 +51,9 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <div class="portal_pagination">
-  ${copies.totalCount} élève(s) <g:paginate total="${copies.totalCount}"
-                                            id="${seance.id}"></g:paginate>
+  <p class="nb_result">${copies.totalCount} élève(s) </p><g:paginate total="${copies.totalCount}"
+                                            id="${seance.id}">
+                                            </g:paginate>
 </div>
 <g:set var="copie" value="${copies[0]}"/>
 <g:hasErrors bean="${copieNotation}">
@@ -72,7 +73,7 @@
 <form method="post">
 
   <g:hiddenField name="copieId" value="${copie.id}"/>
-  <div class="portal-form_container">
+  <div class="portal-form_container corrige">
     <table>
       <tr>
         <td class="label">Élève :</td>
@@ -106,17 +107,18 @@
     </table>
   </div>
 
-  <div class="form_actions">
+  <div class="form_actions corrige">
     <g:link action="${lienRetour.action}"
             controller="${lienRetour.controller}"
             params="${lienRetour.params}">Annuler</g:link>&nbsp;
     |&nbsp;
-    <g:actionSubmit value="Enregistrer" action="enregistreCopie"
+    <g:actionSubmit value="Enregistrer" action="enregistreCopie" class="button"
                     title="Enregistrer" id="${seance.id}"/>
   </div>
 </form>
 
-<h3 class="tdbase-sujet-titre">${sujet.titre}</h3>
+<div class="teste">
+<h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
 
 <g:set var="indexReponse" value="0"/>
 <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
@@ -124,10 +126,9 @@
     <g:if test="${sujetQuestion.question.type.interaction}">
       <g:set var="reponse"
              value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
-      <div class="tdbase-sujet-edition-question-points"
-           style="margin-bottom: 15px">
-        <div id="SujetSequenceQuestions-${sujetQuestion.id}"
-             style="float: left;width: 80px;">
+      
+      <div class="tdbase-sujet-edition-question-points">
+        <div id="SujetSequenceQuestions-${sujetQuestion.id}">
           <g:if test="${reponse}">
             <g:if test="${reponse.estEnNotationManuelle()}">
               <div class="editinplace" id="${reponse.id}"
@@ -137,17 +138,18 @@
               </div>
             </g:if>
             <g:else>
-              <g:formatNumber number="${reponse.correctionNoteAutomatique}"
-                              format="##0.00"/>
+            	<em><g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00" /></em>
             </g:else>
           </g:if>
           <g:else>
             <span title="L'élève a rendu sa copie après l'ajout de cette réponse">Non&nbsp;évaluable</span>
           </g:else>
+          &nbsp;/&nbsp;<strong><g:formatNumber number="${sujetQuestion.points}"
+                                     format="##0.00"/>&nbsp;point(s)</strong>
         </div>
-        &nbsp;/&nbsp;<g:formatNumber number="${sujetQuestion.points}"
-                                     format="##0.00"/>&nbsp;point(s)
+        
       </div>
+      
     </g:if>
 
 
@@ -171,6 +173,7 @@
     </div>
   </div>
 </g:each>
+</div>
 
 </body>
 </html>
