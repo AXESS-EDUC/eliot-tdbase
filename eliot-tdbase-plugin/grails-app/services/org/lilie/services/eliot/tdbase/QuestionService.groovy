@@ -417,7 +417,8 @@ class QuestionService implements ApplicationContextAware {
             GraphicMatch.questionType,
             FillGraphics.questionType,
             Open.questionType,
-            FileUpload.questionType
+            FileUpload.questionType,
+            BooleanMatch.questionType
     ]
   }
 
