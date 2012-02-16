@@ -494,6 +494,7 @@ div.portal-default_results-list h1{
 }
 	div.portal-default_results-list.sujet>div{background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;}
 	div.portal-default_results-list.question>div{background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;}
+	
 	div.portal-default_results-list.sceance>div{background: url("../../images/eliot/picto-sceance.png") no-repeat 10px 8px;}
 		
 	div.portal-default_results-list div.even2{background-color: #f9f9f9;}
@@ -817,3 +818,12 @@ Style for the edition of a document or category (Content)
 	top: 2px;
 }
 
+/**/
+.edite.portal-form_container{padding-bottom: 20px;background-color: whitesmoke;}
+.edite.portal-form_container table td{padding: 2px 0;}
+.edite.portal-form_container h1{
+		padding-left: 50px;
+		padding-bottom: 10px;
+		background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
+		border-bottom: 1px dotted #ccc;
+}

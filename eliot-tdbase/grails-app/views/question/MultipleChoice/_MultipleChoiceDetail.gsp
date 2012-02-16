@@ -38,6 +38,6 @@
       ${reponse.libelleReponse}
       <br/>
     </g:each>
-    Correction : ${specifobject.correction}
+    <strong>Correction :</strong> ${specifobject.correction}
   </td>
 </tr>

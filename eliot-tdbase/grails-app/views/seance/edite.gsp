@@ -60,7 +60,7 @@
 
 
   <g:form method="post" controller="seance" action="edite">
-    <div class="portal-form_container edite" style="width: 70%;margin-left: 15px;">
+    <div class="portal-form_container edite">
       <table>
 
         <tr>
