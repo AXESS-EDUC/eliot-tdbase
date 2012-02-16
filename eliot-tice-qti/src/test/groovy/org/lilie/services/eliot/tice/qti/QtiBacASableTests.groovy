@@ -37,10 +37,10 @@ class QtiBacASableTests extends GroovyTestCase {
   void testParseQtiFile() {
     String qtiXml = '''
     <assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p0 imsqti_v2p0.xsd"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p0 imsqti_v2p0.xsd"
         identifier="choiceMultiple" title="Composition of Water" adaptive="false" timeDependent="false">
-        <responseDeclaration identifier="RESPONSE" cardinality="multiple" baseType="identifier">
+        <responseDeclaration identifier="MR01" cardinality="multiple" baseType="identifier">
             <correctResponse>
                 <value>H</value>
                 <value>O</value>
@@ -54,7 +54,7 @@ class QtiBacASableTests extends GroovyTestCase {
         <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="integer"/>
         <itemBody>
             <choiceInteraction responseIdentifier="MR01" shuffle="true" maxChoices="0">
-                <prompt>Which of the following elements are used to form water?</prompt>
+                <prompt>Which of the <strong>following</strong> elements are used to form water?</prompt>
                 <simpleChoice identifier="H" fixed="false">Hydrogen</simpleChoice>
                 <simpleChoice identifier="He" fixed="false">Helium</simpleChoice>
                 <simpleChoice identifier="C" fixed="false">Carbon</simpleChoice>
@@ -68,8 +68,14 @@ class QtiBacASableTests extends GroovyTestCase {
   '''
 
     QtiBacASable qtiBacASable = new QtiBacASable()
-    def mcSpec = qtiBacASable.parseQtiChoiceInteraction(qtiXml)
+    def mcSpec = qtiBacASable.parseQtiChoiceInteractionWithXmlParser(qtiXml)
 
+    println ">>>> with xml parser ${mcSpec.libelle}"
+    assertNotNull(mcSpec.libelle)
+
+
+    mcSpec = qtiBacASable.parseQtiChoiceInteraction(qtiXml)
+    println ">>>> with xom ${mcSpec.libelle}"
     assertNotNull(mcSpec.libelle)
 
 
