@@ -47,7 +47,7 @@
             <tr>
                 <td id="associate_reponses">
                     <g:render template="/question/Associate/AssociateEditionReponses"
-                              model="[specifobject:specifobject]"/>
+                              model="[specifobject: specifobject]"/>
                 </td>
                 <td style="vertical-align: bottom;">
                     <g:submitToRemote title="Ajouter une nouvelle association" value="Ajouter"
@@ -61,9 +61,11 @@
     </td>
 </tr>
 <tr>
-    <td class="label">
-        Correction:
-    </td>
+    <td class="label">Montrer la colonne à gauche:</td>
+    <td><g:checkBox name="specifobject.montrerColonneAGauche" checked="${specifobject.montrerColonneAGauche}"/></td>
+</tr>
+<tr>
+    <td class="label">Correction:</td>
     <td>
         <g:textArea
                 name="specifobject.correction"

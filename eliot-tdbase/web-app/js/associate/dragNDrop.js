@@ -20,6 +20,7 @@ function initDragNDrop() {
         $('.associationCell input').hide();
 
         positionParticipants();
+        disableDraggablesInLeftColumn();
     }
 
     function registerEventHandlers() {
@@ -139,5 +140,32 @@ function initDragNDrop() {
         droppedItems[droppableId] = draggableId;
     }
 
+    /**
+     * Disable draggables that are positioned in the left column in case that the option 'montre la conne à gauche' is true.
+     */
+    function disableDraggablesInLeftColumn() {
+
+        $('.associateQuestion').each(function () {
+            var disableDraggables = $(this).children('.montrerLaColonneAGauche').val();
+            var responseIndex = $(this).attr('index');
+
+            if (disableDraggables) {
+                jQuery.each(getToBeDisabledDraggableIds(responseIndex), function (indexInArray, valueOfElement) {
+                    $('#' + valueOfElement).draggable('destroy');
+                });
+            }
+        });
+    }
+
+    function getToBeDisabledDraggableIds(responseIndex) {
+        var droppableIds = [];
+        var i = 0;
+        for (var dropTargetId in droppedItems) {
+            if (new String(dropTargetId).match('association' + responseIndex + '_.*left') != null) {
+                droppableIds[i++] = droppedItems[dropTargetId];
+            }
+        }
+        return droppableIds;
+    }
 }
 
