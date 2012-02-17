@@ -56,7 +56,7 @@
 </g:if>
 
 
-<div class="portal-form_container edite">
+<div class="portal-form_container edite apercu">
       <g:render template="/question/detail_commun"
                           model="[question: question]"/>
 

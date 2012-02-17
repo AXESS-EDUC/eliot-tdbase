@@ -841,7 +841,8 @@ Style for the edition of a document or category (Content)
 }
 
 /***** Aperçu Question ****/
-.edite.portal-form_container{padding-bottom: 20px;background-color: whitesmoke;}
+.edite.portal-form_container{padding-bottom: 20px;background-color: white;}
+.edite.apercu.portal-form_container{background-color: whitesmoke;}
 .edite.portal-form_container table td{padding: 2px 0;}
 .edite.portal-form_container h1{
 		padding-left: 50px;
