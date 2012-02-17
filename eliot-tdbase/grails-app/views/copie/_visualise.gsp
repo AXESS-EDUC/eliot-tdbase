@@ -31,6 +31,16 @@
 
 <g:set var="sujet" value="${copie.sujet}"/>
 <div class="portal-form_container corrige visualise">
+	<ul>
+		<li class="name">${copie.eleve.nomAffichage}</li>
+		<li class="notice"><span class="label">Appréciation :</span><em>${copie.correctionAnnotation}</em></li>
+		<li><span class="label">Modulation :</span>  ${NumberUtils.formatFloat(copie.pointsModulation)}</li>
+		<li class="note"><span class="label">Note :</span>	  <strong>${NumberUtils.formatFloat(copie.correctionNoteFinale)}</strong> / ${NumberUtils.formatFloat(copie.maxPoints)}</li>
+	</ul>
+	
+</div>
+<!--
+<div class="portal-form_container corrige visualise">
   <table>
     <tr>
       <td class="label">Élève :</td>
@@ -57,6 +67,8 @@
     </tr>
   </table>
 </div>
+-->
+
 <g:if test="${copie.modaliteActivite.estOuverte()}">
   <g:if test="${copie.dateRemise}">
     <div class="portal-messages notice">

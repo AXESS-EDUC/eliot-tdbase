@@ -830,8 +830,8 @@ Style for the edition of a document or category (Content)
 		border-bottom: 1px dotted #ccc;
 }
 
-/**/
-.visualise.portal-form_container{padding: 10px 0;}
+/* Copie visualise*/
+.visualise.portal-form_container{padding: 10px 0;margin-bottom: 25px;}
 .visualise.portal-form_container table{
 	width: 0;
 	margin-left:20px;
@@ -842,4 +842,32 @@ Style for the edition of a document or category (Content)
     padding:10px 0 4px 30px;
 	background: url("../../images/eliot/picto-sceance.png") no-repeat 0 10px;
 }
-
+.visualise ul{
+	margin-left: 35px;
+}
+.visualise li{
+	list-style-type: none;
+	overflow: hidden;
+	padding: 3px 0;
+	clear: both;display: block;
+	margin-left: 0;
+}
+.visualise .name{
+	font-weight: bold;
+	color: #666;
+	font-size: 18px;
+	border-bottom: 1px dotted #ccc;
+	margin-bottom: .5em;
+	padding-bottom: 10px;
+	text-transform: capitalize;
+}
+.visualise .label{
+	color: #666;
+	font-weight: bold;
+	width: 100px;
+	display: block;
+	float: left;
+	text-align: left;
+}
+.visualise .note strong,
+.visualise .notice em{color: #ec8e0c;}
