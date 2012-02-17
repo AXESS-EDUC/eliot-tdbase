@@ -48,61 +48,40 @@
 
   <g:if test="${copies}">
     <div class="portal_pagination">
-      ${copies.totalCount} résultat(s) <g:paginate total="${copies.totalCount}"></g:paginate>
+      <p class="nb_result">${copies.totalCount} résultat(s)</p> <g:paginate total="${copies.totalCount}"></g:paginate>
     </div>
-
-    <div class="portal-default_table">
-      <table>
-        <thead>
-        <tr>
-          <th>Sujet</th>
-          <th>Note</th>
-          <th>Note auto.</th>
-          <th>Note Prof.</th>
-          <th>Début</th>
-          <th>Fin</th>
-          <th>Viualiser</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <g:each in="${copies}" status="i" var="copie">
-          <g:set var="seance" value="${copie.modaliteActivite}"/>
-          <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-            <td>
-              ${seance.sujet.titre}
-            </td>
-             <td>
-               <g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" />
-        / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
-            </td>
-            <td>
-              <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
-              / <g:formatNumber number="${copie.maxPointsAutomatique}" format="##0.00" />
-            </td>
-            <td>
-              <g:formatNumber number="${copie.correctionNoteCorrecteur}" format="##0.00" />
-                            / <g:formatNumber number="${copie.maxPointsCorrecteur}" format="##0.00" />
-
-            </td>
-            <td>
-              ${seance.dateDebut.format('dd/MM/yy HH:mm')}
-            </td>
-            <td>
-              ${seance.dateFin.format('dd/MM/yy HH:mm')}
-            </td>
-            <td>
-              <g:link action="visualiseCopie" controller="activite"
-                      id="${copie.id}" title="Visualiser la copie">
-                <img src="/eliot-tdbase/images/eliot/magglass-btn.gif"
-                     width="18" height="16"/>
-              </g:link>
-            </td>
-          </tr>
-        </g:each>
-        </tbody>
-      </table>
-    </div>
+	
+	<div class="portal-default_results-list sceance">
+		<g:each in="${copies}" status="i" var="copie">
+			<g:set var="seance" value="${copie.modaliteActivite}"/>
+		  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+		  	<h1> ${seance.sujet.titre}</h1>
+		  
+		  	<g:link action="travailleCopie" controller="activite" class="button voir" 
+		  	        id="${seance.id}" title="Visualiser la copie">
+		  	</g:link>
+		  	
+		  	<p><strong> » Note : </strong><b><g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" /></b>
+		  		/ <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
+		  	</p>
+		  	<p>
+		  		<strong> » Note auto. : </strong><b><g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" /></b>
+		  		/ <g:formatNumber number="${copie.maxPointsAutomatique}" format="##0.00" />
+		  	</p>
+		  	<g:if test="${copie.correctionNoteCorrecteur}">
+		  	<p>
+		  		<strong> » Note Prof. : </strong><b><g:formatNumber number="${copie.correctionNoteCorrecteur}" format="##0.00" /></b>
+		  		              / <g:formatNumber number="${copie.maxPointsCorrecteur}" format="##0.00" />
+		  	</p>
+		  	</g:if>
+		  	<g:if test="${seance.matiere?.libelleLong}">
+		  	<p><strong>» Matière : </strong>${seance.matiere?.libelleLong}</p>
+		  	</g:if>
+		  	<p><em>(Scéance du :  ${seance.dateDebut.format('dd/MM/yy HH:mm')}  au ${seance.dateFin.format('dd/MM/yy HH:mm')})</em></p>
+		  </div>
+		</g:each> 
+	</div>
+	
   </g:if>
   <g:else>
      <div class="portal_pagination">

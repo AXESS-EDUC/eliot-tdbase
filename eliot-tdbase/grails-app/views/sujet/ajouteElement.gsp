@@ -49,8 +49,8 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
-<div style="width:80%; padding:15px; margin: auto;">
-  <h4>Créer et ajouter un item</h4>
+<div class="add-item">
+  <h1>Créer et ajouter un item</h1>
   <ul>
     <li>
       <g:link action="edite"
@@ -82,7 +82,7 @@
     </li>
   </ul>
 
-  <h4>Rechercher et ajouter un item</h4>
+  <h1>Rechercher et ajouter un item</h1>
   <ul>
     <li>
       <g:link action="recherche" controller="question"
@@ -109,7 +109,7 @@
     </li>
   </ul>
 
-  <h4>Importer et ajouter un item</h4>
+  <h1>Importer et ajouter un item</h1>
   <ul>
     <li>Un élément d'énoncé</li>
     <li>Un document</li>
