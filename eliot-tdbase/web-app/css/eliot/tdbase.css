@@ -445,7 +445,25 @@ styles for TDBase results list
 }
 
 /* Pagination */
-.portal_pagination {margin-bottom: 0;}
+.portal_pagination {
+	position: relative;
+	margin-bottom: 0;
+	margin-right: 10px;
+	text-align: right;
+}
+	.portal_pagination span,
+	.portal_pagination a{
+		top: -10px;
+		position: relative;
+		padding: 2px 4px;
+	}	
+		.portal_pagination a{}
+			.portal_pagination a:hover,
+			.portal_pagination a:focus{
+				color: #ec8e0c;
+				background-color: #fbffd9;
+				border-color: #ec8e0c;
+			}
 
 div.portal-default_results-list{margin-bottom: 50px;position: relative;}
 div.portal-default_results-list.partiel{width: 71.5%;}
