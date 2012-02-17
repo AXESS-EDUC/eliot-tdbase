@@ -676,7 +676,8 @@ Style for the edition of a document or category (Content)
 	font-weight: bold;
 	color: #3F61A0;
 }
-	.question .form_actions{
+	.question .form_actions,
+	.sujet .form_actions{
 		border: none;
 		border-top: 1px dotted #ccc;
 		background-color:whiteSmoke;

@@ -57,14 +57,18 @@
   </div>
 </g:if>
 
-<form method="post" action="#">
-  <div class="portal-form_container">
+<form method="post" action="#" class="sujet">
+  <div class="portal-form_container edite">
 	<table>
 	      <tr>
-	        <td class="label">Titre:</td>
+	        <td class="label title">Titre:</td>
 	        <td>
 	          <input size="80" type="text" value="${sujet.titre}" name="titre"/>
 	        </td>
+	      </tr>
+	      <tr>
+	      	<td>&nbsp;</td>
+	      	<td>&nbsp;</td>
 	      </tr>
 	      <tr>
 	        <td class="label">Type&nbsp;:</td>
@@ -159,7 +163,7 @@
   <div class="form_actions">
     <g:link action="${lienRetour.action}" controller="${lienRetour.controller}"
             params="${lienRetour.params}">Annuler</g:link> |
-    <g:actionSubmit value="Enregistrer" action="enregistrePropriete"
+    <g:actionSubmit value="Enregistrer" action="enregistrePropriete" class="button"
                     title="Enregistrer"/>
   </div>
 </form>
