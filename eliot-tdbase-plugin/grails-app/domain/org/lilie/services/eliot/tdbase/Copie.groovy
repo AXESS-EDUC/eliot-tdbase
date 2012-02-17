@@ -79,6 +79,8 @@ class Copie {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.copie_id_seq'])
     cache(true)
+    reponses(lazy: false)
+    sujet(fetch: 'join')
   }
 
   static transients = ['estModifiable', 'recalculeNoteFinale']

@@ -80,6 +80,7 @@ class ReponseService implements ApplicationContextAware {
       def specService = reponseSpecificationServiceForQuestionType(qtype)
       specService.initialiseReponseSpecificationForQuestion(reponse, question)
     }
+    copie.addToReponses(reponse)
     reponse.save(flush: true)
     return reponse
   }
@@ -125,16 +126,18 @@ class ReponseService implements ApplicationContextAware {
    */
   @Transactional
   def supprimeReponse(Reponse reponse, Personne supprimeur) {
-    if (!reponse.copie?.estJetable) {
-      assert (reponse.copie.modaliteActivite?.enseignant == supprimeur)
+    def copie = reponse.copie
+    if (!copie?.estJetable) {
+      assert (copie.modaliteActivite?.enseignant == supprimeur)
     }
+    copie.removeFromReponses(reponse)
     // supprimer les attachements si nécessaire
     def reponseAttachements = ReponseAttachement.findAllByReponse(reponse)
     reponseAttachements.each {
       reponseAttachementService.deleteReponseAttachement(it)
     }
 
-    reponse.delete(flush: true)
+    reponse.delete()
 
   }
 

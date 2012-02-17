@@ -127,6 +127,7 @@ class CopieService {
         rep.rang = ordreQuestions[index]
         rep.save()
       }
+      copie.refresh()
     }
   }
 
@@ -319,7 +320,8 @@ class CopieService {
     assert (seance?.enseignant == personne)
     def copies = findCopiesForModaliteActivite(seance, personne)
     copies.each { copie ->
-      def reponses = Reponse.findByCopie(copie)
+      def reponses = []
+      reponses.addAll(copie.reponses)
       reponses.each { reponse ->
         reponseService.supprimeReponse(reponse, personne)
       }
@@ -335,12 +337,13 @@ class CopieService {
   def supprimeCopiesJetablesForSujet(Sujet sujet) {
     def copies = Copie.findAllBySujetAndEstJetable(sujet, true)
     copies.each { copie ->
-      def reponses = Reponse.findAllByCopie(copie)
-      reponses.each { reponse ->
-        reponseService.supprimeReponse(reponse, null)
-      }
-      copie.delete()
-    }
+          def reponses = []
+          reponses.addAll(copie.reponses)
+          reponses.each { reponse ->
+            reponseService.supprimeReponse(reponse, null)
+          }
+          copie.delete(flush: true)
+        }
   }
 
 

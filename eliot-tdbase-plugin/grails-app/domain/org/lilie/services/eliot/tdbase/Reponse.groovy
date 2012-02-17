@@ -94,6 +94,7 @@ class Reponse implements Comparable {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.reponse_id_seq'])
     cache(true)
+    sujetQuestion(fetch: 'join')
   }
 
   static transients = ['reponseService', 'estEnNotationManuelle', 'question','questionType']
