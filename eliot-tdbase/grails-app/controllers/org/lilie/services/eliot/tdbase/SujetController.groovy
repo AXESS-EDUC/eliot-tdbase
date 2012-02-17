@@ -193,7 +193,7 @@ class SujetController {
    *
    * Action rend la copie
    */
-  def rendLaCopieTeste() {
+  def rendLaCopie() {
     Copie copie = Copie.get(params.copie.id)
     def nombreReponses = params.nombreReponsesNonVides as Integer
     ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
