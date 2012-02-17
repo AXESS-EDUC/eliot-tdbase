@@ -889,3 +889,20 @@ Style for the edition of a document or category (Content)
 }
 .visualise .note strong,
 .visualise .notice em{color: #ec8e0c;}
+
+/* Ajout item */
+.add-item{
+	margin: 20px 10px 100px;
+	width: 70%;
+}
+.add-item h1{
+		padding-left: 50px;
+		padding-bottom: 8px;
+		background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
+		border-bottom: 1px dotted #ccc;
+		margin-bottom: 10px;
+}
+	.add-item ul{
+		margin: 0 0 45px 55px;
+		line-height: 170%;
+	}
