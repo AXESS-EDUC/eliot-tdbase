@@ -515,6 +515,8 @@ div.portal-default_results-list h1{
 	
 	div.portal-default_results-list.sceance>div{background: url("../../images/eliot/picto-sceance.png") no-repeat 10px 8px;}
 		
+	div.portal-default_results-list.sceance em{color: #999;padding-top: 4px;display: block;}
+	
 	div.portal-default_results-list div.even2{background-color: #f9f9f9;}
 
 div.portal-default_results-list p{
