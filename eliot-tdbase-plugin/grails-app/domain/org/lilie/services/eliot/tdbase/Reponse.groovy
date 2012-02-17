@@ -34,7 +34,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
  * Classe représentant une réponse à une question
  * @author franck Silvestre
  */
-class Reponse {
+class Reponse implements Comparable {
 
   ReponseService reponseService
 
@@ -48,15 +48,33 @@ class Reponse {
   String correctionNoteNonNumerique
 
   Copie copie
+  // necessaire pour recuperer le bareme, le seuil de passage à
+  // la question suivante et l'ordre dans le cas d'un ordre impose
+  // par le sujet
   SujetSequenceQuestions sujetQuestion
+  // le rang est null si l'ordre des questions dans la copie est imposée dans
+  // le sujet
+  Integer rang
+
+  /**
+   *
+   * @return le rang de la réponse i.e. le rang de la question dans la copie
+   */
+  Integer getRang() {
+    if (rang == null) {
+      return sujetQuestion.rang
+    } else {
+      return rang
+    }
+  }
 
   Personne correcteur
   Personne eleve    // utile uniquement pour stats et securite
   SortedSet<ReponseAttachement> reponseAttachements
 
   static hasMany = [
-            reponseAttachements: ReponseAttachement
-    ]
+          reponseAttachements: ReponseAttachement
+  ]
 
   static constraints = {
     specification(nullable: true)
@@ -68,6 +86,7 @@ class Reponse {
     correctionNoteNonNumerique(nullable: true)
     correcteur(nullable: true)
     eleve(nullable: true)
+    rang(nullable: true)
   }
 
   static mapping = {
@@ -77,8 +96,34 @@ class Reponse {
     cache(true)
   }
 
-  static transients = ['reponseService', 'estEnNotationManuelle']
+  static transients = ['reponseService', 'estEnNotationManuelle', 'question','questionType']
 
+  /**
+   * Permet l'ordonnancement des réponse par le rang de la
+   * réponse dans la copie
+   * @param obj l'objet de comparaison
+   * @return
+   */
+  int compareTo(obj) {
+    getRang().compareTo(obj.rang)
+  }
+
+  /**
+   *
+   * @return  la question associée à la réponse
+   */
+  Question getQuestion() {
+    return sujetQuestion.question
+  }
+
+  /**
+   *
+   * @return  le type de question associé à la réponse
+   */
+  QuestionType getQuestionType() {
+    return sujetQuestion.question.type
+  }
+  
   /**
    *
    * @return true si la question induit une  notation  manuelle

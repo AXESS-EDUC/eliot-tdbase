@@ -76,8 +76,10 @@ class ReponseService implements ApplicationContextAware {
             ).save()
     def question = sujetQuestion.question
     def qtype = question.type
-    def specService = reponseSpecificationServiceForQuestionType(qtype)
-    specService.initialiseReponseSpecificationForQuestion(reponse, question)
+    if (qtype.interaction) {
+      def specService = reponseSpecificationServiceForQuestionType(qtype)
+      specService.initialiseReponseSpecificationForQuestion(reponse, question)
+    }
     reponse.save(flush: true)
     return reponse
   }
@@ -93,7 +95,7 @@ class ReponseService implements ApplicationContextAware {
   Reponse updateSpecificationAndEvalue(Reponse reponse, def specificationObject,
                                        Personne proprietaire) {
 
-    assert (reponse.eleve == proprietaire)
+    assert (reponse.eleve == proprietaire && reponse.questionType.interaction)
 
     QuestionType qtype = reponse.sujetQuestion.question.type
     def specService = reponseSpecificationServiceForQuestionType(qtype)
@@ -110,6 +112,7 @@ class ReponseService implements ApplicationContextAware {
    * type de question
    */
   def getSpecificationReponseInitialisee(Reponse reponse) {
+    assert (reponse.questionType.interaction)
     def question = reponse.sujetQuestion.question
     def specService = reponseSpecificationServiceForQuestionType(question.type)
     specService.getObjectInitialiseFromSpecification(question)

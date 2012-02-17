@@ -65,23 +65,8 @@ class CopieService {
         return copie
       }
     }
-    // pour chaque question du sujet, on crée un obejt de type réponse ;
-    // on test la nécessité de creer la réponse car si le sujet a été modifié
-    // alors que la copie a déjà été créé, il faut créé la réponse adhoc pour
-    // la ou les questions ajoutées
-    sujet.questionsSequences.each {
-      if (it.question.type.interaction) {
-        Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
-        if (reponse == null) {
-          reponseService.createReponse(
-                  copie,
-                  it,
-                  personne
-          )
-        }
-      }
-    }
-
+    createReponsesManquantesForCopie(copie)
+    copie.save(flush: true)
     return copie
   }
 
@@ -109,24 +94,40 @@ class CopieService {
         return copie
       }
     }
+    createReponsesManquantesForCopie(copie)
+    copie.save(flush: true)
+    return copie
+  }
+
+  private def createReponsesManquantesForCopie(Copie copie) {
+    def aCreeDesReponses = false
+    def sujet = copie.sujet
+    def reponses = []
     // pour chaque question du sujet, on crée un obejt de type réponse ;
     // on test la nécessité de creer la réponse car si le sujet a été modifié
     // alors que la copie a déjà été créé, il faut créé la réponse adhoc pour
     // la ou les questions ajoutées
-    seance.sujet.questionsSequences.each {
-      if (it.question.type.interaction) {
-        Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
-        if (reponse == null) {
-          reponseService.createReponse(
-                  copie,
-                  it,
-                  eleve
-          )
-        }
+    sujet.questionsSequences.each {
+      Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
+      if (reponse == null) {
+        reponse = reponseService.createReponse(
+                copie,
+                it,
+                copie.eleve
+        )
+        aCreeDesReponses = true
+      }
+      reponses << reponse
+    }
+    if (aCreeDesReponses && sujet.ordreQuestionsAleatoire) {
+      // mise en ouvre du shuffle
+      def ordreQuestions = sujet.questionsSequences*.rang
+      Collections.shuffle(ordreQuestions)
+      reponses.eachWithIndex { rep, index ->
+        rep.rang = ordreQuestions[index]
+        rep.save()
       }
     }
-    copie.save(flush: true)
-    return copie
   }
 
   /**

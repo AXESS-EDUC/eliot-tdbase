@@ -195,7 +195,7 @@ class SujetController {
    */
   def rendLaCopieTeste() {
     Copie copie = Copie.get(params.copie.id)
-    def nombreReponses = params.nombreReponses as Integer
+    def nombreReponses = params.nombreReponsesNonVides as Integer
     ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
     nombreReponses.times {
       reponsesCopie.listeReponses << new ReponseCopie()

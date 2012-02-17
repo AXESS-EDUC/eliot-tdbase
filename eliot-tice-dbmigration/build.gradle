@@ -81,6 +81,8 @@ dataSourceConfigFile = "${projectDir}/DataSource.groovy"
 
 /**
  * Configuration de la tache update
+ * Pour lancer en mode dev : gradle update
+ * Pour lancer en mode test : gradle update -Penvironnment=test
  */
 task update(dependsOn: build) {
   if (!project.hasProperty('environment')) {

@@ -27,7 +27,8 @@
   --}%
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
-${question.titre} <br/>
+<h2>${question.titre} </h2>
+<div class="item">
 Auteur : ${specifobject.auteur} &nbsp;&nbsp;&nbsp;
 Source : ${specifobject.source} <br/>
 <g:if test="${specifobject.attachement}">
@@ -48,7 +49,7 @@ Source : ${specifobject.source} <br/>
     <g:message code="attachement.acces"/>
   </a> <br/>
 </g:if>
-
 <br/>
+</div>
 
 
