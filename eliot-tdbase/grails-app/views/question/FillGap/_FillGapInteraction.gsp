@@ -29,8 +29,8 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 <g:set var="index" value="0"/>
-${questionspecifobject.libelle} <br/>
-
+<h2>${questionspecifobject.libelle}</h2>
+<div class="item">
 <g:each in="${questionspecifobject.texteATrousStructure}" var="texteATrouElement" status="i">
     &nbsp;
 
@@ -58,3 +58,4 @@ ${questionspecifobject.libelle} <br/>
 <g:if test="${questionspecifobject.montrerLesMots}">
     Mots sugeres : ${questionspecifobject.motsSugeres}
 </g:if>
+</div>

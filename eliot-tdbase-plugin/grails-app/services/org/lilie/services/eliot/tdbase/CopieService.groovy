@@ -169,18 +169,13 @@ class CopieService {
     copie.maxPointsAutomatique = nbGlobalPointsAuto
     copie.maxPointsCorrecteur = nbGlobalPointsCorrecteur
     copie.maxPoints = nbGlobalPointsAuto + nbGlobalPointsCorrecteur
+    copie.correctionNoteFinale = copie.correctionNoteAutomatique
     if (nbGlobalPointsCorrecteur > 0) {
       if (copie.correctionNoteCorrecteur != null) {
-        copie.correctionNoteFinale = copie.correctionNoteAutomatique + copie.correctionNoteCorrecteur
+        copie.correctionNoteFinale += copie.correctionNoteCorrecteur
       }
-    } else {
-      copie.correctionNoteFinale = copie.correctionNoteAutomatique
     }
-    if (copie.correctionNoteFinale != null) {
-      copie.correctionNoteFinale += copie.pointsModulation
-    } else {
-      copie.correctionNoteFinale = copie.pointsModulation
-    }
+    copie.correctionNoteFinale += copie.pointsModulation
     copie.save()
     return copie
   }

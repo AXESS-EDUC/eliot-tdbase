@@ -58,7 +58,7 @@
         <thead>
         <tr>
           <th>Élève</th>
-          <th>Note</th>
+          <th>Note finale</th>
           <th>Note auto.</th>
           <th>Note prof.</th>
           <th>Dernière remise</th>

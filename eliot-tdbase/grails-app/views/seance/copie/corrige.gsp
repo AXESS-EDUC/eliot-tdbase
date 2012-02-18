@@ -38,7 +38,15 @@
       $('.interaction').attr('disabled', true);
       $('#copieAnnotation').removeAttr('disabled');
       $(".editinplace").editInPlace({
-              url: "${g.createLink(controller: 'seance', action: 'updateReponseNote')}"
+              url: "${g.createLink(controller: 'seance', action: 'updateReponseNote')}",
+              success: function(jsonRes){
+                                      var res = JSON.parse(jsonRes);
+                                      var eltId = "#"+res[0];
+                                      $(eltId).html(res[1]);
+                                      if (res.length > 2) {
+                                          $("#copie_note_finale").html(res[2]);
+                                      }
+                              }
             });
 
     });
@@ -51,9 +59,10 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <div class="portal_pagination">
-  <p class="nb_result">${copies.totalCount} élève(s) </p><g:paginate total="${copies.totalCount}"
-                                            id="${seance.id}">
-                                            </g:paginate>
+  <p class="nb_result">${copies.totalCount} élève(s)</p><g:paginate
+        total="${copies.totalCount}"
+        id="${seance.id}">
+</g:paginate>
 </div>
 <g:set var="copie" value="${copies[0]}"/>
 <g:hasErrors bean="${copieNotation}">
@@ -98,8 +107,8 @@
       <tr>
         <td class="label">Note :</td>
         <td>
-          <strong><g:formatNumber number="${copie.correctionNoteFinale}"
-                                  format="##0.00"/>
+          <strong><span
+                  id="copie_note_finale">${NumberUtils.formatFloat(copie.correctionNoteFinale)}</span>
             / <g:formatNumber number="${copie.maxPoints}"
                               format="##0.00"/></strong>
         </td>
@@ -118,61 +127,63 @@
 </form>
 
 <div class="teste">
-<h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
+  <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
 
-<g:set var="indexReponse" value="0"/>
-<g:each in="${sujet.questionsSequences}" var="sujetQuestion">
-  <div class="tdbase-sujet-edition-question">
-    <g:if test="${sujetQuestion.question.type.interaction}">
-      <g:set var="reponse"
-             value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
-      
-      <div class="tdbase-sujet-edition-question-points">
-        <div id="SujetSequenceQuestions-${sujetQuestion.id}">
-          <g:if test="${reponse}">
-            <g:if test="${reponse.estEnNotationManuelle()}">
-              <div class="editinplace" id="${reponse.id}"
-                   title="Cliquez pour modifier le nombre de points...">
-                <g:formatNumber number="${reponse.correctionNoteCorrecteur}"
-                                format="##0.00"/>
-              </div>
+  <g:set var="indexReponse" value="0"/>
+  <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
+    <div class="tdbase-sujet-edition-question">
+      <g:if test="${sujetQuestion.question.type.interaction}">
+        <g:set var="reponse"
+               value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
+
+        <div class="tdbase-sujet-edition-question-points">
+          <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+            <g:if test="${reponse}">
+              <g:if test="${reponse.estEnNotationManuelle()}">
+                <div class="editinplace" id="${reponse.id}"
+                     title="Cliquez pour modifier le nombre de points...">
+                  <g:formatNumber number="${reponse.correctionNoteCorrecteur}"
+                                  format="##0.00"/>
+                </div>
+              </g:if>
+              <g:else>
+                <em><g:formatNumber
+                        number="${reponse.correctionNoteAutomatique}"
+                        format="##0.00"/></em>
+              </g:else>
             </g:if>
             <g:else>
-            	<em><g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00" /></em>
+              <span title="L'élève a rendu sa copie après l'ajout de cette réponse">Non&nbsp;évaluable</span>
             </g:else>
-          </g:if>
-          <g:else>
-            <span title="L'élève a rendu sa copie après l'ajout de cette réponse">Non&nbsp;évaluable</span>
-          </g:else>
           &nbsp;/&nbsp;<strong><g:formatNumber number="${sujetQuestion.points}"
-                                     format="##0.00"/>&nbsp;point(s)</strong>
+                                               format="##0.00"/>&nbsp;point(s)</strong>
+          </div>
+
         </div>
-        
-      </div>
-      
-    </g:if>
-
-
-    <g:set var="question" value="${sujetQuestion.question}"/>
-    <div class="tdbase-sujet-edition-question-interaction">
-      <g:if test="${question.type.interaction}">
-        <g:render
-                template="/question/${question.type.code}/${question.type.code}Interaction"
-                model="[question: question, reponse: reponse, indexReponse: indexReponse++]"/>
-
-        <g:render
-                template="/question/${question.type.code}/${question.type.code}Correction"
-                model="[question: question]"/>
 
       </g:if>
-      <g:else>
-        <g:render
-                template="/question/${question.type.code}/${question.type.code}Preview"
-                model="[question: question]"/>
-      </g:else>
+
+
+      <g:set var="question" value="${sujetQuestion.question}"/>
+      <div class="tdbase-sujet-edition-question-interaction">
+        <g:if test="${question.type.interaction}">
+          <g:render
+                  template="/question/${question.type.code}/${question.type.code}Interaction"
+                  model="[question: question, reponse: reponse, indexReponse: indexReponse++]"/>
+
+          <g:render
+                  template="/question/${question.type.code}/${question.type.code}Correction"
+                  model="[question: question]"/>
+
+        </g:if>
+        <g:else>
+          <g:render
+                  template="/question/${question.type.code}/${question.type.code}Preview"
+                  model="[question: question]"/>
+        </g:else>
+      </div>
     </div>
-  </div>
-</g:each>
+  </g:each>
 </div>
 
 </body>

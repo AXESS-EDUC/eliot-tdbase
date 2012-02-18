@@ -26,8 +26,8 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle} <br/>
-
+<div class="item">
+<p class="title"><strong>${specifobject.libelle}</strong></p>
 <g:each in="${specifobject.texteATrousStructure}" var="texteATrouElement"
         status="i">
   ${texteATrouElement.valeurAsText()}
@@ -38,4 +38,5 @@ ${specifobject.libelle} <br/>
   Mots sugeres : ${specifobject.motsSugeres}
 </g:if>
 
-Correction : ${specifobject.correction}
+  <strong>Correction :</strong> <br/>${specifobject.correction}
+  </div>

@@ -67,7 +67,7 @@
         <thead>
         <tr>
           <th>Sujet</th>
-          <th>Note</th>
+          <th>Note finale</th>
           <th>Note auto.</th>
           <th>Note Prof.</th>
           <th>Début</th>

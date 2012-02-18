@@ -35,6 +35,8 @@ import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
+import grails.converters.JSON
+import groovy.json.JsonBuilder
 
 class SeanceController {
 
@@ -214,11 +216,13 @@ class SeanceController {
       // récupère la nouvelle valeur
       def points = nvelleNote.update_value
       // met à jour
-      copieService.updateNoteForReponse(points, reponse, enseignant)
-      render NumberUtils.formatFloat(points)
+      def copie = copieService.updateNoteForReponse(points, reponse, enseignant)
+      def noteRep = NumberUtils.formatFloat(points)
+      def noteFinale = NumberUtils.formatFloat(copie.correctionNoteFinale)
+      render new JsonBuilder([nvelleNote.element_id.toString(),noteRep,noteFinale]).toString()
     } catch (Exception e) {
       log.info(e.message)
-      render params.original_html
+      render new JsonBuilder([nvelleNote.element_id.toString(),params.original_html]).toString()
     }
   }
 
