@@ -70,16 +70,7 @@
 	      	<td>&nbsp;</td>
 	      	<td>&nbsp;</td>
 	      </tr>
-	      <tr>
-	        <td class="label">Type&nbsp;:</td>
-	        <td>
-	          <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
-	                    noSelection="${['null': 'Sélectionner un type...']}"
-	                    from="${typesSujet}"
-	                    optionKey="id"
-	                    optionValue="nom"/>
-	        </td>
-	      </tr>
+
 	      <tr>
 	        <td class="label">Mati&egrave;re&nbsp;:</td>
 	        <td>
@@ -107,13 +98,7 @@
 	          <i>(en minutes)</i>
 	        </td>
 	      </tr>
-	      <tr>
-	        <td class="label">Présentation&nbsp;:</td>
-	        <td>
-	          <g:checkBox name="accesSequentiel"
-	                      checked="${sujet.accesSequentiel}"/>
-	          1 seule question par écran</td>
-	      </tr>
+
 	      <tr>
 	        <td class="label">Ordre&nbsp;questions&nbsp;:</td>
 	        <td>
