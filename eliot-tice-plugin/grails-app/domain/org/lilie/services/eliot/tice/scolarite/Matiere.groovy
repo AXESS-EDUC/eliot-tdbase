@@ -46,6 +46,7 @@ class Matiere {
     codeSts nullable: true
     codeGestion(nullable : false, blank:false)
     origine(nullable: true)
+    libelleEdition(nullable: false, blank:false)
     libelleLong(nullable: false, blank:false)
   }
 

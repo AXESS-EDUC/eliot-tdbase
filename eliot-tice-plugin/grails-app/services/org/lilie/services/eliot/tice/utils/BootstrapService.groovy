@@ -82,7 +82,6 @@ class BootstrapService {
 
   private List<ProprietesScolarite> proprietesScolariteListUtilisateur1 = []
 
-
   /**
    * Initialise l'application au lancement avec un jeu de test
    */
@@ -226,46 +225,56 @@ class BootstrapService {
     if (!Matiere.findAllByCodeGestionLike("${CODE_GESTION_PREFIXE}%")) {
       Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
       Etablissement college = Etablissement.findByUai(UAI_COLLEGE)
-      new Matiere(
+      def mat1 = new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_1",
               etablissement: lycee,
-              libelleLong: "Mathématiques",
-              libelleCourt: "Mathématiques"
-      ).save()
+              libelleEdition: "Mathématiques",
+              libelleCourt: "Mathématiques",
+              libelleLong: "Mathématiques"
+      )
+      mat1.save()
+
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_2",
               etablissement: lycee,
-              libelleLong: "SES",
-              libelleCourt: "SES"
+              libelleEdition: "SES",
+              libelleCourt: "SES",
+              libelleLong: "SES"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_3",
               etablissement: lycee,
-              libelleLong: "SES Spécialité",
-              libelleCourt: "SES Spécialité"
+              libelleEdition: "SES Spécialité",
+              libelleCourt: "SES Spécialité",
+              libelleLong: "SES Spécialité"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_4",
               etablissement: college,
-              libelleLong: "Histoire",
-              libelleCourt: "Hitsoire"
+              libelleEdition: "Histoire",
+              libelleCourt: "Histoire",
+              libelleLong: "Histoire"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_5",
               etablissement: college,
+              libelleEdition: "Géographie",
+              libelleCourt: "Géographie",
               libelleLong: "Géographie"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_6",
               etablissement: lycee,
-              libelleLong: "Communication",
-              libelleCourt: "Communication"
+              libelleEdition: "Communication",
+              libelleCourt: "Communication",
+              libelleLong: "Communication"
       ).save()
       new Matiere(
               codeGestion: "${CODE_GESTION_PREFIXE}_7",
               etablissement: lycee,
-              libelleLong: "Anglais",
-              libelleCourt: "Anglais"
+              libelleEdition: "Anglais",
+              libelleCourt: "Anglais",
+              libelleLong: "Anglais"
       ).save(flush: true)
     }
   }
