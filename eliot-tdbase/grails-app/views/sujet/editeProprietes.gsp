@@ -108,12 +108,6 @@
 	        </td>
 	      </tr>
 	      <tr>
-	        <td class="label">Accessible&nbsp;:</td>
-	        <td>
-	          <g:checkBox name="accesPublic" checked="${sujet.accesPublic}"/>
-	          via lien public</td>
-	      </tr>
-	      <tr>
 	        <td class="label">Présentation&nbsp;:</td>
 	        <td>
 	          <g:checkBox name="accesSequentiel"
@@ -127,13 +121,7 @@
 	                      checked="${sujet.ordreQuestionsAleatoire}"/>
 	          Al&eacute;atoire</td>
 	      </tr>
-	      <tr>
-	        <td class="label">S&eacute;lection&nbsp;:</td>
-	        <td>
-	          <input type="text" name="nbQuestions" value="${sujet.nbQuestions}"/>
-	          <i>(le nombre de questions &agrave; selectionner)</i>
-	        </td>
-	      </tr>
+
 	      <tr>
 	        <td class="label">Description&nbsp;:</td>
 	        <td>
