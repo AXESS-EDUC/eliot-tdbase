@@ -125,10 +125,7 @@ class FillGapSpecification implements QuestionSpecification {
     }
 
     /**
-     * Genère une liste des mots suggerés comme reponses. Utilise l'attribut trouElements. Parmi les possibilité de
-     * reponse pour un trouElement, le premier est choisi pour la suggestion de reponse. Les suggestions de reponse sont
-     * melangés pour que le candidat qui passe le teste ne trouve pas de correlation entre les trous à remplir et le
-     * reponses suggerés.
+     * Genère une liste des mots suggerés comme reponses.
      * @return une liste des reponses suggerés.
      */
     def List getMotsSugeres() {
@@ -137,9 +134,7 @@ class FillGapSpecification implements QuestionSpecification {
             if (!it.isTextElement()) {
                 TrouElement trouElement = (TrouElement) it
                 trouElement.valeur.each {
-                    if (it.correct) {
-                        mots << it.text
-                    }
+                    mots << it.text
                 }
             }
         }
