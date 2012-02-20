@@ -34,6 +34,8 @@ import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.lilie.services.eliot.tice.utils.NumberUtils
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  *
@@ -47,9 +49,9 @@ class ReponseSliderSpecificationService extends ReponseSpecificationService<Repo
   }
 
   @Override
-  ReponseSliderSpecification getObjectInitialiseFromSpecification(Question question) {
-    return createSpecification(valeurCorrecte: question.specificationObject.valeur,
-                               precision: question.specificationObject.precision)
+  ReponseSliderSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
+    return createSpecification(valeurCorrecte: questionSpecification.valeur,
+                               precision: questionSpecification.precision)
   }
 }
 
@@ -57,7 +59,7 @@ class ReponseSliderSpecificationService extends ReponseSpecificationService<Repo
  * Représente un objet spécification pour une question de type Decimal.
  */
 class ReponseSliderSpecification implements ReponseSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.Slider.name()
   /**
    * La valeur de la reponse.
    */
@@ -76,6 +78,7 @@ class ReponseSliderSpecification implements ReponseSpecification {
 
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             valeurReponse: valeurReponse,
             valeurCorrecte: valeurCorrecte,
             precision: precision

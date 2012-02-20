@@ -31,6 +31,8 @@ package org.lilie.services.eliot.tdbase.impl.associate
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  * Service pour les specifications de reponses de type associate.
@@ -44,9 +46,9 @@ class ReponseAssociateSpecificationService extends ReponseSpecificationService<R
     }
 
     @Override
-    ReponseAssociateSpecification getObjectInitialiseFromSpecification(Question question) {
+    ReponseAssociateSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
 
-        AssociateSpecification specification = question.specificationObject
+        AssociateSpecification specification = questionSpecification
         List<Association> valeursReponse = []
         def association
 
@@ -68,6 +70,8 @@ class ReponseAssociateSpecificationService extends ReponseSpecificationService<R
  * Specifications de reponses de type associate.
  */
 class ReponseAssociateSpecification implements ReponseSpecification {
+
+  String questionTypeCode = QuestionTypeEnum.Associate.name()
 
     /**
      * Liste d'associations fournis comme reponse à la question.
@@ -94,6 +98,7 @@ class ReponseAssociateSpecification implements ReponseSpecification {
     @Override
     Map toMap() {
         [
+                questionTypeCode: questionTypeCode,
                 valeursDeReponse: valeursDeReponse,
                 reponsesPossibles: reponsesPossibles
         ]

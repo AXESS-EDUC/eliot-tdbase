@@ -32,6 +32,8 @@ import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import static org.lilie.services.eliot.tice.utils.StringUtils.normalise
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  * Service pour les specifications de reponses de type texte à trous.
@@ -44,9 +46,9 @@ class ReponseFillGapSpecificationService extends ReponseSpecificationService<Rep
     }
 
     @Override
-    ReponseFillGapSpecification getObjectInitialiseFromSpecification(Question question) {
+    ReponseFillGapSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
 
-        List<TextATrouElement> texteATrousStructure = question.specificationObject.texteATrousStructure
+        List<TextATrouElement> texteATrousStructure = questionSpecification.texteATrousStructure
         createSpecification(reponsesPossibles: texteATrousStructure.findAll {!it.isTextElement()})
     }
 }
@@ -55,7 +57,7 @@ class ReponseFillGapSpecificationService extends ReponseSpecificationService<Rep
  * Specifications de reponses de type texte à trous.
  */
 class ReponseFillGapSpecification implements ReponseSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.FillGap.name()
     /**
      * les valeurs de reponse.
      */
@@ -69,6 +71,7 @@ class ReponseFillGapSpecification implements ReponseSpecification {
     @Override
     Map toMap() {
         [
+                questionTypeCode: questionTypeCode,
                 valeursDeReponse: valeursDeReponse,
                 reponsesPossibles: reponsesPossibles
         ]

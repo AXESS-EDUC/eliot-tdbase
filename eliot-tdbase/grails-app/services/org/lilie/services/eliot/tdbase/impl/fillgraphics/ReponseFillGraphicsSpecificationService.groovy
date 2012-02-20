@@ -33,6 +33,8 @@ import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  *   Service pour les specifications de reponses de type 'graphique à compléter'.
@@ -46,10 +48,10 @@ class ReponseFillGraphicsSpecificationService extends
     }
 
     @Override
-    ReponseFillGraphicsSpecification getObjectInitialiseFromSpecification(Question question) {
+    ReponseFillGraphicsSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
         List<TextZoneContenu> reponsesPossibles = []
         List<TextZoneContenu> valeursDeReponse = []
-        question.specificationObject.textZones.each {
+        questionSpecification.textZones.each {
             reponsesPossibles << new TextZoneContenu(id: it.id, text: it.text)
             valeursDeReponse << new TextZoneContenu()
         }
@@ -61,7 +63,7 @@ class ReponseFillGraphicsSpecificationService extends
  * Specifications de reponses de type 'graphique à compléter'.
  */
 class ReponseFillGraphicsSpecification implements ReponseSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.FillGraphics.name()
     /**
      * Liste d'elements fournis comme reponse à la question.
      */
@@ -95,6 +97,7 @@ class ReponseFillGraphicsSpecification implements ReponseSpecification {
     @Override
     Map toMap() {
         [
+                questionTypeCode: questionTypeCode,
                 valeursDeReponse: valeursDeReponse,
                 reponsesPossibles: reponsesPossibles
         ]

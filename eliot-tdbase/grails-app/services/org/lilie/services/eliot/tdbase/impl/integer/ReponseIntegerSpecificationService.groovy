@@ -31,6 +31,8 @@ package org.lilie.services.eliot.tdbase.impl.integer
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  *
@@ -44,8 +46,8 @@ class ReponseIntegerSpecificationService extends ReponseSpecificationService<Rep
   }
 
   @Override
-  ReponseIntegerSpecification getObjectInitialiseFromSpecification(Question question) {
-    return createSpecification(valeurCorrecte: question.specificationObject.valeur)
+  ReponseIntegerSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
+    return createSpecification(valeurCorrecte: questionSpecification.valeur)
   }
 }
 
@@ -53,7 +55,7 @@ class ReponseIntegerSpecificationService extends ReponseSpecificationService<Rep
  * Représente un objet spécification pour une question de type Decimal
  */
 class ReponseIntegerSpecification implements ReponseSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.Integer.name()
   /**
    * La valeur correcte.
    */
@@ -66,6 +68,7 @@ class ReponseIntegerSpecification implements ReponseSpecification {
 
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             valeurCorrecte: valeurCorrecte,
             valeurReponse: valeurReponse
     ]

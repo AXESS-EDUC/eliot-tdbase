@@ -77,7 +77,7 @@ public abstract class ReponseSpecificationService<R extends ReponseSpecification
      * @param question la question
      * @return l'objet specification initialisé
      */
-    R getObjectInitialiseFromSpecification(Question question) {
+    R getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
         return createSpecification(new HashMap())
     }
 
@@ -100,7 +100,7 @@ public abstract class ReponseSpecificationService<R extends ReponseSpecification
      */
     Reponse initialiseReponseSpecificationForQuestion(Reponse reponse,
                                                       Question question) {
-        updateReponseSpecificationForObject(reponse, getObjectInitialiseFromSpecification(question))
+        updateReponseSpecificationForObject(reponse, getObjectInitialiseFromSpecification(question.specificationObject))
     }
 
     /**
