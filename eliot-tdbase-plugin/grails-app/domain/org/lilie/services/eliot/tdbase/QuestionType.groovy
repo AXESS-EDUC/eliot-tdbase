@@ -58,7 +58,7 @@ class QuestionType {
  *  <li>Open - question ouverte</li>
  *  <li>Decimal - question à réponse nombre décimal</li>
  *  <li>Integer - question à réponse nombre entièr</li>
- *  <li>FillTable - tableau à compléter</li>
+ *  <li>Composite - question composée </li>
  *  <li>FillGap - texte à trous</li>
  *  <li>BooleanMatch - évaluation booléeene</li>
  *  <li>ExclusiveChoice - question à choix exclusif</li>
@@ -68,10 +68,9 @@ class QuestionType {
  *  <li>Associate - associate</li>
  *  <li>Slider - curseur à déplacer</li>
  *  <li>GraphicMatch - correspondance en glisser déposer</li>
- *  <li>Match - correspondance</li>
  *  <li>Document - présentation d'un document (pas d'interaction) </li>
  *  <li>Statement - élément d'énoncé (pas d'interaction)</li>
- *  <li>Composite - question composée (pas d'intercaction directe)</li>
+ *
  * </ul>
  */
 enum QuestionTypeEnum {
@@ -80,7 +79,7 @@ enum QuestionTypeEnum {
     Open(2),
     Decimal(3),
     Integer(4),
-    FillTable(5),
+    Composite(5),
     FillGap(6),
     BooleanMatch(7),
     ExclusiveChoice(8),
@@ -90,10 +89,8 @@ enum QuestionTypeEnum {
     Associate(12),
     Slider(13),
     GraphicMatch(14),
-    Match(15),
     Document(51),
-    Statement(52),
-    Composite(53),
+    Statement(52)
 
 
     private Long id

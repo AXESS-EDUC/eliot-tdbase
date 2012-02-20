@@ -31,6 +31,7 @@ package org.lilie.services.eliot.tdbase.impl.order
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  * Service des specifications de questios de type 'ordre à retablir'.
@@ -50,7 +51,7 @@ class QuestionOrderSpecificationService extends QuestionSpecificationService<Ord
  */
 @Validateable
 class OrderSpecification implements QuestionSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.Order.name()
   /**
    * Le libellé.
    */
@@ -86,6 +87,7 @@ class OrderSpecification implements QuestionSpecification {
   @Override
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             libelle: libelle,
             correction: correction,
             orderedItems: orderedItems.collect {it.toMap()}

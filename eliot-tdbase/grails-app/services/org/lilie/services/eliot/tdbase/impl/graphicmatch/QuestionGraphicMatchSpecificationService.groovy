@@ -89,7 +89,7 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
  */
 @Validateable
 class GraphicMatchSpecification implements QuestionSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.GraphicMatch.name()
   /**
    * Le libellé.
    */
@@ -149,6 +149,7 @@ class GraphicMatchSpecification implements QuestionSpecification {
   @Override
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             libelle: libelle,
             correction: correction,
             graphicMatches: graphicMatches,

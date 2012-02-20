@@ -33,6 +33,7 @@ package org.lilie.services.eliot.tdbase.impl.multiplechoice
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  *
@@ -52,6 +53,7 @@ class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationSe
  */
 @Validateable
 class MultipleChoiceSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.MultipleChoice.name()
   String libelle
   String correction
   List<MultipleChoiceSpecificationReponsePossible> reponses = []
@@ -80,6 +82,7 @@ class MultipleChoiceSpecification implements QuestionSpecification {
 
   def Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             libelle: libelle,
             correction: correction,
             reponses: reponses*.toMap()

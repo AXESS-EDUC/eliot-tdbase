@@ -27,71 +27,71 @@
  */
 
 
-
-
-
-
-package org.lilie.services.eliot.tdbase.impl.open
+package org.lilie.services.eliot.tdbase.impl.composite
 
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  *
  * @author franck Silvestre
  */
-class QuestionOpenSpecificationService extends QuestionSpecificationService<OpenSpecification> {
+class QuestionCompositeSpecificationService extends QuestionSpecificationService<CompositeSpecification> {
 
-  /**
-   *
-   * @see QuestionSpecificationService
-   */
   @Override
   def createSpecification(Map map) {
-    return new OpenSpecification(map)
+    new CompositeSpecification(map)
   }
+
 }
 
 /**
- * Représente un objet spécification pour une question de type Open
+ * Représente un objet spécification pour une question de type Decimal
  */
 @Validateable
-class OpenSpecification implements QuestionSpecification {
-  String questionTypeCode = QuestionTypeEnum.Open.name()
+class CompositeSpecification implements QuestionSpecification {
+
+  String questionTypeCode = QuestionTypeEnum.Composite.name()
+  
   String libelle
-  Integer nombreLignesReponse = 5
-  String correction
+  List<QuestionSpecification> questionSpecificationList =[]
 
 
-  OpenSpecification() {
+  CompositeSpecification() {
     super()
   }
 
   /**
-   * Créer et initialise un nouvel objet de type OpenSpecification
+   * Créer et initialise un nouvel objet de type Specification
    * @param map la map permettant d'initialiser l'objet en cours
    * de création
    */
-  OpenSpecification(Map map) {
+  CompositeSpecification(Map map) {
+    def questions = map.questions
+    questions.each {
+      def constructor = Class.forName(it.questionClassName).
+                                         getConstructor( [ Map ] as Class[] )
+      def questSpec = constructor.newInstance( it.questionMap )
+      questionSpecificationList << questSpec
+    }
     libelle = map.libelle
-    nombreLignesReponse = map.nombreLignesReponse
-    correction = map.correction
   }
 
-  def Map toMap() {
-    [
-            questionTypeCode: questionTypeCode,
-            libelle: libelle,
-            nombreLignesReponse: nombreLignesReponse,
-            correction: correction
-    ]
+  /**
+   *
+   * @return la représentation sous forme de map
+   */
+  Map toMap() {
+    def questionMaps = []
+    questionSpecificationList.each {
+      questionMaps << it.toMap()
+    }
+    [questionTypeCode:questionTypeCode ,libelle:libelle, questions:questionMaps]
   }
 
-  static constraints = {
-    libelle blank: false
-    nombreLignesReponse nullable: false
-  }
+  
 
 }

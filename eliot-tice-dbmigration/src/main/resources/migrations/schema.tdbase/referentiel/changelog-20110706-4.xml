@@ -181,4 +181,17 @@
             </sql>
         </changeSet>
 
+    <changeSet id="7" author="fsil">
+        <comment>
+                    Mise à jour de la table question type
+                </comment>
+                <sql>
+                    delete from td.question_type where id=5;
+                    delete from td.question_type where id=53;
+                    INSERT INTO td.question_type (code,interaction,nom_anglais,nom,id)
+                    VALUES
+                    ('Composite', true, 'Composite','Composée',5);
+                </sql>
+    </changeSet>
+
 </databaseChangeLog>

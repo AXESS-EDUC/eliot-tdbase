@@ -87,6 +87,7 @@ class QuestionFileUploadSpecificationService extends QuestionSpecificationServic
  */
 @Validateable
 class FileUploadSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.FileUpload.name()
   String libelle
   String correction
   Long questionAttachementId
@@ -109,6 +110,7 @@ class FileUploadSpecification implements QuestionSpecification {
 
   def Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             libelle: libelle,
             questionAttachementId: questionAttachementId,
             correction: correction

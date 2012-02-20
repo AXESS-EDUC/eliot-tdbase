@@ -32,6 +32,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import static java.util.Collections.shuffle
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  * Service des specifications de questions de type text à trou.
@@ -50,7 +51,7 @@ class QuestionFillGapSpecificationService extends QuestionSpecificationService<F
  */
 @Validateable
 class FillGapSpecification implements QuestionSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.FillGap.name()
     /**
      * Le libellé.
      */
@@ -80,6 +81,7 @@ class FillGapSpecification implements QuestionSpecification {
     @Override
     Map toMap() {
         [
+                questionTypeCode:questionTypeCode,
                 libelle: libelle,
                 montrerLesMots: montrerLesMots,
                 saisieLibre: saisieLibre,

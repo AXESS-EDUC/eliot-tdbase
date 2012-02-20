@@ -32,6 +32,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  *
@@ -52,10 +53,14 @@ class QuestionStatementSpecificationService extends QuestionSpecificationService
 
 @Validateable
 class StatementSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.Statement.name()
   String enonce
 
   Map toMap() {
-    return [enonce: enonce]
+    [
+            questionTypeCode: questionTypeCode,
+            enonce: enonce
+    ]
   }
 
   static constraints = {

@@ -32,16 +32,17 @@ package org.lilie.services.eliot.tdbase.impl.booleanmatch
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  * Service des specifications de questions de type booléenne.
  */
 class QuestionBooleanMatchSpecificationService extends QuestionSpecificationService<BooleanMatchSpecification> {
 
-    @Override
-    def createSpecification(Map map) {
-        new BooleanMatchSpecification(map)
-    }
+  @Override
+  def createSpecification(Map map) {
+    new BooleanMatchSpecification(map)
+  }
 
 }
 
@@ -50,59 +51,60 @@ class QuestionBooleanMatchSpecificationService extends QuestionSpecificationServ
  */
 @Validateable
 class BooleanMatchSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.BooleanMatch.name()
+  /**
+   * Le libellé.
+   */
+  String libelle
 
-    /**
-     * Le libellé.
-     */
-    String libelle
+  /**
+   * La correction.
+   */
+  String correction
 
-    /**
-     * La correction.
-     */
-    String correction
+  /**
+   * Les reponses
+   */
+  List<String> reponses = []
 
-    /**
-     * Les reponses
-     */
-    List<String> reponses = []
+  /**
+   * Si vrai, alors toutes les reponses donnéés
+   */
+  boolean toutOuRien = false
 
-    /**
-     * Si vrai, alors toutes les reponses donnéés
-     */
-    boolean toutOuRien = false
+  /**
+   * Constructeur par défaut.
+   */
+  BooleanMatchSpecification() {
+    super()
+  }
 
-    /**
-     * Constructeur par défaut.
-     */
-    BooleanMatchSpecification() {
-        super()
-    }
+  /**
+   * Constructeur prennant une map de paramètres.
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  BooleanMatchSpecification(Map map) {
+    libelle = map.libelle
+    correction = map.correction
+    reponses = map.reponses
+    toutOuRien = map.toutOuRien
+  }
 
-    /**
-     * Constructeur prennant une map de paramètres.
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    BooleanMatchSpecification(Map map) {
-        libelle = map.libelle
-        correction = map.correction
-        reponses = map.reponses
-        toutOuRien = map.toutOuRien
-    }
+  @Override
+  Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            libelle: libelle,
+            reponses: reponses,
+            correction: correction,
+            toutOuRien: toutOuRien
+    ]
+  }
 
-    @Override
-    Map toMap() {
-        [
-                libelle: libelle,
-                reponses: reponses,
-                correction: correction,
-                toutOuRien: toutOuRien
-        ]
-    }
-
-    static constraints = {
-        libelle blank: false
-        reponses nullable: false
-    }
+  static constraints = {
+    libelle blank: false
+    reponses nullable: false
+  }
 
 }

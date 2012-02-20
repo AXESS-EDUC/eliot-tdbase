@@ -31,6 +31,7 @@ package org.lilie.services.eliot.tdbase.impl.associate
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 import org.lilie.services.eliot.tice.utils.StringUtils
 
 /**
@@ -38,10 +39,10 @@ import org.lilie.services.eliot.tice.utils.StringUtils
  */
 class QuestionAssociateSpecificationService extends QuestionSpecificationService<AssociateSpecification> {
 
-    @Override
-    def createSpecification(Map map) {
-        new AssociateSpecification(map)
-    }
+  @Override
+  def createSpecification(Map map) {
+    new AssociateSpecification(map)
+  }
 
 }
 
@@ -51,74 +52,77 @@ class QuestionAssociateSpecificationService extends QuestionSpecificationService
 @Validateable
 class AssociateSpecification implements QuestionSpecification {
 
-    /**
-     * Le libellé.
-     */
-    String libelle
+  String questionTypeCode = QuestionTypeEnum.Associate.name()
 
-    /**
-     * La correction.
-     */
-    String correction
+  /**
+   * Le libellé.
+   */
+  String libelle
 
-    /**
-     * Montrer la colonne à gauche.
-     */
-    boolean montrerColonneAGauche = false
+  /**
+   * La correction.
+   */
+  String correction
 
-    /**
-     * La liste d'associations.
-     */
-    List<Association> associations = []
+  /**
+   * Montrer la colonne à gauche.
+   */
+  boolean montrerColonneAGauche = false
 
-    /**
-     * La liste de tous les participants de toutes les associations.
-     */
-    List<String> participants = []
+  /**
+   * La liste d'associations.
+   */
+  List<Association> associations = []
 
-    /**
-     * Constructeur par défaut.
-     */
-    AssociateSpecification() {
-        super()
-    }
+  /**
+   * La liste de tous les participants de toutes les associations.
+   */
+  List<String> participants = []
 
-    /**
-     * Constructeur.
-     * @param params map de paramètres sous format de chaine de charactères.
-     */
-    AssociateSpecification(Map params) {
-        libelle = params.libelle
-        correction = params.correction
-        associations = params.associations.collect {new Association(it)}
-        montrerColonneAGauche = params.montrerColonneAGauche
-        sauverParticipants(associations)
-    }
+  /**
+   * Constructeur par défaut.
+   */
+  AssociateSpecification() {
+    super()
+  }
 
-    @Override
-    Map toMap() {
-        [
-                libelle: libelle,
-                correction: correction,
-                associations: associations.collect {it.toMap()},
-                montrerColonneAGauche: montrerColonneAGauche
-        ]
-    }
+  /**
+   * Constructeur.
+   * @param params map de paramètres sous format de chaine de charactères.
+   */
+  AssociateSpecification(Map params) {
+    libelle = params.libelle
+    correction = params.correction
+    associations = params.associations.collect {new Association(it)}
+    montrerColonneAGauche = params.montrerColonneAGauche
+    sauverParticipants(associations)
+  }
 
-    /**
-     * Setter polymorphique pour la liste des Participants à partir d'une liste d'associations.
-     * @param associactionList
-     */
-    void sauverParticipants(List<Association> associactionList) {
-        participants = []
-        associactionList.each {participants << it.participant1; participants << it.participant2}
-        Collections.shuffle(participants)
-    }
+  @Override
+  Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            libelle: libelle,
+            correction: correction,
+            associations: associations.collect {it.toMap()},
+            montrerColonneAGauche: montrerColonneAGauche
+    ]
+  }
 
-    static constraints = {
-        libelle blank: false
-        associations minSize: 2
-    }
+  /**
+   * Setter polymorphique pour la liste des Participants à partir d'une liste d'associations.
+   * @param associactionList
+   */
+  void sauverParticipants(List<Association> associactionList) {
+    participants = []
+    associactionList.each {participants << it.participant1; participants << it.participant2}
+    Collections.shuffle(participants)
+  }
+
+  static constraints = {
+    libelle blank: false
+    associations minSize: 2
+  }
 }
 
 /**
@@ -126,41 +130,41 @@ class AssociateSpecification implements QuestionSpecification {
  */
 class Association {
 
-    /**
-     * Le premier participant.
-     */
-    String participant1
-    /**
-     * Le deuxieme participant.
-     */
-    String participant2
+  /**
+   * Le premier participant.
+   */
+  String participant1
+  /**
+   * Le deuxieme participant.
+   */
+  String participant2
 
-    /**
-     * Marshalling des membres de la classe dans une map.
-     * @return map des valeurs des membres de la classe.
-     */
-    Map toMap() {
-        return [participant1: participant1,
-                participant2: participant2]
+  /**
+   * Marshalling des membres de la classe dans une map.
+   * @return map des valeurs des membres de la classe.
+   */
+  Map toMap() {
+    return [participant1: participant1,
+            participant2: participant2]
+  }
+
+  /**
+   * Evalue l'égalité de deux associations.
+   * @param object l'associate à comparer.
+   * @return vrai si l'intersection des ensembles de participants des deux associations est vide.
+   */
+  @Override
+  boolean equals(Object object) {
+    if (object == null || !(object instanceof Association)) {
+      return false
     }
 
-    /**
-     * Evalue l'égalité de deux associations.
-     * @param object l'associate à comparer.
-     * @return vrai si l'intersection des ensembles de participants des deux associations est vide.
-     */
-    @Override
-    boolean equals(Object object) {
-        if (object == null || !(object instanceof Association)) {
-            return false
-        }
-
-        def meParticipants = [StringUtils.normalise(participant1), StringUtils.normalise(participant2)]
-        def lesAutresParticipants = [StringUtils.normalise(object.participant1), StringUtils.normalise(object.participant2)]
+    def meParticipants = [StringUtils.normalise(participant1), StringUtils.normalise(participant2)]
+    def lesAutresParticipants = [StringUtils.normalise(object.participant1), StringUtils.normalise(object.participant2)]
 
 
-        (meParticipants - lesAutresParticipants).isEmpty()
-    }
+    (meParticipants - lesAutresParticipants).isEmpty()
+  }
 
 
 }
