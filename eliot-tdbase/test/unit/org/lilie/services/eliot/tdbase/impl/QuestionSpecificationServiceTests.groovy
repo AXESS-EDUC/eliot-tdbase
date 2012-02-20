@@ -1,5 +1,6 @@
 package org.lilie.services.eliot.tdbase.impl
 
+import grails.validation.ValidationErrors
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.Specification
@@ -17,7 +18,6 @@ import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecifi
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.QuestionMultipleChoiceSpecificationService
 import org.lilie.services.eliot.tdbase.impl.order.OrderSpecification
-import org.lilie.services.eliot.tdbase.impl.order.QuestionOrderSpecificationService
 import org.lilie.services.eliot.tdbase.impl.statement.QuestionStatementSpecificationService
 import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
 
@@ -60,7 +60,7 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
         new FillGapSpecification([
                 libelle: "Please fill in the gaps.",
                 montrerLesMots: true,
-                texteATrous: "The color of blood is #{red}. Major blood vessels are #{arteries, veins} and #{veins, arteries}.",
+                texteATrous: "The color of blood is {=red}. Major blood vessels are {~feet=arteries=veins} and {=veins=arteries~hair~\\~moo\\}\\=\\{}.",
                 correction: "The color of blood is red. Major blood vessels are arteries and veins."
         ])
     }
@@ -179,7 +179,7 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
                 assertNotNull spec2.getProperty(it.key)
                 assertEquals "Specification initiale et celle generée ne sont pas égales", it.value, spec2.getProperty(it.key), 0f
             }
-            else {
+            else if (!(it.value instanceof ValidationErrors)) {
                 assertEquals("Specification initiale et celle generée ne sont pas égales", it.value, spec2.getProperty(it.key))
             }
         }
@@ -187,11 +187,8 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
 
     def testGetTexteATrous() {
         def fillGap = fillGapSpecification()
-
-        println(fillGap.texteATrous)
-        println(fillGap.motsSugeres)
-        println(fillGap.toMap())
-
+        println fillGap.texteATrous
+        println fillGap.motsSugeres
+        println fillGap.toMap()
     }
-
 }
