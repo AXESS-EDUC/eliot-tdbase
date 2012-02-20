@@ -79,7 +79,7 @@ class Sujet implements Artefact {
 
   Integer rangInsertion
 
-  static transients = ['rangInsertion']
+  static transients = ['rangInsertion','estUnExercice']
 
   static constraints = {
     titre(blank: false, nullable: false)
@@ -104,7 +104,16 @@ class Sujet implements Artefact {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
     questionsSequences(cascade: 'refresh')
+    sujetType(fetch: 'join')
     cache(true)
+  }
+
+  /**
+   *
+   * @return true si le sujet est un exercice
+   */
+  boolean estUnExercice() {
+    sujetTypeId == SujetTypeEnum.Exercice.id
   }
 
   /**

@@ -89,6 +89,29 @@ class QuestionService implements ApplicationContextAware {
   }
 
   /**
+     * Créé une question composite correspondant à un exercice
+     * @param sujet l'exercice
+     * @param proprietaire le proprietaire
+     * @return la question créée
+     */
+    @Transactional
+    Question createQuestionCompositeForExercice(Sujet exercice, Personne proprietaire) {
+      Question question = new Question(
+              proprietaire: proprietaire,
+              titreNormalise: exercice.titreNormalise,
+              publie: false,
+              versionQuestion: 1,
+              copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
+              specification: "{}"
+      )
+      question.properties = exercice.properties
+      question.type = QuestionTypeEnum.Composite.questionType
+      question.exercice = exercice
+      question.save(flush: true)
+      return question
+    }
+
+  /**
    * Recopie une question dans un sujet
    * @param sujetQuestion la question à recopier et son sujet associé
    * @param proprietaire le proprietaire

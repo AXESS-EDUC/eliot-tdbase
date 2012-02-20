@@ -39,397 +39,403 @@ import org.springframework.transaction.annotation.Transactional
 
 class SujetService {
 
-    static transactional = false
+  static transactional = false
 
-    QuestionService questionService
-    ArtefactAutorisationService artefactAutorisationService
-    CopieService copieService
-    ReponseService reponseService
+  QuestionService questionService
+  ArtefactAutorisationService artefactAutorisationService
+  CopieService copieService
+  ReponseService reponseService
 
-    /**
-     * Créé un sujet
-     * @param proprietaire le proprietaire du sujet
-     * @param titre le titre du sujet
-     * @return le sujet créé
-     */
-    @Transactional
-    Sujet createSujet(Personne proprietaire, String titre) {
-        Sujet sujet = new Sujet(
-                proprietaire: proprietaire,
-                titre: titre,
-                titreNormalise: StringUtils.normalise(titre),
-                accesPublic: false,
-                accesSequentiel: false,
-                ordreQuestionsAleatoire: false,
-                publie: false,
-                versionSujet: 1,
-                copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType
-        )
-        sujet.save(flush: true)
-        return sujet
+  /**
+   * Créé un sujet
+   * @param proprietaire le proprietaire du sujet
+   * @param titre le titre du sujet
+   * @return le sujet créé
+   */
+  @Transactional
+  Sujet createSujet(Personne proprietaire, String titre) {
+    Sujet sujet = new Sujet(
+            proprietaire: proprietaire,
+            titre: titre,
+            titreNormalise: StringUtils.normalise(titre),
+            accesPublic: false,
+            accesSequentiel: false,
+            ordreQuestionsAleatoire: false,
+            publie: false,
+            versionSujet: 1,
+            copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType
+    )
+    sujet.save(flush: true)
+    return sujet
+  }
+
+  /**
+   * Recopie un sujet
+   * @param sujet le sujet à recopier
+   * @param proprietaire le proprietaire
+   * @return la copie du sujet
+   */
+  @Transactional
+  Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
+    // verification securité
+    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, sujet))
+
+    Sujet sujetCopie = new Sujet(
+            proprietaire: proprietaire,
+            titre: sujet.titre + " (Copie)",
+            titreNormalise: sujet.titreNormalise,
+            presentation: sujet.presentation,
+            presentationNormalise: sujet.presentationNormalise,
+            accesPublic: false,
+            accesSequentiel: sujet.accesSequentiel,
+            ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
+            publie: false,
+            copyrightsType: sujet.copyrightsType
+    )
+    sujetCopie.save()
+    // recopie de la séquence de questions (ce n'est pas une copie en profondeur)
+    sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
+      SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
+              question: sujetQuestion.question,
+              sujet: sujetCopie,
+              noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
+      )
+      sujetCopie.addToQuestionsSequences(copieSujetSequence)
+      copieSujetSequence.save()
+    }
+    // repertorie l'ateriorité
+    sujetCopie.paternite = sujet.paternite
+    sujetCopie.save()
+    return sujetCopie
+  }
+
+  /**
+   * Change le titre du sujet
+   * @param sujet le sujet à modifier
+   * @param nouveauTitre le titre
+   * @return le sujet
+   */
+  Sujet updateTitreSujet(Sujet leSujet, String nouveauTitre, Personne proprietaire) {
+    // verif securite
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
+
+    leSujet.titre = nouveauTitre
+    leSujet.titreNormalise = StringUtils.normalise(nouveauTitre)
+    leSujet.save()
+    return leSujet
+  }
+
+  /**
+   * Modifie les proprietes du sujet passé en paramètre
+   * @param sujet le sujet
+   * @param proprietes les nouvelles proprietes
+   * @param proprietaire le proprietaire
+   * @return le sujet
+   */
+  Sujet updateProprietes(Sujet leSujet, Map proprietes, Personne proprietaire) {
+    // verif securite
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
+
+    if (proprietes.titre && leSujet.titre != proprietes.titre) {
+      leSujet.titreNormalise = StringUtils.normalise(proprietes.titre)
+    }
+    if (proprietes.presentation && leSujet.presentation != proprietes.presentation) {
+      leSujet.presentationNormalise = StringUtils.normalise(proprietes.presentation)
+    }
+    leSujet.properties = proprietes
+    leSujet.save(flush: true)
+    if (leSujet.estUnExercice()) {
+      def question = Question.findByExercice(leSujet)
+      if (!question) {
+        questionService.createQuestionCompositeForExercice(leSujet, proprietaire)
+      }
+    }
+    return leSujet
+  }
+
+  /**
+   * Supprime un sujet
+   * @param sujet la question à supprimer
+   * @param supprimeur la personne tentant la suppression
+   */
+  @Transactional
+  def supprimeSujet(Sujet leSujet, Personne supprimeur) {
+    assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
+            supprimeur, leSujet))
+    // suppression des copies jetables attachees au sujet
+    copieService.supprimeCopiesJetablesForSujet(leSujet)
+    // suppression des sujetQuestions
+    def sujetQuests = SujetSequenceQuestions.where {
+      sujet == leSujet
+    }
+    sujetQuests.deleteAll()
+    // suppression de la publication si necessaire
+    if (leSujet.estPartage()) {
+      leSujet.publication.delete()
+    }
+    // on supprime enfin le sujet
+    leSujet.delete()
+  }
+
+  /**
+   *  Partage un sujet
+   * @param leSujet le sujet à partager
+   * @param partageur la personne souhaitant partager
+   */
+  @Transactional
+  def partageSujet(Sujet leSujet, Personne partageur) {
+    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(
+            partageur, leSujet))
+    CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
+    Publication publication = new Publication(dateDebut: new Date(),
+                                              copyrightsType: ct)
+    publication.save()
+    leSujet.copyrightsType = ct
+    leSujet.publication = publication
+    leSujet.publie = true
+    // il faut partager les questions qui ne sont pas partagées
+    leSujet.questionsSequences.each {
+      def question = it.question
+      if (!question.estPartage()) {
+        questionService.partageQuestion(question, partageur)
+      }
+    }
+    // mise à jour de la paternite
+    PaterniteItem paterniteItem = new PaterniteItem(
+            auteur: "${partageur.nomAffichage}",
+            copyrightDescription: "${ct.presentation}",
+            copyrighLien: "${ct.lien}",
+            datePublication: publication.dateDebut,
+            oeuvreEnCours: true
+    )
+    Paternite paternite = new Paternite(leSujet.paternite)
+    paternite.paterniteItems.each {
+      it.oeuvreEnCours = false
+    }
+    paternite.addPaterniteItem(paterniteItem)
+    leSujet.paternite = paternite.toString()
+    leSujet.save()
+    return leSujet
+  }
+
+  /**
+   * Recherche de sujets
+   * @param chercheur la personne effectuant la recherche
+   * @param patternTitre le pattern saisi pour le titre
+   * @param patternAuteur le pattern saisi pour l'auteur
+   * @param patternPresentation le pattern saisi pour la presentation
+   * @param matiere la matiere
+   * @param niveau le niveau
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @return la liste des sujets
+   */
+  List<Sujet> findSujets(Personne chercheur,
+                         String patternTitre,
+                         String patternAuteur,
+                         String patternPresentation,
+                         Matiere matiere,
+                         Niveau niveau,
+                         SujetType sujetType,
+                         Map paginationAndSortingSpec = null) {
+    // todofsil : gerer les index de manière efficace couplée avec présentation
+    // paramètre de recherche ad-hoc
+    if (!chercheur) {
+      throw new IllegalArgumentException("sujet.recherche.chercheur.null")
+    }
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
     }
 
-    /**
-     * Recopie un sujet
-     * @param sujet le sujet à recopier
-     * @param proprietaire le proprietaire
-     * @return la copie du sujet
-     */
-    @Transactional
-    Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
-        // verification securité
-        assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, sujet))
-
-        Sujet sujetCopie = new Sujet(
-                proprietaire: proprietaire,
-                titre: sujet.titre + " (Copie)",
-                titreNormalise: sujet.titreNormalise,
-                presentation: sujet.presentation,
-                presentationNormalise: sujet.presentationNormalise,
-                accesPublic: false,
-                accesSequentiel: sujet.accesSequentiel,
-                ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
-                publie: false,
-                copyrightsType: sujet.copyrightsType
-        )
-        sujetCopie.save()
-        // recopie de la séquence de questions (ce n'est pas une copie en profondeur)
-        sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
-            SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
-                    question: sujetQuestion.question,
-                    sujet: sujetCopie,
-                    noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
-            )
-            sujetCopie.addToQuestionsSequences(copieSujetSequence)
-            copieSujetSequence.save()
+    def criteria = Sujet.createCriteria()
+    List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
+      if (patternAuteur) {
+        String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
+        proprietaire {
+          or {
+            like "nomNormalise", patternAuteurNormalise
+            like "prenomNormalise", patternAuteurNormalise
+          }
         }
-        // repertorie l'ateriorité
-        sujetCopie.paternite = sujet.paternite
-        sujetCopie.save()
-        return sujetCopie
+      }
+      if (patternTitre) {
+        like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
+      }
+      if (patternPresentation) {
+        like "presentationNormalise", "%${StringUtils.normalise(patternPresentation)}%"
+      }
+      if (matiere) {
+        eq "matiere", matiere
+      }
+      if (niveau) {
+        eq "niveau", niveau
+      }
+      if (sujetType) {
+        eq "sujetType", sujetType
+      }
+      or {
+        eq 'proprietaire', chercheur
+        eq 'publie', true
+      }
+      if (paginationAndSortingSpec) {
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+        if (sortArg) {
+          order "${sortArg}", orderArg
+        }
+
+      }
+    }
+    return sujets
+  }
+
+  /**
+   * Recherche de tous les sujet pour un proprietaire donné
+   * @param proprietaire la personne effectuant la recherche
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @return la liste des sujets
+   */
+  List<Sujet> findSujetsForProprietaire(Personne proprietaire,
+                                        Map paginationAndSortingSpec = null) {
+    if (!proprietaire) {
+      throw new IllegalArgumentException("sujet.recherche.chercheur.null")
+    }
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
     }
 
-    /**
-     * Change le titre du sujet
-     * @param sujet le sujet à modifier
-     * @param nouveauTitre le titre
-     * @return le sujet
-     */
-    Sujet updateTitreSujet(Sujet leSujet, String nouveauTitre, Personne proprietaire) {
-        // verif securite
-        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
+    def criteria = Sujet.createCriteria()
+    List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
+      eq 'proprietaire', proprietaire
+      if (paginationAndSortingSpec) {
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+        if (sortArg) {
+          order "${sortArg}", orderArg
+        }
 
-        leSujet.titre = nouveauTitre
-        leSujet.titreNormalise = StringUtils.normalise(nouveauTitre)
-        leSujet.save()
-        return leSujet
+      }
+    }
+    return sujets
+  }
+
+  /**
+   *
+   * @return la liste de tous les types de sujet
+   */
+  List<SujetType> getAllSujetTypes() {
+    return SujetType.getAll()
+  }
+
+  /**
+   * Insert une question dans un sujet sujet
+   * @param question la question
+   * @param sujet le sujet
+   * @param proprietaire le propriétaire
+   * @param rang le rang d'insertion
+   * @return le sujet modifié
+   */
+  @Transactional
+  Sujet insertQuestionInSujet(Question question, Sujet leSujet,
+                              Personne proprietaire, Integer rang = null) {
+
+    // verif securite
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
+    assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(proprietaire, question))
+
+    if (!question.estPartage() && leSujet.estPartage()) {
+      questionService.partageQuestion(question, proprietaire)
     }
 
-    /**
-     * Modifie les proprietes du sujet passé en paramètre
-     * @param sujet le sujet
-     * @param proprietes les nouvelles proprietes
-     * @param proprietaire le proprietaire
-     * @return le sujet
-     */
-    Sujet updateProprietes(Sujet leSujet, Map proprietes, Personne proprietaire) {
-        // verif securite
-        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
+    def sequence = new SujetSequenceQuestions(
+            question: question,
+            sujet: leSujet,
+            rang: leSujet.questionsSequences?.size()
+    )
 
-        if (proprietes.titre && leSujet.titre != proprietes.titre) {
-            leSujet.titreNormalise = StringUtils.normalise(proprietes.titre)
-        }
-        if (proprietes.presentation && leSujet.presentation != proprietes.presentation) {
-            leSujet.presentationNormalise = StringUtils.normalise(proprietes.presentation)
-        }
-        leSujet.properties = proprietes
-        leSujet.save(flush: true)
-        return leSujet
+    leSujet.addToQuestionsSequences(sequence)
+    leSujet.lastUpdated = new Date()
+    sequence.save()
+    leSujet.save(flush: true)
+    if (rang != null && rang < leSujet.questionsSequences.size() - 1) {
+      // il faut insérer au rang correct
+      def idxSujQuest = leSujet.questionsSequences.size() - 1
+      while (idxSujQuest != rang) {
+        def idxSujQuestPrec = idxSujQuest - 1
+        def sujQuest = leSujet.questionsSequences[idxSujQuest]
+        def sujQuestPrec = leSujet.questionsSequences[idxSujQuestPrec]
+        leSujet.questionsSequences[idxSujQuest] = sujQuestPrec
+        leSujet.questionsSequences[idxSujQuestPrec] = sujQuest
+        idxSujQuest = idxSujQuestPrec
+      }
+      leSujet.save(flush: true)
     }
+    leSujet.refresh()
+    return leSujet
+  }
 
-    /**
-     * Supprime un sujet
-     * @param sujet la question à supprimer
-     * @param supprimeur la personne tentant la suppression
-     */
-    @Transactional
-    def supprimeSujet(Sujet leSujet, Personne supprimeur) {
-        assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
-                supprimeur, leSujet))
-        // suppression des copies jetables attachees au sujet
-        copieService.supprimeCopiesJetablesForSujet(leSujet)
-        // suppression des sujetQuestions
-        def sujetQuests = SujetSequenceQuestions.where {
-            sujet == leSujet
-        }
-        sujetQuests.deleteAll()
-        // suppression de la publication si necessaire
-        if (leSujet.estPartage()) {
-            leSujet.publication.delete()
-        }
-        // on supprime enfin le sujet
-        leSujet.delete()
-    }
-
-    /**
-     *  Partage un sujet
-     * @param leSujet le sujet à partager
-     * @param partageur la personne souhaitant partager
-     */
-    @Transactional
-    def partageSujet(Sujet leSujet, Personne partageur) {
-        assert (artefactAutorisationService.utilisateurPeutPartageArtefact(
-                partageur, leSujet))
-        CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
-        Publication publication = new Publication(dateDebut: new Date(),
-                copyrightsType: ct)
-        publication.save()
-        leSujet.copyrightsType = ct
-        leSujet.publication = publication
-        leSujet.publie = true
-        // il faut partager les questions qui ne sont pas partagées
-        leSujet.questionsSequences.each {
-            def question = it.question
-            if (!question.estPartage()) {
-                questionService.partageQuestion(question, partageur)
-            }
-        }
-        // mise à jour de la paternite
-        PaterniteItem paterniteItem = new PaterniteItem(
-                auteur: "${partageur.nomAffichage}",
-                copyrightDescription: "${ct.presentation}",
-                copyrighLien: "${ct.lien}",
-                datePublication: publication.dateDebut,
-                oeuvreEnCours: true
-        )
-        Paternite paternite = new Paternite(leSujet.paternite)
-        paternite.paterniteItems.each {
-            it.oeuvreEnCours = false
-        }
-        paternite.addPaterniteItem(paterniteItem)
-        leSujet.paternite = paternite.toString()
-        leSujet.save()
-        return leSujet
-    }
-
-    /**
-     * Recherche de sujets
-     * @param chercheur la personne effectuant la recherche
-     * @param patternTitre le pattern saisi pour le titre
-     * @param patternAuteur le pattern saisi pour l'auteur
-     * @param patternPresentation le pattern saisi pour la presentation
-     * @param matiere la matiere
-     * @param niveau le niveau
-     * @param paginationAndSortingSpec les specifications pour l'ordre et
-     * la pagination
-     * @return la liste des sujets
-     */
-    List<Sujet> findSujets(Personne chercheur,
-                           String patternTitre,
-                           String patternAuteur,
-                           String patternPresentation,
-                           Matiere matiere,
-                           Niveau niveau,
-                           SujetType sujetType,
-                           Map paginationAndSortingSpec = null) {
-        // todofsil : gerer les index de manière efficace couplée avec présentation
-        // paramètre de recherche ad-hoc
-        if (!chercheur) {
-            throw new IllegalArgumentException("sujet.recherche.chercheur.null")
-        }
-        if (paginationAndSortingSpec == null) {
-            paginationAndSortingSpec = [:]
-        }
-
-        def criteria = Sujet.createCriteria()
-        List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
-            if (patternAuteur) {
-                String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
-                proprietaire {
-                    or {
-                        like "nomNormalise", patternAuteurNormalise
-                        like "prenomNormalise", patternAuteurNormalise
-                    }
-                }
-            }
-            if (patternTitre) {
-                like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
-            }
-            if (patternPresentation) {
-                like "presentationNormalise", "%${StringUtils.normalise(patternPresentation)}%"
-            }
-            if (matiere) {
-                eq "matiere", matiere
-            }
-            if (niveau) {
-                eq "niveau", niveau
-            }
-            if (sujetType) {
-                eq "sujetType", sujetType
-            }
-            or {
-                eq 'proprietaire', chercheur
-                eq 'publie', true
-            }
-            if (paginationAndSortingSpec) {
-                def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
-                def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-                if (sortArg) {
-                    order "${sortArg}", orderArg
-                }
-
-            }
-        }
-        return sujets
-    }
-
-    /**
-     * Recherche de tous les sujet pour un proprietaire donné
-     * @param proprietaire la personne effectuant la recherche
-     * @param paginationAndSortingSpec les specifications pour l'ordre et
-     * la pagination
-     * @return la liste des sujets
-     */
-    List<Sujet> findSujetsForProprietaire(Personne proprietaire,
-                                          Map paginationAndSortingSpec = null) {
-        if (!proprietaire) {
-            throw new IllegalArgumentException("sujet.recherche.chercheur.null")
-        }
-        if (paginationAndSortingSpec == null) {
-            paginationAndSortingSpec = [:]
-        }
-
-        def criteria = Sujet.createCriteria()
-        List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
-            eq 'proprietaire', proprietaire
-            if (paginationAndSortingSpec) {
-                def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
-                def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-                if (sortArg) {
-                    order "${sortArg}", orderArg
-                }
-
-            }
-        }
-        return sujets
-    }
-
-    /**
-     *
-     * @return la liste de tous les types de sujet
-     */
-    List<SujetType> getAllSujetTypes() {
-        return SujetType.getAll()
-    }
-
-    /**
-     * Insert une question dans un sujet sujet
-     * @param question la question
-     * @param sujet le sujet
-     * @param proprietaire le propriétaire
-     * @param rang le rang d'insertion
-     * @return le sujet modifié
-     */
-    @Transactional
-    Sujet insertQuestionInSujet(Question question, Sujet leSujet,
-                                Personne proprietaire, Integer rang = null) {
-
-        // verif securite
-        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
-        assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(proprietaire, question))
-
-        if (!question.estPartage() && leSujet.estPartage()) {
-            questionService.partageQuestion(question, proprietaire)
-        }
-
-        def sequence = new SujetSequenceQuestions(
-                question: question,
-                sujet: leSujet,
-                rang: leSujet.questionsSequences?.size()
-        )
-
-        leSujet.addToQuestionsSequences(sequence)
-        leSujet.lastUpdated = new Date()
-        sequence.save()
-        leSujet.save(flush: true)
-        if (rang != null && rang < leSujet.questionsSequences.size() - 1) {
-            // il faut insérer au rang correct
-            def idxSujQuest = leSujet.questionsSequences.size() - 1
-            while (idxSujQuest != rang) {
-                def idxSujQuestPrec = idxSujQuest - 1
-                def sujQuest = leSujet.questionsSequences[idxSujQuest]
-                def sujQuestPrec = leSujet.questionsSequences[idxSujQuestPrec]
-                leSujet.questionsSequences[idxSujQuest] = sujQuestPrec
-                leSujet.questionsSequences[idxSujQuestPrec] = sujQuest
-                idxSujQuest = idxSujQuestPrec
-            }
-            leSujet.save(flush: true)
-        }
-        leSujet.refresh()
-        return leSujet
-    }
-
-    /**
-     * Inverse une question avec sa précédente dans un sujet
-     * @param sujetQuestion la question à inverser
-     * @param proprietaire le proprietaire du sujet
-     * @return le sujet modifié
-     */
-    @Transactional
-    Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
-                                          Personne proprietaire) {
-
-        Sujet leSujet = sujetQuestion.sujet
-        // verif securite
-        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
-
-        sujetQuestion.refresh()
-        def idx = sujetQuestion.rang
-        if (idx == 0) { // on ne fait rien
-            return sujetQuestion.sujet
-        }
-        def idxPrec = sujetQuestion.rang - 1
-
-        def squestPrec = leSujet.questionsSequences[idxPrec]
-        def squest = leSujet.questionsSequences[idx]
-        leSujet.lastUpdated = new Date()
-        leSujet.questionsSequences[idx] = squestPrec
-        leSujet.questionsSequences[idxPrec] = squest
-        leSujet.save(flush: true)
-        // refresh sinon la collection n'est pas raffraichie : raison possible
-        // pour suppression modelisation to many
-        leSujet.refresh()
-        return leSujet
-    }
-
-    /**
-     * Inverse une question avec sa suivante dans un sujet
-     * @param sujetQuestion la question à inverser
-     * @param proprietaire le proprietaire du sujet
-     * @return le sujet modifié
-     */
-    @Transactional
-    Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
+  /**
+   * Inverse une question avec sa précédente dans un sujet
+   * @param sujetQuestion la question à inverser
+   * @param proprietaire le proprietaire du sujet
+   * @return le sujet modifié
+   */
+  @Transactional
+  Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
-        Sujet leSujet = sujetQuestion.sujet
-        // verif securite
-        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
 
-        sujetQuestion.refresh()
-        def idx = sujetQuestion.rang
-        if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) { // on ne fait rien
-            return sujetQuestion.sujet
-        }
-        def idxSuiv = sujetQuestion.rang + 1
-        def squestSuiv = leSujet.questionsSequences[idxSuiv]
-        def squest = leSujet.questionsSequences[idx]
-        leSujet.questionsSequences[idx] = squestSuiv
-        leSujet.questionsSequences[idxSuiv] = squest
-        leSujet.lastUpdated = new Date()
-        leSujet.save(flush: true)
-        leSujet.refresh()
-        return leSujet
+    Sujet leSujet = sujetQuestion.sujet
+    // verif securite
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
+
+    sujetQuestion.refresh()
+    def idx = sujetQuestion.rang
+    if (idx == 0) { // on ne fait rien
+      return sujetQuestion.sujet
     }
+    def idxPrec = sujetQuestion.rang - 1
+
+    def squestPrec = leSujet.questionsSequences[idxPrec]
+    def squest = leSujet.questionsSequences[idx]
+    leSujet.lastUpdated = new Date()
+    leSujet.questionsSequences[idx] = squestPrec
+    leSujet.questionsSequences[idxPrec] = squest
+    leSujet.save(flush: true)
+    // refresh sinon la collection n'est pas raffraichie : raison possible
+    // pour suppression modelisation to many
+    leSujet.refresh()
+    return leSujet
+  }
+
+  /**
+   * Inverse une question avec sa suivante dans un sujet
+   * @param sujetQuestion la question à inverser
+   * @param proprietaire le proprietaire du sujet
+   * @return le sujet modifié
+   */
+  @Transactional
+  Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
+                                      Personne proprietaire) {
+    Sujet leSujet = sujetQuestion.sujet
+    // verif securite
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
+
+    sujetQuestion.refresh()
+    def idx = sujetQuestion.rang
+    if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) { // on ne fait rien
+      return sujetQuestion.sujet
+    }
+    def idxSuiv = sujetQuestion.rang + 1
+    def squestSuiv = leSujet.questionsSequences[idxSuiv]
+    def squest = leSujet.questionsSequences[idx]
+    leSujet.questionsSequences[idx] = squestSuiv
+    leSujet.questionsSequences[idxSuiv] = squest
+    leSujet.lastUpdated = new Date()
+    leSujet.save(flush: true)
+    leSujet.refresh()
+    return leSujet
+  }
 
 /**
  * Supprime une question d'un sujet
@@ -437,48 +443,48 @@ class SujetService {
  * @param proprietaire le propriétaire
  * @return le sujet modifié
  */
-    @Transactional
-    Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
-                                    Personne proprietaire) {
-        // verif securite
-        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(
-                proprietaire, sujetQuestion.sujet
-        ))
+  @Transactional
+  Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
+                                  Personne proprietaire) {
+    // verif securite
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(
+            proprietaire, sujetQuestion.sujet
+    ))
 
-        Sujet leSujet = sujetQuestion.sujet
-        leSujet.removeFromQuestionsSequences(sujetQuestion)
-        def reponses = Reponse.findAllBySujetQuestion(sujetQuestion)
-        reponses.each {
-            reponseService.supprimeReponse(it, proprietaire)
-        }
-        sujetQuestion.delete()
-        leSujet.lastUpdated = new Date()
-        leSujet.save(flush: true)
-        leSujet.refresh()
-        return leSujet
+    Sujet leSujet = sujetQuestion.sujet
+    leSujet.removeFromQuestionsSequences(sujetQuestion)
+    def reponses = Reponse.findAllBySujetQuestion(sujetQuestion)
+    reponses.each {
+      reponseService.supprimeReponse(it, proprietaire)
     }
+    sujetQuestion.delete()
+    leSujet.lastUpdated = new Date()
+    leSujet.save(flush: true)
+    leSujet.refresh()
+    return leSujet
+  }
 
-    /**
-     * Modifie le nombre de points associé à une question dans un sujet
-     * @param sujetQuestion le sujet et la question
-     * @param proprietaire le propriétaire
-     * @return le sujet modifié
-     */
-    @Transactional
-    SujetSequenceQuestions updatePointsForQuestion(Float newPoints,
-                                                   SujetSequenceQuestions sujetQuestion,
-                                                   Personne proprietaire) {
+  /**
+   * Modifie le nombre de points associé à une question dans un sujet
+   * @param sujetQuestion le sujet et la question
+   * @param proprietaire le propriétaire
+   * @return le sujet modifié
+   */
+  @Transactional
+  SujetSequenceQuestions updatePointsForQuestion(Float newPoints,
+                                                 SujetSequenceQuestions sujetQuestion,
+                                                 Personne proprietaire) {
 
-        assert (sujetQuestion.sujet.proprietaire == proprietaire)
+    assert (sujetQuestion.sujet.proprietaire == proprietaire)
 
-        sujetQuestion.points = newPoints
-        if (sujetQuestion.save()) {
-            def leSujet = sujetQuestion.sujet
-            leSujet.lastUpdated = new Date()
-            leSujet.save()
-        }
-        return sujetQuestion
+    sujetQuestion.points = newPoints
+    if (sujetQuestion.save()) {
+      def leSujet = sujetQuestion.sujet
+      leSujet.lastUpdated = new Date()
+      leSujet.save()
     }
+    return sujetQuestion
+  }
 
 
 }

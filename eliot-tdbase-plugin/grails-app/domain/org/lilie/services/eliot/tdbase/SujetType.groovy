@@ -50,3 +50,23 @@ class SujetType {
     cache('read-only')
   }
 }
+
+enum SujetTypeEnum {
+  Sujet(1),
+  Exercice(2)
+
+  private Long id
+
+  private SujetTypeEnum(Long id) {
+    this.id = id
+  }
+
+  SujetType getSujetType() {
+    return SujetType.get(id)
+  }
+  
+  Long getId() {
+    return id
+  }
+
+}
