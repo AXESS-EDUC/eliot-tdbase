@@ -60,20 +60,18 @@ class Question implements Artefact {
 
   Personne proprietaire
   QuestionType type
+  Sujet exercice
 
   Etablissement etablissement
   Matiere matiere
   Niveau niveau
   CopyrightsType copyrightsType
   Publication publication
-  SortedSet<QuestionArborescence> questionArborescenceFilles
   SortedSet<QuestionAttachement> questionAttachements
 
   private def specificationObject
 
   static hasMany = [
-          questionArborescenceFilles: QuestionArborescence,
-          questionArborescenceParentes: QuestionArborescence,
           questionAttachements: QuestionAttachement
   ]
 
@@ -89,6 +87,7 @@ class Question implements Artefact {
     niveau(nullable: true)
     publication(nullable: true)
     paternite(nullable: true)
+    exercice(nullable: true)
     specification(validator: { val, obj, errors ->
       def objSpec = obj.getSpecificationObjectForJson(val)
       if (!objSpec.validate()) {
@@ -119,13 +118,6 @@ class Question implements Artefact {
            type.code == QuestionTypeEnum.FileUpload.name()
   }
 
-  /**
-   *
-   * @return la liste des questions filles de la question courante
-   */
-  List<Question> questionsFilles() {
-    return questionArborescenceFilles*.questionFille
-  }
 
   /**
    *

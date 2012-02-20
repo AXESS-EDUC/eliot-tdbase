@@ -148,17 +148,6 @@ class QuestionService implements ApplicationContextAware {
       questionCopie.save()
     }
 
-    // recopie l'arborescence (si question composite)
-    question.questionArborescenceFilles.each { QuestionArborescence questionArborescence ->
-      QuestionArborescence copieQuestionArborescence = new QuestionArborescence(
-              question: questionCopie,
-              questionFille: questionArborescence.questionFille,
-              rang: questionArborescence.rang
-      )
-      questionCopie.addToQuestionArborescenceFilles(copieQuestionArborescence)
-      questionCopie.save()
-    }
-
     // repertorie l'anteriorite
     questionCopie.paternite = question.paternite
 
@@ -231,13 +220,6 @@ class QuestionService implements ApplicationContextAware {
     sujetQuestions.each {
       sujetService.supprimeQuestionFromSujet(it, supprimeur)
     }
-
-
-    // suppression des questions arborescences
-    QuestionArborescence.executeUpdate(" \
-        DELETE FROM QuestionArborescence as questArb \
-        where questArb.question = :question  or questArb.questionFille = :question",
-                                       [question: laQuestion])
 
     // supprimer les attachements si nécessaire
     def questionAttachements = QuestionAttachement.findAllByQuestion(laQuestion)
