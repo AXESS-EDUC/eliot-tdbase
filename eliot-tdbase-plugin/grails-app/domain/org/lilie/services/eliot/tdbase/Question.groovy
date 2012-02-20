@@ -75,10 +75,6 @@ class Question implements Artefact {
           questionAttachements: QuestionAttachement
   ]
 
-  static mappedBy = [
-          questionArborescenceFilles: 'question',
-          questionArborescenceParentes: 'questionFille'
-  ]
 
   static constraints = {
     specificationNormalise(nullable: true)
@@ -103,7 +99,6 @@ class Question implements Artefact {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
     cache(true)
-    questionArborescenceFilles(lazy: 'false', sort: 'rang', order: 'asc')
     questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
   }
 
