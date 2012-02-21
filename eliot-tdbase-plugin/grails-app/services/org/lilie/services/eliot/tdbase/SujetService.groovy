@@ -63,7 +63,8 @@ class SujetService {
             ordreQuestionsAleatoire: false,
             publie: false,
             versionSujet: 1,
-            copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType
+            copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
+            sujetType: SujetTypeEnum.Sujet.sujetType
     )
     sujet.save(flush: true)
     return sujet
@@ -90,7 +91,8 @@ class SujetService {
             accesSequentiel: sujet.accesSequentiel,
             ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
             publie: false,
-            copyrightsType: sujet.copyrightsType
+            copyrightsType: sujet.copyrightsType,
+            sujetType: sujet.sujetType
     )
     sujetCopie.save()
     // recopie de la séquence de questions (ce n'est pas une copie en profondeur)
@@ -106,6 +108,9 @@ class SujetService {
     // repertorie l'ateriorité
     sujetCopie.paternite = sujet.paternite
     sujetCopie.save()
+    if (sujetCopie.estUnExercice()) {
+      questionService.createQuestionCompositeForExercice(sujetCopie,proprietaire)
+    }
     return sujetCopie
   }
 
@@ -132,6 +137,7 @@ class SujetService {
    * @param proprietaire le proprietaire
    * @return le sujet
    */
+  @Transactional
   Sujet updateProprietes(Sujet leSujet, Map proprietes, Personne proprietaire) {
     // verif securite
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
@@ -144,10 +150,17 @@ class SujetService {
     }
     leSujet.properties = proprietes
     leSujet.save(flush: true)
+    // traitement de la question associee au sujet si le sujet est un exercice
+    def question = leSujet.questionComposite
     if (leSujet.estUnExercice()) {
-      def question = Question.findByExercice(leSujet)
       if (!question) {
         questionService.createQuestionCompositeForExercice(leSujet, proprietaire)
+      }
+    } else {
+      // si le sujet était un exercice mais ne l'est plus, suppression de
+      // la question associée
+      if (question) {
+        questionService.supprimeQuestionComposite(question, proprietaire)
       }
     }
     return leSujet
@@ -169,6 +182,12 @@ class SujetService {
       sujet == leSujet
     }
     sujetQuests.deleteAll()
+    // si le sujet est un exercice, suppression de la question associée
+    // si le sujet est un exercice, partage de la question associee
+    def question = leSujet.questionComposite
+    if (question) {
+      questionService.supprimeQuestionComposite(question, supprimeur)
+    }
     // suppression de la publication si necessaire
     if (leSujet.estPartage()) {
       leSujet.publication.delete()
@@ -177,11 +196,11 @@ class SujetService {
     leSujet.delete()
   }
 
-  /**
-   *  Partage un sujet
-   * @param leSujet le sujet à partager
-   * @param partageur la personne souhaitant partager
-   */
+/**
+ *  Partage un sujet
+ * @param leSujet le sujet à partager
+ * @param partageur la personne souhaitant partager
+ */
   @Transactional
   def partageSujet(Sujet leSujet, Personne partageur) {
     assert (artefactAutorisationService.utilisateurPeutPartageArtefact(
@@ -215,21 +234,27 @@ class SujetService {
     paternite.addPaterniteItem(paterniteItem)
     leSujet.paternite = paternite.toString()
     leSujet.save()
+    // si le sujet est un exercice, partage de la question associee
+    def question = leSujet.questionComposite
+    if (question) {
+      questionService.partageQuestionComposite(question, partageur)
+    }
+
     return leSujet
   }
 
-  /**
-   * Recherche de sujets
-   * @param chercheur la personne effectuant la recherche
-   * @param patternTitre le pattern saisi pour le titre
-   * @param patternAuteur le pattern saisi pour l'auteur
-   * @param patternPresentation le pattern saisi pour la presentation
-   * @param matiere la matiere
-   * @param niveau le niveau
-   * @param paginationAndSortingSpec les specifications pour l'ordre et
-   * la pagination
-   * @return la liste des sujets
-   */
+/**
+ * Recherche de sujets
+ * @param chercheur la personne effectuant la recherche
+ * @param patternTitre le pattern saisi pour le titre
+ * @param patternAuteur le pattern saisi pour l'auteur
+ * @param patternPresentation le pattern saisi pour la presentation
+ * @param matiere la matiere
+ * @param niveau le niveau
+ * @param paginationAndSortingSpec les specifications pour l'ordre et
+ * la pagination
+ * @return la liste des sujets
+ */
   List<Sujet> findSujets(Personne chercheur,
                          String patternTitre,
                          String patternAuteur,
@@ -289,13 +314,13 @@ class SujetService {
     return sujets
   }
 
-  /**
-   * Recherche de tous les sujet pour un proprietaire donné
-   * @param proprietaire la personne effectuant la recherche
-   * @param paginationAndSortingSpec les specifications pour l'ordre et
-   * la pagination
-   * @return la liste des sujets
-   */
+/**
+ * Recherche de tous les sujet pour un proprietaire donné
+ * @param proprietaire la personne effectuant la recherche
+ * @param paginationAndSortingSpec les specifications pour l'ordre et
+ * la pagination
+ * @return la liste des sujets
+ */
   List<Sujet> findSujetsForProprietaire(Personne proprietaire,
                                         Map paginationAndSortingSpec = null) {
     if (!proprietaire) {
@@ -320,22 +345,22 @@ class SujetService {
     return sujets
   }
 
-  /**
-   *
-   * @return la liste de tous les types de sujet
-   */
+/**
+ *
+ * @return la liste de tous les types de sujet
+ */
   List<SujetType> getAllSujetTypes() {
     return SujetType.getAll()
   }
 
-  /**
-   * Insert une question dans un sujet sujet
-   * @param question la question
-   * @param sujet le sujet
-   * @param proprietaire le propriétaire
-   * @param rang le rang d'insertion
-   * @return le sujet modifié
-   */
+/**
+ * Insert une question dans un sujet sujet
+ * @param question la question
+ * @param sujet le sujet
+ * @param proprietaire le propriétaire
+ * @param rang le rang d'insertion
+ * @return le sujet modifié
+ */
   @Transactional
   Sujet insertQuestionInSujet(Question question, Sujet leSujet,
                               Personne proprietaire, Integer rang = null) {
@@ -375,12 +400,12 @@ class SujetService {
     return leSujet
   }
 
-  /**
-   * Inverse une question avec sa précédente dans un sujet
-   * @param sujetQuestion la question à inverser
-   * @param proprietaire le proprietaire du sujet
-   * @return le sujet modifié
-   */
+/**
+ * Inverse une question avec sa précédente dans un sujet
+ * @param sujetQuestion la question à inverser
+ * @param proprietaire le proprietaire du sujet
+ * @return le sujet modifié
+ */
   @Transactional
   Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
                                         Personne proprietaire) {
@@ -408,12 +433,12 @@ class SujetService {
     return leSujet
   }
 
-  /**
-   * Inverse une question avec sa suivante dans un sujet
-   * @param sujetQuestion la question à inverser
-   * @param proprietaire le proprietaire du sujet
-   * @return le sujet modifié
-   */
+/**
+ * Inverse une question avec sa suivante dans un sujet
+ * @param sujetQuestion la question à inverser
+ * @param proprietaire le proprietaire du sujet
+ * @return le sujet modifié
+ */
   @Transactional
   Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
                                       Personne proprietaire) {
@@ -464,12 +489,12 @@ class SujetService {
     return leSujet
   }
 
-  /**
-   * Modifie le nombre de points associé à une question dans un sujet
-   * @param sujetQuestion le sujet et la question
-   * @param proprietaire le propriétaire
-   * @return le sujet modifié
-   */
+/**
+ * Modifie le nombre de points associé à une question dans un sujet
+ * @param sujetQuestion le sujet et la question
+ * @param proprietaire le propriétaire
+ * @return le sujet modifié
+ */
   @Transactional
   SujetSequenceQuestions updatePointsForQuestion(Float newPoints,
                                                  SujetSequenceQuestions sujetQuestion,
@@ -485,6 +510,5 @@ class SujetService {
     }
     return sujetQuestion
   }
-
 
 }

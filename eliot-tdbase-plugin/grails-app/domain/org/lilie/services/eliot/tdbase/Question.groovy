@@ -113,6 +113,9 @@ class Question implements Artefact {
            type.code == QuestionTypeEnum.FileUpload.name()
   }
 
+  boolean estComposite() {
+    return type.code == QuestionTypeEnum.Composite.name()
+  }
 
   /**
    *

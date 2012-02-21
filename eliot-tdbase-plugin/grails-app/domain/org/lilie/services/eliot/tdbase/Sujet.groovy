@@ -79,7 +79,7 @@ class Sujet implements Artefact {
 
   Integer rangInsertion
 
-  static transients = ['rangInsertion','estUnExercice']
+  static transients = ['rangInsertion', 'estUnExercice','questionComposite']
 
   static constraints = {
     titre(blank: false, nullable: false)
@@ -114,6 +114,14 @@ class Sujet implements Artefact {
    */
   boolean estUnExercice() {
     sujetTypeId == SujetTypeEnum.Exercice.id
+  }
+
+  /**
+   * Retourne la question composite associée au sujet
+   * @return la question composite
+   */
+  Question getQuestionComposite() {
+    Question.findByExercice(this)
   }
 
   /**
