@@ -45,42 +45,42 @@ modules = {
     }
 
     associateJS {
-        dependsOn "modernizr", "eliot-tice-ui"
-        resource url: [dir: 'js/associate', file: 'load.js']
-        resource url: [dir: 'js/associate', file: 'dragNDrop.polyfill.js']
-        resource url: [dir: 'js/associate', file: 'dragNDrop.js']
+        dependsOn "modernizr", "eliot-tice-ui", "seanceCopie_Common"
+        resource url: [dir: 'js/question/associate', file: 'load.js']
+        resource url: [dir: 'js/question/associate', file: 'dragNDrop.polyfill.js']
+        resource url: [dir: 'js/question/associate', file: 'dragNDrop.js']
     }
 
     orderJS {
-        dependsOn "modernizr", "eliot-tice-ui"
-        resource url: [dir: 'js/order', file: 'load.js']
-        resource url: [dir: 'js/order', file: 'dragNDrop.polyfill.js']
-        resource url: [dir: 'js/order', file: 'dragNDrop.js']
+        dependsOn "modernizr", "eliot-tice-ui", "seanceCopie_Common"
+        resource url: [dir: 'js/question/order', file: 'load.js']
+        resource url: [dir: 'js/question/order', file: 'dragNDrop.polyfill.js']
+        resource url: [dir: 'js/question/order', file: 'dragNDrop.js']
     }
 
     graphicMatch_Common {
         dependsOn "modernizr", "eliot-tice-ui"
-        resource url: [dir: 'js/graphicmatch', file: 'common.js'], disposition: 'head'
-        resource url: [dir: 'css/graphicmatch', file: 'style.css']
+        resource url: [dir: 'js/question/graphicmatch', file: 'common.js'], disposition: 'head'
+        resource url: [dir: 'css/question/graphicmatch', file: 'style.css']
     }
 
     graphicMatch_EditionJS {
         dependsOn "graphicMatch_Common"
-        resource url: [dir: 'js/graphicmatch/edition', file: 'load.js']
-        resource url: [dir: 'js/graphicmatch/edition', file: 'dragNDrop.polyfill.js']
-        resource url: [dir: 'js/graphicmatch/edition', file: 'dragNDrop.js']
+        resource url: [dir: 'js/question/graphicmatch/edition', file: 'load.js']
+        resource url: [dir: 'js/question/graphicmatch/edition', file: 'dragNDrop.polyfill.js']
+        resource url: [dir: 'js/question/graphicmatch/edition', file: 'dragNDrop.js']
     }
 
     graphicMatch_InteractionJS {
-        dependsOn "graphicMatch_Common"
-        resource url: [dir: 'js/graphicmatch/interaction', file: 'load.js']
-        resource url: [dir: 'js/graphicmatch/interaction', file: 'dragNDrop.polyfill.js']
-        resource url: [dir: 'js/graphicmatch/interaction', file: 'dragNDrop.js']
+        dependsOn "graphicMatch_Common", "seanceCopie_Common"
+        resource url: [dir: 'js/question/graphicmatch/interaction', file: 'load.js']
+        resource url: [dir: 'js/question/graphicmatch/interaction', file: 'dragNDrop.polyfill.js']
+        resource url: [dir: 'js/question/graphicmatch/interaction', file: 'dragNDrop.js']
     }
 
     graphicMatch_PreviewJS {
         dependsOn "graphicMatch_Common"
-        resource url: [dir: 'js/graphicmatch/preview', file: 'load.js']
+        resource url: [dir: 'js/question/graphicmatch/preview', file: 'load.js']
     }
 
     graphicMatch_DetailsJS {
@@ -89,30 +89,44 @@ modules = {
 
     graphicMatch_CorrectionJS {
         dependsOn "graphicMatch_Common"
-        resource url: [dir: 'js/graphicmatch/correction', file: 'load.js']
+        resource url: [dir: 'js/question/graphicmatch/correction', file: 'load.js']
     }
 
     fillGraphics_Common {
         dependsOn "modernizr", "eliot-tice-ui"
-        resource url: [dir: 'css/fillgraphics', file: 'style.css']
-        resource url: [dir: 'js/fillgraphics', file: 'common.js']
+        resource url: [dir: 'css/question/fillgraphics', file: 'style.css']
+        resource url: [dir: 'js/question/fillgraphics', file: 'common.js']
     }
 
     fillGraphics_EditionJS {
         dependsOn "fillGraphics_Common"
-        resource url: [dir: 'js/fillgraphics/edition', file: 'dragNDrop.polyfill.js']
-        resource url: [dir: 'js/fillgraphics/edition', file: 'dragNDrop.js']
-        resource url: [dir: 'js/fillgraphics/edition', file: 'load.js']
+        resource url: [dir: 'js/question/fillgraphics/edition', file: 'dragNDrop.polyfill.js']
+        resource url: [dir: 'js/question/fillgraphics/edition', file: 'dragNDrop.js']
+        resource url: [dir: 'js/question/fillgraphics/edition', file: 'load.js']
     }
 
     fillGraphics_InteractionJS {
         dependsOn "fillGraphics_Common"
-        resource url: [dir: 'js/fillgraphics/interaction', file: 'load.js']
+        resource url: [dir: 'js/question/fillgraphics/interaction', file: 'load.js']
     }
 
     fillGraphics_PreviewJS {
         dependsOn "fillGraphics_Common"
-        resource url: [dir: 'js/fillgraphics/preview', file: 'load.js']
+        resource url: [dir: 'js/question/fillgraphics/preview', file: 'load.js']
     }
 
+    seanceCopie_Common {
+        dependsOn "eliot-tice-ui"
+        resource url: [dir: 'js/seance/copie', file: 'common.js']
+    }
+
+    seanceCopie_CorrigeJS {
+        dependsOn "seanceCopie_Common"
+        resource url: [dir: 'js/seance/copie', file: 'corrige.js']
+    }
+
+    seanceCopie_VisualiseJS {
+        dependsOn "fillGraphics_Common"
+        resource url: [dir: 'js/seance/copie', file: 'visualise.js']
+    }
 }

@@ -53,6 +53,7 @@ function initDragNDrop() {
         $('.hotspotStyle').droppable();
 
         common.positionIcons();
+        new SeanceCopieCommon().disableDraggablesIfInCorrectionMode(".imageContainer[qualifier=interaction]>.icons>.icon");
     }
 
     function registerEventHandlers() {

@@ -31,72 +31,74 @@
 
 <g:set var="sujet" value="${copie.sujet}"/>
 <form method="post" class="edite">
-   <div class="top portal-tabs">
-   	<div class="form_actions">
-     <g:link action="${lienRetour.action}"
-             controller="${lienRetour.controller}"
-             params="${lienRetour.params}">Annuler</g:link>&nbsp;
-     |&nbsp;
-       <g:actionSubmit value="Rendre la copie" action="rendLaCopie" class="button"
-                       title="Rendre la copie"/>
-	</div>
-   </div>
-
-   <g:hiddenField name="copie.id" value="${copie.id}"/>
-
-   <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
-   <g:set var="indexReponseNonVide" value="0"/>
-   <g:each in="${copie.reponses}" var="reponse">
-     <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
-     <div class="tdbase-sujet-edition-question">
-       <g:if test="${sujetQuestion.question.type.interaction}">
-         <div class="tdbase-sujet-edition-question-points">
-           <div id="SujetSequenceQuestions-${sujetQuestion.id}">
-             <em><g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00" /></em>
-           	&nbsp;/&nbsp;<strong><g:formatNumber number="${sujetQuestion.points}" format="##0.00" />&nbsp;point(s)</strong>
-            </div>
-          </div>
-       </g:if>
-       <g:set var="question" value="${sujetQuestion.question}"/>
-
-       <g:if test="${question.type.interaction}">
-         <div class="tdbase-sujet-edition-question-interaction">
-
-           <g:hiddenField
-                   name="reponsesCopie.listeReponses[${indexReponseNonVide}].reponse.id"
-                   value="${reponse.id}"/>
-
-           <g:render
-                   template="/question/${question.type.code}/${question.type.code}Interaction"
-                   model="[question:question, reponse:reponse, indexReponse:indexReponseNonVide++]"/>
-            <g:if test="${afficheCorrection}">
-             <g:render template="/question/${question.type.code}/${question.type.code}Correction"
-                   model="[question:question]"/>
-            </g:if>
-
-
-         </div>
-       </g:if>
-       <g:else>
-         <div class="tdbase-sujet-edition-question-interaction">
-           <g:set var="question" value="${sujetQuestion.question}"/>
-           <g:render
-                   template="/question/${question.type.code}/${question.type.code}Preview"
-                   model="[question:question]"/>
-         </div>
-       </g:else>
-
-     </div>
-
-   </g:each>
-   <g:hiddenField name="nombreReponsesNonVides" value="${indexReponseNonVide}"/>
-   <div class="bottom">
-   	<div class="form_actions">
-      <g:link action="${lienRetour.action}"
-              controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link>&nbsp;
-            |&nbsp;<g:actionSubmit value="Rendre la copie" action="rendLaCopie" class="button"
-                        title="Rendre la copie"/>
+    <div class="top portal-tabs">
+        <div class="form_actions">
+            <g:link action="${lienRetour.action}"
+                    controller="${lienRetour.controller}"
+                    params="${lienRetour.params}">Annuler</g:link>&nbsp;
+            |&nbsp;
+            <g:actionSubmit value="Rendre la copie" action="rendLaCopie" class="button"
+                            title="Rendre la copie"/>
         </div>
-   </div>
- </form>
+    </div>
+
+    <g:hiddenField name="copie.id" value="${copie.id}"/>
+
+    <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
+    <g:set var="indexReponseNonVide" value="0"/>
+    <g:each in="${copie.reponses}" var="reponse">
+        <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
+        <div class="tdbase-sujet-edition-question">
+            <g:if test="${sujetQuestion.question.type.interaction}">
+                <div class="tdbase-sujet-edition-question-points">
+                    <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+                        <em><g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00"/></em>
+                        &nbsp;/&nbsp;<strong><g:formatNumber number="${sujetQuestion.points}"
+                                                             format="##0.00"/>&nbsp;point(s)</strong>
+                    </div>
+                </div>
+            </g:if>
+            <g:set var="question" value="${sujetQuestion.question}"/>
+
+            <g:if test="${question.type.interaction}">
+                <div class="tdbase-sujet-edition-question-interaction">
+
+                    <g:hiddenField
+                            name="reponsesCopie.listeReponses[${indexReponseNonVide}].reponse.id"
+                            value="${reponse.id}"/>
+
+                    <g:render
+                            template="/question/${question.type.code}/${question.type.code}Interaction"
+                            model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide]"/>
+
+                    <g:set var="indexReponseNonVide" value="${indexReponseNonVide.toInteger() + 1}"/>
+                    <g:if test="${afficheCorrection}">
+                        <g:render template="/question/${question.type.code}/${question.type.code}Correction"
+                                  model="[question: question]"/>
+                    </g:if>
+
+                </div>
+            </g:if>
+            <g:else>
+                <div class="tdbase-sujet-edition-question-interaction">
+                    <g:set var="question" value="${sujetQuestion.question}"/>
+                    <g:render
+                            template="/question/${question.type.code}/${question.type.code}Preview"
+                            model="[question: question]"/>
+                </div>
+            </g:else>
+
+        </div>
+
+    </g:each>
+    <g:hiddenField name="nombreReponsesNonVides" value="${indexReponseNonVide}"/>
+    <div class="bottom">
+        <div class="form_actions">
+            <g:link action="${lienRetour.action}"
+                    controller="${lienRetour.controller}"
+                    params="${lienRetour.params}">Annuler</g:link>&nbsp;
+            |&nbsp;<g:actionSubmit value="Rendre la copie" action="rendLaCopie" class="button"
+                                   title="Rendre la copie"/>
+        </div>
+    </div>
+</form>

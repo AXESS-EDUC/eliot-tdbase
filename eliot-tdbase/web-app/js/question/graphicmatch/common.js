@@ -49,7 +49,7 @@ function Common() {
             hotspotDiv.css('left', offLeft + 'px');
             $(this).remove();
         });
-    }
+    };
 
     /**
      * For each graphic between an icon and an hotspot, stored in
@@ -71,7 +71,7 @@ function Common() {
                 new Common().highlight($('#' + hotspotId));
             }
         });
-    }
+    };
 
     this.putDraggableIntoDroppable = function (draggableId, droppableId) {
         var droppableCenter = {top:0, left:0};
@@ -95,16 +95,16 @@ function Common() {
         $('#' + draggableId).css('position', 'absolute');
         $('#' + draggableId).css('top', draggablePosition.top);
         $('#' + draggableId).css('left', draggablePosition.left);
-    }
+    };
 
     this.highlight = function (dropTarget) {
         dropTarget.removeClass("unHighlightedHotspot");
         dropTarget.addClass("highlightedHotspot");
-    }
+    };
 
     this.unHighlight = function (dropTarget) {
         dropTarget.removeClass("highlightedHotspot");
         dropTarget.addClass("unHighlightedHotspot");
-    }
+    };
 
 }

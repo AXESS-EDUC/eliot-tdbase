@@ -3,6 +3,7 @@ function initDragNDrop() {
     var droppedItems = {};
     initWidgets();
     registerEventHandlers();
+    new SeanceCopieCommon().disableDraggablesIfInCorrectionMode(".participant");
 
 
     function initWidgets() {
@@ -87,10 +88,6 @@ function initDragNDrop() {
 
     function getDraggableValue(draggableId) {
         return $("#" + draggableId + " p").text();
-    }
-
-    function getDroppableValue(droppableId) {
-        return $("#" + droppableId + "_field").attr("value");
     }
 
     function positionParticipants() {
