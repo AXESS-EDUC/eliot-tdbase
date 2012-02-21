@@ -28,12 +28,13 @@
 
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<br/>
-Correction&nbsp;: <br/>
-${specifobject.valeurAffichage}
-&nbsp;&nbsp;
-<g:if test="${specifobject.unite}">
-${specifobject.unite} &nbsp;&nbsp;
-</g:if>
-<br/>
-Remarque : ${specifobject.correction}
+<div class="item">
+    <strong>Correction&nbsp;:</strong> <br/>
+    ${specifobject.valeurAffichage}
+    &nbsp;&nbsp;
+    <g:if test="${specifobject.unite}">
+        ${specifobject.unite} &nbsp;&nbsp;
+    </g:if>
+    <br/>
+    <strong>Remarque :</strong> ${specifobject.correction}
+</div>

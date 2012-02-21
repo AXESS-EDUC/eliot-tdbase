@@ -25,6 +25,8 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<g:set var="questionspecifobject" value="${question.specificationObject}"/>
-<br>
-Correction: ${questionspecifobject.correction}
+<g:set var="specifobject" value="${question.specificationObject}"/>
+<div class="item">
+    <strong>Correction&nbsp;:</strong> <br/>
+    ${specifobject.correction}
+</div>

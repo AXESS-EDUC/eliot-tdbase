@@ -44,20 +44,21 @@
 
 </style>
 
-<g:set var="questionspecifobject" value="${question.specificationObject}"/>
-<br>
-Correction: ${questionspecifobject.correction}
-
-<table>
-    <g:each status="i" in="${questionspecifobject.associations}" var="association">
-        <tr>
-            <td class="participantCorrection">
-                ${association.participant1}
-            </td>
-            <td>------</td>
-            <td class="participantCorrection">
-                ${association.participant2}
-            </td>
-        </tr>
-    </g:each>
-</table>
+<g:set var="specifobject" value="${question.specificationObject}"/>
+<div class="item">
+    <strong>Correction&nbsp;:</strong> <br/>
+    <table>
+        <g:each status="i" in="${specifobject.associations}" var="association">
+            <tr>
+                <td class="participantCorrection">
+                    ${association.participant1}
+                </td>
+                <td>------</td>
+                <td class="participantCorrection">
+                    ${association.participant2}
+                </td>
+            </tr>
+        </g:each>
+    </table>
+    <strong>Remarque :</strong> ${specifobject.correction}
+</div>
