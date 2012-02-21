@@ -43,7 +43,7 @@ class QuestionCompositeSpecificationService extends QuestionSpecificationService
 
   @Override
   def createSpecification(Map map) {
-    new CompositeSpecification(map)
+    new CompositeSpecification()
   }
 
 }
@@ -55,41 +55,14 @@ class QuestionCompositeSpecificationService extends QuestionSpecificationService
 class CompositeSpecification implements QuestionSpecification {
 
   String questionTypeCode = QuestionTypeEnum.Composite.name()
-  
-  String libelle
-  List<QuestionSpecification> questionSpecificationList =[]
 
-
-  CompositeSpecification() {
-    super()
-  }
-
-  /**
-   * Créer et initialise un nouvel objet de type Specification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  CompositeSpecification(Map map) {
-    def questions = map.questions
-    questions.each {
-      def constructor = Class.forName(it.questionClassName).
-                                         getConstructor( [ Map ] as Class[] )
-      def questSpec = constructor.newInstance( it.questionMap )
-      questionSpecificationList << questSpec
-    }
-    libelle = map.libelle
-  }
 
   /**
    *
    * @return la représentation sous forme de map
    */
   Map toMap() {
-    def questionMaps = []
-    questionSpecificationList.each {
-      questionMaps << it.toMap()
-    }
-    [questionTypeCode:questionTypeCode ,libelle:libelle, questions:questionMaps]
+    [questionTypeCode:questionTypeCode]
   }
 
   

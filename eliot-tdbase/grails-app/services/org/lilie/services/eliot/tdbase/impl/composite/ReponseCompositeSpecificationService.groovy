@@ -41,36 +41,16 @@ import org.lilie.services.eliot.tdbase.QuestionSpecification
  *
  * @author franck Silvestre
  */
-class ReponseCompositeSpecificationService extends ReponseSpecificationService<ReponseCompositeSpecification>
-implements ApplicationContextAware {
-
-  ApplicationContext applicationContext
-
-  /**
-   * Récupère le service de gestion de spécification de réponse correspondant
-   * au type de question passé en paramètre
-   * @param questionType le type de question
-   * @return le service ad-hoc pour le type de question
-   */
-  ReponseSpecificationService reponseSpecificationServiceForQuestionType(QuestionType questionType) {
-    return applicationContext.getBean("reponse${questionType.code}SpecificationService")
-  }
+class ReponseCompositeSpecificationService extends ReponseSpecificationService<ReponseCompositeSpecification> {
 
   @Override
   ReponseCompositeSpecification createSpecification(Map map) {
-    new ReponseCompositeSpecification(map)
+    new ReponseCompositeSpecification()
   }
 
   @Override
   ReponseCompositeSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
-    CompositeSpecification compositeSpecification = questionSpecification
-    def repCompositeSpec = new ReponseCompositeSpecification()
-    compositeSpecification.questionSpecificationList.each {
-      // il faut le type d'item dans la reponseSpec et dans la questionSpec
-      def repSpecService = reponseSpecificationServiceForQuestionType(it.questionTypeCode)
-      repCompositeSpec.reponseSpecificationList << repSpecService.getObjectInitialiseFromSpecification(it)
-    }
-    repCompositeSpec
+    new ReponseCompositeSpecification()
   }
 }
 
@@ -81,45 +61,15 @@ class ReponseCompositeSpecification implements ReponseSpecification {
   
   String questionTypeCode = QuestionTypeEnum.Composite.name()
 
-  List<ReponseSpecification> reponseSpecificationList = []
-
-  /**
-   * Constructeur par defaut
-   */
-  ReponseCompositeSpecification() {}
-
-  /**
-   * Créer et initialise un nouvel objet de type Specification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  ReponseCompositeSpecification(Map map) {
-    def reponses = map.reponses
-    reponses.each {
-      def constructor = Class.forName(it.reponseClassName).
-              getConstructor([Map] as Class[])
-      def repSpec = constructor.newInstance(it.reponseMap)
-      reponseSpecificationList << repSpec
-    }
-  }
 
   Map toMap() {
-    def reponseMaps = []
-    reponseSpecificationList.each {
-      def reponseMap = [reponseClassName: it.class.name, reponseMap: it.toMap()]
-      reponseMaps << reponseMap
-    }
-    [reponses: reponseMaps]
+    [questionTypeCode:questionTypeCode]
   }
 
   /*On fait la somme des evaluations des reponses imbriquées
   */
 
   float evaluate(float maximumPoints) {
-    def val = 0F
-    reponseSpecificationList.each {
-      val += it.evaluate(1)
-    }
-    val * maximumPoints
+    0F
   }
 }
