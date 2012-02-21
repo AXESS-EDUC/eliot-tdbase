@@ -31,39 +31,40 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-${specifobject.libelle}
+<h2>${specifobject.libelle}</h2>
 
-<br>
 
-<div class="fillgraphicsEditor">
-    <g:if test="${specifobject.attachmentId}">
-        <div class="imageContainer">
-            <et:viewAttachement
-                    attachement="${specifobject.attachement}"
-                    width="500"
-                    height="500"/>
-        </div>
+<div class="item">
+    <div class="fillgraphicsEditor">
+        <g:if test="${specifobject.attachmentId}">
+            <div class="imageContainer">
+                <et:viewAttachement
+                        attachement="${specifobject.attachement}"
+                        width="500"
+                        height="500"/>
+            </div>
+        </g:if>
+
+        <g:each status="i" in="${specifobject.textZones}" var="textZone">
+            <div id="textZone_${indexReponse}_${i}" class="textZone"
+                 style=" top: ${textZone.topDistance}px; left: ${textZone.leftDistance}px;">
+                <g:textArea
+                        name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].text"
+                        rows="3" cols="3"
+                        style="width: ${textZone.width}px; height: ${textZone.height}px;"
+                        value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}"
+                        class="nonResizableTextArea"/>
+
+                <g:hiddenField
+                        name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].id"
+                        value="${textZone.id}"/>
+
+            </div>
+        </g:each>
+    </div>
+
+    <g:if test="${specifobject.montrerLesMots}">
+        <span class="label">Mots sugeres :</span> ${specifobject.motsSugeres}
     </g:if>
-
-    <g:each status="i" in="${specifobject.textZones}" var="textZone">
-        <div id="textZone_${indexReponse}_${i}" class="textZone"
-             style=" top: ${textZone.topDistance}px; left: ${textZone.leftDistance}px;">
-            <g:textArea
-                    name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].text"
-                    rows="3" cols="3"
-                    style="width: ${textZone.width}px; height: ${textZone.height}px;"
-                    value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}"
-                    class="nonResizableTextArea"/>
-
-            <g:hiddenField
-                    name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].id"
-                    value="${textZone.id}"/>
-
-        </div>
-    </g:each>
+    <br>
 </div>
-
-<g:if test="${specifobject.montrerLesMots}">
-    <span class="label">Mots sugeres :</span> ${specifobject.motsSugeres}
-</g:if>
-<br>

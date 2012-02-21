@@ -27,8 +27,9 @@
   --}%
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
-${questionspecifobject.libelle} <br/>
+<h2>${questionspecifobject.libelle}</h2>
 
-<g:textField name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurDeReponse"
-             value="${reponsespecifobject.valeurDeReponse}" size="50"/>
-
+<div class="item">
+    <g:textField name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurDeReponse"
+                 value="${reponsespecifobject.valeurDeReponse}" size="50"/>
+</div>

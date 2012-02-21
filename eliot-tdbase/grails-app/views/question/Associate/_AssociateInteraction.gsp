@@ -63,40 +63,42 @@
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
 <div id="associateQuestion_${indexReponse}" class="associateQuestion" index="${indexReponse}">
-    ${questionspecifobject.libelle} <br/>
+    <h2>${questionspecifobject.libelle}</h2>
 
-    <table>
-        <g:each status="i" in="${questionspecifobject.associations}"
-                var="association">
-            <tr>
-                <td id="association${indexReponse}_${i}left" class="associationCell">
-                    <g:textField id="association${indexReponse}_${i}left_field"
-                                 name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant1"
-                                 value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant1}"/>
-                </td>
-                <td>------</td>
-                <td id="association${indexReponse}_${i}right" class="associationCell">
-                    <g:textField id="association${indexReponse}_${i}right_field"
-                                 name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant2"
-                                 value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant2}"/>
-                </td>
-            </tr>
-        </g:each>
-    </table>
-
-    <table>
-        <tr id="participants">
-            <g:each status="i" in="${questionspecifobject.participants}"
-                    var="participant">
-                <td id="participant${indexReponse}_${i}" class="participant">
-                    <p>${participant}</p>
-                </td>
+    <div class="item">
+        <table>
+            <g:each status="i" in="${questionspecifobject.associations}"
+                    var="association">
+                <tr>
+                    <td id="association${indexReponse}_${i}left" class="associationCell">
+                        <g:textField id="association${indexReponse}_${i}left_field"
+                                     name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant1"
+                                     value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant1}"/>
+                    </td>
+                    <td>------</td>
+                    <td id="association${indexReponse}_${i}right" class="associationCell">
+                        <g:textField id="association${indexReponse}_${i}right_field"
+                                     name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant2"
+                                     value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant2}"/>
+                    </td>
+                </tr>
             </g:each>
-        </tr>
-    </table>
+        </table>
 
-    <g:hiddenField id="montrerLaColonne_${indexReponse}" class="montrerLaColonneAGauche"
-                   name="montrerLaColonneAGauche_${indexReponse}"
-                   value="${questionspecifobject.montrerColonneAGauche}"/>
+        <table>
+            <tr id="participants">
+                <g:each status="i" in="${questionspecifobject.participants}"
+                        var="participant">
+                    <td id="participant${indexReponse}_${i}" class="participant">
+                        <p>${participant}</p>
+                    </td>
+                </g:each>
+            </tr>
+        </table>
 
+        <g:hiddenField id="montrerLaColonne_${indexReponse}" class="montrerLaColonneAGauche"
+                       name="montrerLaColonneAGauche_${indexReponse}"
+                       value="${questionspecifobject.montrerColonneAGauche}"/>
+
+    </div>
 </div>

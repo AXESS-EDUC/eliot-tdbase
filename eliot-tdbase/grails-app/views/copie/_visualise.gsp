@@ -39,35 +39,6 @@
 	</ul>
 	
 </div>
-<!--
-<div class="portal-form_container corrige visualise">
-  <table>
-    <tr>
-      <td class="label">Élève :</td>
-      <td><strong>${copie.eleve.nomAffichage}</strong> <br/><br/></td>
-    </tr>
-    <tr>
-      <td class="label">Appréciation :</td>
-      <td>
-        <p>${copie.correctionAnnotation}</p>
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Modulation :</td>
-      <td>
-        ${NumberUtils.formatFloat(copie.pointsModulation)}
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Note :</td>
-      <td>
-        <strong>${NumberUtils.formatFloat(copie.correctionNoteFinale)}
-          / ${NumberUtils.formatFloat(copie.maxPoints)}</strong>
-      </td>
-    </tr>
-  </table>
-</div>
--->
 
 <g:if test="${copie.modaliteActivite.estOuverte()}">
   <g:if test="${copie.dateRemise}">

@@ -25,15 +25,10 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-<r:require module="eliot-tice-ui"/>
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
-${questionspecifobject.libelle} <br/>
-Valeur<g:textField id="valeur_slider_${indexReponse}" name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse" value="${reponsespecifobject?.valeurReponseAffichage}" size="10"/>
 
-<div id="slider_${indexReponse}" style="width: 50%"></div>
-
+<r:require module="eliot-tice-ui"/>
 <r:script>
   $(document).ready( function() {
   		$( "#slider_${indexReponse}" ).slider({
@@ -46,7 +41,7 @@ Valeur<g:textField id="valeur_slider_${indexReponse}" name="reponsesCopie.listeR
   				$( "#valeur_slider_${indexReponse}" ).val( valeurSlide );
   			}
   		});
-  		var valeur = new String($( "#slider_${indexReponse}" ).slider( "value" ))
+  		var valeur = new String($( "#slider_${indexReponse}" ).slider( "value" ));
   		valeur = valeur. replace('.',',');
   		$( "#valeur_slider_${indexReponse}" ).val( valeur );
   	}
@@ -54,3 +49,14 @@ Valeur<g:textField id="valeur_slider_${indexReponse}" name="reponsesCopie.listeR
   );
 </r:script>
 
+<h2>${questionspecifobject.libelle}</h2>
+
+<div class="item">
+
+    Valeur<g:textField id="valeur_slider_${indexReponse}"
+                       name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse"
+                       value="${reponsespecifobject?.valeurReponseAffichage}" size="10"/>
+
+    <div id="slider_${indexReponse}" style="width: 50%"></div>
+
+</div>

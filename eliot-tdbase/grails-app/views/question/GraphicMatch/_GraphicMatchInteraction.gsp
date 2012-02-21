@@ -29,11 +29,9 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-${specifobject.libelle}
+<h2>${specifobject.libelle}</h2>
 
-<br>
-
-<div class="imageContainer" qualifier="interaction"
+<div class="imageContainer item" qualifier="interaction"
      indexReponse="${indexReponse}">
   <g:if test="${specifobject.attachmentId}">
     <et:viewAttachement

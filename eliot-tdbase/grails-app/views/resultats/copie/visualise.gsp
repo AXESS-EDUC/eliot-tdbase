@@ -33,22 +33,15 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="layout" content="eliot-tdbase-resultats"/>
-  <r:script>
-    $(document).ready(function() {
-      $('#menu-item-resultats').addClass('actif');
-      $(':checkbox').attr('disabled',true);
-      $('textarea').attr('disabled', true);
-      $('.interaction').attr('disabled', true);
-    });
-  </r:script>
-  <title>TDBase - Visualisation d'une copie</title>
+    <meta name="layout" content="eliot-tdbase-resultats"/>
+    <r:require module="seanceCopie_VisualiseJS"/>
+    <title>TDBase - Visualisation d'une copie</title>
 </head>
 
 <body>
-  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
+<g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
 
-  <g:render template="/copie/visualise" model="[copie: copie]"/>
+<g:render template="/copie/visualise" model="[copie: copie]"/>
 
 </body>
 </html>

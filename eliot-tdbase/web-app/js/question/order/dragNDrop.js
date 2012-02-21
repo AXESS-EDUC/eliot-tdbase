@@ -39,6 +39,7 @@ function initDragNDrop() {
     initWidgets();
     moveItems();
     registerEventHandlers();
+    new SeanceCopieCommon().disableDraggablesIfInCorrectionMode('.orderedItemCell');
 
     /**
      * Cacher les elements du formulaire.
@@ -53,8 +54,7 @@ function initDragNDrop() {
     function initData() {
         $(".dropTarget").each(function () {
             var dropTargetId = $(this).attr('id');
-            var itemId = $(this).children(".orderedItemCell").attr('id');
-            setItems[dropTargetId] = itemId;
+            setItems[dropTargetId] = $(this).children(".orderedItemCell").attr('id');
         });
     }
 
@@ -162,7 +162,6 @@ function initDragNDrop() {
 
     function moveItems() {
         $('.dropTarget').each(function () {
-            var currentDroppableId = $(this).attr('id');
             var draggableId = $(this).children('.orderedItemCell').attr('id');
             var droppableTargetId = getDroppableFromSelectValue(draggableId);
 
