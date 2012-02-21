@@ -108,28 +108,48 @@ class CopieService {
     // alors que la copie a déjà été créé, il faut créé la réponse adhoc pour
     // la ou les questions ajoutées
     sujet.questionsSequences.each {
-      Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
-      if (reponse == null) {
-        reponse = reponseService.createReponse(
-                copie,
-                it,
-                copie.eleve
-        )
-        aCreeDesReponses = true
+      if (it.question.estComposite()) {
+        def reponsesComposite = []
+        it.question.exercice.questionsSequences.each { qs ->
+          Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, qs)
+          if (reponse == null) {
+            reponse = reponseService.createReponse(
+                    copie,
+                    qs,
+                    copie.eleve
+            )
+            aCreeDesReponses = true
+          }
+          reponsesComposite << reponse
+        }
+        reponses << reponsesComposite
+      } else {
+        Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
+        if (reponse == null) {
+          reponse = reponseService.createReponse(
+                  copie,
+                  it,
+                  copie.eleve
+          )
+          aCreeDesReponses = true
+        }
+        reponses << reponse
       }
-      reponses << reponse
     }
-    if (aCreeDesReponses && sujet.ordreQuestionsAleatoire) {
-      // mise en ouvre du shuffle
-      def ordreQuestions = sujet.questionsSequences*.rang
-      Collections.shuffle(ordreQuestions)
-      reponses.eachWithIndex { rep, index ->
-        rep.rang = ordreQuestions[index]
+    if (aCreeDesReponses) {
+      if (sujet.ordreQuestionsAleatoire) {
+        // mise en ouvre du shuffle
+        Collections.shuffle(reponses)
+      }
+      reponses = reponses.flatten()
+      reponses.eachWithIndex {Reponse rep, def index ->
+        rep.rang = index
         rep.save()
       }
       copie.refresh()
     }
   }
+
 
   /**
    * Met à jour la copie en prenant en compte la liste de réponses soumises
@@ -332,13 +352,13 @@ class CopieService {
   def supprimeCopiesJetablesForSujet(Sujet sujet) {
     def copies = Copie.findAllBySujetAndEstJetable(sujet, true)
     copies.each { copie ->
-          def reponses = []
-          reponses.addAll(copie.reponses)
-          reponses.each { reponse ->
-            reponseService.supprimeReponse(reponse, null)
-          }
-          copie.delete(flush: true)
-        }
+      def reponses = []
+      reponses.addAll(copie.reponses)
+      reponses.each { reponse ->
+        reponseService.supprimeReponse(reponse, null)
+      }
+      copie.delete(flush: true)
+    }
   }
 
 
