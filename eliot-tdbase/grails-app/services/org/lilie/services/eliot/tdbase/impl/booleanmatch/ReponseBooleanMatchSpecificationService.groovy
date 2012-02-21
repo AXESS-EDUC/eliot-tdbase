@@ -32,6 +32,8 @@ import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.lilie.services.eliot.tice.utils.StringUtils
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  * Service pour les specifications de reponses de type booléenne.
@@ -44,9 +46,9 @@ class ReponseBooleanMatchSpecificationService extends ReponseSpecificationServic
     }
 
     @Override
-    ReponseBooleanMatchSpecification getObjectInitialiseFromSpecification(Question question) {
+    ReponseBooleanMatchSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
 
-        BooleanMatchSpecification specification = question.specificationObject;
+        BooleanMatchSpecification specification = questionSpecification;
 
         return createSpecification(reponsesPossibles: specification.reponses,
                 toutOuRien: specification.toutOuRien)
@@ -57,7 +59,7 @@ class ReponseBooleanMatchSpecificationService extends ReponseSpecificationServic
  * Représente un objet spécification pour une question de booléenne.
  */
 class ReponseBooleanMatchSpecification implements ReponseSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.BooleanMatch.name()
     /**
      * La valeur de la reponse.
      */
@@ -75,6 +77,7 @@ class ReponseBooleanMatchSpecification implements ReponseSpecification {
 
     Map toMap() {
         [
+                questionTypeCode: questionTypeCode,
                 valeurDeReponse: valeurDeReponse,
                 reponsesPossibles: reponsesPossibles,
                 toutOuRien: toutOuRien

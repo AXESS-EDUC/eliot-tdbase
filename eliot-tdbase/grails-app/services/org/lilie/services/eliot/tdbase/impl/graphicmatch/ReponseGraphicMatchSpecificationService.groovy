@@ -31,6 +31,8 @@ package org.lilie.services.eliot.tdbase.impl.graphicmatch
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  *   Service pour les specifications de reponses de type 'glisser-déposer'.
@@ -44,8 +46,8 @@ class ReponseGraphicMatchSpecificationService extends
   }
 
   @Override
-  ReponseGraphicMatchSpecification getObjectInitialiseFromSpecification(Question question) {
-    def specification = question.specificationObject
+  ReponseGraphicMatchSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
+    def specification = questionSpecification
     def reponsesPossibles = [:]
     reponsesPossibles << specification.graphicMatches
 
@@ -64,7 +66,7 @@ class ReponseGraphicMatchSpecificationService extends
  * Specifications de reponses de type 'glisser-déposer'.
  */
 class ReponseGraphicMatchSpecification implements ReponseSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.GraphicMatch.name()
   /**
    * Liste d'elements fournis comme reponse à la question.
    */
@@ -93,7 +95,11 @@ class ReponseGraphicMatchSpecification implements ReponseSpecification {
 
   @Override
   Map toMap() {
-    [valeursDeReponse: valeursDeReponse, reponsesPossibles: reponsesPossibles]
+    [
+            questionTypeCode: questionTypeCode,
+            valeursDeReponse: valeursDeReponse,
+            reponsesPossibles: reponsesPossibles
+    ]
   }
 
   /**

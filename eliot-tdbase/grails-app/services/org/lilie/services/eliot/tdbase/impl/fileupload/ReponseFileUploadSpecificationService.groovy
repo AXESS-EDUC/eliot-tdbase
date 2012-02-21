@@ -88,12 +88,14 @@ class ReponseFileUploadSpecificationService extends ReponseSpecificationService<
  * Représente un objet spécification pour une question de type Decimal
  */
 class ReponseFileUploadSpecification implements ReponseSpecification {
+  String questionTypeCode = QuestionTypeEnum.FileUpload.name()
 
   Long reponseAttachementId
   MultipartFile fichier
 
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             reponseAttachementId: reponseAttachementId
     ]
   }

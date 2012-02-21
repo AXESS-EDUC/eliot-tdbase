@@ -31,6 +31,8 @@ package org.lilie.services.eliot.tdbase.impl.order
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  * Service pour les specifications de reponses de type 'ordre à retablir'.
@@ -44,16 +46,16 @@ class ReponseOrderSpecificationService extends ReponseSpecificationService<Repon
   }
 
   @Override
-  ReponseOrderSpecification getObjectInitialiseFromSpecification(Question question) {
+  ReponseOrderSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
 
     List<Item> valeursReponse = []
 
-    question.specificationObject.orderedItems.each {
+    questionSpecification.orderedItems.each {
       valeursReponse << new Item(text: it.text)
     }
 
     new ReponseOrderSpecification(valeursDeReponse: valeursReponse,
-                                  reponsesPossibles: question.specificationObject.orderedItems)
+                                  reponsesPossibles: questionSpecification.orderedItems)
   }
 }
 
@@ -61,7 +63,7 @@ class ReponseOrderSpecificationService extends ReponseSpecificationService<Repon
  * Specifications de reponses de type ordre a retablir.
  */
 class ReponseOrderSpecification implements ReponseSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.Order.name()
   /**
    * Liste d'elements fournis comme reponse à la question.
    */
@@ -91,6 +93,7 @@ class ReponseOrderSpecification implements ReponseSpecification {
   @Override
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             valeursDeReponse: valeursDeReponse.collect {it.toMap()},
             reponsesPossibles: reponsesPossibles.collect {it.toMap()}
     ]

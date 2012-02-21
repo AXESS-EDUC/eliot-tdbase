@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  *
@@ -49,6 +50,7 @@ class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationS
  */
 @Validateable
 class ExclusiveChoiceSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.ExclusiveChoice.name()
   String libelle
   String correction
   List<ExclusiveChoiceSpecificationReponsePossible> reponses = []
@@ -78,6 +80,7 @@ class ExclusiveChoiceSpecification implements QuestionSpecification {
 
   def Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             libelle: libelle,
             correction: correction,
             reponses: reponses*.toMap(),

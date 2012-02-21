@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.impl.open
 import org.lilie.services.eliot.tdbase.Reponse
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  *
@@ -60,11 +61,12 @@ class ReponseOpenSpecificationService extends ReponseSpecificationService<Repons
  * Représente un objet spécification pour une question de type Decimal
  */
 class ReponseOpenSpecification implements ReponseSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.Open.name()
   String valeurReponse
 
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             valeurReponse: valeurReponse
     ]
   }

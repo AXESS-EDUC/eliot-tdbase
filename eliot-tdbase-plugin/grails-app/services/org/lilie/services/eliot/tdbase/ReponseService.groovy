@@ -116,7 +116,7 @@ class ReponseService implements ApplicationContextAware {
     assert (reponse.questionType.interaction)
     def question = reponse.sujetQuestion.question
     def specService = reponseSpecificationServiceForQuestionType(question.type)
-    specService.getObjectInitialiseFromSpecification(question)
+    specService.getObjectInitialiseFromSpecification(question.specificationObject)
   }
 
   /**

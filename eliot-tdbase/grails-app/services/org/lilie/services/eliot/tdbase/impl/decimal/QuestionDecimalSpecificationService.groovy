@@ -33,6 +33,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.NumberUtils
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  *
@@ -52,6 +53,7 @@ class QuestionDecimalSpecificationService extends QuestionSpecificationService<D
  */
 @Validateable
 class DecimalSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.Decimal.name()
   String libelle
   Float valeur
   String unite
@@ -78,6 +80,7 @@ class DecimalSpecification implements QuestionSpecification {
 
   Map toMap() {
     [
+            questionTypeCode:questionTypeCode,
             libelle: libelle,
             valeur: valeur,
             unite: unite,

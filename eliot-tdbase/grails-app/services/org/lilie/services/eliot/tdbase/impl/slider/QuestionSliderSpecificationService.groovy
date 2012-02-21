@@ -35,6 +35,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tice.utils.NumberUtils
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  *
@@ -54,6 +55,7 @@ class QuestionSliderSpecificationService extends QuestionSpecificationService<Sl
  */
 @Validateable
 class SliderSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.Slider.name()
   String libelle
   Float valeur
   Float precision = 0
@@ -84,6 +86,7 @@ class SliderSpecification implements QuestionSpecification {
 
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             libelle: libelle,
             valeur: valeur,
             valeurMin: valeurMin,

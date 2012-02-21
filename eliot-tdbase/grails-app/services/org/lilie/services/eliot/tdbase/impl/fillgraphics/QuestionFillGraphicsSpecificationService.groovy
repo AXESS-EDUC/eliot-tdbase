@@ -38,36 +38,36 @@ import org.lilie.services.eliot.tdbase.*
  */
 class QuestionFillGraphicsSpecificationService extends QuestionSpecificationService<FillGraphicsSpecification> {
 
-    /**
-     * Le service qui gère les pieces jointes à une question.
-     */
-    QuestionAttachementService questionAttachementService
+  /**
+   * Le service qui gère les pieces jointes à une question.
+   */
+  QuestionAttachementService questionAttachementService
 
-    @Override
-    def createSpecification(Map map) {
-        new FillGraphicsSpecification(map)
+  @Override
+  def createSpecification(Map map) {
+    new FillGraphicsSpecification(map)
+  }
+
+  @Transactional
+  @Override
+  def updateQuestionSpecificationForObject(Question question, FillGraphicsSpecification spec) {
+
+    super.updateQuestionSpecificationForObject(question, spec)
+
+    def oldImageId = question.specificationObject?.attachmentId
+    if (spec.fichier && !spec.fichier.empty) {
+      def questionAttachement = questionAttachementService.createAttachementForQuestion(
+              spec.fichier, question)
+
+      if (oldImageId) {
+        questionAttachementService.deleteQuestionAttachement(
+                QuestionAttachement.get(oldImageId))
+      }
+      spec.attachmentId = questionAttachement.id
     }
 
-    @Transactional
-    @Override
-    def updateQuestionSpecificationForObject(Question question, FillGraphicsSpecification spec) {
-
-        super.updateQuestionSpecificationForObject(question, spec)
-
-        def oldImageId = question.specificationObject?.attachmentId
-        if (spec.fichier && !spec.fichier.empty) {
-            def questionAttachement = questionAttachementService.createAttachementForQuestion(
-                    spec.fichier, question)
-
-            if (oldImageId) {
-                questionAttachementService.deleteQuestionAttachement(
-                        QuestionAttachement.get(oldImageId))
-            }
-            spec.attachmentId = questionAttachement.id
-        }
-
-        super.updateQuestionSpecificationForObject(question, spec)
-    }
+    super.updateQuestionSpecificationForObject(question, spec)
+  }
 }
 
 /**
@@ -75,94 +75,95 @@ class QuestionFillGraphicsSpecificationService extends QuestionSpecificationServ
  */
 @Validateable
 class FillGraphicsSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.FillGraphics.name()
+  /**
+   * Le libellé.
+   */
+  String libelle
 
-    /**
-     * Le libellé.
-     */
-    String libelle
+  /**
+   * La correction.
+   */
+  String correction
 
-    /**
-     * La correction.
-     */
-    String correction
+  /**
+   * La liste des zones de texte.
+   */
+  List<TextZone> textZones = []
 
-    /**
-     * La liste des zones de texte.
-     */
-    List<TextZone> textZones = []
+  /**
+   * Montrer les mots.
+   */
+  boolean montrerLesMots = false
 
-    /**
-     * Montrer les mots.
-     */
-    boolean montrerLesMots = false
+  /**
+   * Identifiant du fichier de l'image d'arrière plan joint à la question.
+   */
+  Long attachmentId
 
-    /**
-     * Identifiant du fichier de l'image d'arrière plan joint à la question.
-     */
-    Long attachmentId
+  /**
+   * L'objet du fichier. Le fichier n'est pas mappé.
+   * Il ne sert que pour l'echange entre IHM et controlleur.
+   */
+  MultipartFile fichier
 
-    /**
-     * L'objet du fichier. Le fichier n'est pas mappé.
-     * Il ne sert que pour l'echange entre IHM et controlleur.
-     */
-    MultipartFile fichier
+  /**
+   * Constructeur par defaut.
+   */
+  FillGraphicsSpecification() {
+    super()
+  }
 
-    /**
-     * Constructeur par defaut.
-     */
-    FillGraphicsSpecification() {
-        super()
+  /**
+   * Constructeur prennant une map de paramètres.
+   */
+  FillGraphicsSpecification(Map params) {
+    libelle = params.libelle
+    correction = params.correction
+    attachmentId = params.attachmentId
+    textZones = params.textZones.collect {new TextZone(it)}
+    montrerLesMots = params.montrerLesMots
+  }
+
+  /**
+   * Genère une liste des mots suggerés comme reponses.
+   * @return
+   */
+  List getMotsSugeres() {
+    def motsSugeres = textZones.collect {it.text}
+    Collections.shuffle(motsSugeres)
+    motsSugeres
+  }
+
+  @Override
+  Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            libelle: libelle,
+            correction: correction,
+            attachmentId: attachmentId,
+            textZones: textZones.collect {it.toMap()},
+            montrerLesMots: montrerLesMots
+    ]
+  }
+
+  /**
+   * Retourne l'attachement correspondant
+   * @return l'attachement
+   */
+  Attachement getAttachement() {
+    if (attachmentId) {
+      return QuestionAttachement.get(attachmentId).attachement
     }
+    null
+  }
 
-    /**
-     * Constructeur prennant une map de paramètres.
-     */
-    FillGraphicsSpecification(Map params) {
-        libelle = params.libelle
-        correction = params.correction
-        attachmentId = params.attachmentId
-        textZones = params.textZones.collect {new TextZone(it)}
-        montrerLesMots = params.montrerLesMots
-    }
-
-    /**
-     * Genère une liste des mots suggerés comme reponses.
-     * @return
-     */
-    List getMotsSugeres() {
-        def motsSugeres = textZones.collect {it.text}
-        Collections.shuffle(motsSugeres)
-        motsSugeres
-    }
-
-    @Override
-    Map toMap() {
-        [
-                libelle: libelle,
-                correction: correction,
-                attachmentId: attachmentId,
-                textZones: textZones.collect {it.toMap()},
-                montrerLesMots: montrerLesMots
-        ]
-    }
-
-    /**
-     * Retourne l'attachement correspondant
-     * @return l'attachement
-     */
-    Attachement getAttachement() {
-        if (attachmentId) {
-            return QuestionAttachement.get(attachmentId).attachement
-        }
-        null
-    }
-
-    /**
-     * Contraintes de validation.
-     */
-    static constraints = {
-        libelle blank: false
-    }
+  /**
+   * Contraintes de validation.
+   */
+  static constraints = {
+    libelle blank: false
+  }
 }
 
 /**
@@ -171,60 +172,60 @@ class FillGraphicsSpecification implements QuestionSpecification {
 @Validateable
 class TextZone {
 
-    /**
-     * L'identifiant. 
-     */
-    String id = ""
+  /**
+   * L'identifiant.
+   */
+  String id = ""
 
-    /**
-     * La distance du hotspot de la bordure en haut de l'image d'arrière plan.
-     */
-    int topDistance = 0
+  /**
+   * La distance du hotspot de la bordure en haut de l'image d'arrière plan.
+   */
+  int topDistance = 0
 
-    /**
-     * La distance du hotspot de la bordure à la gauche de l'image d'arrière plan.
-     */
-    int leftDistance = 0
+  /**
+   * La distance du hotspot de la bordure à la gauche de l'image d'arrière plan.
+   */
+  int leftDistance = 0
 
-    /**
-     * La largeur de la zone de text.
-     */
-    int width = 50
+  /**
+   * La largeur de la zone de text.
+   */
+  int width = 50
 
-    /**
-     * La hauteur de la zone de text.
-     */
-    int height = 30
+  /**
+   * La hauteur de la zone de text.
+   */
+  int height = 30
 
-    /**
-     * Le texte que cette zone doit afficher.
-     */
-    String text = ""
+  /**
+   * Le texte que cette zone doit afficher.
+   */
+  String text = ""
 
-    /**
-     * Constructeur par defaut.
-     */
-    TextZone() {super()}
+  /**
+   * Constructeur par defaut.
+   */
+  TextZone() {super()}
 
-    /**
-     * Conversion de l'objet en map.
-     * @return une map des attributs de l'objet.
-     */
-    Map toMap() {
-        [
-                id: id,
-                topDistance: topDistance,
-                leftDistance: leftDistance,
-                width: width,
-                height: height,
-                text: text
-        ]
-    }
+  /**
+   * Conversion de l'objet en map.
+   * @return une map des attributs de l'objet.
+   */
+  Map toMap() {
+    [
+            id: id,
+            topDistance: topDistance,
+            leftDistance: leftDistance,
+            width: width,
+            height: height,
+            text: text
+    ]
+  }
 
-    /**
-     * Contraintes de validation.
-     */
-    static constraints = {
-        id blank: false
-    }
+  /**
+   * Contraintes de validation.
+   */
+  static constraints = {
+    id blank: false
+  }
 }

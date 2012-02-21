@@ -30,6 +30,8 @@ package org.lilie.services.eliot.tdbase.impl.multiplechoice
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  *
@@ -45,8 +47,8 @@ class ReponseMultipleChoiceSpecificationService extends ReponseSpecificationServ
   /**
    * @see ReponseSpecificationService
    */
-  ReponseMultipleChoiceSpecification getObjectInitialiseFromSpecification(Question question) {
-    def reponsesPossibles = question.specificationObject.reponses
+  ReponseMultipleChoiceSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
+    def reponsesPossibles = questionSpecification.reponses
     ReponseMultipleChoiceSpecification specObj = new ReponseMultipleChoiceSpecification()
 
     reponsesPossibles.each {
@@ -63,7 +65,7 @@ class ReponseMultipleChoiceSpecificationService extends ReponseSpecificationServ
  * Représente un objet spécification pour une question de type MultipleChoice
  */
 class ReponseMultipleChoiceSpecification implements ReponseSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.MultipleChoice.name()
   /**
    *  Toutes les réponses possibles
    */
@@ -82,6 +84,7 @@ class ReponseMultipleChoiceSpecification implements ReponseSpecification {
   @Override
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             labelsReponses: labelsReponses,
             labelsReponsesCoches: labelsReponsesCoches,
             labelsReponsesCorrects: labelsReponsesCorrects

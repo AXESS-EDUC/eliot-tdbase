@@ -37,6 +37,12 @@ public interface Specification {
    * @return map des valeurs sous forme des Strings
    */
   Map toMap()
+
+  /**
+   *
+   * @return  le code du type de question
+   */
+  String getQuestionTypeCode()
 }
 
 /**

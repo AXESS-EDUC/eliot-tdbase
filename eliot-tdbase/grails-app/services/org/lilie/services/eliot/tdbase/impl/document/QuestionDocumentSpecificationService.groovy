@@ -92,6 +92,8 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
  */
 @Validateable
 class DocumentSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.Document.name()
+
   String auteur
   String source
   String presentation
@@ -119,6 +121,7 @@ class DocumentSpecification implements QuestionSpecification {
 
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             auteur: auteur,
             source: source,
             presentation: presentation,

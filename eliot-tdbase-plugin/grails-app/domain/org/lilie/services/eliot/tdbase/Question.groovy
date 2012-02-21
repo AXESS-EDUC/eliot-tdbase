@@ -60,27 +60,21 @@ class Question implements Artefact {
 
   Personne proprietaire
   QuestionType type
+  Sujet exercice
 
   Etablissement etablissement
   Matiere matiere
   Niveau niveau
   CopyrightsType copyrightsType
   Publication publication
-  SortedSet<QuestionArborescence> questionArborescenceFilles
   SortedSet<QuestionAttachement> questionAttachements
 
   private def specificationObject
 
   static hasMany = [
-          questionArborescenceFilles: QuestionArborescence,
-          questionArborescenceParentes: QuestionArborescence,
           questionAttachements: QuestionAttachement
   ]
 
-  static mappedBy = [
-          questionArborescenceFilles: 'question',
-          questionArborescenceParentes: 'questionFille'
-  ]
 
   static constraints = {
     specificationNormalise(nullable: true)
@@ -89,6 +83,7 @@ class Question implements Artefact {
     niveau(nullable: true)
     publication(nullable: true)
     paternite(nullable: true)
+    exercice(nullable: true)
     specification(validator: { val, obj, errors ->
       def objSpec = obj.getSpecificationObjectForJson(val)
       if (!objSpec.validate()) {
@@ -104,7 +99,6 @@ class Question implements Artefact {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
     cache(true)
-    questionArborescenceFilles(lazy: 'false', sort: 'rang', order: 'asc')
     questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
   }
 
@@ -119,13 +113,6 @@ class Question implements Artefact {
            type.code == QuestionTypeEnum.FileUpload.name()
   }
 
-  /**
-   *
-   * @return la liste des questions filles de la question courante
-   */
-  List<Question> questionsFilles() {
-    return questionArborescenceFilles*.questionFille
-  }
 
   /**
    *

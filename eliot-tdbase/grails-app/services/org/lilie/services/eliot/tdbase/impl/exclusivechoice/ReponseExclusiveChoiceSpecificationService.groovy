@@ -30,6 +30,8 @@ package org.lilie.services.eliot.tdbase.impl.exclusivechoice
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  *
@@ -43,9 +45,9 @@ class ReponseExclusiveChoiceSpecificationService extends ReponseSpecificationSer
   }
 
   @Override
-  ReponseExclusiveChoiceSpecification getObjectInitialiseFromSpecification(Question question) {
+  ReponseExclusiveChoiceSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
 
-    def specObj = question.specificationObject
+    def specObj = questionSpecification
 
     return createSpecification(indexBonneReponse: specObj.indexBonneReponse,
                                indexReponse: specObj.indexBonneReponse,
@@ -57,7 +59,7 @@ class ReponseExclusiveChoiceSpecificationService extends ReponseSpecificationSer
  * Représente un objet spécification pour une question de type MultipleChoice
  */
 class ReponseExclusiveChoiceSpecification implements ReponseSpecification {
-
+  String questionTypeCode = QuestionTypeEnum.ExclusiveChoice.name()
   /**
    * L'indexe de la reponse
    */
@@ -76,6 +78,7 @@ class ReponseExclusiveChoiceSpecification implements ReponseSpecification {
   @Override
   Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             indexReponse: indexReponse,
             indexBonneReponse: indexBonneReponse,
             numberReponsesPossibles: numberReponsesPossibles

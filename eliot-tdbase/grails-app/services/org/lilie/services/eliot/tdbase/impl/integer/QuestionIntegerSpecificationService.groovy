@@ -34,6 +34,7 @@ package org.lilie.services.eliot.tdbase.impl.integer
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
  *
@@ -56,6 +57,7 @@ class QuestionIntegerSpecificationService extends QuestionSpecificationService<I
  */
 @Validateable
 class IntegerSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.Integer.name()
   String libelle
   Integer valeur
   String unite
@@ -80,6 +82,7 @@ class IntegerSpecification implements QuestionSpecification {
 
   def Map toMap() {
     [
+            questionTypeCode: questionTypeCode,
             libelle: libelle,
             valeur: valeur,
             unite: unite,
