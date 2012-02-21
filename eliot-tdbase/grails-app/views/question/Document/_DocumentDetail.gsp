@@ -26,66 +26,68 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<tr>
-  <td class="label">Auteur&nbsp;:</td>
-  <td>
-    ${specifobject.auteur}
-  </td>
-</tr>
-<tr>
-  <td class="label">Source&nbsp;:</td>
-  <td>
-    ${specifobject.source}
-  </td>
-</tr>
-<tr>
-  <td class="label">Type&nbsp;:</td>
-  <td>
-    ${specifobject.type}
-  </td>
-</tr>
-<tr>
-  <td class="label">URL externe&nbsp;:</td>
-  <td>
-    <g:if test="${specifobject.urlExterne}">
-    <a href="${specifobject.urlExterne}" target="_blank">
-      ${specifobject.urlExterne}
-    </a>
-    </g:if>
-  </td>
-</tr>
-<tr>
-  <td class="label">Fichier&nbsp;:</td>
-  <td>
-    <g:if test="${specifobject.questionAttachementId}">
-      <g:set var="attachement"
-             value="${specifobject.attachement}"/>
 
-      <g:link action="viewAttachement" controller="attachement"
-              id="${attachement.id}" target="_blank">
-        ${attachement.nomFichierOriginal}
-      </g:link>
-      <br/>
-    </g:if>
-  </td>
-</tr>
+<r:script>
+    $('li').css('list-style', 'none');
+</r:script>
+
 <tr>
-  <td class="label">Affichage&nbsp;:</td>
-  <td>
-    <g:checkBox name="specifobject.estInsereDansLeSujet"
-                title="Le document est inséré dans le sujet"
-                checked="${specifobject.estInsereDansLeSujet}" disabled="true"/>
-    Le document est inséré dans le sujet
-  </td>
-</tr>
-<tr>
-  <td class="label">
-    Présentation&nbsp;:
-  </td>
-  <td>
-    ${specifobject.presentation}
-  </td>
+    <td class="label">Détail :</td>
+
+    <td>
+        <table>
+            <tr>
+                <td><strong>Auteur :</strong></td>
+                <td>${specifobject.auteur}</td>
+            </tr>
+            <tr>
+                <td><strong>Source :</strong></td>
+                <td>${specifobject.source}</td>
+            </tr>
+            <tr>
+                <td><strong>Type :</strong></td>
+                <td>${specifobject.type}</td>
+            </tr>
+            <tr>
+                <td><strong>URL externe :</strong></td>
+                <td>
+                    <g:if test="${specifobject.urlExterne}">
+                        <a href="${specifobject.urlExterne}" target="_blank">
+                            ${specifobject.urlExterne}
+                        </a>
+                    </g:if>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Fichier :</strong></td>
+                <td>
+                    <g:if test="${specifobject.questionAttachementId}">
+                        <g:set var="attachement"
+                               value="${specifobject.attachement}"/>
+
+                        <g:link action="viewAttachement" controller="attachement"
+                                id="${attachement.id}" target="_blank">
+                            ${attachement.nomFichierOriginal}
+                        </g:link>
+                        <br/>
+                    </g:if>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Affichage :</strong></td>
+                <td>
+                    <g:checkBox name="specifobject.estInsereDansLeSujet"
+                                title="Le document est inséré dans le sujet"
+                                checked="${specifobject.estInsereDansLeSujet}" disabled="true"/>
+                    Le document est inséré dans le sujet
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Présentation :</strong></td>
+                <td>${specifobject.presentation}</td>
+            </tr>
+        </table>
+    </td>
 </tr>
 

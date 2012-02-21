@@ -27,7 +27,7 @@
   --}%
 <h1>${question.titre}</h1>
 <table><tr>
-<td style="width: 50%; vertical-align: top;">
+<td style="width: 60%; vertical-align: top;">
   <table>
     <tr>
           <td class="label">Type :</td>
@@ -41,7 +41,7 @@
 
   </table>
 </td>
-<td style="width: 50%; vertical-align: top;">
+<td style="width: 40%; vertical-align: top;">
   <table>
     <tr>
       <td class="label">Titre :</td>

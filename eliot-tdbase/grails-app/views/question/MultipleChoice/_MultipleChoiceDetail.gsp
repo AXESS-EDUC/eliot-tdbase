@@ -27,17 +27,17 @@
   --}%
 
 <tr>
-  <td class="label">Détail :</td>
-  <td>
-    <g:set var="specifobject" value="${question.specificationObject}"/>
-    ${specifobject.libelle} <br/>
-    <g:each in="${specifobject.reponses}" var="reponse">
-      &nbsp;
-      <g:checkBox name="specifobject.reponses[${i}].estUneBonneReponse"
-                  checked="${reponse.estUneBonneReponse}" disabled="true"/>
-      ${reponse.libelleReponse}
-      <br/>
-    </g:each>
-    <strong>Correction :</strong> ${specifobject.correction}
-  </td>
+    <td class="label">Détail :</td>
+    <td>
+        <g:set var="specifobject" value="${question.specificationObject}"/>
+        ${specifobject.libelle} <br/>
+        <g:each in="${specifobject.reponses}" var="reponse">
+            &nbsp;
+            <g:checkBox name="specifobject.reponses[${i}].estUneBonneReponse"
+                        checked="${reponse.estUneBonneReponse}" disabled="true"/>
+            ${reponse.libelleReponse}
+            <br/>
+        </g:each>
+        <strong>Correction :</strong> ${specifobject.correction}
+    </td>
 </tr>

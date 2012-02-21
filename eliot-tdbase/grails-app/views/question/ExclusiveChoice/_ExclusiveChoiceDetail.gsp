@@ -25,21 +25,18 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
-
 <tr>
-  <td class="label">Détail :</td>
-  <td>
-    <g:set var="specifobject" value="${question.specificationObject}"/>
-    ${specifobject.libelle} <br/>
-    <g:each in="${specifobject.reponses}" var="reponse" status="i">
-      &nbsp;
-      <g:radio name="specifobject.indexBonneReponse" checked="${i == specifobject.indexBonneReponse}"
-                  value="${i}" disabled="true"/>
-      ${reponse.libelleReponse}
-      <br/>
-    </g:each>
-    Correction : ${specifobject.correction}
-  </td>
+    <td class="label">Détail :</td>
+    <td>
+        <g:set var="specifobject" value="${question.specificationObject}"/>
+        ${specifobject.libelle} <br/>
+        <g:each in="${specifobject.reponses}" var="reponse" status="i">
+            &nbsp;
+            <g:radio name="specifobject.indexBonneReponse" checked="${i == specifobject.indexBonneReponse}"
+                     value="${i}" disabled="true"/>
+            ${reponse.libelleReponse}
+            <br/>
+        </g:each>
+        <strong>Correction :</strong> ${specifobject.correction}
+    </td>
 </tr>
