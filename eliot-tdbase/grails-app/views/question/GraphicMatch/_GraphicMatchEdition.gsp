@@ -58,7 +58,8 @@
                         action="ajouteHotspot"
                         controller="questionGraphicMatch"
                         update="hotspotsEtIcons"
-                        onComplete="afterHotspotAdded()"/>
+                        onComplete="afterHotspotAdded()"
+                        class="button"/>
 
       <div id="imageContainer">
         <et:viewAttachement

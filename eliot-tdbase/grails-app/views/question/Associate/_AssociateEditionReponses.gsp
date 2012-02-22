@@ -27,7 +27,7 @@
   --}%
 
 <g:each status="i" in="${specifobject.associations}" var="association">
-    &nbsp;
+
     <g:textField name="specifobject.associations[${i}].participant1" size="34"
                  value="${association.participant1}" maxlength="30"/>
     &nbsp;
@@ -35,7 +35,7 @@
                  value="${association.participant2}"/>
     &nbsp;
     <g:submitToRemote id="${i}" value="Suppr" title="Supprimer l'associaction" action="supprimeAssociation"
-                      controller="questionAssociate" update="associate_reponses"/>
+                      controller="questionAssociate" update="associate_reponses" class="button"/>
     <br/>
 </g:each>
 

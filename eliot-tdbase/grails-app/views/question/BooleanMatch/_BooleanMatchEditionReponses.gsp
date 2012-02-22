@@ -30,7 +30,7 @@
                  value="${reponse}"/>
     &nbsp;
     <g:submitToRemote id="${i}" value="Suppr" title="Supprimer la réponse" action="supprimeReponse"
-                      controller="questionBooleanMatch" update="specifobject_reponses"/>
+                      controller="questionBooleanMatch" update="specifobject_reponses" class="button"/>
     <br/>
 </g:each>
 <g:hiddenField name="specifobject.reponses.size" value="${specifobject.reponses?.size()}"/>
