@@ -355,7 +355,6 @@ Style custom eliot-tdbase
 }
 
 .tdbase-sujet-edition-question-preview {
-    /*background-color: #F3F6FB;*/
     padding: 20px 0 10px 30px;
     margin: 8px 0;
     border-top: 1px dotted #ccc;
@@ -364,6 +363,8 @@ Style custom eliot-tdbase
 .tdbase-sujet-edition-question-interaction {
     margin: 10px 0;
     padding: 3px;
+    border-top: 1px dotted #ccc;
+
 }
 
 .tdbase-sujet-titre {
@@ -982,7 +983,6 @@ Style for the edition of a document or category (Content)
 .teste .tdbase-sujet-edition-question-points,
 .edite .tdbase-sujet-edition-question-points,
 .visualise .tdbase-sujet-edition-question-points {
-    margin-top: 15px;
     text-align: right;
     right: 15px;
 }

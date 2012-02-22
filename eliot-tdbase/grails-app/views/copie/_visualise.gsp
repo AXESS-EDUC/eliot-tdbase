@@ -28,33 +28,34 @@
 
 <%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 
-
 <g:set var="sujet" value="${copie.sujet}"/>
 <div class="portal-form_container corrige visualise">
-	<ul>
-		<li class="name">${copie.eleve.nomAffichage}</li>
-		<li class="notice"><span class="label">Appréciation :</span><em>${copie.correctionAnnotation}</em></li>
-		<li><span class="label">Modulation :</span>  ${NumberUtils.formatFloat(copie.pointsModulation)}</li>
-		<li class="note"><span class="label">Note :</span>	  <strong>${NumberUtils.formatFloat(copie.correctionNoteFinale)}</strong> / ${NumberUtils.formatFloat(copie.maxPoints)}</li>
-	</ul>
-	
+    <ul>
+        <li class="name">${copie.eleve.nomAffichage}</li>
+        <li class="notice"><span class="label">Appréciation :</span><em>${copie.correctionAnnotation}</em></li>
+        <li><span class="label">Modulation :</span>  ${NumberUtils.formatFloat(copie.pointsModulation)}</li>
+        <li class="note"><span
+                class="label">Note :</span>      <strong>${NumberUtils.formatFloat(copie.correctionNoteFinale ?: 0)}</strong> / ${NumberUtils.formatFloat(copie.maxPoints ?: 0)}
+        </li>
+    </ul>
+
 </div>
 
 <g:if test="${copie.modaliteActivite.estOuverte()}">
-  <g:if test="${copie.dateRemise}">
-    <div class="portal-messages notice">
-      Note (correction automatique) :
-      <g:formatNumber number="${copie.correctionNoteAutomatique}"
-                      format="##0.00"/>
-      / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
-      &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
-    </div>
-  </g:if>
-  <g:if test="${!copie.estModifiable()}">
-    <div class="portal-messages notice">
-      La copie n'est plus modifiable.
-    </div>
-  </g:if>
+    <g:if test="${copie.dateRemise}">
+        <div class="portal-messages notice">
+            Note (correction automatique) :
+            <g:formatNumber number="${copie.correctionNoteAutomatique}"
+                            format="##0.00"/>
+            / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
+            &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+        </div>
+    </g:if>
+    <g:if test="${!copie.estModifiable()}">
+        <div class="portal-messages notice">
+            La copie n'est plus modifiable.
+        </div>
+    </g:if>
 </g:if>
 <form method="post" class="visualise">
 
@@ -64,6 +65,7 @@
     <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
     <div class="tdbase-sujet-edition-question">
       <g:if test="${sujetQuestion.question.type.interaction}">
+        <h1>Question ${indexReponseNonVide + 1}</h1>
         <div class="tdbase-sujet-edition-question-points">
           <div id="SujetSequenceQuestions-${sujetQuestion.id}">
             <g:if test="${reponse}">
@@ -89,28 +91,31 @@
       <div class="tdbase-sujet-edition-question-interaction">
         <g:if test="${question.type.interaction}">
 
-          <g:render
-                  template="/question/${question.type.code}/${question.type.code}Interaction"
-                  model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide++]"/>
+            <g:if test="${question.type.interaction}">
+                <div class="tdbase-sujet-edition-question-interaction correction_copie">
+                    <g:render
+                            template="/question/${question.type.code}/${question.type.code}Interaction"
+                            model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide++]"/>
 
-          <g:if test="${copie.modaliteActivite.estPerimee()}">
-            <g:render
-                    template="/question/${question.type.code}/${question.type.code}Correction"
-                    model="[question: question]"/>
-          </g:if>
+                    <g:if test="${copie.modaliteActivite.estPerimee()}">
+                        <g:render
+                                template="/question/${question.type.code}/${question.type.code}Correction"
+                                model="[question: question]"/>
+                    </g:if>
+                </div>
+            </g:if>
+            <g:else>
+                <h1>&nbsp; ${question.type.nom}</h1>
 
-        </g:if>
-        <g:else>
+                <div class="tdbase-sujet-edition-question-interaction correction_copie">
+                    <g:render template="/question/${question.type.code}/${question.type.code}Preview"
+                              model="[question: question]"/>
+                </div>
+            </g:else>
 
-          <g:render
-                  template="/question/${question.type.code}/${question.type.code}Preview"
-                  model="[question: question]"/>
+        </div>
 
-        </g:else>
-      </div>
-    </div>
-
-  </g:each>
+    </g:each>
 
 </form>
 

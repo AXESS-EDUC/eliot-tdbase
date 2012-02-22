@@ -58,9 +58,8 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-<h2>${questionspecifobject.libelle}</h2>
-
 <div class="item">
+    <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
     <div id="orderQuestionContainment_${indexReponse}">
         <table>
             <g:each status="i" in="${questionspecifobject.orderedItems}"

@@ -87,7 +87,7 @@
                 <td class="label">Note :</td>
                 <td>
                     <strong><span
-                            id="copie_note_finale">${NumberUtils.formatFloat(copie.correctionNoteFinale)}</span>
+                            id="copie_note_finale">${NumberUtils.formatFloat(copie.correctionNoteFinale ?: 0)}</span>
                         / <g:formatNumber number="${copie.maxPoints}"
                                           format="##0.00"/></strong>
                 </td>
@@ -112,6 +112,7 @@
       <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
         <div class="tdbase-sujet-edition-question">
             <g:if test="${sujetQuestion.question.type.interaction}">
+              <h1>Question ${indexReponseNonVide + 1}</h1>
                 <div class="tdbase-sujet-edition-question-points">
                     <div id="SujetSequenceQuestions-${sujetQuestion.id}">
                         <g:if test="${reponse}">
@@ -140,8 +141,9 @@
             </g:if>
 
             <g:set var="question" value="${sujetQuestion.question}"/>
-            <div class="tdbase-sujet-edition-question-interaction">
-                <g:if test="${question.type.interaction}">
+
+            <g:if test="${question.type.interaction}">
+                <div class="tdbase-sujet-edition-question-interaction">
                     <g:render
                             template="/question/${question.type.code}/${question.type.code}Interaction"
                             model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide++]"/>
@@ -149,14 +151,17 @@
                     <g:render
                             template="/question/${question.type.code}/${question.type.code}Correction"
                             model="[question: question]"/>
-
-                </g:if>
-                <g:else>
+                </div>
+            </g:if>
+            <g:else>
+                <h1>${question.type.nom}</h1>
+                <div class="tdbase-sujet-edition-question-interaction">
                     <g:render
                             template="/question/${question.type.code}/${question.type.code}Preview"
                             model="[question: question]"/>
-                </g:else>
-            </div>
+                </div>
+            </g:else>
+
         </div>
     </g:each>
 </div>

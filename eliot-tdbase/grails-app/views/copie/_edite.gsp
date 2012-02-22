@@ -50,6 +50,8 @@
         <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
         <div class="tdbase-sujet-edition-question">
             <g:if test="${sujetQuestion.question.type.interaction}">
+                <h1>Question ${indexReponseNonVide.toInteger() + 1}</h1>
+
                 <div class="tdbase-sujet-edition-question-points">
                     <div id="SujetSequenceQuestions-${sujetQuestion.id}">
                         <em><g:formatNumber number="${reponse.correctionNoteAutomatique}" format="##0.00"/></em>
@@ -66,7 +68,6 @@
                     <g:hiddenField
                             name="reponsesCopie.listeReponses[${indexReponseNonVide}].reponse.id"
                             value="${reponse.id}"/>
-
                     <g:render
                             template="/question/${question.type.code}/${question.type.code}Interaction"
                             model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide]"/>
@@ -80,6 +81,7 @@
                 </div>
             </g:if>
             <g:else>
+                <h1>${question.type.nom}</h1>
                 <div class="tdbase-sujet-edition-question-interaction">
                     <g:set var="question" value="${sujetQuestion.question}"/>
                     <g:render

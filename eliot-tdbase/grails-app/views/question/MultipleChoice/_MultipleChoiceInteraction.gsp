@@ -27,9 +27,9 @@
   --}%
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
-	<h2>${questionspecifobject.libelle}</h2>
-	
+
 	<div class="item">
+        <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
 		<g:each status="i" in="${questionspecifobject.reponses}" var="reponsePossible">
 		  &nbsp;
 		  <g:checkBox
