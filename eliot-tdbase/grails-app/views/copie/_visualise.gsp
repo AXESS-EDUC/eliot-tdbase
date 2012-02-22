@@ -89,7 +89,6 @@
       </g:if>
       <g:set var="question" value="${sujetQuestion.question}"/>
       <div class="tdbase-sujet-edition-question-interaction">
-        <g:if test="${question.type.interaction}">
 
             <g:if test="${question.type.interaction}">
                 <div class="tdbase-sujet-edition-question-interaction correction_copie">
