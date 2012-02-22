@@ -52,11 +52,12 @@ table table, table table td {
     width: 100%;
 }
 
-.portal-form_container select{
-	width: 20em;
+.portal-form_container select {
+    width: 20em;
 }
-.portal-form_container  textarea{
-	border-color: #ccc;
+
+.portal-form_container  textarea {
+    border-color: #ccc;
 }
 
 /*******************************************************************************
@@ -291,47 +292,55 @@ Style custom eliot-tdbase
 @author franck silvestre
 *******************************************************************************/
 
-.tdbase-sujet-liste-elements{
+.tdbase-sujet-liste-elements {
     margin: 0 10px;
     padding: 10px;
     /*border: 1px solid #ec8e0c;*/
     width: 24%;
     float: right;
     background-color: #fbffd9;
-    
+
     /*-moz-box-shadow:0px 0px 8px #bababa;
-	-webkit-box-shadow:0px 0px 8px #bababa;
-	box-shadow:0px 0px 8px #bababa;*/
-	/*IE DOES NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
-	
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	/*IE DOES NOT SUPPORT BORDER RADIUS*/
+     -webkit-box-shadow:0px 0px 8px #bababa;
+     box-shadow:0px 0px 8px #bababa;*/
+    /*IE DOES NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
+
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
-	.tdbase-sujet-liste-elements h4{
-		margin: 0 10px;
-		padding:5px 0 7px;
-		border-bottom: 1px solid #ec8e0c;
-		color: #ec8e0c;
-		background:  url("../../images/eliot/picto-sujet.png") no-repeat 100% 0;
-		
-		-moz-box-shadow:0px 1px 0px #fff;
-		-webkit-box-shadow:0px 1px 0px #fff;
-		box-shadow:0px 1px 0px #fff;
-		/*IE DOES NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
-	}
-	.tdbase-sujet-liste-elements ul{padding: 10px;}
-		.tdbase-sujet-liste-elements li{
-			background: url("../../images/eliot/picto-question.png") no-repeat 0 50%;
-			padding: 8px 0 8px 28px;
-			margin-top:4px;
-			margin-left: 0;
-			list-style-type: none;
-			border-top: 1px dotted #ccc;
-			font-size: 1.05em;
-		}
-			.tdbase-sujet-liste-elements li:first-child{border: none;}
+
+.tdbase-sujet-liste-elements h4 {
+    margin: 0 10px;
+    padding: 5px 0 7px;
+    border-bottom: 1px solid #ec8e0c;
+    color: #ec8e0c;
+    background: url("../../images/eliot/picto-sujet.png") no-repeat 100% 0;
+
+    -moz-box-shadow: 0px 1px 0px #fff;
+    -webkit-box-shadow: 0px 1px 0px #fff;
+    box-shadow: 0px 1px 0px #fff;
+    /*IE DOES NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
+}
+
+.tdbase-sujet-liste-elements ul {
+    padding: 10px;
+}
+
+.tdbase-sujet-liste-elements li {
+    background: url("../../images/eliot/picto-question.png") no-repeat 0 50%;
+    padding: 8px 0 8px 28px;
+    margin-top: 4px;
+    margin-left: 0;
+    list-style-type: none;
+    border-top: 1px dotted #ccc;
+    font-size: 1.05em;
+}
+
+.tdbase-sujet-liste-elements li:first-child {
+    border: none;
+}
 
 .tdbase-sujet-edition-question-boutons {
     text-align: right;
@@ -348,12 +357,12 @@ Style custom eliot-tdbase
 .tdbase-sujet-edition-question-preview {
     /*background-color: #F3F6FB;*/
     padding: 20px 0 10px 30px;
-    margin:8px 0;
+    margin: 8px 0;
     border-top: 1px dotted #ccc;
 }
 
 .tdbase-sujet-edition-question-interaction {
-	margin:10px 0;
+    margin: 10px 0;
     padding: 3px;
 }
 
@@ -377,22 +386,30 @@ Style custom eliot-tdbase
     list-style: none;
     margin-left: 0;
     padding: 1px 0;
-	font-style: italic;
-	color: #ccc;
+    font-style: italic;
+    color: #ccc;
 }
-	.tdbase-menu-actions li a{
-	font-weight: normal;
-	font-style: normal;
+
+.tdbase-menu-actions li a {
+    font-weight: normal;
+    font-style: normal;
 }
-	.tdbase-menu-actions li a:hover {color: #ec8e0c;}
-	.tdbase-menu-actions hr{border: none;border-top: 1px dotted #ccc;}
-	
+
+.tdbase-menu-actions li a:hover {
+    color: #ec8e0c;
+}
+
+.tdbase-menu-actions hr {
+    border: none;
+    border-top: 1px dotted #ccc;
+}
+
 .editinplace {
     float: left;
     height: 23px;
     line-height: 200%;
     border: 1px dotted #ccc;
- 	background-color: #fff;
+    background-color: #fff;
     width: 5em;
     text-align: center;
     color: #ec8e0c;
@@ -400,12 +417,12 @@ Style custom eliot-tdbase
 
 .editinplace input {
     width: 5em;
-    padding: 0;padding: 0.3em 0; line-height: 100%;
+    padding: 0;
+    padding: 0.3em 0;
+    line-height: 100%;
     margin: 0;
     border: none;
 }
-
-
 
 /*******************************************************************************
 styles for TDBase results list
@@ -424,15 +441,18 @@ styles for TDBase results list
     margin-top: 0;
     margin-bottom: 10px;
     height: 20px;
-    font-weight: normal!important;
+    font-weight: normal !important;
 }
 
 .portal-breadcrumbs a, .portal-breadcrumbs span {
     float: left;
     font-size: 1em;
-    
+
 }
-	.portal-breadcrumbs a:first-child{font-weight: bold;}
+
+.portal-breadcrumbs a:first-child {
+    font-weight: bold;
+}
 
 .portal-bc-separator {
     background: transparent url(../../images/eliot/bg-breadcrumb.png) no-repeat scroll 0;
@@ -446,93 +466,148 @@ styles for TDBase results list
 
 /* Pagination */
 .portal_pagination {
-	position: relative;
-	margin-bottom: 0;
-	margin-right: 10px;
-	text-align: right;
+    position: relative;
+    margin-bottom: 0;
+    margin-right: 10px;
+    text-align: right;
 }
-	.portal_pagination span,
-	.portal_pagination a{
-		top: -10px;
-		position: relative;
-		padding: 2px 4px;
-	}	
-		.portal_pagination a{}
-			.portal_pagination a:hover,
-			.portal_pagination a:focus{
-				color: #ec8e0c;
-				background-color: #fbffd9;
-				border-color: #ec8e0c;
-			}
 
-div.portal-default_results-list{margin-bottom: 50px;position: relative;}
-div.portal-default_results-list.partiel{width: 71.5%;}
-
-div.portal-default_results-list>div{
-	position: relative;
-	padding:5px 0 10px;
-	margin: 0 10px;
-	border-bottom: 1px dotted #e5e5e5;
+.portal_pagination span,
+.portal_pagination a {
+    top: -10px;
+    position: relative;
+    padding: 2px 4px;
 }
-	div.portal-default_results-list>div:hover{background-color: #fdfdfd!important;}
-	
-	div.portal-default_results-list>div:first-child{
-		border-top: 1px solid #e5e5e5;
-	}
-	div.portal-default_results-list>div button,
-	div.portal-default_results-list>div .button{
-		top: -1px;
-		margin:0 0 0 10px;
-		visibility: hidden;
-	}
-		div.portal-default_results-list>div:hover button,
-		div.portal-default_results-list>div:hover .button{visibility: visible;opacity: .6;}
-		div.portal-default_results-list>div:hover button:hover,
-		div.portal-default_results-list>div:hover button.active,
-		div.portal-default_results-list>div:hover .button:hover,
-		div.portal-default_results-list>div:hover .button.active{visibility: visible;opacity: 1;}
 
-		
-		div.portal-default_results-list.partiel>div button{right: 0;}
-		div.portal-default_results-list .tdbase-menu-actions{
-			position: absolute;
-			/*margin-left: -97px;*/
-		}
-			div.portal-default_results-list>div .tdbase-menu-actions{visibility: hidden;}
-			div.portal-default_results-list>div:hover .tdbase-menu-actions{visibility: visible;}
-			
-			div.portal-default_results-list .tdbase-menu-actions{top: 32px;}
-			div.portal-default_results-list .tdbase-menu-actions.top{top: 8px;}
+.portal_pagination a {
+}
 
-div.portal-default_results-list h1{
-	padding-left: 35px;
-	margin: 6px 10px 0px;
-	font-size: 1.5em;
-	display: inline;
+.portal_pagination a:hover,
+.portal_pagination a:focus {
+    color: #ec8e0c;
+    background-color: #fbffd9;
+    border-color: #ec8e0c;
 }
-	div.portal-default_results-list.sujet>div{background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;}
-	div.portal-default_results-list.question>div{background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;}
-	
-	div.portal-default_results-list.sceance>div{background: url("../../images/eliot/picto-sceance.png") no-repeat 10px 8px;}
-		
-	div.portal-default_results-list.sceance em{color: #999;padding-top: 4px;display: block;}
-	
-	div.portal-default_results-list div.even2{background-color: #f9f9f9;}
 
-div.portal-default_results-list p{
-	padding-left: 45px;
-	margin: 1px 0;
+div.portal-default_results-list {
+    margin-bottom: 50px;
+    position: relative;
 }
-	div.portal-default_results-list p.date{
-		color: #999;font-size: .9em;
-		margin: -2px 0 2px;
-		font-style: italic;
-	}
-	div.portal-default_results-list p strong{color: #728CBD;margin-left: 10px;}
-		div.portal-default_results-list p strong:first-child{
-	margin-left: 0;
+
+div.portal-default_results-list.partiel {
+    width: 71.5%;
 }
-	
+
+div.portal-default_results-list>div {
+    position: relative;
+    padding: 5px 0 10px;
+    margin: 0 10px;
+    border-bottom: 1px dotted #e5e5e5;
+}
+
+div.portal-default_results-list>div:hover {
+    background-color: #fdfdfd !important;
+}
+
+div.portal-default_results-list>div:first-child {
+    border-top: 1px solid #e5e5e5;
+}
+
+div.portal-default_results-list>div button,
+div.portal-default_results-list>div .button {
+    top: -1px;
+    margin: 0 0 0 10px;
+    visibility: hidden;
+}
+
+div.portal-default_results-list>div:hover button,
+div.portal-default_results-list>div:hover .button {
+    visibility: visible;
+    opacity: .6;
+}
+
+div.portal-default_results-list>div:hover button:hover,
+div.portal-default_results-list>div:hover button.active,
+div.portal-default_results-list>div:hover .button:hover,
+div.portal-default_results-list>div:hover .button.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+div.portal-default_results-list.partiel>div button {
+    right: 0;
+}
+
+div.portal-default_results-list .tdbase-menu-actions {
+    position: absolute;
+    /*margin-left: -97px;*/
+}
+
+div.portal-default_results-list>div .tdbase-menu-actions {
+    visibility: hidden;
+}
+
+div.portal-default_results-list>div:hover .tdbase-menu-actions {
+    visibility: visible;
+}
+
+div.portal-default_results-list .tdbase-menu-actions {
+    top: 32px;
+}
+
+div.portal-default_results-list .tdbase-menu-actions.top {
+    top: 8px;
+}
+
+div.portal-default_results-list h1 {
+    padding-left: 35px;
+    margin: 6px 10px 0px;
+    font-size: 1.5em;
+    display: inline;
+}
+
+div.portal-default_results-list.sujet>div {
+    background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;
+}
+
+div.portal-default_results-list.question>div {
+    background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;
+}
+
+div.portal-default_results-list.sceance>div {
+    background: url("../../images/eliot/picto-sceance.png") no-repeat 10px 8px;
+}
+
+div.portal-default_results-list.sceance em {
+    color: #999;
+    padding-top: 4px;
+    display: block;
+}
+
+div.portal-default_results-list div.even2 {
+    background-color: #f9f9f9;
+}
+
+div.portal-default_results-list p {
+    padding-left: 45px;
+    margin: 1px 0;
+}
+
+div.portal-default_results-list p.date {
+    color: #999;
+    font-size: .9em;
+    margin: -2px 0 2px;
+    font-style: italic;
+}
+
+div.portal-default_results-list p strong {
+    color: #728CBD;
+    margin-left: 10px;
+}
+
+div.portal-default_results-list p strong:first-child {
+    margin-left: 0;
+}
 
 /*******************************************************************************
 
@@ -542,371 +617,487 @@ Style for the edition of a document or category (ToolBar)
 /* Surcharge "portal.css" */
 .portal-messages .success {
     background-color: #f8ffeb;
-    background-position:5px 10px;
-    margin:  10px;
+    background-position: 5px 10px;
+    margin: 10px;
     padding: 10px 25px;
 }
 
 .portal-messages .notice {
     background-color: #fbffd9;
-    background-position:5px 10px;
+    background-position: 5px 10px;
     color: #ec8e0c;
-    margin:  10px;
+    margin: 10px;
     padding: 10px 25px;
 }
 
 .portal-messages .error {
-	background-position:5px 10px;
-	margin:  10px;
+    background-position: 5px 10px;
+    margin: 10px;
     padding: 10px 25px;
 }
 
 /* Fin surcharge "portal.css" */
 
-
 .portal-tabs {
-	position: relative;
+    position: relative;
     background-color: #f0f0f0;
     color: #999999;
     border: none;
-    text-align:left;
+    text-align: left;
     margin: 25px 10px 0px;
     padding: 12px 0;
-    
-    -moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	/*IE DOES NOT SUPPORT BORDER RADIUS*/
+
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
-	
-	
-	.portal-tabs-famille-liens button{
-		position: absolute;
-		margin-top:-6px;
-	}
-		.portal-tabs .tdbase-menu-actions{top: 32px;}
-		.portal-tabs .tdbase-menu-actions.top{top:8px;}
 
-.portal-tabs a {margin-left: 10px;}
-	.portal-tabs a:hover{
-		color: #ec8e0c;
-	}
+.portal-tabs-famille-liens button {
+    position: absolute;
+    margin-top: -6px;
+}
 
-	.portal-tabs a:first-child{margin-left: 0;}
-	.portal-tabs a.add{
-		padding: 4px 4px 4px 20px;
-		background: url("../../images/eliot/picto-add.png") no-repeat 0 4px;
-	}
-		.portal-tabs a.add:hover{background-position: 0 -22px;}
-	
-	.portal-tabs a.modify{
-		padding: 4px 4px 4px 20px;
-		background: url("../../images/eliot/picto-modif.png") no-repeat 0 4px;
-	}
-		.portal-tabs a.modify:hover{background-position: 0 -22px;}
-	
-	.portal-tabs a.share{
-		padding: 4px 4px 4px 20px;
-		background: url("../../images/eliot/picto-share.png") no-repeat 0 4px;
-	}
-		.portal-tabs a.share:hover{background-position: 0 -23px;}
-	
-	.portal-tabs a.delete{
-		padding: 4px 4px 4px 20px;
-		background: url("../../images/eliot/picto-delete.png") no-repeat 0 4px;
-	}
-		.portal-tabs a.delete:hover{background-position: 0 -23px;}
+.portal-tabs .tdbase-menu-actions {
+    top: 32px;
+}
 
+.portal-tabs .tdbase-menu-actions.top {
+    top: 8px;
+}
+
+.portal-tabs a {
+    margin-left: 10px;
+}
+
+.portal-tabs a:hover {
+    color: #ec8e0c;
+}
+
+.portal-tabs a:first-child {
+    margin-left: 0;
+}
+
+.portal-tabs a.add {
+    padding: 4px 4px 4px 20px;
+    background: url("../../images/eliot/picto-add.png") no-repeat 0 4px;
+}
+
+.portal-tabs a.add:hover {
+    background-position: 0 -22px;
+}
+
+.portal-tabs a.modify {
+    padding: 4px 4px 4px 20px;
+    background: url("../../images/eliot/picto-modif.png") no-repeat 0 4px;
+}
+
+.portal-tabs a.modify:hover {
+    background-position: 0 -22px;
+}
+
+.portal-tabs a.share {
+    padding: 4px 4px 4px 20px;
+    background: url("../../images/eliot/picto-share.png") no-repeat 0 4px;
+}
+
+.portal-tabs a.share:hover {
+    background-position: 0 -23px;
+}
+
+.portal-tabs a.delete {
+    padding: 4px 4px 4px 20px;
+    background: url("../../images/eliot/picto-delete.png") no-repeat 0 4px;
+}
+
+.portal-tabs a.delete:hover {
+    background-position: 0 -23px;
+}
 
 /*******************************************************************************
 
 Style for the edition of a document or category (Content)
 
-********************************************************************************/		
-.edite.portal-form_container{margin: 30px 20px;border: none;width: 100%;}
-
-.recherche.portal-form_container{
-	
+********************************************************************************/
+.edite.portal-form_container {
+    margin: 30px 20px;
+    border: none;
+    width: 100%;
 }
-	.recherche.portal-form_container>table{margin: 10px 0;}
-	.recherche.portal-form_container,
-	.corrige.portal-form_container,
-	.edite.portal-form_container{
-		padding: 5px 0;
-	    width:70%;
-	    margin-left:10px;
-	    margin-right:auto;
-	   
-	   background-color:whiteSmoke;background: #fdf5ce;
-	   color: #999999;
-	   border: none;
-	        
-	    -moz-border-radius:6px;
-		-webkit-border-radius:6px;
-		border-radius:6px;
-		/*IE DOES NOT SUPPORT BORDER RADIUS*/
-	}
+
+.recherche.portal-form_container {
+
+}
+
+.recherche.portal-form_container>table {
+    margin: 10px 0;
+}
+
+.recherche.portal-form_container,
+.corrige.portal-form_container,
+.edite.portal-form_container {
+    padding: 5px 0;
+    width: 70%;
+    margin-left: 10px;
+    margin-right: auto;
+
+    background-color: whiteSmoke;
+    background: #fdf5ce;
+    color: #999999;
+    border: none;
+
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*IE DOES NOT SUPPORT BORDER RADIUS*/
+}
 
 .recherche.form_actions,
 .corrige.form_actions,
-.edite.form_actions{
+.edite.form_actions {
     background: none;
     border: none;
     border-top-width: 0;
     color: #3F61A0;
-    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial,helvetica;
-    padding-top:0.5em;
-    padding-bottom:0.5em;
-    margin-left:10px;
-    margin-right:auto;
+    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial, helvetica;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-left: 10px;
+    margin-right: auto;
     margin-bottom: -20px;
     text-align: right;
-    width:70%;
+    width: 70%;
 }
 
-.recherche.portal-form_container input[type=text]{
-	width: 200px;
+.recherche.portal-form_container input[type=text] {
+    width: 200px;
 }
 
-.portal-form_container .title{
-	font-size: 1.6em;
-	margin-right: 5px;
-	padding:0 0 4px 30px;
-	background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;
-	font-weight: bold;
-	color: #3F61A0;
+.portal-form_container .title {
+    font-size: 1.6em;
+    margin-right: 5px;
+    padding: 0 0 4px 30px;
+    background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;
+    font-weight: bold;
+    color: #3F61A0;
 }
-	.question .form_actions,
-	.sujet .form_actions{
-		border: none;
-		border-top: 1px dotted #ccc;
-		background-color:whiteSmoke;
-		margin-bottom: 20px;
-	}
-		.question .form_actions .button{margin-right: 15px;color: #ec8e0c;}
-		#specifobject_reponses .button{color: #333;}
-		
-	.question .portal-form_container .title{background: url("../../images/eliot/picto-question.png") no-repeat 0 0;}
-	.question .portal-form_container td{border-bottom: 5px solid #fff;}
-	
-.portal-form_container input[type=text]{
-	border: 1px solid #ccc;
-	padding: 5px 2px;
-	margin-top: -2px;
-}
-.portal-form_container input[type=submit]{margin-top: -3px;margin-left: 10px;}
 
-.button{      
+.question .form_actions,
+.sujet .form_actions {
+    border: none;
+    border-top: 1px dotted #ccc;
+    background-color: whiteSmoke;
+    margin-bottom: 20px;
+}
+
+.question .form_actions .button {
+    margin-right: 15px;
+    color: #ec8e0c;
+}
+
+#specifobject_reponses .button {
+    color: #333;
+}
+
+.question .portal-form_container .title {
+    background: url("../../images/eliot/picto-question.png") no-repeat 0 0;
+}
+
+.question .portal-form_container td {
+    border-bottom: 5px solid #fff;
+}
+
+.portal-form_container input[type=text] {
+    border: 1px solid #ccc;
+    padding: 5px 2px;
+    margin-top: -2px;
+}
+
+.portal-form_container input[type=submit] {
+    margin-top: -3px;
+    margin-left: 10px;
+}
+
+.button {
     padding: 5px 12px 6px;
     border: 1px solid #CCC;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-	text-transform: uppercase;
-	color: #ec8e0c!important;
-	background:whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
-}	
-	.ui-button:hover, .button:hover, .ui-button.active{
-		border: 1px solid #fbcb09;
-		background:#fdf5ce url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
-	    color: #ec8e0c;
-	    cursor: pointer;
-	}
-	
-.tdbase-sujet-edition{margin-bottom: 50px;}
-.tdbase-sujet-edition-question{
-	position: relative;
-	padding:0 10px 10px;
-	margin: 0 10px 10px;
-	border: none;
-	background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 8px;
+    text-transform: uppercase;
+    color: #ec8e0c !important;
+    background: whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
 }
-	.tdbase-sujet-edition-question h1{padding: 10px 0 0 15px;}
 
-	.tdbase-sujet-edition-question button{
-		position: absolute;
-		top: 8px;
-		margin: 0 10px 0 0;
-		right: 0;
-	}	
-		.tdbase-sujet-edition-question .tdbase-menu-actions{top: 32px;margin-left: -97px;}
-		.tdbase-sujet-edition-question .tdbase-menu-actions.top{top:8px;}
-	
-.tdbase-sujet-edition-question .tdbase-sujet-edition-question-points{
-	position: absolute;
-	margin-top: -38px;
-	right: 70px;
-	width: 120px;
+.ui-button:hover, .button:hover, .ui-button.active {
+    border: 1px solid #fbcb09;
+    background: #fdf5ce url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
+    color: #ec8e0c;
+    cursor: pointer;
 }
-	.tdbase-sujet-edition-question .tdbase-sujet-edition-question-points .editinplace {float:left;}
 
-	.tdbase-sujet-edition-question .tdbase-sujet-edition-question-points .point{
-		font-weight: bold;
-		margin: 5px;
-		text-indent: 6px;
-		display: block;
-		color: #666;
-	}
-	
-.tdbase-sujet-edition-question .item{margin-left:0px}
-	.tdbase-sujet-edition-question .item .title{
-		color: #3F61A0;
-		font-size: 1.0em;
-	}
-	
+.tdbase-sujet-edition {
+    margin-bottom: 50px;
+}
+
+.tdbase-sujet-edition-question {
+    position: relative;
+    padding: 0 10px 10px;
+    margin: 0 10px 10px;
+    border: none;
+    background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 8px;
+}
+
+.tdbase-sujet-edition-question h1 {
+    padding: 10px 0 0 15px;
+}
+
+.tdbase-sujet-edition-question button {
+    position: absolute;
+    top: 8px;
+    margin: 0 10px 0 0;
+    right: 0;
+}
+
+.tdbase-sujet-edition-question .tdbase-menu-actions {
+    top: 32px;
+    margin-left: -97px;
+}
+
+.tdbase-sujet-edition-question .tdbase-menu-actions.top {
+    top: 8px;
+}
+
+.tdbase-sujet-edition-question .tdbase-sujet-edition-question-points {
+    position: absolute;
+    margin-top: -38px;
+    right: 70px;
+    width: 120px;
+}
+
+.tdbase-sujet-edition-question .tdbase-sujet-edition-question-points .editinplace {
+    float: left;
+}
+
+.tdbase-sujet-edition-question .tdbase-sujet-edition-question-points .point {
+    font-weight: bold;
+    margin: 5px;
+    text-indent: 6px;
+    display: block;
+    color: #666;
+}
+
+.tdbase-sujet-edition-question .item {
+    margin-left: 0px;
+}
+
+.tdbase-sujet-edition-question .item .title {
+    color: #3F61A0;
+    font-size: 1.0em;
+}
+
+.tdbase-sujet-edition-question .item input[type=text]{
+    border: 1px solid #ccc;
+    padding: 5px 2px;
+    margin-top: -2px;
+}
+
 /***** Test sujet ****/
 .teste .bottom, .teste .top,
-.edite .bottom, .edite .top{
-	width: 98%;
-	padding: 0 1%;
+.edite .bottom, .edite .top {
+    width: 98%;
+    padding: 0 1%;
 }
-	.edite .bottom .form_actions{
-		padding: 10px 10px 10px 0;		
+
+.edite .bottom .form_actions {
+    padding: 10px 10px 10px 0;
 }
-	
-.teste .top{padding: 0;}
-.edite .top{padding: 5px 0;}
-	.teste .top .form_actions,
-	.edite .top .form_actions{
-		margin: 0;
-		
-		text-align: left;
-		padding-left: 10px;
-	    -moz-border-radius:6px;
-		-webkit-border-radius:6px;
-		border-radius:6px;
-		/*IE DOES NOT SUPPORT BORDER RADIUS*/
-	}
-.teste .form_actions,
-.edite .form_actions{
-	border: none;
-	border-top: 1px dotted #ccc;
-	background-color: #f0f0f0;
-	margin: 20px 0 20px;
-	width: auto;
-	display: block;
+
+.teste .top {
+    padding: 0;
 }
-	.teste .form_actions .button{margin-right:20px;}
+
+.edite .top {
+    padding: 5px 0;
+}
 
 .teste .top .form_actions,
-.edite .top .form_actions{border: none;}
+.edite .top .form_actions {
+    margin: 0;
+
+    text-align: left;
+    padding-left: 10px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*IE DOES NOT SUPPORT BORDER RADIUS*/
+}
+
+.teste .form_actions,
+.edite .form_actions {
+    border: none;
+    border-top: 1px dotted #ccc;
+    background-color: #f0f0f0;
+    margin: 20px 0 20px;
+    width: auto;
+    display: block;
+}
+
+.teste .form_actions .button {
+    margin-right: 20px;
+}
+
+.teste .top .form_actions,
+.edite .top .form_actions {
+    border: none;
+}
 
 .teste .tdbase-sujet-titre,
-.edite .tdbase-sujet-titre{
+.edite .tdbase-sujet-titre {
     text-align: left;
-    padding:10px 0 4px 30px;
-	background: url("../../images/eliot/picto-sujet.png") no-repeat 0 10px;
+    padding: 10px 0 4px 30px;
+    background: url("../../images/eliot/picto-sujet.png") no-repeat 0 10px;
 }
 
-.teste h2{
-	font-size: 1.4em;
+.teste h2 {
+    font-size: 1.4em;
 }
 
-.tdbase-sujet-edition-question-interaction h1{
-	margin:10px 0;
+.tdbase-sujet-edition-question-interaction h1 {
+    margin: 10px 0;
     padding: 3px;
 }
-	.tdbase-sujet-edition-question-interaction h2{
-		border-bottom: 1px dotted #CCC;
-		font-size: 1.2em;
-		margin-top: 5px;
-		padding:3px 0 12px 25px;
-	}
-.tdbase-sujet-edition-question-interaction .item{margin:10px 0 0 30px;}
+
+.tdbase-sujet-edition-question-interaction h2 {
+    border-bottom: 1px dotted #CCC;
+    font-size: 1.2em;
+    margin-top: 5px;
+    padding: 3px 0 12px 25px;
+}
+
+.tdbase-sujet-edition-question-interaction .item {
+    margin: 10px 0 0 30px;
+}
 
 .teste .tdbase-sujet-edition-question-points,
 .edite .tdbase-sujet-edition-question-points,
-.visualise .tdbase-sujet-edition-question-points{
-	margin-top: 15px;
-	text-align: right;
-	right: 15px;
+.visualise .tdbase-sujet-edition-question-points {
+    margin-top: 15px;
+    text-align: right;
+    right: 15px;
 }
-	.teste .tdbase-sujet-edition-question-points em,
-	.edite .tdbase-sujet-edition-question-points em,
-	.visualise .tdbase-sujet-edition-question-points em{
-		font-weight: normal;
-		font-style: normal;
-		color: #ec8e0c;
-	}
+
+.teste .tdbase-sujet-edition-question-points em,
+.edite .tdbase-sujet-edition-question-points em,
+.visualise .tdbase-sujet-edition-question-points em {
+    font-weight: normal;
+    font-style: normal;
+    color: #ec8e0c;
+}
 
 /***** Liste Sceance élève ****/
-.button.work:before{
-	content: url("../../images/eliot/picto-work.png") no-repeat 0 0;
-	position: relative;
-	top: 2px;
+.button.work:before {
+    content: url("../../images/eliot/picto-work.png") no-repeat 0 0;
+    position: relative;
+    top: 2px;
 }
-.button.voir:before{
-	content: url("../../images/eliot/picto-voir.png") no-repeat 0 0;
-	position: relative;
-	top: 2px;
+
+.button.voir:before {
+    content: url("../../images/eliot/picto-voir.png") no-repeat 0 0;
+    position: relative;
+    top: 2px;
 }
 
 /***** Aperçu Question ****/
-.edite.portal-form_container{padding-bottom: 20px;background-color: white;}
-.edite.apercu.portal-form_container{background-color: whitesmoke;}
-.edite.portal-form_container table td{padding: 2px 0;}
-.edite.portal-form_container h1{
-		padding-left: 50px;
-		padding-bottom: 10px;
-		background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
-		border-bottom: 1px dotted #ccc;
+.edite.portal-form_container {
+    padding-bottom: 20px;
+    background-color: white;
+}
+
+.edite.apercu.portal-form_container {
+    background-color: whitesmoke;
+}
+
+.edite.portal-form_container table td {
+    padding: 2px 0;
+}
+
+.edite.portal-form_container h1 {
+    padding-left: 50px;
+    padding-bottom: 10px;
+    background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
+    border-bottom: 1px dotted #ccc;
 }
 
 /* Copie visualise*/
-.visualise.portal-form_container{padding: 10px 0;margin-bottom: 25px;}
-.visualise.portal-form_container table{
-	width: 0;
-	margin-left:20px;
+.visualise.portal-form_container {
+    padding: 10px 0;
+    margin-bottom: 25px;
 }
 
-.visualise h1.tdbase-sujet-titre{
+.visualise.portal-form_container table {
+    width: 0;
+    margin-left: 20px;
+}
+
+.visualise h1.tdbase-sujet-titre {
     text-align: left;
-    padding:10px 0 4px 30px;
-	background: url("../../images/eliot/picto-sceance.png") no-repeat 0 10px;
+    padding: 10px 0 4px 30px;
+    background: url("../../images/eliot/picto-sceance.png") no-repeat 0 10px;
 }
-.visualise ul{
-	margin-left: 35px;
+
+.visualise ul {
+    margin-left: 35px;
 }
-.visualise li{
-	list-style-type: none;
-	overflow: hidden;
-	padding: 3px 0;
-	clear: both;display: block;
-	margin-left: 0;
+
+.visualise li {
+    list-style-type: none;
+    overflow: hidden;
+    padding: 3px 0;
+    clear: both;
+    display: block;
+    margin-left: 0;
 }
-.visualise .name{
-	font-weight: bold;
-	color: #666;
-	font-size: 18px;
-	border-bottom: 1px dotted #ccc;
-	margin-bottom: .5em;
-	padding-bottom: 10px;
-	text-transform: capitalize;
+
+.visualise .name {
+    font-weight: bold;
+    color: #666;
+    font-size: 18px;
+    border-bottom: 1px dotted #ccc;
+    margin-bottom: .5em;
+    padding-bottom: 10px;
+    text-transform: capitalize;
 }
-.visualise .label{
-	color: #666;
-	font-weight: bold;
-	width: 100px;
-	display: block;
-	float: left;
-	text-align: left;
+
+.visualise .label {
+    color: #666;
+    font-weight: bold;
+    width: 100px;
+    display: block;
+    float: left;
+    text-align: left;
 }
+
 .visualise .note strong,
-.visualise .notice em{color: #ec8e0c;}
+.visualise .notice em {
+    color: #ec8e0c;
+}
 
 /* Ajout item */
-.add-item{
-	margin: 20px 10px 100px;
-	width: 70%;
+.add-item {
+    margin: 20px 10px 100px;
+    width: 70%;
 }
-.add-item h1{
-		padding-left: 50px;
-		padding-bottom: 8px;
-		background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
-		border-bottom: 1px dotted #ccc;
-		margin-bottom: 10px;
+
+.add-item h1 {
+    padding-left: 50px;
+    padding-bottom: 8px;
+    background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
+    border-bottom: 1px dotted #ccc;
+    margin-bottom: 10px;
 }
-	.add-item ul{
-		margin: 0 0 45px 55px;
-		line-height: 170%;
-	}
+
+.add-item ul {
+    margin: 0 0 45px 55px;
+    line-height: 170%;
+}

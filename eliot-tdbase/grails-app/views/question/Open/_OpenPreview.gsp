@@ -25,17 +25,13 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
-
-<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
-
-
-
 <g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle} <br/>
-<g:textArea cols="55" rows="${specifobject.nombreLignesReponse}"
-            name="listeQuestions[${indexQuestion}].specifobject.correction"
-            value="Champ saisie de la réponse" disabled="true"/>
-<p>Correction&nbsp;:</p>${specifobject.correction}
+<div class="item">
+    <p class="title"><strong>${specifobject.libelle}</strong></p>
+    <g:textArea cols="55" rows="${specifobject.nombreLignesReponse}"
+                name="listeQuestions[${indexQuestion}].specifobject.correction"
+                value="Champ saisie de la réponse" disabled="true"/>
+    <br/>
+    <strong>Correction :</strong> <br/>${specifobject.correction}
+</div>
 

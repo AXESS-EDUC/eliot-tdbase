@@ -25,16 +25,14 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
+<g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
     <td class="label">Détail :</td>
     <td>
-        <g:set var="specifobject" value="${question.specificationObject}"/>
         ${specifobject.libelle} <br/>
-        ${specifobject.valeurAffichage}
-    &nbsp;&nbsp;
+        ${specifobject.valeurAffichage}<br/>
         <g:if test="${specifobject.unite}">
-            <strong>Unité :</strong>${specifobject.unite} &nbsp;&nbsp;
+            <strong>Unité :</strong>&nbsp;${specifobject.unite}</br>
         </g:if>
         <strong>Précision :</strong> ${specifobject.precisionAffichage}<br/>
         <strong>Correction :</strong> ${specifobject.correction}
