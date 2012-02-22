@@ -25,18 +25,16 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
+<g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
-  <td class="label">Détail :</td>
-  <td>
-    <g:set var="specifobject" value="${question.specificationObject}"/>
-    ${specifobject.libelle} <br/>
-    ${specifobject.valeurAffichage}
-    &nbsp;&nbsp;
-    Précision&nbsp;:&nbsp;${specifobject.precisionAffichage}<br/>
-    Valeur&nbsp;minimale&nbsp;:&nbsp;${specifobject.valeurMinAffichage}<br/>
-    Valeur&nbsp;maximale&nbsp;:&nbsp;${specifobject.valeurMaxAffichage}<br/>
-    Pas&nbsp;:&nbsp;${specifobject.pasAffichage}<br/>
-    Correction : ${specifobject.correction}
-  </td>
+    <td class="label">Détail :</td>
+    <td>
+        ${specifobject.libelle} <br/>
+        <strong>Valeur cible :</strong>${specifobject.valeurAffichage}<br/>
+        <strong>Précision :</strong>${specifobject.precisionAffichage}<br/>
+        <strong>Valeur minimale :</strong>${specifobject.valeurMinAffichage}<br/>
+        <strong>Valeur maximale :</strong>${specifobject.valeurMaxAffichage}<br/>
+        <strong>Pas :</strong>${specifobject.pasAffichage}<br/>
+        <strong>Correction :</strong> ${specifobject.correction}
+    </td>
 </tr>

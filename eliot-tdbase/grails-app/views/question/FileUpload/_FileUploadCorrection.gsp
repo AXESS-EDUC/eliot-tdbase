@@ -25,20 +25,13 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
-
-
-
-
-
-
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <div class="item">
-<g:link action="viewAttachement" controller="attachement"
+    <strong>Correction&nbsp;:</strong> <br/>
+    <g:link action="viewAttachement" controller="attachement"
             id="${specifobject.attachement.id}" target="_blank">
-      <g:message code="attachement.correction.acces"/>
- </g:link>
-  <br/>
-  	<strong>Correction :</strong> <br/>${specifobject.correction}
+        <g:message code="attachement.correction.acces"/>
+    </g:link>
+    <br/>
+    <strong>Remarque :</strong> ${specifobject.correction}
 </div>

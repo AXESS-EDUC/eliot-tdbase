@@ -25,8 +25,6 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
   <td class="label">
@@ -53,9 +51,7 @@
   </td>
 </tr>
 <tr>
-  <td class="label">
-    Correction:
-  </td>
+  <td class="label">Correction:</td>
   <td>
      <g:textArea
             name="specifobject.correction"

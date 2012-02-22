@@ -61,7 +61,7 @@
 <ul>
   <g:each status="i" in="${specifobject.icons}" var="icon">
     <li class="editIcon">
-      <span>Hotspot ${specifobject.graphicMatches.getAt(icon.id)}:</span>
+      <strong>Hotspot ${specifobject.graphicMatches.getAt(icon.id)}:</strong>
 
       <g:if test="${icon.attachmentId}">
         <et:viewAttachement attachement="${icon.attachment}" width="40" height="40"/>

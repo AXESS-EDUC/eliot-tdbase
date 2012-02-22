@@ -25,17 +25,15 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
-
-
-
 <g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle} <br/>
-<g:textField name="listeQuestions[${indexQuestion}].specifobject.valeur" value="${specifobject.valeur}" size="10" disabled="true"/>
-&nbsp;&nbsp;
-<g:if test="${specifobject.unite}">
-Unité&nbsp;:&nbsp;${specifobject.unite} &nbsp;&nbsp;
-</g:if>
-<br/>
-Correction : ${specifobject.correction}
+
+<div class="item">
+    <p class="title"><strong>${specifobject.libelle}</strong></p>
+    <g:textField name="listeQuestions[${indexQuestion}].specifobject.valeur" value="${specifobject.valeur}" size="10"
+                 disabled="true"/><br/>
+    <g:if test="${specifobject.unite}">
+        <strong>Unité :</strong>${specifobject.unite}<br/>
+    </g:if>
+
+    <strong>Correction :</strong> <br/>${specifobject.correction}
+</div>

@@ -32,14 +32,17 @@
     <td>
         ${specifobject.libelle}
         <br/>
-        Texte à trous : ${specifobject.texteATrous}
+        <strong>Texte à trous :</strong> ${specifobject.texteATrous}
 
-        Mots sugerés : <p>${specifobject.motsSugeres}</p>
+        <strong>Mots sugerés :</strong>
 
-        Presentation des troux : <p><g:if test="${specifobject.saisieLibre}">Saisie libre</g:if><g:else>Choix dans le texte</g:else></p>
-        
-        Correction : ${specifobject.correction}
-        
-        
+        <p>${specifobject.motsSugeres}</p>
+
+        <strong>Presentation des troux :</strong>
+
+        <p><g:if test="${specifobject.saisieLibre}">Saisie libre</g:if><g:else>Choix dans le texte</g:else></p>
+
+        <strong>Correction :</strong> ${specifobject.correction}
+
     </td>
 </tr>

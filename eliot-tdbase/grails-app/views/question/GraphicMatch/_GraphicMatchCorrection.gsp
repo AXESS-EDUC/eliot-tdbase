@@ -27,41 +27,41 @@
   --}%
 <r:require module="graphicMatch_CorrectionJS"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
+<div class="item">
+    <strong>Correction&nbsp;:</strong> <br/>
 
-Correction: ${specifobject.correction}
-<br>
-<br>
+    <div class="imageContainer" qualifier="correction"
+         indexReponse="${indexReponse}">
+        <g:if test="${specifobject.attachement}">
+            <et:viewAttachement attachement="${specifobject.attachement}"
+                                width="500" height="500"/>
+        </g:if>
 
-<div class="imageContainer" qualifier="correction"
-     indexReponse="${indexReponse}">
-  <g:if test="${specifobject.attachement}">
-    <et:viewAttachement attachement="${specifobject.attachement}"
-                        width="500" height="500"/>
-  </g:if>
+        <ul class="hotspots">
+            <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
+                <li topDistance="${hotspot.topDistance}"
+                    leftDistance="${hotspot.leftDistance}"
+                    id="hotspot_correction_${indexReponse}_${hotspot.id}"
+                    hotspotId="${hotspot.id}"
+                    class="hotspot">
+                </li>
+            </g:each>
+        </ul>
 
-  <ul class="hotspots">
-    <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-      <li topDistance="${hotspot.topDistance}"
-          leftDistance="${hotspot.leftDistance}"
-          id="hotspot_correction_${indexReponse}_${hotspot.id}"
-          hotspotId="${hotspot.id}"
-          class="hotspot">
-      </li>
-    </g:each>
-  </ul>
+        <ul class="icons">
+            <g:each status="i" in="${specifobject.icons}" var="icon">
 
-  <ul class="icons">
-    <g:each status="i" in="${specifobject.icons}" var="icon">
-
-      <g:if test="${icon.attachment}">
-        <li class="icon" id="icon_correction_${indexReponse}_${icon.id}">
-          <et:viewAttachement attachement="${icon.attachment}"
-                              width="40" height="40"/>
-          <span class="zoneLabel"><br>avec Zone</span>
-          <span
-                  class="hotspotSelector">${specifobject.graphicMatches[icon.id]}</span>
-        </li>
-      </g:if>
-    </g:each>
-  </ul>
+                <g:if test="${icon.attachment}">
+                    <li class="icon" id="icon_correction_${indexReponse}_${icon.id}">
+                        <et:viewAttachement attachement="${icon.attachment}"
+                                            width="40" height="40"/>
+                        <span class="zoneLabel"><br>avec Zone</span>
+                        <span
+                                class="hotspotSelector">${specifobject.graphicMatches[icon.id]}</span>
+                    </li>
+                </g:if>
+            </g:each>
+        </ul>
+    </div>
+    <strong>Remarque :</strong> ${specifobject.correction}
 </div>

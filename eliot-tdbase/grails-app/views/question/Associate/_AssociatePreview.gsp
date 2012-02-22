@@ -26,16 +26,17 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
-${specifobject.libelle}
-<br/><br/>
-<g:each status="i" in="${specifobject.associations}" var="association">
-    &nbsp;
-    <g:textField name="specifobject.associations[${i}].participant1" size="30"
-                 value="${association.participant1}" disabled="true"/>
-    &nbsp;
-    <g:textField name="specifobject.associations[${i}].participant2" size="30"
-                 value="${association.participant2}" disabled="true"/>
+<div class="item">
+    <p class="title"><strong>${specifobject.libelle}</strong></p>
+    <g:each status="i" in="${specifobject.associations}" var="association">
+        &nbsp;
+        <g:textField name="specifobject.associations[${i}].participant1" size="30"
+                     value="${association.participant1}" disabled="true"/>
+        &nbsp;
+        <g:textField name="specifobject.associations[${i}].participant2" size="30"
+                     value="${association.participant2}" disabled="true"/>
+        <br/>
+    </g:each>
     <br/>
-</g:each>
-<br/>
-Correction : ${specifobject.correction}
+    <strong>Correction :</strong> <br/>${specifobject.correction}
+</div>

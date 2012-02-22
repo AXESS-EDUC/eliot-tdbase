@@ -31,39 +31,67 @@
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
-  <td class="label">
-    Lib&eacute;ll&eacute;:
-  </td>
-  <td>
-    <g:textArea
-            name="specifobject.libelle"
-            rows="3" cols="55"
-            value="${specifobject.libelle}"
-    />
-  </td>
+    <td class="label">
+        Lib&eacute;ll&eacute;:
+    </td>
+    <td>
+        <g:textArea
+                name="specifobject.libelle"
+                rows="3" cols="55"
+                value="${specifobject.libelle}"/>
+    </td>
 </tr>
 <tr>
-  <td class="label">
-    R&eacute;ponse:
-  </td>
-  <td>
-    Valeur&nbsp;attendue&nbsp;<g:textField name="specifobject.valeur" value="${specifobject.valeurAffichage}" size="10"/>
-    &nbsp;&nbsp;Précision&nbsp;
-    <g:textField name="specifobject.precision" value="${specifobject.precisionAffichage}" size="10"/> <br/>
-    Valeur&nbsp;minimale&nbsp;<g:textField name="specifobject.valeurMin" value="${specifobject.valeurMinAffichage}" size="10"/> <br/>
-    Valeur&nbsp;maximale&nbsp;<g:textField name="specifobject.valeurMax" value="${specifobject.valeurMaxAffichage}" size="10"/><br/>
-    Pas&nbsp;<g:textField name="specifobject.pas" value="${specifobject.pasAffichage}" size="10"/>
-  </td>
+    <td class="label">
+        R&eacute;ponse:
+    </td>
+    <td>
+        <table style="float: left; width:200px;">
+            <tr>
+                <td>Valeur attendue :</td>
+                <td>
+                    <g:textField name="specifobject.valeur" value="${specifobject.valeurAffichage}" size="10"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td>Précision :</td>
+                <td>
+                    <g:textField name="specifobject.precision" value="${specifobject.precisionAffichage}" size="10"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Valeur minimale :</td>
+                <td>
+                    <g:textField name="specifobject.valeurMin" value="${specifobject.valeurMinAffichage}" size="10"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td>Valeur maximale :</td>
+                <td>
+                    <g:textField name="specifobject.valeurMax" value="${specifobject.valeurMaxAffichage}"
+                                 size="10"/><br/>
+                </td>
+
+            </tr>
+            <tr>
+                <td>Pas:</td>
+                <td>
+                    <g:textField name="specifobject.pas" value="${specifobject.pasAffichage}" size="10"/>
+                </td>
+            </tr>
+        </table>
+    </td>
 </tr>
 <tr>
-  <td class="label">
-    Correction:
-  </td>
-  <td>
-     <g:textArea
-            name="specifobject.correction"
-            rows="3" cols="55"
-            value="${specifobject.correction}"
-    />
-  </td>
+    <td class="label">
+        Correction:
+    </td>
+    <td>
+        <g:textArea
+                name="specifobject.correction"
+                rows="3" cols="55"
+                value="${specifobject.correction}"/>
+    </td>
 </tr>

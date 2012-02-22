@@ -50,10 +50,12 @@
                               model="[specifobject: specifobject]"/>
                 </td>
                 <td style="vertical-align: bottom;">
-                    <g:submitToRemote title="Ajouter une nouvelle association" value="Ajouter"
+                    <g:submitToRemote title="Ajouter une nouvelle association"
+                                      value="Ajouter"
                                       action="ajouteAssociation"
                                       controller="questionAssociate"
-                                      update="associate_reponses"/>
+                                      update="associate_reponses"
+                                      class="button"/>
                 </td>
             </tr>
         </table>

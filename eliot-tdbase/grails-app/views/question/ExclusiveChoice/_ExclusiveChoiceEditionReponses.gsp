@@ -38,7 +38,8 @@
   &nbsp;
   <g:textField size="2"  value="${reponse.rang}" name="specifobject.reponses[${i}].rang"/>
   &nbsp;
-  <g:submitToRemote id="${i}" value="Suppr" title="Supprimer la réponse" action="supprimeReponse" controller="questionExclusiveChoice" update="specifobject_reponses"/>
+  <g:submitToRemote id="${i}" value="Suppr" title="Supprimer la réponse" action="supprimeReponse"
+                    controller="questionExclusiveChoice" update="specifobject_reponses" class="button"/>
     <br/>
 </g:each>
 <g:hiddenField name="specifobject.reponses.size" value="${specifobject.reponses?.size()}"/>

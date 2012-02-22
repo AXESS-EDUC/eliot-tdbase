@@ -28,11 +28,12 @@
 
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<br/>
-Correction&nbsp;: <br/>
-<g:each in="${specifobject.reponses}" var="reponse" status="i">
-  <g:if test="${specifobject.indexBonneReponse == i}">
-    ${reponse.libelleReponse}<br/>
-  </g:if>
-</g:each>
-Remarque : ${specifobject.correction}
+<div class="item">
+    <strong>Correction&nbsp;:</strong> <br/>
+    <g:each in="${specifobject.reponses}" var="reponse" status="i">
+        <g:if test="${specifobject.indexBonneReponse == i}">
+            ${reponse.libelleReponse}<br/>
+        </g:if>
+    </g:each>
+    <strong>Remarque :</strong> ${specifobject.correction}
+</div>

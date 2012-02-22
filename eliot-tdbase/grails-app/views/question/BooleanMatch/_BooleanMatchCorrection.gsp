@@ -27,8 +27,9 @@
   --}%
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<br/>
-Correction : <br/>
-${specifobject.reponses}
-<br/>
-Remarque : ${specifobject.correction}
+<div class="item">
+    <strong>Correction&nbsp;:</strong> <br/>
+    ${specifobject.reponses}
+    <br/>
+    <strong>Remarque :</strong> ${specifobject.correction}
+</div>

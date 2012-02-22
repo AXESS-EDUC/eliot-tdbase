@@ -29,8 +29,8 @@
 <r:require module="fillGraphics_PreviewJS"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
-${specifobject.libelle}
-<br/>
+<div class="item">
+	<p class="title"><strong>${specifobject.libelle}</strong></p>
 
 <div class="fillgraphicsEditor">
     <g:if test="${specifobject.attachmentId}">
@@ -59,4 +59,5 @@ ${specifobject.libelle}
 </g:else>
 
 <br/>
-Correction : ${specifobject.correction}
+    <strong>Correction :</strong> <br/>${specifobject.correction}
+</div>

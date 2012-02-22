@@ -25,7 +25,6 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
 <tr>
   <td class="label">Détail :</td>
   <td>
@@ -35,7 +34,6 @@
                 id="${specifobject.attachement.id}" target="_blank">
           <g:message code="attachement.correction.acces"/>
      </g:link> <br/>
-    Correction&nbsp;:<br/>
-    ${specifobject.correction}
+      <strong>Correction :</strong> ${specifobject.correction}
   </td>
 </tr>

@@ -32,11 +32,11 @@
     &nbsp;
 
     <g:select name="specifobject.orderedItems[${i}].ordinal" value="${orderedItem.ordinal}"
-              from="${specifobject.selectableOrdinalList}"/>
+              from="${specifobject.selectableOrdinalList}" style="width: 3em;"/>
 
     &nbsp;
     <g:submitToRemote id="${i}" value="Suppr" title="Supprimer l'element" action="supprimeItem"
-                      controller="questionOrder" update="order_reponses"/>
+                      controller="questionOrder" update="order_reponses" class="button"/>
     <br/>
 </g:each>
 

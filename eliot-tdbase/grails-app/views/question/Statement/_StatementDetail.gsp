@@ -25,11 +25,8 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
-
 <tr>
-    <td class="label" style="vertical-align: top;">Énoncé :</td>
+    <td class="label">Énoncé :</td>
     <td>
         ${question.specificationObject.enonce}
     </td>

@@ -51,22 +51,19 @@
         R&eacute;ponse(s):
     </td>
     <td>
-
-        <table>
-            <tr>
-                <td id="order_reponses">
-                    <g:render template="/question/Order/OrderEditionReponses"
-                              model="[specifobject:specifobject]"/>
-                </td>
-                <td style="vertical-align: bottom;">
-                    <g:submitToRemote title="Ajouter un nouveau element" value="Ajouter"
-                                      action="ajouteItem"
-                                      controller="questionOrder"
-                                      update="order_reponses"/>
-                </td>
-            </tr>
-        </table>
-
+        <ul>
+            <li id="order_reponses" style="list-style: none">
+                <g:render template="/question/Order/OrderEditionReponses"
+                          model="[specifobject: specifobject]"/>
+            </li>
+            <li style="list-style: none;">
+                <g:submitToRemote title="Ajouter un nouveau element" value="Ajouter"
+                                  action="ajouteItem"
+                                  controller="questionOrder"
+                                  update="order_reponses"
+                                  class="button"/>
+            </li>
+        </ul>
     </td>
 </tr>
 <tr>

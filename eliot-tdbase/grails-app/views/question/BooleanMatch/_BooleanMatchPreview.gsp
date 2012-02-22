@@ -26,13 +26,14 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<span class="label">Libellé:</span> ${specifobject.libelle}  <br/>
-<span class="label">Réponse:</span> ${specifobject.reponses} <br/>
-<g:if test="${specifobject.toutOuRien}">
-    <span class="label">Mode d'evalutation :</span> Tout ou rien.
-</g:if>
-<g:else>
-    <span class="label">Mode d'evalutation :</span> par défaut.
-</g:else>
-<br>
-<span class="label">Correction :</span> ${specifobject.correction}
+<div class="item">
+    <p class="title"><strong>${specifobject.libelle}</strong></p>
+    <strong>Réponse:</strong> ${specifobject.reponses} <br/>
+    <g:if test="${specifobject.toutOuRien}">
+        <strong>Mode d'evalutation :</strong> Tout ou rien.
+    </g:if>
+    <g:else>
+        <strong>Mode d'evalutation :</strong> par défaut.
+    </g:else><br/>
+    <strong>Correction :</strong> <br/>${specifobject.correction}
+</div>

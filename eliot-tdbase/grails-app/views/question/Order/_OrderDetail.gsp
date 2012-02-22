@@ -41,7 +41,6 @@
                          value="${orderedItem.ordinal}" disabled="true"/>
             <br/>
         </g:each>
-
-        Correction : ${specifobject.correction}
+        <strong>Correction :</strong> ${specifobject.correction}
     </td>
 </tr>

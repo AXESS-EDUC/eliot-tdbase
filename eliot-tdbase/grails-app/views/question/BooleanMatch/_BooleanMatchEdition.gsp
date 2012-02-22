@@ -25,8 +25,6 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
   <td class="label">
@@ -53,9 +51,8 @@
         </td>
         <td style="vertical-align: bottom;">
           <g:submitToRemote title="Ajouter une réponse possible" value="Ajouter"
-                            action="ajouteReponse"
-                            controller="questionBooleanMatch"
-                            update="specifobject_reponses"/>
+                            action="ajouteReponse" controller="questionBooleanMatch"
+                            update="specifobject_reponses" class="button"/>
         </td>
       </tr>
     </table>

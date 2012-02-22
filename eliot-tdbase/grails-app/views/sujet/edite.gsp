@@ -151,7 +151,7 @@
   <g:each in="${sujet.questionsSequences}" var="sujetQuestion"
           status="indexQuestion">
     <div class="tdbase-sujet-edition-question">
-    	<h1>Question ${indexQuestion}</h1>
+    	<h1>Question ${indexQuestion+1}</h1>
 
       <button id="${sujetQuestion.id}">Actions</button>
       <ul id="menu_actions_${sujetQuestion.id}"

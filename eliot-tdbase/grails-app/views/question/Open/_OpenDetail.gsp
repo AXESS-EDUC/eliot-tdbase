@@ -25,17 +25,11 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
-
-
-
+<g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
-  <td class="label">Détail :</td>
-  <td>
-    <g:set var="specifobject" value="${question.specificationObject}"/>
-    ${specifobject.libelle} <br/>
-    Correction&nbsp;:<br/>
-    ${specifobject.correction}
-  </td>
+    <td class="label">Détail :</td>
+    <td>
+        ${specifobject.libelle} <br/>
+        <strong>Correction :</strong> ${specifobject.correction}
+    </td>
 </tr>

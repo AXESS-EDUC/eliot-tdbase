@@ -26,14 +26,13 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
-
-${specifobject.libelle}
-<br/><br/>
-<g:each status="i" in="${specifobject.orderedItems}" var="orderedItem">
-    &nbsp;
-    <g:textField name="specifobject.orderedItems[${i}].text" size="50"
-                 value="${orderedItem.text}" disabled="true"/>
-    <br/>
-</g:each>
-<br/>
-Correction : ${specifobject.correction}
+<div class="item">
+    <p class="title"><strong>${specifobject.libelle}</strong></p>
+    <g:each status="i" in="${specifobject.orderedItems}" var="orderedItem">
+        &nbsp;
+        <g:textField name="specifobject.orderedItems[${i}].text" size="50"
+                     value="${orderedItem.text}" disabled="true"/>
+        <br/>
+    </g:each>
+    <br/><strong>Correction :</strong> <br/>${specifobject.correction}
+</div>
