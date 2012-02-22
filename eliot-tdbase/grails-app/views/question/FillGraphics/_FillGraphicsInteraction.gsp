@@ -31,10 +31,8 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-<h2>${specifobject.libelle}</h2>
-
-
 <div class="item">
+    <p class="title"><strong>${specifobject.libelle}</strong></p>
     <div class="fillgraphicsEditor">
         <g:if test="${specifobject.attachmentId}">
             <div class="imageContainer">

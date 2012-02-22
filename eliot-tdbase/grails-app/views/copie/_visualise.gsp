@@ -28,91 +28,94 @@
 
 <%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 
-
 <g:set var="sujet" value="${copie.sujet}"/>
 <div class="portal-form_container corrige visualise">
-	<ul>
-		<li class="name">${copie.eleve.nomAffichage}</li>
-		<li class="notice"><span class="label">Appréciation :</span><em>${copie.correctionAnnotation}</em></li>
-		<li><span class="label">Modulation :</span>  ${NumberUtils.formatFloat(copie.pointsModulation)}</li>
-		<li class="note"><span class="label">Note :</span>	  <strong>${NumberUtils.formatFloat(copie.correctionNoteFinale)}</strong> / ${NumberUtils.formatFloat(copie.maxPoints)}</li>
-	</ul>
-	
+    <ul>
+        <li class="name">${copie.eleve.nomAffichage}</li>
+        <li class="notice"><span class="label">Appréciation :</span><em>${copie.correctionAnnotation}</em></li>
+        <li><span class="label">Modulation :</span>  ${NumberUtils.formatFloat(copie.pointsModulation)}</li>
+        <li class="note"><span
+                class="label">Note :</span>      <strong>${NumberUtils.formatFloat(copie.correctionNoteFinale ?: 0)}</strong> / ${NumberUtils.formatFloat(copie.maxPoints ?: 0)}
+        </li>
+    </ul>
+
 </div>
 
 <g:if test="${copie.modaliteActivite.estOuverte()}">
-  <g:if test="${copie.dateRemise}">
-    <div class="portal-messages notice">
-      Note (correction automatique) :
-      <g:formatNumber number="${copie.correctionNoteAutomatique}"
-                      format="##0.00"/>
-      / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
-      &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
-    </div>
-  </g:if>
-  <g:if test="${!copie.estModifiable()}">
-    <div class="portal-messages notice">
-      La copie n'est plus modifiable.
-    </div>
-  </g:if>
+    <g:if test="${copie.dateRemise}">
+        <div class="portal-messages notice">
+            Note (correction automatique) :
+            <g:formatNumber number="${copie.correctionNoteAutomatique}"
+                            format="##0.00"/>
+            / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
+            &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+        </div>
+    </g:if>
+    <g:if test="${!copie.estModifiable()}">
+        <div class="portal-messages notice">
+            La copie n'est plus modifiable.
+        </div>
+    </g:if>
 </g:if>
 <form method="post" class="visualise">
 
-  <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
-  <g:set var="indexReponse" value="0"/>
-  <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
-    <div class="tdbase-sujet-edition-question">
-      <g:if test="${sujetQuestion.question.type.interaction}">
-        <g:set var="reponse"
-               value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
+    <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
+    <g:set var="indexReponse" value="0"/>
+    <g:each in="${sujet.questionsSequences}" var="sujetQuestion" status="i">
+        <div class="tdbase-sujet-edition-question">
+            <g:if test="${sujetQuestion.question.type.interaction}">
+                <g:set var="reponse"
+                       value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
+                <h1>Question ${i + 1}</h1>
 
-        <div class="tdbase-sujet-edition-question-points">
-          <div id="SujetSequenceQuestions-${sujetQuestion.id}">
-            <g:if test="${reponse}">
-              <g:if test="${reponse.estEnNotationManuelle()}">
-                <em><g:formatNumber number="${reponse.correctionNoteCorrecteur}"
-                                format="##0.00"/></em>
-              </g:if>
-              <g:else>
-                <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
-                                format="##0.00"/></em>
-              </g:else>
+                <div class="tdbase-sujet-edition-question-points">
+                    <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+                        <g:if test="${reponse}">
+                            <g:if test="${reponse.estEnNotationManuelle()}">
+                                <em><g:formatNumber number="${reponse.correctionNoteCorrecteur}"
+                                                    format="##0.00"/></em>
+                            </g:if>
+                            <g:else>
+                                <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                                                    format="##0.00"/></em>
+                            </g:else>
+                        </g:if>
+                        <g:else>
+                            <span title="Copie rendue après ajout de cette question.">Non&nbsp;notée&nbsp;</span>
+                        </g:else>
+                    &nbsp;/&nbsp;<strong><g:formatNumber number="${sujetQuestion.points}"
+                                                         format="##0.00"/>&nbsp;point(s)</strong>
+                    </div>
+
+                </div>
+            </g:if>
+            <g:set var="question" value="${sujetQuestion.question}"/>
+
+            <g:if test="${question.type.interaction}">
+                <div class="tdbase-sujet-edition-question-interaction correction_copie">
+                    <g:render
+                            template="/question/${question.type.code}/${question.type.code}Interaction"
+                            model="[question: question, reponse: reponse, indexReponse: indexReponse++]"/>
+
+                    <g:if test="${copie.modaliteActivite.estPerimee()}">
+                        <g:render
+                                template="/question/${question.type.code}/${question.type.code}Correction"
+                                model="[question: question]"/>
+                    </g:if>
+                </div>
             </g:if>
             <g:else>
-              <span title="Copie rendue après ajout de cette question.">Non&nbsp;notée&nbsp;</span>
+                <h1>&nbsp; ${question.type.nom}</h1>
+
+                <div class="tdbase-sujet-edition-question-interaction correction_copie">
+                    <g:render template="/question/${question.type.code}/${question.type.code}Preview"
+                              model="[question: question]"/>
+                </div>
             </g:else>
-            &nbsp;/&nbsp;<strong><g:formatNumber number="${sujetQuestion.points}"
-                                       format="##0.00"/>&nbsp;point(s)</strong>
-          </div>
-          
+
         </div>
-      </g:if>
-      <g:set var="question" value="${sujetQuestion.question}"/>
-      <div class="tdbase-sujet-edition-question-interaction">
-        <g:if test="${question.type.interaction}">
 
-          <g:render
-                  template="/question/${question.type.code}/${question.type.code}Interaction"
-                  model="[question: question, reponse: reponse, indexReponse: indexReponse++]"/>
-
-          <g:if test="${copie.modaliteActivite.estPerimee()}">
-            <g:render
-                    template="/question/${question.type.code}/${question.type.code}Correction"
-                    model="[question: question]"/>
-          </g:if>
-
-        </g:if>
-        <g:else>
-
-          <g:render
-                  template="/question/${question.type.code}/${question.type.code}Preview"
-                  model="[question: question]"/>
-
-        </g:else>
-      </div>
-    </div>
-
-  </g:each>
+    </g:each>
 
 </form>
 

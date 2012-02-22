@@ -63,9 +63,9 @@
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
 <div id="associateQuestion_${indexReponse}" class="associateQuestion" index="${indexReponse}">
-    <h2>${questionspecifobject.libelle}</h2>
 
     <div class="item">
+        <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
         <table>
             <g:each status="i" in="${questionspecifobject.associations}"
                     var="association">

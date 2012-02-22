@@ -29,33 +29,35 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 <g:set var="index" value="0"/>
-<h2>${questionspecifobject.libelle}</h2>
+
 <div class="item">
-<g:each in="${questionspecifobject.texteATrousStructure}" var="texteATrouElement" status="i">
-    &nbsp;
+    <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
+    <g:each in="${questionspecifobject.texteATrousStructure}" var="texteATrouElement" status="i">
+        &nbsp;
 
-    <g:if test="${texteATrouElement.isTextElement()}">
-        ${texteATrouElement.valeur}
-    </g:if>
-    <g:else>
-
-        <g:if test="${questionspecifobject.saisieLibre}">
-
-            <g:textField value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
-                         name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"/>
+        <g:if test="${texteATrouElement.isTextElement()}">
+            ${texteATrouElement.valeur}
         </g:if>
         <g:else>
-            <g:select name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"
-                      from="${texteATrouElement.valeur*.text}"
-                      value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
-                      noSelection="['': 'Faite votre choix']"/>
-        </g:else>
-        <g:set var="index" value="${index.toInteger() + 1}"/>
-    </g:else>
-</g:each>
 
-<br>
-<g:if test="${questionspecifobject.montrerLesMots}">
-    Mots sugeres : ${questionspecifobject.motsSugeres}
-</g:if>
+            <g:if test="${questionspecifobject.saisieLibre}">
+
+                <g:textField value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
+                             name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"/>
+            </g:if>
+            <g:else>
+                <g:select
+                        name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"
+                        from="${texteATrouElement.valeur*.text}"
+                        value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
+                        noSelection="['': 'Faite votre choix']"/>
+            </g:else>
+            <g:set var="index" value="${index.toInteger() + 1}"/>
+        </g:else>
+    </g:each>
+
+    <br>
+    <g:if test="${questionspecifobject.montrerLesMots}">
+        Mots sugeres : ${questionspecifobject.motsSugeres}
+    </g:if>
 </div>

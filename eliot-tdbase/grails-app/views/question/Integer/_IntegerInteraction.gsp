@@ -25,15 +25,11 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
-
-
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
-<h2>${questionspecifobject.libelle}</h2>
 
 <div class="item">
+    <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
     <g:textField name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse"
                  value="${reponsespecifobject?.valeurReponse}" size="10"/>
     &nbsp;&nbsp;
