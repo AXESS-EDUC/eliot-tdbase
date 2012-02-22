@@ -30,6 +30,21 @@
 <head>
     <meta name="layout" content="eliot-tdbase"/>
     <r:require module="seanceCopie_CorrigeJS"/>
+    <r:script>
+    $(document).ready(function () {
+        $(".editinplace").editInPlace({
+            url:"${g.createLink(controller: 'seance', action: 'updateReponseNote')}",
+            success:function (jsonRes) {
+                var res = JSON.parse(jsonRes);
+                var eltId = "#" + res[0];
+                $(eltId).html(res[1]);
+                if (res.length > 2) {
+                    $("#copie_note_finale").html(res[2]);
+                }
+            }
+        });
+    });
+      </r:script>
     <title>TDBase - Edition d'une copie</title>
 </head>
 
@@ -107,7 +122,7 @@
 
 <div class="correction_copie">
     <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
-    <g:set var="indexReponseNonVide" value="0"/>
+    <g:set var="indexReponseNonVide" value="${0}"/>
   <g:each in="${copie.reponses}" var="reponse">
       <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
         <div class="tdbase-sujet-edition-question">

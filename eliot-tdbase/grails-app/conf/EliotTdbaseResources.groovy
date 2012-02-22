@@ -126,7 +126,7 @@ modules = {
     }
 
     seanceCopie_VisualiseJS {
-        dependsOn "fillGraphics_Common"
+        dependsOn "seanceCopie_Common"
         resource url: [dir: 'js/seance/copie', file: 'visualise.js']
     }
 }
