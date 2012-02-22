@@ -59,13 +59,11 @@
 <form method="post" class="visualise">
 
   <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
-  <g:set var="indexReponse" value="0"/>
-  <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
+  <g:set var="indexReponseNonVide" value="0"/>
+  <g:each in="${copie.reponses}" var="reponse">
+    <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
     <div class="tdbase-sujet-edition-question">
       <g:if test="${sujetQuestion.question.type.interaction}">
-        <g:set var="reponse"
-               value="${copie.getReponseForSujetQuestion(sujetQuestion)}"/>
-
         <div class="tdbase-sujet-edition-question-points">
           <div id="SujetSequenceQuestions-${sujetQuestion.id}">
             <g:if test="${reponse}">
@@ -93,7 +91,7 @@
 
           <g:render
                   template="/question/${question.type.code}/${question.type.code}Interaction"
-                  model="[question: question, reponse: reponse, indexReponse: indexReponse++]"/>
+                  model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide++]"/>
 
           <g:if test="${copie.modaliteActivite.estPerimee()}">
             <g:render

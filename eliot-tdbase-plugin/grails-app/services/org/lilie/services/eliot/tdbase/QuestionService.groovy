@@ -39,7 +39,6 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.transaction.annotation.Transactional
 import static org.lilie.services.eliot.tdbase.QuestionTypeEnum.*
-import org.hibernate.SessionFactory
 
 /**
  * Service de gestion des questions
@@ -89,27 +88,27 @@ class QuestionService implements ApplicationContextAware {
   }
 
   /**
-     * Créé une question composite correspondant à un exercice
-     * @param sujet l'exercice
-     * @param proprietaire le proprietaire
-     * @return la question créée
-     */
-    @Transactional
-    Question createQuestionCompositeForExercice(Sujet exercice, Personne proprietaire) {
-      Question question = new Question(
-              proprietaire: proprietaire,
-              titreNormalise: exercice.titreNormalise,
-              publie: false,
-              versionQuestion: 1,
-              copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
-              specification: "{}"
-      )
-      question.properties = exercice.properties
-      question.type = QuestionTypeEnum.Composite.questionType
-      question.exercice = exercice
-      question.save(flush: true)
-      return question
-    }
+   * Créé une question composite correspondant à un exercice
+   * @param sujet l'exercice
+   * @param proprietaire le proprietaire
+   * @return la question créée
+   */
+  @Transactional
+  Question createQuestionCompositeForExercice(Sujet exercice, Personne proprietaire) {
+    Question question = new Question(
+            proprietaire: proprietaire,
+            titreNormalise: exercice.titreNormalise,
+            publie: false,
+            versionQuestion: 1,
+            copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
+            specification: "{}"
+    )
+    question.properties = exercice.properties
+    question.type = QuestionTypeEnum.Composite.questionType
+    question.exercice = exercice
+    question.save(flush: true)
+    return question
+  }
 
   /**
    * Recopie une question dans un sujet
@@ -247,7 +246,7 @@ class QuestionService implements ApplicationContextAware {
     // supprimer les attachements si nécessaire
     def questionAttachements = QuestionAttachement.findAllByQuestion(laQuestion)
     questionAttachements.each {
-       questionAttachementService.deleteQuestionAttachement(it)
+      questionAttachementService.deleteQuestionAttachement(it)
     }
 
     // supprimer la publication si nécessaire
@@ -259,26 +258,26 @@ class QuestionService implements ApplicationContextAware {
   }
 
   /**
-     * Supprime une question composite
-     * @param question la question à supprimer
-     * @param supprimeur la personne tentant la suppression
-     */
-    @Transactional
-    def supprimeQuestionComposite(Question laQuestion, Personne supprimeur) {
-      assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
-              supprimeur, laQuestion) && laQuestion.estComposite())
+   * Supprime une question composite
+   * @param question la question à supprimer
+   * @param supprimeur la personne tentant la suppression
+   */
+  @Transactional
+  def supprimeQuestionComposite(Question laQuestion, Personne supprimeur) {
+    assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
+            supprimeur, laQuestion) && laQuestion.estComposite())
 
-      // supression des réponses et des sujetQuestions
-      def sujetQuestions = SujetSequenceQuestions.findAllByQuestion(laQuestion)
-      sujetQuestions.each {
-        sujetService.supprimeQuestionFromSujet(it, supprimeur)
-      }
-      // on ne supprime pas les attachements (il n'y en a pas)
-      // on ne supprime pas la publication, elle est attachée au sujey si
-      // il y en une
-
-      laQuestion.delete()
+    // supression des réponses et des sujetQuestions
+    def sujetQuestions = SujetSequenceQuestions.findAllByQuestion(laQuestion)
+    sujetQuestions.each {
+      sujetService.supprimeQuestionFromSujet(it, supprimeur)
     }
+    // on ne supprime pas les attachements (il n'y en a pas)
+    // on ne supprime pas la publication, elle est attachée au sujey si
+    // il y en une
+
+    laQuestion.delete()
+  }
 
   /**
    *  Partage une question
@@ -314,21 +313,21 @@ class QuestionService implements ApplicationContextAware {
   }
 
   /**
-     *  Partage une question
-     * @param laQuestion la question à partager
-     * @param partageur la personne souhaitant partager
-     */
-    @Transactional
-    def partageQuestionComposite(Question laQuestion, Personne partageur) {
-      assert (artefactAutorisationService.utilisateurPeutPartageArtefact(
-              partageur, laQuestion) && laQuestion.estComposite())
-      def exercice = laQuestion.exercice
-      laQuestion.copyrightsType = exercice.copyrightsType
-      laQuestion.publication = exercice.publication
-      laQuestion.publie = true
-      laQuestion.paternite = exercice.paternite
-      laQuestion.save()
-    }
+   *  Partage une question
+   * @param laQuestion la question à partager
+   * @param partageur la personne souhaitant partager
+   */
+  @Transactional
+  def partageQuestionComposite(Question laQuestion, Personne partageur) {
+    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(
+            partageur, laQuestion) && laQuestion.estComposite())
+    def exercice = laQuestion.exercice
+    laQuestion.copyrightsType = exercice.copyrightsType
+    laQuestion.publication = exercice.publication
+    laQuestion.publie = true
+    laQuestion.paternite = exercice.paternite
+    laQuestion.save()
+  }
 
   /**
    * Recherche de questions
@@ -462,7 +461,8 @@ class QuestionService implements ApplicationContextAware {
             FillGraphics.questionType,
             Open.questionType,
             FileUpload.questionType,
-            BooleanMatch.questionType
+            BooleanMatch.questionType,
+            Composite.questionType
     ]
   }
 
@@ -478,5 +478,12 @@ class QuestionService implements ApplicationContextAware {
     ]
   }
 
+  /**
+   *
+   * @return la liste des types de questions à interaction supportes par tdbase
+   */
+  List<QuestionType> getTypesQuestionsInteractionSupportesPourCreation() {
+    typesQuestionsInteractionSupportes - Composite.questionType
+  }
 
 }

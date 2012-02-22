@@ -74,7 +74,6 @@
         <td class="label">Type&nbsp;:</td>
         <td>
           <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
-                    noSelection="${['null': 'Sélectionner un type...']}"
                     from="${typesSujet}"
                     optionKey="id"
                     optionValue="nom"/>

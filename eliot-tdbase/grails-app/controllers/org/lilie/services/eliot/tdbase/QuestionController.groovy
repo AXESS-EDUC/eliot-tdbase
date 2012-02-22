@@ -53,7 +53,7 @@ class QuestionController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
     [
             liens: breadcrumpsService.liens,
-            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes
+            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation
     ]
   }
 

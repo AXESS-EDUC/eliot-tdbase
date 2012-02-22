@@ -374,7 +374,8 @@ class SujetController {
     [
             sujet: sujet,
             liens: breadcrumpsService.liens,
-            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes
+            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes,
+            typesQuestionSupportesPourCreation: questionService.typesQuestionsInteractionSupportesPourCreation
     ]
   }
 

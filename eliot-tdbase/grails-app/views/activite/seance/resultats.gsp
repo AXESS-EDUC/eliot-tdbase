@@ -57,8 +57,8 @@
 		  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
 		  	<h1> ${seance.sujet.titre}</h1>
 		  
-		  	<g:link action="travailleCopie" controller="activite" class="button voir" 
-		  	        id="${seance.id}" title="Visualiser la copie">
+		  	<g:link action="visualiseCopie" controller="activite" class="button voir"
+		  	        id="${copie.id}" title="Visualiser la copie">
 		  	</g:link>
 		  	
 		  	<p><strong> » Note : </strong><b><g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" /></b>

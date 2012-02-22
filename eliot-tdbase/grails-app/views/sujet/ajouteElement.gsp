@@ -74,7 +74,7 @@
         Une question de type <g:select name="questionTypeId"
                                        id="select_creation"
                                        noSelection="${['null': 'Sélectionnez...']}"
-                                       from="${typesQuestionSupportes}"
+                                       from="${typesQuestionSupportesPourCreation}"
                                        optionKey="id"
                                        optionValue="nom"/>
       </g:form>
