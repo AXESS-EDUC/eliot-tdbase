@@ -79,7 +79,12 @@ class Sujet implements Artefact {
 
   Integer rangInsertion
 
-  static transients = ['rangInsertion', 'estUnExercice','questionComposite']
+  static transients = [
+          'rangInsertion',
+          'estUnExercice',
+          'questionComposite',
+          'estInvariant'
+  ]
 
   static constraints = {
     titre(blank: false, nullable: false)
@@ -165,6 +170,15 @@ class Sujet implements Artefact {
    */
   boolean estPartage() {
     return publication != null
+  }
+
+  /**
+   *
+   * @return true si le sujet est invariant
+   * @see Artefact
+   */
+  boolean estInvariant() {
+    return false
   }
 
 

@@ -102,7 +102,12 @@ class Question implements Artefact {
     questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
   }
 
-  static transients = ['questionService', 'specificationObject', 'estEnNotationManuelle']
+  static transients = [
+          'questionService',
+          'specificationObject',
+          'estEnNotationManuelle',
+          'estInvariant'
+  ]
 
   /**
    *
@@ -182,6 +187,15 @@ class Question implements Artefact {
    */
   boolean estPartage() {
     return publication != null
+  }
+
+  /**
+   *
+   * @return  true si la question est invariante
+   * @see Artefact
+   */
+  boolean estInvariant() {
+    return estComposite()
   }
 
 }

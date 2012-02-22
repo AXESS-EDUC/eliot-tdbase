@@ -52,6 +52,9 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutSupprimerArtefact(Personne utilisateur, Artefact artefact) {
+    if (artefact.estInvariant()) {
+      return false
+    }
     return utilisateurPeutModifierArtefact(utilisateur, artefact)
   }
 
@@ -62,6 +65,9 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutModifierArtefact(Personne utilisateur, Artefact artefact) {
+    if (artefact.estInvariant()) {
+      return false
+    }
     if (utilisateur != artefact.proprietaire) {
       return false
     }
@@ -75,6 +81,9 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutMasquerArtefact(Personne utilisateur, Artefact artefact) {
+    if (artefact.estInvariant()) {
+      return false
+    }
     return utilisateur == artefact.proprietaire
   }
 
@@ -85,6 +94,9 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutDupliquerArtefact(Personne utilisateur, Artefact artefact) {
+    if (artefact.estInvariant()) {
+      return false
+    }
     return utilisateurPeutReutiliserArtefact(utilisateur, artefact)
   }
 
@@ -95,6 +107,9 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutPartageArtefact(Personne utilisateur, Artefact artefact) {
+    if (artefact.estInvariant()) {
+      return false
+    }
     if (artefact.estPartage()) {
       return false
     }
