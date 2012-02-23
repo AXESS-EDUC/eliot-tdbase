@@ -88,7 +88,11 @@ class Sujet implements Artefact {
 
   static constraints = {
     titre(blank: false, nullable: false)
-    sujetType(nullable: true)
+    sujetType(nullable: true, validator: { val, obj ->
+       if (val == SujetTypeEnum.Exercice.sujetType && obj.possedeUneQuestionComposite()) {
+         return ['exerciceavecquestioncomposite']
+       }
+    })
     etablissement(nullable: true)
     matiere(nullable: true)
     niveau(nullable: true)
@@ -135,6 +139,14 @@ class Sujet implements Artefact {
    */
   List<Question> getQuestions() {
     questionsSequences*.question
+  }
+
+  /**
+   *
+   * @return true si le sujet possede une question composite
+   */
+  boolean possedeUneQuestionComposite() {
+    return questions.count { it.estComposite() } > 0
   }
 
   /**
