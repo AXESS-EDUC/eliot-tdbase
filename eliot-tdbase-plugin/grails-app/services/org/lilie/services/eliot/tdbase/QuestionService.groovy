@@ -294,9 +294,7 @@ class QuestionService implements ApplicationContextAware {
                                Niveau niveau,
                                QuestionType questionType,
                                Map paginationAndSortingSpec = null) {
-    // todofsil : gerer les index de manière efficace couplée avec présentation
-    // paramètre de recherche ad-hoc
-    if (!chercheur) {
+     if (!chercheur) {
       throw new IllegalArgumentException("question.recherche.chercheur.null")
     }
     if (paginationAndSortingSpec == null) {

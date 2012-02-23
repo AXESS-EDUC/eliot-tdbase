@@ -182,19 +182,21 @@ class SujetService {
   def supprimeSujet(Sujet leSujet, Personne supprimeur) {
     assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
             supprimeur, leSujet))
+
+    // si le sujet est un exercice, suppression de la question associée
+    def question = leSujet.questionComposite
+    if (question) {
+      supprimeQuestionComposite(question, supprimeur)
+    }
     // suppression des copies jetables attachees au sujet
     copieService.supprimeCopiesJetablesForSujet(leSujet)
+
     // suppression des sujetQuestions
     def sujetQuests = SujetSequenceQuestions.where {
       sujet == leSujet
     }
     sujetQuests.deleteAll()
-    // si le sujet est un exercice, suppression de la question associée
-    // si le sujet est un exercice, partage de la question associee
-    def question = leSujet.questionComposite
-    if (question) {
-      supprimeQuestionComposite(question, supprimeur)
-    }
+
     // suppression de la publication si necessaire
     if (leSujet.estPartage()) {
       leSujet.publication.delete()
@@ -274,8 +276,6 @@ class SujetService {
                          Niveau niveau,
                          SujetType sujetType,
                          Map paginationAndSortingSpec = null) {
-    // todofsil : gerer les index de manière efficace couplée avec présentation
-    // paramètre de recherche ad-hoc
     if (!chercheur) {
       throw new IllegalArgumentException("sujet.recherche.chercheur.null")
     }
@@ -496,8 +496,6 @@ class SujetService {
     }
     def question = sujetQuestion.question
     if (question.estComposite()) {
-      // todofsil gerer proprement la sortie de la question composite du 
-      // sujet
       def exercice = question.exercice
       def questSujts = []
       questSujts.addAll(exercice.questionsSequences)
