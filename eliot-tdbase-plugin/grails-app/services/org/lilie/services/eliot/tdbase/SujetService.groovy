@@ -375,6 +375,7 @@ class SujetService {
     // verif securite
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
     assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(proprietaire, question))
+    assert (!insertionQuestionCompositeInExercice(question,leSujet))
 
     if (!question.estPartage() && leSujet.estPartage()) {
       questionService.partageQuestion(question, proprietaire)
@@ -598,6 +599,20 @@ class SujetService {
 
     laQuestion.save(flush: true)
     return laQuestion
+  }
+
+  /**
+   * Indique si la question à insérer dans le sujet est une question composite
+   * à insérer dans un sujet de type  exercice
+   * @param question la question à insérer
+   * @param sujet le sujet
+   * @return  true si la question est composite et le sujet est un exercice
+   */
+  private boolean insertionQuestionCompositeInExercice(Question question, Sujet sujet) {
+    if (question.estComposite() && sujet.estUnExercice()) {
+      return true
+    }
+    return false
   }
 
 }
