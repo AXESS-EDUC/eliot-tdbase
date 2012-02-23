@@ -50,7 +50,6 @@ class ReponseExclusiveChoiceSpecificationService extends ReponseSpecificationSer
     def specObj = questionSpecification
 
     return createSpecification(indexBonneReponse: specObj.indexBonneReponse,
-                               indexReponse: specObj.indexBonneReponse,
                                numberReponsesPossibles: specObj.reponses.size())
   }
 }

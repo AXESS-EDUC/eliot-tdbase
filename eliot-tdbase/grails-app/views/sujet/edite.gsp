@@ -101,8 +101,10 @@
 <g:else>
   <div class="portal-tabs" style="text-align: left">
     <span class="portal-tabs-famille-liens">
-      Ajouter un item |
-      Modifier les propriétés du sujet|
+      <span class="add">Ajouter un item</span> |
+      <span class="modify">Modifier les propriétés du sujet</span>
+    </span>
+    <span class="portal-tabs-famille-liens">
       <button id="sujet_nouveau">Actions</button>
       <ul id="menu_actions_sujet_nouveau"
           class="tdbase-menu-actions">
@@ -140,103 +142,106 @@
 </g:if>
 <form method="post">
   <div class="portal-form_container edite">
-  	<span class="title">Titre :</span> <g:textField name="sujetTitre" value="${titreSujet}" size="80"/> <g:actionSubmit action="enregistre" value="Enregistrer" class="button"/>
-    <g:if test="${sujetEnEdition}">
-      <g:hiddenField name="sujetId" value="${sujet.id}"/>
-    </g:if>
+    <span class="title">Titre :</span> <g:textField name="sujetTitre"
+                                                    value="${titreSujet}"
+                                                    size="80"/> <g:actionSubmit
+          action="enregistre" value="Enregistrer" class="button"/>
+  <g:if test="${sujetEnEdition}">
+    <g:hiddenField name="sujetId" value="${sujet.id}"/>
+  </g:if>
   </div>
 </form>
 <g:if test="${sujet}">
-	<div class="tdbase-sujet-edition">
-  <g:each in="${sujet.questionsSequences}" var="sujetQuestion"
-          status="indexQuestion">
-    <div class="tdbase-sujet-edition-question">
-    	<h1>Question ${indexQuestion+1}</h1>
+  <div class="tdbase-sujet-edition">
+    <g:each in="${sujet.questionsSequences}" var="sujetQuestion"
+            status="indexQuestion">
+      <div class="tdbase-sujet-edition-question">
+        <h1>Question ${indexQuestion + 1}</h1>
 
-      <button id="${sujetQuestion.id}">Actions</button>
-      <ul id="menu_actions_${sujetQuestion.id}"
-          class="tdbase-menu-actions">
-        <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetQuestion.question)}">
-          <li><g:link action="edite"
-                      controller="question${sujetQuestion.question.type.code}"
-                      id="${sujetQuestion.question.id}">Modifier
-          </g:link></li>
-        </g:if>
-        <g:else>
-          <li>Modifier</li>
-        </g:else>
-        <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetQuestion.question)}">
-          <li><g:link action="dupliqueDansSujet"
-                      controller="question${sujetQuestion.question.type.code}"
-                      id="${sujetQuestion.id}">Dupliquer&nbsp;et&nbsp;modifier</g:link></li>
-        </g:if>
-        <g:else>
-          <li>Dupliquer&nbsp;et&nbsp;modifier</li>
-        </g:else>
-        <li><hr/></li>
-        <li>
-          <g:if test="${indexQuestion > 0}">
-            <g:link action="remonteElement" controller="sujet"
-                    id="${sujetQuestion.id}">
+        <button id="${sujetQuestion.id}">Actions</button>
+        <ul id="menu_actions_${sujetQuestion.id}"
+            class="tdbase-menu-actions">
+          <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetQuestion.question)}">
+            <li><g:link action="edite"
+                        controller="question${sujetQuestion.question.type.code}"
+                        id="${sujetQuestion.question.id}">Modifier
+            </g:link></li>
+          </g:if>
+          <g:else>
+            <li>Modifier</li>
+          </g:else>
+          <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetQuestion.question)}">
+            <li><g:link action="dupliqueDansSujet"
+                        controller="question${sujetQuestion.question.type.code}"
+                        id="${sujetQuestion.id}">Dupliquer&nbsp;et&nbsp;modifier</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Dupliquer&nbsp;et&nbsp;modifier</li>
+          </g:else>
+          <li><hr/></li>
+          <li>
+            <g:if test="${indexQuestion > 0}">
+              <g:link action="remonteElement" controller="sujet"
+                      id="${sujetQuestion.id}">
+                Déplacer&nbsp;vers&nbsp;le&nbsp;haut
+              </g:link>
+            </g:if>
+            <g:else>
               Déplacer&nbsp;vers&nbsp;le&nbsp;haut
-            </g:link>
-          </g:if>
-          <g:else>
-            Déplacer&nbsp;vers&nbsp;le&nbsp;haut
-          </g:else>
-        </li>
-        <li>
-          <g:if test="${indexQuestion < sujet.questionsSequences.size() - 1}">
-            <g:link action="descendElement" controller="sujet"
-                    id="${sujetQuestion.id}">
+            </g:else>
+          </li>
+          <li>
+            <g:if test="${indexQuestion < sujet.questionsSequences.size() - 1}">
+              <g:link action="descendElement" controller="sujet"
+                      id="${sujetQuestion.id}">
+                Déplacer&nbsp;vers&nbsp;le&nbsp;bas
+              </g:link>
+            </g:if>
+            <g:else>
               Déplacer&nbsp;vers&nbsp;le&nbsp;bas
+            </g:else>
+          </li>
+          <li><hr/></li>
+          <li>
+            <g:link action="ajouteElement" controller="sujet"
+                    id="${sujet.id}" params="[direction: 'avant',
+                    rang: indexQuestion]">
+              Insérer&nbsp;un&nbsp;item&nbsp;avant
             </g:link>
-          </g:if>
-          <g:else>
-            Déplacer&nbsp;vers&nbsp;le&nbsp;bas
-          </g:else>
-        </li>
-        <li><hr/></li>
-        <li>
-          <g:link action="ajouteElement" controller="sujet"
-                  id="${sujet.id}" params="[direction: 'avant',
-                  rang: indexQuestion]">
-            Insérer&nbsp;un&nbsp;item&nbsp;avant
-          </g:link>
-        </li>
-        <li>
-          <g:link action="ajouteElement" controller="sujet"
-                  id="${sujet.id}" params="[rang: indexQuestion]">
-            Insérer&nbsp;un&nbsp;item&nbsp;après
-          </g:link>
-        </li>
-        <li><hr/></li>
-        <li><g:link action="supprimeFromSujet" controller="sujet"
-                    id="${sujetQuestion.id}">
-          Retirer</g:link></li>
+          </li>
+          <li>
+            <g:link action="ajouteElement" controller="sujet"
+                    id="${sujet.id}" params="[rang: indexQuestion]">
+              Insérer&nbsp;un&nbsp;item&nbsp;après
+            </g:link>
+          </li>
+          <li><hr/></li>
+          <li><g:link action="supprimeFromSujet" controller="sujet"
+                      id="${sujetQuestion.id}">
+            Retirer</g:link></li>
 
-      </ul>
-		
-      <g:if test="${sujetQuestion.question.type.interaction}">
-        <div class="tdbase-sujet-edition-question-points">
-          <div class="editinplace"
-               id="SujetSequenceQuestions-${sujetQuestion.id}"
-               title="Cliquez pour modifier le barème...">
-            ${NumberUtils.formatFloat(sujetQuestion.points)}
+        </ul>
+
+        <g:if test="${sujetQuestion.question.type.interaction}">
+          <div class="tdbase-sujet-edition-question-points">
+            <div class="editinplace"
+                 id="SujetSequenceQuestions-${sujetQuestion.id}"
+                 title="Cliquez pour modifier le barème...">
+              ${NumberUtils.formatFloat(sujetQuestion.points)}
+            </div>
+            <span class="point">point(s)</span>
           </div>
-          <span class="point">point(s)</span>
+        </g:if>
+        <div class="tdbase-sujet-edition-question-preview">
+          <g:set var="question" value="${sujetQuestion.question}"/>
+          <g:render
+                  template="/question/${question.type.code}/${question.type.code}Preview"
+                  model="[question: question, indexQuestion: indexQuestion]"/>
         </div>
-      </g:if>
-      <div class="tdbase-sujet-edition-question-preview">
-        <g:set var="question" value="${sujetQuestion.question}"/>
-        <g:render
-                template="/question/${question.type.code}/${question.type.code}Preview"
-                model="[question: question, indexQuestion: indexQuestion]"/>
+
       </div>
 
-    </div>
-
-  </g:each>
+    </g:each>
   </div>
 </g:if>
 </body>

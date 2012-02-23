@@ -129,7 +129,7 @@ class SujetService {
     leSujet.save()
     if (leSujet.estUnExercice()) {
       def question = leSujet.questionComposite
-      updateTitreQuestionComposite(nouveauTitre,question)
+      updateTitreQuestionComposite(nouveauTitre, question)
     }
     return leSujet
   }
@@ -222,8 +222,12 @@ class SujetService {
     // il faut partager les questions qui ne sont pas partagées
     leSujet.questionsSequences.each {
       def question = it.question
-      if (!question.estPartage()) {
-        questionService.partageQuestion(question, partageur)
+      if (question.estComposite()) {
+        partageSujet(question.exercice, partageur)
+      } else {
+        if (!question.estPartage()) {
+          questionService.partageQuestion(question, partageur)
+        }
       }
     }
     // mise à jour de la paternite
@@ -375,7 +379,7 @@ class SujetService {
     // verif securite
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
     assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(proprietaire, question))
-    assert (!insertionQuestionCompositeInExercice(question,leSujet))
+    assert (!insertionQuestionCompositeInExercice(question, leSujet))
 
     if (!question.estPartage() && leSujet.estPartage()) {
       questionService.partageQuestion(question, proprietaire)
@@ -389,7 +393,7 @@ class SujetService {
 
     leSujet.addToQuestionsSequences(sequence)
     leSujet.lastUpdated = new Date()
-    sequence.save()
+    sequence.save(failOnError: true)
     leSujet.save(flush: true)
     if (rang != null && rang < leSujet.questionsSequences.size() - 1) {
       // il faut insérer au rang correct
@@ -490,6 +494,22 @@ class SujetService {
     reponses.each {
       reponseService.supprimeReponse(it, proprietaire)
     }
+    def question = sujetQuestion.question
+    if (question.estComposite()) {
+      // todofsil gerer proprement la sortie de la question composite du 
+      // sujet
+      def exercice = question.exercice
+      def questSujts = []
+      questSujts.addAll(exercice.questionsSequences)
+      questSujts.each {
+        exercice.removeFromQuestionsSequences(it)
+        def reponsesEx = Reponse.findAllBySujetQuestion(it)
+        reponsesEx.each {
+          reponseService.supprimeReponse(it, proprietaire)
+        }
+      }
+    }
+
     sujetQuestion.delete()
     leSujet.lastUpdated = new Date()
     leSujet.save(flush: true)
@@ -606,7 +626,7 @@ class SujetService {
    * à insérer dans un sujet de type  exercice
    * @param question la question à insérer
    * @param sujet le sujet
-   * @return  true si la question est composite et le sujet est un exercice
+   * @return true si la question est composite et le sujet est un exercice
    */
   private boolean insertionQuestionCompositeInExercice(Question question, Sujet sujet) {
     if (question.estComposite() && sujet.estUnExercice()) {

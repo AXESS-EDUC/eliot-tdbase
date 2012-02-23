@@ -90,7 +90,7 @@ class Sujet implements Artefact {
     titre(blank: false, nullable: false)
     sujetType(nullable: true, validator: { val, obj ->
        if (val == SujetTypeEnum.Exercice.sujetType && obj.possedeUneQuestionComposite()) {
-         return ['exerciceavecquestioncomposite']
+         return ['invalid.exerciceavecquestioncomposite']
        }
     })
     etablissement(nullable: true)
@@ -146,7 +146,7 @@ class Sujet implements Artefact {
    * @return true si le sujet possede une question composite
    */
   boolean possedeUneQuestionComposite() {
-    return questions.count { it.estComposite() } > 0
+    return questions?.count { it.estComposite() } > 0
   }
 
   /**

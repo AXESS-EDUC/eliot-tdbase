@@ -34,36 +34,43 @@ package org.lilie.services.eliot.tdbase
  */
 class SujetSequenceQuestions implements Comparable {
 
-    Integer rang
-    Float noteSeuilPoursuite
-    Float points = 1
+  Integer rang
+  Float noteSeuilPoursuite
+  Float points = 1
 
-    Question question
-    Sujet sujet
+  Question question
+  Sujet sujet
 
 
-    static constraints = {
-        noteSeuilPoursuite(nullable: true)
-    }
+  static constraints = {
+    noteSeuilPoursuite(nullable: true)
+    question(validator: {val,obj ->
+      if (val.type.interaction) {
+        if (SujetSequenceQuestions.countBySujetAndQuestion(obj.sujet,val)) {
+           return ['invalid.doublonsquestioninteraction']
+        }
+      }
+    })
+  }
 
-    /**
-     * Permet l'ordonnancement des questions par le rang de la
-     * question dans le sujet
-     * @param obj l'objet de comparaison
-     * @return
-     */
-    int compareTo(obj) {
-        rang.compareTo(obj.rang)
-    }
+  /**
+   * Permet l'ordonnancement des questions par le rang de la
+   * question dans le sujet
+   * @param obj l'objet de comparaison
+   * @return
+   */
+  int compareTo(obj) {
+    rang.compareTo(obj.rang)
+  }
 
-    static mapping = {
-        table('td.sujet_sequence_questions')
-        version(false)
-        id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_sequence_questions_id_seq'])
-        cache(true)
-        question(fetch: 'join')
-        rang(column: 'questions_sequences_idx', insertable: false, updateable: false)
-    }
+  static mapping = {
+    table('td.sujet_sequence_questions')
+    version(false)
+    id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_sequence_questions_id_seq'])
+    cache(true)
+    question(fetch: 'join')
+    rang(column: 'questions_sequences_idx', insertable: false, updateable: false)
+  }
 
 
 }
