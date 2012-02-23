@@ -143,6 +143,9 @@ class Sujet implements Artefact {
    * @see Artefact
    */
   boolean estDistribue() {
+    if (estUnExercice()) {
+      return questionComposite.estDistribue()
+    }
     // verifie en premier si des copies sont attachées
     def critCopie = Copie.createCriteria()
     def nbCopies = critCopie.count {

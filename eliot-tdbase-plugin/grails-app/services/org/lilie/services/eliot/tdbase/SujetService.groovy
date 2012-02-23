@@ -109,7 +109,7 @@ class SujetService {
     sujetCopie.paternite = sujet.paternite
     sujetCopie.save()
     if (sujetCopie.estUnExercice()) {
-      questionService.createQuestionCompositeForExercice(sujetCopie,proprietaire)
+      createQuestionCompositeForExercice(sujetCopie, proprietaire)
     }
     return sujetCopie
   }
@@ -127,6 +127,10 @@ class SujetService {
     leSujet.titre = nouveauTitre
     leSujet.titreNormalise = StringUtils.normalise(nouveauTitre)
     leSujet.save()
+    if (leSujet.estUnExercice()) {
+      def question = leSujet.questionComposite
+      updateTitreQuestionComposite(nouveauTitre,question)
+    }
     return leSujet
   }
 
@@ -154,13 +158,16 @@ class SujetService {
     def question = leSujet.questionComposite
     if (leSujet.estUnExercice()) {
       if (!question) {
-        questionService.createQuestionCompositeForExercice(leSujet, proprietaire)
+        createQuestionCompositeForExercice(leSujet, proprietaire)
+      } else {
+        // il faut mettre a jour le titre de la question
+        updateTitreQuestionComposite(leSujet.titre, question)
       }
     } else {
       // si le sujet était un exercice mais ne l'est plus, suppression de
       // la question associée
       if (question) {
-        questionService.supprimeQuestionComposite(question, proprietaire)
+        supprimeQuestionComposite(question, proprietaire)
       }
     }
     return leSujet
@@ -186,7 +193,7 @@ class SujetService {
     // si le sujet est un exercice, partage de la question associee
     def question = leSujet.questionComposite
     if (question) {
-      questionService.supprimeQuestionComposite(question, supprimeur)
+      supprimeQuestionComposite(question, supprimeur)
     }
     // suppression de la publication si necessaire
     if (leSujet.estPartage()) {
@@ -237,7 +244,7 @@ class SujetService {
     // si le sujet est un exercice, partage de la question associee
     def question = leSujet.questionComposite
     if (question) {
-      questionService.partageQuestionComposite(question, partageur)
+      partageQuestionComposite(question)
     }
 
     return leSujet
@@ -509,6 +516,88 @@ class SujetService {
       leSujet.save()
     }
     return sujetQuestion
+  }
+
+  /**
+   * Créé une question composite correspondant à un exercice
+   * @param sujet l'exercice
+   * @param proprietaire le proprietaire
+   * @return la question créée
+   */
+  @Transactional
+  private Question createQuestionCompositeForExercice(Sujet exercice, Personne proprietaire) {
+    Question question = new Question(
+            proprietaire: proprietaire,
+            titreNormalise: exercice.titreNormalise,
+            publie: false,
+            versionQuestion: 1,
+            copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
+            specification: "{}"
+    )
+    question.properties = exercice.properties
+    question.type = QuestionTypeEnum.Composite.questionType
+    question.exercice = exercice
+    question.save(flush: true)
+    return question
+  }
+
+  /**
+   * Supprime une question composite
+   * @param question la question à supprimer
+   * @param supprimeur la personne tentant la suppression
+   */
+  @Transactional
+  private def supprimeQuestionComposite(Question laQuestion, Personne supprimeur) {
+    assert (laQuestion.estComposite())
+
+    // supression des réponses et des sujetQuestions
+    def sujetQuestions = SujetSequenceQuestions.findAllByQuestion(laQuestion)
+    sujetQuestions.each {
+      supprimeQuestionFromSujet(it, supprimeur)
+    }
+    // on ne supprime pas les attachements (il n'y en a pas)
+    // on ne supprime pas la publication, elle est attachée au sujey si
+    // il y en une
+
+    laQuestion.delete()
+  }
+
+  /**
+   *  Partage une question
+   * @param laQuestion la question à partager
+   * @param partageur la personne souhaitant partager
+   */
+  @Transactional
+  private def partageQuestionComposite(Question laQuestion) {
+    assert (laQuestion.estComposite())
+    def exercice = laQuestion.exercice
+    laQuestion.copyrightsType = exercice.copyrightsType
+    laQuestion.publication = exercice.publication
+    laQuestion.publie = true
+    laQuestion.paternite = exercice.paternite
+    laQuestion.save()
+  }
+
+  /**
+   * Modifie les proprietes de la question passée en paramètre
+   * @param question la question
+   * @param proprietes les nouvelles proprietes
+   * @param specificationObject l'objet specification
+   * @param proprietaire le proprietaire
+   * @return la question
+   */
+  @Transactional
+  private Question updateTitreQuestionComposite(String nvtitre, Question laQuestion) {
+
+    assert (laQuestion.estComposite())
+
+    if (nvtitre && laQuestion.titre != nvtitre) {
+      laQuestion.titreNormalise = StringUtils.normalise(nvtitre)
+      laQuestion.titre = nvtitre
+    }
+
+    laQuestion.save(flush: true)
+    return laQuestion
   }
 
 }

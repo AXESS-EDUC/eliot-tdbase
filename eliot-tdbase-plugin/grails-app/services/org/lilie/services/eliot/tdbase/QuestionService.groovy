@@ -87,28 +87,6 @@ class QuestionService implements ApplicationContextAware {
     return question
   }
 
-  /**
-   * Créé une question composite correspondant à un exercice
-   * @param sujet l'exercice
-   * @param proprietaire le proprietaire
-   * @return la question créée
-   */
-  @Transactional
-  Question createQuestionCompositeForExercice(Sujet exercice, Personne proprietaire) {
-    Question question = new Question(
-            proprietaire: proprietaire,
-            titreNormalise: exercice.titreNormalise,
-            publie: false,
-            versionQuestion: 1,
-            copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
-            specification: "{}"
-    )
-    question.properties = exercice.properties
-    question.type = QuestionTypeEnum.Composite.questionType
-    question.exercice = exercice
-    question.save(flush: true)
-    return question
-  }
 
   /**
    * Recopie une question dans un sujet
@@ -202,6 +180,7 @@ class QuestionService implements ApplicationContextAware {
     return laQuestion
   }
 
+
 /**
  * Créé une question et l'insert dans le sujet
  * @param proprietesQuestion les propriétés de la question
@@ -257,27 +236,7 @@ class QuestionService implements ApplicationContextAware {
     laQuestion.delete()
   }
 
-  /**
-   * Supprime une question composite
-   * @param question la question à supprimer
-   * @param supprimeur la personne tentant la suppression
-   */
-  @Transactional
-  def supprimeQuestionComposite(Question laQuestion, Personne supprimeur) {
-    assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(
-            supprimeur, laQuestion) && laQuestion.estComposite())
 
-    // supression des réponses et des sujetQuestions
-    def sujetQuestions = SujetSequenceQuestions.findAllByQuestion(laQuestion)
-    sujetQuestions.each {
-      sujetService.supprimeQuestionFromSujet(it, supprimeur)
-    }
-    // on ne supprime pas les attachements (il n'y en a pas)
-    // on ne supprime pas la publication, elle est attachée au sujey si
-    // il y en une
-
-    laQuestion.delete()
-  }
 
   /**
    *  Partage une question
@@ -312,22 +271,7 @@ class QuestionService implements ApplicationContextAware {
     laQuestion.save()
   }
 
-  /**
-   *  Partage une question
-   * @param laQuestion la question à partager
-   * @param partageur la personne souhaitant partager
-   */
-  @Transactional
-  def partageQuestionComposite(Question laQuestion, Personne partageur) {
-    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(
-            partageur, laQuestion) && laQuestion.estComposite())
-    def exercice = laQuestion.exercice
-    laQuestion.copyrightsType = exercice.copyrightsType
-    laQuestion.publication = exercice.publication
-    laQuestion.publie = true
-    laQuestion.paternite = exercice.paternite
-    laQuestion.save()
-  }
+
 
   /**
    * Recherche de questions
