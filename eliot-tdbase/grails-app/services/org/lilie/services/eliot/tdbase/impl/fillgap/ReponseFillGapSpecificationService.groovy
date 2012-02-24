@@ -28,7 +28,6 @@
 
 package org.lilie.services.eliot.tdbase.impl.fillgap
 
-import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import static org.lilie.services.eliot.tice.utils.StringUtils.normalise
@@ -85,10 +84,9 @@ class ReponseFillGapSpecification implements ReponseSpecification {
         for (i in 0..numberRes - 1) {
 
             def valeurDeReponse = normalise(valeursDeReponse[i].trim())
-            def validReponseList = reponsesPossibles[i].valeur.findAll {it.correct}.collect {normalise(it.text)}
-
+            def validReponseList = reponsesPossibles[i].valeur.findAll {it.correct}.collect {normalise(it.text.trim())}
             if (validReponseList.contains(valeurDeReponse)) {
-                reponsesCorrects++
+                reponsesCorrects = reponsesCorrects + 1
             }
         }
 
