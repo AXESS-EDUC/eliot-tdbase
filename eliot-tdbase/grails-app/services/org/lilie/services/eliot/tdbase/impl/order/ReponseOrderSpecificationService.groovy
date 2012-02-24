@@ -28,7 +28,6 @@
 
 package org.lilie.services.eliot.tdbase.impl.order
 
-import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
