@@ -31,7 +31,7 @@
     <g:each in="${specifobject.reponses}" var="reponse" status="i">
         &nbsp;
         <g:radio name="listeQuestions[${indexQuestion}].specifobject.indexBonneReponse"
-                 value="${i}" checked="${i == specifobject.indexBonneReponse}" disabled="true"/>
+                 value="${reponse.id}" checked="${reponse.id == specifobject.indexBonneReponse}" disabled="true"/>
         ${reponse.libelleReponse}
         <br/>
     </g:each>

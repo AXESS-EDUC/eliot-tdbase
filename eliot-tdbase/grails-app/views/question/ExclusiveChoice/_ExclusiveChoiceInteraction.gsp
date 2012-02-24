@@ -32,10 +32,12 @@
 
 <div class="item">
     <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
-    <g:each status="i" in="${questionspecifobject.reponses}" var="reponsePossible">
+    <g:each status="i"
+            in="${questionspecifobject.shuffled ? questionspecifobject.reponsesAleatoires : questionspecifobject.reponses}"
+            var="reponsePossible">
         &nbsp;
         <g:radio name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.indexReponse"
-                 value="${i}" checked="${i == reponsespecifobject?.indexReponse}"/>
+                 value="${reponsePossible.id}" checked="${reponsePossible.id == reponsespecifobject?.indexReponse}"/>
         ${reponsePossible.libelleReponse}
         <br/>
     </g:each>

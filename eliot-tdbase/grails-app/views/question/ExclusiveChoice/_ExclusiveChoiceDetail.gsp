@@ -32,11 +32,12 @@
         ${specifobject.libelle} <br/>
         <g:each in="${specifobject.reponses}" var="reponse" status="i">
             &nbsp;
-            <g:radio name="specifobject.indexBonneReponse" checked="${i == specifobject.indexBonneReponse}"
-                     value="${i}" disabled="true"/>
+            <g:radio name="specifobject.indexBonneReponse" checked="${reponse.id == specifobject.indexBonneReponse}"
+                     value="${reponse.id}" disabled="true"/>
             ${reponse.libelleReponse}
             <br/>
         </g:each>
+        <strong>Présentation aléatoire :</strong> ${specifobject.shuffled ? 'oui' : 'non'}<br/>
         <strong>Correction :</strong> ${specifobject.correction}
     </td>
 </tr>

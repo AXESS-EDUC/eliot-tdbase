@@ -35,7 +35,7 @@
 
 <br>
 <g:if test="${specifobject.montrerLesMots}">
-  Mots sugeres : ${specifobject.motsSugeres}
+  <strong>Mots sugeres :</strong> ${specifobject.motsSugeres}
 </g:if>
 
   <strong>Correction :</strong> <br/>${specifobject.correction}

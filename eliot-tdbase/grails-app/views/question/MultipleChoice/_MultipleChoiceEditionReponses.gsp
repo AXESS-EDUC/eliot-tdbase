@@ -25,18 +25,15 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
 <g:each status="i" in="${specifobject.reponses}" var="reponse">
-  &nbsp;
-  <g:checkBox name="specifobject.reponses[${i}].estUneBonneReponse"
-              checked="${reponse.estUneBonneReponse}"/>
-  <g:textField name="specifobject.reponses[${i}].libelleReponse" size="45"
-                value="${reponse.libelleReponse}"/>
-  &nbsp;
-  <g:textField size="2"  value="${reponse.rang}" name="specifobject.reponses[${i}].rang"/>
-  &nbsp;
-  <g:submitToRemote id="${i}" value="Suppr" title="Supprimer la réponse" action="supprimeReponse" class="button" controller="questionMultipleChoice" update="specifobject_reponses"/>
+    &nbsp;
+    <g:checkBox name="specifobject.reponses[${i}].estUneBonneReponse"
+                checked="${reponse.estUneBonneReponse}"/>
+    <g:textField name="specifobject.reponses[${i}].libelleReponse" size="45"
+                 value="${reponse.libelleReponse}"/>
+    &nbsp;
+    <g:submitToRemote id="${i}" value="Suppr" title="Supprimer la réponse" action="supprimeReponse" class="button"
+                      controller="questionMultipleChoice" update="specifobject_reponses"/>
     <br/>
 </g:each>
 <g:hiddenField name="specifobject.reponses.size" value="${specifobject.reponses?.size()}"/>
