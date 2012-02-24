@@ -1,6 +1,6 @@
 group = "org.lilie.services.eliot"
 artefactId = "eliot-tice-dbmigration"
-version = "0.4a-SNAPSHOT"
+version = "0.4a"
 
 versionSchemaEliot = "2.7.1-A1"
 classifierSchemaEliot = "A1"
