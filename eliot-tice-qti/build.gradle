@@ -28,7 +28,7 @@
 
 group = "org.lilie.services.eliot"
 artefactId = "eliot-tice-qti"
-version = "0.4a"
+version = "0.5-SNAPSHOT"
 
 apply plugin: 'groovy'
 apply plugin: 'idea'
