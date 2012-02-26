@@ -103,12 +103,10 @@
         "questionTypeCode" : "Associate",
         "libelle" : "<xsl:value-of select="qti:prompt"/>",
         "montrerColonneAGauche" : <xsl:value-of select="$montrerColonneAGauche"/>,
-        "associations" : [
-           <xsl:call-template name="constituePaires">
-               <xsl:with-param name="associateInteractionElt" select="."/>
-               <xsl:with-param name="correctResponseElt" select="$response"/>
-           </xsl:call-template>
-        ]
+        "associations" : [ <xsl:call-template name="constituePaires">
+                            <xsl:with-param name="associateInteractionElt" select="."/>
+                            <xsl:with-param name="correctResponseElt" select="$response"/>
+                            </xsl:call-template>]
         },
     </xsl:template>
 
@@ -182,10 +180,10 @@
         <xsl:param name="associateInteractionElt"/>
         <xsl:for-each select="$correctResponseElt/qti:correctResponse/qti:value">
             <xsl:variable name="tabPartIds" select="tokenize(text(),'\s+')"/>
-        {
-          "participant1": "<xsl:value-of select="$tabPartIds[0]"/>",
-          "participant2": "<xsl:value-of select="$tabPartIds[1]"/>"
-        },
+          {
+            "participant1": "<xsl:value-of select="$associateInteractionElt/qti:simpleAssociableChoice[@identifier=$tabPartIds[1]]"/>",
+            "participant2": "<xsl:value-of select="$associateInteractionElt/qti:simpleAssociableChoice[@identifier=$tabPartIds[2]]"/>"
+          },
         </xsl:for-each>
     </xsl:template>
 

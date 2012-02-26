@@ -28,9 +28,11 @@
 
 package org.lilie.services.eliot.tice.qti
 
-import nu.xom.Builder
-import nu.xom.Element
-import nu.xom.Elements
+
+
+//import nu.xom.Builder
+//import nu.xom.Element
+//import nu.xom.Elements
 /**
  *
  * @author franck Silvestre
@@ -46,20 +48,20 @@ class QtiBacASable {
     return mcSpec
   }
 
-  MultipleChoiceSpecification parseQtiChoiceInteraction(String qtiXML) {
-    def assessmentItem = new Builder().build(qtiXML, null)
-    MultipleChoiceSpecification mcSpec = new MultipleChoiceSpecification()
-    Element rootElt =  assessmentItem.getRootElement()
-    Elements children = rootElt.getChildElements()
-    for(int i = 0; i<children.size();i++) {
-      println ">>>> child ${i} : ${children.get(i).getNamespaceURI()}"
-    }
-    Element itemBodyElement = rootElt.getFirstChildElement("itemBody",QTI_NS_URI)
-    Element choiceInteractionElement = itemBodyElement.getFirstChildElement("choiceInteraction",QTI_NS_URI)
-    Element promptElt = choiceInteractionElement.getFirstChildElement("prompt",QTI_NS_URI)
-    mcSpec.libelle = promptElt.toXML()
-    return mcSpec
-  }
+//  MultipleChoiceSpecification parseQtiChoiceInteraction(String qtiXML) {
+//    def assessmentItem = new Builder().build(qtiXML, null)
+//    MultipleChoiceSpecification mcSpec = new MultipleChoiceSpecification()
+//    Element rootElt =  assessmentItem.getRootElement()
+//    Elements children = rootElt.getChildElements()
+//    for(int i = 0; i<children.size();i++) {
+//      println ">>>> child ${i} : ${children.get(i).getNamespaceURI()}"
+//    }
+//    Element itemBodyElement = rootElt.getFirstChildElement("itemBody",QTI_NS_URI)
+//    Element choiceInteractionElement = itemBodyElement.getFirstChildElement("choiceInteraction",QTI_NS_URI)
+//    Element promptElt = choiceInteractionElement.getFirstChildElement("prompt",QTI_NS_URI)
+//    mcSpec.libelle = promptElt.toXML()
+//    return mcSpec
+//  }
 
 
 }

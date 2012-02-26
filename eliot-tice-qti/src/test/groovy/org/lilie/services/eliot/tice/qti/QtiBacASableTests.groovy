@@ -74,9 +74,9 @@ class QtiBacASableTests extends GroovyTestCase {
     assertNotNull(mcSpec.libelle)
 
 
-    mcSpec = qtiBacASable.parseQtiChoiceInteraction(qtiXml)
-    println ">>>> with xom ${mcSpec.libelle}"
-    assertNotNull(mcSpec.libelle)
+//    mcSpec = qtiBacASable.parseQtiChoiceInteraction(qtiXml)
+//    println ">>>> with xom ${mcSpec.libelle}"
+//    assertNotNull(mcSpec.libelle)
 
 
   }
