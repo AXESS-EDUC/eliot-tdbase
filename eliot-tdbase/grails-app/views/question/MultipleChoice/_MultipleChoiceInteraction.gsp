@@ -28,15 +28,17 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-	<div class="item">
-        <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
-		<g:each status="i" in="${questionspecifobject.reponses}" var="reponsePossible">
-		  &nbsp;
-		  <g:checkBox
-		          name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.labelsReponsesCoches[${i}]"
-		          checked="${reponsespecifobject.labelsReponsesCoches.contains(reponsePossible.libelleReponse)}"
-		          value="${reponsePossible.libelleReponse}"/>
-		  ${reponsePossible.libelleReponse}
-		  <br/>
-		</g:each>
-	</div>
+<div class="item">
+    <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
+    <g:each status="i"
+            in="${questionspecifobject.shuffled ? questionspecifobject.reponsesAleatoires : questionspecifobject.reponses}"
+            var="reponsePossible">
+        &nbsp;
+        <g:checkBox
+                name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.labelsReponsesCoches[${i}]"
+                checked="${reponsespecifobject.labelsReponsesCoches.contains(reponsePossible.libelleReponse)}"
+                value="${reponsePossible.libelleReponse}"/>
+        ${reponsePossible.libelleReponse}
+        <br/>
+    </g:each>
+</div>

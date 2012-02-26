@@ -27,48 +27,50 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
-  <td class="label">
-    Lib&eacute;ll&eacute;:
-  </td>
-  <td>
-    <g:textArea
-            name="specifobject.libelle"
-            rows="3" cols="55"
-            value="${specifobject.libelle}"
-    />
-  </td>
+    <td class="label">
+        Lib&eacute;ll&eacute;:
+    </td>
+    <td>
+        <g:textArea
+                name="specifobject.libelle"
+                rows="3" cols="55"
+                value="${specifobject.libelle}"/>
+    </td>
 </tr>
 <tr>
-  <td class="label">
-    R&eacute;ponse(s):
-  </td>
-  <td>
+    <td class="label">
+        R&eacute;ponse(s):
+    </td>
+    <td>
 
-    <table>
-      <tr>
-        <td id="specifobject_reponses">
-          <g:render template="/question/MultipleChoice/MultipleChoiceEditionReponses"
-                    model="[specifobject:specifobject]"/>
-        </td>
-        <td style="vertical-align: bottom;">
-          <g:submitToRemote title="Ajouter une réponse possible" value="Ajouter"
-                            class="button"
-                            action="ajouteReponse"
-                            controller="questionMultipleChoice"
-                            update="specifobject_reponses"/>
-        </td>
-      </tr>
-    </table>
-
-  </td>
+        <table>
+            <tr>
+                <td id="specifobject_reponses">
+                    <g:render template="/question/MultipleChoice/MultipleChoiceEditionReponses"
+                              model="[specifobject: specifobject]"/>
+                </td>
+                <td style="vertical-align: bottom;">
+                    <g:submitToRemote title="Ajouter une réponse possible" value="Ajouter"
+                                      class="button"
+                                      action="ajouteReponse"
+                                      controller="questionMultipleChoice"
+                                      update="specifobject_reponses"/>
+                </td>
+            </tr>
+        </table>
+    </td>
 </tr>
 <tr>
-  <td class="label">Correction:</td>
-  <td>
-     <g:textArea
-            name="specifobject.correction"
-            rows="3" cols="55"
-            value="${specifobject.correction}"
-    />
-  </td>
+    <td class="label">Présentation aléatoire :</td>
+    <td><g:checkBox name="specifobject.shuffled"
+                    checked="${specifobject.shuffled}"/></td>
+</tr>
+<tr>
+    <td class="label">Correction :</td>
+    <td>
+        <g:textArea
+                name="specifobject.correction"
+                rows="3" cols="55"
+                value="${specifobject.correction}"/>
+    </td>
 </tr>

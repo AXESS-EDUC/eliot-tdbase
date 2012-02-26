@@ -38,6 +38,7 @@
             ${reponse.libelleReponse}
             <br/>
         </g:each>
+        <strong>Présentation aléatoire :</strong> ${specifobject.shuffled ? 'oui' : 'non'}<br/>
         <strong>Correction :</strong> ${specifobject.correction}
     </td>
 </tr>
