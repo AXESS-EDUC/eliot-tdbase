@@ -69,6 +69,20 @@
         </xsl:if>
     </xsl:template>
 
+    <!--
+       Les items QTI de type assiociateInteraction sont placés dans des éléments
+       de type Associate ou la colonne à gauche n'est pas montrée
+    -->
+    <xsl:template match="qti:associateInteraction">
+        <xsl:variable name="idResponse" select="@responseIdentifier"/>
+        <xsl:variable name="response"
+                      select="//qti:responseDeclaration[@identifier=$idResponse]"/>
+        <xsl:call-template name="Assiociate">
+            <xsl:with-param name="response" select="$response"/>
+            <xsl:with-param name="montrerColonneAGauche">false</xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
 
     <!--
     On ignore les éléments non supportés par eliot- tdbase
@@ -76,8 +90,31 @@
     <xsl:template match="qti:outcomeDeclaration"/>
     <xsl:template match="qti:responseProcessing"/>
 
+
     <!--
     Template pour la generation d'une MultipleChoice question
+    @param response un élément de type qti:responseDeclaration/qti:correctResponse
+    @param montrerColonneAGauche true si il faut montrer la colonne à gauche
+    -->
+    <xsl:template name="Assiociate">
+        <xsl:param name="response"/>
+        <xsl:param name="montrerColonneAGauche"/>
+        {
+        "questionTypeCode" : "Associate",
+        "libelle" : "<xsl:value-of select="qti:prompt"/>",
+        "montrerColonneAGauche" : <xsl:value-of select="$montrerColonneAGauche"/>,
+        "associations" : [
+           <xsl:call-template name="constituePaires">
+               <xsl:with-param name="associateInteractionElt" select="."/>
+               <xsl:with-param name="correctResponseElt" select="$response"/>
+           </xsl:call-template>
+        ]
+        },
+    </xsl:template>
+
+    <!--
+    Template pour la generation d'une MultipleChoice question
+    @param response un element de type qti:responseDeclaration/qti:correctResponse
     -->
     <xsl:template name="MultipleChoice">
         <xsl:param name="response"/>
@@ -89,11 +126,13 @@
         <xsl:for-each select="qti:simpleChoice">
             {
             "libelleReponse" : "<xsl:value-of select="text()"/>",
-            "estUneBonneReponse" : <xsl:call-template
-                name="afficheTrueSiReponseCorrecte">
-                    <xsl:with-param name="correctResponseElt" select="$response/qti:correctResponse"/>
-                    <xsl:with-param name="idReponseAEvaluer" select="@identifier"/>
-                </xsl:call-template>
+            "estUneBonneReponse" :
+            <xsl:call-template
+                    name="afficheTrueSiReponseCorrecte">
+                <xsl:with-param name="correctResponseElt"
+                                select="$response/qti:correctResponse"/>
+                <xsl:with-param name="idReponseAEvaluer" select="@identifier"/>
+            </xsl:call-template>
             },
         </xsl:for-each>
         ]
@@ -132,9 +171,22 @@
     <xsl:template name="afficheTrueSiReponseCorrecte">
         <xsl:param name="correctResponseElt"/>
         <xsl:param name="idReponseAEvaluer"/>
-        <xsl:variable name="reponseCorrecte" select="$correctResponseElt/qti:value[text()=$idReponseAEvaluer]"/>
+        <xsl:variable name="reponseCorrecte"
+                      select="$correctResponseElt/qti:value[text()=$idReponseAEvaluer]"/>
         <xsl:if test="$reponseCorrecte">true</xsl:if>
         <xsl:if test="not($reponseCorrecte)">false</xsl:if>
+    </xsl:template>
+
+    <xsl:template name="constituePaires">
+        <xsl:param name="correctResponseElt"/>
+        <xsl:param name="associateInteractionElt"/>
+        <xsl:for-each select="$correctResponseElt/qti:correctResponse/qti:value">
+            <xsl:variable name="tabPartIds" select="tokenize(text(),'\s+')"/>
+        {
+          "participant1": "<xsl:value-of select="$tabPartIds[0]"/>",
+          "participant2": "<xsl:value-of select="$tabPartIds[1]"/>"
+        },
+        </xsl:for-each>
     </xsl:template>
 
 </xsl:stylesheet>
