@@ -105,8 +105,7 @@ class ExclusiveChoiceSpecification implements QuestionSpecification {
                 correction: correction,
                 reponses: reponses*.toMap(),
                 indexBonneReponse: indexBonneReponse,
-                shuffled: shuffled,
-                indexBonneReponse: indexBonneReponse
+                shuffled: shuffled
         ]
     }
 

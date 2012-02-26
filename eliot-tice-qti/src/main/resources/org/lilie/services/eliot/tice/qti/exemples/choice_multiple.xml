@@ -44,7 +44,7 @@
     </responseDeclaration>
     <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="integer"/>
     <itemBody>
-        <choiceInteraction responseIdentifier="MR01" shuffle="true" maxChoices="0">
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="true" maxChoices="0">
             <prompt>Which of the following elements are used to form water?</prompt>
             <simpleChoice identifier="H" fixed="false">Hydrogen</simpleChoice>
             <simpleChoice identifier="He" fixed="false">Helium</simpleChoice>
