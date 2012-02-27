@@ -180,7 +180,21 @@
             <xsl:with-param name="response" select="$response"/>
         </xsl:call-template>
     </xsl:template>
-    
+
+    <!--
+         Les items QTI de type gapMatchInteraction sont placés dans des éléments
+         de type FillGap
+    -->
+    <xsl:template match="qti:gapMatchInteraction">
+        <xsl:variable name="idResponse" select="@responseIdentifier"/>
+        <xsl:variable name="response"
+                      select="//qti:responseDeclaration[@identifier=$idResponse]"/>
+        <xsl:call-template name="FillGap">
+            <xsl:with-param name="response" select="$response"/>
+            <xsl:with-param name="saisieLibre">true</xsl:with-param>
+            <xsl:with-param name="montrerLesMots">true</xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
 
     <!--
     On ignore les éléments non supportés par eliot- tdbase
@@ -195,9 +209,33 @@
     -->
 
     <!--
-            Template pour la generation d'une Open question
-            @param response un element de type qti:responseDeclaration/qti:correctResponse
-            -->
+        Template pour la generation d'une FillGap question
+        @param response un element de type qti:responseDeclaration/qti:correctResponse
+        -->
+    <xsl:template name="FillGap">
+        <xsl:param name="response"/>
+        <xsl:param name="saisieLibre"/>
+        <xsl:param name="montrerLesMots"/>
+        <xsl:variable name="textAtrous">
+            &lt;p&gt;<xsl:call-template name="constitueTexteATrous">
+                        <xsl:with-param name="responseElt" select="$response"/>
+                        <xsl:with-param name="gapMatchInteractionElt" select="."/>
+                    </xsl:call-template>&lt;/p&gt;
+        </xsl:variable>
+        {
+        "questionTypeCode" : "FillGap",
+        "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
+        "saisieLibre" : <xsl:value-of select="$saisieLibre"/>,
+        "montrerLesMots" : <xsl:value-of select="$montrerLesMots"/>,
+        "texteATrous" : "<xsl:value-of select="normalize-space($textAtrous)"/>"
+        },
+    </xsl:template>
+
+
+    <!--
+        Template pour la generation d'une Open question
+        @param response un element de type qti:responseDeclaration/qti:correctResponse
+        -->
     <xsl:template name="FileUpload">
         <xsl:param name="response"/>
         {
@@ -364,7 +402,7 @@
 
     <!--
        Constitue les items ordonnés pour une question de type Order
-       @param correctResponseElt un element de type qti:correctResponse
+       @param correctResponseElt un element de type qti:responseDeclaration
        @param orderInteractionElt un element de type qti:orderInteraction
     -->
     <xsl:template name="constitueItemsOrdonnes">
@@ -381,4 +419,40 @@
         </xsl:for-each>
     </xsl:template>
 
+    <!--
+       Constitue le texte à trous pour une question de type FillGap
+       @param responseElt un element de type qti:responseDeclaration
+       @param gapMatchInteractionElt un element de type qti:gapMatchInteractionElt
+    -->
+    <xsl:template name="constitueTexteATrous">
+        <xsl:param name="responseElt"/>
+        <xsl:param name="gapMatchInteractionElt"/>
+        <xsl:apply-templates select=".//node()">
+           <xsl:with-param name="responseElt" select="$responseElt"/>
+           <xsl:with-param name="gapMatchInteractionElt" select="$gapMatchInteractionElt" />
+        </xsl:apply-templates>
+    </xsl:template>
+
+    <xsl:template match="qti:gapMatchInteraction//node()[string-length(normalize-space(text()))>0]" priority="-0.5">
+       <xsl:copy>
+           <xsl:apply-templates select="qti:gapMatchInteraction//node()[string-length(normalize-space(text()))>0]"/>
+       </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="qti:gap">
+        <xsl:param name="responseElt"/>
+        <xsl:param name="gapMatchInteractionElt"/>
+        <xsl:variable name="gapId" select="@identifier"/>
+        {<xsl:for-each select="$gapMatchInteractionElt/qti:gapText">
+            <xsl:variable name="gapTextId" select="@identifier"/>
+            <xsl:variable name="gapTextIdWithCurrentGap" select="tokenize($responseElt/qti:correctResponse/qti:value[tokenize(text(),'\s+')[2]=$gapId]/text(),'\s+')[1]"/>
+            <xsl:if test="$gapTextIdWithCurrentGap=$gapTextId">=</xsl:if>
+            <xsl:if test="not($gapTextIdWithCurrentGap=$gapTextId)">~</xsl:if>
+            <xsl:value-of select="text()"/>
+        </xsl:for-each>}
+    </xsl:template>
+
+    <xsl:template match="qti:gapText//node()"/>
+    <xsl:template match="qti:prompt//node()"/>
+    
 </xsl:stylesheet>
