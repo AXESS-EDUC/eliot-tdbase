@@ -167,6 +167,19 @@
             <xsl:with-param name="response" select="$response"/>
         </xsl:call-template>
     </xsl:template>
+
+    <!--
+         Les items QTI de type uploadInteraction sont placés dans des éléments
+         de type FileUpload
+    -->
+    <xsl:template match="qti:uploadInteraction">
+        <xsl:variable name="idResponse" select="@responseIdentifier"/>
+        <xsl:variable name="response"
+                      select="//qti:responseDeclaration[@identifier=$idResponse]"/>
+        <xsl:call-template name="FileUpload">
+            <xsl:with-param name="response" select="$response"/>
+        </xsl:call-template>
+    </xsl:template>
     
 
     <!--
@@ -180,6 +193,18 @@
        Template nommés pour le rendu des types de question eliot-tdbase
        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     -->
+
+    <!--
+            Template pour la generation d'une Open question
+            @param response un element de type qti:responseDeclaration/qti:correctResponse
+            -->
+    <xsl:template name="FileUpload">
+        <xsl:param name="response"/>
+        {
+        "questionTypeCode" : "FileUpload",
+        "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>"
+        },
+    </xsl:template>
 
     <!--
         Template pour la generation d'une Open question
