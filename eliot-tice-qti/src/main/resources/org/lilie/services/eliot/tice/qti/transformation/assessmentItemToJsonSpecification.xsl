@@ -32,7 +32,7 @@
     <xsl:output encoding="UTF-8" omit-xml-declaration="yes" method="text"/>
 
     <!--
-     Traitement du neoud racine
+     Traitement du noeud racine
     -->
     <xsl:template match="qti:assessmentItem">
     {
@@ -58,9 +58,12 @@
     <xsl:template
             match="qti:itemBody//node()[string-length(normalize-space(text()))>0]"
             priority="-1">
+        <xsl:variable name="enonce">
+            &lt;p&gt;<xsl:copy-of select="."></xsl:copy-of>&lt;/p&gt;
+        </xsl:variable>
         {
         "questionTypeCode": "Statement",
-        "enonce" : "&lt;p&gt;<xsl:copy-of select="."></xsl:copy-of>&lt;/p&gt;"
+        "enonce" : "<xsl:value-of select="normalize-space($enonce)"/>
         },
         <xsl:apply-templates
                 select="qti:itemBody//node()[string-length(normalize-space(text()))>0]"/>
@@ -153,12 +156,49 @@
 
 
     <!--
+         Les items QTI de type sliderInteraction sont placés dans des éléments
+         de type Slider
+    -->
+    <xsl:template match="qti:sliderInteraction">
+        <xsl:variable name="idResponse" select="@responseIdentifier"/>
+        <xsl:variable name="response"
+                      select="//qti:responseDeclaration[@identifier=$idResponse]"/>
+        <xsl:call-template name="Slider">
+            <xsl:with-param name="response" select="$response"/>
+        </xsl:call-template>
+    </xsl:template>
+    
+
+    <!--
     On ignore les éléments non supportés par eliot- tdbase
     -->
     <xsl:template match="qti:outcomeDeclaration"/>
     <xsl:template match="qti:responseProcessing"/>
 
+    <!--
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       Template nommés pour le rendu des types de question eliot-tdbase
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    -->
 
+    <!--
+        Template pour la generation d'une Open question
+        @param response un element de type qti:responseDeclaration/qti:correctResponse
+        -->
+    <xsl:template name="Slider">
+        <xsl:param name="response"/>
+        {
+        "questionTypeCode" : "Slider",
+        "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
+        "valeur" : <xsl:value-of select="$response/qti:correctResponse/qti:value/text()"/>,
+        "valeurMin" : <xsl:value-of select="@lowerBound"/>,
+        "valeurMax" : <xsl:value-of select="@upperBound"/>,
+        "pas" : <xsl:value-of select="@step"/>,
+        "precision" : <xsl:value-of select="@step"/>
+        },
+    </xsl:template>
+    
+    
     <!--
     Template pour la generation d'une Open question
     @param response un element de type qti:responseDeclaration/qti:correctResponse
