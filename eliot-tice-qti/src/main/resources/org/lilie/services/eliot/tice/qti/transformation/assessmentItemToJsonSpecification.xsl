@@ -138,6 +138,19 @@
         </xsl:call-template>
     </xsl:template>
 
+    <!--
+         Les items QTI de type orderInteraction sont placés dans des éléments
+         de type Order
+    -->
+    <xsl:template match="qti:orderInteraction">
+        <xsl:variable name="idResponse" select="@responseIdentifier"/>
+        <xsl:variable name="response"
+                      select="//qti:responseDeclaration[@identifier=$idResponse]"/>
+        <xsl:call-template name="Order">
+            <xsl:with-param name="response" select="$response"/>
+        </xsl:call-template>
+    </xsl:template>
+
 
     <!--
     On ignore les éléments non supportés par eliot- tdbase
@@ -145,6 +158,24 @@
     <xsl:template match="qti:outcomeDeclaration"/>
     <xsl:template match="qti:responseProcessing"/>
 
+
+    <!--
+    Template pour la generation d'une Open question
+    @param response un element de type qti:responseDeclaration/qti:correctResponse
+    -->
+    <xsl:template name="Order">
+        <xsl:param name="response"/>
+        {
+        "questionTypeCode" : "Order",
+        "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
+        "orderedItems" : [
+            <xsl:call-template name="constitueItemsOrdonnes">
+                <xsl:with-param name="correctResponseElt" select="$response"/>
+                <xsl:with-param name="orderInteractionElt" select="."/>
+            </xsl:call-template>
+        ]
+        },
+    </xsl:template>
 
     <!--
     Template pour la generation d'une Open question
@@ -246,6 +277,11 @@
         <xsl:if test="not($reponseCorrecte)">false</xsl:if>
     </xsl:template>
 
+    <!--
+           Constitue les paires pour une question de type Associate
+           @param correctResponseElt un element de type qti:correctResponse
+           @param associateInteractionElt un element de type qti:associateInteraction
+        -->
     <xsl:template name="constituePaires">
         <xsl:param name="correctResponseElt"/>
         <xsl:param name="associateInteractionElt"/>
@@ -257,6 +293,25 @@
                 select="$associateInteractionElt//qti:simpleAssociableChoice[@identifier=$tabPartIds[1]]"/>",
             "participant2": "<xsl:value-of
                 select="$associateInteractionElt//qti:simpleAssociableChoice[@identifier=$tabPartIds[2]]"/>"
+            },
+        </xsl:for-each>
+    </xsl:template>
+
+    <!--
+       Constitue les items ordonnés pour une question de type Order
+       @param correctResponseElt un element de type qti:correctResponse
+       @param orderInteractionElt un element de type qti:orderInteraction
+    -->
+    <xsl:template name="constitueItemsOrdonnes">
+        <xsl:param name="correctResponseElt"/>
+        <xsl:param name="orderInteractionElt"/>
+        <xsl:for-each
+                select="$correctResponseElt/qti:correctResponse/qti:value">
+            <xsl:variable name="identifier" select="text()"/>
+            {
+            "text": "<xsl:value-of
+                select="$orderInteractionElt//qti:simpleChoice[@identifier=$identifier]"/>",
+            "ordinal": "<xsl:value-of select="position()"/>"
             },
         </xsl:for-each>
     </xsl:template>
