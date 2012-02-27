@@ -39,10 +39,9 @@
             <xsl:apply-templates select="qti:itemBody"/>
         </xsl:variable>
         {
-        "title" : "<xsl:value-of select="./@title"/>"
+        "title" : "<xsl:value-of select="./@title"/>",
         "questions" : [
-        <!--<xsl:value-of select="normalize-space($questions)"/>-->
-        <xsl:value-of select="$questions"/>
+        <xsl:value-of select="normalize-space($questions)"/>
         ]
         }
     </xsl:template>
@@ -63,7 +62,7 @@
             match="qti:itemBody//node()[string-length(normalize-space(text()))>0]"
             priority="-1">
         <xsl:variable name="enonce">
-            &lt;p&gt;<xsl:copy-of select="."></xsl:copy-of>&lt;/p&gt;
+            &lt;p&gt;<xsl:copy-of select="."/>&lt;/p&gt;
         </xsl:variable>
         {
         "questionTypeCode": "Statement",
@@ -137,11 +136,7 @@
          de type Open
     -->
     <xsl:template match="qti:extendedTextInteraction">
-        <xsl:variable name="idResponse" select="@responseIdentifier"/>
-        <xsl:variable name="response"
-                      select="//qti:responseDeclaration[@identifier=$idResponse]"/>
         <xsl:call-template name="Open">
-            <xsl:with-param name="response" select="$response"/>
         </xsl:call-template>
     </xsl:template>
 
@@ -177,11 +172,7 @@
          de type FileUpload
     -->
     <xsl:template match="qti:uploadInteraction">
-        <xsl:variable name="idResponse" select="@responseIdentifier"/>
-        <xsl:variable name="response"
-                      select="//qti:responseDeclaration[@identifier=$idResponse]"/>
         <xsl:call-template name="FileUpload">
-            <xsl:with-param name="response" select="$response"/>
         </xsl:call-template>
     </xsl:template>
 
@@ -285,7 +276,6 @@
         @param response un element de type qti:responseDeclaration/qti:correctResponse
         -->
     <xsl:template name="FileUpload">
-        <xsl:param name="response"/>
         {
         "questionTypeCode" : "FileUpload",
         "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>"
@@ -335,7 +325,6 @@
     @param response un element de type qti:responseDeclaration/qti:correctResponse
     -->
     <xsl:template name="Open">
-        <xsl:param name="response"/>
         <xsl:variable name="nbLignes" select="floor(@expectedLength div 80)+1"/>
         {
         "questionTypeCode" : "Open",
