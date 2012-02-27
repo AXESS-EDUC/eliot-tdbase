@@ -34,10 +34,10 @@
     <!--
      Traitement du neoud racine
     -->
-    <xsl:template match="qti:assessmentItem" xml:space="preserve">
+    <xsl:template match="qti:assessmentItem">
     {
-      "title" : "<xsl:value-of select="./@title"/>"
-      "questions" : [
+    "title" : "<xsl:value-of select="./@title"/>"
+    "questions" : [
         <xsl:apply-templates select="qti:itemBody"/>
       ]
     }
@@ -56,14 +56,14 @@
         On perd le balisage en raison du format de sortie textuel.
     -->
     <xsl:template
-            match="qti:itemBody/node()[string-length(normalize-space(text()))>0]"
+            match="qti:itemBody//node()[string-length(normalize-space(text()))>0]"
             priority="-1">
         {
         "questionTypeCode": "Statement",
-        "enonce" : "&lt;p&gt;<xsl:copy-of select="text()"></xsl:copy-of>&lt;/p&gt;"
+        "enonce" : "&lt;p&gt;<xsl:copy-of select="."></xsl:copy-of>&lt;/p&gt;"
         },
         <xsl:apply-templates
-                select="qti:itemBody/node()[string-length(normalize-space(text()))>0]"/>
+                select="qti:itemBody//node()[string-length(normalize-space(text()))>0]"/>
     </xsl:template>
 
     <!--
@@ -125,6 +125,19 @@
         </xsl:call-template>
     </xsl:template>
 
+    <!--
+         Les items QTI de type extendedTextInteraction sont placés dans des éléments
+         de type Open
+    -->
+    <xsl:template match="qti:extendedTextInteraction">
+        <xsl:variable name="idResponse" select="@responseIdentifier"/>
+        <xsl:variable name="response"
+                      select="//qti:responseDeclaration[@identifier=$idResponse]"/>
+        <xsl:call-template name="Open">
+            <xsl:with-param name="response" select="$response"/>
+        </xsl:call-template>
+    </xsl:template>
+
 
     <!--
     On ignore les éléments non supportés par eliot- tdbase
@@ -132,6 +145,20 @@
     <xsl:template match="qti:outcomeDeclaration"/>
     <xsl:template match="qti:responseProcessing"/>
 
+
+    <!--
+    Template pour la generation d'une Open question
+    @param response un element de type qti:responseDeclaration/qti:correctResponse
+    -->
+    <xsl:template name="Open">
+        <xsl:param name="response"/>
+        <xsl:variable name="nbLignes" select="floor(@expectedLength div 80)+1"/>
+        {
+        "questionTypeCode" : "Open",
+        "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
+        "nombreLignesReponses" : <xsl:value-of select="$nbLignes"/>
+        },
+    </xsl:template>
 
     <!--
     Template pour la generation d'une MultipleChoice question
@@ -143,7 +170,7 @@
         <xsl:param name="montrerColonneAGauche"/>
         {
         "questionTypeCode" : "Associate",
-        "libelle" : "<xsl:value-of select="qti:prompt"/>",
+        "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
         "montrerColonneAGauche" : <xsl:value-of
             select="$montrerColonneAGauche"/>,
         "associations" : [
@@ -163,14 +190,13 @@
         <xsl:param name="response"/>
         {
         "questionTypeCode" : "MultipleChoice",
-        "libelle" : "<xsl:value-of select="qti:prompt"/>",
+        "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
         "shuffled" : <xsl:value-of select="@shuffle"/>,
         "reponses" : [
         <xsl:for-each select="qti:simpleChoice">
             {
             "libelleReponse" : "<xsl:value-of select="text()"/>",
-            "estUneBonneReponse" :
-            <xsl:call-template
+            "estUneBonneReponse" : <xsl:call-template
                     name="afficheTrueSiReponseCorrecte">
                 <xsl:with-param name="correctResponseElt"
                                 select="$response/qti:correctResponse"/>
@@ -191,7 +217,7 @@
         <xsl:param name="response"/>
         {
         "questionTypeCode" : "ExclusiveChoice",
-        "libelle" : "<xsl:value-of select="qti:prompt"/>",
+        "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
         "shuffled" : <xsl:value-of select="@shuffle"/>,
         "indexBonneReponse": "<xsl:value-of
             select="$response/qti:correctResponse/qti:value"/>",
