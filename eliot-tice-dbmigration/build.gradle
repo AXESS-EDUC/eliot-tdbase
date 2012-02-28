@@ -34,6 +34,7 @@ dependencies {
   liquibase group: 'org.lilie.services.eliot', name:'eliot-scolarite-commons', version:"${versionSchemaEliot}", classifier:"${classifierSchemaEliot}"
 
   deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
+  //deploiementArtefact 'org.apache.maven.wagon:wagon-webdav-jackrabbit:2.2'
 }
 
 /**

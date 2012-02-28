@@ -39,9 +39,8 @@
             <xsl:apply-templates select="qti:itemBody"/>
         </xsl:variable>
         {
-        "title" : "<xsl:value-of select="./@title"/>",
-        "questions" : [
-        <xsl:value-of select="normalize-space($questions)"/>
+         "items" : [
+        {"title" : "<xsl:value-of select="./@title"/>"}<xsl:value-of select="normalize-space($questions)"/>
         ]
         }
     </xsl:template>
@@ -61,13 +60,7 @@
     <xsl:template
             match="qti:itemBody//node()[string-length(normalize-space(text()))>0]"
             priority="-1">
-        <xsl:variable name="enonce">
-            &lt;p&gt;<xsl:copy-of select="."/>&lt;/p&gt;
-        </xsl:variable>
-        {
-        "questionTypeCode": "Statement",
-        "enonce" : "<xsl:value-of select="normalize-space($enonce)"/>"
-        },
+        <xsl:call-template name="Statement"/>
         <xsl:apply-templates
                 select="qti:itemBody//node()[string-length(normalize-space(text()))>0]"/>
     </xsl:template>
@@ -76,11 +69,7 @@
        Les éléments 'img' sont plaçés dans des items de type document
     -->
     <xsl:template match="qti:img">
-        {
-        "questionTypeCode": "Document",
-        "presentation" : "<xsl:value-of select="@alt"/>",
-        "questionAttachementSrc": "<xsl:value-of select="@src"/>"
-        },
+        <xsl:call-template name="Document"/>
     </xsl:template>
 
     <!--
@@ -216,13 +205,38 @@
        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     -->
 
+
+    <!--
+    Template pour la generation d'une Document question
+    -->
+    <xsl:template name="Document">
+        ,{
+        "questionTypeCode": "Document",
+        "presentation" : "<xsl:value-of select="@alt"/>",
+        "questionAttachementSrc": "<xsl:value-of select="@src"/>"
+        }
+    </xsl:template>
+
+    <!--
+           Template pour la generation d'une Statement question
+           -->
+    <xsl:template name="Statement">
+        <xsl:variable name="enonce">
+            &lt;p&gt;<xsl:copy-of select="."/>&lt;/p&gt;
+        </xsl:variable>
+        ,{
+        "questionTypeCode": "Statement",
+        "enonce" : "<xsl:value-of select="normalize-space($enonce)"/>"
+        }
+    </xsl:template>
+
     <!--
          Template pour la generation d'une GraphicMatch question
          @param response un element de type qti:responseDeclaration/qti:correctResponse
          -->
     <xsl:template name="GraphicMatch">
         <xsl:param name="response"/>
-        {
+        ,{
         "questionTypeCode" : "GraphicMatch",
         "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
         "attachmentSrc" : "<xsl:value-of select="qti:object/@data"/>",
@@ -242,7 +256,7 @@
             <xsl:with-param name="response" select="$response"/>
         </xsl:call-template>
         }
-        },
+        }
     </xsl:template>
 
     <!--
@@ -261,13 +275,13 @@
             </xsl:call-template>
             &lt;/p&gt;
         </xsl:variable>
-        {
+        ,{
         "questionTypeCode" : "FillGap",
         "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
         "saisieLibre" : <xsl:value-of select="$saisieLibre"/>,
         "montrerLesMots" : <xsl:value-of select="$montrerLesMots"/>,
         "texteATrous" : "<xsl:value-of select="normalize-space($textAtrous)"/>"
-        },
+        }
     </xsl:template>
 
 
@@ -276,10 +290,10 @@
         @param response un element de type qti:responseDeclaration/qti:correctResponse
         -->
     <xsl:template name="FileUpload">
-        {
+        ,{
         "questionTypeCode" : "FileUpload",
         "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>"
-        },
+        }
     </xsl:template>
 
     <!--
@@ -288,17 +302,16 @@
         -->
     <xsl:template name="Slider">
         <xsl:param name="response"/>
-        {
+        ,{
         "questionTypeCode" : "Slider",
         "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
-        "valeur" : <xsl:value-of
-            select="$response/qti:correctResponse/qti:value/text()"/>,
+        "valeur" : <xsl:value-of select="$response/qti:correctResponse/qti:value/text()"/>,
         "valeurMin" : <xsl:value-of select="@lowerBound"/>,
         "valeurMax" : <xsl:value-of select="@upperBound"/>,
         "pas" : <xsl:value-of select="@step"/>,
         "precision" :
         <xsl:value-of select="@step"/>
-        },
+        }
     </xsl:template>
 
 
@@ -308,7 +321,7 @@
     -->
     <xsl:template name="Order">
         <xsl:param name="response"/>
-        {
+        ,{
         "questionTypeCode" : "Order",
         "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
         "orderedItems" : [
@@ -317,7 +330,7 @@
             <xsl:with-param name="orderInteractionElt" select="."/>
         </xsl:call-template>
         ]
-        },
+        }
     </xsl:template>
 
     <!--
@@ -326,12 +339,12 @@
     -->
     <xsl:template name="Open">
         <xsl:variable name="nbLignes" select="floor(@expectedLength div 80)+1"/>
-        {
+        ,{
         "questionTypeCode" : "Open",
         "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
         "nombreLignesReponses" :
         <xsl:value-of select="$nbLignes"/>
-        },
+        }
     </xsl:template>
 
     <!--
@@ -342,7 +355,7 @@
     <xsl:template name="Assiociate">
         <xsl:param name="response"/>
         <xsl:param name="montrerColonneAGauche"/>
-        {
+        ,{
         "questionTypeCode" : "Associate",
         "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
         "montrerColonneAGauche" : <xsl:value-of
@@ -353,7 +366,7 @@
             <xsl:with-param name="correctResponseElt" select="$response"/>
         </xsl:call-template>
         ]
-        },
+        }
     </xsl:template>
 
     <!--
@@ -362,7 +375,7 @@
     -->
     <xsl:template name="MultipleChoice">
         <xsl:param name="response"/>
-        {
+        ,{
         "questionTypeCode" : "MultipleChoice",
         "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
         "shuffled" : <xsl:value-of select="@shuffle"/>,
@@ -377,10 +390,10 @@
                                 select="$response/qti:correctResponse"/>
                 <xsl:with-param name="idReponseAEvaluer" select="@identifier"/>
             </xsl:call-template>
-            },
+            }<xsl:if test="position()!=last()">,</xsl:if>
         </xsl:for-each>
         ]
-        },
+        }
     </xsl:template>
 
 
@@ -390,7 +403,7 @@
     -->
     <xsl:template name="ExclusiveChoice">
         <xsl:param name="response"/>
-        {
+        ,{
         "questionTypeCode" : "ExclusiveChoice",
         "libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",
         "shuffled" : <xsl:value-of select="@shuffle"/>,
@@ -401,10 +414,10 @@
             {
             "libelleReponse" : "<xsl:value-of select="text()"/>",
             "id" : "<xsl:value-of select="@identifier"/>"
-            },
+            }<xsl:if test="position()!=last()">,</xsl:if>
         </xsl:for-each>
         ]
-        },
+        }
     </xsl:template>
 
     <!--
@@ -437,7 +450,7 @@
                 select="$associateInteractionElt//qti:simpleAssociableChoice[@identifier=$tabPartIds[1]]"/>",
             "participant2": "<xsl:value-of
                 select="$associateInteractionElt//qti:simpleAssociableChoice[@identifier=$tabPartIds[2]]"/>"
-            },
+            }<xsl:if test="position()!=last()">,</xsl:if>
         </xsl:for-each>
     </xsl:template>
 
@@ -456,7 +469,7 @@
             "text": "<xsl:value-of
                 select="$orderInteractionElt//qti:simpleChoice[@identifier=$identifier]"/>",
             "ordinal": "<xsl:value-of select="position()"/>"
-            },
+            }<xsl:if test="position()!=last()">,</xsl:if>
         </xsl:for-each>
     </xsl:template>
 
@@ -512,8 +525,11 @@
         <xsl:for-each
                 select="$graphicGapMatchInteraction/qti:associableHotspot">
             <xsl:variable name="tabCoords" select="tokenize(@coords,',')"/>
-            {"id":"<xsl:value-of select="@identifier"/>","topDistance":<xsl:value-of
-                select="$tabCoords[2]"/>, "leftDistance":<xsl:value-of select="$tabCoords[1]"/> },
+            {"id":"<xsl:value-of
+                select="@identifier"/>","topDistance":<xsl:value-of
+                select="$tabCoords[2]"/>, "leftDistance":<xsl:value-of
+                select="$tabCoords[1]"/> }
+            <xsl:if test="position()!=last()">,</xsl:if>
         </xsl:for-each>
     </xsl:template>
 
@@ -528,8 +544,10 @@
         <xsl:for-each
                 select="$response/qti:correctResponse/qti:value">
             <xsl:variable name="idImg" select="tokenize(text(),'\s+')[1]"/>
-            {"id":"<xsl:value-of select="$idImg"/>","attachmentSrc": "<xsl:value-of
-                select="$graphicGapMatchInteraction/qti:gapImg[@identifier=$idImg]/qti:object/@data"/>"},
+            {"id":"<xsl:value-of select="$idImg"/>","attachmentSrc":
+            "<xsl:value-of
+                select="$graphicGapMatchInteraction/qti:gapImg[@identifier=$idImg]/qti:object/@data"/>"}
+            <xsl:if test="position()!=last()">,</xsl:if>
         </xsl:for-each>
     </xsl:template>
 
@@ -542,10 +560,11 @@
         <xsl:for-each
                 select="$response/qti:correctResponse/qti:value">
             <xsl:variable name="idsTab" select="tokenize(text(),'\s+')"/>
-            "<xsl:value-of select="$idsTab[1]"/>" : "<xsl:value-of select="$idsTab[2]"/>",
+            "<xsl:value-of select="$idsTab[1]"/>" : "<xsl:value-of
+                select="$idsTab[2]"/>"
+            <xsl:if test="position()!=last()">,</xsl:if>
         </xsl:for-each>
     </xsl:template>
-
 
 
 </xsl:stylesheet>
