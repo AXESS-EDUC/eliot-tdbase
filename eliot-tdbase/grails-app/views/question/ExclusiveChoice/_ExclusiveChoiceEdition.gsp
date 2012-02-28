@@ -43,7 +43,6 @@
     R&eacute;ponse(s):
   </td>
   <td>
-
     <table>
       <tr>
         <td id="specifobject_reponses">
@@ -58,8 +57,12 @@
         </td>
       </tr>
     </table>
-
   </td>
+</tr>
+<tr>
+    <td class="label">Présentation aléatoire :</td>
+    <td><g:checkBox name="specifobject.shuffled"
+                    checked="${specifobject.shuffled}"/></td>
 </tr>
 <tr>
   <td class="label">

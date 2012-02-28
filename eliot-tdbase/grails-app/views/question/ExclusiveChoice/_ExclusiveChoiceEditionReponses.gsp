@@ -25,21 +25,19 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-
-
-
-
 <g:each status="i" in="${specifobject.reponses}" var="reponse">
-  &nbsp;
-  <g:radio name="specifobject.indexBonneReponse"
-              value="${i}" checked="${i == specifobject.indexBonneReponse}"/>
-  <g:textField name="specifobject.reponses[${i}].libelleReponse" size="45"
-                value="${reponse.libelleReponse}"/>
-  &nbsp;
-  <g:textField size="2"  value="${reponse.rang}" name="specifobject.reponses[${i}].rang"/>
-  &nbsp;
-  <g:submitToRemote id="${i}" value="Suppr" title="Supprimer la réponse" action="supprimeReponse"
-                    controller="questionExclusiveChoice" update="specifobject_reponses" class="button"/>
+    &nbsp;
+    <g:radio name="specifobject.indexBonneReponse"
+             value="${reponse.id}" checked="${reponse.id == specifobject.indexBonneReponse}"/>
+
+    <g:textField name="specifobject.reponses[${i}].libelleReponse" size="45"
+                 value="${reponse.libelleReponse}"/>
+
+    <g:hiddenField name="specifobject.reponses[${i}].id" value="${reponse.id}"/>
+
+    &nbsp;
+    <g:submitToRemote id="${i}" value="Suppr" title="Supprimer la réponse" action="supprimeReponse"
+                      controller="questionExclusiveChoice" update="specifobject_reponses" class="button"/>
     <br/>
 </g:each>
 <g:hiddenField name="specifobject.reponses.size" value="${specifobject.reponses?.size()}"/>

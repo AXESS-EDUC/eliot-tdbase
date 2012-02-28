@@ -62,12 +62,12 @@ class ReponseExclusiveChoiceSpecification implements ReponseSpecification {
   /**
    * L'indexe de la reponse
    */
-  Integer indexReponse
+  String indexReponse
 
   /**
    * L'indexe de la bonne reponse
    */
-  Integer indexBonneReponse
+  String indexBonneReponse
 
   /**
    * Le nombre de reponses possibles 

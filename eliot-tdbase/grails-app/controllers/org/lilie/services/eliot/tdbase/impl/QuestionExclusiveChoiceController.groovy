@@ -25,11 +25,6 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-
-
-
-
-
 package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
@@ -38,57 +33,47 @@ import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpeci
 
 class QuestionExclusiveChoiceController extends QuestionController {
 
-  /**
-   *
-   * Action "ajouteReponse"
-   */
-  def ajouteReponse() {
-    ExclusiveChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
-    specifobject.reponses << new ExclusiveChoiceSpecificationReponsePossible(
-            rang: specifobject.reponses.size()+1)
-    render(
-            template: "/question/ExclusiveChoice/ExclusiveChoiceEditionReponses",
-            model:[ specifobject: specifobject ]
-    )
-  }
-
-  /**
-   *
-   * Action "ajouteReponse"
-   */
-  def supprimeReponse() {
-    ExclusiveChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
-    specifobject.reponses.remove(params.id as Integer)
-    render(
-            template: "/question/ExclusiveChoice/ExclusiveChoiceEditionReponses",
-            model:[ specifobject: specifobject ]
-    )
-  }
-
-  /**
-   *
-   * @param params  les paramètres de la requête
-   * @return l'objet représentant la spécification
-   */
-  def getSpecificationObjectFromParams(Map params) {
-    def specifobject = new ExclusiveChoiceSpecification()
-    def size = params.specifobject.reponses?.size as Integer
-    if (size) {
-      for (int i = 0; i < size; i++) {
-        specifobject.reponses << new ExclusiveChoiceSpecificationReponsePossible()
-      }
+    /**
+     *
+     * Action "ajouteReponse"
+     */
+    def ajouteReponse() {
+        ExclusiveChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
+        specifobject.reponses << new ExclusiveChoiceSpecificationReponsePossible(id: specifobject.reponses.size() + 1)
+        render(
+                template: "/question/ExclusiveChoice/ExclusiveChoiceEditionReponses",
+                model: [specifobject: specifobject]
+        )
     }
-    bindData(specifobject, params, "specifobject")
-    def indexBonneReponse = specifobject.indexBonneReponse
-    def bonneReponse = null
-    if (indexBonneReponse != null)  {
-      bonneReponse = specifobject.reponses[indexBonneReponse]
+
+    /**
+     *
+     * Action "ajouteReponse"
+     */
+    def supprimeReponse() {
+        ExclusiveChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
+        specifobject.reponses.remove(params.id as Integer)
+        render(
+                template: "/question/ExclusiveChoice/ExclusiveChoiceEditionReponses",
+                model: [specifobject: specifobject]
+        )
     }
-    def reponsesOrd = specifobject.reponses.sort { it.rang }
-    specifobject.reponses = reponsesOrd
-    specifobject.indexBonneReponse =  bonneReponse ? reponsesOrd.indexOf(bonneReponse) : null
-    return specifobject
-  }
+
+    /**
+     *
+     * @param params les paramètres de la requête
+     * @return l'objet représentant la spécification
+     */
+    def getSpecificationObjectFromParams(Map params) {
+        def specifobject = new ExclusiveChoiceSpecification()
+        def size = params.specifobject.reponses?.size as Integer
+        if (size) {
+            size.times {
+                specifobject.reponses << new ExclusiveChoiceSpecificationReponsePossible()
+            }
+        }
+        bindData(specifobject, params, "specifobject")
+    }
 }
 
 
