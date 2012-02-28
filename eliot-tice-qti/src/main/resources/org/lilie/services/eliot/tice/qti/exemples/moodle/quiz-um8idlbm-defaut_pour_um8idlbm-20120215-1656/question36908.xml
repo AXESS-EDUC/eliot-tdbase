@@ -1,0 +1,53 @@
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_item_v2p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_item_v2p0 ./imsqti_item_v2p0.xsd" identifier="question36908" title="Langages et framework" adaptive="false" timeDependent="false">
+	<responseDeclaration identifier="question36908matching" cardinality="multiple" baseType="directedPair">
+		<correctResponse>
+   						<value>q16929 a16929</value>
+   						<value>q16930 a16930</value>
+   						<value>q16931 a16931</value>
+   				</correctResponse>
+
+		<mapping defaultValue="0">
+   		   		   <mapEntry mapKey="q16929 a16929" mappedValue="1"/>
+   		   		   <mapEntry mapKey="q16930 a16930" mappedValue="1"/>
+   		   		   <mapEntry mapKey="q16931 a16931" mappedValue="1"/>
+   				</mapping>
+	</responseDeclaration>
+	<outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float"/>
+
+	<itemBody>
+		<p>Associez le bon langage au bon framework</p>
+		<div class="interactive.match">
+			<matchInteraction responseIdentifier="question36908matching" shuffle="false" maxAssociations="3">
+				<simpleMatchSet>
+           		    				<simpleAssociableChoice identifier="q16929" matchMax="1">Grails</simpleAssociableChoice>
+           		    				<simpleAssociableChoice identifier="q16930" matchMax="1">Ruby On Rails</simpleAssociableChoice>
+           		    				<simpleAssociableChoice identifier="q16931" matchMax="1">Spring MVC</simpleAssociableChoice>
+           						</simpleMatchSet>
+				<simpleMatchSet>
+           		    				<simpleAssociableChoice identifier="a16929" matchMax="3">Groovy</simpleAssociableChoice>
+           		    				<simpleAssociableChoice identifier="a16930" matchMax="3">Ruby</simpleAssociableChoice>
+           		    				<simpleAssociableChoice identifier="a16931" matchMax="3">Java</simpleAssociableChoice>
+           						</simpleMatchSet>
+			</matchInteraction>
+		</div>
+		</itemBody>
+	<responseProcessing xmlns="http://www.imsglobal.org/xsd/imsqti_item_v2p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_item_v2p0 ../imsqti_item_v2p0.xsd">
+		<responseCondition>
+
+			<responseIf>
+				<isNull>
+					<variable identifier="question36908matching"/>
+				</isNull>
+				<setOutcomeValue identifier="SCORE">
+					<baseValue baseType="integer">0</baseValue>
+				</setOutcomeValue>
+			</responseIf>
+
+			<responseElse>
+				<setOutcomeValue identifier="SCORE">
+					<mapResponse identifier="question36908matching"/>
+				</setOutcomeValue>
+			</responseElse>
+		</responseCondition>
+	</responseProcessing>
+</assessmentItem>

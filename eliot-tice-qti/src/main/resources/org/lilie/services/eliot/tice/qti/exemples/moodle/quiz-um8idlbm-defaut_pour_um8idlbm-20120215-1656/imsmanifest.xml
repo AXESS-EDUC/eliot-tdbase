@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns="http://www.imsglobal.org/xsd/imscp_v1p1" xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:imsqti="http://www.imsglobal.org/xsd/imsqti_item_v2p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="question_category_4913---http-__moodle.ups-tlse.fr" xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 imscp_v1p1.xsd   http://www.imsglobal.org/xsd/imsmd_v1p2 imsmd_v1p2p2.xsd  http://www.imsglobal.org/xsd/imsqti_item_v2p0 ./imsqti_item_v2p0.xsd">
+	<metadata>
+		<schema>ADL SCORM</schema>
+		<schemaversion>1.2</schemaversion>
+		<lom xmlns="http://www.imsglobal.org/xsd/imsmd_v1p2" 
+     			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+     			xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 imsmd_v1p2p2.xsd">
+     		<general>
+				<title><langstring xml:lang="fr_utf8">question_category_4913</langstring></title>
+				<description><langstring xml:lang="fr_utf8">All questions in category 4913</langstring></description>
+				<keyword><langstring xml:lang="fr_utf8"></langstring></keyword>
+			</general>
+		</lom>
+   			</metadata>
+	<organizations/>
+	<resources>
+    			<resource identifier="category4913-question36908" type="imsqti_item_xmlv2p0" href="./category4913-question36908.xml">
+			<metadata>
+				<schema>IMS QTI Item</schema>
+				<schemaversion>2.0</schemaversion>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>category4913-question36908</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring xml:lang="fr_utf8">Langages et framework</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring xml:lang="en">Question 36908 from category 4913</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:lifecycle>
+						<imsmd:version>
+							<imsmd:langstring xml:lang="en">1.0</imsmd:langstring>
+						</imsmd:version>
+						<imsmd:status>
+							<imsmd:source>
+								<imsmd:langstring xml:lang="en">LOMv1.0</imsmd:langstring>
+							</imsmd:source>
+							<imsmd:value>
+								<imsmd:langstring xml:lang="en">Draft</imsmd:langstring>
+							</imsmd:value>
+						</imsmd:status>
+					</imsmd:lifecycle>
+				</imsmd:lom>
+				<imsqti:qtiMetadata>
+					<imsqti:timeDependent>false</imsqti:timeDependent>
+					<imsqti:interactionType>matchInteraction</imsqti:interactionType>
+					<imsqti:canComputerScore>true</imsqti:canComputerScore>
+					<imsqti:feedbackType>nonadaptive</imsqti:feedbackType>
+					<imsqti:solutionAvailable>true</imsqti:solutionAvailable>
+				</imsqti:qtiMetadata>
+			</metadata>
+						
+		</resource>
+				<resource identifier="category4913-question36907" type="imsqti_item_xmlv2p0" href="./category4913-question36907.xml">
+			<metadata>
+				<schema>IMS QTI Item</schema>
+				<schemaversion>2.0</schemaversion>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>category4913-question36907</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring xml:lang="fr_utf8">Gestion de Version de Code distribué</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring xml:lang="en">Question 36907 from category 4913</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:lifecycle>
+						<imsmd:version>
+							<imsmd:langstring xml:lang="en">1.0</imsmd:langstring>
+						</imsmd:version>
+						<imsmd:status>
+							<imsmd:source>
+								<imsmd:langstring xml:lang="en">LOMv1.0</imsmd:langstring>
+							</imsmd:source>
+							<imsmd:value>
+								<imsmd:langstring xml:lang="en">Draft</imsmd:langstring>
+							</imsmd:value>
+						</imsmd:status>
+					</imsmd:lifecycle>
+				</imsmd:lom>
+				<imsqti:qtiMetadata>
+					<imsqti:timeDependent>false</imsqti:timeDependent>
+					<imsqti:interactionType>choiceInteraction</imsqti:interactionType>
+					<imsqti:canComputerScore>true</imsqti:canComputerScore>
+					<imsqti:feedbackType>nonadaptive</imsqti:feedbackType>
+					<imsqti:solutionAvailable>true</imsqti:solutionAvailable>
+				</imsqti:qtiMetadata>
+			</metadata>
+						
+		</resource>
+			</resources>
+</manifest>

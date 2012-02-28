@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p0 ../../imsqti_v2p0.xsd"
+                identifier="question36907"
+                title="Gestion de Version de Code distribué" adaptive="false"
+                timeDependent="false">
+    <responseDeclaration identifier="question36907multichoice"
+                         cardinality="multiple" baseType="identifier">
+        <correctResponse>
+            <value>92045</value>
+            <value>92046</value>
+        </correctResponse>
+        <mapping lowerBound="0" upperBound="1" defaultValue="-1">
+            <mapEntry mapKey="92044" mappedValue="-0.5"/>
+            <mapEntry mapKey="92045" mappedValue="0.5"/>
+            <mapEntry mapKey="92046" mappedValue="0.5"/>
+            <mapEntry mapKey="92047" mappedValue="-0.5"/>
+        </mapping>
+    </responseDeclaration>
+    <outcomeDeclaration identifier="SCORE" cardinality="single"
+                        baseType="float"/>
+    <itemBody>
+        <div class="assesmentItemBody">
+            <p>Parmi les 3 outil de gestion de version de code, sélectionnez les
+                outils fonctionnant sur une architecture distribuée.
+            </p>
+        </div>
+        <div class="interactive.choiceMultiple">
+            <choiceInteraction responseIdentifier="question36907multichoice"
+                               shuffle="false" maxChoices="4">
+                <simpleChoice identifier="92044" fixed="false">SVN
+                </simpleChoice>
+                <simpleChoice identifier="92045" fixed="false">Mercurial
+                </simpleChoice>
+                <simpleChoice identifier="92046" fixed="false">Git
+                </simpleChoice>
+                <simpleChoice identifier="92047" fixed="false">CVS
+                </simpleChoice>
+            </choiceInteraction>
+        </div>
+    </itemBody>
+    <responseProcessing xmlns="http://www.imsglobal.org/xsd/imsqti_v2p0"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p0 ../../imsqti_v2p0.xsd">
+        <responseCondition>
+            <responseIf>
+                <isNull>
+                    <variable identifier="question36907multichoice"/>
+                </isNull>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <mapResponse identifier="question36907multichoice"/>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+        <setOutcomeValue identifier="FEEDBACK">
+            <variable identifier="question36907multichoice"/>
+        </setOutcomeValue>
+    </responseProcessing>
+</assessmentItem>
