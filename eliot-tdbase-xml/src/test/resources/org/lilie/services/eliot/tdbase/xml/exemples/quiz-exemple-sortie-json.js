@@ -2,7 +2,7 @@
 var quiz = {
   "quiz" : [
     {
-      "nombreItems" : "11"
+      "nombreItems" : 11
     }
 
     ,

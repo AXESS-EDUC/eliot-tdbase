@@ -39,8 +39,8 @@
       {
         "quiz" : [
           {
-            "nombreItems" : "<xsl:value-of
-            select="count(question[@type != 'category'])"/>"
+            "nombreItems" : <xsl:value-of
+            select="count(question[@type != 'category'])"/>
           }
           <xsl:for-each select="question[@type != 'category']">
           ,
