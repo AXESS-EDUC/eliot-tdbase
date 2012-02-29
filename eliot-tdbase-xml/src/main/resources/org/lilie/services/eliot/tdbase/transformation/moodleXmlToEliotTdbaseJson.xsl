@@ -106,9 +106,12 @@
     -->
     <xsl:template match="question[@type = 'multichoice']">
         <xsl:choose>
-        <xsl:when test="single/text() = 'false'">
-        <xsl:call-template name="MultipleChoice"/>
-        </xsl:when>
+            <xsl:when test="single = false()">
+                <xsl:call-template name="MultipleChoice"/>
+            </xsl:when>
+            <xsl:when test="single = true()">
+                <xsl:call-template name="ExclusiveChoice"/>
+            </xsl:when>
         </xsl:choose>
     </xsl:template>
 
@@ -174,6 +177,24 @@
                ]
     </xsl:template>
 
+    <!--
+        Template pour la génération d'une ExclusiveChoice question
+    -->
+        <xsl:template name="ExclusiveChoice">
+               "questionTypeCode" : "ExclusiveChoice",
+               "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
+               "shuffled" : <xsl:choose><xsl:when test="shuffleanswers = true()">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose>,
+               "reponses" : [<xsl:for-each select="answer">
+                  {
+                     "libelleReponse" : "<xsl:value-of select="json:encode-string(text/text())"/>",
+                     "id" : "<xsl:value-of select="position()"/>"
+                  }<xsl:if test="position()!=last()">,</xsl:if></xsl:for-each>
+               ],
+               "indexBonneReponse": <xsl:for-each select="answer">
+                    <xsl:if test="@fraction &gt; 0">"<xsl:value-of select="position()"/>"</xsl:if>
+               </xsl:for-each>
+        </xsl:template>
+
 
     <!--&lt;!&ndash;-->
     <!--Template pour la generation d'une FillGap question-->
@@ -200,80 +221,6 @@
     <!--}-->
     <!--</xsl:template>-->
 
-
-    <!--&lt;!&ndash;-->
-    <!--Template pour la generation d'une MultipleChoice question-->
-    <!--@param response un élément de type qti:responseDeclaration/qti:correctResponse-->
-    <!--@param montrerColonneAGauche true si il faut montrer la colonne à gauche-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="Assiociate">-->
-    <!--<xsl:param name="response"/>-->
-    <!--<xsl:param name="montrerColonneAGauche"/>-->
-    <!--,{-->
-    <!--"questionTypeCode" : "Associate",-->
-    <!--"libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",-->
-    <!--"montrerColonneAGauche" : <xsl:value-of-->
-    <!--select="$montrerColonneAGauche"/>,-->
-    <!--"associations" : [-->
-    <!--<xsl:call-template name="constituePaires">-->
-    <!--<xsl:with-param name="associateInteractionElt" select="."/>-->
-    <!--<xsl:with-param name="correctResponseElt" select="$response"/>-->
-    <!--</xsl:call-template>-->
-    <!--]-->
-    <!--}-->
-    <!--</xsl:template>-->
-
-    <!--&lt;!&ndash;-->
-    <!--Template pour la generation d'une MultipleChoice question-->
-    <!--@param response un element de type qti:responseDeclaration/qti:correctResponse-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="MultipleChoice">-->
-    <!--<xsl:param name="response"/>-->
-    <!--,{-->
-    <!--"questionTypeCode" : "MultipleChoice",-->
-    <!--"libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",-->
-    <!--"shuffled" : <xsl:value-of select="@shuffle"/>,-->
-    <!--"reponses" : [-->
-    <!--<xsl:for-each select="qti:simpleChoice">-->
-    <!--{-->
-    <!--"libelleReponse" : "<xsl:value-of select="text()"/>",-->
-    <!--"estUneBonneReponse" :-->
-    <!--<xsl:call-template-->
-    <!--name="afficheTrueSiReponseCorrecte">-->
-    <!--<xsl:with-param name="correctResponseElt"-->
-    <!--select="$response/qti:correctResponse"/>-->
-    <!--<xsl:with-param name="idReponseAEvaluer" select="@identifier"/>-->
-    <!--</xsl:call-template>-->
-    <!--}<xsl:if test="position()!=last()">,</xsl:if>-->
-    <!--</xsl:for-each>-->
-    <!--]-->
-    <!--}-->
-    <!--</xsl:template>-->
-
-
-    <!--&lt;!&ndash;-->
-    <!--Template pour la generation d'une MultipleChoice question-->
-    <!--@param response  un element de type qti:correctResponse-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="ExclusiveChoice">-->
-    <!--<xsl:param name="response"/>-->
-    <!--,{-->
-    <!--"questionTypeCode" : "ExclusiveChoice",-->
-    <!--"libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",-->
-    <!--"shuffled" : <xsl:value-of select="@shuffle"/>,-->
-    <!--"indexBonneReponse": "<xsl:value-of-->
-    <!--select="$response/qti:correctResponse/qti:value"/>",-->
-    <!--"reponses" : [-->
-    <!--<xsl:for-each select="qti:simpleChoice">-->
-    <!--{-->
-    <!--"libelleReponse" : "<xsl:value-of select="text()"/>",-->
-    <!--"id" : "<xsl:value-of select="@identifier"/>"-->
-    <!--}<xsl:if test="position()!=last()">,</xsl:if>-->
-    <!--</xsl:for-each>-->
-    <!--]-->
-    <!--}-->
-    <!--</xsl:template>-->
-
     <!--&lt;!&ndash;-->
     <!--Affiche true si une reponse est correcte-->
     <!--@param correctResponseElt un element de type qti:correctResponse-->
@@ -288,25 +235,6 @@
     <!--<xsl:if test="not($reponseCorrecte)">false</xsl:if>-->
     <!--</xsl:template>-->
 
-    <!--&lt;!&ndash;-->
-    <!--Constitue les paires pour une question de type Associate-->
-    <!--@param correctResponseElt un element de type qti:correctResponse-->
-    <!--@param associateInteractionElt un element de type qti:associateInteraction-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="constituePaires">-->
-    <!--<xsl:param name="correctResponseElt"/>-->
-    <!--<xsl:param name="associateInteractionElt"/>-->
-    <!--<xsl:for-each-->
-    <!--select="$correctResponseElt/qti:correctResponse/qti:value">-->
-    <!--<xsl:variable name="tabPartIds" select="tokenize(text(),'\s+')"/>-->
-    <!--{-->
-    <!--"participant1": "<xsl:value-of-->
-    <!--select="$associateInteractionElt//qti:simpleAssociableChoice[@identifier=$tabPartIds[1]]"/>",-->
-    <!--"participant2": "<xsl:value-of-->
-    <!--select="$associateInteractionElt//qti:simpleAssociableChoice[@identifier=$tabPartIds[2]]"/>"-->
-    <!--}<xsl:if test="position()!=last()">,</xsl:if>-->
-    <!--</xsl:for-each>-->
-    <!--</xsl:template>-->
 
 
 
