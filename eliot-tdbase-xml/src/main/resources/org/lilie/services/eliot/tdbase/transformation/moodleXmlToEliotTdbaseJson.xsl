@@ -124,6 +124,14 @@
     </xsl:template>
 
     <!--
+         Les questions de type numerical sont associées à un item de type
+         Decimal.
+    -->
+    <xsl:template match="question[@type = 'numerical']">
+        <xsl:call-template name="Decimal"/>
+    </xsl:template>
+
+    <!--
       Traitement d'une question  dont le type est à ignorer ne fait rien
     -->
     <xsl:template match="question">
@@ -203,6 +211,17 @@
                </xsl:for-each>
         </xsl:template>
 
+
+    <!--
+        Template pour la génération d'une Decimal question
+        -->
+        <xsl:template name="Decimal">
+                "questionTypeCode":"Decimal",
+                "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
+                "valeur" : <xsl:value-of select="answer/text/text()"/>,
+                "unite": "<xsl:value-of select="units/unit[1]/unit_name/text()"/>",
+                "precision": <xsl:value-of select="answer/tolerance/text()"/>
+        </xsl:template>
 
     <!--&lt;!&ndash;-->
     <!--Template pour la generation d'une FillGap question-->
