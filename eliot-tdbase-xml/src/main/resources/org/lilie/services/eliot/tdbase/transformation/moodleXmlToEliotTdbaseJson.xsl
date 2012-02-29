@@ -62,9 +62,7 @@
       Renvoie vers le template de question non supportée
     -->
     <xsl:template match="question[@type = 'calculated' or @type = 'cloze']">
-        <xsl:call-template name="type_question_non_supporte">
-            <xsl:with-param name="question" select="."/>
-        </xsl:call-template>
+        <xsl:call-template name="type_question_non_supporte"/>
     </xsl:template>
 
     <xsl:template match="image">
@@ -83,9 +81,7 @@
         Statement.
     -->
     <xsl:template match="question[@type = 'description']">
-        <xsl:call-template name="Statement">
-            <xsl:with-param name="question" select="."/>
-        </xsl:call-template>
+        <xsl:call-template name="Statement"/>
     </xsl:template>
 
     <!--
@@ -93,9 +89,7 @@
           Open.
      -->
     <xsl:template match="question[@type = 'essay']">
-        <xsl:call-template name="Open">
-            <xsl:with-param name="question" select="."/>
-        </xsl:call-template>
+        <xsl:call-template name="Open"/>
     </xsl:template>
 
     <!--
@@ -103,9 +97,19 @@
          Associate.
     -->
     <xsl:template match="question[@type = 'matching']">
-        <xsl:call-template name="Associate">
-            <xsl:with-param name="question" select="."/>
-        </xsl:call-template>
+        <xsl:call-template name="Associate"/>
+    </xsl:template>
+
+    <!--
+         Les questions de type multichoice sont associées à un item de type
+         MultipleChoice ou ExclusiveChoice.
+    -->
+    <xsl:template match="question[@type = 'multichoice']">
+        <xsl:choose>
+        <xsl:when test="single/text() = 'false'">
+        <xsl:call-template name="MultipleChoice"/>
+        </xsl:when>
+        </xsl:choose>
     </xsl:template>
 
     <!--
@@ -120,7 +124,6 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
     <xsl:template name="type_question_non_supporte">
-        <xsl:param name="question"/>
               "questionTypeCode": "<xsl:value-of select="@type"/>"
     </xsl:template>
 
@@ -128,18 +131,16 @@
         Template pour la generation d'une Statement question
         -->
     <xsl:template name="Statement">
-        <xsl:param name="question"/>
               "questionTypeCode": "Statement",
-              "enonce" : "<xsl:value-of select="json:encode-string($question/questiontext/text/text())"/>"
+              "enonce" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>"
     </xsl:template>
 
     <!--
         Template pour la generation d'une Statement question
      -->
     <xsl:template name="Open">
-        <xsl:param name="question"/>
               "questionTypeCode": "Open",
-              "libelle" : "<xsl:value-of select="json:encode-string($question/questiontext/text/text())"/>",
+              "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
               "nombreLignesReponses" : 5
     </xsl:template>
 
@@ -147,11 +148,10 @@
         Template pour la génération d'une Associate question
      -->
     <xsl:template name="Associate">
-        <xsl:param name="question"/>
               "questionTypeCode" : "Associate",
-              "libelle" : "<xsl:value-of select="json:encode-string($question/questiontext/text/text())"/>",
+              "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
               "montrerColonneAGauche" : true,
-              "associations" : [<xsl:for-each select="$question/subquestion">
+              "associations" : [<xsl:for-each select="subquestion">
                  {
                    "participant1": "<xsl:value-of select="json:encode-string(text/text())"/>",
                    "participant2": "<xsl:value-of select="json:encode-string(answer/text/text())"/>"
@@ -159,35 +159,21 @@
               ]
     </xsl:template>
 
+    <!--
+       Template pour la génération d'une MultipleChoice question
+    -->
+    <xsl:template name="MultipleChoice">
+              "questionTypeCode" : "MultipleChoice",
+               "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
+               "shuffled" : <xsl:choose><xsl:when test="shuffleanswers/text() = 1">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose>,
+               "reponses" : [<xsl:for-each select="answer">
+                  {
+                     "libelleReponse" : "<xsl:value-of select="json:encode-string(text/text())"/>",
+                     "estUneBonneReponse" : <xsl:choose><xsl:when test="@fraction &lt;= 0">false</xsl:when><xsl:otherwise>true</xsl:otherwise></xsl:choose>
+                  }<xsl:if test="position()!=last()">,</xsl:if></xsl:for-each>
+               ]
+    </xsl:template>
 
-    <!--&lt;!&ndash;-->
-    <!--Template pour la generation d'une GraphicMatch question-->
-    <!--@param response un element de type qti:responseDeclaration/qti:correctResponse-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="GraphicMatch">-->
-    <!--<xsl:param name="response"/>-->
-    <!--,{-->
-    <!--"questionTypeCode" : "GraphicMatch",-->
-    <!--"libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",-->
-    <!--"attachmentSrc" : "<xsl:value-of select="qti:object/@data"/>",-->
-    <!--"hotspots" : [-->
-    <!--<xsl:call-template name="constitueHotspots">-->
-    <!--<xsl:with-param name="graphicGapMatchInteraction" select="."/>-->
-    <!--</xsl:call-template>-->
-    <!--],-->
-    <!--"icons" : [-->
-    <!--<xsl:call-template name="constitueIcons">-->
-    <!--<xsl:with-param name="response" select="$response"/>-->
-    <!--<xsl:with-param name="graphicGapMatchInteraction" select="."/>-->
-    <!--</xsl:call-template>-->
-    <!--],-->
-    <!--"graphicMatches" : {-->
-    <!--<xsl:call-template name="constitueGraphicMatchs">-->
-    <!--<xsl:with-param name="response" select="$response"/>-->
-    <!--</xsl:call-template>-->
-    <!--}-->
-    <!--}-->
-    <!--</xsl:template>-->
 
     <!--&lt;!&ndash;-->
     <!--Template pour la generation d'une FillGap question-->
@@ -214,68 +200,6 @@
     <!--}-->
     <!--</xsl:template>-->
 
-
-    <!--&lt;!&ndash;-->
-    <!--Template pour la generation d'une Open question-->
-    <!--@param response un element de type qti:responseDeclaration/qti:correctResponse-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="FileUpload">-->
-    <!--,{-->
-    <!--"questionTypeCode" : "FileUpload",-->
-    <!--"libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>"-->
-    <!--}-->
-    <!--</xsl:template>-->
-
-    <!--&lt;!&ndash;-->
-    <!--Template pour la generation d'une Open question-->
-    <!--@param response un element de type qti:responseDeclaration/qti:correctResponse-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="Slider">-->
-    <!--<xsl:param name="response"/>-->
-    <!--,{-->
-    <!--"questionTypeCode" : "Slider",-->
-    <!--"libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",-->
-    <!--"valeur" : <xsl:value-of select="$response/qti:correctResponse/qti:value/text()"/>,-->
-    <!--"valeurMin" : <xsl:value-of select="@lowerBound"/>,-->
-    <!--"valeurMax" : <xsl:value-of select="@upperBound"/>,-->
-    <!--"pas" : <xsl:value-of select="@step"/>,-->
-    <!--"precision" :-->
-    <!--<xsl:value-of select="@step"/>-->
-    <!--}-->
-    <!--</xsl:template>-->
-
-
-    <!--&lt;!&ndash;-->
-    <!--Template pour la generation d'une Open question-->
-    <!--@param response un element de type qti:responseDeclaration/qti:correctResponse-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="Order">-->
-    <!--<xsl:param name="response"/>-->
-    <!--,{-->
-    <!--"questionTypeCode" : "Order",-->
-    <!--"libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",-->
-    <!--"orderedItems" : [-->
-    <!--<xsl:call-template name="constitueItemsOrdonnes">-->
-    <!--<xsl:with-param name="correctResponseElt" select="$response"/>-->
-    <!--<xsl:with-param name="orderInteractionElt" select="."/>-->
-    <!--</xsl:call-template>-->
-    <!--]-->
-    <!--}-->
-    <!--</xsl:template>-->
-
-    <!--&lt;!&ndash;-->
-    <!--Template pour la generation d'une Open question-->
-    <!--@param response un element de type qti:responseDeclaration/qti:correctResponse-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="Open">-->
-    <!--<xsl:variable name="nbLignes" select="floor(@expectedLength div 80)+1"/>-->
-    <!--,{-->
-    <!--"questionTypeCode" : "Open",-->
-    <!--"libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",-->
-    <!--"nombreLignesReponses" :-->
-    <!--<xsl:value-of select="$nbLignes"/>-->
-    <!--}-->
-    <!--</xsl:template>-->
 
     <!--&lt;!&ndash;-->
     <!--Template pour la generation d'une MultipleChoice question-->
