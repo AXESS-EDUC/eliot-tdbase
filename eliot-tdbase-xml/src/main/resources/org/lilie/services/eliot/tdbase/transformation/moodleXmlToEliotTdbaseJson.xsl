@@ -116,6 +116,14 @@
     </xsl:template>
 
     <!--
+         Les questions de type truefalse sont associées à un item de type
+         ExclusiveChoice.
+    -->
+    <xsl:template match="question[@type = 'truefalse']">
+        <xsl:call-template name="ExclusiveChoice"/>
+    </xsl:template>
+
+    <!--
       Traitement d'une question  dont le type est à ignorer ne fait rien
     -->
     <xsl:template match="question">

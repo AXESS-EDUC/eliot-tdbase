@@ -165,6 +165,20 @@ var quiz = {
       "titre" : "Tomcat et JEE",
       "attachement" : {},
       "specification" : {
+         "questionTypeCode" : "ExclusiveChoice",
+         "libelle" : "Tomcat est un conteneur implémentant toutes les spécifications\n JEE.\n",
+         "shuffled" : false,
+         "reponses" : [
+            {
+               "libelleReponse" : "true",
+               "id" : "1"
+            },
+            {
+               "libelleReponse" : "false",
+               "id" : "2"
+            }
+         ],
+         "indexBonneReponse": "2"
       }
     }
 
