@@ -132,6 +132,14 @@
     </xsl:template>
 
     <!--
+         Les questions de type shortAnswer sont associées à un item de type
+         FillGap.
+    -->
+    <xsl:template match="question[@type = 'shortanswer']">
+        <xsl:call-template name="FillGap"/>
+    </xsl:template>
+
+    <!--
       Traitement d'une question  dont le type est à ignorer ne fait rien
     -->
     <xsl:template match="question">
@@ -223,47 +231,19 @@
                 "precision": <xsl:value-of select="answer/tolerance/text()"/>
         </xsl:template>
 
-    <!--&lt;!&ndash;-->
-    <!--Template pour la generation d'une FillGap question-->
-    <!--@param response un element de type qti:responseDeclaration/qti:correctResponse-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="FillGap">-->
-    <!--<xsl:param name="response"/>-->
-    <!--<xsl:param name="saisieLibre"/>-->
-    <!--<xsl:param name="montrerLesMots"/>-->
-    <!--<xsl:variable name="textAtrous">-->
-    <!--&lt;p&gt;-->
-    <!--<xsl:call-template name="constitueTexteATrous">-->
-    <!--<xsl:with-param name="responseElt" select="$response"/>-->
-    <!--<xsl:with-param name="gapMatchInteractionElt" select="."/>-->
-    <!--</xsl:call-template>-->
-    <!--&lt;/p&gt;-->
-    <!--</xsl:variable>-->
-    <!--,{-->
-    <!--"questionTypeCode" : "FillGap",-->
-    <!--"libelle" : "<xsl:value-of select="normalize-space(qti:prompt)"/>",-->
-    <!--"saisieLibre" : <xsl:value-of select="$saisieLibre"/>,-->
-    <!--"montrerLesMots" : <xsl:value-of select="$montrerLesMots"/>,-->
-    <!--"texteATrous" : "<xsl:value-of select="normalize-space($textAtrous)"/>"-->
-    <!--}-->
-    <!--</xsl:template>-->
-
-    <!--&lt;!&ndash;-->
-    <!--Affiche true si une reponse est correcte-->
-    <!--@param correctResponseElt un element de type qti:correctResponse-->
-    <!--@param idReponseAEvaluer valeur d'un simpleChoice/@identifier-->
-    <!--&ndash;&gt;-->
-    <!--<xsl:template name="afficheTrueSiReponseCorrecte">-->
-    <!--<xsl:param name="correctResponseElt"/>-->
-    <!--<xsl:param name="idReponseAEvaluer"/>-->
-    <!--<xsl:variable name="reponseCorrecte"-->
-    <!--select="$correctResponseElt/qti:value[text()=$idReponseAEvaluer]"/>-->
-    <!--<xsl:if test="$reponseCorrecte">true</xsl:if>-->
-    <!--<xsl:if test="not($reponseCorrecte)">false</xsl:if>-->
-    <!--</xsl:template>-->
-
-
-
+    <!--
+         Template pour la génération d'une FillGap question
+            -->
+         <xsl:template name="FillGap">
+                "questionTypeCode" : "FillGap",
+                "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
+                "saisieLibre" : true,
+                "montrerLesMots" : false,
+                "texteATrous" : "{<xsl:for-each select="answer"><xsl:choose>
+                 <xsl:when test="@fraction &gt; 0">=<xsl:value-of select="json:encode-string(normalize-space(text/text()))"/></xsl:when>
+                 <xsl:when test="@fraction &lt;= 0">~<xsl:value-of select="json:encode-string(normalize-space(text/text()))"/></xsl:when>
+                 </xsl:choose></xsl:for-each>}"
+         </xsl:template>
 
 
 

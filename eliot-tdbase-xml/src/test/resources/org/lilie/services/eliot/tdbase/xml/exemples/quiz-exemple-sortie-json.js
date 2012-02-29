@@ -141,6 +141,11 @@ var quiz = {
       "titre" : "HTTP 1er protocole de l'Internet",
       "attachement" : {},
       "specification" : {
+          "questionTypeCode":"Decimal",
+          "libelle" : "En quelle année HTTP devient le premier protocole de\n l'Internet ?\n",
+          "valeur" : 1996,
+          "unite": "année",
+          "precision": 0
       }
     }
 
@@ -149,6 +154,12 @@ var quiz = {
       "titre" : "MVC",
       "attachement" : {},
       "specification" : {
+          "questionTypeCode" : "FillGap",
+          "libelle" : "Que signifie MVC ?",
+          "saisieLibre" : true,
+          "montrerLesMots" : false,
+          "texteATrous" : "{=Model View Controller=Modèle vue contrôleur}"
+
       }
     }
 
@@ -157,6 +168,12 @@ var quiz = {
       "titre" : "Premier langage Orienté Objet",
       "attachement" : {},
       "specification" : {
+          "questionTypeCode" : "FillGap",
+          "libelle" : "Quel est le premier langage Orienté Objet ?",
+          "saisieLibre" : true,
+          "montrerLesMots" : false,
+          "texteATrous" : "{=Simula 66=Simula}"
+
       }
     }
 
