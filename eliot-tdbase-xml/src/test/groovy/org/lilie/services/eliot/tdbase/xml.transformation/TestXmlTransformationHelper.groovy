@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.xml.transformation
 
 import org.springframework.context.support.ClassPathXmlApplicationContext
 import org.springframework.context.ApplicationContext
+import groovy.json.JsonSlurper
 
 /**
  * 
@@ -54,8 +55,13 @@ class TestXmlTransformationHelper extends GroovyTestCase {
     def xsltSream = ctx.getResource("classpath:$XSLT").getInputStream()
     assertNotNull(xsltSream)
     assertNotNull(inputStream)
-    transformationHelper.transformInputWithXslt(inputStream, xsltSream)
-    assertNotNull(transformationHelper)
+    ByteArrayOutputStream baos = new ByteArrayOutputStream()
+    transformationHelper.transformInputWithXslt(inputStream, xsltSream, baos)
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray())
+    Reader reader = new InputStreamReader(bais)
+    //def result = new JsonSlurper().parse(reader)
+    println reader.text
+    assertNotNull reader
   }
 
 }
