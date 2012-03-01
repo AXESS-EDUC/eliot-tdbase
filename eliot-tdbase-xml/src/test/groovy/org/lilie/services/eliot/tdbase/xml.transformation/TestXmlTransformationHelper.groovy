@@ -26,7 +26,7 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.transformation
+package org.lilie.services.eliot.tdbase.xml.transformation
 
 import org.springframework.context.support.ClassPathXmlApplicationContext
 import org.springframework.context.ApplicationContext
@@ -37,17 +37,25 @@ import org.springframework.context.ApplicationContext
  */
 class TestXmlTransformationHelper extends GroovyTestCase {
 
+  static final INPUT =  'org/lilie/services/eliot/tdbase/xml/exemples/quiz-exemple-20120229-0812.xml'
+  static final XSLT = 'org/lilie/services/eliot/tdbase/xml/transformation/moodleXmlToEliotTdbaseJson.xsl'
+
   XmlTransformationHelper transformationHelper
+  ApplicationContext ctx
 
   void setUp() {
-    ApplicationContext ctx = new ClassPathXmlApplicationContext('TestContext.xml')
+    ctx = new ClassPathXmlApplicationContext('TestContext.xml')
     transformationHelper = ctx.getBean('transformationHelper')
   }
 
   void testTransformInputWithStyleSheet() {
     XmlTransformationHelper transformationHelper = new XmlTransformationHelper()
+    def inputStream = ctx.getResource("classpath:$INPUT").getInputStream()
+    def xsltSream = ctx.getResource("classpath:$XSLT").getInputStream()
+    assertNotNull(xsltSream)
+    assertNotNull(inputStream)
+    transformationHelper.transformInputWithXslt(inputStream, xsltSream)
     assertNotNull(transformationHelper)
-    //transformationHelper.transformInputWithXslt(null, null)
   }
 
 }
