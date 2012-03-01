@@ -26,7 +26,7 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.transformation
+package org.lilie.services.eliot.tdbase.xml.transformation
 
 import javax.xml.transform.stream.StreamSource
 import javax.xml.transform.stream.StreamResult
@@ -38,6 +38,12 @@ import javax.xml.transform.TransformerFactory
  */
 class XmlTransformationHelper {
 
+  /**
+   * Transforme un fichier XML avec une feuille de style XSLT
+   * @param input l'inputstream correspondant au fichier XML à transformer
+   * @param xslt l'inputstreao correspondant au fichier XSLT
+   * @param result l'outputstream réceptionnant le résultat
+   */
 
   def transformInputWithXslt(InputStream input, InputStream xslt, OutputStream result = System.out) {
     def factory = TransformerFactory.newInstance()
