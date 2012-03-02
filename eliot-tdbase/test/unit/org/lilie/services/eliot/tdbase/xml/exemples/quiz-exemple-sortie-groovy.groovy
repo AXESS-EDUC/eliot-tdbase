@@ -67,7 +67,7 @@ package org.lilie.services.eliot.tdbase.xml.exemples
               "specification" : """{
                 "questionTypeCode": "Open",
                 "libelle" : "Ecrire un programme qui affiche Hello world",
-                "nombreLignesReponses" : 5
+                "nombreLignesReponse" : 5
               }"""
 
           ]

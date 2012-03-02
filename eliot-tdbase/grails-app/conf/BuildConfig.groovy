@@ -64,8 +64,11 @@ grails.project.dependency.resolution = {
    *   'test' or 'provided' scopes eg.
    */
   dependencies {
+    build group: 'net.sourceforge.saxon', name: 'saxon', version: '9.1.0.8'
     runtime "postgresql:postgresql:8.4-702.jdbc4"
     compile group: 'net.sourceforge.saxon', name: 'saxon', version: '9.1.0.8'
+    build 'net.sf.saxon:saxon-dom:8.7'
+
   }
 
   plugins {

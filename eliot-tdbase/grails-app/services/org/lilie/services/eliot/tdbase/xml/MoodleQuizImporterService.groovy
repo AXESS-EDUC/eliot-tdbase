@@ -30,7 +30,6 @@ package org.lilie.services.eliot.tdbase.xml
 
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
 
 /**
@@ -50,9 +49,9 @@ class MoodleQuizImporterService {
    * @param xmlMoodle l'inputstream correspondant au fichier XML Moodle
    * @param sujet le sujet dans lequel on importe les questions
    * @param importeur la personne déclenchant l'import
-   * @return  le rapport d'import
+   * @return le rapport d'import
    */
-  MoodleQuizImportReport importMoodleQuiz(MultipartFile xmlMoodle, Sujet sujet, Personne importeur) {
+  MoodleQuizImportReport importMoodleQuiz(InputStream xmlMoodle, Sujet sujet, Personne importeur) {
 
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet))
     //
@@ -60,7 +59,7 @@ class MoodleQuizImporterService {
     //
     Map map
     try {
-      map = moodleQuizTransformer.moodleQuizTransform(xmlMoodle.inputStream)
+      map = moodleQuizTransformer.moodleQuizTransform(xmlMoodle)
     } catch (Exception e) {
       log.error(e.message)
       throw new Exception("xml.import.moodle.echec")
@@ -75,7 +74,10 @@ class MoodleQuizImporterService {
       def importItem = new ImportItem()
       importItem.titre = item.titre
       importItem.questionTypeCode = item.questionTypeCode
-      QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.valueOf(item.questionTypeCode)
+      QuestionTypeEnum questionTypeEnum = null
+      try {
+        questionTypeEnum = QuestionTypeEnum.valueOf(item.questionTypeCode)
+      } catch (Exception e0) { }
       if (questionTypeEnum == null) {
         importItem.erreurImport = "xml.import.moodle.item.typenonsupporte"
         report.itemsNonImportes << importItem
@@ -99,7 +101,7 @@ class MoodleQuizImporterService {
       Question question = questionService.createQuestionAndInsertInSujet(
               [
                       titre: item.titre,
-                      typeId: questionTypeEnum.id
+                      type: questionTypeEnum.questionType
               ],
               objSpec,
               sujet,
@@ -114,6 +116,7 @@ class MoodleQuizImporterService {
 
       report.itemsImportes << importItem
     }
+    return report
   }
 
 
@@ -127,6 +130,28 @@ class MoodleQuizImportReport {
 
   List<ImportItem> itemsImportes = []
   List<ImportItem> itemsNonImportes = []
+
+  String toString() {
+    def res = new StringBuilder("""
+      Nombre items traites : $nombreItemsTraites
+      Nombre items importes : ${itemsImportes.size()}
+      Nombre item non importes : ${itemsNonImportes.size()}
+    """)
+    res += "\n\nItems importes : \n\n"
+    itemsImportes.each {
+      res += "--\n"
+      res += "Type : ${it.questionTypeCode}\n"
+      res += "Titre : ${it.titre}\n"
+    }
+    res += "\n\nItems non importes : \n\n"
+    itemsNonImportes.each {
+      res += "--\n"
+      res += "Type : ${it.questionTypeCode}\n"
+      res += "Titre : ${it.titre}\n"
+      res += "Cause echec import : ${it.erreurImport}\n"
+    }
+    res.toString()
+  }
 
 }
 

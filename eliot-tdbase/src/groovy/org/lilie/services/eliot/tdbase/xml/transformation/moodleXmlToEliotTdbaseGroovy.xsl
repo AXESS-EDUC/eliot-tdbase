@@ -173,7 +173,7 @@
               "specification" : """{
                 "questionTypeCode": "Open",
                 "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
-                "nombreLignesReponses" : 5
+                "nombreLignesReponse" : 5
               }"""
     </xsl:template>
 
@@ -259,7 +259,7 @@
                 "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
                 "saisieLibre" : true,
                 "montrerLesMots" : false,
-                "texteATrous" : "{<xsl:for-each select="answer"><xsl:choose>
+                "texteATrous" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/> {<xsl:for-each select="answer"><xsl:choose>
                  <xsl:when test="@fraction &gt; 0">=<xsl:value-of select="json:encode-string(normalize-space(text/text()))"/></xsl:when>
                  <xsl:when test="@fraction &lt;= 0">~<xsl:value-of select="json:encode-string(normalize-space(text/text()))"/></xsl:when>
                  </xsl:choose></xsl:for-each>}"
