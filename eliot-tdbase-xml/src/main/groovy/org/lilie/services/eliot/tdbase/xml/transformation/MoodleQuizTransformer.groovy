@@ -1,7 +1,7 @@
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
  * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
- *
+ *  
  *  Lilie is free software. You can redistribute it and/or modify since
  *  you respect the terms of either (at least one of the both license) :
  *  - under the terms of the GNU Affero General Public License as
@@ -9,17 +9,17 @@
  *  License, or (at your option) any later version.
  *  - the CeCILL-C as published by CeCILL-C; either version 1 of the
  *  License, or any later version
- *
+ *  
  *  There are special exceptions to the terms and conditions of the
  *  licenses as they are applied to this software. View the full text of
  *  the exception in file LICENSE.txt in the directory of this software
  *  distribution.
- *
+ *  
  *  Lilie is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  Licenses for more details.
- *
+ *  
  *  You should have received a copy of the GNU General Public License
  *  and the CeCILL-C along with Lilie. If not, see :
  *  <http://www.gnu.org/licenses/> and
@@ -28,25 +28,35 @@
 
 package org.lilie.services.eliot.tdbase.xml.transformation
 
-import javax.xml.transform.stream.StreamSource
-import javax.xml.transform.stream.StreamResult
-import javax.xml.transform.TransformerFactory
+import org.springframework.context.ApplicationContext
+import org.springframework.context.ApplicationContextAware
 
 /**
- * 
+ * Classe responsable de la transformation d'un quiz moodle au format moodle XML
+ * en structure Groovy
  * @author franck Silvestre
  */
-class XmlTransformationHelper {
+class MoodleQuizTransformer implements ApplicationContextAware {
+
+  private static final XSLT_GROOVY = 'org/lilie/services/eliot/tdbase/xml/transformation/moodleXmlToEliotTdbaseGroovy.xsl'
+
+  XmlTransformationHelper xmlTransformationHelper
+  ApplicationContext applicationContext
 
   /**
-   * Transforme un fichier XML avec une feuille de style XSLT
-   * @param input l'inputstream correspondant au fichier XML à transformer
-   * @param xslt l'inputstreao correspondant au fichier XSLT
-   * @param result l'outputstream réceptionnant le résultat
+   * Transforme un fichier quiz moodle xml en une map contenant les items à
+   * importer
+   * @param moodleQuiz l'inpustream correspondant au quiz moodle xml
+   * @return  la map groovy contenant les items à importer
    */
-  def transformInputWithXslt(InputStream input, InputStream xslt, OutputStream result = System.out) {
-    def factory = TransformerFactory.newInstance()
-    def transformer = factory.newTransformer(new StreamSource(xslt))
-    transformer.transform(new StreamSource(input), new StreamResult(result))
+  Map moodleQuizTransform(InputStream moodleQuiz) {
+    def xsltSream = applicationContext.getResource("classpath:$XSLT_GROOVY").getInputStream()
+    ByteArrayOutputStream baos = new ByteArrayOutputStream()
+    xmlTransformationHelper.transformInputWithXslt(moodleQuiz, xsltSream, baos)
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray())
+    Reader reader = new InputStreamReader(bais)
+    def gShell = new GroovyShell()
+    def res = gShell.evaluate(reader)
+    return res
   }
 }

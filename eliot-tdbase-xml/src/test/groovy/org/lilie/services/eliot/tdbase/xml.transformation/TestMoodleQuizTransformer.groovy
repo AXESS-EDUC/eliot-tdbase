@@ -28,25 +28,33 @@
 
 package org.lilie.services.eliot.tdbase.xml.transformation
 
-import javax.xml.transform.stream.StreamSource
-import javax.xml.transform.stream.StreamResult
-import javax.xml.transform.TransformerFactory
+import org.springframework.context.ApplicationContext
+import org.springframework.context.support.ClassPathXmlApplicationContext
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
-class XmlTransformationHelper {
+class TestMoodleQuizTransformer extends GroovyTestCase {
 
-  /**
-   * Transforme un fichier XML avec une feuille de style XSLT
-   * @param input l'inputstream correspondant au fichier XML à transformer
-   * @param xslt l'inputstreao correspondant au fichier XSLT
-   * @param result l'outputstream réceptionnant le résultat
-   */
-  def transformInputWithXslt(InputStream input, InputStream xslt, OutputStream result = System.out) {
-    def factory = TransformerFactory.newInstance()
-    def transformer = factory.newTransformer(new StreamSource(xslt))
-    transformer.transform(new StreamSource(input), new StreamResult(result))
+  static final INPUT = 'org/lilie/services/eliot/tdbase/xml/exemples/quiz-exemple-20120229-0812.xml'
+
+  MoodleQuizTransformer moodleQuizTransformer
+  ApplicationContext ctx
+
+  void setUp() {
+    ctx = new ClassPathXmlApplicationContext('TestContext.xml')
+    moodleQuizTransformer = ctx.getBean('moodleQuizTransformer')
   }
+
+  void testTransformInputWithStyleSheetGroovy() {
+    def inputStream = ctx.getResource("classpath:$INPUT").getInputStream()
+    assertNotNull(inputStream)
+    def res = moodleQuizTransformer.moodleQuizTransform(inputStream)
+    assertNotNull res
+    def quiz = res.quiz
+    println quiz
+    assert quiz[0].nombreItems == 11
+  }
+
 }

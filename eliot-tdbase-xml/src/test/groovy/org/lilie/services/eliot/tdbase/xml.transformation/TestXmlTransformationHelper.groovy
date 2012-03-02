@@ -28,18 +28,17 @@
 
 package org.lilie.services.eliot.tdbase.xml.transformation
 
-import org.springframework.context.support.ClassPathXmlApplicationContext
 import org.springframework.context.ApplicationContext
-import groovy.json.JsonSlurper
+import org.springframework.context.support.ClassPathXmlApplicationContext
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 class TestXmlTransformationHelper extends GroovyTestCase {
 
-  static final INPUT =  'org/lilie/services/eliot/tdbase/xml/exemples/quiz-exemple-20120229-0812.xml'
-  static final XSLT = 'org/lilie/services/eliot/tdbase/xml/transformation/moodleXmlToEliotTdbaseJson.xsl'
+  static final INPUT = 'org/lilie/services/eliot/tdbase/xml/exemples/quiz-exemple-20120229-0812.xml'
+  static final XSLT_JSON = 'org/lilie/services/eliot/tdbase/xml/transformation/moodleXmlToEliotTdbaseJson.xsl'
 
   XmlTransformationHelper transformationHelper
   ApplicationContext ctx
@@ -49,19 +48,19 @@ class TestXmlTransformationHelper extends GroovyTestCase {
     transformationHelper = ctx.getBean('transformationHelper')
   }
 
-  void testTransformInputWithStyleSheet() {
-    XmlTransformationHelper transformationHelper = new XmlTransformationHelper()
+  void testTransformInputWithStyleSheetJson() {
     def inputStream = ctx.getResource("classpath:$INPUT").getInputStream()
-    def xsltSream = ctx.getResource("classpath:$XSLT").getInputStream()
+    def xsltSream = ctx.getResource("classpath:$XSLT_JSON").getInputStream()
     assertNotNull(xsltSream)
     assertNotNull(inputStream)
     ByteArrayOutputStream baos = new ByteArrayOutputStream()
     transformationHelper.transformInputWithXslt(inputStream, xsltSream, baos)
     ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray())
     Reader reader = new InputStreamReader(bais)
-    //def result = new JsonSlurper().parse(reader)
     println reader.text
     assertNotNull reader
   }
+
+
 
 }

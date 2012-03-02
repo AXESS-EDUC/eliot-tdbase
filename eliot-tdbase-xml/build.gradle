@@ -44,5 +44,5 @@ dependencies {
   compile group:'org.springframework', name:'spring-core', version:'3.1.1.RELEASE'
   compile group:'org.springframework', name:'spring-context', version:'3.1.1.RELEASE'
   compile group:'org.springframework', name:'spring-context-support', version:'3.1.1.RELEASE'
-  compile group:'com.googlecode.json-simple', name:'json-simple', version:'1.1'
+  //compile group:'com.googlecode.json-simple', name:'json-simple', version:'1.1'
 }

@@ -32,6 +32,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean class="org.lilie.services.eliot.tdbase.xml.transformation.XmlTransformationHelper"
-          id="transformationHelper" scope="singleton">
+          id="transformationHelper">
+    </bean>
+    
+    <bean class="org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer"
+          id="moodleQuizTransformer">
+        <property name="xmlTransformationHelper" ref="transformationHelper"/>
     </bean>
 </beans>
