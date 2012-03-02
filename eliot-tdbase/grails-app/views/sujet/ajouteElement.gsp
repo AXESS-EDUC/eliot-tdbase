@@ -109,12 +109,8 @@
     </li>
   </ul>
 
-  <h1>Importer et ajouter un item</h1>
-  <ul>
-    <li>Un élément d'énoncé</li>
-    <li>Un document</li>
-    <li>Une question de type...</li>
-  </ul>
+  <h1>Importer et ajouter un quiz Moodle...</h1>
+
 </div>
 
 </body>

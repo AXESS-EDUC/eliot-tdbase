@@ -101,7 +101,9 @@ class MoodleQuizImporterService {
       Question question = questionService.createQuestionAndInsertInSujet(
               [
                       titre: item.titre,
-                      type: questionTypeEnum.questionType
+                      type: questionTypeEnum.questionType,
+                      matiere: sujet.matiere,
+                      niveau: sujet.niveau
               ],
               objSpec,
               sujet,

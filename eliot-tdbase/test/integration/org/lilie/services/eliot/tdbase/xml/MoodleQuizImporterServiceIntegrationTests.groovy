@@ -90,6 +90,8 @@ class MoodleQuizImporterServiceIntegrationTests extends GroovyTestCase implement
             input, sujet1 ,personne1
     )
     assert report.nombreItemsTraites == 11
+    assert report.itemsImportes.size() == 9
+    assert report.itemsNonImportes.size() == 2
     println report
 
   }
