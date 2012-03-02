@@ -29,12 +29,9 @@
 package org.lilie.services.eliot.tdbase.xml
 
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer
-import org.lilie.services.eliot.tdbase.QuestionService
-import org.springframework.web.multipart.MultipartFile
-import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
-import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.springframework.web.multipart.MultipartFile
+import org.lilie.services.eliot.tdbase.*
 
 /**
  * Service d'import d'un quiz moodle
@@ -43,45 +40,98 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 class MoodleQuizImporterService {
 
   static transactional = false
-  
+
   MoodleQuizTransformer moodleQuizTransformer
   QuestionService questionService
   ArtefactAutorisationService artefactAutorisationService
-  
+
+  /**
+   * Import les items issus d'un fichier XML moodle dans un sujet donné
+   * @param xmlMoodle l'inputstream correspondant au fichier XML Moodle
+   * @param sujet le sujet dans lequel on importe les questions
+   * @param importeur la personne déclenchant l'import
+   * @return  le rapport d'import
+   */
   MoodleQuizImportReport importMoodleQuiz(MultipartFile xmlMoodle, Sujet sujet, Personne importeur) {
 
-    assert(artefactAutorisationService.utilisateurPeutModifierArtefact(importeur,sujet))
-    Map map = [:]
-
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet))
+    //
+    // la transformation
+    //
+    Map map
     try {
       map = moodleQuizTransformer.moodleQuizTransform(xmlMoodle.inputStream)
-    } catch(Exception e) {
+    } catch (Exception e) {
       log.error(e.message)
       throw new Exception("xml.import.moodle.echec")
     }
     MoodleQuizImportReport report = new MoodleQuizImportReport()
     report.nombreItemsTraites = map.quiz[0].nombreItems
-    for (int i=1; i< map.quiz.size() ;i++) {
+    //
+    // Traitement des items
+    //
+    for (int i = 1; i < map.quiz.size(); i++) {
       def item = map.quiz[i]
+      def importItem = new ImportItem()
+      importItem.titre = item.titre
+      importItem.questionTypeCode = item.questionTypeCode
+      QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.valueOf(item.questionTypeCode)
+      if (questionTypeEnum == null) {
+        importItem.erreurImport = "xml.import.moodle.item.typenonsupporte"
+        report.itemsNonImportes << importItem
+        continue
+      }
+      QuestionSpecificationService specService = questionService.questionSpecificationServiceForQuestionType(questionTypeEnum.questionType)
+      // permet de securiser l'import :
+      // on traduit en objet specification
+      // on reutilise le Question service
+      def objSpec
+      try {
+        objSpec = specService.getObjectFromSpecification(item.specification)
+      } catch (Exception e1) {
+        log.error(e1.message)
+        importItem.erreurImport = "xml.import.moodle.item.specificationincorrecte"
+        report.itemsNonImportes << importItem
+        continue
+      }
+      // l'import en base correspond à une création de question et à une
+      // insertion dans le sujet passé en paramètre
+      Question question = questionService.createQuestionAndInsertInSujet(
+              [
+                      titre: item.titre,
+                      typeId: questionTypeEnum.id
+              ],
+              objSpec,
+              sujet,
+              importeur
+      )
+      if (question.hasErrors()) {
+        log.error(question.errors.allErrors.toListString())
+        importItem.erreurImport = "xml.import.moodle.item.loadfail"
+        report.itemsNonImportes << importItem
+        continue
+      }
 
+      report.itemsImportes << importItem
     }
-    
-    
   }
-   
+
 
 }
 
+/**
+ * Classe représentant un rapport d'import de quiz Moodle XML
+ */
 class MoodleQuizImportReport {
   Integer nombreItemsTraites = 0
-  
+
   List<ImportItem> itemsImportes = []
   List<ImportItem> itemsNonImportes = []
-  
+
 }
 
 class ImportItem {
   String titre
-  QuestionTypeEnum questionTypeEnum
+  String questionTypeCode
   String erreurImport
 }
