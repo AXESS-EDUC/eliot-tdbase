@@ -35,26 +35,32 @@ import org.springframework.context.support.ClassPathXmlApplicationContext
  *
  * @author franck Silvestre
  */
-class TestMoodleQuizTransformer extends GroovyTestCase {
+class XmlTransformationHelperTests extends GroovyTestCase {
 
   static final INPUT = 'org/lilie/services/eliot/tdbase/xml/exemples/quiz-exemple-20120229-0812.xml'
+  static final XSLT_JSON = 'org/lilie/services/eliot/tdbase/xml/transformation/moodleXmlToEliotTdbaseJson.xsl'
 
-  MoodleQuizTransformer moodleQuizTransformer
+  XmlTransformationHelper transformationHelper
   ApplicationContext ctx
 
   void setUp() {
     ctx = new ClassPathXmlApplicationContext('TestContext.xml')
-    moodleQuizTransformer = ctx.getBean('moodleQuizTransformer')
+    transformationHelper = ctx.getBean('transformationHelper')
   }
 
-  void testTransformInputWithStyleSheetGroovy() {
+  void testTransformInputWithStyleSheetJson() {
     def inputStream = ctx.getResource("classpath:$INPUT").getInputStream()
+    def xsltSream = ctx.getResource("classpath:$XSLT_JSON").getInputStream()
+    assertNotNull(xsltSream)
     assertNotNull(inputStream)
-    def res = moodleQuizTransformer.moodleQuizTransform(inputStream)
-    assertNotNull res
-    def quiz = res.quiz
-    println quiz
-    assert quiz[0].nombreItems == 11
+    ByteArrayOutputStream baos = new ByteArrayOutputStream()
+    transformationHelper.transformInputWithXslt(inputStream, xsltSream, baos)
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray())
+    Reader reader = new InputStreamReader(bais)
+    println reader.text
+    assertNotNull reader
   }
+
+
 
 }

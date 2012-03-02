@@ -35,6 +35,7 @@ grails.plugin.location.'eliot-tdbase-plugin' = "../eliot-tdbase-plugin"
 grails.plugin.location.'eliot-textes-plugin' = "../eliot-textes-plugin"
 grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
 
+
 grails.project.war.file = "target/${appName}.war"
 
 // This closure is passed the location of the staging directory that
@@ -64,6 +65,7 @@ grails.project.dependency.resolution = {
    */
   dependencies {
     runtime "postgresql:postgresql:8.4-702.jdbc4"
+    compile group: 'net.sourceforge.saxon', name: 'saxon', version: '9.1.0.8'
   }
 
   plugins {
