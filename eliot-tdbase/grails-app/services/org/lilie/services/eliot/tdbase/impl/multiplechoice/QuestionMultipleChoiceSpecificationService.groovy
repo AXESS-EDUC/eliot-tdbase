@@ -38,10 +38,10 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
  * @author franck Silvestre
  */
 class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationService<MultipleChoiceSpecification> {
-    @Override
-    def createSpecification(Map map) {
-        new MultipleChoiceSpecification(map)
-    }
+  @Override
+  def createSpecification(Map map) {
+    new MultipleChoiceSpecification(map)
+  }
 }
 
 /**
@@ -50,78 +50,78 @@ class QuestionMultipleChoiceSpecificationService extends QuestionSpecificationSe
 @Validateable
 class MultipleChoiceSpecification implements QuestionSpecification {
 
-    /**
-     * Le code du type de la question.
-     */
-    String questionTypeCode = QuestionTypeEnum.MultipleChoice.name()
+  /**
+   * Le code du type de la question.
+   */
+  String questionTypeCode = QuestionTypeEnum.MultipleChoice.name()
 
-    /**
-     * Le libellé.
-     */
-    String libelle
+  /**
+   * Le libellé.
+   */
+  String libelle
 
-    /**
-     * La correction de la question.
-     */
-    String correction
+  /**
+   * La correction de la question.
+   */
+  String correction
 
-    /**
-     * Indique si les differents réponses doivent être presentés de manière aléatoire.
-     */
-    boolean shuffled = false
+  /**
+   * Indique si les differents réponses doivent être presentés de manière aléatoire.
+   */
+  boolean shuffled = false
 
-    /**
-     * Les reponses.
-     */
-    List<MultipleChoiceSpecificationReponsePossible> reponses = []
+  /**
+   * Les reponses.
+   */
+  List<MultipleChoiceSpecificationReponsePossible> reponses = []
 
-    /**
-     * Constructeur par défaut.
-     */
-    MultipleChoiceSpecification() {
-        super()
-    }
+  /**
+   * Constructeur par défaut.
+   */
+  MultipleChoiceSpecification() {
+    super()
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    MultipleChoiceSpecification(Map map) {
-        libelle = map.libelle
-        correction = map.correction
-        reponses = map.reponses.collect {createReponsePossibles(it)}
-        shuffled = map.shuffled
-    }
+  /**
+   * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  MultipleChoiceSpecification(Map map) {
+    libelle = map.libelle
+    correction = map.correction
+    reponses = map.reponses.collect {createReponsePossibles(it)}
+    shuffled = map.shuffled
+  }
 
-    def Map toMap() {
-        [
-                questionTypeCode: questionTypeCode,
-                libelle: libelle,
-                correction: correction,
-                reponses: reponses*.toMap(),
-                shuffled: shuffled
-        ]
-    }
+  def Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            libelle: libelle,
+            correction: correction,
+            reponses: reponses*.toMap(),
+            shuffled: shuffled
+    ]
+  }
 
-    List<MultipleChoiceSpecificationReponsePossible> getReponsesAleatoires() {
-        def result = reponses
-        Collections.shuffle(result)
-        result
-    }
+  List<MultipleChoiceSpecificationReponsePossible> getReponsesAleatoires() {
+    def result = reponses
+    Collections.shuffle(result)
+    result
+  }
 
-    static constraints = {
-        libelle blank: false
-        reponses minSize: 2
-    }
+  static constraints = {
+    libelle blank: false
+    reponses minSize: 2
+  }
 
-    private createReponsePossibles(MultipleChoiceSpecificationReponsePossible reponse) {
-        reponse
-    }
+  private createReponsePossibles(MultipleChoiceSpecificationReponsePossible reponse) {
+    reponse
+  }
 
-    private createReponsePossibles(Map params) {
-        new MultipleChoiceSpecificationReponsePossible(params)
-    }
+  private createReponsePossibles(Map params) {
+    new MultipleChoiceSpecificationReponsePossible(params)
+  }
 }
 
 /**
@@ -129,36 +129,31 @@ class MultipleChoiceSpecification implements QuestionSpecification {
  * type MultipleChoice
  */
 class MultipleChoiceSpecificationReponsePossible {
-    String libelleReponse
-    boolean estUneBonneReponse
+  String libelleReponse
+  boolean estUneBonneReponse
+  String id
 
-    MultipleChoiceSpecificationReponsePossible() {
-        super()
-    }
+  MultipleChoiceSpecificationReponsePossible() {
+    super()
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type MultipleChoiceSpecificationReponsePossible
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    MultipleChoiceSpecificationReponsePossible(Map map) {
-        libelleReponse = map.libelleReponse
-        estUneBonneReponse = map.estUneBonneReponse
-    }
+  /**
+   * Créer et initialise un nouvel objet de type MultipleChoiceSpecificationReponsePossible
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  MultipleChoiceSpecificationReponsePossible(Map map) {
+    libelleReponse = map.libelleReponse
+    estUneBonneReponse = map.estUneBonneReponse
+    id = map.id
+  }
 
-    def toMap() {
-        [
-                libelleReponse: libelleReponse,
-                estUneBonneReponse: estUneBonneReponse,
-        ]
-    }
-    /**
-     * Genére un identifiant stable par rapport aux attributs de l'objet.
-     */
-    int getId() {
-        int hash = 1
-        hash = hash * 17 + (libelleReponse == null ? 0 : libelleReponse.hashCode())
-        hash = hash * 17 + (estUneBonneReponse == null ? 0 : estUneBonneReponse.hashCode())
-        hash
-    }
+  def toMap() {
+    [
+            libelleReponse: libelleReponse,
+            estUneBonneReponse: estUneBonneReponse,
+            id: id
+    ]
+  }
+
 }

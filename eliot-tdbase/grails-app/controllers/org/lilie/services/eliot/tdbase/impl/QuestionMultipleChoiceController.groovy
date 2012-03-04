@@ -43,7 +43,7 @@ class QuestionMultipleChoiceController extends QuestionController {
     def ajouteReponse() {
         MultipleChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
         specifobject.reponses << new MultipleChoiceSpecificationReponsePossible(
-                rang: specifobject.reponses.size() + 1)
+                id: specifobject.reponses.size() + 1)
         render(
                 template: "/question/MultipleChoice/MultipleChoiceEditionReponses",
                 model: [specifobject: specifobject]

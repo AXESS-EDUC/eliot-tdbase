@@ -35,9 +35,9 @@
             var="reponsePossible">
         &nbsp;
         <g:checkBox
-                name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.labelsReponsesCoches[${i}]"
-                checked="${reponsespecifobject.labelsReponsesCoches.contains(reponsePossible.libelleReponse)}"
-                value="${reponsePossible.libelleReponse}"/>
+                name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.indexReponsesCoches[${i}]"
+                checked="${reponsespecifobject.indexReponsesCoches.contains(reponsePossible.id)}"
+                value="${reponsePossible.id}"/>
         ${reponsePossible.libelleReponse}
         <br/>
     </g:each>

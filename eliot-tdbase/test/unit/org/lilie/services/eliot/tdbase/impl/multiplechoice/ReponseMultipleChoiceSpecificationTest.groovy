@@ -40,33 +40,33 @@ class ReponseMultipleChoiceSpecificationTest extends GroovyTestCase {
   void testEvaluate() {
 
     def params = [
-            labelsReponses: ['a', 'b', 'c', 'd'],
-            labelsReponsesCorrects: ['a', 'c', 'd'],
-            labelsReponsesCoches: ['a', 'c']
+            indexReponses: ['a', 'b', 'c', 'd'],
+            indexReponsesCorrects: ['a', 'c', 'd'],
+            indexReponsesCoches: ['a', 'c']
     ]
     def result = new ReponseMultipleChoiceSpecification(params).evaluate(4F)
     assertEquals(2F, result, 0F)
 
     params = [
-            labelsReponses: ['a', 'b', 'c', 'd'],
-            labelsReponsesCorrects: ['a', 'c', 'd'],
-            labelsReponsesCoches: ['a', 'c', 'd']
+            indexReponses: ['a', 'b', 'c', 'd'],
+            indexReponsesCorrects: ['a', 'c', 'd'],
+            indexReponsesCoches: ['a', 'c', 'd']
     ]
     result = new ReponseMultipleChoiceSpecification(params).evaluate(4F)
     assertEquals(4F, result, 0F)
 
     params = [
-            labelsReponses: ['a', 'b', 'c', 'd'],
-            labelsReponsesCorrects: ['a', 'c', 'd'],
-            labelsReponsesCoches: []
+            indexReponses: ['a', 'b', 'c', 'd'],
+            indexReponsesCorrects: ['a', 'c', 'd'],
+            indexReponsesCoches: []
     ]
     result = new ReponseMultipleChoiceSpecification(params).evaluate(4F)
     assertEquals(0F, result, 0F)
 
     params = [
-            labelsReponses: ['a', 'b', 'c', 'd'],
-            labelsReponsesCorrects: ['a', 'c', 'd'],
-            labelsReponsesCoches: ['a', 'b']
+            indexReponses: ['a', 'b', 'c', 'd'],
+            indexReponsesCorrects: ['a', 'c', 'd'],
+            indexReponsesCoches: ['a', 'b']
     ]
     result = new ReponseMultipleChoiceSpecification(params).evaluate(4F)
     assertEquals(-2F, result, 0F)

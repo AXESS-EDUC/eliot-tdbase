@@ -38,7 +38,7 @@ package org.lilie.services.eliot.tdbase.impl.multiplechoice
 class MultipleChoiceSpecificationTest extends GroovyTestCase {
 
   void testGetId() {
-    def multipleChoiceReponse = new MultipleChoiceSpecificationReponsePossible(libelleReponse: "Yet another Choice", estUneBonneReponse: false, rang: 23.4F)
-    assertEquals(35749663, multipleChoiceReponse.id)
+    def multipleChoiceReponse = new MultipleChoiceSpecificationReponsePossible(libelleReponse: "Yet another Choice", estUneBonneReponse: false, id: "1")
+    assertEquals("1", multipleChoiceReponse.id)
   }
 }

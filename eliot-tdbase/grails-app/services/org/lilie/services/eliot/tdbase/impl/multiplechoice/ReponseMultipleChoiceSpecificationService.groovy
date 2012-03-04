@@ -52,9 +52,9 @@ class ReponseMultipleChoiceSpecificationService extends ReponseSpecificationServ
     ReponseMultipleChoiceSpecification specObj = new ReponseMultipleChoiceSpecification()
 
     reponsesPossibles.each {
-      specObj.labelsReponses << it.libelleReponse
+      specObj.indexReponses << it.id
       if (it.estUneBonneReponse) {
-        specObj.labelsReponsesCorrects << it.libelleReponse
+        specObj.indexReponsesCorrects << it.id
       }
     }
     specObj
@@ -69,25 +69,25 @@ class ReponseMultipleChoiceSpecification implements ReponseSpecification {
   /**
    *  Toutes les réponses possibles
    */
-  List<String> labelsReponses = []
+  List<String> indexReponses = []
 
   /**
    * Les réponses cochés.
    */
-  List<String> labelsReponsesCoches = []
+  List<String> indexReponsesCoches = []
 
   /**
    * Les reponses corrects.
    */
-  List<String> labelsReponsesCorrects = []
+  List<String> indexReponsesCorrects = []
 
   @Override
   Map toMap() {
     [
             questionTypeCode: questionTypeCode,
-            labelsReponses: labelsReponses,
-            labelsReponsesCoches: labelsReponsesCoches,
-            labelsReponsesCorrects: labelsReponsesCorrects
+            indexReponses: indexReponses,
+            indexReponsesCoches: indexReponsesCoches,
+            indexReponsesCorrects: indexReponsesCorrects
     ]
   }
 
@@ -100,26 +100,26 @@ class ReponseMultipleChoiceSpecification implements ReponseSpecification {
    */
   float evaluate(float maximumPoints) {
 
-    if (labelsReponsesCoches.isEmpty()) {
+    if (indexReponsesCoches.isEmpty()) {
       return 0F
     }
 
     def points = 0
-    labelsReponses.each {
+    indexReponses.each {
       if (reponseEleveEstJuste(it)) {
         points++
       } else {
         points--
       }
     }
-    points / labelsReponses.size() * maximumPoints;
+    points / indexReponses.size() * maximumPoints;
   }
 
   private boolean reponseEleveEstJuste(String label) {
-    def res = (labelsReponsesCorrects.contains(label) &&
-               labelsReponsesCoches.contains(label)) ||
-              (!labelsReponsesCorrects.contains(label) &&
-               !labelsReponsesCoches.contains(label))
+    def res = (indexReponsesCorrects.contains(label) &&
+               indexReponsesCoches.contains(label)) ||
+              (!indexReponsesCorrects.contains(label) &&
+               !indexReponsesCoches.contains(label))
     return res
   }
 }
