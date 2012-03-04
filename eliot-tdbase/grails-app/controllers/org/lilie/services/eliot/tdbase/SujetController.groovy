@@ -2,6 +2,8 @@ package org.lilie.services.eliot.tdbase
 
 import grails.converters.JSON
 import grails.plugins.springsecurity.SpringSecurityService
+import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
+import org.lilie.services.eliot.tdbase.xml.MoodleQuizImporterService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
@@ -9,6 +11,7 @@ import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.Breadcrumps
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
+import org.springframework.web.multipart.MultipartFile
 
 class SujetController {
 
@@ -23,6 +26,7 @@ class SujetController {
   SpringSecurityService springSecurityService
   ProfilScolariteService profilScolariteService
   BreadcrumpsService breadcrumpsService
+  MoodleQuizImporterService moodleQuizImporterService
   ArtefactAutorisationService artefactAutorisationService
 
   /**
@@ -168,8 +172,8 @@ class SujetController {
     sujetService.supprimeSujet(sujet, personne)
     def lien = breadcrumpsService.lienRetour()
     redirect(action: lien.action,
-            controller: lien.controller,
-            params: lien.params)
+             controller: lien.controller,
+             params: lien.params)
 
   }
 
@@ -420,6 +424,80 @@ class SujetController {
     }
   }
 
+  /**
+   *
+   * Action donnant accès au formulaire d'import d'un fichier moodle XML
+   */
+  def editeImportMoodleXml() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.importmoodlexml.titre"))
+    Sujet sujet = Sujet.get(params.id)
+    Personne proprietaire = authenticatedPersonne
+    [
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            sujet: sujet,
+            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+    ]
+
+  }
+
+  /**
+   * Action déclenchant l'import du fichier XML
+   */
+  def importMoodleXML(ImportMoodleXmlCommand importMoodleXmlCommand) {
+    Sujet sujet = Sujet.get(importMoodleXmlCommand.sujetId)
+    Matiere matiere = Matiere.get(importMoodleXmlCommand.matiereId)
+    Niveau niveau = Niveau.get(importMoodleXmlCommand.niveauId)
+    Personne proprietaire = authenticatedPersonne
+    MultipartFile fichier = request.getFile("fichierImport")
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    boolean importSuccess = true
+    if (!fichier || fichier.isEmpty()) {
+      flash.errorMessageCode = "question.document.fichier.vide"
+      importSuccess = false
+    } else if (!fichier.name) {
+      flash.errorMessageCode = "question.document.fichier.nom.null"
+      importSuccess = false
+    } else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+      flash.errorMessageCode = "question.document.fichier.tropgros"
+      importSuccess = false
+    }
+    if (importSuccess) {
+      try {
+        MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(
+                fichier.inputStream,
+                sujet,
+                matiere,
+                niveau,
+                proprietaire)
+        flash.report = report
+      } catch (Exception e) {
+        flash.errorMessageCode = e.message
+        importSuccess = false
+      }
+    }
+    flash.liens = breadcrumpsService.liens
+    if (importSuccess) {
+      redirect(action: 'rapportImportMoodleXML')
+    } else {
+      redirect(action: 'editeImportMoodleXml', id: sujet.id)
+    }
+  }
+
+  /**
+   * Action présentant le rapport d'importMoodle XML
+   */
+  def rapportImportMoodleXML() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.rapportmoodlexml.titre"))
+  }
+
+}
+
+class ImportMoodleXmlCommand {
+  Long sujetId
+  Long matiereId
+  Long niveauId
 }
 
 class UpdatePointsCommand {

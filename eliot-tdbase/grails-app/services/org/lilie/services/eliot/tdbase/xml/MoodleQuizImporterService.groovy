@@ -31,6 +31,8 @@ package org.lilie.services.eliot.tdbase.xml
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tdbase.*
+import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.lilie.services.eliot.tice.scolarite.Niveau
 
 /**
  * Service d'import d'un quiz moodle
@@ -51,7 +53,12 @@ class MoodleQuizImporterService {
    * @param importeur la personne déclenchant l'import
    * @return le rapport d'import
    */
-  MoodleQuizImportReport importMoodleQuiz(InputStream xmlMoodle, Sujet sujet, Personne importeur) {
+  MoodleQuizImportReport importMoodleQuiz(
+          InputStream xmlMoodle,
+          Sujet sujet,
+          Matiere matiere,
+          Niveau niveau,
+          Personne importeur) {
 
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet))
     //
@@ -102,8 +109,8 @@ class MoodleQuizImporterService {
               [
                       titre: item.titre,
                       type: questionTypeEnum.questionType,
-                      matiere: sujet.matiere,
-                      niveau: sujet.niveau
+                      matiere: matiere,
+                      niveau: niveau
               ],
               objSpec,
               sujet,

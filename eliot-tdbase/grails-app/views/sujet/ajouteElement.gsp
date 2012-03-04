@@ -109,7 +109,7 @@
     </li>
   </ul>
 
-  <h1>Importer et ajouter un quiz Moodle...</h1>
+  <h1><g:link action="editeImportMoodleXml" controller="sujet" id="${sujet.id}">Importer et ajouter un quiz Moodle...</g:link></h1>
 
 </div>
 

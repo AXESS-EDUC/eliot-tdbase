@@ -35,26 +35,20 @@
   <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
+      $("form").attr('enctype', 'multipart/form-data');
     });
   </r:script>
-  <title>TDBase - Edition des propriétés du sujet</title>
+  <title>TDBase - Import d'un fichier Moodle XML dans le sujet</title>
 </head>
 
 <body>
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 
-<g:hasErrors bean="${sujet}">
+<g:if test="${flash.errorMessageCode}">
   <div class="portal-messages">
-    <g:eachError>
-      <li class="error"><g:message error="${it}"/></li>
-    </g:eachError>
-  </div>
-</g:hasErrors>
-<g:if test="${request.messageCode}">
-  <div class="portal-messages">
-    <li class="success"><g:message code="${request.messageCode}"
-                                   class="portal-messages success"/></li>
+    <li class="error"><g:message code="${flash.errorMessageCode}"
+                                   class="portal-messages error"/></li>
   </div>
 </g:if>
 
@@ -62,28 +56,9 @@
   <div class="portal-form_container edite">
     <table>
       <tr>
-        <td class="label title">Titre:</td>
-        <td>
-          <input size="80" type="text" value="${sujet.titre}" name="titre"/>
-        </td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="label">Type&nbsp;:</td>
-        <td>
-          <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
-                    from="${typesSujet}"
-                    optionKey="id"
-                    optionValue="nom"/>
-        </td>
-      </tr>
-      <tr>
         <td class="label">Mati&egrave;re&nbsp;:</td>
         <td>
-          <g:select name="matiere.id" value="${sujet.matiere?.id}"
+          <g:select name="matiereId" value="${sujet.matiere?.id}"
                     noSelection="${['null': 'Sélectionner une matière...']}"
                     from="${matieres}"
                     optionKey="id"
@@ -93,7 +68,7 @@
       <tr>
         <td class="label">Niveau&nbsp;:</td>
         <td>
-          <g:select name="niveau.id" value="${sujet.niveau?.id}"
+          <g:select name="niveauId" value="${sujet.niveau?.id}"
                     noSelection="${['null': 'Sélectionner un niveau...']}"
                     from="${niveaux}"
                     optionKey="id"
@@ -101,53 +76,20 @@
         </td>
       </tr>
       <tr>
-        <td class="label">Dur&eacute;e&nbsp;:</td>
-        <td>
-          <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}"/>
-          <i>(en minutes)</i>
+        <td class="label">Fichier&nbsp;:</td>
+        <td id="fichier_import_td">
+          <input type="file" name="fichierImport">
         </td>
       </tr>
-
-      <tr>
-        <td class="label">Ordre&nbsp;questions&nbsp;:</td>
-        <td>
-          <g:checkBox name="ordreQuestionsAleatoire"
-                      checked="${sujet.ordreQuestionsAleatoire}"/>
-          Al&eacute;atoire</td>
-      </tr>
-
-      <tr>
-        <td class="label">Description&nbsp;:</td>
-        <td>
-          <g:textArea cols="56" rows="10" name="presentation"
-                      value="${sujet.presentation}"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Partage :</td>
-        <td>
-          <g:if test="${sujet.estPartage()}">
-            <a href="${sujet.copyrightsType.lien}"
-               target="_blank">${sujet.copyrightsType.presentation}</a>
-          </g:if>
-          <g:else>
-            ce sujet n'est pas partagé
-          </g:else>
-        </td>
-      </tr>
-      <g:if test="${sujet.paternite}">
-        <g:render template="/artefact/paternite"
-                  model="[paternite: sujet.paternite]"/>
-      </g:if>
     </table>
   </div>
-  <g:hiddenField name="id" value="${sujet.id}"/>
+  <g:hiddenField name="sujetId" value="${sujet.id}"/>
   <div class="form_actions">
     <g:link action="${lienRetour.action}" controller="${lienRetour.controller}"
             params="${lienRetour.params}">Annuler</g:link> |
-    <g:actionSubmit value="Enregistrer" action="enregistrePropriete"
+    <g:actionSubmit value="Importer" action="importMoodleXML"
                     class="button"
-                    title="Enregistrer"/>
+                    title="Importer"/>
   </div>
 </form>
 
