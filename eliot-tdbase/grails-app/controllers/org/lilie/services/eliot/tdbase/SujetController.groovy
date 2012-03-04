@@ -428,7 +428,7 @@ class SujetController {
    *
    * Action donnant accès au formulaire d'import d'un fichier moodle XML
    */
-  def editeImportMoodleXml() {
+  def editeImportMoodleXML() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.importmoodlexml.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
@@ -481,7 +481,7 @@ class SujetController {
     if (importSuccess) {
       redirect(action: 'rapportImportMoodleXML')
     } else {
-      redirect(action: 'editeImportMoodleXml', id: sujet.id)
+      redirect(action: 'editeImportMoodleXML', id: sujet.id)
     }
   }
 
