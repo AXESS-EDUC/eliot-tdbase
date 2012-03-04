@@ -32,6 +32,7 @@
     <g:textField name="specifobject.reponses[${i}].libelleReponse" size="45"
                  value="${reponse.libelleReponse}"/>
     &nbsp;
+  <g:hiddenField name="specifobject.reponses[${i}].id" value="${reponse.id}"/>
     <g:submitToRemote id="${i}" value="Suppr" title="Supprimer la réponse" action="supprimeReponse" class="button"
                       controller="questionMultipleChoice" update="specifobject_reponses"/>
     <br/>
