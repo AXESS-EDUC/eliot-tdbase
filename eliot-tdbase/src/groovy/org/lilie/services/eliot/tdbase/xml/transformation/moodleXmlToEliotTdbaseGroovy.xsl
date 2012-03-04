@@ -207,7 +207,8 @@
                "reponses" : [<xsl:for-each select="answer">
                   {
                      "libelleReponse" : "<xsl:value-of select="json:encode-string(text/text())"/>",
-                     "estUneBonneReponse" : <xsl:choose><xsl:when test="@fraction &lt;= 0">false</xsl:when><xsl:otherwise>true</xsl:otherwise></xsl:choose>
+                     "estUneBonneReponse" : <xsl:choose><xsl:when test="@fraction &lt;= 0">false</xsl:when><xsl:otherwise>true</xsl:otherwise></xsl:choose>,
+                     "id" : "<xsl:value-of select="position()"/>"
                   }<xsl:if test="position()!=last()">,</xsl:if></xsl:for-each>
                ]
             }"""

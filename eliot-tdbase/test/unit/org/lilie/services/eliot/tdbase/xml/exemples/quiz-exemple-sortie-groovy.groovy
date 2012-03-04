@@ -29,221 +29,226 @@
 package org.lilie.services.eliot.tdbase.xml.exemples
 
 
-      [
-        "quiz" : [
-          [
-            "nombreItems" : 11
-          ]
 
-          ,
-          [
-            "titre" : """Aire du cercle (pas du carré)""",
-            "attachement" : [],
+[
+  "quiz" : [
+    [
+      "nombreItems" : 11
+    ]
 
-              "questionTypeCode": "calculated"
+    ,
+    [
+      "titre" : """Aire du cercle (pas du carré)""",
+      "attachement" : [],
 
-          ]
+        "questionTypeCode": "calculated"
 
-          ,
-          [
-            "titre" : """Consigne dispositif électronique""",
-            "attachement" : [],
+    ]
 
-               "questionTypeCode": "Statement",
-               "specification" : """{
-                      "questionTypeCode": "Statement",
-                      "enonce" : "Pas de calculatrice !"
-                }"""
+    ,
+    [
+      "titre" : """Consigne dispositif électronique""",
+      "attachement" : [],
+
+         "questionTypeCode": "Statement",
+         "specification" : """{
+                "questionTypeCode": "Statement",
+                "enonce" : "Pas de calculatrice !"
+          }"""
 
 
-          ]
+    ]
 
-          ,
-          [
-            "titre" : """Question ouverte""",
-            "attachement" : [],
+    ,
+    [
+      "titre" : """Question ouverte""",
+      "attachement" : [],
 
-              "questionTypeCode": "Open",
-              "specification" : """{
-                "questionTypeCode": "Open",
-                "libelle" : "Ecrire un programme qui affiche Hello world",
-                "nombreLignesReponse" : 5
-              }"""
+        "questionTypeCode": "Open",
+        "specification" : """{
+          "questionTypeCode": "Open",
+          "libelle" : "Ecrire un programme qui affiche Hello world",
+          "nombreLignesReponse" : 5
+        }"""
 
-          ]
+    ]
 
-          ,
-          [
-            "titre" : """Serveur d'application / éditeurs""",
-            "attachement" : [],
+    ,
+    [
+      "titre" : """Serveur d'application / éditeurs""",
+      "attachement" : [],
 
-            "questionTypeCode" : "Associate",
-            "specification" : """{
-              "questionTypeCode" : "Associate",
-              "libelle" : "Relier les serveurs d'applications avec les bons éditeurs\n",
-              "montrerColonneAGauche" : true,
-              "associations" : [
-                 {
-                   "participant1": "JBOSS",
-                   "participant2": "Redhat"
-                 },
-                 {
-                   "participant1": "Websphere",
-                   "participant2": "IBM"
-                 },
-                 {
-                   "participant1": "GlassFish",
-                   "participant2": "Oracle"
-                 },
-                 {
-                   "participant1": "Tomcat",
-                   "participant2": "Fondation Apache"
-                 }
-              ]
-            }"""
-
-          ]
-
-          ,
-          [
-            "titre" : """Question "Cloze" (composite ?)""",
-            "attachement" : [],
-
-              "questionTypeCode": "cloze"
-
-          ]
-
-          ,
-          [
-            "titre" : """Architecture à 3 niveaux ?""",
-            "attachement" : [
-              "nom" : "446px-Uncle_Sam_pointing_finger_.jpg"],
-
-            "questionTypeCode" : "ExclusiveChoice",
-            "specification" : """{
-               "questionTypeCode" : "ExclusiveChoice",
-               "libelle" : "Que désigne une architecture à 3 niveaux ?",
-               "shuffled" : true,
-               "reponses" : [
-                  {
-                     "libelleReponse" : "\n Une architecture MVC\n",
-                     "id" : "1"
-                  },
-                  {
-                     "libelleReponse" : "\n Une architecture N tiers ou N vaut 3\n",
-                     "id" : "2"
-                  }
-               ],
-               "indexBonneReponse": "2"
-            }"""
-
-          ]
-
-          ,
-          [
-            "titre" : """Architectures N tiers""",
-            "attachement" : [
-              "nom" : "446px-Uncle_Sam_pointing_finger_.jpg"],
-
-            "questionTypeCode" : "MultipleChoice",
-            "specification" : """{
-              "questionTypeCode" : "MultipleChoice",
-               "libelle" : "Cocher les assertions vraies.",
-               "shuffled" : true,
-               "reponses" : [
-                  {
-                     "libelleReponse" : "\n Une architecture N-tiers est uniquement une architecture à base\n de Web Services\n",
-                     "estUneBonneReponse" : false
-                  },
-                  {
-                     "libelleReponse" : "\n Une architecture client serveur est une architecture N-tiers\n",
-                     "estUneBonneReponse" : true
-                  },
-                  {
-                     "libelleReponse" : "\n Une architecture N-tiers correspond à une architecture\n d'application distribuée sur plusieurs noeuds physiques\n",
-                     "estUneBonneReponse" : true
-                  },
-                  {
-                     "libelleReponse" : "\n Une application web est une application reposant sur une\n architecture N Tiers\n",
-                     "estUneBonneReponse" : true
-                  }
-               ]
-            }"""
-
-          ]
-
-          ,
-          [
-            "titre" : """HTTP 1er protocole de l'Internet""",
-            "attachement" : [],
-
-              "questionTypeCode":"Decimal",
-              "specification" : """{
-                "questionTypeCode":"Decimal",
-                "libelle" : "En quelle année HTTP devient le premier protocole de\n l'Internet ?\n",
-                "valeur" : 1996,
-                "unite": "année",
-                "precision": 0
-              }"""
-
-          ]
-
-          ,
-          [
-            "titre" : """MVC""",
-            "attachement" : [],
-
-             "questionTypeCode" : "FillGap",
-             "specification" : """{
-                "questionTypeCode" : "FillGap",
-                "libelle" : "Que signifie MVC ?",
-                "saisieLibre" : true,
-                "montrerLesMots" : false,
-                "texteATrous" : "{=Model View Controller=Modèle vue contrôleur}"
-             }"""
-
-          ]
-
-          ,
-          [
-            "titre" : """Premier langage Orienté Objet""",
-            "attachement" : [],
-
-             "questionTypeCode" : "FillGap",
-             "specification" : """{
-                "questionTypeCode" : "FillGap",
-                "libelle" : "Quel est le premier langage Orienté Objet ?",
-                "saisieLibre" : true,
-                "montrerLesMots" : false,
-                "texteATrous" : "{=Simula 66=Simula}"
-             }"""
-
-          ]
-
-          ,
-          [
-            "titre" : """Tomcat et JEE""",
-            "attachement" : [],
-
-            "questionTypeCode" : "ExclusiveChoice",
-            "specification" : """{
-               "questionTypeCode" : "ExclusiveChoice",
-               "libelle" : "Tomcat est un conteneur implémentant toutes les spécifications\n JEE.\n",
-               "shuffled" : false,
-               "reponses" : [
-                  {
-                     "libelleReponse" : "true",
-                     "id" : "1"
-                  },
-                  {
-                     "libelleReponse" : "false",
-                     "id" : "2"
-                  }
-               ],
-               "indexBonneReponse": "2"
-            }"""
-
-          ]
-
+      "questionTypeCode" : "Associate",
+      "specification" : """{
+        "questionTypeCode" : "Associate",
+        "libelle" : "Relier les serveurs d'applications avec les bons éditeurs\n",
+        "montrerColonneAGauche" : true,
+        "associations" : [
+           {
+             "participant1": "JBOSS",
+             "participant2": "Redhat"
+           },
+           {
+             "participant1": "Websphere",
+             "participant2": "IBM"
+           },
+           {
+             "participant1": "GlassFish",
+             "participant2": "Oracle"
+           },
+           {
+             "participant1": "Tomcat",
+             "participant2": "Fondation Apache"
+           }
         ]
-      ]
+      }"""
+
+    ]
+
+    ,
+    [
+      "titre" : """Question "Cloze" (composite ?)""",
+      "attachement" : [],
+
+        "questionTypeCode": "cloze"
+
+    ]
+
+    ,
+    [
+      "titre" : """Architecture à 3 niveaux ?""",
+      "attachement" : [
+        "nom" : "446px-Uncle_Sam_pointing_finger_.jpg"],
+
+      "questionTypeCode" : "ExclusiveChoice",
+      "specification" : """{
+         "questionTypeCode" : "ExclusiveChoice",
+         "libelle" : "Que désigne une architecture à 3 niveaux ?",
+         "shuffled" : true,
+         "reponses" : [
+            {
+               "libelleReponse" : "\n Une architecture MVC\n",
+               "id" : "1"
+            },
+            {
+               "libelleReponse" : "\n Une architecture N tiers ou N vaut 3\n",
+               "id" : "2"
+            }
+         ],
+         "indexBonneReponse": "2"
+      }"""
+
+    ]
+
+    ,
+    [
+      "titre" : """Architectures N tiers""",
+      "attachement" : [
+        "nom" : "446px-Uncle_Sam_pointing_finger_.jpg"],
+
+      "questionTypeCode" : "MultipleChoice",
+      "specification" : """{
+        "questionTypeCode" : "MultipleChoice",
+         "libelle" : "Cocher les assertions vraies.",
+         "shuffled" : true,
+         "reponses" : [
+            {
+               "libelleReponse" : "\n Une architecture N-tiers est uniquement une architecture à base\n de Web Services\n",
+               "estUneBonneReponse" : false,
+               "id" : "1"
+            },
+            {
+               "libelleReponse" : "\n Une architecture client serveur est une architecture N-tiers\n",
+               "estUneBonneReponse" : true,
+               "id" : "2"
+            },
+            {
+               "libelleReponse" : "\n Une architecture N-tiers correspond à une architecture\n d'application distribuée sur plusieurs noeuds physiques\n",
+               "estUneBonneReponse" : true,
+               "id" : "3"
+            },
+            {
+               "libelleReponse" : "\n Une application web est une application reposant sur une\n architecture N Tiers\n",
+               "estUneBonneReponse" : true,
+               "id" : "4"
+            }
+         ]
+      }"""
+
+    ]
+
+    ,
+    [
+      "titre" : """HTTP 1er protocole de l'Internet""",
+      "attachement" : [],
+
+        "questionTypeCode":"Decimal",
+        "specification" : """{
+          "questionTypeCode":"Decimal",
+          "libelle" : "En quelle année HTTP devient le premier protocole de\n l'Internet ?\n",
+          "valeur" : 1996,
+          "unite": "année",
+          "precision": 0
+        }"""
+
+    ]
+
+    ,
+    [
+      "titre" : """MVC""",
+      "attachement" : [],
+
+       "questionTypeCode" : "FillGap",
+       "specification" : """{
+          "questionTypeCode" : "FillGap",
+          "libelle" : "Que signifie MVC ?",
+          "saisieLibre" : true,
+          "montrerLesMots" : false,
+          "texteATrous" : "Que signifie MVC ? {=Model View Controller=Modèle vue contrôleur}"
+       }"""
+
+    ]
+
+    ,
+    [
+      "titre" : """Premier langage Orienté Objet""",
+      "attachement" : [],
+
+       "questionTypeCode" : "FillGap",
+       "specification" : """{
+          "questionTypeCode" : "FillGap",
+          "libelle" : "Quel est le premier langage Orienté Objet ?",
+          "saisieLibre" : true,
+          "montrerLesMots" : false,
+          "texteATrous" : "Quel est le premier langage Orienté Objet ? {=Simula 66=Simula}"
+       }"""
+
+    ]
+
+    ,
+    [
+      "titre" : """Tomcat et JEE""",
+      "attachement" : [],
+
+      "questionTypeCode" : "ExclusiveChoice",
+      "specification" : """{
+         "questionTypeCode" : "ExclusiveChoice",
+         "libelle" : "Tomcat est un conteneur implémentant toutes les spécifications\n JEE.\n",
+         "shuffled" : false,
+         "reponses" : [
+            {
+               "libelleReponse" : "true",
+               "id" : "1"
+            },
+            {
+               "libelleReponse" : "false",
+               "id" : "2"
+            }
+         ],
+         "indexBonneReponse": "2"
+      }"""
+
+    ]
+
+  ]
+]
