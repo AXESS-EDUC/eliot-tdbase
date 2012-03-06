@@ -38,7 +38,6 @@ class DashboardController {
   BreadcrumpsService breadcrumpsService
   ModaliteActiviteService modaliteActiviteService
 
-
   /**
    *
    * Action "index"
@@ -52,14 +51,13 @@ class DashboardController {
             sujets: sujetService.findSujetsForProprietaire(
                     personne,
                     params),
-            seances:modaliteActiviteService.findModalitesActivitesForEnseignant(
-                        personne,
-                        params
-                )
+            seances: modaliteActiviteService.findModalitesActivitesForEnseignant(
+                    personne,
+                    params
+            )
 
     ]
   }
-
 
 
 }

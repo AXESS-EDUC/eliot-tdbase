@@ -33,7 +33,7 @@
   <g:if test="${sujets}">
   <p class="nb_result">${sujets.totalCount} sujet(s)</p>
   <ul>
-    <g:each in="sujets" var="sujetInstance">
+    <g:each in="${sujets}" var="sujetInstance">
       <li><strong>${sujetInstance.titre}</strong><br/>
         <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>
         <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière : </strong>${sujetInstance.matiere?.libelleLong} </g:if>

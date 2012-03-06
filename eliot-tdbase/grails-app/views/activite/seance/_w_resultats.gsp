@@ -33,7 +33,7 @@
   <g:if test="${copies}">
   <p class="nb_result">${copies.totalCount} résultat(s)</p>
   <ul>
-    <g:each in="copies" var="copie">
+    <g:each in="${copies}" var="copie">
       <g:set var="seance" value="${copie.modaliteActivite}"/>
       <li><strong>${seance.matiere?.libelleLong} - ${seance.sujet.titre}</strong><br/>
         <strong> » Note : </strong><b><g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" /></b>

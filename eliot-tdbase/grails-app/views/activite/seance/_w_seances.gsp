@@ -29,11 +29,11 @@
 
 
 <div class="widget">
-  <h2><g:link action="liste" controller="activite">${titre}</g:link></h2>
+  <h2><g:link action="listeSeances" controller="activite">${titre}</g:link></h2>
   <g:if test="${seances}">
   <p class="nb_result">${seances.totalCount} séance(s)</p>
   <ul>
-    <g:each in="seances" var="seance">
+    <g:each in="${seances}" var="seance">
       <li><strong>${seance.matiere?.libelleLong} - ${seance.sujet.titre}</strong><br/>
         <strong> » Fin : </strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
       </li>

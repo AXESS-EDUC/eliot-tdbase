@@ -31,7 +31,7 @@
   <g:if test="${seances}">
   <p class="nb_result">${seances.totalCount} séance(s)</p>
   <ul>
-    <g:each in="seances" var="seance">
+    <g:each in="${seances}" var="seance">
       <li><strong>${seance.groupeLibelle} - ${seance.sujet.titre}</strong><br/>
         <strong> » Fin : </strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
       </li>
@@ -39,6 +39,6 @@
   </ul>
   </g:if>
   <g:else>
-    Aucune séance en cours
+    Aucune séance en cours.
   </g:else>
 </div>
