@@ -29,7 +29,9 @@
 
 
 <div class="widget">
-  <p class="nb_result"><g:link action="listeResultats" controller="activite">${copies.totalCount} résultat(s)</g:link></p>
+  <h2><g:link action="listeResultats" controller="activite">${titre}</g:link></h2>
+  <g:if test="${copies}">
+  <p class="nb_result">${copies.totalCount} résultat(s)</p>
   <ul>
     <g:each in="copies" var="copie">
       <g:set var="seance" value="${copie.modaliteActivite}"/>
@@ -39,4 +41,8 @@
       </li>
     </g:each>
   </ul>
+  </g:if>
+  <g:else>
+    Aucun résultat n'est publié.
+  </g:else>
 </div>

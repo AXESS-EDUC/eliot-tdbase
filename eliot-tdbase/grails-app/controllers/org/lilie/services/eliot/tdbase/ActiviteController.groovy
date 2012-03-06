@@ -48,6 +48,29 @@ class ActiviteController {
 
   /**
    *
+   * Action correspondant à la page d'accueil
+   */
+  def index() {
+    params.max = Math.min(params.max ? params.int('max') : 5, 100)
+    breadcrumpsService.manageBreadcrumps(params, message(code: "accueil.titre"))
+    Personne personne = authenticatedPersonne
+    def modalitesActivites = modaliteActiviteService.findModalitesActivitesForApprenant(
+            personne,
+            params
+    )
+    def copies = copieService.findCopiesEnVisualisationForApprenant(
+            personne,
+            params
+    )
+    [
+            liens: breadcrumpsService.liens,
+            seances: modalitesActivites,
+            copies: copies
+    ]
+  }
+
+  /**
+   *
    * Action "liste des séances"
    */
   def listeSeances() {
@@ -59,9 +82,9 @@ class ActiviteController {
             params
     )
     render(view: '/activite/seance/liste', model: [
-           liens: breadcrumpsService.liens,
-           seances: modalitesActivites
-           ])
+            liens: breadcrumpsService.liens,
+            seances: modalitesActivites
+    ])
   }
 
   /**
@@ -74,10 +97,10 @@ class ActiviteController {
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Copie copie = copieService.getCopieForModaliteActiviteAndEleve(seance, eleve)
     render(view: '/activite/copie/edite', model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           copie: copie
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            copie: copie
+    ])
   }
 
   /**
@@ -101,22 +124,22 @@ class ActiviteController {
     bindData(reponsesCopie, params, "reponsesCopie")
     Personne eleve = authenticatedPersonne
     copieService.updateCopieForListeReponsesCopie(copie,
-                                                    reponsesCopie.listeReponses,
-                                                    eleve)
+                                                  reponsesCopie.listeReponses,
+                                                  eleve)
     request.messageCode = "copie.enregistre.succes"
 
     render(view: '/activite/copie/edite', model: [
-           liens: breadcrumpsService.liens,
-           lienRetour: breadcrumpsService.lienRetour(),
-           copie: copie
-           ])
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            copie: copie
+    ])
   }
 
   /**
    * Action liste résulats
    *
    */
-    def listeResultats() {
+  def listeResultats() {
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.resultats.titre"))
     Personne personne = authenticatedPersonne
@@ -125,11 +148,10 @@ class ActiviteController {
             params
     )
     render(view: '/activite/seance/resultats', model: [
-           liens: breadcrumpsService.liens,
-           copies: copies
-           ])
+            liens: breadcrumpsService.liens,
+            copies: copies
+    ])
   }
-
 
   /**
    *
@@ -139,11 +161,10 @@ class ActiviteController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
     Copie copie = Copie.get(params.id)
     render(view: '/activite/copie/visualise', model: [
-           liens: breadcrumpsService.liens,
-           copie: copie
-           ])
+            liens: breadcrumpsService.liens,
+            copie: copie
+    ])
   }
-
 
 
 }

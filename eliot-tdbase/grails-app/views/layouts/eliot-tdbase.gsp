@@ -49,6 +49,11 @@
     </g:if>
     <div class="portal-menu">
       <ul id="portal-hz-menu">
+        <li id="menu-item-accueil">
+                  <g:link controller="seance" action="index"
+                                        title="Accueil"
+                                        params="[bcInit:true]">Accueil</g:link>
+        </li>
         <li id="menu-item-seances">
           <g:link controller="seance" action="liste"
                                 title="Liste des séances"

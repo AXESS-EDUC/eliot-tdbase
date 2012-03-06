@@ -28,18 +28,25 @@
 
 
 
-<div class="widget">
-  <h2><g:link action="mesSujets" controller="sujet">${titre}</g:link></h2>
-  <g:if test="${sujets}">
-  <p class="nb_result">${sujets.totalCount} sujet(s)</p>
-  <ul>
-    <g:each in="sujets" var="sujetInstance">
-      <li><strong>${sujetInstance.titre}</strong><br/>
-        <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>
-        <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière : </strong>${sujetInstance.matiere?.libelleLong} </g:if>
-      </li>
-    </g:each>
-  </ul>
-  </g:if>
-     <g:link controller="sujet" action="nouveau">Créer un sujet</g:link>
- </div>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="layout" content="eliot-tdbase-activite"/>
+  <r:require modules="eliot-tdbase-ui"/>
+  <r:script>
+    $(document).ready(function() {
+      $('#menu-item-accueil').addClass('actif');
+    });
+  </r:script>
+  <title>TDBase - Accueil</title>
+</head>
+
+<body>
+
+  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
+
+  <g:render template="seance/w_seances" model="[seances:seances, titre:'Séances']"/>
+  <g:render template="seance/w_resultats" model="[copies:copies, titre:'Résultats']"/>
+
+</body>
+</html>

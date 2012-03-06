@@ -141,6 +141,13 @@ grails.plugins.springsecurity.interceptUrlMap = [
         '/': [
                 'IS_AUTHENTICATED_FULLY'
         ],
+        '/dashboard/**': [
+                        "${FonctionEnum.ENS.toRole()}",
+                        "${FonctionEnum.DOC.toRole()}",
+                        "${FonctionEnum.CTR.toRole()}",
+                        "${FonctionEnum.DIR.toRole()}",
+                        'IS_AUTHENTICATED_FULLY'
+        ],
         '/sujet/**': [
                 "${FonctionEnum.ENS.toRole()}",
                 "${FonctionEnum.DOC.toRole()}",

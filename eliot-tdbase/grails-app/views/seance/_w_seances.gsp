@@ -27,7 +27,9 @@
   --}%
 
 <div class="widget">
-  <p class="nb_result"><g:link action="liste" controller="seance">${seances.totalCount} séance(s)</g:link></p>
+  <h2><g:link action="liste" controller="seance">${titre}</g:link></h2>
+  <g:if test="${seances}">
+  <p class="nb_result">${seances.totalCount} séance(s)</p>
   <ul>
     <g:each in="seances" var="seance">
       <li><strong>${seance.groupeLibelle} - ${seance.sujet.titre}</strong><br/>
@@ -35,4 +37,8 @@
       </li>
     </g:each>
   </ul>
+  </g:if>
+  <g:else>
+    Aucune séance en cours
+  </g:else>
 </div>

@@ -29,7 +29,9 @@
 
 
 <div class="widget">
-  <p class="nb_result"><g:link action="liste" controller="activite">${seances.totalCount} séance(s)</g:link></p>
+  <h2><g:link action="liste" controller="activite">${titre}</g:link></h2>
+  <g:if test="${seances}">
+  <p class="nb_result">${seances.totalCount} séance(s)</p>
   <ul>
     <g:each in="seances" var="seance">
       <li><strong>${seance.matiere?.libelleLong} - ${seance.sujet.titre}</strong><br/>
@@ -37,4 +39,8 @@
       </li>
     </g:each>
   </ul>
+  </g:if>
+  <g:else>
+    Aucune séance ouverte.
+  </g:else>
 </div>
