@@ -34,7 +34,7 @@
   <p class="nb_result">${seances.totalCount} séance(s)</p>
   <ul>
     <g:each in="${seances}" var="seance">
-      <li><strong>${seance.matiere?.libelleLong} - ${seance.sujet.titre}</strong><br/>
+      <li><strong><g:link controller="activite" action="travailleCopie" id="${seance.id}">${seance.matiere?.libelleLong} - ${seance.sujet.titre}</g:link></strong><br/>
         <strong> » Fin : </strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
       </li>
     </g:each>

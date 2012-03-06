@@ -35,7 +35,7 @@
   <ul>
     <g:each in="${copies}" var="copie">
       <g:set var="seance" value="${copie.modaliteActivite}"/>
-      <li><strong>${seance.matiere?.libelleLong} - ${seance.sujet.titre}</strong><br/>
+      <li><strong><g:link controller="activite" action="visualiseCopie" id="${copie.id}">${seance.matiere?.libelleLong} - ${seance.sujet.titre}</g:link></strong><br/>
         <strong> » Note : </strong><b><g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" /></b>
         		  		/ <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
       </li>

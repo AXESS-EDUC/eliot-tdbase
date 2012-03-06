@@ -37,6 +37,7 @@ class DashboardController {
   SujetService sujetService
   BreadcrumpsService breadcrumpsService
   ModaliteActiviteService modaliteActiviteService
+  QuestionService questionService
 
   /**
    *
@@ -54,8 +55,11 @@ class DashboardController {
             seances: modaliteActiviteService.findModalitesActivitesForEnseignant(
                     personne,
                     params
-            )
-
+            ),
+            items: questionService.findQuestionsForProprietaire(
+                            personne,
+                            params
+                    )
     ]
   }
 

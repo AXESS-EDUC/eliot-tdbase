@@ -32,7 +32,7 @@
   <p class="nb_result">${seances.totalCount} séance(s)</p>
   <ul>
     <g:each in="${seances}" var="seance">
-      <li><strong>${seance.groupeLibelle} - ${seance.sujet.titre}</strong><br/>
+      <li><strong><g:link controller="seance" action="edite" id="${seance.id}">${seance.groupeLibelle} - ${seance.sujet.titre}</g:link></strong><br/>
         <strong> » Fin : </strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
       </li>
     </g:each>

@@ -41,8 +41,9 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 
-<g:render template="/sujet/w_sujets" model="[sujets:sujets, titre:'Mes sujets récents']"/>
 <g:render template="/seance/w_seances" model="[seances:seances, titre:'Mes séances en cours']"/>
+<g:render template="/sujet/w_sujets" model="[sujets:sujets, titre:'Mes sujets récents']"/>
+<g:render template="/question/w_questions" model="[items:items, titre:'Mes items récents']"/>
 
 </body>
 </html>

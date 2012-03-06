@@ -29,17 +29,17 @@
 
 
 <div class="widget">
-  <h2><g:link action="mesSujets" controller="sujet">${titre}</g:link></h2>
-  <g:if test="${sujets}">
-  <p class="nb_result">${sujets.totalCount} sujet(s)</p>
+  <h2><g:link action="mesItems" controller="question">${titre}</g:link></h2>
+  <g:if test="${items}">
+  <p class="nb_result">${items.totalCount} item(s)</p>
   <ul>
-    <g:each in="${sujets}" var="sujetInstance">
-      <li><strong><g:link controller="sujet" action="edite" id="${sujetInstance.id}">${sujetInstance.titre}</g:link></strong><br/>
-        <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>
-        <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière : </strong>${sujetInstance.matiere?.libelleLong} </g:if>
+    <g:each in="${items}" var="item">
+      <li><strong><g:link controller="question" action="edite" id="${item.id}">${item.type.nom} - ${item.titre}</g:link></strong><br/>
+        <g:if test="${item.niveau?.libelleLong}"><strong>» Niveau : </strong>${item.niveau?.libelleLong} </g:if>
+        <g:if test="${item.matiere?.libelleLong}"><strong>» Matière : </strong>${item.matiere?.libelleLong} </g:if>
       </li>
     </g:each>
   </ul>
   </g:if>
-     <g:link controller="sujet" action="nouveau">Créer un sujet</g:link>
+     <g:link controller="question" action="nouvelle">Créer un item</g:link>
  </div>
