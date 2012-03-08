@@ -50,7 +50,7 @@
     <div class="portal-menu">
       <ul id="portal-hz-menu">
         <li id="menu-item-accueil">
-                  <g:link controller="seance" action="index"
+                  <g:link controller="dashboard" action="index"
                                         title="Accueil"
                                         params="[bcInit:true]">Accueil</g:link>
         </li>
