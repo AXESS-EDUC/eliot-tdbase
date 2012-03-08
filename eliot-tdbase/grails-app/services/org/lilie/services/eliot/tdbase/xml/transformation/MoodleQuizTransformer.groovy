@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.xml.transformation
 
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
+import org.lilie.services.eliot.tice.ImageIds
 
 /**
  * Classe responsable de la transformation d'un quiz moodle au format moodle XML
@@ -66,7 +67,7 @@ class MoodleQuizTransformer implements ApplicationContextAware {
    * @return  la map ayant pour clé l'identifiant de l'image dans le fichier source
    * et comme valeur un objet encapsulant l'identifiant de l'image dans le data store
    */
-  Map<String, MoodleQuizImageIds> importImages(InputStream moodleQuiz) {
+  Map<String, ImageIds> importImages(InputStream moodleQuiz) {
     xmlTransformationHelper.processInputWithBase64Handler(moodleQuiz)
   }
   
