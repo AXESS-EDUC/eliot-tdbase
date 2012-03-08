@@ -466,7 +466,7 @@ class SujetController {
     if (importSuccess) {
       try {
         MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(
-                fichier.inputStream,
+                fichier.bytes,
                 sujet,
                 matiere,
                 niveau,

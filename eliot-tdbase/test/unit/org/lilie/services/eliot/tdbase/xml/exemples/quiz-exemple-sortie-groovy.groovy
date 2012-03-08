@@ -30,56 +30,56 @@ package org.lilie.services.eliot.tdbase.xml.exemples
 
 
 
+
 [
-  "quiz" : [
-    [
-      "nombreItems" : 11
-    ]
+        "quiz": [
+                [
+                        "nombreItems": 11
+                ]
 
-    ,
-    [
-      "titre" : """Aire du cercle (pas du carré)""",
-      "attachement" : [],
+                ,
+                [
+                        "titre": """Aire du cercle (pas du carré)""",
+                        "attachementInputId": "",
 
-        "questionTypeCode": "calculated"
+                        "questionTypeCode": "calculated"
 
-    ]
+                ]
 
-    ,
-    [
-      "titre" : """Consigne dispositif électronique""",
-      "attachement" : [],
+                ,
+                [
+                        "titre": """Consigne dispositif électronique""",
+                        "attachementInputId": "",
 
-         "questionTypeCode": "Statement",
-         "specification" : """{
+                        "questionTypeCode": "Statement",
+                        "specification": """{
                 "questionTypeCode": "Statement",
                 "enonce" : "Pas de calculatrice !"
           }"""
 
+                ]
 
-    ]
+                ,
+                [
+                        "titre": """Question ouverte""",
+                        "attachementInputId": "",
 
-    ,
-    [
-      "titre" : """Question ouverte""",
-      "attachement" : [],
-
-        "questionTypeCode": "Open",
-        "specification" : """{
+                        "questionTypeCode": "Open",
+                        "specification": """{
           "questionTypeCode": "Open",
           "libelle" : "Ecrire un programme qui affiche Hello world",
           "nombreLignesReponse" : 5
         }"""
 
-    ]
+                ]
 
-    ,
-    [
-      "titre" : """Serveur d'application / éditeurs""",
-      "attachement" : [],
+                ,
+                [
+                        "titre": """Serveur d'application / éditeurs""",
+                        "attachementInputId": "",
 
-      "questionTypeCode" : "Associate",
-      "specification" : """{
+                        "questionTypeCode": "Associate",
+                        "specification": """{
         "questionTypeCode" : "Associate",
         "libelle" : "Relier les serveurs d'applications avec les bons éditeurs\n",
         "montrerColonneAGauche" : true,
@@ -103,25 +103,24 @@ package org.lilie.services.eliot.tdbase.xml.exemples
         ]
       }"""
 
-    ]
+                ]
 
-    ,
-    [
-      "titre" : """Question "Cloze" (composite ?)""",
-      "attachement" : [],
+                ,
+                [
+                        "titre": """Question "Cloze" (composite ?)""",
+                        "attachementInputId": "",
 
-        "questionTypeCode": "cloze"
+                        "questionTypeCode": "cloze"
 
-    ]
+                ]
 
-    ,
-    [
-      "titre" : """Architecture à 3 niveaux ?""",
-      "attachement" : [
-        "nom" : "446px-Uncle_Sam_pointing_finger_.jpg"],
+                ,
+                [
+                        "titre": """Architecture à 3 niveaux ?""",
+                        "attachementInputId": "backupdata/446px-Uncle_Sam_pointing_finger_.jpg",
 
-      "questionTypeCode" : "ExclusiveChoice",
-      "specification" : """{
+                        "questionTypeCode": "ExclusiveChoice",
+                        "specification": """{
          "questionTypeCode" : "ExclusiveChoice",
          "libelle" : "Que désigne une architecture à 3 niveaux ?",
          "shuffled" : true,
@@ -138,16 +137,15 @@ package org.lilie.services.eliot.tdbase.xml.exemples
          "indexBonneReponse": "2"
       }"""
 
-    ]
+                ]
 
-    ,
-    [
-      "titre" : """Architectures N tiers""",
-      "attachement" : [
-        "nom" : "446px-Uncle_Sam_pointing_finger_.jpg"],
+                ,
+                [
+                        "titre": """Architectures N tiers""",
+                        "attachementInputId": "backupdata/446px-Uncle_Sam_pointing_finger_.jpg",
 
-      "questionTypeCode" : "MultipleChoice",
-      "specification" : """{
+                        "questionTypeCode": "MultipleChoice",
+                        "specification": """{
         "questionTypeCode" : "MultipleChoice",
          "libelle" : "Cocher les assertions vraies.",
          "shuffled" : true,
@@ -175,15 +173,15 @@ package org.lilie.services.eliot.tdbase.xml.exemples
          ]
       }"""
 
-    ]
+                ]
 
-    ,
-    [
-      "titre" : """HTTP 1er protocole de l'Internet""",
-      "attachement" : [],
+                ,
+                [
+                        "titre": """HTTP 1er protocole de l'Internet""",
+                        "attachementInputId": "",
 
-        "questionTypeCode":"Decimal",
-        "specification" : """{
+                        "questionTypeCode": "Decimal",
+                        "specification": """{
           "questionTypeCode":"Decimal",
           "libelle" : "En quelle année HTTP devient le premier protocole de\n l'Internet ?\n",
           "valeur" : 1996,
@@ -191,15 +189,15 @@ package org.lilie.services.eliot.tdbase.xml.exemples
           "precision": 0
         }"""
 
-    ]
+                ]
 
-    ,
-    [
-      "titre" : """MVC""",
-      "attachement" : [],
+                ,
+                [
+                        "titre": """MVC""",
+                        "attachementInputId": "",
 
-       "questionTypeCode" : "FillGap",
-       "specification" : """{
+                        "questionTypeCode": "FillGap",
+                        "specification": """{
           "questionTypeCode" : "FillGap",
           "libelle" : "Que signifie MVC ?",
           "saisieLibre" : true,
@@ -207,15 +205,15 @@ package org.lilie.services.eliot.tdbase.xml.exemples
           "texteATrous" : "Que signifie MVC ? {=Model View Controller=Modèle vue contrôleur}"
        }"""
 
-    ]
+                ]
 
-    ,
-    [
-      "titre" : """Premier langage Orienté Objet""",
-      "attachement" : [],
+                ,
+                [
+                        "titre": """Premier langage Orienté Objet""",
+                        "attachementInputId": "",
 
-       "questionTypeCode" : "FillGap",
-       "specification" : """{
+                        "questionTypeCode": "FillGap",
+                        "specification": """{
           "questionTypeCode" : "FillGap",
           "libelle" : "Quel est le premier langage Orienté Objet ?",
           "saisieLibre" : true,
@@ -223,15 +221,15 @@ package org.lilie.services.eliot.tdbase.xml.exemples
           "texteATrous" : "Quel est le premier langage Orienté Objet ? {=Simula 66=Simula}"
        }"""
 
-    ]
+                ]
 
-    ,
-    [
-      "titre" : """Tomcat et JEE""",
-      "attachement" : [],
+                ,
+                [
+                        "titre": """Tomcat et JEE""",
+                        "attachementInputId": "",
 
-      "questionTypeCode" : "ExclusiveChoice",
-      "specification" : """{
+                        "questionTypeCode": "ExclusiveChoice",
+                        "specification": """{
          "questionTypeCode" : "ExclusiveChoice",
          "libelle" : "Tomcat est un conteneur implémentant toutes les spécifications\n JEE.\n",
          "shuffled" : false,
@@ -248,7 +246,7 @@ package org.lilie.services.eliot.tdbase.xml.exemples
          "indexBonneReponse": "2"
       }"""
 
-    ]
+                ]
 
-  ]
+        ]
 ]

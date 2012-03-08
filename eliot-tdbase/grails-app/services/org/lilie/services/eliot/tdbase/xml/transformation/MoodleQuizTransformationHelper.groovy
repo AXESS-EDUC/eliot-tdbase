@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.xml.transformation
 
+import javax.activation.FileTypeMap
 import javax.mail.internet.MimeUtility
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamReader
@@ -35,7 +36,8 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
 import org.lilie.services.eliot.tice.AttachementDataStore
-import groovy.transform.ToString
+import org.lilie.services.eliot.tice.ImageIds
+import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataRecord
 
 /**
  *
@@ -59,9 +61,9 @@ class MoodleQuizTransformationHelper {
 
   /**
    * Traite un inputstream pour extraire les images encodées en base 64
-   * @param input  l'input stream à traiter
+   * @param input l'input stream à traiter
    */
-  List<MoodleQuizImageIds> processInputWithBase64Handler(InputStream input) {
+  Map<String, ImageIds> processInputWithBase64Handler(InputStream input) {
     XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(input)
     def processor = new MoodleQuizBase64DecoderHandler(dataStore: dataStore);
     processor.process(reader)
@@ -70,14 +72,17 @@ class MoodleQuizTransformationHelper {
 
 }
 
+/**
+ * Classe permettant d'extraire les images d'un fichier Moodle
+ */
 class MoodleQuizBase64DecoderHandler {
 
   AttachementDataStore dataStore
-  private List<MoodleQuizImageIds> images = []
-  private MoodleQuizImageIds currentImage
+  private Map<String, ImageIds> images = [:]
+  private ImageIds currentImage
 
 
-  List<MoodleQuizImageIds> process(XMLStreamReader reader) {
+  Map<String, ImageIds> process(XMLStreamReader reader) {
     while (reader.hasNext()) {
       if (reader.startElement) {
         processStartElement(reader)
@@ -93,13 +98,18 @@ class MoodleQuizBase64DecoderHandler {
   def processStartElement(XMLStreamReader element) {
     def elementName = element.name.toString()
     if (elementName == 'image') {
-       currentImage = new MoodleQuizImageIds(inputId: element.getElementText())
+      currentImage = new ImageIds(sourceId: element.getElementText())
+      def mt = FileTypeMap.getDefaultFileTypeMap().getContentType(currentImage.sourceId)
+      currentImage.contentType = mt
+      currentImage.fileName = currentImage.sourceId.split(File.separator).last()
     }
     if (elementName == 'image_base64') {
       if (currentImage) {
         InputStream encodedIs = new ByteArrayInputStream(element.getElementText().bytes)
         InputStream decodedIs = MimeUtility.decode(encodedIs, 'base64')
-        currentImage.dataSoreId = dataStore.addRecord(decodedIs)
+        DataRecord dataRecord =  dataStore.addRecord(decodedIs)
+        currentImage.dataSoreId = dataRecord.identifier.toString()
+        currentImage.size = dataRecord.length
       }
     }
   }
@@ -108,7 +118,7 @@ class MoodleQuizBase64DecoderHandler {
     def elementName = element.name.toString()
     if (elementName == 'image_base64') {
       if (currentImage) {
-        images << currentImage
+        images.put(currentImage.sourceId, currentImage)
         currentImage = null
       }
     }
@@ -117,9 +127,3 @@ class MoodleQuizBase64DecoderHandler {
 
 }
 
-@ToString
-class MoodleQuizImageIds {
-  String inputId
-  String dataSoreId
-
-}

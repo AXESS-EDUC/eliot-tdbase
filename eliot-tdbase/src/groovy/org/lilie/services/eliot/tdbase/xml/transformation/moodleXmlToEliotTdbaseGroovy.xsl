@@ -40,14 +40,16 @@
         "quiz" : [
           [
             "nombreItems" : <xsl:value-of
-            select="count(question[@type != 'category'])"/>
+            select="count(question[@type != 'category'])"/>,
+            "nombreImages" : <xsl:value-of
+                        select="count(//image/text())"/>
           ]
           <xsl:for-each select="question[@type != 'category']">
           ,
           [
             "titre" : """<xsl:value-of
                 select="name/text/text()"/>""",
-            "attachement" : [<xsl:apply-templates select="image"/>],
+            "attachementInputId" : "<xsl:apply-templates select="image"/>",
             <xsl:apply-templates select="."/>
           ]
         </xsl:for-each>
@@ -65,14 +67,7 @@
     </xsl:template>
 
     <xsl:template match="image">
-        <xsl:if test="not(empty(text()))">
-            <xsl:variable name="nom" select="tokenize(text(),'/')[last()]"/>
-              "nom" : "<xsl:value-of select="$nom"/>"<xsl:if test="not(empty(image_base64/text()))">,
-              "contenu_base64" : """<xsl:value-of select="image_base64/text()"/>"""
-            </xsl:if><!--<xsl:if test="not(empty(following-sibling::image_base64[position()=1]/text()))">,-->
-              <!--"contenu_base64_not_nested" : """<xsl:value-of select="following::image_base64[position()=1]/text()"/>"""-->
-            <!--</xsl:if>-->
-        </xsl:if>
+         <xsl:value-of select="text()"/>
     </xsl:template>
 
     <!--

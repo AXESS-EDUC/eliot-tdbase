@@ -59,4 +59,15 @@ class MoodleQuizTransformer implements ApplicationContextAware {
     def res = gShell.evaluate(reader)
     return res
   }
+
+  /**
+   * Importe dans l'attachement data store les images contenues dans un quiz moodle
+   * @param moodleQuiz  le quiz moodle à importer
+   * @return  la map ayant pour clé l'identifiant de l'image dans le fichier source
+   * et comme valeur un objet encapsulant l'identifiant de l'image dans le data store
+   */
+  Map<String, MoodleQuizImageIds> importImages(InputStream moodleQuiz) {
+    xmlTransformationHelper.processInputWithBase64Handler(moodleQuiz)
+  }
+  
 }

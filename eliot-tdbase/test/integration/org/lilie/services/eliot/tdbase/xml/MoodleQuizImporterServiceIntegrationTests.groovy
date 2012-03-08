@@ -85,7 +85,7 @@ class MoodleQuizImporterServiceIntegrationTests extends GroovyTestCase implement
     Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
     assertFalse(sujet2.hasErrors())
     def sujet1 = Sujet.get(sujet2.id)
-    def input = applicationContext.getResource("classpath:$INPUT").getInputStream()
+    def input = applicationContext.getResource("classpath:$INPUT").getInputStream().bytes
     MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(
             input, sujet1 , sujet1.matiere, sujet1.niveau, personne1
     )
