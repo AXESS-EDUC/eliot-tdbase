@@ -28,30 +28,77 @@
 package org.lilie.services.eliot.tdbase.xml
 
 import groovy.xml.MarkupBuilder
+import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.Sujet
+import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
+import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
 
 /**
- * Service d'export d'un quiz moodle
+ * Service d'export d'un quiz moodle.
  * @author bert poller
  */
 class MoodleQuizExporterService {
 
     /**
-     * Exporter un sujet sous format d'un moodle quiz
+     * Exporter un sujet sous format d'un moodle quiz.
      * @param sujet
      * @return
      */
     String toMoodleQuiz(Sujet sujet) {
-      "<quiz>Hello world</quiz>"
+        new File("/home/bert/questions.json").write(sujet.questions.collect {it.specification}.toString(),"UTF-8")
+        renderQuiz(sujet.questions.collect {it.specificationObject})
     }
 
     /**
-     * Exporter une sous format d'un moodle quiz
+     * Exporter une Question sous format d'un moodle quiz.
      * @param questionSpecification
      * @return
      */
-    String toMoodleQuiz(QuestionSpecification questionSpecification) {
+    String toMoodleQuiz(Question question) {
+        renderQuiz([question.specificationObject])
+    }
 
+    /**
+     * Render the <quiz> tag.
+     * @param questionSpecifications
+     * @return
+     */
+    private String renderQuiz(List<QuestionSpecification> questionSpecifications) {
+        def writer = new StringWriter()
+        def xml = new MarkupBuilder(writer)
+
+        xml.quiz() {
+            questionSpecifications.each {renderQuestion(xml, it)}
+        }
+
+        prependHeader writer.toString()
+    }
+
+    /**
+     * Render the <question> tag for multiple choice questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, MultipleChoiceSpecification specification) {
+        xml.question(type: "multichoice")
+    }
+
+    /**
+     * Render the <question> tag for decimal questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, DecimalSpecification specification) {
+        xml.question(type: "numerical")
+    }
+
+    /**
+     * Prepend a correct header at the beginning of the generated XML document.
+     * @param xml
+     * @return
+     */
+    private String prependHeader(String xml) {
+        "<?xml version=\"1.0\" ?>\n" + xml
     }
 }

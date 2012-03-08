@@ -54,7 +54,7 @@ abstract class QuestionSpecificationService<QS extends QuestionSpecification> {
      * @param specification le string en json
      * @return l'objet
      */
-    def getObjectFromSpecification(String specification) {
+    QS getObjectFromSpecification(String specification) {
         if (!specification) {
             createSpecification(new HashMap())
         } else {
@@ -79,7 +79,7 @@ abstract class QuestionSpecificationService<QS extends QuestionSpecification> {
      * Crée une spécification
      * @return la spécification
      */
-    abstract createSpecification(Map params)
+    abstract QS createSpecification(Map params)
 
     /**
      * Récupère la specification normalisée d'une question à partir d'un objet

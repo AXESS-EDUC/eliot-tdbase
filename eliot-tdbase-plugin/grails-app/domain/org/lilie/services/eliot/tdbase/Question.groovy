@@ -42,161 +42,161 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
  */
 class Question implements Artefact {
 
-  QuestionService questionService
+    QuestionService questionService
 
-  String titre
-  String titreNormalise
+    String titre
+    String titreNormalise
 
-  Date dateCreated
-  Date lastUpdated
+    Date dateCreated
+    Date lastUpdated
 
-  int versionQuestion
-  String specification
-  String specificationNormalise
-  Boolean estAutonome = true
-  Boolean publie
+    int versionQuestion
+    String specification
+    String specificationNormalise
+    Boolean estAutonome = true
+    Boolean publie
 
-  String paternite
+    String paternite
 
-  Personne proprietaire
-  QuestionType type
-  Sujet exercice
+    Personne proprietaire
+    QuestionType type
+    Sujet exercice
 
-  Etablissement etablissement
-  Matiere matiere
-  Niveau niveau
-  CopyrightsType copyrightsType
-  Publication publication
-  SortedSet<QuestionAttachement> questionAttachements
+    Etablissement etablissement
+    Matiere matiere
+    Niveau niveau
+    CopyrightsType copyrightsType
+    Publication publication
+    SortedSet<QuestionAttachement> questionAttachements
 
-  private def specificationObject
+    private def specificationObject
 
-  static hasMany = [
-          questionAttachements: QuestionAttachement
-  ]
+    static hasMany = [
+            questionAttachements: QuestionAttachement
+    ]
 
 
-  static constraints = {
-    specificationNormalise(nullable: true)
-    etablissement(nullable: true)
-    matiere(nullable: true)
-    niveau(nullable: true)
-    publication(nullable: true)
-    paternite(nullable: true)
-    exercice(nullable: true)
-    specification(validator: { val, obj, errors ->
-      def objSpec = obj.getSpecificationObjectForJson(val)
-      if (!objSpec.validate()) {
-        objSpec.errors.allErrors.each {
-          errors.reject(it.code, it.arguments, it.defaultMessage)
-        }
-      }
-    })
-  }
-
-  static mapping = {
-    table('td.question')
-    version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
-    cache(true)
-    questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
-  }
-
-  static transients = [
-          'questionService',
-          'specificationObject',
-          'estEnNotationManuelle',
-          'estInvariant'
-  ]
-
-  /**
-   *
-   * @return true si la question induit une  notation  manuelle
-   */
-  boolean estEnNotationManuelle() {
-    return type.code == QuestionTypeEnum.Open.name() ||
-           type.code == QuestionTypeEnum.FileUpload.name()
-  }
-
-  boolean estComposite() {
-    return type.code == QuestionTypeEnum.Composite.name()
-  }
-
-  /**
-   *
-   * @return la liste des attachements de la question courante
-   */
-  List<Attachement> attachements() {
-    return questionAttachements*.attachement
-  }
-
-  /**
-   *
-   * @return l'objet encapsulant la spécification
-   */
-  def getSpecificationObject() {
-    return getSpecificationObjectForJson(specification)
-  }
-
-  /**
-   *
-   * @return l'objet encapsulant la spécification pour un Json donné
-   */
-  def getSpecificationObjectForJson(String jsonSpec) {
-    def specService = questionService.questionSpecificationServiceForQuestionType(type)
-    specService.getObjectFromSpecification(jsonSpec)
-  }
-
-  /**
-   * @return true si la question est distribuée
-   * @see Artefact
-   */
-  boolean estDistribue() {
-    // verifie en premier si des copies sont attachées à la question
-    def critCopie = Copie.createCriteria()
-    def nbCopies = critCopie.count {
-      eq 'estJetable', false
-      sujet {
-        questionsSequences {
-          eq 'question', this
-        }
-      }
+    static constraints = {
+        specificationNormalise(nullable: true)
+        etablissement(nullable: true)
+        matiere(nullable: true)
+        niveau(nullable: true)
+        publication(nullable: true)
+        paternite(nullable: true)
+        exercice(nullable: true)
+        specification(validator: { val, obj, errors ->
+            def objSpec = obj.getSpecificationObjectForJson(val)
+            if (!objSpec.validate()) {
+                objSpec.errors.allErrors.each {
+                    errors.reject(it.code, it.arguments, it.defaultMessage)
+                }
+            }
+        })
     }
-    if (nbCopies > 0) {
-      return true
+
+    static mapping = {
+        table('td.question')
+        version(false)
+        id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
+        cache(true)
+        questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
     }
-    // sinon verifie qu'une séance ouverte n'est pas attaché à la question
-    def now = new Date()
-    def crit = ModaliteActivite.createCriteria()
-    def nbSeances = crit.count {
-      le 'dateDebut', now
-      ge 'dateFin', now
-      sujet {
-        questionsSequences {
-          eq 'question', this
+
+    static transients = [
+            'questionService',
+            'specificationObject',
+            'estEnNotationManuelle',
+            'estInvariant'
+    ]
+
+    /**
+     *
+     * @return true si la question induit une  notation  manuelle
+     */
+    boolean estEnNotationManuelle() {
+        return type.code == QuestionTypeEnum.Open.name() ||
+                type.code == QuestionTypeEnum.FileUpload.name()
+    }
+
+    boolean estComposite() {
+        return type.code == QuestionTypeEnum.Composite.name()
+    }
+
+    /**
+     *
+     * @return la liste des attachements de la question courante
+     */
+    List<Attachement> attachements() {
+        return questionAttachements*.attachement
+    }
+
+    /**
+     *
+     * @return l'objet encapsulant la spécification
+     */
+    def QuestionSpecification getSpecificationObject() {
+        return getSpecificationObjectForJson(specification)
+    }
+
+    /**
+     *
+     * @return l'objet encapsulant la spécification pour un Json donné
+     */
+    def getSpecificationObjectForJson(String jsonSpec) {
+        def specService = questionService.questionSpecificationServiceForQuestionType(type)
+        specService.getObjectFromSpecification(jsonSpec)
+    }
+
+    /**
+     * @return true si la question est distribuée
+     * @see Artefact
+     */
+    boolean estDistribue() {
+        // verifie en premier si des copies sont attachées à la question
+        def critCopie = Copie.createCriteria()
+        def nbCopies = critCopie.count {
+            eq 'estJetable', false
+            sujet {
+                questionsSequences {
+                    eq 'question', this
+                }
+            }
         }
-      }
+        if (nbCopies > 0) {
+            return true
+        }
+        // sinon verifie qu'une séance ouverte n'est pas attaché à la question
+        def now = new Date()
+        def crit = ModaliteActivite.createCriteria()
+        def nbSeances = crit.count {
+            le 'dateDebut', now
+            ge 'dateFin', now
+            sujet {
+                questionsSequences {
+                    eq 'question', this
+                }
+            }
+        }
+        return nbSeances > 0
     }
-    return nbSeances > 0
-  }
 
-  /**
-   *
-   * @return true si la question est partagée
-   * @see Artefact
-   */
-  boolean estPartage() {
-    return publication != null
-  }
+    /**
+     *
+     * @return true si la question est partagée
+     * @see Artefact
+     */
+    boolean estPartage() {
+        return publication != null
+    }
 
-  /**
-   *
-   * @return  true si la question est invariante
-   * @see Artefact
-   */
-  boolean estInvariant() {
-    return estComposite()
-  }
+    /**
+     *
+     * @return true si la question est invariante
+     * @see Artefact
+     */
+    boolean estInvariant() {
+        return estComposite()
+    }
 
 }
 
