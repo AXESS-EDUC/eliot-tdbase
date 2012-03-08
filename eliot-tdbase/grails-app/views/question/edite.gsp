@@ -29,6 +29,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
+  <r:require modules="eliot-tdbase-ui"/>
   <g:external dir="js/eliot/tiny_mce/tiny_mce.js" plugin="eliot-tice-plugin"/>
   <script type="text/javascript">
     tinyMCE.init({
@@ -53,11 +54,12 @@
     $(document).ready(function () {
       $('#menu-item-contributions').addClass('actif');
       $('#question\\.titre').focus();
-      $("#question\\.titre").blur(function() {
-            if ($("#specifobject\\.libelle").val() == "") {
-              $("#specifobject\\.libelle").val($("#question\\.titre").val());
-            }
-          });
+      $("#question\\.titre").blur(function () {
+        if ($("#specifobject\\.libelle").val() == "") {
+          $("#specifobject\\.libelle").val($("#question\\.titre").val());
+        }
+      });
+      initButtons()
     });
   </r:script>
   <title>TDBase - Edition d'un item</title>
@@ -71,36 +73,64 @@
   <div class="portal-tabs">
 
     <span class="portal-tabs-famille-liens">
-      Exporter | &nbsp;
-      <g:if test="${peutPartagerQuestion}">
-        <g:link action="partage" class="share"
-                id="${question.id}">Partager</g:link>&nbsp; | 
+  <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
+    <g:link action="partage" class="share"
+            id="${question.id}">Partager l'item</g:link>&nbsp; |
+  </g:if>
+  <g:else>
+    Partager l'item&nbsp;| &nbsp;
+  </g:else>
+  </span>
+  </span>
+  <span class="portal-tabs-famille-liens">
+    <button id="${question.id}">Actions</button>
+    <ul id="menu_actions_${question.id}"
+        class="tdbase-menu-actions">
+      <li><g:link action="detail" controller="question${question.type.code}"
+                  id="${question.id}">Aperçu</g:link></li>
+      <li><hr/></li>
+      <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, question)}">
+        <li><g:link action="duplique"
+                    controller="question${question.type.code}"
+                    id="${question.id}">Dupliquer</g:link></li>
       </g:if>
       <g:else>
-        Partager
+        <li>Dupliquer</li>
       </g:else>
-    </span>
-
-    <span class="portal-tabs-famille-liens">
-      <g:if test="${peutSupprimer}">
-        <g:link action="supprime" class="delete"
-                id="${question.id}">Supprimer</g:link>
+      <li><hr/></li>
+      <li>Exporter</li>
+      <li><hr/></li>
+      <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, question)}">
+        <li><g:link action="supprime"
+                    controller="question${question.type.code}"
+                    id="${question.id}">Supprimer</g:link></li>
       </g:if>
       <g:else>
-        Supprimer
+        <li>Supprimer</li>
       </g:else>
-    </span>
+    </ul>
+  </span>
 
   </div>
 </g:if>
 <g:else>
   <div class="portal-tabs">
     <span class="portal-tabs-famille-liens">
-      Exporter | Partager
-    </span>
-    <span class="portal-tabs-famille-liens">
-      Supprimer
-    </span>
+                Partager l'item&nbsp;| &nbsp;
+            </span>
+            </span>
+            <span class="portal-tabs-famille-liens">
+              <button id="${question.id}">Actions</button>
+  <ul id="menu_actions_${question.id}"
+      class="tdbase-menu-actions">
+    <li>Aperçu</li>
+    <li><hr/></li>
+    <li>Dupliquer</li>>
+    <li>Exporter</li>
+    <li><hr/></li>
+    <li>Supprimer</li>
+  </ul>
+  </span>
   </div>
 </g:else>
 <g:hasErrors bean="${question}">
@@ -110,10 +140,10 @@
     </g:eachError>
   </div>
 </g:hasErrors>
-<g:if test="${request.messageCode}">
+<g:if test="${flash.messageCode}">
   <div class="portal-messages">
-    <li class="success"><g:message code="${request.messageCode}"
-                                   args="${request.messageArgs}"
+    <li class="success"><g:message code="${flash.messageCode}"
+                                   args="${flash.messageArgs}"
                                    class="portal-messages success"/></li>
   </div>
 </g:if>
@@ -122,7 +152,8 @@
   <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
 </g:if>
 
-<g:form method="post" controller="question${question.type.code}"  class="question">
+<g:form method="post" controller="question${question.type.code}"
+        class="question">
   <div class="portal-form_container edite" style="width: 69%;">
     <table>
 
@@ -228,7 +259,7 @@
     <g:else>
       <g:actionSubmit value="Enregistrer"
                       action="enregistre"
-                      title="Enregistrer" 
+                      title="Enregistrer"
                       class="button"/>
 
     </g:else>

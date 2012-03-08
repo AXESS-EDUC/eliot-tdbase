@@ -105,9 +105,11 @@
   </div>
 </g:if>
 
-<g:if test="${request.messageCode}">
+<g:if test="${flash.messageCode}">
   <div class="portal-messages">
-    <li class="success"><g:message code="${request.messageCode}"/></li>
+    <li class="success"><g:message code="${flash.messageCode}"
+                                   args="${flash.messageArgs}"
+                                   class="portal-messages success"/></li>
   </div>
 </g:if>
 
