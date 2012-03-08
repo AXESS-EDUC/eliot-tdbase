@@ -102,17 +102,10 @@ class QuestionController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.detail.titre"))
     Question question
     question = Question.get(params.id)
-    boolean peutSupprimerQuestion = false
-    boolean peutPartagerQuestion = false
-    boolean peutModiferQuestion = false
     Personne personne = authenticatedPersonne
     Sujet sujet = null
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId)
-    } else {
-      peutSupprimerQuestion = artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question)
-      peutPartagerQuestion = artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
-      peutModiferQuestion = artefactAutorisationService.utilisateurPeutModifierArtefact(personne,question)
     }
     render(view: '/question/detail', model: [
             liens: breadcrumpsService.liens,
@@ -120,9 +113,8 @@ class QuestionController {
             question: question,
             sujet: sujet,
             afficheLienInserer: true,
-            peutSupprimer: peutSupprimerQuestion,
-            peutModifierQuestion: peutModiferQuestion,
-            peutPartagerQuestion: peutPartagerQuestion
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ])
   }
 

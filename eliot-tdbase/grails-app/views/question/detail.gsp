@@ -31,10 +31,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="jquery"/>
+  <r:require modules="eliot-tdbase-ui"/>
   <r:script>
     $(document).ready(function () {
       $('#menu-item-contributions').addClass('actif');
+      initButtons();
     });
   </r:script>
   <title>TDBase - Détail d'un item</title>
@@ -49,33 +50,58 @@
   <div class="portal-tabs">
 
     <span class="portal-tabs-famille-liens">
-      <g:if test="${peutModifierQuestion}">
+      <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur,question)}">
         <g:link action="edite" class="modify"
                 id="${question.id}">Modifer l'item</g:link>&nbsp; |
       </g:if>
       <g:else>
         Modifier l'item&nbsp;| &nbsp;
       </g:else>
-      <g:if test="${peutPartagerQuestion}">
-        <g:link action="partage" class="share"
-                id="${question.id}">Partager l'item</g:link> |
-      </g:if>
-      <g:else>
-        Partager l'item | &nbsp;
-      </g:else>
-      Exporter l'item | &nbsp;
     </span>
-
+    </span>
     <span class="portal-tabs-famille-liens">
-      <g:if test="${peutSupprimer}">
-        <g:link action="supprime" class="delete"
-                id="${question.id}">Supprimer</g:link>
-      </g:if>
-      <g:else>
-        Supprimer
-      </g:else>
+      <button id="${question.id}">Actions</button>
+              <ul id="menu_actions_${question.id}"
+                  class="tdbase-menu-actions">
+                <g:if test="${sujet}">
+                  <li><g:link action="insert"
+                              controller="question${question.type.code}"
+                              id="${question.id}"
+                              params="[sujetId: sujet?.id]">
+                    Insérer&nbsp;dans&nbsp;le&nbsp;sujet
+                  </g:link>
+                  </li>
+                </g:if>
+                <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, question)}">
+                  <li><g:link action="duplique"
+                              controller="question${question.type.code}"
+                              id="${question.id}">Dupliquer</g:link></li>
+                </g:if>
+                <g:else>
+                  <li>Dupliquer</li>
+                </g:else>
+                <li><hr/></li>
+                <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
+                  <li><g:link action="partage"
+                              controller="question${question.type.code}"
+                              id="${question.id}">Partager</g:link></li>
+                </g:if>
+                <g:else>
+                  <li>Partager</li>
+                </g:else>
+                  <li>Exporter</li>
+                <li><hr/></li>
+                <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, question)}">
+                  <li><g:link action="supprime"
+                              controller="question${question.type.code}"
+                              id="${question.id}">Supprimer</g:link></li>
+                </g:if>
+                <g:else>
+                  <li>Supprimer</li>
+                </g:else>
+      	  	</ul>
     </span>
-
+    
   </div>
 </g:if>
 
