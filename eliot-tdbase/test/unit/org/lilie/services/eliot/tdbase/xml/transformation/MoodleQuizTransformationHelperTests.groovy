@@ -35,15 +35,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext
  *
  * @author franck Silvestre
  */
-class XmlTransformationHelperTests extends GroovyTestCase {
+class MoodleQuizTransformationHelperTests extends GroovyTestCase {
 
   static final INPUT = 'org/lilie/services/eliot/tdbase/xml/exemples/quiz-exemple-20120229-0812.xml'
   static final XSLT_JSON = 'org/lilie/services/eliot/tdbase/xml/transformation/moodleXmlToEliotTdbaseJson.xsl'
 
-  XmlTransformationHelper transformationHelper
+  MoodleQuizTransformationHelper transformationHelper
   ApplicationContext ctx
 
   void setUp() {
+
     ctx = new ClassPathXmlApplicationContext('TestContext.xml')
     transformationHelper = ctx.getBean('transformationHelper')
   }
@@ -60,6 +61,15 @@ class XmlTransformationHelperTests extends GroovyTestCase {
     println reader.text
     assertNotNull reader
   }
+
+  void testProcessInputWithBase64Handler() {
+      def inputStream = ctx.getResource("classpath:$INPUT").getInputStream()
+      def imageIds = transformationHelper.processInputWithBase64Handler(inputStream)
+      assertTrue(imageIds.size() > 0)
+      imageIds.each {
+        println it
+      }
+    }
 
 
 

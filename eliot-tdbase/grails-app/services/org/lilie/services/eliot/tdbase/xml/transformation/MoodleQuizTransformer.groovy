@@ -40,7 +40,7 @@ class MoodleQuizTransformer implements ApplicationContextAware {
 
   private static final XSLT_GROOVY = 'org/lilie/services/eliot/tdbase/xml/transformation/moodleXmlToEliotTdbaseGroovy.xsl'
 
-  XmlTransformationHelper xmlTransformationHelper
+  MoodleQuizTransformationHelper xmlTransformationHelper
   ApplicationContext applicationContext
 
   /**

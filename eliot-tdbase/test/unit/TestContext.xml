@@ -31,8 +31,14 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean class="org.lilie.services.eliot.tdbase.xml.transformation.XmlTransformationHelper"
+    <bean class="org.lilie.services.eliot.tice.AttachementDataStore" id="dataStore"
+            init-method="initFileDataStore">
+        <property name="path" value="/tmp"/>
+    </bean>
+
+    <bean class="org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformationHelper"
           id="transformationHelper">
+        <property name="dataStore" ref="dataStore"/>
     </bean>
     
     <bean class="org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer"
