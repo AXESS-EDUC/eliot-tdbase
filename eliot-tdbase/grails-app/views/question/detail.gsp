@@ -45,6 +45,40 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 
+<g:if test="${sujet == null}">
+  <div class="portal-tabs">
+
+    <span class="portal-tabs-famille-liens">
+      <g:if test="${peutModifierQuestion}">
+        <g:link action="edite" class="modify"
+                id="${question.id}">Modifer l'item</g:link>&nbsp; |
+      </g:if>
+      <g:else>
+        Modifier l'item&nbsp;| &nbsp;
+      </g:else>
+      <g:if test="${peutPartagerQuestion}">
+        <g:link action="partage" class="share"
+                id="${question.id}">Partager l'item</g:link> |
+      </g:if>
+      <g:else>
+        Partager l'item | &nbsp;
+      </g:else>
+      Exporter l'item | &nbsp;
+    </span>
+
+    <span class="portal-tabs-famille-liens">
+      <g:if test="${peutSupprimer}">
+        <g:link action="supprime" class="delete"
+                id="${question.id}">Supprimer</g:link>
+      </g:if>
+      <g:else>
+        Supprimer
+      </g:else>
+    </span>
+
+  </div>
+</g:if>
+
 <g:if test="${request.messageCode}">
   <div class="portal-messages">
     <li class="success"><g:message code="${request.messageCode}"/></li>
@@ -57,8 +91,8 @@
 
 
 <div class="portal-form_container edite apercu">
-      <g:render template="/question/detail_commun"
-                          model="[question: question]"/>
+  <g:render template="/question/detail_commun"
+            model="[question: question]"/>
 
 </div>
 
@@ -68,7 +102,7 @@
           params="${lienRetour.params}">Retour</g:link>&nbsp;
   <g:if test="${sujet && afficheLienInserer}">|
     <g:link action="insert"
-            title="Insérer dans le sujet" id="${question.id}" 
+            title="Insérer dans le sujet" id="${question.id}"
             params="[sujetId: sujet?.id]">
       Insérer dans le sujet &nbsp;
     </g:link>

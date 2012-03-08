@@ -72,7 +72,7 @@
 
     <span class="portal-tabs-famille-liens">
       Exporter | &nbsp;
-      <g:if test="${peutPartagerQuestion && !question.estPartage()}">
+      <g:if test="${peutPartagerQuestion}">
         <g:link action="partage" class="share"
                 id="${question.id}">Partager</g:link>&nbsp; | 
       </g:if>

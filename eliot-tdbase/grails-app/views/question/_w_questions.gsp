@@ -34,7 +34,7 @@
   <p class="nb_result">${items.totalCount} item(s)</p>
   <ul>
     <g:each in="${items}" var="item">
-      <li><strong><g:link controller="question" action="edite" id="${item.id}">${item.type.nom} - ${item.titre}</g:link></strong><br/>
+      <li><strong><g:link controller="question" action="detail" id="${item.id}">${item.type.nom} - ${item.titre}</g:link></strong><br/>
         <g:if test="${item.niveau?.libelleLong}"><strong>» Niveau : </strong>${item.niveau?.libelleLong} </g:if>
         <g:if test="${item.matiere?.libelleLong}"><strong>» Matière : </strong>${item.matiere?.libelleLong} </g:if>
       </li>

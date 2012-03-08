@@ -102,16 +102,27 @@ class QuestionController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.detail.titre"))
     Question question
     question = Question.get(params.id)
+    boolean peutSupprimerQuestion = false
+    boolean peutPartagerQuestion = false
+    boolean peutModiferQuestion = false
+    Personne personne = authenticatedPersonne
     Sujet sujet = null
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId)
+    } else {
+      peutSupprimerQuestion = artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, question)
+      peutPartagerQuestion = artefactAutorisationService.utilisateurPeutPartageArtefact(personne, question)
+      peutModiferQuestion = artefactAutorisationService.utilisateurPeutModifierArtefact(personne,question)
     }
     render(view: '/question/detail', model: [
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             question: question,
             sujet: sujet,
-            afficheLienInserer: true
+            afficheLienInserer: true,
+            peutSupprimer: peutSupprimerQuestion,
+            peutModifierQuestion: peutModiferQuestion,
+            peutPartagerQuestion: peutPartagerQuestion
     ])
   }
 
@@ -124,8 +135,8 @@ class QuestionController {
     questionService.supprimeQuestion(question, personne)
     def lien = breadcrumpsService.lienRetour()
     redirect(action: lien.action,
-            controller: lien.controller,
-            params: lien.params)
+             controller: lien.controller,
+             params: lien.params)
 
   }
 
@@ -327,22 +338,22 @@ class QuestionController {
 
   def mesItems() {
     params.max = Math.min(params.max ? params.int('max') : 5, 100)
-        breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
-        Personne personne = authenticatedPersonne
-        def questions = questionService.findQuestionsForProprietaire(
-                personne,
-                params
-        )
-        boolean afficheLiensModifier = true
-        def model = [
-                liens: breadcrumpsService.liens,
-                afficheFormulaire: false,
-                questions: questions,
-                afficheLiensModifier: afficheLiensModifier,
-                artefactHelper: artefactAutorisationService,
-                utilisateur: personne
-        ]
-        render(view: "recherche", model:  model)
+    breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
+    Personne personne = authenticatedPersonne
+    def questions = questionService.findQuestionsForProprietaire(
+            personne,
+            params
+    )
+    boolean afficheLiensModifier = true
+    def model = [
+            liens: breadcrumpsService.liens,
+            afficheFormulaire: false,
+            questions: questions,
+            afficheLiensModifier: afficheLiensModifier,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
+    ]
+    render(view: "recherche", model: model)
   }
 
   /**
