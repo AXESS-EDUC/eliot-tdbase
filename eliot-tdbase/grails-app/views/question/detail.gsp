@@ -128,10 +128,10 @@
   <g:link action="${lienRetour.action}" class="button"
           controller="${lienRetour.controller}"
           params="${lienRetour.params}">Retour</g:link>&nbsp;
-  <g:if test="${sujet && afficheLienInserer}">|
+  <g:if test="${sujet && !flash.messageCode}">|
     <g:link action="insert"
             title="Insérer dans le sujet" id="${question.id}"
-            params="[sujetId: sujet?.id]">
+            params="[sujetId: sujet?.id]" class="button">
       Insérer dans le sujet &nbsp;
     </g:link>
   </g:if>

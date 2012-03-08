@@ -108,7 +108,6 @@ class QuestionController {
             lienRetour: breadcrumpsService.lienRetour(),
             question: question,
             sujet: sujet,
-            afficheLienInserer: true,
             artefactHelper: artefactAutorisationService,
             utilisateur: personne
     ])
