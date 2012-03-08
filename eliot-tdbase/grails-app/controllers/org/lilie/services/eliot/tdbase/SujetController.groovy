@@ -189,7 +189,10 @@ class SujetController {
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             copie: copie,
-            afficheCorrection: false
+            afficheCorrection: false,
+            sujet: sujet,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
     ]
   }
 
@@ -222,7 +225,10 @@ class SujetController {
             liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             copie: copie,
-            afficheCorrection: true
+            afficheCorrection: true,
+            sujet: copie.sujet,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: eleve
     ])
   }
 
