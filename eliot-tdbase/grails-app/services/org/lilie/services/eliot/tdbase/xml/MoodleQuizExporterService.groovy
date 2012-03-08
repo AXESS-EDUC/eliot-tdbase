@@ -31,8 +31,22 @@ import groovy.xml.MarkupBuilder
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.Sujet
+import org.lilie.services.eliot.tdbase.impl.associate.AssociateSpecification
+import org.lilie.services.eliot.tdbase.impl.booleanmatch.BooleanMatchSpecification
+import org.lilie.services.eliot.tdbase.impl.composite.CompositeSpecification
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
+import org.lilie.services.eliot.tdbase.impl.document.DocumentSpecification
+import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpecification
+import org.lilie.services.eliot.tdbase.impl.fileupload.FileUploadSpecification
+import org.lilie.services.eliot.tdbase.impl.fillgap.FillGapSpecification
+import org.lilie.services.eliot.tdbase.impl.fillgraphics.FillGraphicsSpecification
+import org.lilie.services.eliot.tdbase.impl.graphicmatch.GraphicMatchSpecification
+import org.lilie.services.eliot.tdbase.impl.integer.IntegerSpecification
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
+import org.lilie.services.eliot.tdbase.impl.open.OpenSpecification
+import org.lilie.services.eliot.tdbase.impl.order.OrderSpecification
+import org.lilie.services.eliot.tdbase.impl.slider.SliderSpecification
+import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
 
 /**
  * Service d'export d'un quiz moodle.
@@ -46,7 +60,7 @@ class MoodleQuizExporterService {
      * @return
      */
     String toMoodleQuiz(Sujet sujet) {
-        new File("/home/bert/questions.json").write(sujet.questions.collect {it.specification}.toString(),"UTF-8")
+        new File("/home/bert/questions.json").write(sujet.questions.collect {it.specification}.toString(), "UTF-8")
         renderQuiz(sujet.questions.collect {it.specificationObject})
     }
 
@@ -76,12 +90,30 @@ class MoodleQuizExporterService {
     }
 
     /**
-     * Render the <question> tag for multiple choice questions.
+     * Render the <question> tag for associate questions.
      * @param xml
      * @param theQuestion
      */
-    private void renderQuestion(MarkupBuilder xml, MultipleChoiceSpecification specification) {
-        xml.question(type: "multichoice")
+    private void renderQuestion(MarkupBuilder xml, AssociateSpecification specification) {
+        xml.question(type: "to_be_implemented_associate")
+    }
+
+    /**
+     * Render the <question> tag for boolean questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, BooleanMatchSpecification specification) {
+        xml.question(type: "to_be_implemented_booleanMatch")
+    }
+
+    /**
+     * Render the <question> tag for composite questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, CompositeSpecification specification) {
+        xml.question(type: "to_be_implemented_compositeQuestion")
     }
 
     /**
@@ -90,7 +122,115 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, DecimalSpecification specification) {
-        xml.question(type: "numerical")
+        xml.question(type: "to_be_implemented_decimal")
+    }
+
+    /**
+     * Render the <question> tag for documentation questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, DocumentSpecification specification) {
+        xml.question(type: "to_be_implemented_documentSpecification")
+    }
+
+    /**
+     * Render the <question> tag for exclusive choice questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, ExclusiveChoiceSpecification specification) {
+        xml.question(type: "to_be_implemented_exclusiveChoiceSpecification")
+    }
+
+    /**
+     * Render the <question> tag for file upload questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, FileUploadSpecification specification) {
+        xml.question(type: "to_be_implemented_fileUploadSpecification")
+    }
+
+    /**
+     * Render the <question> tag for fill gap  questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, FillGapSpecification specification) {
+        xml.question(type: "to_be_implemented_fill gap")
+    }
+
+    /**
+     * Render the <question> tag for fill graphics questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, FillGraphicsSpecification specification) {
+        xml.question(type: "to_be_implemented_fill graphics")
+    }
+
+    /**
+     * Render the <question> tag for graphic match questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, GraphicMatchSpecification specification) {
+        xml.question(type: "to_be_implemented_graphic match")
+    }
+
+    /**
+     * Render the <question> tag for Integer questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, IntegerSpecification specification) {
+        xml.question(type: "to_be_implemented integer")
+    }
+
+    /**
+     * Render the <question> tag for multiple choice questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, MultipleChoiceSpecification specification) {
+        xml.question(type: "to_be_implemented multiple choice")
+    }
+
+    /**
+     * Render the <question> tag for open questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, OpenSpecification specification) {
+        xml.question(type: "to_be_implemented open question")
+    }
+
+    /**
+     * Render the <question> tag for order questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, OrderSpecification specification) {
+        xml.question(type: "to_be_implemented order question")
+    }
+
+    /**
+     * Render the <question> tag for slider questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, SliderSpecification specification) {
+        xml.question(type: "to_be_implemented slider")
+    }
+
+    /**
+     * Render the <question> tag for statement questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, StatementSpecification specification) {
+        xml.question(type: "to_be_implemented statement")
     }
 
     /**
