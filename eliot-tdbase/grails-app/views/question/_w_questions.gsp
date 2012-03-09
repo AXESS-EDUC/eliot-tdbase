@@ -28,18 +28,22 @@
 
 
 
-<div class="widget">
-  <h2><g:link action="mesItems" controller="question">${titre}</g:link></h2>
+<div class="widget items">
+  <h1><g:link action="mesItems" controller="question">${titre}</g:link></h1>
   <g:if test="${items}">
   <p class="nb_result">${items.totalCount} item(s)</p>
-  <ul>
-    <g:each in="${items}" var="item">
-      <li><strong><g:link controller="question" action="detail" id="${item.id}">${item.type.nom} - ${item.titre}</g:link></strong><br/>
-        <g:if test="${item.niveau?.libelleLong}"><strong>» Niveau : </strong>${item.niveau?.libelleLong} </g:if>
-        <g:if test="${item.matiere?.libelleLong}"><strong>» Matière : </strong>${item.matiere?.libelleLong} </g:if>
-      </li>
-    </g:each>
-  </ul>
+  <div class="innertube">
+	  <ul>
+	    <g:each in="${items}" status="i" var="item">
+	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}"><g:link controller="question" title="${item.titre}" action="detail" id="${item.id}">${item.titre}</g:link><br/>
+	      	<em>(${item.type.nom})</em><br/>
+	        <g:if test="${item.niveau?.libelleLong}"><strong>» Niveau : </strong>${item.niveau?.libelleLong} </g:if>
+	        <g:if test="${item.matiere?.libelleLong}"><strong>» Matière : </strong>${item.matiere?.libelleLong} </g:if>
+	      </li>
+	    </g:each>
+	  </ul>
+	  
+  </div>
   </g:if>
-     <g:link controller="question" action="nouvelle">Créer un item</g:link>
+	     <g:link controller="question" class="add" action="nouvelle">Créer un item</g:link>
  </div>

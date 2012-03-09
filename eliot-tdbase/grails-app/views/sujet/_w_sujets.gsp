@@ -27,19 +27,21 @@
   --}%
 
 
-
-<div class="widget">
-  <h2><g:link action="mesSujets" controller="sujet">${titre}</g:link></h2>
+<div class="widget sujets">
+  <h1><g:link action="mesSujets" controller="sujet">${titre}</g:link></h1>
   <g:if test="${sujets}">
   <p class="nb_result">${sujets.totalCount} sujet(s)</p>
-  <ul>
-    <g:each in="${sujets}" var="sujetInstance">
-      <li><strong><g:link controller="sujet" action="teste" id="${sujetInstance.id}">${sujetInstance.titre}</g:link></strong><br/>
-        <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>
-        <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière : </strong>${sujetInstance.matiere?.libelleLong} </g:if>
-      </li>
-    </g:each>
-  </ul>
-  </g:if>
-     <g:link controller="sujet" action="nouveau">Créer un sujet</g:link>
+  <div class="innertube">
+	  <ul>
+	    <g:each in="${sujets}" status="i" var="sujetInstance">
+	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}"><g:link controller="sujet" title="${sujetInstance.titre}" action="teste" id="${sujetInstance.id}">${sujetInstance.titre}</g:link><br/>
+	        <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>
+	        <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière : </strong>${sujetInstance.matiere?.libelleLong} </g:if>
+	      </li>
+	    </g:each>
+	  </ul>
+	  
+	</div>
+	</g:if>
+	     <g:link controller="sujet" class="add" action="nouveau">Créer un sujet</g:link>
  </div>

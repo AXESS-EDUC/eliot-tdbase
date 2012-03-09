@@ -26,19 +26,22 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<div class="widget">
-  <h2><g:link action="liste" controller="seance">${titre}</g:link></h2>
+
+<div class="widget sceances">
+  <h1><g:link action="liste" controller="seance">${titre}</g:link></h1>
   <g:if test="${seances}">
   <p class="nb_result">${seances.totalCount} séance(s)</p>
-  <ul>
-    <g:each in="${seances}" var="seance">
-      <li><strong><g:link controller="seance" action="edite" id="${seance.id}">${seance.groupeLibelle} - ${seance.sujet.titre}</g:link></strong><br/>
-        <strong> » Fin : </strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
-      </li>
-    </g:each>
-  </ul>
-  </g:if>
-  <g:else>
-    Aucune séance en cours.
-  </g:else>
+  <div class="innertube">
+	  <ul>
+	    <g:each in="${seances}"  status="i" var="seance">
+	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}"><g:link title="${seance.sujet.titre}" controller="seance" action="edite" id="${seance.id}">${seance.groupeLibelle} - ${seance.sujet.titre}</g:link><br/>
+	        <strong> » Fin : </strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
+	      </li>
+	    </g:each>
+	  </ul>
+	  </g:if>
+	  <g:else>
+	    Aucune séance en cours.
+	  </g:else>
+	</div>
 </div>
