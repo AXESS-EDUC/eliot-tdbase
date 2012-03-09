@@ -30,7 +30,11 @@
 <div class="widget sceances">
   <h1><g:link action="listeSeances" controller="activite">${titre}</g:link></h1>
   <g:if test="${seances}">
-  <p class="nb_result">${seances.totalCount} séance(s)</p>
+  <p class="nb_result">${seances.totalCount} séance(s)
+  	<g:if test="${seances.totalCount>5}">
+  		- <g:link action="listeSeances" controller="activite">Voir toutes</g:link>
+  	</g:if>
+  </p>
   <div class="innertube">
 	  <ul>
 	    <g:each in="${seances}" status="i" var="seance">

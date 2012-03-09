@@ -31,7 +31,11 @@
 <div class="widget items">
   <h1><g:link action="mesItems" controller="question">${titre}</g:link></h1>
   <g:if test="${items}">
-  <p class="nb_result">${items.totalCount} item(s)</p>
+  <p class="nb_result">${items.totalCount} item(s)
+  	<g:if test="${items.totalCount>5}">
+  		- <g:link action="mesItems" controller="question">Voir tous</g:link>
+  	</g:if>
+  </p>
   <div class="innertube">
 	  <ul>
 	    <g:each in="${items}" status="i" var="item">
