@@ -36,7 +36,14 @@
 	  <ul>
 	    <g:each in="${copies}" status="i" var="copie">
 	      <g:set var="seance" value="${copie.modaliteActivite}"/>
-	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}"><g:link controller="activite" action="visualiseCopie" id="${copie.id}">${seance.matiere?.libelleLong} - ${seance.sujet.titre}</g:link><br/>
+	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}"><g:link controller="activite" action="visualiseCopie" id="${copie.id}">
+	      	<g:if test="{seance.matiere?.libelleLong} == ''">
+	      		 
+	      	</g:if>
+	      	<g:else>
+	      	     ${seance.matiere?.libelleLong} -
+	      	</g:else>
+	      	${seance.sujet.titre}</g:link><br/>
 	        <strong> » Note : </strong><b><g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" /></b>
 	        		  		/ <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
 	      </li>
@@ -46,5 +53,5 @@
 	  <g:else>
 	    Aucun résultat n'est publié.
 	  </g:else>
-	</div>
+	
 </div>

@@ -1125,21 +1125,27 @@ Style for frontpage Widget
 	.widget h1{
 		margin: 0;
 		background-color:whitesmoke ;/*#f0f2f2*/
-		padding: 10px 5px 2px 40px;
+		padding: 10px 5px 2px 15px;
 	}
-		.widget.sceances h1{background:whitesmoke url("../../images/eliot/picto-sceance.png") no-repeat 10px 12px;}
-		.widget.sujets h1{background:whitesmoke url("../../images/eliot/picto-sujet.png") no-repeat 10px 11px;}
-		.widget.items h1{background:whitesmoke url("../../images/eliot/picto-question.png") no-repeat 10px 10px;}
+		.widget.sceances h1{background:whitesmoke url("../../images/eliot/picto-sceance.png") no-repeat 95% 12px;}
+		.widget.sujets h1{background:whitesmoke url("../../images/eliot/picto-sujet.png") no-repeat 95% 10px;}
+		.widget.items h1{background:whitesmoke url("../../images/eliot/picto-question.png") no-repeat 95% 10px;}
+		.widget.resultats h1{background:whitesmoke url("../../images/eliot/picto-result.png") no-repeat 95% 12px;}
 		
 	.widget .nb_result{
 		display: block;
 		padding-bottom: 8px;
-		text-indent: 40px;
-		margin: 0 0 10px;
+		text-indent: 15px;
+		margin: -2px 0 12px;
 		font-style: italic;
 		color: #666;
 		background-color: whitesmoke;
 		border-bottom: 1px solid #ddd;
+	}
+	.widget .none{
+		padding: 8px 10px 8px 15px;
+		font-style: italic;
+		color: #999;
 	}
 
 .widget .innertube{
@@ -1153,7 +1159,7 @@ Style for frontpage Widget
 			list-style-type: none;
 			margin-left: 0;
 			border-top: 1px dotted #ddd;
-			padding: 10px 10px 10px 15px;
+			padding: 8px 10px 8px 15px;
 			line-height: 130%;
 		}
 			.widget ul li.odd{background-color: #fcfcfc;}
