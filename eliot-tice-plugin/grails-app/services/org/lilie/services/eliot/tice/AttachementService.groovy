@@ -39,6 +39,7 @@ import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataReco
 import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataStore
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.transaction.annotation.Transactional
+import groovy.transform.ToString
 
 /**
  * Classe fournissant le service de gestion de breadcrumps
@@ -53,7 +54,6 @@ class AttachementService {
    * Créer un objet de type Attachement à partir d'une requête HTTP
    * encapsulant la pièce jointe
    * @param fichier l'objet fichier provenant de la requête
-   * @param serviceEliotEnum le service eliot concerné
    * @param proprietaire le proprietaire du fichier
    * @param config le config object
    * @return l'objet Attachment
@@ -90,6 +90,32 @@ class AttachementService {
     attachement.save()
     return attachement
   }
+
+  /**
+     * Créer un objet de type Attachement à partir d'un objet ImageIds
+     * @param fichier l'objet de type ImageIds
+     * @param proprietaire le proprietaire du fichier
+     * @param config le config object
+     * @return l'objet Attachment
+     */
+    @Transactional
+    Attachement createAttachementForImageIds(
+            ImageIds fichier) {
+
+      // par defaut un nouvel attachement est marque a supprimer
+      // c'est à la création d'un lien vers un item qu'il faut le
+      // considérer comme attaché et donc comme non à supprimer
+      Attachement attachement = new Attachement(
+              taille: fichier.size,
+              typeMime: fichier.contentType,
+              nom: fichier.fileName,
+              nomFichierOriginal: fichier.fileName,
+              aSupprimer: true
+      )
+      attachement.chemin = fichier.dataSoreId
+      attachement.save()
+      return attachement
+    }
 
 
   /**
@@ -131,4 +157,18 @@ class AttachementService {
       reader?.dispose()
     }
   }
+}
+
+/**
+ * Class représentant une image déjà chargée dans le DataStore (une image
+ * importée par exemple)
+ */
+@ToString
+class ImageIds {
+  String sourceId
+  String fileName
+  String dataSoreId
+  String contentType
+  Long size
+
 }

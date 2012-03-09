@@ -29,10 +29,11 @@
 package org.lilie.services.eliot.tdbase.xml
 
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer
+import org.lilie.services.eliot.tice.ImageIds
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tdbase.*
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.lilie.services.eliot.tdbase.*
 
 /**
  * Service d'import d'un quiz moodle
@@ -45,6 +46,7 @@ class MoodleQuizImporterService {
   MoodleQuizTransformer moodleQuizTransformer
   QuestionService questionService
   ArtefactAutorisationService artefactAutorisationService
+  QuestionAttachementService questionAttachementService
 
   /**
    * Import les items issus d'un fichier XML moodle dans un sujet donné
@@ -54,25 +56,39 @@ class MoodleQuizImporterService {
    * @return le rapport d'import
    */
   MoodleQuizImportReport importMoodleQuiz(
-          InputStream xmlMoodle,
+          byte[] xmlMoodle,
           Sujet sujet,
           Matiere matiere,
           Niveau niveau,
           Personne importeur) {
 
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet))
+
     //
     // la transformation
     //
     Map map
     try {
-      map = moodleQuizTransformer.moodleQuizTransform(xmlMoodle)
+      def bais = new ByteArrayInputStream(xmlMoodle)
+      map = moodleQuizTransformer.moodleQuizTransform(bais)
     } catch (Exception e) {
       log.error(e.message)
       throw new Exception("xml.import.moodle.echec")
     }
     MoodleQuizImportReport report = new MoodleQuizImportReport()
     report.nombreItemsTraites = map.quiz[0].nombreItems
+    Map<String, ImageIds> images = [:]
+    if (map.quiz[0].nombreImages > 0) {
+      // il faut importer les images
+      // le flux étant fermé, il faut en crée un nouveau
+      try {
+        ByteArrayInputStream bais = new ByteArrayInputStream(xmlMoodle)
+        images = moodleQuizTransformer.importImages(bais)
+      } catch (Exception e1) {
+        log.error(e1.message)
+      }
+    }
+
     //
     // Traitement des items
     //
@@ -122,7 +138,16 @@ class MoodleQuizImporterService {
         report.itemsNonImportes << importItem
         continue
       }
-
+      if (item.attachementInputId) {
+        try {
+          questionAttachementService.createAttachementForQuestionFromImageIds(
+                images.get(item.attachementInputId),
+                question
+          )
+        } catch (Exception e2) {
+          log.error(e2.message)
+        }
+      }
       report.itemsImportes << importItem
     }
     return report

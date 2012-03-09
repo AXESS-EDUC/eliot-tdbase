@@ -31,18 +31,6 @@
 
 <g:set var="sujet" value="${copie.sujet}"/>
 <form method="post" class="edite">
-  <div class="top portal-tabs">
-    <div class="form_actions">
-      <g:link action="${lienRetour.action}"
-              controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link>&nbsp;
-      |&nbsp;
-      <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
-                      class="button"
-                      title="Rendre la copie"/>
-    </div>
-  </div>
-
   <g:hiddenField name="copie.id" value="${copie.id}"/>
 
   <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>

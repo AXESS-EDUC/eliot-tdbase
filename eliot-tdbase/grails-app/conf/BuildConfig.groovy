@@ -82,6 +82,8 @@ grails.project.dependency.resolution = {
       excludes "groovy-all"
     }
 
+    compile ":mail:1.0"
+
     build(":tomcat:$grailsVersion",
           ":release:1.0.0")
   }

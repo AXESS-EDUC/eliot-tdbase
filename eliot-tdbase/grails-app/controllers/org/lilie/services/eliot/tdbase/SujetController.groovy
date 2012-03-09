@@ -191,7 +191,10 @@ class SujetController {
                 liens: breadcrumpsService.liens,
                 lienRetour: breadcrumpsService.lienRetour(),
                 copie: copie,
-                afficheCorrection: false
+                afficheCorrection: false,
+                sujet: sujet,
+                artefactHelper: artefactAutorisationService,
+                utilisateur: personne
         ]
     }
 
@@ -224,7 +227,10 @@ class SujetController {
                 liens: breadcrumpsService.liens,
                 lienRetour: breadcrumpsService.lienRetour(),
                 copie: copie,
-                afficheCorrection: true
+                afficheCorrection: true,
+                sujet: copie.sujet,
+                artefactHelper: artefactAutorisationService,
+                utilisateur: eleve
         ])
     }
 
@@ -480,7 +486,7 @@ class SujetController {
         if (importSuccess) {
             try {
                 MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(
-                        fichier.inputStream,
+                        fichier.bytes,
                         sujet,
                         matiere,
                         niveau,
@@ -505,7 +511,6 @@ class SujetController {
     def rapportImportMoodleXML() {
         breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.rapportmoodlexml.titre"))
     }
-
 
 }
 

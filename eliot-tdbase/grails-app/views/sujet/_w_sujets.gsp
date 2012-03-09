@@ -34,7 +34,7 @@
   <p class="nb_result">${sujets.totalCount} sujet(s)</p>
   <ul>
     <g:each in="${sujets}" var="sujetInstance">
-      <li><strong><g:link controller="sujet" action="edite" id="${sujetInstance.id}">${sujetInstance.titre}</g:link></strong><br/>
+      <li><strong><g:link controller="sujet" action="teste" id="${sujetInstance.id}">${sujetInstance.titre}</g:link></strong><br/>
         <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>
         <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière : </strong>${sujetInstance.matiere?.libelleLong} </g:if>
       </li>

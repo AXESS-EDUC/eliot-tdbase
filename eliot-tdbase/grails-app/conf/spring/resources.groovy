@@ -2,7 +2,7 @@ import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 import org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar
 import org.lilie.services.eliot.tice.migrations.LiquibaseWrapper
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer
-import org.lilie.services.eliot.tdbase.xml.transformation.XmlTransformationHelper
+import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformationHelper
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -51,7 +51,9 @@ beans = {
   }
 
   // bean pour l'import moodle xml
-  xmlTransformationHelper(XmlTransformationHelper)
+  xmlTransformationHelper(MoodleQuizTransformationHelper) {
+    dataStore = ref("dataStore")
+  }
 
   moodleQuizTransformer(MoodleQuizTransformer) {
     xmlTransformationHelper = ref("xmlTransformationHelper")

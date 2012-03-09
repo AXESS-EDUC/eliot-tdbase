@@ -390,10 +390,18 @@ class SujetService {
             sujet: leSujet,
             rang: leSujet.questionsSequences?.size()
     )
-
     leSujet.addToQuestionsSequences(sequence)
+    sequence.save()
+    if (sequence.hasErrors()) {
+      sequence.errors.allErrors.each {
+        leSujet.errors.reject(it.code, it.arguments, it.defaultMessage)
+      }
+      leSujet.removeFromQuestionsSequences(sequence)
+      return leSujet
+    }
+
     leSujet.lastUpdated = new Date()
-    sequence.save(failOnError: true)
+
     leSujet.save(flush: true)
     if (rang != null && rang < leSujet.questionsSequences.size() - 1) {
       // il faut insérer au rang correct

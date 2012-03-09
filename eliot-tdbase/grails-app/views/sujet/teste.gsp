@@ -31,9 +31,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
+  <r:require module="eliot-tdbase-ui"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-sujets').addClass('actif');
+      initButtons();
     });
   </r:script>
   <title>TDBase - Teste d'un sujet</title>
@@ -42,7 +44,54 @@
 <body>
 
   <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
-
+<div class="portal-tabs">
+    <span class="portal-tabs-famille-liens">
+      <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujet)}">
+      <g:link action="edite" controller="sujet" class="modify"
+              id="${sujet.id}">Modifier le sujet</g:link> |
+      <g:link action="editeProprietes" controller="sujet" class="modify"
+              id="${sujet.id}">Modifier les propriétés du sujet</g:link>
+      </g:if>
+      <g:else>
+        <span class="add">Modifier le sujet</span> |
+        <span class="modify">Modifier les propriétés du sujet</span>
+      </g:else>
+    </span>
+    <span class="portal-tabs-famille-liens">
+      <button id="toolbar_${sujet.id}">Actions</button>
+      <ul id="menu_actions_toolbar_${sujet.id}"
+          class="tdbase-menu-actions">
+        <li><g:link action="ajouteSeance" id="${sujet.id}">
+          Nouvelle&nbsp;séance
+        </g:link>
+        </li>
+        <li><hr/></li>
+        <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
+          <li><g:link action="duplique"
+                      id="${sujet.id}">Dupliquer</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Dupliquer</li>
+        </g:else>
+        <li><hr/></li>
+        <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
+          <li><g:link action="partage"
+                      id="${sujet.id}">Partager</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Partager</li>
+        </g:else>
+        <li><hr/></li>
+        <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
+          <li><g:link action="supprime"
+                      id="${sujet.id}">Supprimer</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Supprimer</li>
+        </g:else>
+      </ul>
+    </span>
+  </div>
   <g:hasErrors bean="${copie}">
     <div class="portal-messages">
       <g:eachError>
