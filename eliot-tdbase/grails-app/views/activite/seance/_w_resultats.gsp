@@ -51,7 +51,8 @@
 	  </ul>
 	  </g:if>
 	  <g:else>
-	    Aucun résultat n'est publié.
+		  <p class="nb_result">${copies.totalCount} résultat(s)</p>
+		  <p class="none">Aucun résultat n'est publié.</p>
 	  </g:else>
 	
 </div>

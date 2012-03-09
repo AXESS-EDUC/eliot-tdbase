@@ -43,7 +43,8 @@
 	  </ul>
 	  </g:if>
 	  <g:else>
-	    Aucune séance en cours.
+	  	<p class="nb_result">${seances.totalCount} séance(s)</p>
+	  	<p class="none">Aucune séance en cours.</p>
 	  </g:else>
 	</div>
 </div>
