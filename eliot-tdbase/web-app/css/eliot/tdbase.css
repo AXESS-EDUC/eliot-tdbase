@@ -1111,8 +1111,8 @@ Style for frontpage Widget
 	overflow: hidden;
 	padding: 20px 0 100px;	
 }
-	#widgets>p{margin: 0 100px 30px 20px;}
-	
+	#widgets>p{margin: 0 200px 25px 20px;line-height: 130%;}
+	#widgets>p>strong{font-size: 130%;margin-bottom:10px;display: block;}
 .widget{
 	position: relative;
 	display: block;
@@ -1135,10 +1135,11 @@ Style for frontpage Widget
 		display: block;
 		padding-bottom: 8px;
 		text-indent: 40px;
-		margin: 0;
+		margin: 0 0 10px;
 		font-style: italic;
 		color: #666;
 		background-color: whitesmoke;
+		border-bottom: 1px solid #ddd;
 	}
 
 .widget .innertube{
@@ -1158,6 +1159,7 @@ Style for frontpage Widget
 			.widget ul li.odd{background-color: #fcfcfc;}
 			.widget ul li:first-child{border: none;}
 			.widget ul li em{color: #999;font-size:90%;}
+			.widget.sceances ul li em{color: #999;font-size: 90%;font-style: normal;}
 
 .widget a.add{
 	position: absolute;
