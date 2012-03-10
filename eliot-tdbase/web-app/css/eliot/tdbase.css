@@ -835,6 +835,17 @@ Style for the edition of a document or category (Content)
     color: #ec8e0c !important;
     background: whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
 }
+.ui-button-text{
+	padding-top: 2px!important;
+	padding-bottom: 3px!important;
+}
+button.ui-button-icons-only{width: 3.2em;}
+
+.ui-button-icon-primary,
+.ui-icon ui-icon-gear{left: .3em!important;}
+
+.ui-button-icon-secondary, 
+.ui-icon ui-icon-triangle-1-s{right: .3em!important;}
 
 .ui-button:hover, .button:hover, .ui-button.active {
     border: 1px solid #fbcb09;
