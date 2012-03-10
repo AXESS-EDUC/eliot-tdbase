@@ -117,7 +117,7 @@
   </g:if>
   <g:else>
      <div class="portal_pagination">
-      Aucune copie à visualiser
+      <p class="nb_result">Aucune copie à visualiser</p>
     </div>
   </g:else>
 

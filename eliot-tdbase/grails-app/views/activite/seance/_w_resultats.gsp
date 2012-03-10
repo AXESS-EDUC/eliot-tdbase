@@ -33,7 +33,7 @@
   <g:if test="${copies}">
   <p class="nb_result">${copies.totalCount} résultat(s)
   	<g:if test="${copies.totalCount>5}">
-  		- <g:link action="listeResultats" controller="activite">Voir tous</g:link>
+  		/ <g:link action="listeResultats" controller="activite">Voir tous</g:link>
   	</g:if>
   </p>
   <div class="innertube">

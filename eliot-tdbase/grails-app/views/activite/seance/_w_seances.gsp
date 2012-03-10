@@ -32,7 +32,7 @@
   <g:if test="${seances}">
   <p class="nb_result">${seances.totalCount} séance(s)
   	<g:if test="${seances.totalCount>5}">
-  		- <g:link action="listeSeances" controller="activite">Voir toutes</g:link>
+  		/ <g:link action="listeSeances" controller="activite">Voir toutes</g:link>
   	</g:if>
   </p>
   <div class="innertube">

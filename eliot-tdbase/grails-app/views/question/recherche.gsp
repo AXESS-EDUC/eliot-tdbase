@@ -120,10 +120,10 @@
 </g:if>
 <g:if test="${questions}">
   <div class="portal_pagination">
-    <p class="nb_result">${questions.totalCount} résultat(s) </p>
-    <g:paginate
+    <p class="nb_result">${questions.totalCount} résultat(s) </p> 
+    <div class="pager"> Page(s) : <g:paginate
             total="${questions.totalCount}"
-            params="${rechercheCommand?.toParams()}"></g:paginate>
+            params="${rechercheCommand?.toParams()}"></g:paginate></div>
   </div>
   
 <div class="portal-default_results-list question  ${sujet ? 'partiel' : ''}">	

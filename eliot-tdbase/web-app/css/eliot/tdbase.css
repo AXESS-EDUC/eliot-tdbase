@@ -1,3 +1,6 @@
+body{background-color: #fff;}
+body>.container{border: none;}
+
 h1 {
     margin: 15px;
     font-family: inherit;
@@ -471,16 +474,19 @@ styles for TDBase results list
     margin-bottom: 0;
     margin-right: 10px;
     text-align: right;
+    margin-top: 30px;
 }
 
 .portal_pagination span,
 .portal_pagination a {
-    top: -10px;
+    top: 0;
     position: relative;
     padding: 2px 4px;
 }
 
-.portal_pagination a {
+.portal_pagination .pager {
+	margin-top: -30px;
+	margin-bottom: 15px;
 }
 
 .portal_pagination a:hover,
@@ -1121,6 +1127,7 @@ Style for frontpage Widget
 	/*min-height: 360px;*/
 	float: left;
 	margin-left: 23px;
+	margin-bottom: 10px;
 }
 	.widget h1{
 		margin: 0;
@@ -1142,9 +1149,9 @@ Style for frontpage Widget
 		background-color: whitesmoke;
 		border-bottom: 1px solid #ddd;
 	}
-		.widget .nb_result a{opacity: .5;}
+		.widget .nb_result a{opacity: .4;}
 			.widget .nb_result a:hover,
-			.widget .nb_result a:focus{opacity: 1;}
+			.widget .nb_result a:focus{opacity: .6;}
 	.widget .none{
 		padding: 8px 10px 8px 15px;
 		font-style: italic;
@@ -1169,6 +1176,7 @@ Style for frontpage Widget
 			.widget ul li:first-child{border: none;}
 			.widget ul li em{color: #999;font-size:90%;}
 			.widget.sceances ul li em{color: #999;font-size: 90%;font-style: normal;}
+			.widget ul li a{font-size: 110%;}
 
 .widget a.add{
 	position: absolute;
