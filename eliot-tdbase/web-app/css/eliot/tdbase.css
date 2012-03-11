@@ -559,11 +559,11 @@ div.portal-default_results-list>div:hover .tdbase-menu-actions {
 }
 
 div.portal-default_results-list .tdbase-menu-actions {
-    top: 32px;
+    top: 29px;
 }
 
 div.portal-default_results-list .tdbase-menu-actions.top {
-    top: 8px;
+    top: 2px;
 }
 
 div.portal-default_results-list h1 {
@@ -666,11 +666,11 @@ Style for the edition of a document or category (ToolBar)
 }
 
 .portal-tabs .tdbase-menu-actions {
-    top: 32px;
+    top: 29px;
 }
 
 .portal-tabs .tdbase-menu-actions.top {
-    top: 8px;
+    top: 2px;
 }
 
 .portal-tabs a {
@@ -878,12 +878,12 @@ button.ui-button-icons-only{width: 3.2em;}
 }
 
 .tdbase-sujet-edition-question .tdbase-menu-actions {
-    top: 32px;
+    top: 29px;
     margin-left: -97px;
 }
 
 .tdbase-sujet-edition-question .tdbase-menu-actions.top {
-    top: 8px;
+    top: 4px;
 }
 
 .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points {
