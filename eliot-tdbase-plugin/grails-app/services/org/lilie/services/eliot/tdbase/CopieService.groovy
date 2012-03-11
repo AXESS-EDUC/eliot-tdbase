@@ -150,7 +150,6 @@ class CopieService {
     }
   }
 
-
   /**
    * Met à jour la copie en prenant en compte la liste de réponses soumises
    * @param copie la copie
@@ -305,7 +304,7 @@ class CopieService {
    * @param seance la séance
    * @param chercheur la personne déclenchant la recherche
    * @param paginationSpec les specifications la pagination
-   * @return
+   * @return les copies correspondant à la séance
    */
   List<Copie> findCopiesForModaliteActivite(ModaliteActivite seance,
                                             Personne chercheur,
@@ -322,6 +321,21 @@ class CopieService {
       join 'eleve'
     }
     return copies
+  }
+
+  /**
+   *
+   * @param seance  la séance
+   * @param lesCopies les copies de la séance en cours
+   * @param chercheur  la personne déclenchant la recherche
+   * @return  les élèves n'ayant pas encore rendus leur copies
+   */
+  List<Personne> findElevesSansCopieForModaliteActivite(ModaliteActivite seance,
+                                                        List<Copie> lesCopies,
+                                                        Personne chercheur) {
+    assert (seance?.enseignant == chercheur)
+
+    seance.getPersonnesDevantRendreCopie() - lesCopies*.eleve
   }
 
   /**

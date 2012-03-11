@@ -144,13 +144,19 @@ class SeanceController {
 
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
-    List<Copie> copies = copieService.findCopiesForModaliteActivite(
+    def copies = copieService.findCopiesForModaliteActivite(
             seance,
             personne)
+    def elevesSansCopies =  copieService.findElevesSansCopieForModaliteActivite(
+            seance,
+            copies,
+            personne
+    )
     render(view: '/seance/listeResultats', model: [
             liens: breadcrumpsService.liens,
             seance: seance,
-            copies: copies
+            copies: copies,
+            elevesSansCopies : elevesSansCopies
     ])
   }
 

@@ -52,6 +52,7 @@
   </li>
   </div>
   <br/>
+<p><strong> Nombres de copies rendues : ${copies.size()} sur ${copies.size() + elevesSansCopies.size()}</strong></p>
   <g:if test="${copies}">
     <div class="portal-default_table">
       <table>
@@ -106,6 +107,16 @@
       <p class="nb_result">Aucun résultat</p>
     </div>
   </g:else>
-
+  <g:if test="${elevesSansCopies}">
+    <br/>
+    <p><strong>Élèves n'ayant pas rendu leur copie...</strong></p>
+    <ul>
+    <g:each in="${elevesSansCopies}" var="eleve">
+      <li>
+        ${eleve.nomAffichage}
+      </li>
+    </g:each>
+    </ul>
+  </g:if>
 </body>
 </html>
