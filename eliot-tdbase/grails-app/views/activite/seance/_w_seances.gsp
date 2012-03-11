@@ -48,6 +48,6 @@
 	  	<p class="nb_result">${seances.totalCount} séance(s)</p>
 	    <p class="none">Aucune séance ouverte.</p>
 	  </g:else>
-	  
+	</div>
 	
 </div>
