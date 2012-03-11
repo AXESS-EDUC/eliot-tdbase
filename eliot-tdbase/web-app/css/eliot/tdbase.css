@@ -95,7 +95,11 @@ styles for TDBase tables
 /*border:0;*/
 /*padding-top:15px;	*/
 /*}*/
-
+.portal-default_table{
+	margin: 0 10px;
+	width: auto;
+	border: 0;
+}
 div.portal-default_table tr {
     height: 10px;
 }
@@ -1211,3 +1215,21 @@ Style for frontpage Widget
 		color: #ec8e0c;
 		background-position: 8px -21px;
 	}
+	
+/*******************************************************************************
+
+Style for result table
+
+********************************************************************************/
+.portal-default_table .sanscopies td{
+	background-color: whitesmoke;
+	font-style: italic;
+	color: #999;
+	border: 1px dotted #cecece;
+}
+	.portal-default_table .sanscopies .even td{background-color: #fff;}
+.portal-default_table a.button{
+	position: relative;
+	top: -2px;
+	padding: 4px 8px 4px;
+}
