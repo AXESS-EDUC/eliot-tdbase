@@ -219,7 +219,7 @@
           <td class="label">Doc. attachés :</td>
           <td>
             <g:select name="attachement.id" value=""
-                      noSelection="${['null': 'Attachez un document...']}"
+                      noSelection="${['null': 'Attacher un document...']}"
                       from="${attachementsSujets}"
                       optionKey="id"
                       optionValue="nom"/>

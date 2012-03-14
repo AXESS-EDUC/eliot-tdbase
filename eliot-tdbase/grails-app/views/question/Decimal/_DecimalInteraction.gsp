@@ -37,7 +37,7 @@
 <g:if test="${questionspecifobject.unite}">
 ${questionspecifobject.unite}&nbsp;&nbsp;
 </g:if>
-Entrez un nombre décimal.
+Entrez un nombre entier ou décimal.
 <br/>
 </div>
 

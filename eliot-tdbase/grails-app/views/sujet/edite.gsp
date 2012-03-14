@@ -164,7 +164,7 @@
           <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetQuestion.question)}">
             <li><g:link action="edite"
                         controller="question${sujetQuestion.question.type.code}"
-                        id="${sujetQuestion.question.id}">Modifier
+                        id="${sujetQuestion.question.id}" params="[sujetId:sujet.id]">Modifier
             </g:link></li>
           </g:if>
           <g:else>
