@@ -97,14 +97,7 @@ class MoodleQuizExporterService {
         xml.question(type: "to_be_implemented_associate")
     }
 
-    /**
-     * Render the <question> tag for boolean questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, BooleanMatchSpecification specification, String title) {
 
-    }
 
     /**
      * Render the <question> tag for composite questions.
@@ -121,16 +114,31 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, DecimalSpecification specification, String title) {
-        xml.question(type: "to_be_implemented decimal")
+        xml.question(type: "numerical") {
+            questionHeader(xml, title, specification.libelle)
+            xml.answer(fraction:100){
+                xml.text specification.valeur
+                xml.unit(name : specification.unite, multiplier: 1)
+                xml.tollerance specification.precision
+            }
+            correction(xml, specification.correction)
+        }
     }
 
     /**
-     * Render the <question> tag for documentation questions.
+     * Render the <question> tag for Integer questions.
      * @param xml
      * @param theQuestion
      */
-    private void renderQuestion(MarkupBuilder xml, DocumentSpecification specification, String title) {
-
+    private void renderQuestion(MarkupBuilder xml, IntegerSpecification specification, String title) {
+        xml.question(type: "numerical") {
+            questionHeader(xml, title, specification.libelle)
+            xml.answer(fraction:100){
+                xml.text specification.valeur
+                xml.unit(name : specification.unite, multiplier: 1)
+            }
+            correction(xml, specification.correction)
+        }
     }
 
     /**
@@ -142,14 +150,7 @@ class MoodleQuizExporterService {
         xml.question(type: "to_be_implemented_exclusiveChoiceSpecification")
     }
 
-    /**
-     * Render the <question> tag for file upload questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, FileUploadSpecification specification, String title) {
 
-    }
 
     /**
      * Render the <question> tag for fill gap  questions.
@@ -160,34 +161,8 @@ class MoodleQuizExporterService {
         xml.question(type: "to_be_implemented_fill gap")
     }
 
-    /**
-     * Render the <question> tag for fill graphics questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, FillGraphicsSpecification specification, String title) {
 
-    }
 
-    /**
-     * Render the <question> tag for graphic match questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, GraphicMatchSpecification specification, String title) {
-
-    }
-
-    /**
-     * Render the <question> tag for Integer questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, IntegerSpecification specification, String title) {
-        xml.question(type: "numerical") {
-            questionHeader(xml, title, specification.libelle)
-        }
-    }
 
     /**
      * Render the <question> tag for multiple choice questions.
@@ -205,23 +180,6 @@ class MoodleQuizExporterService {
      */
     private void renderQuestion(MarkupBuilder xml, OpenSpecification specification, String title) {
         xml.question(type: "to_be_implemented open question")
-    }
-
-    /**
-     * Render the <question> tag for order questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, OrderSpecification specification, String title) {
-
-    }
-
-    /**
-     * Render the <question> tag for slider questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, SliderSpecification specification, String title) {
     }
 
     /**
@@ -249,5 +207,9 @@ class MoodleQuizExporterService {
         xml.questiontext(format: 'html') {
             xml.text libelle
         }
+    }
+
+    private correction(MarkupBuilder xml, String correction) {
+        xml.generalfeedback correction
     }
 }
