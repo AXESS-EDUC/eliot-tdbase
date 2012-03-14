@@ -38,7 +38,7 @@ class BootStrap {
 
     def config = servletContext.grailsApplication.config
 
-    if (config.eliot.bootstrap.migration)  {
+    if (config.eliot.bootstrap.migration) {
       dbMigrationService.updateDb()
     }
 

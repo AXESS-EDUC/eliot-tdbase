@@ -39,18 +39,18 @@ class SliderSpecificationTest extends GroovyTestCase {
                                              valeurReponse: 10.1,
                                              precision: 0.1)
 
-    assertEquals(1, rep.evaluate(1),0)
+    assertEquals(1, rep.evaluate(1), 0)
     rep = new ReponseSliderSpecification(valeurCorrecte: -10,
-                                                 valeurReponse: -9.9,
-                                                 precision: 0.1)
+                                         valeurReponse: -9.9,
+                                         precision: 0.1)
 
-    assertEquals(2, rep.evaluate(2),0)
+    assertEquals(2, rep.evaluate(2), 0)
 
     rep = new ReponseSliderSpecification(valeurCorrecte: -10,
-                                                     valeurReponse: -9.8,
-                                                     precision: 0.1)
+                                         valeurReponse: -9.8,
+                                         precision: 0.1)
 
-    assertEquals(0, rep.evaluate(2),0)
+    assertEquals(0, rep.evaluate(2), 0)
   }
 
 

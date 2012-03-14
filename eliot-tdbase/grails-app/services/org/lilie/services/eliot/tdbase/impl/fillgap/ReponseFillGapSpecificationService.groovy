@@ -39,17 +39,17 @@ import org.lilie.services.eliot.tdbase.QuestionSpecification
  */
 class ReponseFillGapSpecificationService extends ReponseSpecificationService<ReponseFillGapSpecification> {
 
-    @Override
-    ReponseFillGapSpecification createSpecification(Map map) {
-        new ReponseFillGapSpecification(map)
-    }
+  @Override
+  ReponseFillGapSpecification createSpecification(Map map) {
+    new ReponseFillGapSpecification(map)
+  }
 
-    @Override
-    ReponseFillGapSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
+  @Override
+  ReponseFillGapSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
 
-        List<TextATrouElement> texteATrousStructure = questionSpecification.texteATrousStructure
-        createSpecification(reponsesPossibles: texteATrousStructure.findAll {!it.isTextElement()})
-    }
+    List<TextATrouElement> texteATrousStructure = questionSpecification.texteATrousStructure
+    createSpecification(reponsesPossibles: texteATrousStructure.findAll {!it.isTextElement()})
+  }
 }
 
 /**
@@ -57,39 +57,39 @@ class ReponseFillGapSpecificationService extends ReponseSpecificationService<Rep
  */
 class ReponseFillGapSpecification implements ReponseSpecification {
   String questionTypeCode = QuestionTypeEnum.FillGap.name()
-    /**
-     * les valeurs de reponse.
-     */
-    List<String> valeursDeReponse = []
+  /**
+   * les valeurs de reponse.
+   */
+  List<String> valeursDeReponse = []
 
-    /**
-     * Liste des reponses possibles. Structurés par TrouElement.
-     */
-    List<TrouElement> reponsesPossibles = []
+  /**
+   * Liste des reponses possibles. Structurés par TrouElement.
+   */
+  List<TrouElement> reponsesPossibles = []
 
-    @Override
-    Map toMap() {
-        [
-                questionTypeCode: questionTypeCode,
-                valeursDeReponse: valeursDeReponse,
-                reponsesPossibles: reponsesPossibles
-        ]
+  @Override
+  Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            valeursDeReponse: valeursDeReponse,
+            reponsesPossibles: reponsesPossibles
+    ]
+  }
+
+  @Override
+  float evaluate(float maximumPoints) {
+    int reponsesCorrects = 0
+    int numberRes = valeursDeReponse.size()
+
+    for (i in 0..numberRes - 1) {
+
+      def valeurDeReponse = normalise(valeursDeReponse[i].trim())
+      def validReponseList = reponsesPossibles[i].valeur.findAll {it.correct}.collect {normalise(it.text.trim())}
+      if (validReponseList.contains(valeurDeReponse)) {
+        reponsesCorrects = reponsesCorrects + 1
+      }
     }
 
-    @Override
-    float evaluate(float maximumPoints) {
-        int reponsesCorrects = 0
-        int numberRes = valeursDeReponse.size()
-
-        for (i in 0..numberRes - 1) {
-
-            def valeurDeReponse = normalise(valeursDeReponse[i].trim())
-            def validReponseList = reponsesPossibles[i].valeur.findAll {it.correct}.collect {normalise(it.text.trim())}
-            if (validReponseList.contains(valeurDeReponse)) {
-                reponsesCorrects = reponsesCorrects + 1
-            }
-        }
-
-        reponsesCorrects / numberRes * maximumPoints
-    }
+    reponsesCorrects / numberRes * maximumPoints
+  }
 }

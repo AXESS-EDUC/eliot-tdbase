@@ -71,12 +71,12 @@ eliot.portail.menu.liens = [
         ]
 ]
 eliot.portail.news = [
-            "Environnement DEMO",
-            "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
-            "Login / mot de passe enseignant : ens1 / ens1",
-            "Login / mot de passe eleve 1 : elv1 / elv1",
-            "Login / mot de passe eleve 2 : elv2 / elv2",
-            "Login / mot de passe parent 1 : resp1 / resp1"
+        "Environnement DEMO",
+        "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
+        "Login / mot de passe enseignant : ens1 / ens1",
+        "Login / mot de passe eleve 1 : elv1 / elv1",
+        "Login / mot de passe eleve 2 : elv2 / elv2",
+        "Login / mot de passe parent 1 : resp1 / resp1"
 ]
 
 // data source

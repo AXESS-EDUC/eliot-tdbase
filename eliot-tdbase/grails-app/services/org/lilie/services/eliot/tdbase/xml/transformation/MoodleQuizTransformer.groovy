@@ -48,7 +48,7 @@ class MoodleQuizTransformer implements ApplicationContextAware {
    * Transforme un fichier quiz moodle xml en une map contenant les items à
    * importer
    * @param moodleQuiz l'inpustream correspondant au quiz moodle xml
-   * @return  la map groovy contenant les items à importer
+   * @return la map groovy contenant les items à importer
    */
   Map moodleQuizTransform(InputStream moodleQuiz) {
     def xsltSream = applicationContext.getResource("classpath:$XSLT_GROOVY").getInputStream()
@@ -63,12 +63,12 @@ class MoodleQuizTransformer implements ApplicationContextAware {
 
   /**
    * Importe dans l'attachement data store les images contenues dans un quiz moodle
-   * @param moodleQuiz  le quiz moodle à importer
-   * @return  la map ayant pour clé l'identifiant de l'image dans le fichier source
+   * @param moodleQuiz le quiz moodle à importer
+   * @return la map ayant pour clé l'identifiant de l'image dans le fichier source
    * et comme valeur un objet encapsulant l'identifiant de l'image dans le data store
    */
   Map<String, ImageIds> importImages(InputStream moodleQuiz) {
     xmlTransformationHelper.processInputWithBase64Handler(moodleQuiz)
   }
-  
+
 }

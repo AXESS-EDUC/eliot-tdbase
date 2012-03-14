@@ -39,10 +39,10 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
  */
 class QuestionBooleanMatchSpecificationService extends QuestionSpecificationService<BooleanMatchSpecification> {
 
-    @Override
-    BooleanMatchSpecification createSpecification(Map map) {
-        new BooleanMatchSpecification(map)
-    }
+  @Override
+  BooleanMatchSpecification createSpecification(Map map) {
+    new BooleanMatchSpecification(map)
+  }
 
 }
 
@@ -51,60 +51,60 @@ class QuestionBooleanMatchSpecificationService extends QuestionSpecificationServ
  */
 @Validateable
 class BooleanMatchSpecification implements QuestionSpecification {
-    String questionTypeCode = QuestionTypeEnum.BooleanMatch.name()
-    /**
-     * Le libellé.
-     */
-    String libelle
+  String questionTypeCode = QuestionTypeEnum.BooleanMatch.name()
+  /**
+   * Le libellé.
+   */
+  String libelle
 
-    /**
-     * La correction.
-     */
-    String correction
+  /**
+   * La correction.
+   */
+  String correction
 
-    /**
-     * Les reponses
-     */
-    List<String> reponses = []
+  /**
+   * Les reponses
+   */
+  List<String> reponses = []
 
-    /**
-     * Si vrai, alors toutes les reponses donnéés
-     */
-    boolean toutOuRien = false
+  /**
+   * Si vrai, alors toutes les reponses donnéés
+   */
+  boolean toutOuRien = false
 
-    /**
-     * Constructeur par défaut.
-     */
-    BooleanMatchSpecification() {
-        super()
-    }
+  /**
+   * Constructeur par défaut.
+   */
+  BooleanMatchSpecification() {
+    super()
+  }
 
-    /**
-     * Constructeur prennant une map de paramètres.
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    BooleanMatchSpecification(Map map) {
-        libelle = map.libelle
-        correction = map.correction
-        reponses = map.reponses
-        toutOuRien = map.toutOuRien
-    }
+  /**
+   * Constructeur prennant une map de paramètres.
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  BooleanMatchSpecification(Map map) {
+    libelle = map.libelle
+    correction = map.correction
+    reponses = map.reponses
+    toutOuRien = map.toutOuRien
+  }
 
-    @Override
-    Map toMap() {
-        [
-                questionTypeCode: questionTypeCode,
-                libelle: libelle,
-                reponses: reponses,
-                correction: correction,
-                toutOuRien: toutOuRien
-        ]
-    }
+  @Override
+  Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            libelle: libelle,
+            reponses: reponses,
+            correction: correction,
+            toutOuRien: toutOuRien
+    ]
+  }
 
-    static constraints = {
-        libelle blank: false
-        reponses nullable: false
-    }
+  static constraints = {
+    libelle blank: false
+    reponses nullable: false
+  }
 
 }

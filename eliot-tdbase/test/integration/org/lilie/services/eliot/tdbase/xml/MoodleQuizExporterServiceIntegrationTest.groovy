@@ -16,33 +16,33 @@ import org.lilie.services.eliot.tdbase.QuestionType
  */
 class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase {
 
-    /**
-     * The path of the question json file relative to the location of this class.
-     */
-    static final QUESTIONS = 'exemples/questions.json'
+  /**
+   * The path of the question json file relative to the location of this class.
+   */
+  static final QUESTIONS = 'exemples/questions.json'
 
-    MoodleQuizExporterService moodleQuizExporterService
-    QuestionService questionService
+  MoodleQuizExporterService moodleQuizExporterService
+  QuestionService questionService
 
-    void testIntegrationExport() {
-        List<Map> questionSpecs = new JsonSlurper().parseText(getQuestionsJson())
+  void testIntegrationExport() {
+    List<Map> questionSpecs = new JsonSlurper().parseText(getQuestionsJson())
 
-        def questionSequences = questionSpecs.collect {
-            def type = QuestionType.findByCode(it['questionTypeCode'])
-            def question = new Question(specification: it, type: type)
-            new SujetSequenceQuestions(question: question)
-        }
-
-        Sujet sujet = new Sujet(questionsSequences: questionSequences)
-
-        println moodleQuizExporterService.toMoodleQuiz(sujet)
+    def questionSequences = questionSpecs.collect {
+      def type = QuestionType.findByCode(it['questionTypeCode'])
+      def question = new Question(specification: it, type: type)
+      new SujetSequenceQuestions(question: question)
     }
 
-    /**
-     * Loads the contents of the question json file.
-     */
-    private String getQuestionsJson() {
-        def stream = getClass().getResourceAsStream(QUESTIONS)
-        stream?.text
-    }
+    Sujet sujet = new Sujet(questionsSequences: questionSequences)
+
+    println moodleQuizExporterService.toMoodleQuiz(sujet)
+  }
+
+  /**
+   * Loads the contents of the question json file.
+   */
+  private String getQuestionsJson() {
+    def stream = getClass().getResourceAsStream(QUESTIONS)
+    stream?.text
+  }
 }

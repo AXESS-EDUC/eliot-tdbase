@@ -40,30 +40,30 @@ import org.lilie.services.eliot.tdbase.QuestionSpecification
 class ReponseAssociateSpecificationService extends ReponseSpecificationService<ReponseAssociateSpecification> {
 
 
-    @Override
-    ReponseAssociateSpecification createSpecification(Map map) {
-        new ReponseAssociateSpecification(map)
+  @Override
+  ReponseAssociateSpecification createSpecification(Map map) {
+    new ReponseAssociateSpecification(map)
+  }
+
+  @Override
+  ReponseAssociateSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
+
+    AssociateSpecification specification = questionSpecification
+    List<Association> valeursReponse = []
+    def association
+
+    specification.associations.each {
+      if (specification.montrerColonneAGauche) {
+        association = it
+        association.participant2 = ''
+        valeursReponse << association
+      } else {
+        valeursReponse << new Association()
+      }
     }
 
-    @Override
-    ReponseAssociateSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
-
-        AssociateSpecification specification = questionSpecification
-        List<Association> valeursReponse = []
-        def association
-
-        specification.associations.each {
-            if (specification.montrerColonneAGauche) {
-                association = it
-                association.participant2 = ''
-                valeursReponse << association
-            } else {
-                valeursReponse << new Association()
-            }
-        }
-
-        new ReponseAssociateSpecification(valeursDeReponse: valeursReponse, reponsesPossibles: specification.associations)
-    }
+    new ReponseAssociateSpecification(valeursDeReponse: valeursReponse, reponsesPossibles: specification.associations)
+  }
 }
 
 /**
@@ -73,59 +73,59 @@ class ReponseAssociateSpecification implements ReponseSpecification {
 
   String questionTypeCode = QuestionTypeEnum.Associate.name()
 
-    /**
-     * Liste d'associations fournis comme reponse à la question.
-     */
-    List<Association> valeursDeReponse = []
+  /**
+   * Liste d'associations fournis comme reponse à la question.
+   */
+  List<Association> valeursDeReponse = []
 
-    /**
-     * Liste d'associations qui forment une reponse correcte.
-     */
-    List<Association> reponsesPossibles = []
+  /**
+   * Liste d'associations qui forment une reponse correcte.
+   */
+  List<Association> reponsesPossibles = []
 
-    /**
-     * Constructeur par defaut
-     */
-    ReponseAssociateSpecification() {
-        super()
+  /**
+   * Constructeur par defaut
+   */
+  ReponseAssociateSpecification() {
+    super()
+  }
+
+  ReponseAssociateSpecification(Map params) {
+    valeursDeReponse = params.valeursDeReponse.collect {createAssociation(it)}
+    reponsesPossibles = params.reponsesPossibles.collect {createAssociation(it)}
+  }
+
+  @Override
+  Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            valeursDeReponse: valeursDeReponse,
+            reponsesPossibles: reponsesPossibles
+    ]
+  }
+
+  private createAssociation(Association association) {
+    association
+  }
+
+  private createAssociation(Map params) {
+    new Association(params)
+  }
+
+  @Override
+  float evaluate(float maximumPoints) {
+    int reponsesCorrects = 0
+    int numberRes = valeursDeReponse.size()
+
+    def localReponsesPossibles = []
+    localReponsesPossibles.addAll(reponsesPossibles)
+
+    valeursDeReponse.each {
+      if (localReponsesPossibles.contains(it)) {
+        reponsesCorrects++
+        localReponsesPossibles.remove(it)
+      }
     }
-
-    ReponseAssociateSpecification(Map params) {
-        valeursDeReponse = params.valeursDeReponse.collect {createAssociation(it)}
-        reponsesPossibles = params.reponsesPossibles.collect {createAssociation(it)}
-    }
-
-    @Override
-    Map toMap() {
-        [
-                questionTypeCode: questionTypeCode,
-                valeursDeReponse: valeursDeReponse,
-                reponsesPossibles: reponsesPossibles
-        ]
-    }
-
-    private createAssociation(Association association) {
-        association
-    }
-
-    private createAssociation(Map params) {
-        new Association(params)
-    }
-
-    @Override
-    float evaluate(float maximumPoints) {
-        int reponsesCorrects = 0
-        int numberRes = valeursDeReponse.size()
-
-        def localReponsesPossibles = []
-        localReponsesPossibles.addAll(reponsesPossibles)
-
-        valeursDeReponse.each {
-            if (localReponsesPossibles.contains(it)) {
-                reponsesCorrects++
-                localReponsesPossibles.remove(it)
-            }
-        }
-        reponsesCorrects / numberRes * maximumPoints
-    }
+    reponsesCorrects / numberRes * maximumPoints
+  }
 }

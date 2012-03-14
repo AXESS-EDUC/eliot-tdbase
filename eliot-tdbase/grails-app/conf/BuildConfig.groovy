@@ -41,8 +41,8 @@ grails.project.war.file = "target/${appName}.war"
 // This closure is passed the location of the staging directory that
 // is zipped up to make the WAR file, and the command line arguments.
 grails.war.resources = { stagingDir, args ->
-    copy(file: "src/templates/eliot-tdbase-config.groovy",
-         tofile: "${stagingDir}/WEB-INF/classes/eliot-tdbase-config.groovy")
+  copy(file: "src/templates/eliot-tdbase-config.groovy",
+       tofile: "${stagingDir}/WEB-INF/classes/eliot-tdbase-config.groovy")
 }
 
 grails.project.dependency.resolution = {

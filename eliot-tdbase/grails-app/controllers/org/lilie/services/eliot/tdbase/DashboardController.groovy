@@ -57,9 +57,9 @@ class DashboardController {
                     params
             ),
             items: questionService.findQuestionsForProprietaire(
-                            personne,
-                            params
-                    )
+                    personne,
+                    params
+            )
     ]
   }
 

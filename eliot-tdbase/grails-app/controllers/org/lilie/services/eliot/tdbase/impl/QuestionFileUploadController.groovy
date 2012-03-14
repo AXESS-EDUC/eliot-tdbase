@@ -56,7 +56,7 @@ class QuestionFileUploadController extends QuestionController {
    */
   def supprimeReponseAttachement() {
     println ">>>>>>>>>>>> $params"
-    
+
     def indexReponse = params.id
     ReponseFileUploadSpecification spec = getReponseSpecificationObjectFromParams(params, indexReponse)
     spec.reponseAttachementId = null

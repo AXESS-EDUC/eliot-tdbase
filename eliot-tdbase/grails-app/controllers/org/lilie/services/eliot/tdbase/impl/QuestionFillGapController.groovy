@@ -36,8 +36,8 @@ import org.lilie.services.eliot.tdbase.impl.fillgap.FillGapSpecification
  */
 class QuestionFillGapController extends QuestionController {
 
-    @Override
-    def getSpecificationObjectFromParams(Map params) {
-        bindData(new FillGapSpecification(), params, "specifobject")
-    }
+  @Override
+  def getSpecificationObjectFromParams(Map params) {
+    bindData(new FillGapSpecification(), params, "specifobject")
+  }
 }

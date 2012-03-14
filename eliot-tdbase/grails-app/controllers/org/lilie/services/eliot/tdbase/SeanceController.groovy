@@ -219,10 +219,10 @@ class SeanceController {
       def copie = copieService.updateNoteForReponse(points, reponse, enseignant)
       def noteRep = NumberUtils.formatFloat(points)
       def noteFinale = NumberUtils.formatFloat(copie.correctionNoteFinale)
-      render new JsonBuilder([nvelleNote.element_id.toString(),noteRep,noteFinale]).toString()
+      render new JsonBuilder([nvelleNote.element_id.toString(), noteRep, noteFinale]).toString()
     } catch (Exception e) {
       log.info(e.message)
-      render new JsonBuilder([nvelleNote.element_id.toString(),params.original_html]).toString()
+      render new JsonBuilder([nvelleNote.element_id.toString(), params.original_html]).toString()
     }
   }
 

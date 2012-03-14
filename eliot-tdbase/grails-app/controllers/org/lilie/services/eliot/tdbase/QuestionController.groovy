@@ -37,351 +37,351 @@ import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class QuestionController {
 
-    static defaultAction = "recherche"
+  static defaultAction = "recherche"
 
 
-    BreadcrumpsService breadcrumpsService
-    ProfilScolariteService profilScolariteService
-    QuestionService questionService
-    SujetService sujetService
-    ArtefactAutorisationService artefactAutorisationService
-    MoodleQuizExporterService moodleQuizExporterService
+  BreadcrumpsService breadcrumpsService
+  ProfilScolariteService profilScolariteService
+  QuestionService questionService
+  SujetService sujetService
+  ArtefactAutorisationService artefactAutorisationService
+  MoodleQuizExporterService moodleQuizExporterService
 
-    /**
-     *
-     * Action ajoute element
-     */
-    def nouvelle() {
-        breadcrumpsService.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
-        [
-                liens: breadcrumpsService.liens,
-                typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation
-        ]
-    }
+  /**
+   *
+   * Action ajoute element
+   */
+  def nouvelle() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
+    [
+            liens: breadcrumpsService.liens,
+            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation
+    ]
+  }
 
 /**
  *
  * Action "edite"
  */
-    def edite() {
-        breadcrumpsService.manageBreadcrumps(params, message(code: "question.edite.titre"))
-        Question question
-        boolean questionEnEdition = false
-        Personne personne = authenticatedPersonne
-        if (params.creation) {
-            QuestionType questionType = QuestionType.get(params.questionTypeId)
-            question = new Question(type: questionType, titre: message(code: 'question.nouveau.titre'))
-        } else {
-            question = Question.get(params.id)
-            questionEnEdition = true
-        }
-        Sujet sujet = null
-        if (params.sujetId) {
-            sujet = Sujet.get(params.sujetId)
-        }
-        render(view: '/question/edite', model: [
-                liens: breadcrumpsService.liens,
-                lienRetour: breadcrumpsService.lienRetour(),
-                question: question,
-                matieres: profilScolariteService.findMatieresForPersonne(personne),
-                niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-                sujet: sujet,
-                artefactHelper: artefactAutorisationService,
-                utilisateur: personne,
-                questionEnEdition: questionEnEdition
-        ])
+  def edite() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "question.edite.titre"))
+    Question question
+    boolean questionEnEdition = false
+    Personne personne = authenticatedPersonne
+    if (params.creation) {
+      QuestionType questionType = QuestionType.get(params.questionTypeId)
+      question = new Question(type: questionType, titre: message(code: 'question.nouveau.titre'))
+    } else {
+      question = Question.get(params.id)
+      questionEnEdition = true
+    }
+    Sujet sujet = null
+    if (params.sujetId) {
+      sujet = Sujet.get(params.sujetId)
+    }
+    render(view: '/question/edite', model: [
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            question: question,
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujet: sujet,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne,
+            questionEnEdition: questionEnEdition
+    ])
+  }
+
+  /**
+   *
+   * Action "detail"
+   */
+  def detail() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "question.detail.titre"))
+    Question question
+    question = Question.get(params.id)
+    Personne personne = authenticatedPersonne
+    Sujet sujet = null
+    if (params.sujetId) {
+      sujet = Sujet.get(params.sujetId)
+    }
+    render(view: '/question/detail', model: [
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            question: question,
+            sujet: sujet,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
+    ])
+  }
+
+  /**
+   * Action "Supprimer"
+   */
+  def supprime() {
+    Personne personne = authenticatedPersonne
+    Question question = Question.get(params.id)
+    questionService.supprimeQuestion(question, personne)
+    def lien = breadcrumpsService.lienRetour()
+    redirect(action: lien.action,
+             controller: lien.controller,
+             params: lien.params)
+
+  }
+
+  /**
+   *
+   * Action "Dupliquer"
+   */
+  def duplique() {
+    Personne personne = authenticatedPersonne
+    Question question = Question.get(params.id)
+    Question nvelleQuestion = questionService.recopieQuestion(question, personne)
+    redirect(action: 'edite', id: nvelleQuestion.id)
+  }
+
+  /**
+   *
+   * Action "Dupliquer" depuis un sujet
+   */
+  def dupliqueDansSujet() {
+    Personne personne = authenticatedPersonne
+    SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
+    Question nvelleQuestion = questionService.recopieQuestionDansSujet(sujetQuestion, personne)
+    redirect(action: 'edite', id: nvelleQuestion.id)
+  }
+
+  /**
+   * Action "Partager"
+   */
+  def partage() {
+    Personne personne = authenticatedPersonne
+    Question question = Question.get(params.id)
+    if (!question.estPartage()) {
+      questionService.partageQuestion(question, personne)
+    }
+    if (!question.hasErrors()) {
+      flash.messageCode = "question.partage.succes"
+      flash.messageArgs = [question.copyrightsType.presentation]
+    }
+    redirect(action: 'detail', id: question.id)
+
+  }
+
+  /**
+   *
+   * Action "enregistre"
+   */
+  def enregistre() {
+
+    Personne personne = authenticatedPersonne
+    def specifObject = getSpecificationObjectFromParams(params)
+    boolean questionEnEdition = true
+    Question question = Question.get(params.id)
+    if (question) {
+      questionService.updateProprietes(question, params, specifObject, personne)
+    } else {
+      question = questionService.createQuestion(params, specifObject, personne)
+      questionEnEdition = false
+    }
+    Sujet sujet = null
+    if (params.sujetId) {
+      sujet = Sujet.get(params.sujetId as Long)
+    }
+    if (question.hasErrors()) {
+      render(view: '/question/edite', model: [
+              liens: breadcrumpsService.liens,
+              lienRetour: breadcrumpsService.lienRetour(),
+              question: question,
+              matieres: profilScolariteService.findMatieresForPersonne(personne),
+              niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+              sujet: sujet,
+              questionEnEdition: questionEnEdition,
+              artefactHelper: artefactAutorisationService,
+              utilisateur: personne
+      ])
+    } else {
+      flash.messageCode = "question.enregistre.succes"
+      def params = [:]
+      if (sujet) {
+        params.sujetId = sujet.id
+      }
+      redirect(action: 'detail', id: question.id, params: params)
     }
 
-    /**
-     *
-     * Action "detail"
-     */
-    def detail() {
-        breadcrumpsService.manageBreadcrumps(params, message(code: "question.detail.titre"))
-        Question question
-        question = Question.get(params.id)
-        Personne personne = authenticatedPersonne
-        Sujet sujet = null
-        if (params.sujetId) {
-            sujet = Sujet.get(params.sujetId)
-        }
-        render(view: '/question/detail', model: [
-                liens: breadcrumpsService.liens,
-                lienRetour: breadcrumpsService.lienRetour(),
-                question: question,
-                sujet: sujet,
-                artefactHelper: artefactAutorisationService,
-                utilisateur: personne
-        ])
+  }
+
+  /**
+   *
+   * Action "enregistreInsert"
+   */
+  def enregistreInsert() {
+    Personne personne = authenticatedPersonne
+    def specifObject = getSpecificationObjectFromParams(params)
+    Long sujetId = params.sujetId as Long
+    Sujet sujet = Sujet.get(sujetId)
+    Integer rang = breadcrumpsService.getValeurPropriete(
+            SujetController.PROP_RANG_INSERTION)
+    boolean questionEnEdition = false
+    Question question = questionService.createQuestionAndInsertInSujet(
+            params,
+            specifObject,
+            sujet,
+            personne,
+            rang)
+
+    if (question.hasErrors()) {
+      render(view: '/question/edite', model: [
+              liens: breadcrumpsService.liens,
+              lienRetour: breadcrumpsService.lienRetour(),
+              question: question,
+              sujet: sujet,
+              matieres: profilScolariteService.findMatieresForPersonne(personne),
+              niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+              sujet: sujet,
+              peutSupprimer: false,
+              questionEnEdition: questionEnEdition,
+              peutPartagerQuestion: false
+      ])
+    } else {
+      flash.messageCode = "question.enregistre.succes"
+      redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
     }
 
-    /**
-     * Action "Supprimer"
-     */
-    def supprime() {
-        Personne personne = authenticatedPersonne
-        Question question = Question.get(params.id)
-        questionService.supprimeQuestion(question, personne)
-        def lien = breadcrumpsService.lienRetour()
-        redirect(action: lien.action,
-                controller: lien.controller,
-                params: lien.params)
 
-    }
-
-    /**
-     *
-     * Action "Dupliquer"
-     */
-    def duplique() {
-        Personne personne = authenticatedPersonne
-        Question question = Question.get(params.id)
-        Question nvelleQuestion = questionService.recopieQuestion(question, personne)
-        redirect(action: 'edite', id: nvelleQuestion.id)
-    }
-
-    /**
-     *
-     * Action "Dupliquer" depuis un sujet
-     */
-    def dupliqueDansSujet() {
-        Personne personne = authenticatedPersonne
-        SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
-        Question nvelleQuestion = questionService.recopieQuestionDansSujet(sujetQuestion, personne)
-        redirect(action: 'edite', id: nvelleQuestion.id)
-    }
-
-    /**
-     * Action "Partager"
-     */
-    def partage() {
-        Personne personne = authenticatedPersonne
-        Question question = Question.get(params.id)
-        if (!question.estPartage()) {
-            questionService.partageQuestion(question, personne)
-        }
-        if (!question.hasErrors()) {
-            flash.messageCode = "question.partage.succes"
-            flash.messageArgs = [question.copyrightsType.presentation]
-        }
-        redirect(action: 'detail', id: question.id)
-
-    }
-
-    /**
-     *
-     * Action "enregistre"
-     */
-    def enregistre() {
-
-        Personne personne = authenticatedPersonne
-        def specifObject = getSpecificationObjectFromParams(params)
-        boolean questionEnEdition = true
-        Question question = Question.get(params.id)
-        if (question) {
-            questionService.updateProprietes(question, params, specifObject, personne)
-        } else {
-            question = questionService.createQuestion(params, specifObject, personne)
-            questionEnEdition = false
-        }
-        Sujet sujet = null
-        if (params.sujetId) {
-            sujet = Sujet.get(params.sujetId as Long)
-        }
-        if (question.hasErrors()) {
-            render(view: '/question/edite', model: [
-                    liens: breadcrumpsService.liens,
-                    lienRetour: breadcrumpsService.lienRetour(),
-                    question: question,
-                    matieres: profilScolariteService.findMatieresForPersonne(personne),
-                    niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-                    sujet: sujet,
-                    questionEnEdition: questionEnEdition,
-                    artefactHelper: artefactAutorisationService,
-                    utilisateur: personne
-            ])
-        } else {
-            flash.messageCode = "question.enregistre.succes"
-            def params = [:]
-            if (sujet) {
-                params.sujetId = sujet.id
-            }
-            redirect(action: 'detail', id: question.id, params: params)
-        }
-
-    }
-
-    /**
-     *
-     * Action "enregistreInsert"
-     */
-    def enregistreInsert() {
-        Personne personne = authenticatedPersonne
-        def specifObject = getSpecificationObjectFromParams(params)
-        Long sujetId = params.sujetId as Long
-        Sujet sujet = Sujet.get(sujetId)
-        Integer rang = breadcrumpsService.getValeurPropriete(
-                SujetController.PROP_RANG_INSERTION)
-        boolean questionEnEdition = false
-        Question question = questionService.createQuestionAndInsertInSujet(
-                params,
-                specifObject,
-                sujet,
-                personne,
-                rang)
-
-        if (question.hasErrors()) {
-            render(view: '/question/edite', model: [
-                    liens: breadcrumpsService.liens,
-                    lienRetour: breadcrumpsService.lienRetour(),
-                    question: question,
-                    sujet: sujet,
-                    matieres: profilScolariteService.findMatieresForPersonne(personne),
-                    niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-                    sujet: sujet,
-                    peutSupprimer: false,
-                    questionEnEdition: questionEnEdition,
-                    peutPartagerQuestion: false
-            ])
-        } else {
-            flash.messageCode = "question.enregistre.succes"
-            redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
-        }
-
-
-    }
+  }
 
 /**
  *
  * Action "insert"
  */
-    def insert() {
-        Personne personne = authenticatedPersonne
-        Long sujetId = params.sujetId as Long
-        Sujet sujet = Sujet.get(sujetId)
-        Question question = Question.get(params.id)
-        Integer rang = breadcrumpsService.getValeurPropriete(
-                SujetController.PROP_RANG_INSERTION)
-        sujetService.insertQuestionInSujet(question, sujet, personne, rang)
-        if (sujet.hasErrors()) {
-            render(view: '/sujet/edite', model: [
-                    liens: breadcrumpsService.liens,
-                    titreSujet: sujet.titre,
-                    sujet: sujet,
-                    sujetEnEdition: true,
-                    peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-                    peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
-                    artefactHelper: artefactAutorisationService,
-                    utilisateur: personne
-            ])
-        } else {
-            flash.messageCode = "question.enregistreinsert.succes"
-            redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
-        }
-
+  def insert() {
+    Personne personne = authenticatedPersonne
+    Long sujetId = params.sujetId as Long
+    Sujet sujet = Sujet.get(sujetId)
+    Question question = Question.get(params.id)
+    Integer rang = breadcrumpsService.getValeurPropriete(
+            SujetController.PROP_RANG_INSERTION)
+    sujetService.insertQuestionInSujet(question, sujet, personne, rang)
+    if (sujet.hasErrors()) {
+      render(view: '/sujet/edite', model: [
+              liens: breadcrumpsService.liens,
+              titreSujet: sujet.titre,
+              sujet: sujet,
+              sujetEnEdition: true,
+              peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
+              peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+              artefactHelper: artefactAutorisationService,
+              utilisateur: personne
+      ])
+    } else {
+      flash.messageCode = "question.enregistreinsert.succes"
+      redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
     }
 
-    /**
-     *
-     * Action "recherche"
-     */
-    def recherche(RechercheQuestionCommand rechCmd) {
-        params.max = Math.min(params.max ? params.int('max') : 5, 100)
-        breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
-        Personne personne = authenticatedPersonne
-        def questions = questionService.findQuestions(
-                personne,
-                rechCmd.patternTitre,
-                rechCmd.patternAuteur,
-                rechCmd.patternSpecification,
-                rechCmd.estAutonome,
-                Matiere.get(rechCmd.matiereId),
-                Niveau.get(rechCmd.niveauId),
-                QuestionType.get(rechCmd.typeId),
-                params
-        )
-        Sujet sujet = Sujet.get(rechCmd.sujetId)
-        boolean afficheLiensModifier = true
-        if (sujet) {
-            afficheLiensModifier = false
-        }
-        [
-                liens: breadcrumpsService.liens,
-                afficheFormulaire: true,
-                typesQuestion: questionService.getTypesQuestionsSupportes(),
-                matieres: profilScolariteService.findMatieresForPersonne(personne),
-                niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-                questions: questions,
-                rechercheCommand: rechCmd,
-                sujet: sujet,
-                afficheLiensModifier: afficheLiensModifier,
-                artefactHelper: artefactAutorisationService,
-                utilisateur: personne
-        ]
-    }
+  }
 
-    def mesItems() {
-        params.max = Math.min(params.max ? params.int('max') : 5, 100)
-        breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
-        Personne personne = authenticatedPersonne
-        def questions = questionService.findQuestionsForProprietaire(
-                personne,
-                params
-        )
-        boolean afficheLiensModifier = true
-        def model = [
-                liens: breadcrumpsService.liens,
-                afficheFormulaire: false,
-                questions: questions,
-                afficheLiensModifier: afficheLiensModifier,
-                artefactHelper: artefactAutorisationService,
-                utilisateur: personne
-        ]
-        render(view: "recherche", model: model)
+  /**
+   *
+   * Action "recherche"
+   */
+  def recherche(RechercheQuestionCommand rechCmd) {
+    params.max = Math.min(params.max ? params.int('max') : 5, 100)
+    breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
+    Personne personne = authenticatedPersonne
+    def questions = questionService.findQuestions(
+            personne,
+            rechCmd.patternTitre,
+            rechCmd.patternAuteur,
+            rechCmd.patternSpecification,
+            rechCmd.estAutonome,
+            Matiere.get(rechCmd.matiereId),
+            Niveau.get(rechCmd.niveauId),
+            QuestionType.get(rechCmd.typeId),
+            params
+    )
+    Sujet sujet = Sujet.get(rechCmd.sujetId)
+    boolean afficheLiensModifier = true
+    if (sujet) {
+      afficheLiensModifier = false
     }
+    [
+            liens: breadcrumpsService.liens,
+            afficheFormulaire: true,
+            typesQuestion: questionService.getTypesQuestionsSupportes(),
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            questions: questions,
+            rechercheCommand: rechCmd,
+            sujet: sujet,
+            afficheLiensModifier: afficheLiensModifier,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
+    ]
+  }
 
-    /**
-     * Action pour exporter un sujet en XML.
-     * @return
-     */
-    def exporter() {
-        Question question = Question.get(params.id)
-        def xml = question ? moodleQuizExporterService.toMoodleQuiz(question) :
-            message(code: 'xml.export.sujet.inexistant', args: [params.id])
-        render(text: xml, contentType: "text/xml", encoding: "UTF-8")
-    }
+  def mesItems() {
+    params.max = Math.min(params.max ? params.int('max') : 5, 100)
+    breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
+    Personne personne = authenticatedPersonne
+    def questions = questionService.findQuestionsForProprietaire(
+            personne,
+            params
+    )
+    boolean afficheLiensModifier = true
+    def model = [
+            liens: breadcrumpsService.liens,
+            afficheFormulaire: false,
+            questions: questions,
+            afficheLiensModifier: afficheLiensModifier,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
+    ]
+    render(view: "recherche", model: model)
+  }
 
-    /**
-     *
-     * @param params les paramètres de la requête
-     * @return l'objet représentant la spécification
-     */
-    protected def getSpecificationObjectFromParams(Map params) {}
+  /**
+   * Action pour exporter un sujet en XML.
+   * @return
+   */
+  def exporter() {
+    Question question = Question.get(params.id)
+    def xml = question ? moodleQuizExporterService.toMoodleQuiz(question) :
+              message(code: 'xml.export.sujet.inexistant', args: [params.id])
+    render(text: xml, contentType: "text/xml", encoding: "UTF-8")
+  }
+
+  /**
+   *
+   * @param params les paramètres de la requête
+   * @return l'objet représentant la spécification
+   */
+  protected def getSpecificationObjectFromParams(Map params) {}
 
 }
 
 
 class RechercheQuestionCommand {
-    String patternTitre
-    Boolean estAutonome
-    String patternAuteur
-    String patternSpecification
+  String patternTitre
+  Boolean estAutonome
+  String patternAuteur
+  String patternSpecification
 
-    Long matiereId
-    Long typeId
-    Long niveauId
-    Long sujetId
+  Long matiereId
+  Long typeId
+  Long niveauId
+  Long sujetId
 
-    Map toParams() {
-        [
-                patternTitre: patternTitre,
-                estAutonome: estAutonome,
-                patternPresentation: patternSpecification,
-                matiereId: matiereId,
-                typeId: typeId,
-                niveauId: niveauId,
-                sujetId: sujetId
-        ]
-    }
+  Map toParams() {
+    [
+            patternTitre: patternTitre,
+            estAutonome: estAutonome,
+            patternPresentation: patternSpecification,
+            matiereId: matiereId,
+            typeId: typeId,
+            niveauId: niveauId,
+            sujetId: sujetId
+    ]
+  }
 
 }

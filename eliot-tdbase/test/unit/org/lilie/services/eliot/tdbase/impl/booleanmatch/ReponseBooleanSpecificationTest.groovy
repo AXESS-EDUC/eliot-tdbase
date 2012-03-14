@@ -10,37 +10,37 @@ package org.lilie.services.eliot.tdbase.impl.booleanmatch
 class ReponseBooleanSpecificationTest extends GroovyTestCase {
 
 
-    void testEvaluate() {
+  void testEvaluate() {
 
-        def reponsesPossibles = ['I', 'am', 'happy']
-        ReponseBooleanMatchSpecification reponseBooleanSpecification
+    def reponsesPossibles = ['I', 'am', 'happy']
+    ReponseBooleanMatchSpecification reponseBooleanSpecification
 
-        reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
-                valeurDeReponse: 'I am very happy',
-                reponsesPossibles: reponsesPossibles,
-                toutOuRien: false
-        )
-        assertEquals(3F, reponseBooleanSpecification.evaluate(3F), 0F)
+    reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
+            valeurDeReponse: 'I am very happy',
+            reponsesPossibles: reponsesPossibles,
+            toutOuRien: false
+    )
+    assertEquals(3F, reponseBooleanSpecification.evaluate(3F), 0F)
 
-        reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
-                valeurDeReponse: 'I am very happy',
-                reponsesPossibles: reponsesPossibles,
-                toutOuRien: true
-        )
-        assertEquals(3F, reponseBooleanSpecification.evaluate(3F), 0F)
+    reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
+            valeurDeReponse: 'I am very happy',
+            reponsesPossibles: reponsesPossibles,
+            toutOuRien: true
+    )
+    assertEquals(3F, reponseBooleanSpecification.evaluate(3F), 0F)
 
-        reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
-                valeurDeReponse: 'I am unhappy',
-                reponsesPossibles: reponsesPossibles,
-                toutOuRien: false
-        )
-        assertEquals(2F, reponseBooleanSpecification.evaluate(3F), 0F)
+    reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
+            valeurDeReponse: 'I am unhappy',
+            reponsesPossibles: reponsesPossibles,
+            toutOuRien: false
+    )
+    assertEquals(2F, reponseBooleanSpecification.evaluate(3F), 0F)
 
-        reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
-                valeurDeReponse: 'I am unhappy',
-                reponsesPossibles: reponsesPossibles,
-                toutOuRien: true
-        )
-        assertEquals(0F, reponseBooleanSpecification.evaluate(3F), 0F)
-    }
+    reponseBooleanSpecification = new ReponseBooleanMatchSpecification(
+            valeurDeReponse: 'I am unhappy',
+            reponsesPossibles: reponsesPossibles,
+            toutOuRien: true
+    )
+    assertEquals(0F, reponseBooleanSpecification.evaluate(3F), 0F)
+  }
 }

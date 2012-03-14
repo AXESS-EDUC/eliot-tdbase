@@ -9,13 +9,13 @@ package org.lilie.services.eliot.tdbase.impl.fillgap
  */
 class ReponseFillGapSpecificationTest extends GroovyTestCase {
 
-    void testEvaluate() {
+  void testEvaluate() {
 
-        def texteATrous = "The color of blood is {=red}. Major blood vessels are {~feet=arteries=veins} and {=veins=arteries~hair~\\~moo\\}\\=\\{}."
-        def specification = new FillGapSpecification([texteATrous: texteATrous])
-        def reponsesPossibles = specification.texteATrousStructure.findAll {!it.textElement}
-        def reponseSpec = new ReponseFillGapSpecification(valeursDeReponse: ["red", "arteries", "veins"], reponsesPossibles: reponsesPossibles);
+    def texteATrous = "The color of blood is {=red}. Major blood vessels are {~feet=arteries=veins} and {=veins=arteries~hair~\\~moo\\}\\=\\{}."
+    def specification = new FillGapSpecification([texteATrous: texteATrous])
+    def reponsesPossibles = specification.texteATrousStructure.findAll {!it.textElement}
+    def reponseSpec = new ReponseFillGapSpecification(valeursDeReponse: ["red", "arteries", "veins"], reponsesPossibles: reponsesPossibles);
 
-        assertEquals(1f, reponseSpec.evaluate(1f), 0f);
-    }
+    assertEquals(1f, reponseSpec.evaluate(1f), 0f);
+  }
 }

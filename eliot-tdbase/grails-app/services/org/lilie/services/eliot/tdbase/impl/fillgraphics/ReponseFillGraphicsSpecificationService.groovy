@@ -42,21 +42,21 @@ import org.lilie.services.eliot.tdbase.QuestionSpecification
 class ReponseFillGraphicsSpecificationService extends
         ReponseSpecificationService<ReponseFillGraphicsSpecification> {
 
-    @Override
-    ReponseFillGraphicsSpecification createSpecification(Map map) {
-        new ReponseFillGraphicsSpecification(map)
-    }
+  @Override
+  ReponseFillGraphicsSpecification createSpecification(Map map) {
+    new ReponseFillGraphicsSpecification(map)
+  }
 
-    @Override
-    ReponseFillGraphicsSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
-        List<TextZoneContenu> reponsesPossibles = []
-        List<TextZoneContenu> valeursDeReponse = []
-        questionSpecification.textZones.each {
-            reponsesPossibles << new TextZoneContenu(id: it.id, text: it.text)
-            valeursDeReponse << new TextZoneContenu()
-        }
-        createSpecification(reponsesPossibles: reponsesPossibles, valeursDeReponse: valeursDeReponse)
+  @Override
+  ReponseFillGraphicsSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
+    List<TextZoneContenu> reponsesPossibles = []
+    List<TextZoneContenu> valeursDeReponse = []
+    questionSpecification.textZones.each {
+      reponsesPossibles << new TextZoneContenu(id: it.id, text: it.text)
+      valeursDeReponse << new TextZoneContenu()
     }
+    createSpecification(reponsesPossibles: reponsesPossibles, valeursDeReponse: valeursDeReponse)
+  }
 }
 
 /**
@@ -64,44 +64,44 @@ class ReponseFillGraphicsSpecificationService extends
  */
 class ReponseFillGraphicsSpecification implements ReponseSpecification {
   String questionTypeCode = QuestionTypeEnum.FillGraphics.name()
-    /**
-     * Liste d'elements fournis comme reponse à la question.
-     */
-    List<TextZoneContenu> valeursDeReponse = []
+  /**
+   * Liste d'elements fournis comme reponse à la question.
+   */
+  List<TextZoneContenu> valeursDeReponse = []
 
-    /**
-     * Liste d'elements qui forment une reponse correcte.
-     */
-    List<TextZoneContenu> reponsesPossibles = []
+  /**
+   * Liste d'elements qui forment une reponse correcte.
+   */
+  List<TextZoneContenu> reponsesPossibles = []
 
-    /**
-     * Calcule la TextZoneContenus differents entre reponses possibles et
-     * valeurs de reponse. Le nombre des differences est ensuite deduit au
-     * pro-rata des points maximales atteignables.
-     *
-     * @param maximumPoints
-     * @return
-     */
-    float evaluate(float maximumPoints) {
-        def nombreReponses = reponsesPossibles.size()
-        def nombreDifferences = (reponsesPossibles - valeursDeReponse).size()
-        def reponsesCorrects = nombreReponses - nombreDifferences
-        reponsesCorrects / nombreReponses * maximumPoints
-    }
+  /**
+   * Calcule la TextZoneContenus differents entre reponses possibles et
+   * valeurs de reponse. Le nombre des differences est ensuite deduit au
+   * pro-rata des points maximales atteignables.
+   *
+   * @param maximumPoints
+   * @return
+   */
+  float evaluate(float maximumPoints) {
+    def nombreReponses = reponsesPossibles.size()
+    def nombreDifferences = (reponsesPossibles - valeursDeReponse).size()
+    def reponsesCorrects = nombreReponses - nombreDifferences
+    reponsesCorrects / nombreReponses * maximumPoints
+  }
 
-    ReponseFillGraphicsSpecification(Map params) {
-        valeursDeReponse = params.valeursDeReponse
-        reponsesPossibles = params.reponsesPossibles
-    }
+  ReponseFillGraphicsSpecification(Map params) {
+    valeursDeReponse = params.valeursDeReponse
+    reponsesPossibles = params.reponsesPossibles
+  }
 
-    @Override
-    Map toMap() {
-        [
-                questionTypeCode: questionTypeCode,
-                valeursDeReponse: valeursDeReponse,
-                reponsesPossibles: reponsesPossibles
-        ]
-    }
+  @Override
+  Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            valeursDeReponse: valeursDeReponse,
+            reponsesPossibles: reponsesPossibles
+    ]
+  }
 }
 
 /**
@@ -113,38 +113,38 @@ class TextZoneContenu {
 /**
  * L'identifiant. 
  */
-    String id = ""
+  String id = ""
 
-    /**
-     * Le texte que cette zone doit afficher.
-     */
-    String text = ""
+  /**
+   * Le texte que cette zone doit afficher.
+   */
+  String text = ""
 
-    /**
-     * Conversion de l'objet en map.
-     * @return une map des attributs de l'objet.
-     */
-    Map toMap() {[id: id, text: text]}
+  /**
+   * Conversion de l'objet en map.
+   * @return une map des attributs de l'objet.
+   */
+  Map toMap() {[id: id, text: text]}
 
-    @Override
-    boolean equals(other) {
-        if (this.is(other)) return true
-        if (!(other instanceof TextZoneContenu)) return false
+  @Override
+  boolean equals(other) {
+    if (this.is(other)) return true
+    if (!(other instanceof TextZoneContenu)) return false
 
-        TextZoneContenu that = (TextZoneContenu) other
+    TextZoneContenu that = (TextZoneContenu) other
 
-        if (id != that.id) return false
-        if (StringUtils.normalise(text) != StringUtils.normalise(that.text)) return false
+    if (id != that.id) return false
+    if (StringUtils.normalise(text) != StringUtils.normalise(that.text)) return false
 
-        println "Text:" + StringUtils.normalise(text)
-        println "Other:" + StringUtils.normalise(that.text)
-        true
-    }
+    println "Text:" + StringUtils.normalise(text)
+    println "Other:" + StringUtils.normalise(that.text)
+    true
+  }
 
-    @Override
-    int hashCode() {
-        int result
-        result = (id != null ? id.hashCode() : 0)
-        31 * result + (text != null ? StringUtils.normalise(text).hashCode() : 0)
-    }
+  @Override
+  int hashCode() {
+    int result
+    result = (id != null ? id.hashCode() : 0)
+    31 * result + (text != null ? StringUtils.normalise(text).hashCode() : 0)
+  }
 }

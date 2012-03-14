@@ -32,47 +32,47 @@ import org.lilie.services.eliot.tdbase.impl.booleanmatch.BooleanMatchSpecificati
 
 class QuestionBooleanMatchController extends QuestionController {
 
-    /**
-     *
-     * Action "ajouteReponse"
-     */
-    def ajouteReponse() {
-        BooleanMatchSpecification specifobject = getSpecificationObjectFromParams(params)
-        specifobject.reponses << new String()
-        render(
-                template: "/question/BooleanMatch/BooleanMatchEditionReponses",
-                model: [specifobject: specifobject]
-        )
-    }
+  /**
+   *
+   * Action "ajouteReponse"
+   */
+  def ajouteReponse() {
+    BooleanMatchSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.reponses << new String()
+    render(
+            template: "/question/BooleanMatch/BooleanMatchEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
 
-    /**
-     *
-     * Action "supprimeReponse"
-     */
-    def supprimeReponse() {
-        BooleanMatchSpecification specifobject = getSpecificationObjectFromParams(params)
-        specifobject.reponses.remove(params.id as Integer)
-        render(
-                template: "/question/BooleanMatch/BooleanMatchEditionReponses",
-                model: [specifobject: specifobject]
-        )
-    }
+  /**
+   *
+   * Action "supprimeReponse"
+   */
+  def supprimeReponse() {
+    BooleanMatchSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.reponses.remove(params.id as Integer)
+    render(
+            template: "/question/BooleanMatch/BooleanMatchEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
 
-    /**
-     *
-     * @param params les paramètres de la requête
-     * @return l'objet représentant la spécification
-     */
-    def getSpecificationObjectFromParams(Map params) {
-        BooleanMatchSpecification specifobject = new BooleanMatchSpecification()
-        String size = params.specifobject.reponses?.size
-        if (size) {
-            size.toInteger().times {
-                specifobject.reponses << ""
-            }
-        }
-        bindData(specifobject, params, "specifobject")
+  /**
+   *
+   * @param params les paramètres de la requête
+   * @return l'objet représentant la spécification
+   */
+  def getSpecificationObjectFromParams(Map params) {
+    BooleanMatchSpecification specifobject = new BooleanMatchSpecification()
+    String size = params.specifobject.reponses?.size
+    if (size) {
+      size.toInteger().times {
+        specifobject.reponses << ""
+      }
     }
+    bindData(specifobject, params, "specifobject")
+  }
 }
 
 

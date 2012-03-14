@@ -30,34 +30,34 @@ package org.lilie.services.eliot.tdbase.impl.order
 
 class OrderSpecificationTest extends GroovyTestCase {
 
-    void testItemEquals() {
-        def item1 = new Item([text: "Hello", ordinal: "1"])
-        def item2 = new Item([text: "Hello", ordinal: "1"])
-        assertEquals(item1, item2)
+  void testItemEquals() {
+    def item1 = new Item([text: "Hello", ordinal: "1"])
+    def item2 = new Item([text: "Hello", ordinal: "1"])
+    assertEquals(item1, item2)
 
-        item1 = new Item([ordinal: "2"])
-        item2 = new Item([ordinal: "2"])
-        assertEquals(item1, item2)
+    item1 = new Item([ordinal: "2"])
+    item2 = new Item([ordinal: "2"])
+    assertEquals(item1, item2)
 
-        item1 = new Item([text: "Hello", ordinal: "2"])
-        item2 = new Item([text: "Hello", ordinal: "1"])
-        assertNotSame(item1, item2)
-    }
+    item1 = new Item([text: "Hello", ordinal: "2"])
+    item2 = new Item([text: "Hello", ordinal: "1"])
+    assertNotSame(item1, item2)
+  }
 
-    void testEvaluate() {
+  void testEvaluate() {
 
-        def valuesReponse = [[text: "Wie", ordinal: "1"], [text: "heisst", ordinal: "2"], [text: "du ?", ordinal: "3"]];
-        def reponsesPossibles = [[text: "Wie", ordinal: "1"], [text: "heisst", ordinal: "2"], [text: "du ?", ordinal: "3"]];
+    def valuesReponse = [[text: "Wie", ordinal: "1"], [text: "heisst", ordinal: "2"], [text: "du ?", ordinal: "3"]];
+    def reponsesPossibles = [[text: "Wie", ordinal: "1"], [text: "heisst", ordinal: "2"], [text: "du ?", ordinal: "3"]];
 
-        def spec = new ReponseOrderSpecification(reponsesPossibles: reponsesPossibles, valeursDeReponse: valuesReponse)
+    def spec = new ReponseOrderSpecification(reponsesPossibles: reponsesPossibles, valeursDeReponse: valuesReponse)
 
-        assertEquals(1.0f, spec.evaluate(1.0f), 0.0f)
-    }
+    assertEquals(1.0f, spec.evaluate(1.0f), 0.0f)
+  }
 
 
-    void testHashCode() {
-        assertEquals(961, new Item().hashCode())
-    }
+  void testHashCode() {
+    assertEquals(961, new Item().hashCode())
+  }
 
 
 }

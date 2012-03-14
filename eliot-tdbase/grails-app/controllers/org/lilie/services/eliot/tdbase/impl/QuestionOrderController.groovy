@@ -34,43 +34,43 @@ import org.lilie.services.eliot.tdbase.impl.order.OrderSpecification
 
 class QuestionOrderController extends QuestionController {
 
-    @Override
-    def getSpecificationObjectFromParams(Map params) {
+  @Override
+  def getSpecificationObjectFromParams(Map params) {
 
-        def specifobject = new OrderSpecification()
-        def size = params.specifobject.orderedItems.size as Integer
-        if (size) {
-            size.times {
-                specifobject.orderedItems << new Item()
-            }
-        }
-        bindData(specifobject, params, "specifobject")
-    }
-
-    /**
-     *
-     * Action "ajouteItem"
-     */
-    def ajouteItem() {
-        OrderSpecification specifobject = getSpecificationObjectFromParams(params) ?: new OrderSpecification()
+    def specifobject = new OrderSpecification()
+    def size = params.specifobject.orderedItems.size as Integer
+    if (size) {
+      size.times {
         specifobject.orderedItems << new Item()
-        render(
-                template: "/question/Order/OrderEditionReponses",
-                model: [specifobject: specifobject]
-        )
+      }
     }
+    bindData(specifobject, params, "specifobject")
+  }
 
-    /**
-     *
-     * Action "supprimeItem"
-     */
-    def supprimeItem() {
-        OrderSpecification specifobject = getSpecificationObjectFromParams(params)
-        specifobject.orderedItems.remove(params.id as Integer)
-        render(
-                template: "/question/Order/OrderEditionReponses",
-                model: [specifobject: specifobject]
-        )
-    }
+  /**
+   *
+   * Action "ajouteItem"
+   */
+  def ajouteItem() {
+    OrderSpecification specifobject = getSpecificationObjectFromParams(params) ?: new OrderSpecification()
+    specifobject.orderedItems << new Item()
+    render(
+            template: "/question/Order/OrderEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
+
+  /**
+   *
+   * Action "supprimeItem"
+   */
+  def supprimeItem() {
+    OrderSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.orderedItems.remove(params.id as Integer)
+    render(
+            template: "/question/Order/OrderEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
 
 }

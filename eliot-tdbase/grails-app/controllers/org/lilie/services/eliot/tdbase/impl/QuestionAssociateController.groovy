@@ -37,43 +37,43 @@ import org.lilie.services.eliot.tdbase.impl.associate.Association
  */
 class QuestionAssociateController extends QuestionController {
 
-    @Override
-    def getSpecificationObjectFromParams(Map params) {
+  @Override
+  def getSpecificationObjectFromParams(Map params) {
 
-        def specifobject = new AssociateSpecification()
-        def size = params.specifobject.associations.size as Integer
-        if (size) {
-            size.times {
-                specifobject.associations << new Association()
-            }
-        }
-        bindData(specifobject, params, "specifobject")
-    }
-
-    /**
-     *
-     * Action "ajouteAssociation"
-     */
-    def ajouteAssociation() {
-        AssociateSpecification specifobject = getSpecificationObjectFromParams(params) ?: new AssociateSpecification()
+    def specifobject = new AssociateSpecification()
+    def size = params.specifobject.associations.size as Integer
+    if (size) {
+      size.times {
         specifobject.associations << new Association()
-        render(
-                template: "/question/Associate/AssociateEditionReponses",
-                model: [specifobject: specifobject]
-        )
+      }
     }
+    bindData(specifobject, params, "specifobject")
+  }
 
-    /**
-     *
-     * Action "supprimeAssociation"
-     */
-    def supprimeAssociation() {
-        AssociateSpecification specifobject = getSpecificationObjectFromParams(params)
-        specifobject.associations.remove(params.id as Integer)
-        render(
-                template: "/question/Associate/AssociateEditionReponses",
-                model: [specifobject: specifobject]
-        )
-    }
+  /**
+   *
+   * Action "ajouteAssociation"
+   */
+  def ajouteAssociation() {
+    AssociateSpecification specifobject = getSpecificationObjectFromParams(params) ?: new AssociateSpecification()
+    specifobject.associations << new Association()
+    render(
+            template: "/question/Associate/AssociateEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
+
+  /**
+   *
+   * Action "supprimeAssociation"
+   */
+  def supprimeAssociation() {
+    AssociateSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.associations.remove(params.id as Integer)
+    render(
+            template: "/question/Associate/AssociateEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
 
 }

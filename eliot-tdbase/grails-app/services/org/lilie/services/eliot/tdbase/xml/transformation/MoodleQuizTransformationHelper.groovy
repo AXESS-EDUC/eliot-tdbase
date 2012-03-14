@@ -107,7 +107,7 @@ class MoodleQuizBase64DecoderHandler {
       if (currentImage) {
         InputStream encodedIs = new ByteArrayInputStream(element.getElementText().bytes)
         InputStream decodedIs = MimeUtility.decode(encodedIs, 'base64')
-        DataRecord dataRecord =  dataStore.addRecord(decodedIs)
+        DataRecord dataRecord = dataStore.addRecord(decodedIs)
         currentImage.dataSoreId = dataRecord.identifier.toString()
         currentImage.size = dataRecord.length
       }

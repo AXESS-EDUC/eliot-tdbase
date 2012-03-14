@@ -51,230 +51,229 @@ import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
  */
 class MoodleQuizExporterService {
 
-    /**
-     * Exporter un sujet sous format d'un moodle quiz.
-     * @param sujet
-     * @return
-     */
-    String toMoodleQuiz(Sujet sujet) {
-        //new File("/home/bert/questions.json").write(sujet.questions.collect {it.specification}.toString(), "UTF-8")
-        renderQuiz(sujet.questions)
+  /**
+   * Exporter un sujet sous format d'un moodle quiz.
+   * @param sujet
+   * @return
+   */
+  String toMoodleQuiz(Sujet sujet) {
+    //new File("/home/bert/questions.json").write(sujet.questions.collect {it.specification}.toString(), "UTF-8")
+    renderQuiz(sujet.questions)
+  }
+
+  /**
+   * Exporter une Question sous format d'un moodle quiz.
+   * @param questionSpecification
+   * @return
+   */
+  String toMoodleQuiz(Question question) {
+    if (question.type.code == "Composite") {
+      renderQuiz(question.exercice.questions)
+    } else {
+      renderQuiz([question])
+    }
+  }
+
+  /**
+   * Render the <quiz> tag.
+   * @param questionSpecifications
+   * @return
+   */
+  private String renderQuiz(List<Question> question) {
+    def writer = new StringWriter()
+    def xml = new MarkupBuilder(writer)
+
+    xml.quiz() {
+      question.each {
+
+        //TODO put here the stuff for composite question.
+
+        renderQuestion(xml, it.specificationObject, it.titre)
+      }
     }
 
-    /**
-     * Exporter une Question sous format d'un moodle quiz.
-     * @param questionSpecification
-     * @return
-     */
-    String toMoodleQuiz(Question question) {
-        if (question.type.code == "Composite") {
-            renderQuiz(question.exercice.questions)
+    prependHeader writer.toString()
+  }
+
+  /**
+   * Render the <question> tag for associate questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, AssociateSpecification specification, String title) {
+    xml.question(type: "matching") {
+      questionHeader(xml, title, specification.libelle)
+      specification.associations.each {Association association ->
+        xml.subquestion {
+          xml.text association.participant1
+          xml.anwer {xml.text association.participant2}
         }
-        else {
-            renderQuiz([question])
-        }
+      }
+      xml.shuffleanswers false
+      correction(xml, specification.correction)
     }
+  }
 
-    /**
-     * Render the <quiz> tag.
-     * @param questionSpecifications
-     * @return
-     */
-    private String renderQuiz(List<Question> question) {
-        def writer = new StringWriter()
-        def xml = new MarkupBuilder(writer)
-
-        xml.quiz() {
-            question.each {
-
-                //TODO put here the stuff for composite question.
-
-                renderQuestion(xml, it.specificationObject, it.titre)
-            }
-        }
-
-        prependHeader writer.toString()
+  /**
+   * Render the <question> tag for decimal questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, DecimalSpecification specification, String title) {
+    xml.question(type: "numerical") {
+      questionHeader(xml, title, specification.libelle)
+      xml.answer(fraction: 100) {
+        xml.text specification.valeur
+        xml.unit(name: specification.unite, multiplier: 1)
+        xml.tollerance specification.precision
+      }
+      correction(xml, specification.correction)
     }
+  }
 
-    /**
-     * Render the <question> tag for associate questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, AssociateSpecification specification, String title) {
-        xml.question(type: "matching") {
-            questionHeader(xml, title, specification.libelle)
-            specification.associations.each {Association association ->
-                xml.subquestion {
-                    xml.text association.participant1
-                    xml.anwer {xml.text association.participant2}
-                }
-            }
-            xml.shuffleanswers false
-            correction(xml, specification.correction)
-        }
+  /**
+   * Render the <question> tag for Integer questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, IntegerSpecification specification, String title) {
+    xml.question(type: "numerical") {
+      questionHeader(xml, title, specification.libelle)
+      xml.answer(fraction: 100) {
+        xml.text specification.valeur
+        xml.unit(name: specification.unite, multiplier: 1)
+      }
+      correction(xml, specification.correction)
     }
+  }
 
-    /**
-     * Render the <question> tag for decimal questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, DecimalSpecification specification, String title) {
-        xml.question(type: "numerical") {
-            questionHeader(xml, title, specification.libelle)
-            xml.answer(fraction: 100) {
-                xml.text specification.valeur
-                xml.unit(name: specification.unite, multiplier: 1)
-                xml.tollerance specification.precision
-            }
-            correction(xml, specification.correction)
-        }
+  /**
+   * Render the <question> tag for multiple choice questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, MultipleChoiceSpecification specification, String title) {
+    xml.question(type: "multichoice") {
+      questionHeader(xml, title, specification.libelle)
+
+
+
+      correction(xml, specification.correction)
     }
+  }
 
-    /**
-     * Render the <question> tag for Integer questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, IntegerSpecification specification, String title) {
-        xml.question(type: "numerical") {
-            questionHeader(xml, title, specification.libelle)
-            xml.answer(fraction: 100) {
-                xml.text specification.valeur
-                xml.unit(name: specification.unite, multiplier: 1)
-            }
-            correction(xml, specification.correction)
-        }
+  /**
+   * Render the <question> tag for exclusive choice questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, ExclusiveChoiceSpecification specification, String title) {
+    xml.question(type: "multichoice") {
+      questionHeader(xml, title, specification.libelle)
+
+
+
+      correction(xml, specification.correction)
     }
+  }
 
-    /**
-     * Render the <question> tag for multiple choice questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, MultipleChoiceSpecification specification, String title) {
-        xml.question(type: "multichoice") {
-            questionHeader(xml, title, specification.libelle)
+  /**
+   * Render the <question> tag for fill gap  questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, FillGapSpecification specification, String title) {
+    xml.question(type: "to_be_implemented_fill gap")
+  }
 
+  /**
+   * Render the <question> tag for open questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, OpenSpecification specification, String title) {
+    xml.question(type: "to_be_implemented open question")
+  }
 
+  /**
+   * Render the <question> tag for statement questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, StatementSpecification specification, String title) {
+    xml.question(type: "to_be_implemented statement")
+  }
 
-            correction(xml, specification.correction)
-        }
+  /**
+   * Prepend a correct header at the beginning of the generated XML document.
+   * @param xml
+   * @return
+   */
+  private String prependHeader(String xml) {
+    "<?xml version=\"1.0\" ?>\n" + xml
+  }
+
+  private questionHeader(MarkupBuilder xml, String title, String libelle) {
+    xml.name() {
+      xml.text title
     }
-
-    /**
-     * Render the <question> tag for exclusive choice questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, ExclusiveChoiceSpecification specification, String title) {
-        xml.question(type: "multichoice") {
-            questionHeader(xml, title, specification.libelle)
-
-
-
-            correction(xml, specification.correction)
-        }
+    xml.questiontext(format: 'html') {
+      xml.text libelle
     }
+  }
 
-    /**
-     * Render the <question> tag for fill gap  questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, FillGapSpecification specification, String title) {
-        xml.question(type: "to_be_implemented_fill gap")
-    }
+  private correction(MarkupBuilder xml, String correction) {
+    xml.generalfeedback correction
+  }
 
-    /**
-     * Render the <question> tag for open questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, OpenSpecification specification, String title) {
-        xml.question(type: "to_be_implemented open question")
-    }
+  /**
+   * Render the <question> tag for fill graphics questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, FillGraphicsSpecification specification, String title) {
+    // ne peut pas être renderisé
+  }
 
-    /**
-     * Render the <question> tag for statement questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, StatementSpecification specification, String title) {
-        xml.question(type: "to_be_implemented statement")
-    }
+  /**
+   * Render the <question> tag for graphic match questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, GraphicMatchSpecification specification, String title) {
+    // ne peut pas être renderisé
+  }
 
-    /**
-     * Prepend a correct header at the beginning of the generated XML document.
-     * @param xml
-     * @return
-     */
-    private String prependHeader(String xml) {
-        "<?xml version=\"1.0\" ?>\n" + xml
-    }
+  /**
+   * Render the <question> tag for order questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, OrderSpecification specification, String title) {
+    // ne peut pas être renderisé
+  }
 
-    private questionHeader(MarkupBuilder xml, String title, String libelle) {
-        xml.name() {
-            xml.text title
-        }
-        xml.questiontext(format: 'html') {
-            xml.text libelle
-        }
-    }
+  /**
+   * Render the <question> tag for slider questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, SliderSpecification specification, String title) {
+    // ne peut pas être renderisé
+  }
 
-    private correction(MarkupBuilder xml, String correction) {
-        xml.generalfeedback correction
-    }
+  /**
+   * Render the <question> tag for file upload questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, FileUploadSpecification specification, String title) {
+    // ne peut pas être renderisé
+  }
 
-    /**
-     * Render the <question> tag for fill graphics questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, FillGraphicsSpecification specification, String title) {
-        // ne peut pas être renderisé
+  private void renderCompositeQuestion(MarkupBuilder xml, Question question) {
+    question.exercice.questions.each {
+      renderQuestion(xml, question.specification, "Question Composée -- " + question.titre)
     }
-
-    /**
-     * Render the <question> tag for graphic match questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, GraphicMatchSpecification specification, String title) {
-        // ne peut pas être renderisé
-    }
-
-    /**
-     * Render the <question> tag for order questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, OrderSpecification specification, String title) {
-        // ne peut pas être renderisé
-    }
-
-    /**
-     * Render the <question> tag for slider questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, SliderSpecification specification, String title) {
-        // ne peut pas être renderisé
-    }
-
-    /**
-     * Render the <question> tag for file upload questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, FileUploadSpecification specification, String title) {
-        // ne peut pas être renderisé
-    }
-
-    private void renderCompositeQuestion(MarkupBuilder xml, Question question) {
-        question.exercice.questions.each {
-            renderQuestion(xml, question.specification, "Question Composée -- " + question.titre)
-        }
-    }
+  }
 }

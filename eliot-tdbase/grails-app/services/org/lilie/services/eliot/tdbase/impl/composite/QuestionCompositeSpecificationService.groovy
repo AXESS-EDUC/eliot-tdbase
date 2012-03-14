@@ -40,10 +40,10 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
  */
 class QuestionCompositeSpecificationService extends QuestionSpecificationService<CompositeSpecification> {
 
-    @Override
-    CompositeSpecification createSpecification(Map map) {
-        new CompositeSpecification()
-    }
+  @Override
+  CompositeSpecification createSpecification(Map map) {
+    new CompositeSpecification()
+  }
 
 }
 
@@ -53,15 +53,15 @@ class QuestionCompositeSpecificationService extends QuestionSpecificationService
 @Validateable
 class CompositeSpecification implements QuestionSpecification {
 
-    String questionTypeCode = QuestionTypeEnum.Composite.name()
+  String questionTypeCode = QuestionTypeEnum.Composite.name()
 
-    /**
-     *
-     * @return la représentation sous forme de map
-     */
-    Map toMap() {
-        [questionTypeCode: questionTypeCode]
-    }
+  /**
+   *
+   * @return la représentation sous forme de map
+   */
+  Map toMap() {
+    [questionTypeCode: questionTypeCode]
+  }
 
 
 }

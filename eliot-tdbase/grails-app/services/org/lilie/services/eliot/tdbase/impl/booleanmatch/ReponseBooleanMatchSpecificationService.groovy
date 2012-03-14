@@ -40,19 +40,19 @@ import org.lilie.services.eliot.tdbase.QuestionSpecification
  */
 class ReponseBooleanMatchSpecificationService extends ReponseSpecificationService<ReponseBooleanMatchSpecification> {
 
-    @Override
-    ReponseBooleanMatchSpecification createSpecification(Map map) {
-        new ReponseBooleanMatchSpecification(map)
-    }
+  @Override
+  ReponseBooleanMatchSpecification createSpecification(Map map) {
+    new ReponseBooleanMatchSpecification(map)
+  }
 
-    @Override
-    ReponseBooleanMatchSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
+  @Override
+  ReponseBooleanMatchSpecification getObjectInitialiseFromSpecification(QuestionSpecification questionSpecification) {
 
-        BooleanMatchSpecification specification = questionSpecification;
+    BooleanMatchSpecification specification = questionSpecification;
 
-        return createSpecification(reponsesPossibles: specification.reponses,
-                toutOuRien: specification.toutOuRien)
-    }
+    return createSpecification(reponsesPossibles: specification.reponses,
+                               toutOuRien: specification.toutOuRien)
+  }
 }
 
 /**
@@ -60,51 +60,50 @@ class ReponseBooleanMatchSpecificationService extends ReponseSpecificationServic
  */
 class ReponseBooleanMatchSpecification implements ReponseSpecification {
   String questionTypeCode = QuestionTypeEnum.BooleanMatch.name()
-    /**
-     * La valeur de la reponse.
-     */
-    String valeurDeReponse
+  /**
+   * La valeur de la reponse.
+   */
+  String valeurDeReponse
 
-    /**
-     * La valeur correcte de la reponse.
-     */
-    List<String> reponsesPossibles = []
+  /**
+   * La valeur correcte de la reponse.
+   */
+  List<String> reponsesPossibles = []
 
-    /**
-     * Influence sur le mode d'evaluation.
-     */
-    boolean toutOuRien
+  /**
+   * Influence sur le mode d'evaluation.
+   */
+  boolean toutOuRien
 
-    Map toMap() {
-        [
-                questionTypeCode: questionTypeCode,
-                valeurDeReponse: valeurDeReponse,
-                reponsesPossibles: reponsesPossibles,
-                toutOuRien: toutOuRien
-        ]
+  Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            valeurDeReponse: valeurDeReponse,
+            reponsesPossibles: reponsesPossibles,
+            toutOuRien: toutOuRien
+    ]
+  }
+
+  /**
+   *
+   * @param maximumPoints
+   * @return
+   */
+  float evaluate(float maximumPoints) {
+
+    List<String> valeursreponseList = new ArrayList<String>(valeurDeReponse.split("\\s").collect {StringUtils.normalise(it)})
+    List<String> normalisedPossibleReponseList = reponsesPossibles.collect {StringUtils.normalise(it)}
+
+    float points = 0F
+
+    if (toutOuRien) {
+      if (valeursreponseList.containsAll(normalisedPossibleReponseList)) {
+        points = maximumPoints
+      }
+    } else {
+      def intesection = normalisedPossibleReponseList.intersect(valeursreponseList)
+      points = intesection.size() / normalisedPossibleReponseList.size() * maximumPoints
     }
-
-    /**
-     *
-     * @param maximumPoints
-     * @return
-     */
-    float evaluate(float maximumPoints) {
-
-        List<String> valeursreponseList = new ArrayList<String>(valeurDeReponse.split("\\s").collect {StringUtils.normalise(it)})
-        List<String> normalisedPossibleReponseList = reponsesPossibles.collect {StringUtils.normalise(it)}
-
-        float points = 0F
-
-        if (toutOuRien) {
-            if (valeursreponseList.containsAll(normalisedPossibleReponseList)) {
-                points = maximumPoints
-            }
-        }
-        else {
-            def intesection = normalisedPossibleReponseList.intersect(valeursreponseList)
-            points = intesection.size() / normalisedPossibleReponseList.size() * maximumPoints
-        }
-        points
-    }
+    points
+  }
 }

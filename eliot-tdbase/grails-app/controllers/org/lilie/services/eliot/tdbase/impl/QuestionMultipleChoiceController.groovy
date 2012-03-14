@@ -36,48 +36,48 @@ import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecifi
 
 class QuestionMultipleChoiceController extends QuestionController {
 
-    /**
-     *
-     * Action "ajouteReponse"
-     */
-    def ajouteReponse() {
-        MultipleChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
-        specifobject.reponses << new MultipleChoiceSpecificationReponsePossible(
-                id: specifobject.reponses.size() + 1)
-        render(
-                template: "/question/MultipleChoice/MultipleChoiceEditionReponses",
-                model: [specifobject: specifobject]
-        )
-    }
+  /**
+   *
+   * Action "ajouteReponse"
+   */
+  def ajouteReponse() {
+    MultipleChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.reponses << new MultipleChoiceSpecificationReponsePossible(
+            id: specifobject.reponses.size() + 1)
+    render(
+            template: "/question/MultipleChoice/MultipleChoiceEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
 
-    /**
-     *
-     * Action "supprimeReponse"
-     */
-    def supprimeReponse() {
-        MultipleChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
-        specifobject.reponses.remove(params.id as Integer)
-        render(
-                template: "/question/MultipleChoice/MultipleChoiceEditionReponses",
-                model: [specifobject: specifobject]
-        )
-    }
+  /**
+   *
+   * Action "supprimeReponse"
+   */
+  def supprimeReponse() {
+    MultipleChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.reponses.remove(params.id as Integer)
+    render(
+            template: "/question/MultipleChoice/MultipleChoiceEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
 
-    /**
-     *
-     * @param params les paramètres de la requête
-     * @return l'objet représentant la spécification
-     */
-    def getSpecificationObjectFromParams(Map params) {
-        def specifobject = new MultipleChoiceSpecification()
-        def size = params.specifobject.reponses?.size as Integer
-        if (size) {
-            size.times {
-                specifobject.reponses << new MultipleChoiceSpecificationReponsePossible()
-            }
-        }
-        bindData(specifobject, params, "specifobject")
+  /**
+   *
+   * @param params les paramètres de la requête
+   * @return l'objet représentant la spécification
+   */
+  def getSpecificationObjectFromParams(Map params) {
+    def specifobject = new MultipleChoiceSpecification()
+    def size = params.specifobject.reponses?.size as Integer
+    if (size) {
+      size.times {
+        specifobject.reponses << new MultipleChoiceSpecificationReponsePossible()
+      }
     }
+    bindData(specifobject, params, "specifobject")
+  }
 }
 
 

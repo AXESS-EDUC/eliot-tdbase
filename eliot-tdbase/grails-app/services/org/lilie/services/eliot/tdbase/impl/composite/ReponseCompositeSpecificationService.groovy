@@ -58,12 +58,12 @@ class ReponseCompositeSpecificationService extends ReponseSpecificationService<R
  * Représente un objet spécification pour une question de type Composite.
  */
 class ReponseCompositeSpecification implements ReponseSpecification {
-  
+
   String questionTypeCode = QuestionTypeEnum.Composite.name()
 
 
   Map toMap() {
-    [questionTypeCode:questionTypeCode]
+    [questionTypeCode: questionTypeCode]
   }
 
   /*On fait la somme des evaluations des reponses imbriquées

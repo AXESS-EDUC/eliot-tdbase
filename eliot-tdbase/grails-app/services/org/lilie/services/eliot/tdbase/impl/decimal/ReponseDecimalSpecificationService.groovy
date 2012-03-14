@@ -97,12 +97,13 @@ class ReponseDecimalSpecification implements ReponseSpecification {
   * réponse + la précision, la note vaut 1
   * On effectue une règle de trois pour ramener la note correspondant au barême
   */
+
   float evaluate(float maximumPoints) {
-      if (valeurReponse != null && valeurCorrecte != null) {
-        if (NumberUtils.egaliteAvecPrecision(valeurCorrecte,valeurReponse, precision)) {
-          return maximumPoints
-        }
+    if (valeurReponse != null && valeurCorrecte != null) {
+      if (NumberUtils.egaliteAvecPrecision(valeurCorrecte, valeurReponse, precision)) {
+        return maximumPoints
       }
-      0F
     }
+    0F
+  }
 }

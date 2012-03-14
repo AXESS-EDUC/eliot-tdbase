@@ -63,14 +63,13 @@ class MoodleQuizTransformationHelperTests extends GroovyTestCase {
   }
 
   void testProcessInputWithBase64Handler() {
-      def inputStream = ctx.getResource("classpath:$INPUT").getInputStream()
-      def imageIds = transformationHelper.processInputWithBase64Handler(inputStream)
-      assertTrue(imageIds.size() > 0)
-      imageIds.each {
-        println it
-      }
+    def inputStream = ctx.getResource("classpath:$INPUT").getInputStream()
+    def imageIds = transformationHelper.processInputWithBase64Handler(inputStream)
+    assertTrue(imageIds.size() > 0)
+    imageIds.each {
+      println it
     }
-
+  }
 
 
 }

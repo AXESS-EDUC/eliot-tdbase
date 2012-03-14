@@ -41,10 +41,10 @@ import org.lilie.services.eliot.tice.utils.NumberUtils
  */
 class QuestionDecimalSpecificationService extends QuestionSpecificationService<DecimalSpecification> {
 
-    @Override
-    DecimalSpecification createSpecification(Map map) {
-        new DecimalSpecification(map)
-    }
+  @Override
+  DecimalSpecification createSpecification(Map map) {
+    new DecimalSpecification(map)
+  }
 
 }
 
@@ -53,59 +53,59 @@ class QuestionDecimalSpecificationService extends QuestionSpecificationService<D
  */
 @Validateable
 class DecimalSpecification implements QuestionSpecification {
-    String questionTypeCode = QuestionTypeEnum.Decimal.name()
-    String libelle
-    Float valeur
-    String unite
-    Float precision = 0
-    String correction
+  String questionTypeCode = QuestionTypeEnum.Decimal.name()
+  String libelle
+  Float valeur
+  String unite
+  Float precision = 0
+  String correction
 
 
-    DecimalSpecification() {
-        super()
+  DecimalSpecification() {
+    super()
+  }
+
+  /**
+   * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  DecimalSpecification(Map map) {
+    libelle = map.libelle
+    valeur = map.valeur
+    unite = map.unite
+    precision = map.precision
+    correction = map.correction
+  }
+
+  Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            libelle: libelle,
+            valeur: valeur,
+            unite: unite,
+            precision: precision,
+            correction: correction
+    ]
+  }
+
+  String getValeurAffichage() {
+    if (valeur != null) {
+      return NumberUtils.formatFloat(valeur)
     }
+    return null
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    DecimalSpecification(Map map) {
-        libelle = map.libelle
-        valeur = map.valeur
-        unite = map.unite
-        precision = map.precision
-        correction = map.correction
+  String getPrecisionAffichage() {
+    if (precision != null) {
+      return NumberUtils.formatFloat(precision)
     }
+    return null
+  }
 
-    Map toMap() {
-        [
-                questionTypeCode: questionTypeCode,
-                libelle: libelle,
-                valeur: valeur,
-                unite: unite,
-                precision: precision,
-                correction: correction
-        ]
-    }
-
-    String getValeurAffichage() {
-        if (valeur != null) {
-            return NumberUtils.formatFloat(valeur)
-        }
-        return null
-    }
-
-    String getPrecisionAffichage() {
-        if (precision != null) {
-            return NumberUtils.formatFloat(precision)
-        }
-        return null
-    }
-
-    static constraints = {
-        libelle blank: false
-        valeur nullable: false
-    }
+  static constraints = {
+    libelle blank: false
+    valeur nullable: false
+  }
 
 }

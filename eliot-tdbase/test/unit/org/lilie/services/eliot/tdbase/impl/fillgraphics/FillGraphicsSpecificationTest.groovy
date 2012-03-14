@@ -9,18 +9,18 @@ package org.lilie.services.eliot.tdbase.impl.fillgraphics
  */
 class FillGraphicsSpecificationTest extends GroovyTestCase {
 
-    void testGetMotsSugeres() {
-        def textZones = []
-        textZones << new TextZone(text: "Tata").toMap()
-        textZones << new TextZone(text: "Titi").toMap()
-        textZones << new TextZone(text: "Tutu").toMap()
-        def specification = new FillGraphicsSpecification(textZones: textZones)
+  void testGetMotsSugeres() {
+    def textZones = []
+    textZones << new TextZone(text: "Tata").toMap()
+    textZones << new TextZone(text: "Titi").toMap()
+    textZones << new TextZone(text: "Tutu").toMap()
+    def specification = new FillGraphicsSpecification(textZones: textZones)
 
-        def motsSugeres = specification.motsSugeres
+    def motsSugeres = specification.motsSugeres
 
-        assertEquals(3, motsSugeres.size())
-        assertTrue(motsSugeres.contains("Tata"))
-        assertTrue(motsSugeres.contains("Titi"))
-        assertTrue(motsSugeres.contains("Tutu"))
-    }
+    assertEquals(3, motsSugeres.size())
+    assertTrue(motsSugeres.contains("Tata"))
+    assertTrue(motsSugeres.contains("Titi"))
+    assertTrue(motsSugeres.contains("Tutu"))
+  }
 }

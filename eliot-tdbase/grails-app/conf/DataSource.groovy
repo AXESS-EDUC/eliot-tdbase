@@ -51,9 +51,9 @@ environments {
     }
   }
   testlilie {
-      dataSource {
-        url = "jdbc:postgresql://localhost:5432/eliot-tdbase-int"
-      }
+    dataSource {
+      url = "jdbc:postgresql://localhost:5432/eliot-tdbase-int"
     }
+  }
 
 }

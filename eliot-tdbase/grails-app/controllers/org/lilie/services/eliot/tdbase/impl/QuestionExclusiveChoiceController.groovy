@@ -33,47 +33,47 @@ import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpeci
 
 class QuestionExclusiveChoiceController extends QuestionController {
 
-    /**
-     *
-     * Action "ajouteReponse"
-     */
-    def ajouteReponse() {
-        ExclusiveChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
-        specifobject.reponses << new ExclusiveChoiceSpecificationReponsePossible(id: specifobject.reponses.size() + 1)
-        render(
-                template: "/question/ExclusiveChoice/ExclusiveChoiceEditionReponses",
-                model: [specifobject: specifobject]
-        )
-    }
+  /**
+   *
+   * Action "ajouteReponse"
+   */
+  def ajouteReponse() {
+    ExclusiveChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.reponses << new ExclusiveChoiceSpecificationReponsePossible(id: specifobject.reponses.size() + 1)
+    render(
+            template: "/question/ExclusiveChoice/ExclusiveChoiceEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
 
-    /**
-     *
-     * Action "ajouteReponse"
-     */
-    def supprimeReponse() {
-        ExclusiveChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
-        specifobject.reponses.remove(params.id as Integer)
-        render(
-                template: "/question/ExclusiveChoice/ExclusiveChoiceEditionReponses",
-                model: [specifobject: specifobject]
-        )
-    }
+  /**
+   *
+   * Action "ajouteReponse"
+   */
+  def supprimeReponse() {
+    ExclusiveChoiceSpecification specifobject = getSpecificationObjectFromParams(params)
+    specifobject.reponses.remove(params.id as Integer)
+    render(
+            template: "/question/ExclusiveChoice/ExclusiveChoiceEditionReponses",
+            model: [specifobject: specifobject]
+    )
+  }
 
-    /**
-     *
-     * @param params les paramètres de la requête
-     * @return l'objet représentant la spécification
-     */
-    def getSpecificationObjectFromParams(Map params) {
-        def specifobject = new ExclusiveChoiceSpecification()
-        def size = params.specifobject.reponses?.size as Integer
-        if (size) {
-            size.times {
-                specifobject.reponses << new ExclusiveChoiceSpecificationReponsePossible()
-            }
-        }
-        bindData(specifobject, params, "specifobject")
+  /**
+   *
+   * @param params les paramètres de la requête
+   * @return l'objet représentant la spécification
+   */
+  def getSpecificationObjectFromParams(Map params) {
+    def specifobject = new ExclusiveChoiceSpecification()
+    def size = params.specifobject.reponses?.size as Integer
+    if (size) {
+      size.times {
+        specifobject.reponses << new ExclusiveChoiceSpecificationReponsePossible()
+      }
     }
+    bindData(specifobject, params, "specifobject")
+  }
 }
 
 

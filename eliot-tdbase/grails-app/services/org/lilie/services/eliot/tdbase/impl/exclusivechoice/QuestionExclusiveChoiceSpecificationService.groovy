@@ -38,10 +38,10 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
  */
 class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationService<ExclusiveChoiceSpecification> {
 
-    @Override
-    ExclusiveChoiceSpecification createSpecification(Map map) {
-        new ExclusiveChoiceSpecification(map)
-    }
+  @Override
+  ExclusiveChoiceSpecification createSpecification(Map map) {
+    new ExclusiveChoiceSpecification(map)
+  }
 
 }
 
@@ -50,83 +50,83 @@ class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationS
  */
 @Validateable
 class ExclusiveChoiceSpecification implements QuestionSpecification {
-    /**
-     * Le code du type de la question.
-     */
-    String questionTypeCode = QuestionTypeEnum.ExclusiveChoice.name()
+  /**
+   * Le code du type de la question.
+   */
+  String questionTypeCode = QuestionTypeEnum.ExclusiveChoice.name()
 
-    /**
-     * Le libellé.
-     */
-    String libelle
+  /**
+   * Le libellé.
+   */
+  String libelle
 
-    /**
-     * La correction de la question.
-     */
-    String correction
+  /**
+   * La correction de la question.
+   */
+  String correction
 
-    /**
-     * Indique si les differents réponses doivent être presentés de manière aléatoire.
-     */
-    boolean shuffled = false
+  /**
+   * Indique si les differents réponses doivent être presentés de manière aléatoire.
+   */
+  boolean shuffled = false
 
-    String indexBonneReponse
+  String indexBonneReponse
 
-    /**
-     * La liste des réponses.
-     */
-    List<ExclusiveChoiceSpecificationReponsePossible> reponses = []
+  /**
+   * La liste des réponses.
+   */
+  List<ExclusiveChoiceSpecificationReponsePossible> reponses = []
 
-    /**
-     * Constructeur par défaut.
-     */
-    ExclusiveChoiceSpecification() {
-        super()
-    }
+  /**
+   * Constructeur par défaut.
+   */
+  ExclusiveChoiceSpecification() {
+    super()
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecification
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    ExclusiveChoiceSpecification(Map map) {
-        libelle = map.libelle
-        correction = map.correction
-        indexBonneReponse = map.indexBonneReponse
-        reponses = map.reponses.collect {createReponsePossibles it}
-        shuffled = map.shuffled
-        indexBonneReponse = map.indexBonneReponse
-    }
+  /**
+   * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecification
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  ExclusiveChoiceSpecification(Map map) {
+    libelle = map.libelle
+    correction = map.correction
+    indexBonneReponse = map.indexBonneReponse
+    reponses = map.reponses.collect {createReponsePossibles it}
+    shuffled = map.shuffled
+    indexBonneReponse = map.indexBonneReponse
+  }
 
-    def Map toMap() {
-        [
-                questionTypeCode: questionTypeCode,
-                libelle: libelle,
-                correction: correction,
-                reponses: reponses*.toMap(),
-                indexBonneReponse: indexBonneReponse,
-                shuffled: shuffled
-        ]
-    }
+  def Map toMap() {
+    [
+            questionTypeCode: questionTypeCode,
+            libelle: libelle,
+            correction: correction,
+            reponses: reponses*.toMap(),
+            indexBonneReponse: indexBonneReponse,
+            shuffled: shuffled
+    ]
+  }
 
-    List<ExclusiveChoiceSpecificationReponsePossible> getReponsesAleatoires() {
-        def result = reponses
-        Collections.shuffle(result)
-        result
-    }
+  List<ExclusiveChoiceSpecificationReponsePossible> getReponsesAleatoires() {
+    def result = reponses
+    Collections.shuffle(result)
+    result
+  }
 
-    static constraints = {
-        libelle blank: false
-        reponses minSize: 2
-    }
+  static constraints = {
+    libelle blank: false
+    reponses minSize: 2
+  }
 
-    private createReponsePossibles(ExclusiveChoiceSpecificationReponsePossible reponse) {
-        reponse
-    }
+  private createReponsePossibles(ExclusiveChoiceSpecificationReponsePossible reponse) {
+    reponse
+  }
 
-    private createReponsePossibles(Map params) {
-        new ExclusiveChoiceSpecificationReponsePossible(params)
-    }
+  private createReponsePossibles(Map params) {
+    new ExclusiveChoiceSpecificationReponsePossible(params)
+  }
 }
 
 /**
@@ -134,37 +134,37 @@ class ExclusiveChoiceSpecification implements QuestionSpecification {
  * type MultipleChoice
  */
 class ExclusiveChoiceSpecificationReponsePossible {
-    /**
-     * Libelle de la reponse
-     */
-    String libelleReponse
+  /**
+   * Libelle de la reponse
+   */
+  String libelleReponse
 
-    /**
-     * L'id de la reponse
-     */
-    String id
+  /**
+   * L'id de la reponse
+   */
+  String id
 
-    /**
-     * Constructeur par defaut.
-     */
-    ExclusiveChoiceSpecificationReponsePossible() {
-        super()
-    }
+  /**
+   * Constructeur par defaut.
+   */
+  ExclusiveChoiceSpecificationReponsePossible() {
+    super()
+  }
 
-    /**
-     * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecificationReponsePossible
-     * @param map la map permettant d'initialiser l'objet en cours
-     * de création
-     */
-    ExclusiveChoiceSpecificationReponsePossible(Map map) {
-        libelleReponse = map.libelleReponse
-        id = map.id
-    }
+  /**
+   * Créer et initialise un nouvel objet de type ExclusiveChoiceSpecificationReponsePossible
+   * @param map la map permettant d'initialiser l'objet en cours
+   * de création
+   */
+  ExclusiveChoiceSpecificationReponsePossible(Map map) {
+    libelleReponse = map.libelleReponse
+    id = map.id
+  }
 
-    def toMap() {
-        [
-                libelleReponse: libelleReponse,
-                id: id
-        ]
-    }
+  def toMap() {
+    [
+            libelleReponse: libelleReponse,
+            id: id
+    ]
+  }
 }

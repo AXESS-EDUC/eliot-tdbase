@@ -141,8 +141,8 @@ class MoodleQuizImporterService {
       if (item.attachementInputId) {
         try {
           questionAttachementService.createAttachementForQuestionFromImageIds(
-                images.get(item.attachementInputId),
-                question
+                  images.get(item.attachementInputId),
+                  question
           )
         } catch (Exception e2) {
           log.error(e2.message)
