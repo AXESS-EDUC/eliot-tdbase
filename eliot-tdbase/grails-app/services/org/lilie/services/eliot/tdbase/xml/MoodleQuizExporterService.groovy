@@ -46,6 +46,7 @@ import org.lilie.services.eliot.tdbase.impl.slider.SliderSpecification
 import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpecificationReponsePossible
+import org.lilie.services.eliot.tdbase.impl.booleanmatch.BooleanMatchSpecification
 
 /**
  * Service d'export d'un quiz moodle.
@@ -204,21 +205,20 @@ class MoodleQuizExporterService {
   }
 
   /**
-   * Render the <question> tag for fill gap  questions.
-   * @param xml
-   * @param theQuestion
-   */
-  private void renderQuestion(MarkupBuilder xml, FillGapSpecification specification, String title) {
-    xml.question(type: "to_be_implemented_fill gap")
-  }
-
-  /**
    * Render the <question> tag for open questions.
    * @param xml
    * @param theQuestion
    */
   private void renderQuestion(MarkupBuilder xml, OpenSpecification specification, String title) {
-    xml.question(type: "to_be_implemented open question")
+
+    xml.question(type: "essay") {
+      questionHeader(xml, title, specification.libelle)
+      xml.answer(fraction: 0) {
+        xml.text()
+      }
+      correction(xml, specification.correction)
+    }
+
   }
 
   /**
@@ -227,7 +227,26 @@ class MoodleQuizExporterService {
    * @param theQuestion
    */
   private void renderQuestion(MarkupBuilder xml, StatementSpecification specification, String title) {
-    xml.question(type: "to_be_implemented statement")
+    xml.question(type: "description") {
+      questionHeader(xml, title, specification.enonce)
+    }
+  }
+
+  /**
+   * Render the <question> tag for boolean match questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, BooleanMatchSpecification specification, String title) {
+    xml.question(type: "shortAnswer") {
+      questionHeader(xml, title, specification.libelle)
+      specification.reponses.each {answer->
+        xml.answer(fraction: 100) {
+          xml.text answer
+        }
+      }
+      correction(xml, specification.correction)
+    }
   }
 
   /**
@@ -249,7 +268,9 @@ class MoodleQuizExporterService {
   }
 
   private correction(MarkupBuilder xml, String correction) {
-    xml.generalfeedback correction
+    xml.generalfeedback(format: 'html') {
+      xml.text correction
+    }
   }
 
   /**
@@ -294,6 +315,15 @@ class MoodleQuizExporterService {
    * @param theQuestion
    */
   private void renderQuestion(MarkupBuilder xml, FileUploadSpecification specification, String title) {
+    // ne peut pas être renderisé
+  }
+
+  /**
+   * Render the <question> tag for fill gap  questions.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, FillGapSpecification specification, String title) {
     // ne peut pas être renderisé
   }
 }

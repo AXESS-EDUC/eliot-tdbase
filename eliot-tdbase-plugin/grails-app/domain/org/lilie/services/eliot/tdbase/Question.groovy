@@ -204,7 +204,7 @@ class Question implements Artefact {
             "Open",
             "Decimal",
             "Integer",
-            "FillGap",
+            "BooleanMatch",
             "ExclusiveChoice",
             "Associate",
             "Statement",
