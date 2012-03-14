@@ -35,6 +35,7 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 import org.lilie.services.eliot.tice.textes.Activite
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 
 /**
  * Classe représentant les modalités de l'activité d'un groupe d'élèves pour traiter
@@ -42,6 +43,8 @@ import org.lilie.services.eliot.tice.textes.Activite
  * @author franck Silvestre
  */
 class ModaliteActivite {
+
+  ProfilScolariteService profilScolariteService
 
   Date dateRemiseReponses = new Date()
 
@@ -77,7 +80,21 @@ class ModaliteActivite {
     matiere(nullable: true)
   }
 
-  static transients = ['groupeLibelle', 'estOuverte', 'estPerimee']
+  static transients = ['groupeLibelle', 'estOuverte', 'estPerimee','profilScolariteService']
+
+  /**
+   *
+   * @return la liste des personnes devant rendre une copie pour cette séance
+   */
+  List<Personne> getPersonnesDevantRendreCopie() {
+    if (structureEnseignement) {
+      return profilScolariteService.findElevesForStructureEnseignement(structureEnseignement)
+    } else {
+      // groupes non implémentés
+      return []
+    }
+
+  }
 
   /**
    *

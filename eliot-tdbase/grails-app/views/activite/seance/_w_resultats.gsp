@@ -28,21 +28,35 @@
 
 
 
-<div class="widget">
-  <h2><g:link action="listeResultats" controller="activite">${titre}</g:link></h2>
+<div class="widget resultats">
+  <h1><g:link action="listeResultats" controller="activite">${titre}</g:link></h1>
   <g:if test="${copies}">
-  <p class="nb_result">${copies.totalCount} résultat(s)</p>
-  <ul>
-    <g:each in="${copies}" var="copie">
-      <g:set var="seance" value="${copie.modaliteActivite}"/>
-      <li><strong><g:link controller="activite" action="visualiseCopie" id="${copie.id}">${seance.matiere?.libelleLong} - ${seance.sujet.titre}</g:link></strong><br/>
-        <strong> » Note : </strong><b><g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" /></b>
-        		  		/ <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
-      </li>
-    </g:each>
-  </ul>
-  </g:if>
-  <g:else>
-    Aucun résultat n'est publié.
-  </g:else>
+  <p class="nb_result">${copies.totalCount} résultat(s)
+  	<g:if test="${copies.totalCount>5}">
+  		/ <g:link action="listeResultats" controller="activite">Voir tous</g:link>
+  	</g:if>
+  </p>
+  <div class="innertube">
+	  <ul>
+	    <g:each in="${copies}" status="i" var="copie">
+	      <g:set var="seance" value="${copie.modaliteActivite}"/>
+	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}"><g:link controller="activite" action="visualiseCopie" id="${copie.id}">
+	      	<g:if test="{seance.matiere?.libelleLong} == ''">
+	      		 
+	      	</g:if>
+	      	<g:else>
+	      	     ${seance.matiere?.libelleLong} -
+	      	</g:else>
+	      	${seance.sujet.titre}</g:link><br/>
+	        <strong> » Note : </strong><b><g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" /></b>
+	        		  		/ <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
+	      </li>
+	    </g:each>
+	  </ul>
+	  </g:if>
+	  <g:else>
+		  <p class="nb_result">${copies.totalCount} résultat(s)</p>
+		  <p class="none">Aucun résultat n'est publié.</p>
+	  </g:else>
+	
 </div>

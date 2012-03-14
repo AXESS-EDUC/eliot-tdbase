@@ -41,9 +41,14 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 
-<g:render template="/seance/w_seances" model="[seances:seances, titre:'Mes séances en cours']"/>
-<g:render template="/sujet/w_sujets" model="[sujets:sujets, titre:'Mes sujets récents']"/>
-<g:render template="/question/w_questions" model="[items:items, titre:'Mes items récents']"/>
+<div id="widgets">        
+	<p><strong>Bienvenue <sec:loggedInUserInfo field="nomAffichage"/></strong>
+		Texte de présentation uis aliquet egestas purus in blandit. Curabitur vulputate, ligula lacinia scelerisque tempor, lacus lacus ornare ante, ac egestas est urna sit amet arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed molestie augue sit amet.</p>
+		
+	<g:render template="/seance/w_seances" model="[seances:seances, titre:'Mes séances en cours']"/>
+	<g:render template="/sujet/w_sujets" model="[sujets:sujets, titre:'Mes sujets récents']"/>
+	<g:render template="/question/w_questions" model="[items:items, titre:'Mes items récents']"/>
+</div>
 
 </body>
 </html>

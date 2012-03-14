@@ -1,3 +1,6 @@
+body{background-color: #fff;}
+body>.container{border: none;}
+
 h1 {
     margin: 15px;
     font-family: inherit;
@@ -471,16 +474,19 @@ styles for TDBase results list
     margin-bottom: 0;
     margin-right: 10px;
     text-align: right;
+    margin-top: 30px;
 }
 
 .portal_pagination span,
 .portal_pagination a {
-    top: -10px;
+    top: 0;
     position: relative;
     padding: 2px 4px;
 }
 
-.portal_pagination a {
+.portal_pagination .pager {
+	margin-top: -30px;
+	margin-bottom: 15px;
 }
 
 .portal_pagination a:hover,
@@ -553,11 +559,11 @@ div.portal-default_results-list>div:hover .tdbase-menu-actions {
 }
 
 div.portal-default_results-list .tdbase-menu-actions {
-    top: 32px;
+    top: 29px;
 }
 
 div.portal-default_results-list .tdbase-menu-actions.top {
-    top: 8px;
+    top: 2px;
 }
 
 div.portal-default_results-list h1 {
@@ -660,11 +666,11 @@ Style for the edition of a document or category (ToolBar)
 }
 
 .portal-tabs .tdbase-menu-actions {
-    top: 32px;
+    top: 29px;
 }
 
 .portal-tabs .tdbase-menu-actions.top {
-    top: 8px;
+    top: 2px;
 }
 
 .portal-tabs a {
@@ -829,6 +835,17 @@ Style for the edition of a document or category (Content)
     color: #ec8e0c !important;
     background: whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
 }
+.ui-button-text{
+	padding-top: 2px!important;
+	padding-bottom: 3px!important;
+}
+button.ui-button-icons-only{width: 3.2em;}
+
+.ui-button-icon-primary,
+.ui-icon ui-icon-gear{left: .3em!important;}
+
+.ui-button-icon-secondary, 
+.ui-icon ui-icon-triangle-1-s{right: .3em!important;}
 
 .ui-button:hover, .button:hover, .ui-button.active {
     border: 1px solid #fbcb09;
@@ -861,12 +878,12 @@ Style for the edition of a document or category (Content)
 }
 
 .tdbase-sujet-edition-question .tdbase-menu-actions {
-    top: 32px;
+    top: 29px;
     margin-left: -97px;
 }
 
 .tdbase-sujet-edition-question .tdbase-menu-actions.top {
-    top: 8px;
+    top: 4px;
 }
 
 .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points {
@@ -997,13 +1014,13 @@ Style for the edition of a document or category (Content)
 
 /***** Liste Sceance élève ****/
 .button.work:before {
-    content: url("../../images/eliot/picto-work.png") no-repeat 0 0;
+    content: url("../../images/eliot/picto-work.png");
     position: relative;
     top: 2px;
 }
 
 .button.voir:before {
-    content: url("../../images/eliot/picto-voir.png") no-repeat 0 0;
+    content: url("../../images/eliot/picto-voir.png");
     position: relative;
     top: 2px;
 }
@@ -1101,3 +1118,96 @@ Style for the edition of a document or category (Content)
     margin: 0 0 45px 55px;
     line-height: 170%;
 }
+
+/*******************************************************************************
+
+Style for frontpage Widget
+
+********************************************************************************/
+#widgets{
+	overflow: hidden;
+	padding: 20px 0 100px;	
+}
+	#widgets>p{margin: 0 200px 25px 20px;line-height: 130%;}
+	#widgets>p>strong{font-size: 130%;margin-bottom:10px;display: block;}
+.widget{
+	position: relative;
+	display: block;
+	border: 1px solid #ddd;
+	width: 286px;
+	/*min-height: 360px;*/
+	float: left;
+	margin-left: 14px;
+	margin-bottom: 10px;
+}
+	.widget h1{
+		margin: 0;
+		background-color:whitesmoke ;/*#f0f2f2*/
+		padding: 10px 5px 2px 15px;
+	}
+		.widget.sceances h1{background:whitesmoke url("../../images/eliot/picto-sceance.png") no-repeat 95% 12px;}
+		.widget.sujets h1{background:whitesmoke url("../../images/eliot/picto-sujet.png") no-repeat 95% 10px;}
+		.widget.items h1{background:whitesmoke url("../../images/eliot/picto-question.png") no-repeat 95% 10px;}
+		.widget.resultats h1{background:whitesmoke url("../../images/eliot/picto-result.png") no-repeat 95% 12px;}
+		
+	.widget .nb_result{
+		display: block;
+		padding-bottom: 8px;
+		text-indent: 15px;
+		margin: -2px 0 12px;
+		font-style: italic;
+		color: #666;
+		background-color: whitesmoke;
+		border-bottom: 1px solid #ddd;
+	}
+		.widget .nb_result a{opacity: .4;}
+			.widget .nb_result a:hover,
+			.widget .nb_result a:focus{opacity: .6;}
+	.widget .none{
+		padding: 8px 10px 8px 15px;
+		font-style: italic;
+		color: #999;
+	}
+
+.widget .innertube{
+	background-color: #fff;
+	padding: 0;
+	margin: 0;
+}
+	.widget ul{padding: 0;}
+		.widget ul li{
+			display: block;
+			list-style-type: none;
+			margin-left: 0;
+			border-top: 1px dotted #ddd;
+			padding: 8px 10px 8px 15px;
+			line-height: 130%;
+		}
+			.widget ul li.odd{background-color: #fcfcfc;}
+			.widget ul li:first-child{border: none;}
+			.widget ul li em{color: #999;font-size:90%;}
+			.widget.sceances ul li em{color: #999;font-size: 90%;font-style: normal;}
+			.widget ul li a{font-size: 110%;}
+
+.widget a.add{
+	position: absolute;
+    color: #3F61A0;
+    right: -1px;
+    text-align: left;
+    margin: 1px 0 0px;
+    padding: 6px 10px 8px 30px;
+    background:#f0f0f0 url("../../images/eliot/picto-add.png") no-repeat 8px 6px;
+
+    -webkit-border-bottom-right-radius: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	-moz-border-radius-bottomright: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	border-bottom-right-radius: 6px;
+	border-bottom-left-radius: 6px;
+    /*IE DOES NOT SUPPORT BORDER RADIUS*/
+}
+	.widget a.add:hover,
+	.widget a.add:focus{
+		color: #ec8e0c;
+		background-position: 8px -21px;
+	}

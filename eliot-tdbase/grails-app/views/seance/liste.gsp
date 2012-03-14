@@ -49,8 +49,8 @@
 
 <g:if test="${seances}">
   <div class="portal_pagination">
-    <p class="nb_result">${seances.totalCount} résultat(s)</p> <g:paginate
-            total="${seances.totalCount}"></g:paginate>
+    <p class="nb_result">${seances.totalCount} résultat(s)</p> 
+    <div class="pager"> Page(s) : <g:paginate total="${seances.totalCount}"></g:paginate></div>
   </div>
 
 	<div class="portal-default_results-list sceance">

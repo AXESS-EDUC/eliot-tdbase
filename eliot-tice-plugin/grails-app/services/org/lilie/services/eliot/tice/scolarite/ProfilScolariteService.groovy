@@ -150,6 +150,31 @@ public class ProfilScolariteService {
   }
 
   /**
+   * Méthode recherchant la liste des élèves d'une structure d'enseignement
+   * @param struct la structure d'enseignement
+   * @return la liste des eleves
+   */
+  List<Personne> findElevesForStructureEnseignement(StructureEnseignement struct) {
+    def criteria = PersonneProprietesScolarite.createCriteria()
+    def personneProprietesScolarites = criteria.list {
+      proprietesScolarite {
+        eq 'structureEnseignement', struct
+        eq 'fonction', FonctionEnum.ELEVE.fonction
+      }
+      eq 'estActive', true
+      personne {
+        order 'nom', 'asc'
+      }
+      join 'personne'
+    }
+    def eleves = []
+    if (personneProprietesScolarites) {
+      eleves = personneProprietesScolarites*.personne
+    }
+    return eleves
+  }
+
+  /**
    * Méthode recherchant la liste des élèves d'un responsable
    * @param responsable le responsable élève
    * @return la liste des eleves du responsable
