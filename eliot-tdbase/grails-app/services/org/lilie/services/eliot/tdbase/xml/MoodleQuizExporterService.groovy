@@ -31,10 +31,8 @@ import groovy.xml.MarkupBuilder
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.impl.associate.AssociateSpecification
-import org.lilie.services.eliot.tdbase.impl.booleanmatch.BooleanMatchSpecification
-import org.lilie.services.eliot.tdbase.impl.composite.CompositeSpecification
+import org.lilie.services.eliot.tdbase.impl.associate.Association
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
-import org.lilie.services.eliot.tdbase.impl.document.DocumentSpecification
 import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpecification
 import org.lilie.services.eliot.tdbase.impl.fileupload.FileUploadSpecification
 import org.lilie.services.eliot.tdbase.impl.fillgap.FillGapSpecification
@@ -46,7 +44,6 @@ import org.lilie.services.eliot.tdbase.impl.open.OpenSpecification
 import org.lilie.services.eliot.tdbase.impl.order.OrderSpecification
 import org.lilie.services.eliot.tdbase.impl.slider.SliderSpecification
 import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
-import org.lilie.services.eliot.tdbase.impl.associate.Association
 
 /**
  * Service d'export d'un quiz moodle.
@@ -70,7 +67,12 @@ class MoodleQuizExporterService {
      * @return
      */
     String toMoodleQuiz(Question question) {
-        renderQuiz([question])
+        if (question.type.code == "Composite") {
+            renderQuiz(question.exercice.questions)
+        }
+        else {
+            renderQuiz([question])
+        }
     }
 
     /**
@@ -83,7 +85,12 @@ class MoodleQuizExporterService {
         def xml = new MarkupBuilder(writer)
 
         xml.quiz() {
-            question.each {renderQuestion(xml, it.specificationObject, it.titre)}
+            question.each {
+
+                //TODO put here the stuff for composite question.
+
+                renderQuestion(xml, it.specificationObject, it.titre)
+            }
         }
 
         prependHeader writer.toString()
@@ -98,25 +105,14 @@ class MoodleQuizExporterService {
         xml.question(type: "matching") {
             questionHeader(xml, title, specification.libelle)
             specification.associations.each {Association association ->
-                xml.subquestion{
+                xml.subquestion {
                     xml.text association.participant1
-                    xml.anwer{xml.text association.participant2}
+                    xml.anwer {xml.text association.participant2}
                 }
             }
             xml.shuffleanswers false
             correction(xml, specification.correction)
         }
-    }
-
-
-
-    /**
-     * Render the <question> tag for composite questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, CompositeSpecification specification, String title) {
-        xml.question(type: "to_be_implemented_compositeQuestion")
     }
 
     /**
@@ -127,9 +123,9 @@ class MoodleQuizExporterService {
     private void renderQuestion(MarkupBuilder xml, DecimalSpecification specification, String title) {
         xml.question(type: "numerical") {
             questionHeader(xml, title, specification.libelle)
-            xml.answer(fraction:100){
+            xml.answer(fraction: 100) {
                 xml.text specification.valeur
-                xml.unit(name : specification.unite, multiplier: 1)
+                xml.unit(name: specification.unite, multiplier: 1)
                 xml.tollerance specification.precision
             }
             correction(xml, specification.correction)
@@ -144,10 +140,25 @@ class MoodleQuizExporterService {
     private void renderQuestion(MarkupBuilder xml, IntegerSpecification specification, String title) {
         xml.question(type: "numerical") {
             questionHeader(xml, title, specification.libelle)
-            xml.answer(fraction:100){
+            xml.answer(fraction: 100) {
                 xml.text specification.valeur
-                xml.unit(name : specification.unite, multiplier: 1)
+                xml.unit(name: specification.unite, multiplier: 1)
             }
+            correction(xml, specification.correction)
+        }
+    }
+
+    /**
+     * Render the <question> tag for multiple choice questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, MultipleChoiceSpecification specification, String title) {
+        xml.question(type: "multichoice") {
+            questionHeader(xml, title, specification.libelle)
+
+
+
             correction(xml, specification.correction)
         }
     }
@@ -158,10 +169,14 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, ExclusiveChoiceSpecification specification, String title) {
-        xml.question(type: "to_be_implemented_exclusiveChoiceSpecification")
+        xml.question(type: "multichoice") {
+            questionHeader(xml, title, specification.libelle)
+
+
+
+            correction(xml, specification.correction)
+        }
     }
-
-
 
     /**
      * Render the <question> tag for fill gap  questions.
@@ -170,18 +185,6 @@ class MoodleQuizExporterService {
      */
     private void renderQuestion(MarkupBuilder xml, FillGapSpecification specification, String title) {
         xml.question(type: "to_be_implemented_fill gap")
-    }
-
-
-
-
-    /**
-     * Render the <question> tag for multiple choice questions.
-     * @param xml
-     * @param theQuestion
-     */
-    private void renderQuestion(MarkupBuilder xml, MultipleChoiceSpecification specification, String title) {
-        xml.question(type: "to_be_implemented multiple choice")
     }
 
     /**
@@ -222,5 +225,56 @@ class MoodleQuizExporterService {
 
     private correction(MarkupBuilder xml, String correction) {
         xml.generalfeedback correction
+    }
+
+    /**
+     * Render the <question> tag for fill graphics questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, FillGraphicsSpecification specification, String title) {
+        // ne peut pas être renderisé
+    }
+
+    /**
+     * Render the <question> tag for graphic match questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, GraphicMatchSpecification specification, String title) {
+        // ne peut pas être renderisé
+    }
+
+    /**
+     * Render the <question> tag for order questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, OrderSpecification specification, String title) {
+        // ne peut pas être renderisé
+    }
+
+    /**
+     * Render the <question> tag for slider questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, SliderSpecification specification, String title) {
+        // ne peut pas être renderisé
+    }
+
+    /**
+     * Render the <question> tag for file upload questions.
+     * @param xml
+     * @param theQuestion
+     */
+    private void renderQuestion(MarkupBuilder xml, FileUploadSpecification specification, String title) {
+        // ne peut pas être renderisé
+    }
+
+    private void renderCompositeQuestion(MarkupBuilder xml, Question question) {
+        question.exercice.questions.each {
+            renderQuestion(xml, question.specification, "Question Composée -- " + question.titre)
+        }
     }
 }
