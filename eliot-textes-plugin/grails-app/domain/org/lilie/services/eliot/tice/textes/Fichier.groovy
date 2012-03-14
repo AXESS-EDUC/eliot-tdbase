@@ -28,7 +28,6 @@
 
 package org.lilie.services.eliot.tice.textes
 
-
 /**
  * Fichier.
  * @author
@@ -39,7 +38,7 @@ class Fichier {
     id column: 'id', generator: 'sequence', params: [sequence: 'entcdt.fichier_id_seq']
     version false
   }
-  Long id  
+  Long id
   String nom
   byte[] blob
   Ressource ressource

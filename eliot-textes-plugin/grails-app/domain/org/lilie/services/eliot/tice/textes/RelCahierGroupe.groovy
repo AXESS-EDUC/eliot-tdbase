@@ -62,7 +62,7 @@ class RelCahierGroupe implements Serializable {
   def int hashCode() {
     if (cahierDeTextes?.id && groupe?.id) {
       return (((cahierDeTextes.id % HashConstantes.MAX_16BITS) *
-              HashConstantes.MAX_16BITS) + (groupe.id % HashConstantes.MAX_16BITS))
+               HashConstantes.MAX_16BITS) + (groupe.id % HashConstantes.MAX_16BITS))
     } else {
       return super.hashCode()
     }
@@ -71,7 +71,7 @@ class RelCahierGroupe implements Serializable {
   def boolean equals(Object o) {
     return (
     this.cahierDeTextes.id == o.cahierDeTextes.id &&
-            this.groupe.id == o.groupe.id
+    this.groupe.id == o.groupe.id
     )
   }
 }

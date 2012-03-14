@@ -37,11 +37,11 @@ package org.lilie.services.eliot.tice.textes;
 class TypeActivite {
   static mapping = {
     table 'entcdt.type_activite'
-    id column:'id', generator: 'sequence', params: [sequence: 'entcdt.type_activite_id_seq']
+    id column: 'id', generator: 'sequence', params: [sequence: 'entcdt.type_activite_id_seq']
     cache true
     version false
   }
-  Long id  
+  Long id
   String code
   String nom
   String description
@@ -64,6 +64,7 @@ class TypeActivite {
     nom(size: 1..255, blank: false)
     degre(nullable: true, max: 9999999999L)
   }
+
   String toString() {
     return "${id}"
   }

@@ -31,28 +31,29 @@ package org.lilie.services.eliot.tice.textes
 /**
  * The EtatChapitre entity.
  *
- * @author    
+ * @author
  *
  *
  */
 class EtatChapitre {
-    static mapping = {
-         table 'entcdt.etat_chapitre'
-         version false
-         chapitre column:'id_chapitre'
-         version false
-    }
-    
-    Boolean estFerme
-    // Relation
-    Chapitre chapitre
+  static mapping = {
+    table 'entcdt.etat_chapitre'
+    version false
+    chapitre column: 'id_chapitre'
+    version false
+  }
 
-    static constraints = {
-        version(max: 9999999999L)
-        estFerme(nullable: true)
-        chapitre()
-    }
-    String toString() {
-        return "${chapitre} ${estFerme}" 
-    }
+  Boolean estFerme
+  // Relation
+  Chapitre chapitre
+
+  static constraints = {
+    version(max: 9999999999L)
+    estFerme(nullable: true)
+    chapitre()
+  }
+
+  String toString() {
+    return "${chapitre} ${estFerme}"
+  }
 }

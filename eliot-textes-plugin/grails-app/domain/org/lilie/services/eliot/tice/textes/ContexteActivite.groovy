@@ -37,18 +37,18 @@ package org.lilie.services.eliot.tice.textes;
 class ContexteActivite {
   static mapping = {
     table 'entcdt.contexte_activite'
-    id column:'id', generator: 'sequence', params: [sequence: 'entcdt.contexte_activite_id_seq']
+    id column: 'id', generator: 'sequence', params: [sequence: 'entcdt.contexte_activite_id_seq']
     cache true
     version false
   }
-  Long id  
+  Long id
   String code
   String nom
   String description
 
   public static final String CODE_MAISON = 'MAI'
   public static final String CODE_CLASSE = 'CLA'
-  
+
   static constraints = {
     id(max: 9999999999L)
     version(max: 9999999999L)

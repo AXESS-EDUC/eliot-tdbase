@@ -37,17 +37,17 @@ import org.lilie.services.eliot.tice.securite.DomainAutorite
  *
  *
  */
-class Chapitre  {
+class Chapitre {
 
   static mapping = {
     table 'entcdt.chapitre'
-    id column: 'id', generator:'sequence', params:[sequence:'entcdt.chapitre_id_seq']
+    id column: 'id', generator: 'sequence', params: [sequence: 'entcdt.chapitre_id_seq']
     chapitre column: 'id_chapitre_parent'
     auteur column: 'id_auteur'
     cahierDeTextes column: 'id_cahier_de_textes'
     version false
   }
-  Long id  
+  Long id
   String nom
   String description
   Long ordre
@@ -59,7 +59,7 @@ class Chapitre  {
 
   static hasMany = [chapitreFils: Chapitre, activites: Activite]
 
-  static mappedBy = [chapitreFils:'chapitre']
+  static mappedBy = [chapitreFils: 'chapitre']
 
   static constraints = {
     id(max: 9999999999L)
@@ -67,10 +67,10 @@ class Chapitre  {
     nom(size: 1..255, blank: false)
     description()
     ordre(max: 9999999999L, nullable: false)
-    auteur(nullable:false)
+    auteur(nullable: false)
     chapitre(nullable: true)
     cahierDeTextes(nullable: false)
-    activites(nullable:true)
+    activites(nullable: true)
   }
 
   String toString() {

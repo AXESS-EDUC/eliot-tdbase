@@ -99,7 +99,7 @@ class RelDossierAutorisationCahier implements Serializable {
   def int hashCode() {
     if (dossier?.id && autorisation?.id) {
       return (((dossier.id % HashConstantes.MAX_16BITS) *
-              HashConstantes.MAX_16BITS) + (autorisation.id % HashConstantes.MAX_16BITS))
+               HashConstantes.MAX_16BITS) + (autorisation.id % HashConstantes.MAX_16BITS))
     } else {
       return super.hashCode()
     }

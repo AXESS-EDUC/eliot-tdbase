@@ -69,7 +69,7 @@ class RelActiviteActeur implements Serializable {
   public int hashCode() {
     if (activite?.id && acteur?.id) {
       return (((activite.id % HashConstantes.MAX_16BITS) *
-              HashConstantes.MAX_16BITS) + (acteur.id % HashConstantes.MAX_16BITS))
+               HashConstantes.MAX_16BITS) + (acteur.id % HashConstantes.MAX_16BITS))
     } else {
       return super.hashCode()
     }

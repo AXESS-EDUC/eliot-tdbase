@@ -43,7 +43,7 @@ class DateActivite {
     sort dateActivite: 'desc'
     version false
   }
-  Long id  
+  Long id
   Date dateActivite
   Date dateEcheance
   Long duree
@@ -61,7 +61,6 @@ class DateActivite {
   String toString() {
     return "${id}"
   }
-
 
   /**
    * Retourne une copie de la date
@@ -82,9 +81,9 @@ class DateActivite {
     return result;
   }
 /**
-   * Retourne 'true' si l'objet 'o' est égal à celui-ci
-   * Attention: le test d'égalité ne se base que sur dateActivite, dateEcheance et duree
-   */
+ * Retourne 'true' si l'objet 'o' est égal à celui-ci
+ * Attention: le test d'égalité ne se base que sur dateActivite, dateEcheance et duree
+ */
   boolean equals(o) {
     if (this.is(o)) {
       return true;

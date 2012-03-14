@@ -44,7 +44,7 @@ class Activite {
 
   // datePublication est omitté intentionellement. Ce colon n'est plus utilisé
 
-  Long id  
+  Long id
   DomainItem item
   Date dateCreation
   Date dateModification
@@ -111,7 +111,6 @@ class Activite {
     return Discussion.findByItemCible(item)
   }
 
-
   /**
    * Méthode retournant le résumé de l'activité
    * @return le resume
@@ -150,7 +149,7 @@ class Activite {
 
   boolean estTermineeForActeur(DomainAutorite acteur) {
     RelActiviteActeur rel =
-    relActiviteActeurs.find { RelActiviteActeur rel -> rel.acteur?.idExterne == acteur?.idExterne }
+      relActiviteActeurs.find { RelActiviteActeur rel -> rel.acteur?.idExterne == acteur?.idExterne }
     return rel && rel.estTermine
   }
 

@@ -41,7 +41,7 @@ class EtatDossier {
     dossier column: 'id_dossier'
     version false
   }
-  
+
   Boolean estFerme
   // Relation
   Dossier dossier

@@ -71,7 +71,7 @@ class RelCahierActeur implements Serializable {
   public int hashCode() {
     if (cahierDeTextes?.id && acteur?.id) {
       return (((cahierDeTextes.id % HashConstantes.MAX_16BITS) *
-              HashConstantes.MAX_16BITS) + (acteur.id % HashConstantes.MAX_16BITS))
+               HashConstantes.MAX_16BITS) + (acteur.id % HashConstantes.MAX_16BITS))
     } else {
       return super.hashCode()
     }

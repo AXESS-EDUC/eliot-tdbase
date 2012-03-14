@@ -43,7 +43,7 @@ class Ressource {
     fichier column: 'id_fichier'
     version false
   }
-  Long id  
+  Long id
   //Long idFichier
   Fichier fichier
   String url
@@ -63,7 +63,7 @@ class Ressource {
     activite(nullable: false)
     estPubliee(nullable: false)
     fichier(nullable: true)
-    url(nullable: true, url:true)
+    url(nullable: true, url: true)
     description(nullable: true)
   }
 
@@ -85,9 +85,9 @@ class Ressource {
     return result;
   }
 /**
-   * Retourne 'true' si l'objet o est égal à celui-ci
-   * Attention: le test d'égalité ne se base que sur datePublication, description, estPubliee, fichier, ordre, url 
-   */
+ * Retourne 'true' si l'objet o est égal à celui-ci
+ * Attention: le test d'égalité ne se base que sur datePublication, description, estPubliee, fichier, ordre, url
+ */
   boolean equals(o) {
     if (this.is(o)) {
       return true;

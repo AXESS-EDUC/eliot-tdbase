@@ -54,7 +54,7 @@ class CahierDeTextes {
     anneeScolaire column: 'annee_scolaire_id', fetch: 'join'
     parentIncorporation column: 'id_parent_incorporation'
     version false
-    cache true                                                                        
+    cache true
   }
 
   Long id
@@ -116,7 +116,7 @@ class CahierDeTextes {
    */
   String nomAffichage(DomainAutorite acteur, boolean detail) {
     // Si l'instance n'est pas enregistrée en base (cas d'un visa par exemple)
-    if(this.id == null) {
+    if (this.id == null) {
       return nom
     }
 
@@ -157,7 +157,7 @@ class CahierDeTextes {
    */
   Dossier getDossierParent(DomainAutorite autorite) {
     Dossier dossier = null
-    
+
     if (this && this.item && autorite) {
       DomainAutorisation autorisation = DomainAutorisation.findByItemAndAutorite(this.item, autorite)
       if (autorisation) {
@@ -179,14 +179,14 @@ class CahierDeTextes {
    */
   boolean estVide() {
     def critActivites = Activite.createCriteria()
-    def listeActivites = critActivites.list{
+    def listeActivites = critActivites.list {
       eq("cahierDeTextes", this)
     }
-    if(listeActivites.size() > 0){
+    if (listeActivites.size() > 0) {
       return false
     }
     def critChapitres = Chapitre.createCriteria()
-    def listeChapitres = critChapitres.list{
+    def listeChapitres = critChapitres.list {
       eq("cahierDeTextes", this)
     }
     return (listeChapitres.size() == 0)
