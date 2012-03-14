@@ -39,7 +39,7 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationService<ExclusiveChoiceSpecification> {
 
     @Override
-    def createSpecification(Map map) {
+    ExclusiveChoiceSpecification createSpecification(Map map) {
         new ExclusiveChoiceSpecification(map)
     }
 

@@ -136,7 +136,7 @@ class ArtefactAutorisationService {
      * @return true si l'autorisation est vérifiée
      */
     boolean utilisateurPeutExporterArtefact(Personne utilisateur, Artefact artefact) {
-        utilisateurPeutReutiliserArtefact(utilisateur, artefact)
+        utilisateurPeutReutiliserArtefact(utilisateur, artefact) && artefact.estPresentableEnMoodleXML()
     }
 }
 

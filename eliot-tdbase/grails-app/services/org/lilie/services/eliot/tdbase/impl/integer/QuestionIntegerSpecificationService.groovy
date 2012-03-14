@@ -47,7 +47,7 @@ class QuestionIntegerSpecificationService extends QuestionSpecificationService<I
    * @see QuestionSpecificationService
    */
   @Override
-  def createSpecification(Map map) {
+  IntegerSpecification createSpecification(Map map) {
     return new IntegerSpecification(map)
   }
 }

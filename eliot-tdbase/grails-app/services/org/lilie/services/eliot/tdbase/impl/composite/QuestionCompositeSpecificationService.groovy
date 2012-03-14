@@ -32,7 +32,6 @@ package org.lilie.services.eliot.tdbase.impl.composite
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
 /**
@@ -41,10 +40,10 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
  */
 class QuestionCompositeSpecificationService extends QuestionSpecificationService<CompositeSpecification> {
 
-  @Override
-  def createSpecification(Map map) {
-    new CompositeSpecification()
-  }
+    @Override
+    CompositeSpecification createSpecification(Map map) {
+        new CompositeSpecification()
+    }
 
 }
 
@@ -54,17 +53,15 @@ class QuestionCompositeSpecificationService extends QuestionSpecificationService
 @Validateable
 class CompositeSpecification implements QuestionSpecification {
 
-  String questionTypeCode = QuestionTypeEnum.Composite.name()
+    String questionTypeCode = QuestionTypeEnum.Composite.name()
 
+    /**
+     *
+     * @return la représentation sous forme de map
+     */
+    Map toMap() {
+        [questionTypeCode: questionTypeCode]
+    }
 
-  /**
-   *
-   * @return la représentation sous forme de map
-   */
-  Map toMap() {
-    [questionTypeCode:questionTypeCode]
-  }
-
-  
 
 }

@@ -44,7 +44,7 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 class QuestionSliderSpecificationService extends QuestionSpecificationService<SliderSpecification> {
 
   @Override
-  def createSpecification(Map map) {
+  SliderSpecification createSpecification(Map map) {
     new SliderSpecification(map)
   }
 

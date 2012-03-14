@@ -45,7 +45,7 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
   QuestionAttachementService questionAttachementService
 
   @Override
-  def createSpecification(Map map) {
+  GraphicMatchSpecification createSpecification(Map map) {
     new GraphicMatchSpecification(map)
   }
 

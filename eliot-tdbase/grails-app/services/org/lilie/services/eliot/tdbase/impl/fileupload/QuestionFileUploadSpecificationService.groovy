@@ -54,7 +54,7 @@ class QuestionFileUploadSpecificationService extends QuestionSpecificationServic
    * @see QuestionSpecificationService
    */
   @Override
-  def createSpecification(Map map) {
+  FileUploadSpecification createSpecification(Map map) {
     return new FileUploadSpecification(map)
   }
 

@@ -198,5 +198,19 @@ class Question implements Artefact {
         return estComposite()
     }
 
+    @Override
+    boolean estPresentableEnMoodleXML() {
+        ["MultipleChoice",
+                "Open",
+                "Decimal",
+                "Integer",
+                "FillGap",
+                "ExclusiveChoice",
+                "Associate",
+                "Statement",
+                "Composite"
+        ].contains(type.code)
+    }
+
 }
 

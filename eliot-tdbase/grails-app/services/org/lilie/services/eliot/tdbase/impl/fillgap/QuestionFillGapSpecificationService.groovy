@@ -41,7 +41,7 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 class QuestionFillGapSpecificationService extends QuestionSpecificationService<FillGapSpecification> {
 
     @Override
-    def createSpecification(Map params) {
+    FillGapSpecification createSpecification(Map params) {
         new FillGapSpecification(params)
     }
 }

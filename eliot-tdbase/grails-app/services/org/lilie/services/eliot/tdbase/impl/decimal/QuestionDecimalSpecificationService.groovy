@@ -32,8 +32,8 @@ package org.lilie.services.eliot.tdbase.impl.decimal
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
-import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tice.utils.NumberUtils
 
 /**
  *
@@ -41,10 +41,10 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
  */
 class QuestionDecimalSpecificationService extends QuestionSpecificationService<DecimalSpecification> {
 
-  @Override
-  def createSpecification(Map map) {
-    new DecimalSpecification(map)
-  }
+    @Override
+    DecimalSpecification createSpecification(Map map) {
+        new DecimalSpecification(map)
+    }
 
 }
 
@@ -53,59 +53,59 @@ class QuestionDecimalSpecificationService extends QuestionSpecificationService<D
  */
 @Validateable
 class DecimalSpecification implements QuestionSpecification {
-  String questionTypeCode = QuestionTypeEnum.Decimal.name()
-  String libelle
-  Float valeur
-  String unite
-  Float precision = 0
-  String correction
+    String questionTypeCode = QuestionTypeEnum.Decimal.name()
+    String libelle
+    Float valeur
+    String unite
+    Float precision = 0
+    String correction
 
 
-  DecimalSpecification() {
-    super()
-  }
-
-  /**
-   * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
-   * @param map la map permettant d'initialiser l'objet en cours
-   * de création
-   */
-  DecimalSpecification(Map map) {
-    libelle = map.libelle
-    valeur = map.valeur
-    unite = map.unite
-    precision = map.precision
-    correction = map.correction
-  }
-
-  Map toMap() {
-    [
-            questionTypeCode:questionTypeCode,
-            libelle: libelle,
-            valeur: valeur,
-            unite: unite,
-            precision: precision,
-            correction: correction
-    ]
-  }
-
-  String getValeurAffichage() {
-    if (valeur != null) {
-      return NumberUtils.formatFloat(valeur)
+    DecimalSpecification() {
+        super()
     }
-    return null
-  }
 
-  String getPrecisionAffichage() {
-    if (precision != null) {
-      return NumberUtils.formatFloat(precision)
+    /**
+     * Créer et initialise un nouvel objet de type MultipleChoiceSpecification
+     * @param map la map permettant d'initialiser l'objet en cours
+     * de création
+     */
+    DecimalSpecification(Map map) {
+        libelle = map.libelle
+        valeur = map.valeur
+        unite = map.unite
+        precision = map.precision
+        correction = map.correction
     }
-    return null
-  }
 
-  static constraints = {
-    libelle blank: false
-    valeur nullable: false
-  }
+    Map toMap() {
+        [
+                questionTypeCode: questionTypeCode,
+                libelle: libelle,
+                valeur: valeur,
+                unite: unite,
+                precision: precision,
+                correction: correction
+        ]
+    }
+
+    String getValeurAffichage() {
+        if (valeur != null) {
+            return NumberUtils.formatFloat(valeur)
+        }
+        return null
+    }
+
+    String getPrecisionAffichage() {
+        if (precision != null) {
+            return NumberUtils.formatFloat(precision)
+        }
+        return null
+    }
+
+    static constraints = {
+        libelle blank: false
+        valeur nullable: false
+    }
 
 }

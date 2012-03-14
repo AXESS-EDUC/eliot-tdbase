@@ -40,7 +40,7 @@ class QuestionOrderSpecificationService extends QuestionSpecificationService<Ord
 
 
   @Override
-  def createSpecification(Map map) {
+  OrderSpecification createSpecification(Map map) {
     new OrderSpecification(map)
 
   }

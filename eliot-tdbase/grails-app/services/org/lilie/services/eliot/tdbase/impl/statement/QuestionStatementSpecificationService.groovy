@@ -40,7 +40,7 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
  */
 class QuestionStatementSpecificationService extends QuestionSpecificationService<StatementSpecification> {
 
-  def createSpecification(Map map) {
+  StatementSpecification createSpecification(Map map) {
     return new StatementSpecification(map)
   }
 

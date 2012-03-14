@@ -103,7 +103,7 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, BooleanMatchSpecification specification, String title) {
-        xml.question(type: "to_be_implemented_booleanMatch")
+
     }
 
     /**
@@ -130,7 +130,7 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, DocumentSpecification specification, String title) {
-        xml.question(type: "to_be_implemented_documentSpecification")
+
     }
 
     /**
@@ -148,7 +148,7 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, FileUploadSpecification specification, String title) {
-        xml.question(type: "to_be_implemented_fileUploadSpecification")
+
     }
 
     /**
@@ -166,7 +166,7 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, FillGraphicsSpecification specification, String title) {
-        xml.question(type: "to_be_implemented_fill graphics")
+
     }
 
     /**
@@ -175,7 +175,7 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, GraphicMatchSpecification specification, String title) {
-        xml.question(type: "to_be_implemented_graphic match")
+
     }
 
     /**
@@ -185,12 +185,7 @@ class MoodleQuizExporterService {
      */
     private void renderQuestion(MarkupBuilder xml, IntegerSpecification specification, String title) {
         xml.question(type: "numerical") {
-            xml.name() {
-                xml.text title
-            }
-            xml.questiontext(format:'html') {
-                xml.text specification.libelle
-            }
+            questionHeader(xml, title, specification.libelle)
         }
     }
 
@@ -218,7 +213,7 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, OrderSpecification specification, String title) {
-        xml.question(type: "to_be_implemented order question")
+
     }
 
     /**
@@ -227,7 +222,6 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, SliderSpecification specification, String title) {
-        xml.question(type: "to_be_implemented slider")
     }
 
     /**
@@ -246,5 +240,14 @@ class MoodleQuizExporterService {
      */
     private String prependHeader(String xml) {
         "<?xml version=\"1.0\" ?>\n" + xml
+    }
+
+    private questionHeader(MarkupBuilder xml, String title, String libelle) {
+        xml.name() {
+            xml.text title
+        }
+        xml.questiontext(format: 'html') {
+            xml.text libelle
+        }
     }
 }

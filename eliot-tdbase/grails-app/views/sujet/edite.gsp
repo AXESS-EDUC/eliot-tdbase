@@ -212,6 +212,16 @@
                             Déplacer&nbsp;vers&nbsp;le&nbsp;bas
                         </g:else>
                     </li>
+
+                    <li><hr/></li>
+
+                    <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetQuestion.question)}">
+                        <li><g:link action="exporter" controller="question" id="${sujetQuestion.question.id}">Exporter</g:link></li>
+                    </g:if>
+                    <g:else>
+                        <li>Exporter</li>
+                    </g:else>
+
                     <li><hr/></li>
                     <li>
                         <g:link action="ajouteElement" controller="sujet"
