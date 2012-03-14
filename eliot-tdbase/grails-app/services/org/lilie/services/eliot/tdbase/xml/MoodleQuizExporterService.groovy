@@ -67,7 +67,7 @@ class MoodleQuizExporterService {
    * @return
    */
   String toMoodleQuiz(Question question) {
-    if (question.type.code == "Composite") {
+    if (question.type.code.equals("Composite")) {
       renderQuiz(question.exercice.questions)
     } else {
       renderQuiz([question])
@@ -85,10 +85,11 @@ class MoodleQuizExporterService {
 
     xml.quiz() {
       question.each {
-
-        //TODO put here the stuff for composite question.
-
-        renderQuestion(xml, it.specificationObject, it.titre)
+        if (it.type.code.equals("Composite")) {
+          renderCompositeQuestion(xml, it)
+        } else {
+          renderQuestion(xml, it.specificationObject, it.titre)
+        }
       }
     }
 
@@ -273,7 +274,7 @@ class MoodleQuizExporterService {
 
   private void renderCompositeQuestion(MarkupBuilder xml, Question question) {
     question.exercice.questions.each {
-      renderQuestion(xml, question.specification, "Question Composée -- " + question.titre)
+      renderQuestion(xml, it.specificationObject, "Question Composée -- " + it.titre)
     }
   }
 }
