@@ -50,18 +50,18 @@ class Note {
   static constraints = {
     valeurNumerique(nullable: true)
     valeurNonNumerique(nullable: true)
-    appreciation(nullable:true)
+    appreciation(nullable: true)
   }
 
   static belongsTo = [evaluation: Evaluation]
-  
+
   static mapping = {
 
     table('entnotes.note')
 
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.note_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.note_id_seq']
 
     evaluation column: 'evaluation_id'
     eleve column: 'eleve_id'

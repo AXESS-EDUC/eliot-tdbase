@@ -42,18 +42,18 @@ class ModeleAppreciationProfesseur {
   DomainAutorite enseignant // proprietaire du modèle
   String texte // texte de modèle d'appreciation
 
-  static belongsTo = [enseignant:DomainAutorite]
-  
+  static belongsTo = [enseignant: DomainAutorite]
+
   static constraints = {
-    enseignant (nullable:false)
-    texte (nullable:false, maxSize: 1024)
+    enseignant(nullable: false)
+    texte(nullable: false, maxSize: 1024)
   }
 
   static mapping = {
     table('entnotes.modele_appreciation_professeur')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.modele_appreciation_professeur_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.modele_appreciation_professeur_id_seq']
     version true
     enseignant column: 'autorite_id'
     texte column: 'texte'

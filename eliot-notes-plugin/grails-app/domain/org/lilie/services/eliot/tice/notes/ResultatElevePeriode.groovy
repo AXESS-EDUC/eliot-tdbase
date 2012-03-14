@@ -47,12 +47,12 @@ class ResultatElevePeriode implements Serializable {
   BigDecimal moyenne  // moyenne générale calculée lors de MAJ des notes
 
   static belongsTo = [
-      eleve: DomainAutorite,
-      periode: Periode
+          eleve: DomainAutorite,
+          periode: Periode
   ]
 
   static constraints = {
-    eleve nullable:false
+    eleve nullable: false
     periode nullable: false
     moyenne nullable: true
   }
@@ -60,8 +60,8 @@ class ResultatElevePeriode implements Serializable {
   static mapping = {
     table('entnotes.resultat_eleve_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.resultat_eleve_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.resultat_eleve_periode_id_seq']
     version true
     eleve column: 'id_autorite_eleve'
     periode column: 'id_periode'

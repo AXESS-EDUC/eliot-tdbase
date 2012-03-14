@@ -49,14 +49,14 @@ class AppreciationElevePeriode {
   String appreciation // appreciation donnée lors de conseil de classe
 
   static belongsTo = [
-      eleve: DomainAutorite,
-      periode: Periode
+          eleve: DomainAutorite,
+          periode: Periode
   ]
 
   static constraints = {
-    eleve nullable:false
+    eleve nullable: false
     periode nullable: false
-    appreciation(nullable:true, maxSize: 1024)
+    appreciation(nullable: true, maxSize: 1024)
     avisConseilDeClasse nullable: true
     avisOrientation nullable: true
   }
@@ -64,8 +64,8 @@ class AppreciationElevePeriode {
   static mapping = {
     table('entnotes.appreciation_eleve_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.appreciation_eleve_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.appreciation_eleve_periode_id_seq']
     version true
     eleve column: 'eleve_id'
     periode column: 'periode_id'

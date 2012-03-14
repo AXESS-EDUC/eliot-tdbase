@@ -59,13 +59,13 @@ class ResultatClasseServicePeriode implements Serializable {
   ]
 
   static belongsTo = [
-      classe: StructureEnseignement,
-      service: Service,
-      periode: Periode
+          classe: StructureEnseignement,
+          service: Service,
+          periode: Periode
   ]
 
   static constraints = {
-    classe nullable:false, validator: {val,obj -> val.isClasse()}
+    classe nullable: false, validator: {val, obj -> val.isClasse()}
     service nullable: false
     periode nullable: false
     enseignant nullable: true
@@ -77,8 +77,8 @@ class ResultatClasseServicePeriode implements Serializable {
   static mapping = {
     table('entnotes.resultat_classe_service_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.resultat_classe_service_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.resultat_classe_service_periode_id_seq']
     version true
     classe column: 'id_structure_enseignement'
     service column: 'id_service'
@@ -103,5 +103,5 @@ class ResultatClasseServicePeriode implements Serializable {
   String toString() {
     return "$id ${classe} $service $periode $moyenne"
   }
-  
+
 }

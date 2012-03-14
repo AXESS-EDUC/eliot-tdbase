@@ -33,7 +33,7 @@ package org.lilie.services.eliot.tice.notes
  * @author msan
  */
 public enum TypeMoyenneEnum {
-  
+
   ELEVE_ENSEIGNEMENT_PERIODE, // moyenne d'un élève pour une période et un enseignement
   ELEVE_SERVICE_PERIODE,      // moyenne d'un élève pour une période et un service
   ELEVE_SOUS_SERVICE_PERIODE, // moyenne d'un élève pour une période et un sous-service

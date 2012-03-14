@@ -63,8 +63,8 @@ class ResultatEleveEnseignementPeriode {
   static mapping = {
     table('entnotes.resultat_eleve_enseignement_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.resultat_eleve_enseignement_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.resultat_eleve_enseignement_periode_id_seq']
     periode column: 'periode_id'
     eleve column: 'eleve_id'
     moyenne column: 'moyenne'

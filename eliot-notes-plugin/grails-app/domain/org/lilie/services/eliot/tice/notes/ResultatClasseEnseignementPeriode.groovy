@@ -51,7 +51,7 @@ class ResultatClasseEnseignementPeriode {
   BigDecimal moyenneMin  // pire moyenne générale de la classe
 
   static constraints = {
-    classe nullable: false, validator: {val,obj -> val.isClasse()}
+    classe nullable: false, validator: {val, obj -> val.isClasse()}
     enseignement nullable: false
     periode nullable: false
     moyenne nullable: true
@@ -68,8 +68,8 @@ class ResultatClasseEnseignementPeriode {
   static mapping = {
     table('entnotes.resultat_classe_enseignement_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.resultat_classe_enseignement_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.resultat_classe_enseignement_periode_id_seq']
     classe column: 'structure_enseignement_id'
     periode column: 'periode_id'
     moyenne column: 'moyenne'

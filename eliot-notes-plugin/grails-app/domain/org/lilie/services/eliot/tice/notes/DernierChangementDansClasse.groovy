@@ -39,23 +39,23 @@ class DernierChangementDansClasse {
 
   Long id
   Date dateChangement // date de dernière changement d'un composant qui
-                      // constitue une des moyennes de classe.
+  // constitue une des moyennes de classe.
   StructureEnseignement classe
 
   static belongsTo = [
-    classe: StructureEnseignement
+          classe: StructureEnseignement
   ]
 
   static constraints = {
-    dateChangement (nullable:true)
-    classe (nullable:false)
+    dateChangement(nullable: true)
+    classe(nullable: false)
   }
 
   static mapping = {
     table('entnotes.dernier_changement_dans_classe')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.dernier_changement_dans_classe_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.dernier_changement_dans_classe_id_seq']
     version false // on veut pesimistic locking
     dateChangement column: 'date_changement'
     classe column: 'classe_id'

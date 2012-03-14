@@ -58,15 +58,15 @@ class AppreciationEleveEnseignementPeriode {
 
   static belongsTo = [
           enseignement: Enseignement,
-          periode:Periode,
+          periode: Periode,
           eleve: DomainAutorite
   ]
 
   static mapping = {
     table('entnotes.appreciation_eleve_enseignement_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.appreciation_eleve_enseignement_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.appreciation_eleve_enseignement_periode_id_seq']
     periode column: 'periode_id'
     eleve column: 'eleve_id'
     appreciation column: 'appreciation'

@@ -53,21 +53,21 @@ class DirtyMoyenne {
   TypeMoyenneEnum typeMoyenne
 
   static constraints = {
-    dateChangement (nullable:false)
-    eleve (nullable:true, validator: eleveValidator)
-    classe (nullable:true, validator: classeValidator)
-    periode (nullable:false)
-    service (nullable:true, validator: serviceValidator)
-    enseignement (nullable:true, validator: enseignementValidator)
-    sousService (nullable:true, validator: sousServiceValidator)
-    typeMoyenne (nullable:false)
+    dateChangement(nullable: false)
+    eleve(nullable: true, validator: eleveValidator)
+    classe(nullable: true, validator: classeValidator)
+    periode(nullable: false)
+    service(nullable: true, validator: serviceValidator)
+    enseignement(nullable: true, validator: enseignementValidator)
+    sousService(nullable: true, validator: sousServiceValidator)
+    typeMoyenne(nullable: false)
   }
 
   static mapping = {
     table('entnotes.dirty_moyenne')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.dirty_moyenne_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.dirty_moyenne_id_seq']
     version false // on veut pesimistic locking
     dateChangement column: 'date_changement'
     eleve column: 'eleve_id'
@@ -88,11 +88,11 @@ class DirtyMoyenne {
    */
   static eleveValidator = {val, DirtyMoyenne dm ->
     return ([
-            TypeMoyenneEnum.ELEVE_ENSEIGNEMENT_PERIODE,
-            TypeMoyenneEnum.ELEVE_PERIODE,
-            TypeMoyenneEnum.ELEVE_SERVICE_PERIODE,
-            TypeMoyenneEnum.ELEVE_SOUS_SERVICE_PERIODE].
-            contains(dm.typeMoyenne) ? (val!=null) : true)
+                    TypeMoyenneEnum.ELEVE_ENSEIGNEMENT_PERIODE,
+                    TypeMoyenneEnum.ELEVE_PERIODE,
+                    TypeMoyenneEnum.ELEVE_SERVICE_PERIODE,
+                    TypeMoyenneEnum.ELEVE_SOUS_SERVICE_PERIODE].
+                    contains(dm.typeMoyenne) ? (val != null) : true)
   }
 
   /**
@@ -100,11 +100,11 @@ class DirtyMoyenne {
    */
   static classeValidator = {val, DirtyMoyenne dm ->
     return ([
-            TypeMoyenneEnum.CLASSE_ENSEIGNEMENT_PERIODE,
-            TypeMoyenneEnum.CLASSE_PERIODE,
-            TypeMoyenneEnum.CLASSE_SERVICE_PERIODE,
-            TypeMoyenneEnum.CLASSE_SOUS_SERVICE_PERIODE].
-            contains(dm.typeMoyenne) ? (val!=null) : true)
+                    TypeMoyenneEnum.CLASSE_ENSEIGNEMENT_PERIODE,
+                    TypeMoyenneEnum.CLASSE_PERIODE,
+                    TypeMoyenneEnum.CLASSE_SERVICE_PERIODE,
+                    TypeMoyenneEnum.CLASSE_SOUS_SERVICE_PERIODE].
+                    contains(dm.typeMoyenne) ? (val != null) : true)
   }
 
   /**
@@ -112,11 +112,11 @@ class DirtyMoyenne {
    */
   static serviceValidator = {val, DirtyMoyenne dm ->
     return ([
-            TypeMoyenneEnum.ELEVE_SERVICE_PERIODE,
-            TypeMoyenneEnum.ELEVE_SOUS_SERVICE_PERIODE,
-            TypeMoyenneEnum.CLASSE_SERVICE_PERIODE,
-            TypeMoyenneEnum.CLASSE_SOUS_SERVICE_PERIODE].
-            contains(dm.typeMoyenne) ? (val!=null) : true)
+                    TypeMoyenneEnum.ELEVE_SERVICE_PERIODE,
+                    TypeMoyenneEnum.ELEVE_SOUS_SERVICE_PERIODE,
+                    TypeMoyenneEnum.CLASSE_SERVICE_PERIODE,
+                    TypeMoyenneEnum.CLASSE_SOUS_SERVICE_PERIODE].
+                    contains(dm.typeMoyenne) ? (val != null) : true)
   }
 
   /**
@@ -124,9 +124,9 @@ class DirtyMoyenne {
    */
   static enseignementValidator = {val, DirtyMoyenne dm ->
     return ([
-            TypeMoyenneEnum.ELEVE_ENSEIGNEMENT_PERIODE,
-            TypeMoyenneEnum.CLASSE_ENSEIGNEMENT_PERIODE].
-            contains(dm.typeMoyenne) ? (val!=null) : true)
+                    TypeMoyenneEnum.ELEVE_ENSEIGNEMENT_PERIODE,
+                    TypeMoyenneEnum.CLASSE_ENSEIGNEMENT_PERIODE].
+                    contains(dm.typeMoyenne) ? (val != null) : true)
   }
 
   /**
@@ -134,8 +134,8 @@ class DirtyMoyenne {
    */
   static sousServiceValidator = {val, DirtyMoyenne dm ->
     return ([
-            TypeMoyenneEnum.ELEVE_SOUS_SERVICE_PERIODE,
-            TypeMoyenneEnum.CLASSE_SOUS_SERVICE_PERIODE].
-            contains(dm.typeMoyenne) ? (val!=null) : true)
+                    TypeMoyenneEnum.ELEVE_SOUS_SERVICE_PERIODE,
+                    TypeMoyenneEnum.CLASSE_SOUS_SERVICE_PERIODE].
+                    contains(dm.typeMoyenne) ? (val != null) : true)
   }
 }

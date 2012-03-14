@@ -52,19 +52,19 @@ class ResultatEleveSousServicePeriode implements Serializable {
   ]
 
   static constraints = {
-    resultatEleveServicePeriode nullable:false
-    sousService nullable:false
+    resultatEleveServicePeriode nullable: false
+    sousService nullable: false
     moyenne nullable: true
   }
 
   static mapping = {
     table('entnotes.resultat_eleve_sous_service_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.resultat_eleve_sous_service_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.resultat_eleve_sous_service_periode_id_seq']
     version true
-    sousService column:'sous_service_id'
-    resultatEleveServicePeriode column:'resultat_eleve_service_periode_id'
+    sousService column: 'sous_service_id'
+    resultatEleveServicePeriode column: 'resultat_eleve_service_periode_id'
     moyenne column: 'moyenne'
   }
 

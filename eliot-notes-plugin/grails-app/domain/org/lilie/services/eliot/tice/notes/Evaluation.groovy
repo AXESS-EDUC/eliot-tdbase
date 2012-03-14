@@ -55,21 +55,21 @@ class Evaluation {
   BigDecimal noteMaxPossible
   Boolean publiable
   Date dateCreation = new Date()
-  Integer ordre=0 // l'ordre d'evaluation pour la periode et l'enseignement donnée
+  Integer ordre = 0 // l'ordre d'evaluation pour la periode et l'enseignement donnée
   BigDecimal moyenne // moyenne d'évaluation pour tous les élèves évalués par cet évaluation
   Set<Periode> periodes
   Set<Note> notes
   ModaliteMatiere modaliteMatiere
 
-  static transients = ['verrouille','noteMaxSaisie']
+  static transients = ['verrouille', 'noteMaxSaisie']
 
   static constraints = {
     description(nullable: true)
-    dateCreation(nullable:false)
-    ordre(nullable:false)
-    moyenne(nullable:true)
-    periodes nullable:false, validator: {val,obj -> val.size() > 0}
-    modaliteMatiere(nullable:true)
+    dateCreation(nullable: false)
+    ordre(nullable: false)
+    moyenne(nullable: true)
+    periodes nullable: false, validator: {val, obj -> val.size() > 0}
+    modaliteMatiere(nullable: true)
   }
 
   static hasMany = [notes: Note, periodes: Periode]
@@ -77,8 +77,8 @@ class Evaluation {
   static mapping = {
     table('entnotes.evaluation')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.evaluation_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.evaluation_id_seq']
     // la declaration d'une cle composite ne fonctionne qu'implicitement
     //enseignement column :  ['enseignant_id', 'service_id']
 
@@ -107,9 +107,8 @@ class Evaluation {
    * @author bper
    */
   Boolean getVerrouille() {
-    return this.periodes.any{Periode periode -> periode.verrouille}
+    return this.periodes.any {Periode periode -> periode.verrouille}
   }
-
 
   /**
    * Retourne la valeur numérique maximale des notes saisiees pour cette évaluation

@@ -44,16 +44,16 @@ class AvisOrientation {
   static belongsTo = [etablissement: Etablissement]
 
   static constraints = {
-    etablissement (nullable:false)
-    texte (nullable:true, maxSize: 1024)
-    ordre (nullable:true)
+    etablissement(nullable: false)
+    texte(nullable: true, maxSize: 1024)
+    ordre(nullable: true)
   }
 
   static mapping = {
     table('entnotes.avis_orientation')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.avis_orientation_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.avis_orientation_id_seq']
     version true
     etablissement column: 'etablissement_id'
     texte column: 'texte'

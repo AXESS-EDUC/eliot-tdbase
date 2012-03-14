@@ -43,21 +43,21 @@ class InfoCalculMoyennesClasse {
   Date dateFinCalcul
 
   static belongsTo = [
-    classe: StructureEnseignement
+          classe: StructureEnseignement
   ]
 
   static constraints = {
-    classe (nullable:false)
-    calculEnCours (nullable:false)
-    dateDebutCalcul (nullable:true)
-    dateFinCalcul (nullable:true)
+    classe(nullable: false)
+    calculEnCours(nullable: false)
+    dateDebutCalcul(nullable: true)
+    dateFinCalcul(nullable: true)
   }
 
   static mapping = {
     table('entnotes.info_calcul_moyennes_classe')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.info_calcul_moyennes_classe_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.info_calcul_moyennes_classe_id_seq']
     version true // on veut optimistic locking
     cache false // il est imperatif de ne pas cacher cette classe
     classe column: 'classe_id'

@@ -35,7 +35,7 @@ import org.lilie.services.eliot.tice.scolarite.Periode
  * Représente les résultats d'une classe pour une Période
  *
  * Résultat est supprimé en cascade quand la période proprietaire est supprimé.
- * 
+ *
  * @author bper
  */
 class ResultatClassePeriode implements Serializable {
@@ -50,12 +50,12 @@ class ResultatClassePeriode implements Serializable {
   BigDecimal moyenneMin  // pire moyenne générale de la classe
 
   static belongsTo = [
-      classe: StructureEnseignement,
-      periode: Periode
+          classe: StructureEnseignement,
+          periode: Periode
   ]
 
   static constraints = {
-    classe nullable:false, validator: {val,obj -> val.isClasse()}
+    classe nullable: false, validator: {val, obj -> val.isClasse()}
     periode nullable: false
     moyenne nullable: true
     moyenneMax nullable: true
@@ -65,8 +65,8 @@ class ResultatClassePeriode implements Serializable {
   static mapping = {
     table('entnotes.resultat_classe_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.resultat_classe_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.resultat_classe_periode_id_seq']
     version true
     classe column: 'id_structure_enseignement'
     periode column: 'id_periode'

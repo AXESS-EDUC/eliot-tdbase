@@ -56,13 +56,13 @@ class ResultatEleveServicePeriode implements Serializable {
   ]
 
   static belongsTo = [
-      eleve: DomainAutorite,
-      service: Service,
-      periode: Periode
+          eleve: DomainAutorite,
+          service: Service,
+          periode: Periode
   ]
 
   static constraints = {
-    eleve nullable:false
+    eleve nullable: false
     service nullable: false
     periode nullable: false
     enseignant nullable: true
@@ -72,8 +72,8 @@ class ResultatEleveServicePeriode implements Serializable {
   static mapping = {
     table('entnotes.resultat_eleve_service_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.resultat_eleve_service_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.resultat_eleve_service_periode_id_seq']
     version true
     eleve column: 'id_autorite_eleve'
     service column: 'id_service'
@@ -96,5 +96,5 @@ class ResultatEleveServicePeriode implements Serializable {
   String toString() {
     return "$id ${eleve?.id} $service $periode $moyenne"
   }
-  
+
 }

@@ -54,8 +54,8 @@ class ResultatClasseSousServicePeriode implements Serializable {
   ]
 
   static constraints = {
-    resultatClasseServicePeriode nullable:false
-    sousService nullable:false
+    resultatClasseServicePeriode nullable: false
+    sousService nullable: false
     moyenne nullable: true
     moyenneMax nullable: true
     moyenneMin nullable: true
@@ -64,11 +64,11 @@ class ResultatClasseSousServicePeriode implements Serializable {
   static mapping = {
     table('entnotes.resultat_classe_sous_service_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.resultat_classe_sous_service_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.resultat_classe_sous_service_periode_id_seq']
     version true
-    sousService column:'sous_service_id'
-    resultatClasseServicePeriode column:'resultat_classe_service_periode_id'
+    sousService column: 'sous_service_id'
+    resultatClasseServicePeriode column: 'resultat_classe_service_periode_id'
     moyenne column: 'moyenne'
     moyenneMax column: 'moyenne_max'
     moyenneMin column: 'moyenne_min'

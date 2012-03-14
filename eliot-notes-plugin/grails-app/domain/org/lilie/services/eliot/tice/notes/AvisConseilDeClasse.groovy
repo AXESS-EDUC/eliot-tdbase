@@ -41,19 +41,19 @@ class AvisConseilDeClasse {
   String texte
   Integer ordre
 
-  static belongsTo = [etablissement:Etablissement]
+  static belongsTo = [etablissement: Etablissement]
 
   static constraints = {
-    etablissement (nullable:false)
-    texte (nullable:true, maxSize: 1024)
-    ordre (nullable:true)
+    etablissement(nullable: false)
+    texte(nullable: true, maxSize: 1024)
+    ordre(nullable: true)
   }
 
   static mapping = {
     table('entnotes.avis_conseil_de_classe')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.avis_conseil_de_classe_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.avis_conseil_de_classe_id_seq']
     version true
     etablissement column: 'etablissement_id'
     texte column: 'texte'

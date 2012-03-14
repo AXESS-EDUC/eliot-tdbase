@@ -28,8 +28,6 @@
 
 package org.lilie.services.eliot.tice.notes
 
-
-
 /**
  * Les modèles des appreciations par défaut (Avis de conseil de classe, Avis d'orientation).
  * @author msan
@@ -44,19 +42,19 @@ class ModeleAppreciation {
   Integer ordre
 
   static constraints = {
-    texte (nullable:true, maxSize: 1024)
-    type(nullable:false)
-    ordre(nullable:true) 
+    texte(nullable: true, maxSize: 1024)
+    type(nullable: false)
+    ordre(nullable: true)
   }
 
   static mapping = {
     table('entnotes.modele_appreciation')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.modele_appreciation_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.modele_appreciation_id_seq']
     version true
     texte column: 'texte'
-    type column:'type'
-    ordre column:'ordre'
+    type column: 'type'
+    ordre column: 'ordre'
   }
 }

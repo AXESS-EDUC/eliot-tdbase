@@ -66,8 +66,8 @@ class AppreciationClasseEnseignementPeriode {
   static mapping = {
     table('entnotes.appreciation_classe_enseignement_periode')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'entnotes.appreciation_classe_enseignement_periode_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'entnotes.appreciation_classe_enseignement_periode_id_seq']
     classe column: 'classe_id'
     periode column: 'periode_id'
     appreciation column: 'appreciation'
