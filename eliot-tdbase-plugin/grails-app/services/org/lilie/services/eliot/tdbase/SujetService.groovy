@@ -36,6 +36,9 @@ import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
+import org.lilie.services.eliot.tice.Attachement
+import org.hibernate.SessionFactory
+import org.hibernate.Session
 
 class SujetService {
 
@@ -45,6 +48,7 @@ class SujetService {
   ArtefactAutorisationService artefactAutorisationService
   CopieService copieService
   ReponseService reponseService
+  SessionFactory sessionFactory
 
   /**
    * Créé un sujet
@@ -534,7 +538,7 @@ class SujetService {
                                                  SujetSequenceQuestions sujetQuestion,
                                                  Personne proprietaire) {
 
-    assert (sujetQuestion.sujet.proprietaire == proprietaire)
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire,sujetQuestion.sujet))
 
     sujetQuestion.points = newPoints
     if (sujetQuestion.save()) {
@@ -544,6 +548,27 @@ class SujetService {
     }
     return sujetQuestion
   }
+
+  /**
+   * Recherche les attachements disponibles dans un sujet
+   * @param sujet le sujet
+   * @param personne  la personne accedant aux attachements
+   * @return  la liste des attachements disponibles dans le sujet
+   */
+  List<Attachement> findAttachementsDisponiblesForSujet(Sujet sujet, Personne personne) {
+    assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(personne, sujet))
+    Session  session = sessionFactory.currentSession
+    def query = session.createSQLQuery("\
+    select attach.* from \
+    tice.attachement attach, \
+    td.question_attachement questAttach, \
+    td.sujet_sequence_questions sujetQuest \
+    where \
+    attach.id = questAttach.attachement_id and\
+    questAttach.question_id = sujetQuest.question_id and\
+    sujetQuest.sujet_id = ?").addEntity("attach",Attachement.class)
+    query.setLong(0,sujet.id).list()
+  } 
 
   /**
    * Créé une question composite correspondant à un exercice

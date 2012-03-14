@@ -186,6 +186,8 @@ environments {
     eliot.fichiers.racine = '/tmp'
   }
   development {
+    // autorise l'identification via url get
+    grails.plugins.springsecurity.apf.postOnly = false
     // application de la migration  définie dans eliot-tice-dbmigration
     eliot.bootstrap.migration = true
     // creation d'un jeu de test
