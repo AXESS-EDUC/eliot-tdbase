@@ -40,121 +40,121 @@ import org.springframework.transaction.annotation.Transactional
  */
 class ModaliteActiviteService {
 
-    static transactional = false
-    ProfilScolariteService profilScolariteService
-    CopieService copieService
+  static transactional = false
+  ProfilScolariteService profilScolariteService
+  CopieService copieService
 
-    /**
-     * Créé une séance (modaliteActivite)
-     * @param proprietes les propriétés
-     * @param proprietaire le proprietaire
-     * @return la séance créée
-     */
-    @Transactional
-    ModaliteActivite createModaliteActivite(Map proprietes, Personne proprietaire) {
-        ModaliteActivite modaliteActivite = new ModaliteActivite(
-                enseignant: proprietaire
-        )
-        modaliteActivite.properties = proprietes
-        modaliteActivite.save(flush: true)
-        return modaliteActivite
+  /**
+   * Créé une séance (modaliteActivite)
+   * @param proprietes les propriétés
+   * @param proprietaire le proprietaire
+   * @return la séance créée
+   */
+  @Transactional
+  ModaliteActivite createModaliteActivite(Map proprietes, Personne proprietaire) {
+    ModaliteActivite modaliteActivite = new ModaliteActivite(
+            enseignant: proprietaire
+    )
+    modaliteActivite.properties = proprietes
+    modaliteActivite.save(flush: true)
+    return modaliteActivite
+  }
+
+  /**
+   * Modifie les proprietes de la question passée en paramètre
+   * @param modaliteActivite la séance
+   * @param proprietes les nouvelles proprietes
+   * @param proprietaire le proprietaire
+   * @return la séance modifiée
+   */
+  @Transactional
+  ModaliteActivite updateProprietes(ModaliteActivite modaliteActivite, Map proprietes,
+                                    Personne proprietaire) {
+
+    assert (modaliteActivite.enseignant == proprietaire)
+
+    modaliteActivite.properties = proprietes
+    modaliteActivite.save(flush: true)
+    return modaliteActivite
+  }
+
+  /**
+   * Recherche de séance
+   * @param chercheur la personne effectuant la recherche
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @return la liste des séance
+   */
+  List<ModaliteActivite> findModalitesActivitesForEnseignant(Personne chercheur,
+                                                             Map paginationAndSortingSpec = null) {
+
+    assert (chercheur != null)
+
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
     }
 
-    /**
-     * Modifie les proprietes de la question passée en paramètre
-     * @param modaliteActivite la séance
-     * @param proprietes les nouvelles proprietes
-     * @param proprietaire le proprietaire
-     * @return la séance modifiée
-     */
-    @Transactional
-    ModaliteActivite updateProprietes(ModaliteActivite modaliteActivite, Map proprietes,
-                                      Personne proprietaire) {
+    def criteria = ModaliteActivite.createCriteria()
+    List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
+      eq 'enseignant', chercheur
 
-        assert (modaliteActivite.enseignant == proprietaire)
-
-        modaliteActivite.properties = proprietes
-        modaliteActivite.save(flush: true)
-        return modaliteActivite
-    }
-
-    /**
-     * Recherche de séance
-     * @param chercheur la personne effectuant la recherche
-     * @param paginationAndSortingSpec les specifications pour l'ordre et
-     * la pagination
-     * @return la liste des séance
-     */
-    List<ModaliteActivite> findModalitesActivitesForEnseignant(Personne chercheur,
-                                                               Map paginationAndSortingSpec = null) {
-
-        assert (chercheur != null)
-
-        if (paginationAndSortingSpec == null) {
-            paginationAndSortingSpec = [:]
+      if (paginationAndSortingSpec) {
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+        if (sortArg) {
+          order "${sortArg}", orderArg
         }
 
-        def criteria = ModaliteActivite.createCriteria()
-        List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
-            eq 'enseignant', chercheur
-
-            if (paginationAndSortingSpec) {
-                def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
-                def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-                if (sortArg) {
-                    order "${sortArg}", orderArg
-                }
-
-            }
-        }
-        return seances
+      }
     }
+    return seances
+  }
 
-    /**
-     * Recherche de séances pour profil élève
-     * @param chercheur la personne effectuant la recherche
-     * @param paginationAndSortingSpec les specifications pour l'ordre et
-     * la pagination
-     * @return la liste des séances
-     */
-    List<ModaliteActivite> findModalitesActivitesForApprenant(Personne chercheur,
-                                                              Map paginationAndSortingSpec = null) {
+  /**
+   * Recherche de séances pour profil élève
+   * @param chercheur la personne effectuant la recherche
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @return la liste des séances
+   */
+  List<ModaliteActivite> findModalitesActivitesForApprenant(Personne chercheur,
+                                                            Map paginationAndSortingSpec = null) {
 
-        assert (chercheur != null)
+    assert (chercheur != null)
 
-        if (paginationAndSortingSpec == null) {
-            paginationAndSortingSpec = [:]
-        }
-        def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur)
-        Date now = new Date()
-        def criteria = ModaliteActivite.createCriteria()
-        List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
-            inList 'structureEnseignement', structs
-            le 'dateDebut', now
-            ge 'dateFin', now
-            if (paginationAndSortingSpec) {
-                def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
-                def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-                if (sortArg) {
-                    order "${sortArg}", orderArg
-                }
-
-            }
-        }
-        return seances
+    if (paginationAndSortingSpec == null) {
+      paginationAndSortingSpec = [:]
     }
+    def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur)
+    Date now = new Date()
+    def criteria = ModaliteActivite.createCriteria()
+    List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
+      inList 'structureEnseignement', structs
+      le 'dateDebut', now
+      ge 'dateFin', now
+      if (paginationAndSortingSpec) {
+        def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
+        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+        if (sortArg) {
+          order "${sortArg}", orderArg
+        }
 
-    /**
-     * Supprime une modalite activité
-     * @param modaliteActivite la modalite à supprimer
-     */
-    def supprimeModaliteActivite(ModaliteActivite modaliteActivite, Personne personne) {
-
-        assert (modaliteActivite?.enseignant == personne)
-
-        copieService.supprimeCopiesForModaliteActivite(modaliteActivite,personne)
-        modaliteActivite.delete()
+      }
     }
+    return seances
+  }
+
+  /**
+   * Supprime une modalite activité
+   * @param modaliteActivite la modalite à supprimer
+   */
+  def supprimeModaliteActivite(ModaliteActivite modaliteActivite, Personne personne) {
+
+    assert (modaliteActivite?.enseignant == personne)
+
+    copieService.supprimeCopiesForModaliteActivite(modaliteActivite, personne)
+    modaliteActivite.delete()
+  }
 
 
 }

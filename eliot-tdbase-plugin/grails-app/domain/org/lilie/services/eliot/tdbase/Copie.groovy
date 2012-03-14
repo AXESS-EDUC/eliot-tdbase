@@ -54,7 +54,7 @@ class Copie {
 
   Personne correcteur
   ModaliteActivite modaliteActivite
-  
+
   SortedSet<Reponse> reponses
   static hasMany = [reponses: Reponse]
 

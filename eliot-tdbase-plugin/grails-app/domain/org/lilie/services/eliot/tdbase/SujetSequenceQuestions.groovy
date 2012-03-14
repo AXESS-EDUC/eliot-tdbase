@@ -44,10 +44,10 @@ class SujetSequenceQuestions implements Comparable {
 
   static constraints = {
     noteSeuilPoursuite(nullable: true)
-    question(validator: {val,obj ->
+    question(validator: {val, obj ->
       if (val.type.interaction) {
-        if (SujetSequenceQuestions.countBySujetAndQuestion(obj.sujet,val)) {
-           return ['invalid.doublonsquestioninteraction']
+        if (SujetSequenceQuestions.countBySujetAndQuestion(obj.sujet, val)) {
+          return ['invalid.doublonsquestioninteraction']
         }
       }
     })

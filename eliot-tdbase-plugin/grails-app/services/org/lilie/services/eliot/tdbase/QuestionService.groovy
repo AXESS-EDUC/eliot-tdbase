@@ -87,7 +87,6 @@ class QuestionService implements ApplicationContextAware {
     return question
   }
 
-
   /**
    * Recopie une question dans un sujet
    * @param sujetQuestion la question à recopier et son sujet associé
@@ -180,7 +179,6 @@ class QuestionService implements ApplicationContextAware {
     return laQuestion
   }
 
-
 /**
  * Créé une question et l'insert dans le sujet
  * @param proprietesQuestion les propriétés de la question
@@ -236,8 +234,6 @@ class QuestionService implements ApplicationContextAware {
     laQuestion.delete()
   }
 
-
-
   /**
    *  Partage une question
    * @param laQuestion la question à partager
@@ -271,8 +267,6 @@ class QuestionService implements ApplicationContextAware {
     laQuestion.save()
   }
 
-
-
   /**
    * Recherche de questions
    * @param chercheur la personne effectuant la recherche
@@ -294,7 +288,7 @@ class QuestionService implements ApplicationContextAware {
                                Niveau niveau,
                                QuestionType questionType,
                                Map paginationAndSortingSpec = null) {
-     if (!chercheur) {
+    if (!chercheur) {
       throw new IllegalArgumentException("question.recherche.chercheur.null")
     }
     if (paginationAndSortingSpec == null) {

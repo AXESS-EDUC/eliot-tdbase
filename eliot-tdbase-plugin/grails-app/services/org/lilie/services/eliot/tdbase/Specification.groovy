@@ -40,7 +40,7 @@ public interface Specification {
 
   /**
    *
-   * @return  le code du type de question
+   * @return le code du type de question
    */
   String getQuestionTypeCode()
 }

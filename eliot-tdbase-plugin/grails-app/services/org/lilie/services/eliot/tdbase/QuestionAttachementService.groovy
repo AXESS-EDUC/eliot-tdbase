@@ -61,12 +61,12 @@ class QuestionAttachementService {
    * @param question la question
    * @param proprietaire le proprietaire
    * @param rang le rang
-   * @return  l'objet de type QuestionAttachement
+   * @return l'objet de type QuestionAttachement
    */
   @Transactional(propagation = Propagation.REQUIRED)
   QuestionAttachement createAttachementForQuestion(MultipartFile fichier,
-                                   Question question,
-                                   Integer rang = 1) {
+                                                   Question question,
+                                                   Integer rang = 1) {
     def attachement = attachementService.createAttachementForMultipartFile(
             fichier
     )
@@ -85,33 +85,33 @@ class QuestionAttachementService {
   }
 
   /**
-     * Creer un attachement pour une question
-     * @param fichier le fichier
-     * @param question la question
-     * @param proprietaire le proprietaire
-     * @param rang le rang
-     * @return  l'objet de type QuestionAttachement
-     */
-    @Transactional(propagation = Propagation.REQUIRED)
-    QuestionAttachement createAttachementForQuestionFromImageIds(ImageIds fichier,
-                                     Question question,
-                                     Integer rang = 1) {
-      def attachement = attachementService.createAttachementForImageIds(
-              fichier
-      )
-      QuestionAttachement questionAttachement = new QuestionAttachement(
-              question: question,
-              attachement: attachement,
-              rang: rang
-      )
-      questionAttachement.save()
-      // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
-      attachement.aSupprimer = false
-      question.addToQuestionAttachements(questionAttachement)
-      question.lastUpdated = new Date()
-      question.save()
-      return questionAttachement
-    }
+   * Creer un attachement pour une question
+   * @param fichier le fichier
+   * @param question la question
+   * @param proprietaire le proprietaire
+   * @param rang le rang
+   * @return l'objet de type QuestionAttachement
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  QuestionAttachement createAttachementForQuestionFromImageIds(ImageIds fichier,
+                                                               Question question,
+                                                               Integer rang = 1) {
+    def attachement = attachementService.createAttachementForImageIds(
+            fichier
+    )
+    QuestionAttachement questionAttachement = new QuestionAttachement(
+            question: question,
+            attachement: attachement,
+            rang: rang
+    )
+    questionAttachement.save()
+    // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
+    attachement.aSupprimer = false
+    question.addToQuestionAttachements(questionAttachement)
+    question.lastUpdated = new Date()
+    question.save()
+    return questionAttachement
+  }
 
   /**
    * Supprime le question attachement

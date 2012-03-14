@@ -129,15 +129,15 @@ class ArtefactAutorisationService {
     return artefact.estPartage()
   }
 
-    /**
-     * Vérifie qu'un utilisateur peut exporter un artefact
-     * @param utilisateur l'utilisateur sur lequel on vérifie l'autorisation
-     * @param artefact l'artefact sur lequel on vérifie l'autorisation
-     * @return true si l'autorisation est vérifiée
-     */
-    boolean utilisateurPeutExporterArtefact(Personne utilisateur, Artefact artefact) {
-        utilisateurPeutReutiliserArtefact(utilisateur, artefact) && artefact.estPresentableEnMoodleXML()
-    }
+  /**
+   * Vérifie qu'un utilisateur peut exporter un artefact
+   * @param utilisateur l'utilisateur sur lequel on vérifie l'autorisation
+   * @param artefact l'artefact sur lequel on vérifie l'autorisation
+   * @return true si l'autorisation est vérifiée
+   */
+  boolean utilisateurPeutExporterArtefact(Personne utilisateur, Artefact artefact) {
+    utilisateurPeutReutiliserArtefact(utilisateur, artefact) && artefact.estPresentableEnMoodleXML()
+  }
 }
 
 

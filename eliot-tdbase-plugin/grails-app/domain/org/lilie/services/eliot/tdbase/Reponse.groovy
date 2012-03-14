@@ -97,7 +97,7 @@ class Reponse implements Comparable {
     sujetQuestion(fetch: 'join')
   }
 
-  static transients = ['reponseService', 'estEnNotationManuelle', 'question','questionType']
+  static transients = ['reponseService', 'estEnNotationManuelle', 'question', 'questionType']
 
   /**
    * Permet l'ordonnancement des réponse par le rang de la
@@ -111,7 +111,7 @@ class Reponse implements Comparable {
 
   /**
    *
-   * @return  la question associée à la réponse
+   * @return la question associée à la réponse
    */
   Question getQuestion() {
     return sujetQuestion.question
@@ -119,12 +119,12 @@ class Reponse implements Comparable {
 
   /**
    *
-   * @return  le type de question associé à la réponse
+   * @return le type de question associé à la réponse
    */
   QuestionType getQuestionType() {
     return sujetQuestion.question.type
   }
-  
+
   /**
    *
    * @return true si la question induit une  notation  manuelle

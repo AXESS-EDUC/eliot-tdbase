@@ -150,7 +150,6 @@ class CopieService {
     }
   }
 
-
   /**
    * Met à jour la copie en prenant en compte la liste de réponses soumises
    * @param copie la copie

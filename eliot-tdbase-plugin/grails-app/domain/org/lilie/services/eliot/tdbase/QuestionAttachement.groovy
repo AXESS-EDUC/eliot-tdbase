@@ -36,27 +36,27 @@ import org.lilie.services.eliot.tice.Attachement
  */
 class QuestionAttachement implements Comparable {
 
-    Integer rang
+  Integer rang
 
-    Question question
-    Attachement attachement
+  Question question
+  Attachement attachement
 
-    static mapping = {
-        table('td.question_attachement')
-        version(false)
-        id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_attachement_id_seq'])
-        cache(true)
-        attachement(lazy: false)
-        question(lazy: false)
-    }
+  static mapping = {
+    table('td.question_attachement')
+    version(false)
+    id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_attachement_id_seq'])
+    cache(true)
+    attachement(lazy: false)
+    question(lazy: false)
+  }
 
-    /**
-     * Permet l'ordonnancement des attachements par le rang
-     * @param obj l'objet de comparaison
-     * @return
-     */
-    int compareTo(obj) {
-        rang.compareTo(obj.rang)
-    }
+  /**
+   * Permet l'ordonnancement des attachements par le rang
+   * @param obj l'objet de comparaison
+   * @return
+   */
+  int compareTo(obj) {
+    rang.compareTo(obj.rang)
+  }
 
 }

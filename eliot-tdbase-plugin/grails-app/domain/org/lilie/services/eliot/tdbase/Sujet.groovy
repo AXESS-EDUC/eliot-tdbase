@@ -41,152 +41,152 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
  */
 class Sujet implements Artefact {
 
-    String titre
-    String titreNormalise
-    int versionSujet
+  String titre
+  String titreNormalise
+  int versionSujet
 
-    Date dateCreated
-    Date lastUpdated
+  Date dateCreated
+  Date lastUpdated
 
-    String presentation
-    String presentationNormalise
+  String presentation
+  String presentationNormalise
 
-    String annotationPrivee
-    Integer nbQuestions
-    Integer dureeMinutes
-    Float noteMax
-    Float noteAutoMax
-    Float noteEnseignantMax
-    Boolean publie
-    Boolean accesPublic
-    Boolean accesSequentiel
-    Boolean ordreQuestionsAleatoire
+  String annotationPrivee
+  Integer nbQuestions
+  Integer dureeMinutes
+  Float noteMax
+  Float noteAutoMax
+  Float noteEnseignantMax
+  Boolean publie
+  Boolean accesPublic
+  Boolean accesSequentiel
+  Boolean ordreQuestionsAleatoire
 
-    String paternite
+  String paternite
 
 
-    Personne proprietaire
+  Personne proprietaire
 
-    SujetType sujetType
-    Etablissement etablissement
-    Matiere matiere
-    Niveau niveau
-    Publication publication
-    CopyrightsType copyrightsType
+  SujetType sujetType
+  Etablissement etablissement
+  Matiere matiere
+  Niveau niveau
+  Publication publication
+  CopyrightsType copyrightsType
 
-    List<SujetSequenceQuestions> questionsSequences
-    static hasMany = [questionsSequences: SujetSequenceQuestions]
+  List<SujetSequenceQuestions> questionsSequences
+  static hasMany = [questionsSequences: SujetSequenceQuestions]
 
-    Integer rangInsertion
+  Integer rangInsertion
 
-    static transients = [
-            'rangInsertion',
-            'estUnExercice',
-            'questionComposite',
-            'estInvariant'
-    ]
+  static transients = [
+          'rangInsertion',
+          'estUnExercice',
+          'questionComposite',
+          'estInvariant'
+  ]
 
-    static constraints = {
-        titre(blank: false, nullable: false)
-        sujetType(nullable: true, validator: { val, obj ->
-            if (val == SujetTypeEnum.Exercice.sujetType && obj.possedeUneQuestionComposite()) {
-                return ['invalid.exerciceavecquestioncomposite']
-            }
-        })
-        etablissement(nullable: true)
-        matiere(nullable: true)
-        niveau(nullable: true)
-        publication(nullable: true)
-        presentation(nullable: true)
-        presentationNormalise(nullable: true)
-        annotationPrivee(nullable: true)
-        nbQuestions(nullable: true)
-        dureeMinutes(nullable: true)
-        noteMax(nullable: true)
-        noteAutoMax(nullable: true)
-        noteEnseignantMax(nullable: true)
-        paternite(nullable: true)
+  static constraints = {
+    titre(blank: false, nullable: false)
+    sujetType(nullable: true, validator: { val, obj ->
+      if (val == SujetTypeEnum.Exercice.sujetType && obj.possedeUneQuestionComposite()) {
+        return ['invalid.exerciceavecquestioncomposite']
+      }
+    })
+    etablissement(nullable: true)
+    matiere(nullable: true)
+    niveau(nullable: true)
+    publication(nullable: true)
+    presentation(nullable: true)
+    presentationNormalise(nullable: true)
+    annotationPrivee(nullable: true)
+    nbQuestions(nullable: true)
+    dureeMinutes(nullable: true)
+    noteMax(nullable: true)
+    noteAutoMax(nullable: true)
+    noteEnseignantMax(nullable: true)
+    paternite(nullable: true)
+  }
+
+  static mapping = {
+    table('td.sujet')
+    version(false)
+    id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
+    questionsSequences(cascade: 'refresh')
+    sujetType(fetch: 'join')
+    cache(true)
+  }
+
+  /**
+   *
+   * @return true si le sujet est un exercice
+   */
+  boolean estUnExercice() {
+    sujetTypeId == SujetTypeEnum.Exercice.id
+  }
+
+  /**
+   * Retourne la question composite associée au sujet
+   * @return la question composite
+   */
+  Question getQuestionComposite() {
+    Question.findByExercice(this)
+  }
+
+  /**
+   *
+   * @return la liste des questions du sujet
+   */
+  List<Question> getQuestions() {
+    questionsSequences*.question
+  }
+
+  /**
+   *
+   * @return true si le sujet possede une question composite
+   */
+  boolean possedeUneQuestionComposite() {
+    return questions?.count { it.estComposite() } > 0
+  }
+
+  @Override
+  boolean estDistribue() {
+    if (estUnExercice()) {
+      return questionComposite.estDistribue()
     }
-
-    static mapping = {
-        table('td.sujet')
-        version(false)
-        id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
-        questionsSequences(cascade: 'refresh')
-        sujetType(fetch: 'join')
-        cache(true)
+    // verifie en premier si des copies sont attachées
+    def critCopie = Copie.createCriteria()
+    def nbCopies = critCopie.count {
+      eq 'estJetable', false
+      eq 'sujet', this
     }
-
-    /**
-     *
-     * @return true si le sujet est un exercice
-     */
-    boolean estUnExercice() {
-        sujetTypeId == SujetTypeEnum.Exercice.id
+    if (nbCopies > 0) {
+      return true
     }
-
-    /**
-     * Retourne la question composite associée au sujet
-     * @return la question composite
-     */
-    Question getQuestionComposite() {
-        Question.findByExercice(this)
+    // sinon verifie qu'une séance ouverte n'est pas attaché
+    def crit = ModaliteActivite.createCriteria()
+    def now = new Date()
+    def nbSeances = crit.count {
+      le 'dateDebut', now
+      ge 'dateFin', now
+      eq 'sujet', this
     }
+    return nbSeances > 0
+  }
 
-    /**
-     *
-     * @return la liste des questions du sujet
-     */
-    List<Question> getQuestions() {
-        questionsSequences*.question
-    }
+  @Override
+  boolean estPartage() {
+    publication != null
+  }
 
-    /**
-     *
-     * @return true si le sujet possede une question composite
-     */
-    boolean possedeUneQuestionComposite() {
-        return questions?.count { it.estComposite() } > 0
-    }
+  @Override
+  boolean estInvariant() {
+    false
+  }
 
-    @Override
-    boolean estDistribue() {
-        if (estUnExercice()) {
-            return questionComposite.estDistribue()
-        }
-        // verifie en premier si des copies sont attachées
-        def critCopie = Copie.createCriteria()
-        def nbCopies = critCopie.count {
-            eq 'estJetable', false
-            eq 'sujet', this
-        }
-        if (nbCopies > 0) {
-            return true
-        }
-        // sinon verifie qu'une séance ouverte n'est pas attaché
-        def crit = ModaliteActivite.createCriteria()
-        def now = new Date()
-        def nbSeances = crit.count {
-            le 'dateDebut', now
-            ge 'dateFin', now
-            eq 'sujet', this
-        }
-        return nbSeances > 0
-    }
-
-    @Override
-    boolean estPartage() {
-        publication != null
-    }
-
-    @Override
-    boolean estInvariant() {
-        false
-    }
-
-    @Override
-    boolean estPresentableEnMoodleXML() {
-        true
-    }
+  @Override
+  boolean estPresentableEnMoodleXML() {
+    true
+  }
 
 }

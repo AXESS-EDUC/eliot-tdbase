@@ -53,12 +53,12 @@ class ReponseAttachementService {
    * @param reponse la reponse
    * @param proprietaire le proprietaire
    * @param rang le rang
-   * @return  l'objet de type ReponseAttachement
+   * @return l'objet de type ReponseAttachement
    */
   @Transactional(propagation = Propagation.REQUIRED)
   ReponseAttachement createAttachementForResponse(MultipartFile fichier,
-                                   Reponse reponse,
-                                   Integer rang = 1) {
+                                                  Reponse reponse,
+                                                  Integer rang = 1) {
     def attachement = attachementService.createAttachementForMultipartFile(
             fichier
     )

@@ -64,7 +64,7 @@ enum SujetTypeEnum {
   SujetType getSujetType() {
     return SujetType.get(id)
   }
-  
+
   Long getId() {
     return id
   }

@@ -37,10 +37,10 @@ import org.lilie.services.eliot.tice.utils.InitialisationTestService
 
 class TdBaseInitialisationTestService extends InitialisationTestService {
 
-    StructureEnseignement findStructure1ere() {
-        bootstrapService.bootstrapForIntegrationTest()
-        return bootstrapService.findStruct1ere()
-    }
+  StructureEnseignement findStructure1ere() {
+    bootstrapService.bootstrapForIntegrationTest()
+    return bootstrapService.findStruct1ere()
+  }
 
 
 }
