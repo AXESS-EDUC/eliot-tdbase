@@ -44,6 +44,8 @@ import org.lilie.services.eliot.tdbase.impl.open.OpenSpecification
 import org.lilie.services.eliot.tdbase.impl.order.OrderSpecification
 import org.lilie.services.eliot.tdbase.impl.slider.SliderSpecification
 import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
+import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
+import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpecificationReponsePossible
 
 /**
  * Service d'export d'un quiz moodle.
@@ -94,6 +96,12 @@ class MoodleQuizExporterService {
     }
 
     prependHeader writer.toString()
+  }
+
+  private void renderCompositeQuestion(MarkupBuilder xml, Question question) {
+    question.exercice.questions.each {
+      renderQuestion(xml, it.specificationObject, "Question Composée -- " + it.titre)
+    }
   }
 
   /**
@@ -157,10 +165,22 @@ class MoodleQuizExporterService {
     xml.question(type: "multichoice") {
       questionHeader(xml, title, specification.libelle)
 
+      def goodFraction = calculateGoodFraction(specification)
 
-
+      specification.reponses.each { MultipleChoiceSpecificationReponsePossible reponse ->
+        xml.answer(fraction: reponse.estUneBonneReponse ? goodFraction : 0) {
+          xml.text reponse.libelleReponse
+        }
+      }
+      xml.shuffleanwers specification.shuffled ? 1 : 0
+      xml.single 0
       correction(xml, specification.correction)
     }
+  }
+
+  private calculateGoodFraction(MultipleChoiceSpecification specification) {
+    def goodCount = specification.reponses.count {it.estUneBonneReponse}
+    goodCount > 0 ? 100 / goodCount : 0
   }
 
   /**
@@ -172,8 +192,13 @@ class MoodleQuizExporterService {
     xml.question(type: "multichoice") {
       questionHeader(xml, title, specification.libelle)
 
-
-
+      specification.reponses.eachWithIndex { ExclusiveChoiceSpecificationReponsePossible reponse, int i ->
+        xml.answer(fraction: specification.indexBonneReponse.toInteger() == i + 1 ? 100 : 0) {
+          xml.text reponse.libelleReponse
+        }
+      }
+      xml.shuffleanwers specification.shuffled ? 1 : 0
+      xml.single 1
       correction(xml, specification.correction)
     }
   }
@@ -270,11 +295,5 @@ class MoodleQuizExporterService {
    */
   private void renderQuestion(MarkupBuilder xml, FileUploadSpecification specification, String title) {
     // ne peut pas être renderisé
-  }
-
-  private void renderCompositeQuestion(MarkupBuilder xml, Question question) {
-    question.exercice.questions.each {
-      renderQuestion(xml, it.specificationObject, "Question Composée -- " + it.titre)
-    }
   }
 }
