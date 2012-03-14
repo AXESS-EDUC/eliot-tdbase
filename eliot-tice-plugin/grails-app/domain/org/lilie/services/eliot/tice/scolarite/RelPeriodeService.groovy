@@ -53,9 +53,9 @@ class RelPeriodeService {
     service nullable: false, validator: {it.servicePrincipal} // Le relation peut etre créée uniquement pour un service principal
     periode nullable: false
     coeff nullable: true
-    option nullable:false
-    ordre nullable:true
-    evaluable nullable:false
+    option nullable: false
+    ordre nullable: true
+    evaluable nullable: false
   }
 
   static mapping = {

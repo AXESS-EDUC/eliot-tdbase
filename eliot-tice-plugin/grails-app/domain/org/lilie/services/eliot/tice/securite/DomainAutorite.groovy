@@ -57,13 +57,11 @@ class DomainAutorite implements Autorite {
 
   static mapping = {
     table('securite.autorite')
-    cache usage:'read-write'
+    cache usage: 'read-write'
     id column: 'id', generator: 'sequence', params: [sequence: 'securite.autorite_id_seq']
     idEnregistrementCible column: 'enregistrement_cible_id'
     identifiant column: 'id_externe'
   }
-
-
 
   /**
    * Méthode retournant les permissions de l'autorité sur l'item passé en paramètre
@@ -113,9 +111,9 @@ class DomainAutorite implements Autorite {
 
   public String toString() {
     return "DomainAutorite{" +
-            "id='" + id + '\'' +
-            ", type='" + type + '\'' +
-            ", identifiant ='" + identifiant + '\'' +
-            '}';
+           "id='" + id + '\'' +
+           ", type='" + type + '\'' +
+           ", identifiant ='" + identifiant + '\'' +
+           '}';
   }
 }

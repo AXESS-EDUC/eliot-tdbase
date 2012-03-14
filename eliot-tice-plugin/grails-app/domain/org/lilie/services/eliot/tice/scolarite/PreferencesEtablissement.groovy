@@ -39,46 +39,46 @@ package org.lilie.services.eliot.tice.scolarite
 class PreferencesEtablissement {
 
   Etablissement etablissement
-  
+
   int nbAnneesConservationArchivesBulletins = 3
   int nbAnneesConservationArchivesCdt = 2
 
   // infos de publipostage
-  String nomEtablissement 
+  String nomEtablissement
   String adresse1Etablissement
   String adresse2Etablissement
   String codePostalEtablissement
   String villeEtablissement
   // blob de la signature
   byte[] logoEtablissement
-  
+
   //static hasMany = [distinctions: Distinction]
 
   static constraints = {
-      nomEtablissement(nullable:true)
-      adresse1Etablissement(nullable:true)
-      adresse2Etablissement(nullable:true)
-      codePostalEtablissement(nullable:true)
-      villeEtablissement(nullable:true)
-      logoEtablissement(nullable:true)
-    }
+    nomEtablissement(nullable: true)
+    adresse1Etablissement(nullable: true)
+    adresse2Etablissement(nullable: true)
+    codePostalEtablissement(nullable: true)
+    villeEtablissement(nullable: true)
+    logoEtablissement(nullable: true)
+  }
 
   static mapping = {
 
     table('ent.preferences_etablissement')
 
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'ent.preferences_etablissement_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'ent.preferences_etablissement_id_seq']
 
     etablissement column: 'etablissement_id'
-    nbAnneesConservationArchivesBulletins column:'nb_annees_conservation_archives_bulletins'
-    nbAnneesConservationArchivesCdt column:'nb_annees_conservation_archives_cdt'
-    nomEtablissement column:'nom_etablissement'
-    adresse1Etablissement column:'adresse_1_etablissement'
-    adresse2Etablissement column:'adresse_2_etablissement'
-    codePostalEtablissement column:'code_postal_etablissement'
-    villeEtablissement column:'ville_etablissement'
-    logoEtablissement column:'logo_etablissement'
+    nbAnneesConservationArchivesBulletins column: 'nb_annees_conservation_archives_bulletins'
+    nbAnneesConservationArchivesCdt column: 'nb_annees_conservation_archives_cdt'
+    nomEtablissement column: 'nom_etablissement'
+    adresse1Etablissement column: 'adresse_1_etablissement'
+    adresse2Etablissement column: 'adresse_2_etablissement'
+    codePostalEtablissement column: 'code_postal_etablissement'
+    villeEtablissement column: 'ville_etablissement'
+    logoEtablissement column: 'logo_etablissement'
   }
 }

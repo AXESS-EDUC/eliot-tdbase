@@ -37,35 +37,35 @@ package org.lilie.services.eliot.tice.securite.acl;
  */
 public class AutorisationException extends Exception {
 
-    public static final String NO_AUT_CONSULTATION = "Pas l'autorisation de consultation";
-    public static final String NO_AUT_MODIFICATION = "Pas l'autorisation de modification";
-    public static final String NO_AUT_SUPPRESSION = "Pas l'autorisation de suppression";
-    public static final String NO_AUT_CONSULTATION_PERMISSIONS = "Pas l'autorisation de consulter les permissions";
-    public static final String NO_AUT_MODIFICATION_PERMISSIONS = "Pas l'autorisation de modifier les permissions";
+  public static final String NO_AUT_CONSULTATION = "Pas l'autorisation de consultation";
+  public static final String NO_AUT_MODIFICATION = "Pas l'autorisation de modification";
+  public static final String NO_AUT_SUPPRESSION = "Pas l'autorisation de suppression";
+  public static final String NO_AUT_CONSULTATION_PERMISSIONS = "Pas l'autorisation de consulter les permissions";
+  public static final String NO_AUT_MODIFICATION_PERMISSIONS = "Pas l'autorisation de modifier les permissions";
 
-    public AutorisationException(String message) {
-        super(message);
-    }
+  public AutorisationException(String message) {
+    super(message);
+  }
 
-    public static AutorisationException consultationContenuException() {
-        return new AutorisationException(NO_AUT_CONSULTATION);
-    }
+  public static AutorisationException consultationContenuException() {
+    return new AutorisationException(NO_AUT_CONSULTATION);
+  }
 
-    public static AutorisationException modificationContenuException() {
-        return new AutorisationException(NO_AUT_MODIFICATION);
-    }
+  public static AutorisationException modificationContenuException() {
+    return new AutorisationException(NO_AUT_MODIFICATION);
+  }
 
-    public static AutorisationException suppressionException() {
-        return new AutorisationException(NO_AUT_SUPPRESSION);
-    }
+  public static AutorisationException suppressionException() {
+    return new AutorisationException(NO_AUT_SUPPRESSION);
+  }
 
-    public static AutorisationException consultationPermissionsException() {
-        return new AutorisationException(NO_AUT_CONSULTATION_PERMISSIONS);
-    }
+  public static AutorisationException consultationPermissionsException() {
+    return new AutorisationException(NO_AUT_CONSULTATION_PERMISSIONS);
+  }
 
-    public static AutorisationException modificationPermissionsException() {
-        return new AutorisationException(NO_AUT_MODIFICATION_PERMISSIONS);
-    }
+  public static AutorisationException modificationPermissionsException() {
+    return new AutorisationException(NO_AUT_MODIFICATION_PERMISSIONS);
+  }
 
 
 }

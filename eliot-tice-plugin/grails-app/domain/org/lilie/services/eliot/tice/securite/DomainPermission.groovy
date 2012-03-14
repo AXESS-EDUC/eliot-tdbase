@@ -40,7 +40,7 @@ class DomainPermission {
   }
 
   static mapping = {
-    table ('securite.permission')
-    id column:'id', generator: 'sequence', params: [sequence: 'securite.permission_id_seq']
+    table('securite.permission')
+    id column: 'id', generator: 'sequence', params: [sequence: 'securite.permission_id_seq']
   }
 }

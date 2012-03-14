@@ -49,7 +49,7 @@ class TypePeriode {
 
   static constraints = {
     etablissement nullable: true, validator: etablissementValidator
-    libelle (maxSize: 50, nullable: true)
+    libelle(maxSize: 50, nullable: true)
     nature nullable: false
     intervalle nullable: true, validator: intervalleValidator
   }
@@ -63,7 +63,7 @@ class TypePeriode {
     if (obj.nature == NaturePeriodeEnum.NOTATION) {
       return (val != null)
     } else {
-      return (val == null) 
+      return (val == null)
     }
   }
 
@@ -102,15 +102,14 @@ class TypePeriode {
   }
 
   /**
-  * TypePeriode est Trimestre ou Semestre
-  * @return true/false
-  * @author msan
-  */
+   * TypePeriode est Trimestre ou Semestre
+   * @return true/false
+   * @author msan
+   */
   Boolean isXmestre() {
     if (this.intervalle != null) {
       return (this.intervalle.isXmestre())
-    }
-    else {
+    } else {
       return false
     }
   }

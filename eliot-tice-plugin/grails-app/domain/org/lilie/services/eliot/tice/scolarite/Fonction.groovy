@@ -13,7 +13,7 @@ class Fonction implements GrantedAuthority {
 
   static constraints = {
     code(nullable: false)
-    libelle(nullable: true)    
+    libelle(nullable: true)
   }
 
   /**

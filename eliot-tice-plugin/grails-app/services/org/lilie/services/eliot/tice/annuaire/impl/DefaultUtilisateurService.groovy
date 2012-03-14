@@ -343,8 +343,6 @@ class DefaultUtilisateurService implements UtilisateurService {
     return utilisateurs
   }
 
-
-
   // -------------- private methods --------------------------------------------
 
   /**

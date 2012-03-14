@@ -37,67 +37,64 @@ package org.lilie.services.eliot.tice.securite.acl;
  */
 public interface Autorisation {
 
-    /**
-     * Méthode reptournant l'autorité
-     * @return l'autorité
-     */
-      public Autorite autorite();
+  /**
+   * Méthode reptournant l'autorité
+   * @return l'autorité
+   */
+  public Autorite autorite();
 
-    /**
-     * Méthode reptournant l'item
-     * @return  l'item
-     */
-      public Item item();
+  /**
+   * Méthode reptournant l'item
+   * @return l'item
+   */
+  public Item item();
 
-     /**
-     * Méthode indiquant si l'autorité associée à l'autorisation est propriétaire
-     * @return true si l'autorité est propriétaire
-     */
-      public boolean autoriteEstProprietaire();
+  /**
+   * Méthode indiquant si l'autorité associée à l'autorisation est propriétaire
+   * @return true si l'autorité est propriétaire
+   */
+  public boolean autoriteEstProprietaire();
 
+  /**
+   * Méthode reptournant la valeur des permissions
+   * @return la valeur des permissions
+   */
+  public int getValeurPermissions();
 
-    /**
-     * Méthode reptournant la valeur des permissions 
-     * @return  la valeur des permissions
-     */
-     public int getValeurPermissions();
- 
+  /**
+   * Methode indiquant si l'autorisation permet de consulter le contenu
+   *
+   * @return true si l'action est permise
+   */
+  public boolean autoriseConsulterLeContenu();
 
+  /**
+   * Methode indiquant si l'autorisation permet de modifier le contenu
+   *
+   * @return true si l'action est permise
+   */
+  public boolean autoriseModifierLeContenu();
 
-   /**
-     * Methode indiquant si l'autorisation permet de consulter le contenu
-     *
-     * @return true si l'action est permise
-     */
-   public boolean autoriseConsulterLeContenu();
+  /**
+   * Methode indiquant si l'autorisation permet de consulter les permissions
+   *
+   * @return true si l'action est permise
+   */
+  public boolean autoriseConsulterLesPermissions();
 
-    /**
-     * Methode indiquant si l'autorisation permet de modifier le contenu
-     *
-     * @return true si l'action est permise
-     */
-    public boolean autoriseModifierLeContenu();
+  /**
+   * Methode indiquant si l'autorisation permet de modifier les permissions
+   * sur l'item donné
+   *
+   * @return true si l'action est permise
+   */
+  public boolean autoriseModifierLesPermissions();
 
-    /**
-     * Methode indiquant si l'autorisation permet de consulter les permissions
-     *
-     * @return true si l'action est permise
-     */
-    public boolean autoriseConsulterLesPermissions();
-
-    /**
-     * Methode indiquant si l'autorisation permet de modifier les permissions
-     * sur l'item donné
-     *
-     * @return true si l'action est permise
-     */
-    public boolean autoriseModifierLesPermissions();
-
-    /**
-     * Methode indiquant si si l'autorisation permet de supprimer 
-     *
-     * @return true si l'action est permise
-     */
-    public boolean autoriseSupprimer();
+  /**
+   * Methode indiquant si si l'autorisation permet de supprimer
+   *
+   * @return true si l'action est permise
+   */
+  public boolean autoriseSupprimer();
 
 }

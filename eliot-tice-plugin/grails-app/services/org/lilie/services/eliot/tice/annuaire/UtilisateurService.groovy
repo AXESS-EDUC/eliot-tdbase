@@ -32,7 +32,7 @@ import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.springframework.security.core.GrantedAuthority
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 public interface UtilisateurService {
@@ -61,7 +61,7 @@ public interface UtilisateurService {
    *
    * @param loginOrLoginAlias le login ou l'alias de login de l'utilisateur
    * recherché
-   * @return  l'utilisateur trouvé ou null
+   * @return l'utilisateur trouvé ou null
    */
   Utilisateur findUtilisateur(String loginOrLoginAlias)
 
@@ -84,21 +84,21 @@ public interface UtilisateurService {
    * Met à jour l'alias de login de l'utilisateur caractérisé par le login passé
    * en paramètre
    * @param login le login de l'utilisateur
-   * @param aliasLogin  l'alias du login de l'utilisateur concerné
+   * @param aliasLogin l'alias du login de l'utilisateur concerné
    */
   void setAliasLogin(String login, String loginAlias)
 
   /**
    * Desactive le compte d'un utilisateur
    * @param login le login de l'utilisateur
-   * @return  l'utilisateur suspendu
+   * @return l'utilisateur suspendu
    */
   Utilisateur desactiveUtilisateur(String login)
 
   /**
    * Reactive le compte d'un utilisateur
    * @param login le login de l'utilisateur
-   * @return  l'utilisateur suspendu
+   * @return l'utilisateur suspendu
    */
   Utilisateur reactiveUtilisateur(String login)
 
@@ -114,7 +114,6 @@ public interface UtilisateurService {
    * @return l'utilisateur avec ses nouvelles valeurs
    */
   Utilisateur updateUtilisateur(String login, Utilisateur utilisateur)
-
 
 
 }

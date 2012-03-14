@@ -134,7 +134,7 @@ class Breadcrumps {
 
   /**
    * Retourne la valeur d'une propriete
-   * @param nom  le nom de la propriete
+   * @param nom le nom de la propriete
    * @return la valeur ou null si la propriete n'est pas definie
    */
   synchronized def getValeurPropriete(String nom) {

@@ -59,11 +59,11 @@ public class DefaultPermissionsManager extends PermissionsManager {
     autorisation = DomainAutorisation.findByAutoriteAndItem(autorite, item)
   }
 
-   /**
+  /**
    * Ajoute la propriété de l'item à l'autorité
    * @throws IllegalStateException si l'autorisation n'a pas pu être enregistrée
    */
-   public void addPermissionProprietaire() throws IllegalStateException {
+  public void addPermissionProprietaire() throws IllegalStateException {
     if (autorisation?.autoriteEstProprietaire()) {
       // l'autorisation est déjà OK
       return;
@@ -73,13 +73,13 @@ public class DefaultPermissionsManager extends PermissionsManager {
       autorisation = new DomainAutorisation(autorite: autorite, item: item)
     }
     autorisation.proprietaire = true
-    if(!autorisation.save(flush:true)) {
+    if (!autorisation.save(flush: true)) {
       throw new IllegalStateException(
               "L'autorisation n'a pas pu être enregistrée : ${autorisation.errors}"
       )
     }
 
-   }
+  }
 
   /**
    * Ajoute la permission de consulter l'item à l'autorité
@@ -94,9 +94,9 @@ public class DefaultPermissionsManager extends PermissionsManager {
       // il faut créer l'autorisation
       autorisation = new DomainAutorisation(autorite: autorite, item: item)
     }
-    autorisation.valeurPermissionsExplicite |= 
-           Permission.PEUT_CONSULTER_CONTENU
-    if(!autorisation.save(flush:true)) {
+    autorisation.valeurPermissionsExplicite |=
+      Permission.PEUT_CONSULTER_CONTENU
+    if (!autorisation.save(flush: true)) {
       throw new IllegalStateException(
               "L'autorisation n'a pas pu être enregistrée : ${autorisation.errors}"
       )
@@ -118,9 +118,9 @@ public class DefaultPermissionsManager extends PermissionsManager {
     }
     // on considère que l'ajout de modification induit l'ajout de consultation
     autorisation.valeurPermissionsExplicite = autorisation.valeurPermissionsExplicite |
-            Permission.PEUT_CONSULTER_CONTENU |
-            Permission.PEUT_MODIFIER_CONTENU
-    autorisation.save(flush:true)
+                                              Permission.PEUT_CONSULTER_CONTENU |
+                                              Permission.PEUT_MODIFIER_CONTENU
+    autorisation.save(flush: true)
   }
 
   /**
@@ -136,9 +136,9 @@ public class DefaultPermissionsManager extends PermissionsManager {
       autorisation = new DomainAutorisation(autorite: autorite, item: item)
     }
     autorisation.valeurPermissionsExplicite = autorisation.valeurPermissionsExplicite |
-            Permission.PEUT_CONSULTER_CONTENU |
-            Permission.PEUT_CONSULTER_PERMISSIONS
-    autorisation.save(flush:true)
+                                              Permission.PEUT_CONSULTER_CONTENU |
+                                              Permission.PEUT_CONSULTER_PERMISSIONS
+    autorisation.save(flush: true)
 
   }
 
@@ -155,10 +155,10 @@ public class DefaultPermissionsManager extends PermissionsManager {
       autorisation = new DomainAutorisation(autorite: autorite, item: item)
     }
     autorisation.valeurPermissionsExplicite = autorisation.valeurPermissionsExplicite |
-            Permission.PEUT_CONSULTER_CONTENU |
-            Permission.PEUT_CONSULTER_PERMISSIONS |
-            Permission.PEUT_MODIFIER_PERMISSIONS
-    autorisation.save(flush:true)
+                                              Permission.PEUT_CONSULTER_CONTENU |
+                                              Permission.PEUT_CONSULTER_PERMISSIONS |
+                                              Permission.PEUT_MODIFIER_PERMISSIONS
+    autorisation.save(flush: true)
   }
 
   /**
@@ -174,9 +174,9 @@ public class DefaultPermissionsManager extends PermissionsManager {
       autorisation = new DomainAutorisation(autorite: autorite, item: item)
     }
     autorisation.valeurPermissionsExplicite = autorisation.valeurPermissionsExplicite |
-            Permission.PEUT_CONSULTER_CONTENU |
-            Permission.PEUT_SUPPRIMER
-    autorisation.save(flush:true)
+                                              Permission.PEUT_CONSULTER_CONTENU |
+                                              Permission.PEUT_SUPPRIMER
+    autorisation.save(flush: true)
   }
 
   /**
@@ -193,10 +193,9 @@ public class DefaultPermissionsManager extends PermissionsManager {
     if (autorisationEstSupprimee()) {
       return
     }
-    autorisation.save(flush:true)
+    autorisation.save(flush: true)
 
   }
-
 
   /**
    * Supprime la permission de modifier l'item à l'autorité
@@ -209,11 +208,11 @@ public class DefaultPermissionsManager extends PermissionsManager {
       return
     }
     autorisation.valeurPermissionsExplicite = autorisation.valeurPermissionsExplicite &
-            (~Permission.PEUT_MODIFIER_CONTENU)
-     if (autorisationEstSupprimee()) {
+                                              (~Permission.PEUT_MODIFIER_CONTENU)
+    if (autorisationEstSupprimee()) {
       return
     }
-    autorisation.save(flush:true)
+    autorisation.save(flush: true)
   }
 
   /**
@@ -227,15 +226,14 @@ public class DefaultPermissionsManager extends PermissionsManager {
       return
     }
     autorisation.valeurPermissionsExplicite = autorisation.valeurPermissionsExplicite &
-            (~(Permission.PEUT_CONSULTER_PERMISSIONS |
-                    Permission.PEUT_MODIFIER_PERMISSIONS))
+                                              (~(Permission.PEUT_CONSULTER_PERMISSIONS |
+                                                 Permission.PEUT_MODIFIER_PERMISSIONS))
     if (autorisationEstSupprimee()) {
       return
     }
-    autorisation.save(flush:true)
+    autorisation.save(flush: true)
 
   }
-
 
   /**
    * Supprimela permission de modifier les permissions sur l'item à l'autorité
@@ -248,11 +246,11 @@ public class DefaultPermissionsManager extends PermissionsManager {
       return
     }
     autorisation.valeurPermissionsExplicite = autorisation.valeurPermissionsExplicite &
-            (~Permission.PEUT_MODIFIER_PERMISSIONS)
-     if (autorisationEstSupprimee()) {
+                                              (~Permission.PEUT_MODIFIER_PERMISSIONS)
+    if (autorisationEstSupprimee()) {
       return
     }
-    autorisation.save(flush:true)
+    autorisation.save(flush: true)
   }
 
   /**
@@ -266,17 +264,17 @@ public class DefaultPermissionsManager extends PermissionsManager {
       return
     }
     autorisation.valeurPermissionsExplicite = autorisation.valeurPermissionsExplicite &
-            (~Permission.PEUT_SUPPRIMER)
+                                              (~Permission.PEUT_SUPPRIMER)
     if (autorisationEstSupprimee()) {
       return
     }
-    autorisation.save(flush:true)
+    autorisation.save(flush: true)
   }
 
 
   private boolean autorisationEstSupprimee() {
     if (autorisation.valeurPermissions == 0 &&
-            !autorisation.autoriteEstProprietaire()) {
+        !autorisation.autoriteEstProprietaire()) {
       autorisation.delete()
       autorisation = null
       return true

@@ -39,7 +39,7 @@ package org.lilie.services.eliot.tice.securite.acl;
  * @author jtra
  */
 public interface AclSecuritySession {
-  
+
   /**
    * Méthode retournant la liste des autorités (groupe, personne) attachée à
    * la session

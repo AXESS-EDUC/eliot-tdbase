@@ -75,7 +75,7 @@ class AnneeScolaire {
    */
   public Integer extraitAnneeDebutInteger() {
     String debut = code.split('-')[0]
-    return debut?Integer.parseInt(debut):null
+    return debut ? Integer.parseInt(debut) : null
   }
 
   /**
@@ -87,6 +87,6 @@ class AnneeScolaire {
    */
   public Integer extraitAnneeFinInteger() {
     String fin = code.split('-')[1]
-    return fin?Integer.parseInt(fin):null
+    return fin ? Integer.parseInt(fin) : null
   }
 }

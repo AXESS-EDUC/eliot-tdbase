@@ -28,8 +28,6 @@
 
 package org.lilie.services.eliot.tice.annuaire
 
-
-
 /**
  * Classe de domaine faisant le lien entre personne et groupe de personnes
  * @author othe

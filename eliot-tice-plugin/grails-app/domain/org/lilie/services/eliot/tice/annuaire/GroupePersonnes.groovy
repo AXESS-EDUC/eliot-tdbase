@@ -42,7 +42,7 @@ class GroupePersonnes {
   DomainAutorite autorite
   DomainItem item
   ProprietesScolarite proprietesScolarite
-  
+
   static constraints = {
   }
 

@@ -38,7 +38,7 @@ import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
  *  Test la classe Item
  * @author franck silvestre
  */
-class AutorisationIntegrationTests extends GroovyTestCase  {
+class AutorisationIntegrationTests extends GroovyTestCase {
 
 
   AclSecuritySession session
@@ -55,8 +55,8 @@ class AutorisationIntegrationTests extends GroovyTestCase  {
 
     session = new DefaultAclSecuritySession()
 
-    autProp =  new DomainAutorite(identifiant: "autProp", type: TypeAutorite.PERSONNE.libelle).save()
-    aut =  new DomainAutorite(identifiant: "aut", type: TypeAutorite.PERSONNE.libelle).save()
+    autProp = new DomainAutorite(identifiant: "autProp", type: TypeAutorite.PERSONNE.libelle).save()
+    aut = new DomainAutorite(identifiant: "aut", type: TypeAutorite.PERSONNE.libelle).save()
 
     session = new DefaultAclSecuritySession(defaultAutorite: autProp, autorites: [autProp])
 
@@ -72,7 +72,7 @@ class AutorisationIntegrationTests extends GroovyTestCase  {
 
   void testFindAllPersonneProprietaireAutorisations() {
     // on créé l'autorisation pour autoritePers1 1 , en le mettant proprietaire
-    DomainAutorisation autorisationDefault = new DomainAutorisation (
+    DomainAutorisation autorisationDefault = new DomainAutorisation(
             autorite: autProp,
             item: projetB2I,
             proprietaire: true
@@ -83,10 +83,10 @@ class AutorisationIntegrationTests extends GroovyTestCase  {
             projetB2I, aut, session
     )
     permManager2.addPermissionConsultation()
-    
+
     DomainItem item = DomainItem.get(projetB2I.id)
     List<Autorisation> autsProps = item.findAllPersonneProprietaireAutorisations()
-    assertEquals autsProps.size(),1
+    assertEquals autsProps.size(), 1
     Autorisation autPropFetched = autsProps.last()
     assertTrue autPropFetched.autoriteEstProprietaire()
   }

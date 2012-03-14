@@ -36,18 +36,18 @@ class Perimetre {
 
   String nomEntiteCible
   Long idEnregistrementCible
-  Boolean estActive =false
+  Boolean estActive = false
   Long importId
   Date dateDesactivation
   Perimetre perimetreParent
 
   static constraints = {
-     nomEntiteCible(nullable: true)
-     estActive(nullable: true)
-     importId(nullable: true)
-     dateDesactivation(nullable: true)
-     idEnregistrementCible(nullable: true)
-     perimetreParent(nullable: true)    
+    nomEntiteCible(nullable: true)
+    estActive(nullable: true)
+    importId(nullable: true)
+    dateDesactivation(nullable: true)
+    idEnregistrementCible(nullable: true)
+    perimetreParent(nullable: true)
   }
 
   static mapping = {

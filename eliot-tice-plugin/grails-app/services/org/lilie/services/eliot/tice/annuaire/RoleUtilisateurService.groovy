@@ -32,17 +32,17 @@ import org.springframework.security.core.GrantedAuthority
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 public interface RoleUtilisateurService {
 
   /**
-     * Charge les rôles d'un utilisateur
-     * @param utilisateur l'utilisateur
-     * @return  la liste des rôles (GrantedAuthority) de l'utilisateur
-     */
-    List<GrantedAuthority> findRolesForUtilisateur(Utilisateur utilisateur)
+   * Charge les rôles d'un utilisateur
+   * @param utilisateur l'utilisateur
+   * @return la liste des rôles (GrantedAuthority) de l'utilisateur
+   */
+  List<GrantedAuthority> findRolesForUtilisateur(Utilisateur utilisateur)
 
 }
 

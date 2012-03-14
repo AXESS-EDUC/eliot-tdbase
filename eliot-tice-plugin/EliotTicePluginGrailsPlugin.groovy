@@ -80,7 +80,7 @@ class EliotTicePluginGrailsPlugin {
       }
     }
 
-    dataStore(AttachementDataStore)  { bean ->
+    dataStore(AttachementDataStore) { bean ->
       path = ConfigurationHolder.config.eliot.fichiers.racine ?: null
       bean.initMethod = 'initFileDataStore'
     }

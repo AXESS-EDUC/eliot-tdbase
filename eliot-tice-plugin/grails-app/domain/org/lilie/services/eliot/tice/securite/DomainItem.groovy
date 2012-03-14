@@ -33,15 +33,14 @@ import org.lilie.services.eliot.tice.securite.acl.Item
 import org.lilie.services.eliot.tice.securite.acl.TypeAutorite
 
 class DomainItem implements Item {
-  
-  String type 
 
-  Boolean estActive=false
+  String type
+
+  Boolean estActive = false
   Long importId
   Date dateDesactivation
   String nomEntiteCible
   Long idEnregistrementCible
-
 
   //Supprimer un DomainItem supprimer aussi ses fils
   static belongsTo = [itemParent: DomainItem]
@@ -50,7 +49,6 @@ class DomainItem implements Item {
   static mappedBy = [itemsFils: 'itemParent']
 
   static transients = ['identifiant', 'parentItem']
-
 
   /**
    * @return l'id de l'item sous forme de String
@@ -65,7 +63,6 @@ class DomainItem implements Item {
   public Item getParentItem() {
     return itemParent
   }
-
 
   /**
    * Méthode retournant toutes les autorisations
@@ -83,7 +80,7 @@ class DomainItem implements Item {
    * @return la liste des autorisations
    */
   public List<Autorisation> findAllGroupePersonnesAutorisations() {
-     if (itemParent) {
+    if (itemParent) {
       return itemParent.findAllGroupePersonnesAutorisations()
     }
     return findAllAutorisationsPourType(TypeAutorite.GROUPE_PERSONNE.libelle)
@@ -111,19 +108,18 @@ class DomainItem implements Item {
     return DomainAutorisation.withCriteria {
       and {
         eq("item", this)
-        eq("proprietaire",true)
+        eq("proprietaire", true)
         autorite {
           eq("type", TypeAutorite.PERSONNE.libelle)
         }
       }
     }
   }
-  
 
   /*
-   * Méthode retournant toutes les autorisations de'un type d'autoritée
-   * @return la liste des autorisations
-   */
+  * Méthode retournant toutes les autorisations de'un type d'autoritée
+  * @return la liste des autorisations
+  */
 
   private List<Autorisation> findAllAutorisationsPourType(String autoriteType = null) {
     return DomainAutorisation.withCriteria {

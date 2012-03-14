@@ -44,14 +44,14 @@ class Mef {
   Niveau niveau
 
   static constraints = {
-    code(nullable: false)    
+    code(nullable: false)
     formation(nullable: true)
     specialite(nullable: true)
     libelleLong(nullable: true)
     libelleEdition(nullable: true)
     mefstat11(nullable: true)
     mefstat4(nullable: true)
-    niveau(nullable: false)    
+    niveau(nullable: false)
   }
 
   static mapping = {

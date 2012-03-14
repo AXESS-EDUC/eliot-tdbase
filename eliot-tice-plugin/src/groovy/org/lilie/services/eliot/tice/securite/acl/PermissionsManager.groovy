@@ -38,97 +38,95 @@ package org.lilie.services.eliot.tice.securite.acl;
  */
 public abstract class PermissionsManager {
 
-    private Item item;
-    private Autorite autorite;
-    private AclSecuritySession session;
+  private Item item;
+  private Autorite autorite;
+  private AclSecuritySession session;
 
-    /**
-     * Construit un Permission Manager sur un item en contrôlant que la session
-     * en cours dispose des droits pour modifier les permissions
-     *
-     * @param item
-     * @param session
-     * @throws AutorisationException
-     */
-    public PermissionsManager(Item item, Autorite autorite, AclSecuritySession session)
-            throws AutorisationException {
-        this.item = item;
-        this.session = session;
-        AccessManager accessManager = new AccessManager(item, session);
-        if (!accessManager.peutModifierLesPermissions()) {
-            throw AutorisationException.modificationPermissionsException();
-        }
-        this.autorite = autorite;
+  /**
+   * Construit un Permission Manager sur un item en contrôlant que la session
+   * en cours dispose des droits pour modifier les permissions
+   *
+   * @param item
+   * @param session
+   * @throws AutorisationException
+   */
+  public PermissionsManager(Item item, Autorite autorite, AclSecuritySession session)
+  throws AutorisationException {
+    this.item = item;
+    this.session = session;
+    AccessManager accessManager = new AccessManager(item, session);
+    if (!accessManager.peutModifierLesPermissions()) {
+      throw AutorisationException.modificationPermissionsException();
     }
+    this.autorite = autorite;
+  }
 
-    /**
-     * Ajoute la permission de consulter l'item
-     *
-     */
-    public abstract void addPermissionConsultation();
+  /**
+   * Ajoute la permission de consulter l'item
+   *
+   */
+  public abstract void addPermissionConsultation();
 
-    /**
-     * Ajoute la permission de modifier l'item
-     *
-     */
-    public abstract void addPermissionModification();
+  /**
+   * Ajoute la permission de modifier l'item
+   *
+   */
+  public abstract void addPermissionModification();
 
-    /**
-     * Ajoute la permission de consulter les permissions sur l'item
-     *
-     */
-    public abstract void addPermissionConsultationPermissions();
+  /**
+   * Ajoute la permission de consulter les permissions sur l'item
+   *
+   */
+  public abstract void addPermissionConsultationPermissions();
 
-    /**
-     * Ajoute la permission de modifier les permissions sur l'item
-     */
-    public abstract void addPermissionModificationPermissions();
+  /**
+   * Ajoute la permission de modifier les permissions sur l'item
+   */
+  public abstract void addPermissionModificationPermissions();
 
-    /**
-     * Ajoute la permission de supprimer l'item
-     */
-    public abstract void addPermissionSuppression();
+  /**
+   * Ajoute la permission de supprimer l'item
+   */
+  public abstract void addPermissionSuppression();
 
-    /**
-     * Supprime la permission de consulter l'item
-     */
-    public abstract void deletePermissionConsultation();
+  /**
+   * Supprime la permission de consulter l'item
+   */
+  public abstract void deletePermissionConsultation();
 
+  /**
+   * Supprime la permission de modifier l'item
+   */
+  public abstract void deletePermissionModification();
 
-    /**
-     * Supprime la permission de modifier l'item
-     */
-    public abstract void deletePermissionModification();
+  /**
+   * supprime la permission de consulter les permissions sur l'item
+   */
+  public abstract void deletePermissionConsultationPermissions();
 
-    /**
-     * supprime la permission de consulter les permissions sur l'item
-     */
-    public abstract void deletePermissionConsultationPermissions();
+  /**
+   * Supprimela permission de modifier les permissions sur l'item
+   */
+  public abstract void deletePermissionModificationPermissions();
 
+  /**
+   * Ajoute la permission de supprimer l'item
+   */
+  public abstract void deletePermissionSuppression();
 
-    /**
-     * Supprimela permission de modifier les permissions sur l'item 
-     */
-    public abstract void deletePermissionModificationPermissions();
+  /**
+   * Getter pour l'item
+   * @return l'item
+   */
+  public Item getItem() {
+    return item;
+  }
 
-    /**
-     * Ajoute la permission de supprimer l'item
-     */
-    public abstract void deletePermissionSuppression();
-
-    /**
-     * Getter pour l'item
-     * @return  l'item
-     */
-    public Item getItem() {
-        return item;
-    }
-
-    /**
-     * Getter pour l'autorité
-     * @return l'autoritePers1
-     */
-    public Autorite getAutorite() {
-        return autorite;
-    }
+  /**
+   * Getter pour l'autorité
+   * @return l'autoritePers1
+   */
+  public Autorite getAutorite() {
+    return autorite;
+  }
 }

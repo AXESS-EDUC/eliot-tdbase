@@ -61,7 +61,7 @@ class EliotTiceUserDetailsService implements GrailsUserDetailsService {
   UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Utilisateur utilisateur = utilisateurService.findUtilisateur(username)
     if (utilisateur) {
-      def roles = roleUtilisateurService.findRolesForUtilisateur(utilisateur)  ?: NO_ROLES
+      def roles = roleUtilisateurService.findRolesForUtilisateur(utilisateur) ?: NO_ROLES
       return new EliotTiceUser(utilisateur, roles)
     }
     return null

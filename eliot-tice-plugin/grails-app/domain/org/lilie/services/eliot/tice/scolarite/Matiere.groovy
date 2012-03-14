@@ -41,13 +41,13 @@ class Matiere {
   static belongsTo = [
           etablissement: Etablissement
   ]
-  
+
   static constraints = {
     codeSts nullable: true
-    codeGestion(nullable : false, blank:false)
+    codeGestion(nullable: false, blank: false)
     origine(nullable: true)
-    libelleEdition(nullable: false, blank:false)
-    libelleLong(nullable: false, blank:false)
+    libelleEdition(nullable: false, blank: false)
+    libelleLong(nullable: false, blank: false)
   }
 
   static mapping = {
@@ -58,10 +58,10 @@ class Matiere {
   }
 
   String toString() {
-      return "Matiere{" +
-          "id=" + id +
-          ", libelleLong='" + libelleLong + '\'' +
-          '}';
-    }
+    return "Matiere{" +
+           "id=" + id +
+           ", libelleLong='" + libelleLong + '\'' +
+           '}';
+  }
 
 }

@@ -52,5 +52,5 @@ class ResponsableProprietesScolarite {
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.responsable_proprietes_scolarite_id_seq']
     version false
   }
-  
+
 }

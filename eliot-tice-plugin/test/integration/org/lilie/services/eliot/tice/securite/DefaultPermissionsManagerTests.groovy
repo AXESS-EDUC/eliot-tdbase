@@ -51,18 +51,15 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
     super.setUp()
     // initialise la session
 
-    autorite1 = new DomainAutorite(identifiant:"TEST_prof1", type: TypeAutorite.GROUPE_PERSONNE.libelle).save()
+    autorite1 = new DomainAutorite(identifiant: "TEST_prof1", type: TypeAutorite.GROUPE_PERSONNE.libelle).save()
     session = new DefaultAclSecuritySession(defaultAutorite: autorite1, autorites: [autorite1, tousLesProfs])
     // intialise l'autorite
-    tousLesProfs = new DomainAutorite(identifiant:"TEST_tousLesProfs", type: TypeAutorite.GROUPE_PERSONNE.libelle).save()
-    
-   
+    tousLesProfs = new DomainAutorite(identifiant: "TEST_tousLesProfs", type: TypeAutorite.GROUPE_PERSONNE.libelle).save()
+
     // initialise l'item
     projetB2I = new DomainItem(type: "PROJET")
     projetB2I.save()
-    if (projetB2I.hasErrors())
-      println projetB2I.errors.toString()
-    
+    if (projetB2I.hasErrors()) println projetB2I.errors.toString()
 
 
   }
@@ -82,7 +79,6 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
     // la creation doit echouer faute d'autorisation de acteur 1
     assertNull permissionsManager
 
-
     // on créé l'autorisation pour acteur 1
     int val = Permission.PEUT_CONSULTER_PERMISSIONS | Permission.PEUT_MODIFIER_PERMISSIONS
     autOnProjetB2IForActeur1 = new DomainAutorisation(
@@ -91,8 +87,7 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
             valeurPermissionsExplicite: val
     )
     autOnProjetB2IForActeur1.save()
-    if (autOnProjetB2IForActeur1.hasErrors())
-      println autOnProjetB2IForActeur1.errors.toString()
+    if (autOnProjetB2IForActeur1.hasErrors()) println autOnProjetB2IForActeur1.errors.toString()
 
 
     println "liste des autorisations (type ${session.findAutorisationsOnItem(projetB2I).getClass()} : ${session.findAutorisationsOnItem(projetB2I)}"
@@ -118,8 +113,7 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
             valeurPermissionsExplicite: val
     )
     autOnProjetB2IForActeur1.save()
-    if (autOnProjetB2IForActeur1.hasErrors())
-      println autOnProjetB2IForActeur1.errors.toString()
+    if (autOnProjetB2IForActeur1.hasErrors()) println autOnProjetB2IForActeur1.errors.toString()
 
 
     println "liste des autorisations : ${session.findAutorisationsOnItem(projetB2I)}"
@@ -135,19 +129,18 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
     // test
     permissionsManager.addPermissionModification()
 
-    DomainAutorisation autB2IProfsRecherchee = DomainAutorisation.findByItemAndAutorite(projetB2I,tousLesProfs)
+    DomainAutorisation autB2IProfsRecherchee = DomainAutorisation.findByItemAndAutorite(projetB2I, tousLesProfs)
 
     assertTrue autB2IProfsRecherchee.autoriseModifierLeContenu()
 
   }
 
-   void testAddPermissionModificationAvecPermInitiales() {
-      // initilialise autoritsation sur tous les profs
+  void testAddPermissionModificationAvecPermInitiales() {
+    // initilialise autoritsation sur tous les profs
     int val = Permission.PEUT_CONSULTER_CONTENU
     autOnProjetB2IForTousLesProfs = new DomainAutorisation(autorite: tousLesProfs, item: projetB2I, valeurPermissionsExplicite: val)
     autOnProjetB2IForTousLesProfs.save()
-    if (autOnProjetB2IForTousLesProfs.hasErrors())
-      println(autOnProjetB2IForTousLesProfs.errors.toString())
+    if (autOnProjetB2IForTousLesProfs.hasErrors()) println(autOnProjetB2IForTousLesProfs.errors.toString())
     // preparation du permission manager
     val = Permission.PEUT_CONSULTER_PERMISSIONS | Permission.PEUT_MODIFIER_PERMISSIONS
     autOnProjetB2IForActeur1 = new DomainAutorisation(
@@ -156,8 +149,7 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
             valeurPermissionsExplicite: val
     )
     autOnProjetB2IForActeur1.save()
-    if (autOnProjetB2IForActeur1.hasErrors())
-      println autOnProjetB2IForActeur1.errors.toString()
+    if (autOnProjetB2IForActeur1.hasErrors()) println autOnProjetB2IForActeur1.errors.toString()
 
 
     println "liste des autorisations : ${session.findAutorisationsOnItem(projetB2I)}"
@@ -174,7 +166,7 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
     permissionsManager.addPermissionModification()
     permissionsManager.addPermissionConsultationPermissions()
 
-    DomainAutorisation autB2IProfsRecherchee = DomainAutorisation.findByItemAndAutorite(projetB2I,tousLesProfs)
+    DomainAutorisation autB2IProfsRecherchee = DomainAutorisation.findByItemAndAutorite(projetB2I, tousLesProfs)
 
     assertTrue autB2IProfsRecherchee.autoriseModifierLeContenu()
     assertTrue autB2IProfsRecherchee.autoriseConsulterLesPermissions()
@@ -182,13 +174,12 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
   }
 
 
-   void testDeletePermissionConsultation() {
-     // initilialise autoritsation sur tous les profs
+  void testDeletePermissionConsultation() {
+    // initilialise autoritsation sur tous les profs
     int val = Permission.PEUT_CONSULTER_CONTENU | Permission.PEUT_MODIFIER_CONTENU
     autOnProjetB2IForTousLesProfs = new DomainAutorisation(autorite: tousLesProfs, item: projetB2I, valeurPermissionsExplicite: val)
     autOnProjetB2IForTousLesProfs.save()
-    if (autOnProjetB2IForTousLesProfs.hasErrors())
-      println(autOnProjetB2IForTousLesProfs.errors.toString())
+    if (autOnProjetB2IForTousLesProfs.hasErrors()) println(autOnProjetB2IForTousLesProfs.errors.toString())
     // preparation du permission manager
     val = Permission.PEUT_CONSULTER_PERMISSIONS | Permission.PEUT_MODIFIER_PERMISSIONS
     autOnProjetB2IForActeur1 = new DomainAutorisation(
@@ -197,8 +188,7 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
             valeurPermissionsExplicite: val
     )
     autOnProjetB2IForActeur1.save()
-    if (autOnProjetB2IForActeur1.hasErrors())
-      println autOnProjetB2IForActeur1.errors.toString()
+    if (autOnProjetB2IForActeur1.hasErrors()) println autOnProjetB2IForActeur1.errors.toString()
 
 
     println "liste des autorisations : ${session.findAutorisationsOnItem(projetB2I)}"
@@ -214,12 +204,11 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
     // test
     permissionsManager.deletePermissionConsultation()
 
-    DomainAutorisation autB2IProfsRecherchee = DomainAutorisation.findByItemAndAutorite(projetB2I,tousLesProfs)
+    DomainAutorisation autB2IProfsRecherchee = DomainAutorisation.findByItemAndAutorite(projetB2I, tousLesProfs)
 
     assertNull autB2IProfsRecherchee
 
   }
 
-   
 
 }

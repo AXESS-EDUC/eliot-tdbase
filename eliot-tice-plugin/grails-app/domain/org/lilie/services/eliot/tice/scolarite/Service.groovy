@@ -181,8 +181,8 @@ public class Service {
    */
   Boolean isEvaluable(TypePeriode typePeriode) {
     return !this.relPeriodeServices.isEmpty() ?
-            this.relPeriodeServices.any{it.evaluable} :
-            RelPeriodeService.EVALUABILITE_PAR_DEFAUT
+           this.relPeriodeServices.any {it.evaluable} :
+           RelPeriodeService.EVALUABILITE_PAR_DEFAUT
   }
 
   /**
@@ -199,11 +199,11 @@ public class Service {
   /**
    * Retourne les sous-services correspondant à un type de période
    * @param typePeriode
-   * @return List<SousService>
+   * @return List < SousService >
    * @author bper
    */
   List<SousService> getSousServices(TypePeriode typePeriode) {
-    return (this.sousServices.findAll{it.typePeriode.id == typePeriode.id} as List).sort {it.ordre}
+    return (this.sousServices.findAll {it.typePeriode.id == typePeriode.id} as List).sort {it.ordre}
   }
 
 }

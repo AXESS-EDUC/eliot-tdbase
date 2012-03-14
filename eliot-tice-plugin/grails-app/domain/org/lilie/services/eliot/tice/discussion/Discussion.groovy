@@ -56,6 +56,6 @@ class Discussion {
     itemCible column: 'id_item_cible'
     proprietaire column: 'id_autorite'
     etat column: 'code_etat_discussion', fetch: 'join'
-    typeModeration column: 'code_type_moderation', fetch:'join'
+    typeModeration column: 'code_type_moderation', fetch: 'join'
   }
 }

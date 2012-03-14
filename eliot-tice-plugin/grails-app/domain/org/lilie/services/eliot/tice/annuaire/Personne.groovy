@@ -36,7 +36,7 @@ import org.lilie.services.eliot.tice.scolarite.Regime
  * @author jbui
  */
 
-public class Personne  {
+public class Personne {
 
 
   static final String NOM_TABLE = 'ent.personne'
@@ -64,10 +64,10 @@ public class Personne  {
 
   static mapping = {
     table(Personne.NOM_TABLE)
-    cache usage:'read-write'
+    cache usage: 'read-write'
     version false
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.personne_id_seq']
-    autorite fetch:'join'
+    autorite fetch: 'join'
   }
 
   static transients = ['nomAffichage']
@@ -95,10 +95,10 @@ public class Personne  {
 
   /**
    *
-   * @return  le nom d'affichage
+   * @return le nom d'affichage
    */
   String getNomAffichage() {
-     "$prenom $nom"
+    "$prenom $nom"
   }
 
 }

@@ -65,11 +65,11 @@ class ProprietesScolarite {
 
   /**
    *
-   * @return  le nom de la structure avec matière associée si il y a
+   * @return le nom de la structure avec matière associée si il y a
    */
   String getStructureEnseignementNomAffichage() {
     if (!structureEnseignement) {
-      return  null
+      return null
     }
     def matLib = matiere?.libelleLong
     def suffixe = ''

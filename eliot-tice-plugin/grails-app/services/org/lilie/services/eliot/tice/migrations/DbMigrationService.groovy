@@ -29,7 +29,7 @@
 package org.lilie.services.eliot.tice.migrations
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 class DbMigrationService {
@@ -41,7 +41,6 @@ class DbMigrationService {
   def updateDb() {
     liquibase.runUpdate()
   }
-
 
 
 }

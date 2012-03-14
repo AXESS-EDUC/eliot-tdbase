@@ -18,15 +18,15 @@ class ModaliteCours {
   public static final CODE_TP = 'TP'
 
   static constraints = {
-    codeSts(nullable : true, maxSize : 30, unique : true)
-    libelleCourt(nullable: true, maxSize:255)
-    libelleLong(nullable: true, maxSize:1024)
+    codeSts(nullable: true, maxSize: 30, unique: true)
+    libelleCourt(nullable: true, maxSize: 255)
+    libelleLong(nullable: true, maxSize: 1024)
     coEns(nullable: true)
   }
 
   static mapping = {
     table('ent.modalite_cours')
-    id column: 'id', generator: 'sequence', params: [sequence: 'ent.modalite_cours_id_seq']    
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.modalite_cours_id_seq']
   }
 }
 

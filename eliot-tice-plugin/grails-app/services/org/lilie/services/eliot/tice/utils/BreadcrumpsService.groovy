@@ -35,17 +35,14 @@ package org.lilie.services.eliot.tice.utils
 class BreadcrumpsService {
 
 
-
   static transactional = false
   static scope = "session"
 
   Breadcrumps breadcrumps = new Breadcrumps()
 
   List<BreadcrumpsLien> getLiens() {
-     return breadcrumps.liens
+    return breadcrumps.liens
   }
-
-
 
   /**
    * Gère le breacrumps à partir du contenu de la requête
@@ -69,8 +66,6 @@ class BreadcrumpsService {
     }
   }
 
-
-
   /**
    * Renvoie le lien correspondant à un backtrack applicatif : à utiliser typiquement
    * pour mettre en place un lien annuler
@@ -82,10 +77,10 @@ class BreadcrumpsService {
 
   /**
    * Retourne la valeur d'une propriete
-   * @param nom  le nom de la propriete
+   * @param nom le nom de la propriete
    * @return la valeur ou null si la propriete n'est pas definie
    */
-  def getValeurPropriete(String nom)  {
+  def getValeurPropriete(String nom) {
     return breadcrumps.getValeurPropriete(nom)
   }
 
@@ -98,16 +93,16 @@ class BreadcrumpsService {
    * @return le breadcrumps lien cliqué
    */
   private BreadcrumpsLien onClickSurNouveauLien(String action,
-                                        String controller,
-                                        String libelle,
-                                        Map params,
-                                        Map proprietes = null) {
+                                                String controller,
+                                                String libelle,
+                                                Map params,
+                                                Map proprietes = null) {
 
     BreadcrumpsLien lien = new BreadcrumpsLien(action: action,
                                                controller: controller,
                                                libelle: libelle)
 
-    return breadcrumps.addLien(lien,params,proprietes)
+    return breadcrumps.addLien(lien, params, proprietes)
 
   }
 

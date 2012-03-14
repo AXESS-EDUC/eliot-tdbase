@@ -66,12 +66,12 @@ class Periode implements Comparable {
   ]
 
   static constraints = {
-    typePeriode (nullable:false)
-    classe (nullable:false)
-    dateDebut (nullable:true)
-    dateFin (nullable:true)
-    dateFinSaisie (nullable:true)
-    datePublication (nullable:true)
+    typePeriode(nullable: false)
+    classe(nullable: false)
+    dateDebut(nullable: true)
+    dateFin(nullable: true)
+    dateFinSaisie(nullable: true)
+    datePublication(nullable: true)
   }
 
   // l'enregistrement dans le tableau de jointure rel_evaluation_periode est enlevé par
@@ -81,7 +81,7 @@ class Periode implements Comparable {
     table('ent.periode')
     version false
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.periode_id_seq']
-    typePeriode column:'type_periode_id', fetch:'join'
+    typePeriode column: 'type_periode_id', fetch: 'join'
     dateDebut column: 'date_debut'
     dateFin column: 'date_fin'
     dateFinSaisie column: 'date_fin_saisie'
@@ -89,7 +89,7 @@ class Periode implements Comparable {
     classe column: 'structure_enseignement_id'
   }
 
-  String toString () {
+  String toString() {
     return "$id-${typePeriode.libelle}"
   }
 
@@ -113,7 +113,7 @@ class Periode implements Comparable {
     return this.typePeriode.getTypeIntervalle()
   }
 
-  String getLibelle(){
+  String getLibelle() {
     return this.typePeriode.libelle
   }
 
@@ -126,14 +126,13 @@ class Periode implements Comparable {
   }
 
   /**
-  * Periode est Trimestre ou Semestre
-  * @return true/false
-  * @author msan
-  */
+   * Periode est Trimestre ou Semestre
+   * @return true/false
+   * @author msan
+   */
   Boolean isPeriodeXmestre() {
     return this.typePeriode.isXmestre()
   }
-
 
   /**
    * Retourne true si la date actuelle est entre les dates de debut et de fin,
@@ -151,7 +150,7 @@ class Periode implements Comparable {
       cal.set(Calendar.MILLISECOND, 0)
       Date now = cal.getTime()
 
-      if (this.dateDebut.compareTo(now)<=0 && this.dateFin.compareTo(now)>=0) {
+      if (this.dateDebut.compareTo(now) <= 0 && this.dateFin.compareTo(now) >= 0) {
         return true
       } else {
         return false
@@ -160,7 +159,6 @@ class Periode implements Comparable {
       return false
     }
   }
-  
 
   /**
    * Return true si la saisie des notes et des appréciations et bloquée pour
@@ -178,7 +176,7 @@ class Periode implements Comparable {
       cal.set(Calendar.MILLISECOND, 0)
       Date now = cal.getTime()
 
-      if (this.dateFinSaisie.compareTo(now)>=0) {
+      if (this.dateFinSaisie.compareTo(now) >= 0) {
         return false
       } else {
         return true
@@ -203,7 +201,7 @@ class Periode implements Comparable {
       cal.set(Calendar.MILLISECOND, 0)
       Date now = cal.getTime()
 
-      if (this.datePublication.compareTo(now)>=0) {
+      if (this.datePublication.compareTo(now) >= 0) {
         return false
       } else {
         return true
@@ -212,7 +210,6 @@ class Periode implements Comparable {
       return false
     }
   }
-
 
   /**
    * Permet de trier les périodes

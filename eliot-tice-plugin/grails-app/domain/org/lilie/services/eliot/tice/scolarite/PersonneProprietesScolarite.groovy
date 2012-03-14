@@ -58,7 +58,7 @@ class PersonneProprietesScolarite {
     table('ent.personne_propriete_scolarite')
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.personne_propriete_scolarite_id_seq']
     version false
-    proprietesScolarite(fetch: 'join', column: 'propriete_scolarite_id' )
+    proprietesScolarite(fetch: 'join', column: 'propriete_scolarite_id')
   }
 
 }

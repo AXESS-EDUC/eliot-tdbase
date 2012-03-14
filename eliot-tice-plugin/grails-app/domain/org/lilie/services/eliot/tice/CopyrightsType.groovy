@@ -85,15 +85,15 @@ enum CopyrightsTypeEnum {
   TousDroitsReserves(1),
   CC_BY_NC_SA(2),
   CC_BY_NC(3)
-  
-  private Long id ;
-  
+
+  private Long id;
+
   private CopyrightsTypeEnum(Long id) {
     this.id = id
   }
-  
+
   CopyrightsType getCopyrightsType() {
     CopyrightsType.get(id)
   }
-  
+
 }

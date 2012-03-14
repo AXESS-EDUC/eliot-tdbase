@@ -34,7 +34,7 @@ import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 
 /**
- * 
+ *
  * @author franck Silvestre
  */
 class DefaultRoleUtilisateurService implements RoleUtilisateurService {
@@ -42,11 +42,11 @@ class DefaultRoleUtilisateurService implements RoleUtilisateurService {
   ProfilScolariteService profilScolariteService
 
   /**
-     *
-     * @see org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
-     */
-    List<GrantedAuthority> findRolesForUtilisateur(Utilisateur utilisateur) {
-      profilScolariteService.findFonctionsForPersonne(utilisateur.personne)
-    }
+   *
+   * @see org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
+   */
+  List<GrantedAuthority> findRolesForUtilisateur(Utilisateur utilisateur) {
+    profilScolariteService.findFonctionsForPersonne(utilisateur.personne)
+  }
 
 }

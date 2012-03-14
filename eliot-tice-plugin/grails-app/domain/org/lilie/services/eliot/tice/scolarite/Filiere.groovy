@@ -28,7 +28,6 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
-
 /**
  * Filiere ( niveau de classe )
  *
@@ -43,7 +42,7 @@ public class Filiere {
 
 
   static constraints = {
-    idExterne(nullable:false, maxSize:128)
+    idExterne(nullable: false, maxSize: 128)
   }
 
   static mapping = {
@@ -52,5 +51,5 @@ public class Filiere {
     idExterne column: 'id_externe'
   }
 
-  
+
 }

@@ -56,15 +56,14 @@ class DefaultAclSecuritySession implements AclSecuritySession {
     return autorites
   }
 
-
   /**
-  * Méthode retournant la liste des autorisations de la session sur l'item donné
-  *
-  * @param item l'item
-  * @return la liste des autorisations
-  */
+   * Méthode retournant la liste des autorisations de la session sur l'item donné
+   *
+   * @param item l'item
+   * @return la liste des autorisations
+   */
   List<Autorisation> findAutorisationsOnItem(Item item) {
-    item = (DomainItem)item
+    item = (DomainItem) item
     if (item.itemParent) {
       return findAutorisationsOnItem(item.itemParent)
     }

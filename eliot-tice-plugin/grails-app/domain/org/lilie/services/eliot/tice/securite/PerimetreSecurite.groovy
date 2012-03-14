@@ -28,8 +28,6 @@
 
 package org.lilie.services.eliot.tice.securite
 
-
-
 /**
  * table securite.perimetre_securite
  * @author othe

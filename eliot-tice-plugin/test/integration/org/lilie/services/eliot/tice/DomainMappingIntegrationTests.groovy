@@ -55,5 +55,4 @@ class DomainMappingIntegrationTests extends GroovyTestCase {
   }
 
 
-
 }

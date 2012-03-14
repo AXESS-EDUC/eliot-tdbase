@@ -44,8 +44,6 @@ public interface Autorite {
    */
   public String getType()
 
-
-
   /**
    * Méthode retournant la chaine de caractère représentant l'autorité
    *

@@ -39,31 +39,30 @@ public enum TypeIntervalleEnum {
   String getId() {
     return this
   }
-  
- /**
-  * @author bper
-  */
+
+  /**
+   * @author bper
+   */
   public List<IntervalleEnum> getIntervalles() {
     switch (this) {
-      case (TypeIntervalleEnum.SEMESTRE) : return [IntervalleEnum.S1,IntervalleEnum.S2]
-      case (TypeIntervalleEnum.TRIMESTRE): return [IntervalleEnum.T1,IntervalleEnum.T2,IntervalleEnum.T3]
-      case (TypeIntervalleEnum.ANNEE)    : return [IntervalleEnum.ANNEE]
+      case (TypeIntervalleEnum.SEMESTRE): return [IntervalleEnum.S1, IntervalleEnum.S2]
+      case (TypeIntervalleEnum.TRIMESTRE): return [IntervalleEnum.T1, IntervalleEnum.T2, IntervalleEnum.T3]
+      case (TypeIntervalleEnum.ANNEE): return [IntervalleEnum.ANNEE]
     }
   }
-  
+
   /**
    * @author bper
    */
   public TypeIntervalleEnum getTypeExclusif() {
     switch (this) {
-      case (TypeIntervalleEnum.SEMESTRE) : return TypeIntervalleEnum.TRIMESTRE
+      case (TypeIntervalleEnum.SEMESTRE): return TypeIntervalleEnum.TRIMESTRE
       case (TypeIntervalleEnum.TRIMESTRE): return TypeIntervalleEnum.SEMESTRE
-      case (TypeIntervalleEnum.ANNEE)    : return null
+      case (TypeIntervalleEnum.ANNEE): return null
     }
   }
 
-
-   /**
+  /**
    * Type est Trimestre ou Semestre
    * @return true/false
    * @author msan

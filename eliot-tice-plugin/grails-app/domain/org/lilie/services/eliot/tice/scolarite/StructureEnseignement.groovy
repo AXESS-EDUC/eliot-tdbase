@@ -28,10 +28,9 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
-
 /**
  * Classe représentant une structure d'enseignement
- * @author fsil 
+ * @author fsil
  * @author msan
  * @author bper
  */
@@ -50,7 +49,7 @@ public class StructureEnseignement {
   Long id
   AnneeScolaire anneeScolaire
   String idExterne
-  String type                    
+  String type
   Etablissement etablissement
   String code
 
@@ -78,7 +77,7 @@ public class StructureEnseignement {
   static constraints = {
     idExterne(nullable: false, maxSize: 128)
     type(nullable: false, inList: [TYPE_CLASSE, TYPE_GROUPE])
-    etablissement(nullable: false) 
+    etablissement(nullable: false)
     code(nullable: true)
   }
 
@@ -121,9 +120,9 @@ public class StructureEnseignement {
   }
 
   /**
-  * Nom utilisable pour l'affichage
-  * @return nom utilisable pour l'affichage
-  */
+   * Nom utilisable pour l'affichage
+   * @return nom utilisable pour l'affichage
+   */
   String getNomAffichage() {
     String nomAffichage = null
     if (type == TYPE_CLASSE) {
@@ -131,8 +130,8 @@ public class StructureEnseignement {
     } else {
       // Si groupe avec une seul classe - Classe (Groupe)
       // Sinon Groupe
-      if (classes?.size()==1) {
-        nomAffichage = classes.iterator().next().code+"("+code+")"
+      if (classes?.size() == 1) {
+        nomAffichage = classes.iterator().next().code + "(" + code + ")"
       } else {
         nomAffichage = code
       }

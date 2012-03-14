@@ -31,7 +31,7 @@ package org.lilie.services.eliot.tice.scolarite
 /**
  * Modalité de matiére (sous-matière).
  * E.g. Ecrit, Oral
- * 
+ *
  * @author msan
  */
 class ModaliteMatiere {
@@ -42,16 +42,16 @@ class ModaliteMatiere {
   Etablissement etablissement
 
   static constraints = {
-    code (nullable:false, maxSize:6)
-    libelle (nullable:false, maxSize:1024)
-    etablissement (nullable:false)
+    code(nullable: false, maxSize: 6)
+    libelle(nullable: false, maxSize: 1024)
+    etablissement(nullable: false)
   }
 
   static mapping = {
     table('ent.modalite_matiere')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'ent.modalite_matiere_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'ent.modalite_matiere_id_seq']
 
     code column: 'code'
     libelle column: 'libelle'

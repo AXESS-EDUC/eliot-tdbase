@@ -30,8 +30,6 @@
 
 package org.lilie.services.eliot.tice.securite.acl;
 
-
-
 /**
  * Classe permettant la gestion des accès à un item à partir d'une session
  *
@@ -119,7 +117,7 @@ public class AccessManager {
     if (permissionsOnItem == null) {
       List<Autorisation> autorisations = getAutorisations();
       int permissions = 0;
-      for (Autorisation autorisation : autorisations) {
+      for (Autorisation autorisation: autorisations) {
         permissions = autorisation.getValeurPermissions() | permissions;
       }
       permissionsOnItem = permissions;
@@ -131,7 +129,7 @@ public class AccessManager {
     if (sessionEstProprietaireItem == null) {
       List<Autorisation> autorisations = getAutorisations();
       sessionEstProprietaireItem = false;
-      for (Autorisation autorisation : autorisations) {
+      for (Autorisation autorisation: autorisations) {
         if (autorisation.autoriteEstProprietaire()) {
           sessionEstProprietaireItem = true;
           break;

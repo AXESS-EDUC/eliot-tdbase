@@ -41,21 +41,21 @@ class DomainAutorisation implements Autorisation {
   Boolean proprietaire = Boolean.FALSE // DomainAutorite est propriétaire d'DomainItem
   DomainAutorisation autorisationHeritee
 
-  static belongsTo = [ DomainItem , DomainAutorite ]
-    
+  static belongsTo = [DomainItem, DomainAutorite]
+
   static constraints = {
     // contrainte sur autorisation heritee
-    autorisationHeritee nullable:true, validator: { autorHeritee, autorisation ->
+    autorisationHeritee nullable: true, validator: { autorHeritee, autorisation ->
       if (autorHeritee &&
-            autorisation.proprietaire) {
-                 return false
+          autorisation.proprietaire) {
+        return false
       }
       return true
     }
     // contrainte sur valeurPermissionExplicite
-    valeurPermissionsExplicite validator: { valeurPermission, autorisation  ->
+    valeurPermissionsExplicite validator: { valeurPermission, autorisation ->
       if (valeurPermission > 0 &&
-                      autorisation.proprietaire ){
+          autorisation.proprietaire) {
         return false
       }
       return true
@@ -63,18 +63,18 @@ class DomainAutorisation implements Autorisation {
     // contrainte sur proprietaire
     proprietaire validator: { autorEstProprietaire, autorisation ->
       if (autorEstProprietaire &&
-             ( autorisation.valeurPermissionsExplicite > 0 ||
-                  autorisation.autorisationHeritee  != null )) {
+          (autorisation.valeurPermissionsExplicite > 0 ||
+           autorisation.autorisationHeritee != null)) {
         return false
       }
       return true
     }
-    
+
   }
 
   static mapping = {
-    table ('securite.autorisation')
-    id column:'id', generator: 'sequence', params: [sequence: 'securite.autorisation_id_seq']
+    table('securite.autorisation')
+    id column: 'id', generator: 'sequence', params: [sequence: 'securite.autorisation_id_seq']
   }
 
   static transients = ['valeurPermissions']
@@ -110,80 +110,80 @@ class DomainAutorisation implements Autorisation {
    * @return la valeur des permissions
    */
   int getValeurPermissions() {
-     int res = valeurPermissionsExplicite
-     if (autorisationHeritee) {
-       res = res | autorisationHeritee.valeurPermissions
-     }
-     return res 
+    int res = valeurPermissionsExplicite
+    if (autorisationHeritee) {
+      res = res | autorisationHeritee.valeurPermissions
+    }
+    return res
   }
 
   /**
-    * Methode indiquant si l'autorisation permet de consulter le contenu
-    *
-    * @return true si l'action est permise
-    */
-   public boolean autoriseConsulterLeContenu() {
-       if (autoriteEstProprietaire()) return  true;
-       return verifiePermission(
-               Permission.PEUT_CONSULTER_CONTENU
-       );
+   * Methode indiquant si l'autorisation permet de consulter le contenu
+   *
+   * @return true si l'action est permise
+   */
+  public boolean autoriseConsulterLeContenu() {
+    if (autoriteEstProprietaire()) return true;
+    return verifiePermission(
+            Permission.PEUT_CONSULTER_CONTENU
+    );
 
-   }
+  }
 
-   /**
-    * Methode indiquant si l'autorisation permet de modifier le contenu
-    *
-    * @return true si l'action est permise
-    */
-   public boolean autoriseModifierLeContenu() {
-       if (autoriteEstProprietaire()) return  true;
-       return verifiePermission(
-               Permission.PEUT_MODIFIER_CONTENU
-       );
-   }
+  /**
+   * Methode indiquant si l'autorisation permet de modifier le contenu
+   *
+   * @return true si l'action est permise
+   */
+  public boolean autoriseModifierLeContenu() {
+    if (autoriteEstProprietaire()) return true;
+    return verifiePermission(
+            Permission.PEUT_MODIFIER_CONTENU
+    );
+  }
 
-   /**
-    * Methode indiquant si l'autorisation permet de consulter les permissions
-    *
-    * @return true si l'action est permise
-    */
-   public boolean autoriseConsulterLesPermissions() {
-       if (autoriteEstProprietaire()) return  true;
-       return verifiePermission(
-               Permission.PEUT_CONSULTER_PERMISSIONS
-       );
-   }
+  /**
+   * Methode indiquant si l'autorisation permet de consulter les permissions
+   *
+   * @return true si l'action est permise
+   */
+  public boolean autoriseConsulterLesPermissions() {
+    if (autoriteEstProprietaire()) return true;
+    return verifiePermission(
+            Permission.PEUT_CONSULTER_PERMISSIONS
+    );
+  }
 
-   /**
-    * Methode indiquant si l'autorisation permet de modifier les permissions
-    * sur l'item donné
-    *
-    * @return true si l'action est permise
-    */
-   public boolean autoriseModifierLesPermissions() {
-       if (autoriteEstProprietaire()) return  true;
-       return verifiePermission(
-               Permission.PEUT_MODIFIER_PERMISSIONS
-       );
-   }
+  /**
+   * Methode indiquant si l'autorisation permet de modifier les permissions
+   * sur l'item donné
+   *
+   * @return true si l'action est permise
+   */
+  public boolean autoriseModifierLesPermissions() {
+    if (autoriteEstProprietaire()) return true;
+    return verifiePermission(
+            Permission.PEUT_MODIFIER_PERMISSIONS
+    );
+  }
 
-   /**
-    * Methode indiquant si si l'autorisation permet de supprimer
-    *
-    * @return true si l'action est permise
-    */
-   public boolean autoriseSupprimer() {
-       if (autoriteEstProprietaire()) return  true;
-       return verifiePermission(
-               Permission.PEUT_SUPPRIMER
-       );
-   }
-
-
+  /**
+   * Methode indiquant si si l'autorisation permet de supprimer
+   *
+   * @return true si l'action est permise
+   */
+  public boolean autoriseSupprimer() {
+    if (autoriteEstProprietaire()) return true;
+    return verifiePermission(
+            Permission.PEUT_SUPPRIMER
+    );
+  }
 
 
-   private boolean verifiePermission(int permission) {
-       return (getValeurPermissions() | permission) == getValeurPermissions();
-   }
+
+
+  private boolean verifiePermission(int permission) {
+    return (getValeurPermissions() | permission) == getValeurPermissions();
+  }
 
 }

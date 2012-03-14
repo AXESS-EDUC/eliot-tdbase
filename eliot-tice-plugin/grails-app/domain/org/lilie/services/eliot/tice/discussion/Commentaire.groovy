@@ -58,7 +58,7 @@ class Commentaire {
   }
 
   static constraints = {
-    contenu(minSize :5, blank:false)
+    contenu(minSize: 5, blank: false)
     libelleAuteur(nullable: true)
   }
 
@@ -70,6 +70,6 @@ class Commentaire {
     etat column: 'code_etat_commentaire', fetch: 'join'
   }
 
-  static transients = ['affichageAuteur','estRefuse','estPublie','estEnAttenteDePublication']
+  static transients = ['affichageAuteur', 'estRefuse', 'estPublie', 'estEnAttenteDePublication']
 
 }

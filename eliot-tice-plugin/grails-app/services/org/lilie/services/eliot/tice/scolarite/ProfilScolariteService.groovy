@@ -49,7 +49,7 @@ public class ProfilScolariteService {
    */
   List<ProprietesScolarite> findProprietesScolaritesForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
-    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true)
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true)
     return profils*.proprietesScolarite
   }
 
@@ -62,7 +62,7 @@ public class ProfilScolariteService {
   @Transactional
   List<Fonction> findFonctionsForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
-    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<Fonction> fonctions = []
     profils.collect {
       Fonction fonction = it.proprietesScolarite.fonction
@@ -81,7 +81,7 @@ public class ProfilScolariteService {
    */
   List<Matiere> findMatieresForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
-    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<Matiere> matieres = []
     profils.collect {
       Matiere matiere = it.proprietesScolarite.matiere
@@ -100,7 +100,7 @@ public class ProfilScolariteService {
    */
   List<Niveau> findNiveauxForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
-    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<Niveau> niveaux = []
     profils.collect {
       Niveau niveau = it.proprietesScolarite.niveau
@@ -119,7 +119,7 @@ public class ProfilScolariteService {
    */
   List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne) {
     List<PersonneProprietesScolarite> profils =
-    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<StructureEnseignement> structures = []
     profils.collect {
       StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
@@ -139,7 +139,7 @@ public class ProfilScolariteService {
   List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne) {
     def props = []
     List<PersonneProprietesScolarite> profils =
-    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     profils.collect {
       StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
       if (structureEnseignement && !props.contains(it.proprietesScolarite)) {
@@ -183,7 +183,6 @@ public class ProfilScolariteService {
     }
     return countRespEleves > 0
   }
-
 
 
 }

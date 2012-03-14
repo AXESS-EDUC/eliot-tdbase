@@ -92,31 +92,30 @@ class AttachementService {
   }
 
   /**
-     * Créer un objet de type Attachement à partir d'un objet ImageIds
-     * @param fichier l'objet de type ImageIds
-     * @param proprietaire le proprietaire du fichier
-     * @param config le config object
-     * @return l'objet Attachment
-     */
-    @Transactional
-    Attachement createAttachementForImageIds(
-            ImageIds fichier) {
+   * Créer un objet de type Attachement à partir d'un objet ImageIds
+   * @param fichier l'objet de type ImageIds
+   * @param proprietaire le proprietaire du fichier
+   * @param config le config object
+   * @return l'objet Attachment
+   */
+  @Transactional
+  Attachement createAttachementForImageIds(
+          ImageIds fichier) {
 
-      // par defaut un nouvel attachement est marque a supprimer
-      // c'est à la création d'un lien vers un item qu'il faut le
-      // considérer comme attaché et donc comme non à supprimer
-      Attachement attachement = new Attachement(
-              taille: fichier.size,
-              typeMime: fichier.contentType,
-              nom: fichier.fileName,
-              nomFichierOriginal: fichier.fileName,
-              aSupprimer: true
-      )
-      attachement.chemin = fichier.dataSoreId
-      attachement.save()
-      return attachement
-    }
-
+    // par defaut un nouvel attachement est marque a supprimer
+    // c'est à la création d'un lien vers un item qu'il faut le
+    // considérer comme attaché et donc comme non à supprimer
+    Attachement attachement = new Attachement(
+            taille: fichier.size,
+            typeMime: fichier.contentType,
+            nom: fichier.fileName,
+            nomFichierOriginal: fichier.fileName,
+            aSupprimer: true
+    )
+    attachement.chemin = fichier.dataSoreId
+    attachement.save()
+    return attachement
+  }
 
   /**
    * Retourne l'objet File correspondant à un attachement

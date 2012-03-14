@@ -82,7 +82,7 @@ class LilieUtilisateurService implements UtilisateurService {
       return null
     }
     def idExterne = login.substring(LONGUEUR_PREFIXE_LOGIN)
-    def autorite = DomainAutorite.findByIdentifiantAndType(idExterne,TypeAutorite.PERSONNE.libelle)
+    def autorite = DomainAutorite.findByIdentifiantAndType(idExterne, TypeAutorite.PERSONNE.libelle)
     if (!autorite) {
       return null
     }
@@ -93,7 +93,7 @@ class LilieUtilisateurService implements UtilisateurService {
               "annuaire.no_personne_fot_autorite : ${login}"
       )
     }
-    return utilisateurForLoginAndPersonne(login,personne)
+    return utilisateurForLoginAndPersonne(login, personne)
   }
 
   /**
@@ -157,38 +157,38 @@ class LilieUtilisateurService implements UtilisateurService {
   }
 
   /**
-     * Retourne l'utilisateur correspondant à un compte utilisateur
-     * @param compteUtilisateur le compte utilisateur
-     * @return l'utilisateur
-     */
-    private Utilisateur utilisateurForLoginAndPersonne(String login,Personne personne) {
-      // creer l'utilisateur à retourner
+   * Retourne l'utilisateur correspondant à un compte utilisateur
+   * @param compteUtilisateur le compte utilisateur
+   * @return l'utilisateur
+   */
+  private Utilisateur utilisateurForLoginAndPersonne(String login, Personne personne) {
+    // creer l'utilisateur à retourner
 
-      DomainAutorite autorite = personne.autorite
-      // le login est le password : utilisee uniquement quand CAS n'est pas actif
-      // en mode Lilie quand on est en mode non CAS
-      String encodedPassword = springSecurityService.encodePassword(
-                  login, login)
+    DomainAutorite autorite = personne.autorite
+    // le login est le password : utilisee uniquement quand CAS n'est pas actif
+    // en mode Lilie quand on est en mode non CAS
+    String encodedPassword = springSecurityService.encodePassword(
+            login, login)
 
-      Utilisateur utilisateur = new Utilisateur(
-              login: login,
-              loginAlias: null,
-              password: encodedPassword,
-              dateDerniereConnexion: null,
-              compteActive: true,
-              compteExpire: false,
-              compteVerrouille: false,
-              passwordExpire: false,
-              compteUtilisateurId: null,
-              nom: personne.nom,
-              prenom: personne.prenom,
-              dateNaissance: personne.dateNaissance,
-              email: personne.email,
-              sexe: personne.sexe,
-              personneId: personne.id,
-              autoriteId: autorite.id
-      )
-      return utilisateur
-    }
+    Utilisateur utilisateur = new Utilisateur(
+            login: login,
+            loginAlias: null,
+            password: encodedPassword,
+            dateDerniereConnexion: null,
+            compteActive: true,
+            compteExpire: false,
+            compteVerrouille: false,
+            passwordExpire: false,
+            compteUtilisateurId: null,
+            nom: personne.nom,
+            prenom: personne.prenom,
+            dateNaissance: personne.dateNaissance,
+            email: personne.email,
+            sexe: personne.sexe,
+            personneId: personne.id,
+            autoriteId: autorite.id
+    )
+    return utilisateur
+  }
 
 }

@@ -49,24 +49,24 @@ class SousService {
   ]
 
   static constraints = {
-    coeff (nullable:false)
-    modaliteMatiere (nullable:false)
-    service (nullable:false)
-    ordre (nullable:true)
-    evaluable (nullable:false)
+    coeff(nullable: false)
+    modaliteMatiere(nullable: false)
+    service(nullable: false)
+    ordre(nullable: true)
+    evaluable(nullable: false)
   }
 
   static mapping = {
     table('ent.sous_service')
     id column: 'id',
-            generator: 'sequence',
-            params: [sequence: 'ent.sous_service_id_seq']
+       generator: 'sequence',
+       params: [sequence: 'ent.sous_service_id_seq']
 
     coeff column: 'coeff'
     modaliteMatiere column: 'modalite_matiere_id'
     service column: 'service_id'
-    ordre column:'ordre'
-    evaluable column:'evaluable'
+    ordre column: 'ordre'
+    evaluable column: 'evaluable'
   }
 
   public String toString() {

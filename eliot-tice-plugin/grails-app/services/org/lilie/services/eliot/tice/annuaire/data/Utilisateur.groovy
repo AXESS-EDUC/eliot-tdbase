@@ -38,8 +38,8 @@ import org.lilie.services.eliot.tice.securite.DomainAutorite
  * Classe représentant un utilisateur
  * @author franck Silvestre
  */
-@ToString(includeNames = true, includeFields=true)
-@EqualsAndHashCode(excludes = 'compteUtilisateurId dateDerniereConnexion compteActive compteExpire compteVerrouille passwordExpire' )
+@ToString(includeNames = true, includeFields = true)
+@EqualsAndHashCode(excludes = 'compteUtilisateurId dateDerniereConnexion compteActive compteExpire compteVerrouille passwordExpire')
 class Utilisateur {
 
   // information compte utilisateur
@@ -54,7 +54,6 @@ class Utilisateur {
   boolean passwordExpire
 
   Long compteUtilisateurId
-
 
   // information personne
 
@@ -71,7 +70,7 @@ class Utilisateur {
 
   /**
    *
-   * @return  la personne correspondante à l'utilisateur
+   * @return la personne correspondante à l'utilisateur
    */
   Personne getPersonne() {
     return Personne.get(personneId)
@@ -79,7 +78,7 @@ class Utilisateur {
 
   /**
    *
-   * @return  le compte utilisateur correspondant à l'utilisateur
+   * @return le compte utilisateur correspondant à l'utilisateur
    */
   CompteUtilisateur getCompteUtilisateur() {
     return CompteUtilisateur.get(compteUtilisateurId)
@@ -87,7 +86,7 @@ class Utilisateur {
 
   /**
    *
-   * @return  l'autorité correspondant à l'utilisateur
+   * @return l'autorité correspondant à l'utilisateur
    */
   DomainAutorite getAutorite() {
     return DomainAutorite.get(autoriteId)

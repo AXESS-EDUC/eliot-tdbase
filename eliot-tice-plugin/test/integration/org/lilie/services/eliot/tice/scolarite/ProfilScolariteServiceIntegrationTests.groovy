@@ -45,7 +45,7 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
   Utilisateur enseignant1
 
   void setUp() {
-      enseignant1 = initialisationTestService.enseignant1
+    enseignant1 = initialisationTestService.enseignant1
   }
 
   void testFindProprietesScolaritesForPersonne() {

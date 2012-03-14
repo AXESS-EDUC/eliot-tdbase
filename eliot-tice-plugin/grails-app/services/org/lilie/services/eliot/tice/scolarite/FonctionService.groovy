@@ -26,24 +26,21 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-
-
 /**
  * @author franck silvestre
  */
 package org.lilie.services.eliot.tice.scolarite
 
-
 /**
  * Classe de service pour gestion les utilisateurs
  */
-class FonctionService  {
+class FonctionService {
 
   static transactional = false
 
   /**
    * Retourne la fonction à partir de son libelle
-   * @param fonctionLibelleEnum  le libelle de fonction issue de l'enum
+   * @param fonctionLibelleEnum le libelle de fonction issue de l'enum
    * FonctionLibelle
    * @return la fonction
    */

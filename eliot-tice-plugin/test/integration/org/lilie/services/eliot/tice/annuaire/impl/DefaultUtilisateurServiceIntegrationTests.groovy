@@ -95,7 +95,7 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
 
   void testFindUtilisateur() {
 
-    
+
     assertNull(defaultUtilisateurService.findUtilisateur(""))
 
 
@@ -305,8 +305,6 @@ class DefaultUtilisateurServiceIntegrationTests extends GroovyTestCase {
     assertEquals(utilisateur2, allUtilisateurs.first())
 
   }
-
-
 
 
 }

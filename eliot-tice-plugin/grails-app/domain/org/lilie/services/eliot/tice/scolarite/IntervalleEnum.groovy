@@ -32,17 +32,17 @@ package org.lilie.services.eliot.tice.scolarite
  * @author bper
  */
 public enum IntervalleEnum {
-  S1(TypeIntervalleEnum.SEMESTRE,1),
-  S2(TypeIntervalleEnum.SEMESTRE,2),
-  T1(TypeIntervalleEnum.TRIMESTRE,1),
-  T2(TypeIntervalleEnum.TRIMESTRE,2),
-  T3(TypeIntervalleEnum.TRIMESTRE,3),
-  ANNEE(TypeIntervalleEnum.ANNEE,4)
+  S1(TypeIntervalleEnum.SEMESTRE, 1),
+  S2(TypeIntervalleEnum.SEMESTRE, 2),
+  T1(TypeIntervalleEnum.TRIMESTRE, 1),
+  T2(TypeIntervalleEnum.TRIMESTRE, 2),
+  T3(TypeIntervalleEnum.TRIMESTRE, 3),
+  ANNEE(TypeIntervalleEnum.ANNEE, 4)
 
   private final TypeIntervalleEnum typeIntervalle
   private final Integer ordre
 
-  private IntervalleEnum (TypeIntervalleEnum typeIntervalle, Integer ordre) {
+  private IntervalleEnum(TypeIntervalleEnum typeIntervalle, Integer ordre) {
     this.typeIntervalle = typeIntervalle
     this.ordre = ordre
   }
@@ -56,10 +56,10 @@ public enum IntervalleEnum {
   }
 
   /**
-  * Interval est Trimestre ou Semestre
-  * @return true/false
-  * @author msan
-  */
+   * Interval est Trimestre ou Semestre
+   * @return true/false
+   * @author msan
+   */
   public Boolean isXmestre() {
     return this.typeIntevalle.isXmestre()
   }
@@ -85,6 +85,6 @@ public enum IntervalleEnum {
   String getId() {
     return this
   }
-  
+
 
 }

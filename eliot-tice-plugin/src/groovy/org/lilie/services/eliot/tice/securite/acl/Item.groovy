@@ -30,8 +30,6 @@
 
 package org.lilie.services.eliot.tice.securite.acl;
 
-
-
 /**
  * Interface "marqueur" pour designe les objets dont l'accès est soumis à permissions
  * @author franck silvestre
@@ -39,22 +37,22 @@ package org.lilie.services.eliot.tice.securite.acl;
  */
 public interface Item {
 
-    /**
-     * L'item parent est l'Item qui fournit les autorisations par héritage
-     * à l'item courant.
-     * @return  l'item parent
-     */
-    public Item getParentItem()
+  /**
+   * L'item parent est l'Item qui fournit les autorisations par héritage
+   * à l'item courant.
+   * @return l'item parent
+   */
+  public Item getParentItem()
 
-    /**
-     * Méthode retournant la liste de toutes les autorisations sur l'item
-     * @return la liste de toutes les autorisations sur l'item
-     */
-    public List<Autorisation> findAllAutorisations()
+  /**
+   * Méthode retournant la liste de toutes les autorisations sur l'item
+   * @return la liste de toutes les autorisations sur l'item
+   */
+  public List<Autorisation> findAllAutorisations()
 
-    /**
-     * Méthode retournant l'identifiant de l'item
-     * @return  l'identifiant de l'item
-     */
-    public String getIdentifiant()
+  /**
+   * Méthode retournant l'identifiant de l'item
+   * @return l'identifiant de l'item
+   */
+  public String getIdentifiant()
 }
