@@ -46,6 +46,7 @@ import org.lilie.services.eliot.tdbase.impl.open.OpenSpecification
 import org.lilie.services.eliot.tdbase.impl.order.OrderSpecification
 import org.lilie.services.eliot.tdbase.impl.slider.SliderSpecification
 import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
+import org.lilie.services.eliot.tdbase.impl.associate.Association
 
 /**
  * Service d'export d'un quiz moodle.
@@ -94,7 +95,17 @@ class MoodleQuizExporterService {
      * @param theQuestion
      */
     private void renderQuestion(MarkupBuilder xml, AssociateSpecification specification, String title) {
-        xml.question(type: "to_be_implemented_associate")
+        xml.question(type: "matching") {
+            questionHeader(xml, title, specification.libelle)
+            specification.associations.each {Association association ->
+                xml.subquestion{
+                    xml.text association.participant1
+                    xml.anwer{xml.text association.participant2}
+                }
+            }
+            xml.shuffleanswers false
+            correction(xml, specification.correction)
+        }
     }
 
 
