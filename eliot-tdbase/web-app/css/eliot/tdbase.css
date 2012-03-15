@@ -1056,9 +1056,11 @@ button.ui-button-icons-only{width: 3.2em;}
 		padding: 10px!important;
 		margin-left: 10px;
 		
-		
+		-moz-box-shadow: 10px 10px 5px #999;
+		-webkit-box-shadow: 10px 10px 5px #999;
+		box-shadow: 5px 5px 8px #d5d5d5;
 	}
-		td.detail>strong{font-size: 120%;color:#666;}
+		td.detail>strong{font-size: 110%;color:#666;}
 		td.detail>div{
 			border-top: 1px dotted #ccc;
 			border-bottom: 1px dotted #ccc;

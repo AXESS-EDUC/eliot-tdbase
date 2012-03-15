@@ -55,7 +55,7 @@
                 id="${question.id}">Modifer l'item</g:link>&nbsp; |
       </g:if>
       <g:else>
-        Modifier l'item&nbsp;| &nbsp;
+        <span class="modify">Modifier l'item</span>&nbsp;| &nbsp;
       </g:else>
     </span>
     </span>
