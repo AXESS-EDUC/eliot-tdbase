@@ -60,7 +60,7 @@ class MoodleQuizExporterService {
    * @return
    */
   String toMoodleQuiz(Sujet sujet) {
-    //new File("/home/bert/questions.json").write(sujet.questions.collect {it.specification}.toString(), "UTF-8")
+    new File("/home/bert/questions.json").write(sujet.questions.collect {it.specification}.toString(), "UTF-8")
     renderQuiz(sujet.questions)
   }
 
@@ -113,10 +113,13 @@ class MoodleQuizExporterService {
   private void renderQuestion(MarkupBuilder xml, AssociateSpecification specification, String title) {
     xml.question(type: "matching") {
       questionHeader(xml, title, specification.libelle)
+
+      def fraction = 100 / specification.associations.size()
+
       specification.associations.each {Association association ->
         xml.subquestion {
           xml.text association.participant1
-          xml.anwer {xml.text association.participant2}
+          xml.anwer(fraction: fraction) {xml.text association.participant2}
         }
       }
       xml.shuffleanswers false
@@ -167,9 +170,10 @@ class MoodleQuizExporterService {
       questionHeader(xml, title, specification.libelle)
 
       def goodFraction = calculateGoodFraction(specification)
+      def badFraction = calculateBadFraction(specification)
 
       specification.reponses.each { MultipleChoiceSpecificationReponsePossible reponse ->
-        xml.answer(fraction: reponse.estUneBonneReponse ? goodFraction : 0) {
+        xml.answer(fraction: reponse.estUneBonneReponse ? goodFraction : badFraction) {
           xml.text reponse.libelleReponse
         }
       }
@@ -184,6 +188,11 @@ class MoodleQuizExporterService {
     goodCount > 0 ? 100 / goodCount : 0
   }
 
+  private calculateBadFraction(MultipleChoiceSpecification specification) {
+    def badCount = specification.reponses.count {!it.estUneBonneReponse}
+    badCount > 0 ? -100 / badCount : 0
+  }
+
   /**
    * Render the <question> tag for exclusive choice questions.
    * @param xml
@@ -192,9 +201,10 @@ class MoodleQuizExporterService {
   private void renderQuestion(MarkupBuilder xml, ExclusiveChoiceSpecification specification, String title) {
     xml.question(type: "multichoice") {
       questionHeader(xml, title, specification.libelle)
+      def badFraction = -100 / specification.reponses.size()
 
       specification.reponses.eachWithIndex { ExclusiveChoiceSpecificationReponsePossible reponse, int i ->
-        xml.answer(fraction: specification.indexBonneReponse.toInteger() == i + 1 ? 100 : 0) {
+        xml.answer(fraction: specification.indexBonneReponse.toInteger() == i + 1 ? 100 : badFraction) {
           xml.text reponse.libelleReponse
         }
       }
@@ -240,7 +250,7 @@ class MoodleQuizExporterService {
   private void renderQuestion(MarkupBuilder xml, BooleanMatchSpecification specification, String title) {
     xml.question(type: "shortAnswer") {
       questionHeader(xml, title, specification.libelle)
-      specification.reponses.each {answer->
+      specification.reponses.each {answer ->
         xml.answer(fraction: 100) {
           xml.text answer
         }
