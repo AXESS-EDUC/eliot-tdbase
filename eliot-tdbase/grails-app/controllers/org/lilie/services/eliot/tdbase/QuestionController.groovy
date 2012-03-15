@@ -138,7 +138,8 @@ class QuestionController {
     Personne personne = authenticatedPersonne
     Question question = Question.get(params.id)
     Question nvelleQuestion = questionService.recopieQuestion(question, personne)
-    redirect(action: 'edite', id: nvelleQuestion.id)
+    params.id = nvelleQuestion.id
+    redirect(action: 'edite', id: nvelleQuestion.id, params: params)
   }
 
   /**
@@ -167,6 +168,16 @@ class QuestionController {
     }
     redirect(action: 'detail', id: question.id)
 
+  }
+
+  /**
+   * supprime l'attachement d'une question
+   */
+  def supprimeQuestionAttachement() {
+    Personne personne = authenticatedPersonne
+    Question question = Question.get(params.id)
+    // todofsil : à traiter correctement
+    render(template: "/question/QuestionEditionFichier", model: [question: question])
   }
 
   /**

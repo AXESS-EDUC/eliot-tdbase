@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.Publication
@@ -80,13 +81,18 @@ class QuestionService implements ApplicationContextAware {
             copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
             specification: "{}"
     )
+
+    if (proprietes['questionAttachements[0].id']) {
+      def questAttachId = proprietes['questionAttachements[0].id'] as Long
+      Attachement attachement = Attachement.get(questAttachId)
+      questionAttachementService.createAttachementForQuestion(attachement, question)
+    }
     question.properties = proprietes
     def specService = questionSpecificationServiceForQuestionType(question.type)
     specService.updateQuestionSpecificationForObject(question, specificationObject)
     question.save(flush: true)
     return question
   }
-
 
   /**
    * Recopie une question dans un sujet
@@ -180,7 +186,6 @@ class QuestionService implements ApplicationContextAware {
     return laQuestion
   }
 
-
 /**
  * Créé une question et l'insert dans le sujet
  * @param proprietesQuestion les propriétés de la question
@@ -236,8 +241,6 @@ class QuestionService implements ApplicationContextAware {
     laQuestion.delete()
   }
 
-
-
   /**
    *  Partage une question
    * @param laQuestion la question à partager
@@ -271,8 +274,6 @@ class QuestionService implements ApplicationContextAware {
     laQuestion.save()
   }
 
-
-
   /**
    * Recherche de questions
    * @param chercheur la personne effectuant la recherche
@@ -294,7 +295,7 @@ class QuestionService implements ApplicationContextAware {
                                Niveau niveau,
                                QuestionType questionType,
                                Map paginationAndSortingSpec = null) {
-     if (!chercheur) {
+    if (!chercheur) {
       throw new IllegalArgumentException("question.recherche.chercheur.null")
     }
     if (paginationAndSortingSpec == null) {

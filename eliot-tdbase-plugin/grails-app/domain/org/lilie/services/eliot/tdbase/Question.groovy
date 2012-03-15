@@ -106,7 +106,8 @@ class Question implements Artefact {
           'questionService',
           'specificationObject',
           'estEnNotationManuelle',
-          'estInvariant'
+          'estInvariant',
+          'attachement'
   ]
 
   /**
@@ -128,6 +129,17 @@ class Question implements Artefact {
    */
   List<Attachement> attachements() {
     return questionAttachements*.attachement
+  }
+
+  /**
+   * Retourne le premier attachement de la question si il existe
+   * @return le premier attachement de la question si il existe
+   */
+  Attachement getAttachement() {
+    if (questionAttachements.size() > 0) {
+      return questionAttachements[0].attachement
+    }
+    return null
   }
 
   /**
@@ -191,7 +203,7 @@ class Question implements Artefact {
 
   /**
    *
-   * @return  true si la question est invariante
+   * @return true si la question est invariante
    * @see Artefact
    */
   boolean estInvariant() {
