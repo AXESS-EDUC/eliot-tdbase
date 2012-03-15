@@ -677,7 +677,8 @@ Style for the edition of a document or category (ToolBar)
     top: 2px;
 }
 
-.portal-tabs a {
+.portal-tabs a,
+.portal-tabs span {
     margin-left: 10px;
 }
 
@@ -685,11 +686,20 @@ Style for the edition of a document or category (ToolBar)
     color: #ec8e0c;
 }
 
-.portal-tabs a:first-child {
+.portal-tabs a:first-child,
+.portal-tabs span:first-child{
     margin-left: 0;
 }
 
-.portal-tabs a.add {
+.portal-tabs .share {
+    padding: 4px 4px 4px 20px;
+    background: url("../../images/eliot/picto-share.png") no-repeat 0 4px;
+}
+.portal-tabs a.share:hover {
+    background-position: 0 -22px;
+}
+
+.portal-tabs .add {
     padding: 4px 4px 4px 20px;
     background: url("../../images/eliot/picto-add.png") no-repeat 0 4px;
 }
@@ -698,7 +708,7 @@ Style for the edition of a document or category (ToolBar)
     background-position: 0 -22px;
 }
 
-.portal-tabs a.modify {
+.portal-tabs .modify {
     padding: 4px 4px 4px 20px;
     background: url("../../images/eliot/picto-modif.png") no-repeat 0 4px;
 }
