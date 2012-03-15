@@ -746,13 +746,9 @@ Style for the edition of a document or category (Content)
     width: 100%;
 }
 
-.recherche.portal-form_container {
+.recherche.portal-form_container {}
 
-}
-
-.recherche.portal-form_container>table {
-    margin: 10px 0;
-}
+.recherche.portal-form_container>table {margin: 10px 0;}
 
 .recherche.portal-form_container,
 .corrige.portal-form_container,
@@ -789,6 +785,7 @@ Style for the edition of a document or category (Content)
     text-align: right;
     width: 70%;
 }
+	.portal-form_container.full{width: 100%;}
 
 .recherche.portal-form_container input[type=text] {
     width: 200px;
@@ -836,7 +833,7 @@ Style for the edition of a document or category (Content)
 
 .portal-form_container input[type=submit] {
     margin-top: -3px;
-    /*margin-left: 10px;*/
+    margin-left: 10px;
 }
 
 .button {
