@@ -1044,11 +1044,28 @@ button.ui-button-icons-only{width: 3.2em;}
     padding-bottom: 20px;
     background-color: white;
 }
+	
+.edite.apercu.portal-form_container {background-color: whitesmoke;}
 
-.edite.apercu.portal-form_container {
-    background-color: whitesmoke;
-}
-
+	/* Style for item table detail */
+	.edite.apercu.portal-form_container  td.label{padding-right: 5px;}
+	
+	td.detail{
+		clear: both;
+		background-color: #fff;
+		padding: 10px!important;
+		margin-left: 10px;
+		
+		
+	}
+		td.detail>strong{font-size: 120%;color:#666;}
+		td.detail>div{
+			border-top: 1px dotted #ccc;
+			border-bottom: 1px dotted #ccc;
+			padding: 10px 0;
+			margin: 10px 0;
+		}
+		
 .edite.portal-form_container table td {
     padding: 2px 0;
 }
