@@ -75,9 +75,11 @@ class QuestionController {
       question = Question.get(params.id)
       questionEnEdition = true
     }
+    def attachementsSujets = null
     Sujet sujet = null
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId)
+      attachementsSujets = sujetService.findAttachementsDisponiblesForSujet(sujet,personne)
     }
     render(view: '/question/edite', model: [
             liens: breadcrumpsService.liens,
@@ -88,7 +90,8 @@ class QuestionController {
             sujet: sujet,
             artefactHelper: artefactAutorisationService,
             utilisateur: personne,
-            questionEnEdition: questionEnEdition
+            questionEnEdition: questionEnEdition,
+            attachementsSujets: attachementsSujets
     ])
   }
 
