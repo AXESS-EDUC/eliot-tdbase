@@ -836,7 +836,7 @@ Style for the edition of a document or category (Content)
 
 .portal-form_container input[type=submit] {
     margin-top: -3px;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
 }
 
 .button {
@@ -1058,7 +1058,7 @@ button.ui-button-icons-only{width: 3.2em;}
 		
 		-moz-box-shadow: 10px 10px 5px #999;
 		-webkit-box-shadow: 10px 10px 5px #999;
-		box-shadow: 5px 5px 8px #d5d5d5;
+		box-shadow: 4px 4px 4px #d5d5d5;
 	}
 		td.detail>strong{font-size: 110%;color:#666;}
 		td.detail>div{
