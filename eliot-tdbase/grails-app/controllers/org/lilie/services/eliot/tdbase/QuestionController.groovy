@@ -174,9 +174,8 @@ class QuestionController {
    * supprime l'attachement d'une question
    */
   def supprimeQuestionAttachement() {
-    Personne personne = authenticatedPersonne
     Question question = Question.get(params.id)
-    // todofsil : à traiter correctement
+    question.doitSupprimerAttachement = true
     render(template: "/question/QuestionEditionFichier", model: [question: question])
   }
 

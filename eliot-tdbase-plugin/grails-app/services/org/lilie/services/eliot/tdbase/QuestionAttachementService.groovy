@@ -58,11 +58,13 @@ class QuestionAttachementService {
   @Transactional(propagation = Propagation.REQUIRED)
   QuestionAttachement createAttachementForQuestionFromMultipartFile(MultipartFile fichier,
                                                                     Question question,
+                                                                    Boolean estInsereDansLaQuestion,
                                                                     Integer rang = 1) {
     def attachement = attachementService.createAttachementForMultipartFile(
             fichier
     )
-    return createAttachementForQuestion(attachement, question, rang)
+    return createAttachementForQuestion(attachement, question,
+                                        estInsereDansLaQuestion, rang)
   }
 
   /**
@@ -76,11 +78,13 @@ class QuestionAttachementService {
   @Transactional(propagation = Propagation.REQUIRED)
   QuestionAttachement createAttachementForQuestionFromImageIds(ImageIds fichier,
                                                                Question question,
+                                                               Boolean estInsereDansLaQuestion = true,
                                                                Integer rang = 1) {
     def attachement = attachementService.createAttachementForImageIds(
             fichier
     )
-    return createAttachementForQuestion(attachement, question, rang)
+    return createAttachementForQuestion(attachement, question,
+                                        estInsereDansLaQuestion,rang)
   }
 
   /**
@@ -94,10 +98,12 @@ class QuestionAttachementService {
   @Transactional(propagation = Propagation.REQUIRED)
   QuestionAttachement createAttachementForQuestion(Attachement attachement,
                                                    Question question,
+                                                   Boolean estInsereDansLaQuestion = true,
                                                    Integer rang = 1) {
     QuestionAttachement questionAttachement = new QuestionAttachement(
             question: question,
             attachement: attachement,
+            estInsereDansLaQuestion: estInsereDansLaQuestion,
             rang: rang
     )
     questionAttachement.save()

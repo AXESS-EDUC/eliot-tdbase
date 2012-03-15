@@ -267,7 +267,8 @@
     <!-- Credit:  Bram Stein http://www.bramstein.com/projects/xsltjson/ -->
     <xsl:function name="json:encode-string" as="xs:string">
         <xsl:param name="string" as="xs:string"/>
-        <xsl:sequence select="normalize-space(replace(
+        <xsl:if test="$string">
+            <xsl:sequence select="normalize-space(replace(
         					replace(
         					replace(
         					replace(
@@ -285,6 +286,10 @@
         						'\n','\\n'),
         						'\r','\\r'),
         						'\t','\\t'))"/>
+        </xsl:if>
+        <xsl:if test="not($string)">
+            <xsl:value-of select="$string"/>
+        </xsl:if>
     </xsl:function>
 
 </xsl:stylesheet>
