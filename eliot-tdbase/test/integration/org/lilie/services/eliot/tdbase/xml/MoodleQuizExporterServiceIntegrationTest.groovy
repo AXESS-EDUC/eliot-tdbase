@@ -1,11 +1,17 @@
 package org.lilie.services.eliot.tdbase.xml
 
-import groovy.json.JsonSlurper
-import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionService
 import org.lilie.services.eliot.tdbase.Sujet
-import org.lilie.services.eliot.tdbase.SujetSequenceQuestions
-import org.lilie.services.eliot.tdbase.QuestionType
+
+import org.springframework.context.ApplicationContext
+import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
+import org.hibernate.SessionFactory
+import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
+import org.lilie.services.eliot.tdbase.SujetService
+import org.lilie.services.eliot.tdbase.ModaliteActiviteService
+import org.springframework.context.ApplicationContextAware
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,35 +20,64 @@ import org.lilie.services.eliot.tdbase.QuestionType
  * Time: 14:54
  * To change this template use File | Settings | File Templates.
  */
-class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase {
+class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase implements ApplicationContextAware {
 
-  /**
-   * The path of the question json file relative to the location of this class.
-   */
-  static final QUESTIONS = 'exemples/questions.json'
+  private static final String SUJET_TITRE = "Sujet test 1"
+  static final INPUT = 'org/lilie/services/eliot/tdbase/xml/exemples/quiz-exemple-20120229-0812.xml'
 
-  MoodleQuizExporterService moodleQuizExporterService
+  ApplicationContext applicationContext
+  Utilisateur utilisateur1
+  Personne personne1
+  Utilisateur utilisateur2
+  Personne personne2
+  StructureEnseignement struct1ere
+  SessionFactory sessionFactory
+
+  TdBaseInitialisationTestService tdBaseInitialisationTestService
   QuestionService questionService
+  SujetService sujetService
+  ModaliteActiviteService modaliteActiviteService
+  MoodleQuizImporterService moodleQuizImporterService
+  MoodleQuizExporterService moodleQuizExporterService
 
-  void testIntegrationExport() {
-    List<Map> questionSpecs = new JsonSlurper().parseText(getQuestionsJson())
-
-    def questionSequences = questionSpecs.collect {
-      def type = QuestionType.findByCode(it['questionTypeCode'])
-      def question = new Question(specification: it, type: type)
-      new SujetSequenceQuestions(question: question)
-    }
-
-    Sujet sujet = new Sujet(questionsSequences: questionSequences)
-
-    println moodleQuizExporterService.toMoodleQuiz(sujet)
+  protected void setUp() {
+    super.setUp()
+    utilisateur1 = tdBaseInitialisationTestService.getUtilisateur1()
+    personne1 = utilisateur1.personne
+    utilisateur2 = tdBaseInitialisationTestService.getUtilisateur2()
+    personne2 = utilisateur2.personne
+    struct1ere = tdBaseInitialisationTestService.findStructure1ere()
   }
 
-  /**
-   * Loads the contents of the question json file.
-   */
-  private String getQuestionsJson() {
-    def stream = getClass().getResourceAsStream(QUESTIONS)
-    stream?.text
+  protected void tearDown() {
+    super.tearDown()
+  }
+
+  void testRoundTrip() {
+    Sujet sujet = sujetService.createSujet(personne1, SUJET_TITRE)
+    assertFalse(sujet.hasErrors())
+
+    def xmlInput = applicationContext.getResource("classpath:$INPUT").getInputStream().bytes
+
+    MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(
+            xmlInput, sujet, sujet.matiere, sujet.niveau, personne1
+    )
+    assert report.nombreItemsTraites == 11
+    assert report.itemsImportes.size() == 9
+    assert report.itemsNonImportes.size() == 2
+
+    def xmlOutput = moodleQuizExporterService.toMoodleQuiz(sujet)
+
+    
+    println xml
+
+    Sujet sujet2 = sujetService.createSujet(personne1, SUJET_TITRE + "Re-import")
+    MoodleQuizImportReport report2 = moodleQuizImporterService.importMoodleQuiz(
+            xmlOutput.bytes, sujet2, sujet2.matiere, sujet2.niveau, personne1
+    )
+
+    assert report2.nombreItemsTraites == 11
+    assert report2.itemsImportes.size() == 9
+    assert report2.itemsNonImportes.size() == 2
   }
 }

@@ -36,25 +36,26 @@
      Traitement du noeud racine
     -->
     <xsl:template match="quiz">
-      [
+        [
         "quiz" : [
-          [
-            "nombreItems" : <xsl:value-of
+        [
+        "nombreItems" : <xsl:value-of
             select="count(question[@type != 'category'])"/>,
-            "nombreImages" : <xsl:value-of
-                        select="count(//image/text())"/>
-          ]
-          <xsl:for-each select="question[@type != 'category']">
-          ,
-          [
+        "nombreImages" :
+        <xsl:value-of
+                select="count(//image/text())"/>
+        ]
+        <xsl:for-each select="question[@type != 'category']">
+            ,
+            [
             "titre" : """<xsl:value-of
                 select="name/text/text()"/>""",
             "attachementInputId" : "<xsl:apply-templates select="image"/>",
             <xsl:apply-templates select="."/>
-          ]
+            ]
         </xsl:for-each>
         ]
-      ]
+        ]
     </xsl:template>
 
 
@@ -67,7 +68,7 @@
     </xsl:template>
 
     <xsl:template match="image">
-         <xsl:value-of select="text()"/>
+        <xsl:value-of select="text()"/>
     </xsl:template>
 
     <!--
@@ -145,18 +146,18 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
     <xsl:template name="type_question_non_supporte">
-              "questionTypeCode": "<xsl:value-of select="@type"/>"
+        "questionTypeCode": "<xsl:value-of select="@type"/>"
     </xsl:template>
 
     <!--
         Template pour la generation d'une Statement question
         -->
     <xsl:template name="Statement">
-               "questionTypeCode": "Statement",
-               "specification" : """{
-                      "questionTypeCode": "Statement",
-                      "enonce" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>"
-                }"""
+        "questionTypeCode": "Statement",
+        "specification" : """{
+        "questionTypeCode": "Statement",
+        "enonce" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>"
+        }"""
 
     </xsl:template>
 
@@ -164,127 +165,166 @@
         Template pour la generation d'une Statement question
      -->
     <xsl:template name="Open">
-              "questionTypeCode": "Open",
-              "specification" : """{
-                "questionTypeCode": "Open",
-                "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
-                "nombreLignesReponse" : 5
-              }"""
+        "questionTypeCode": "Open",
+        "specification" : """{
+        "questionTypeCode": "Open",
+        "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
+        "nombreLignesReponse" : 5
+        }"""
     </xsl:template>
 
     <!--
         Template pour la génération d'une Associate question
      -->
     <xsl:template name="Associate">
-            "questionTypeCode" : "Associate",
-            "specification" : """{
-              "questionTypeCode" : "Associate",
-              "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
-              "montrerColonneAGauche" : true,
-              "associations" : [<xsl:for-each select="subquestion">
-                 {
-                   "participant1": "<xsl:value-of select="json:encode-string(text/text())"/>",
-                   "participant2": "<xsl:value-of select="json:encode-string(answer/text/text())"/>"
-                 }<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>
-              ]
-            }"""
+        "questionTypeCode" : "Associate",
+        "specification" : """{
+        "questionTypeCode" : "Associate",
+        "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
+        "montrerColonneAGauche" : true,
+        "associations" : [
+        <xsl:for-each select="subquestion">
+            {
+            "participant1": "<xsl:value-of select="json:encode-string(text/text())"/>",
+            "participant2": "<xsl:value-of select="json:encode-string(answer/text/text())"/>"
+            }
+            <xsl:if test="position() != last()">,</xsl:if>
+        </xsl:for-each>
+        ]
+        }"""
     </xsl:template>
 
     <!--
        Template pour la génération d'une MultipleChoice question
     -->
     <xsl:template name="MultipleChoice">
-            "questionTypeCode" : "MultipleChoice",
-            "specification" : """{
-              "questionTypeCode" : "MultipleChoice",
-               "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
-               "shuffled" : <xsl:choose><xsl:when test="shuffleanswers/text() = 1">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose>,
-               "reponses" : [<xsl:for-each select="answer">
-                  {
-                     "libelleReponse" : "<xsl:value-of select="json:encode-string(text/text())"/>",
-                     "estUneBonneReponse" : <xsl:choose><xsl:when test="@fraction &lt;= 0">false</xsl:when><xsl:otherwise>true</xsl:otherwise></xsl:choose>,
-                     "id" : "<xsl:value-of select="position()"/>"
-                  }<xsl:if test="position()!=last()">,</xsl:if></xsl:for-each>
-               ]
-            }"""
+        "questionTypeCode" : "MultipleChoice",
+        "specification" : """{
+        "questionTypeCode" : "MultipleChoice",
+        "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
+        "shuffled" :
+        <xsl:choose>
+            <xsl:when test="shuffleanswers/text() = 1">true</xsl:when>
+            <xsl:otherwise>false</xsl:otherwise>
+        </xsl:choose>
+        ,
+        "reponses" : [
+        <xsl:for-each select="answer">
+            {
+            "libelleReponse" : "<xsl:value-of select="json:encode-string(text/text())"/>",
+            "estUneBonneReponse" :
+            <xsl:choose>
+                <xsl:when test="@fraction &lt;= 0">false</xsl:when>
+                <xsl:otherwise>true</xsl:otherwise>
+            </xsl:choose>
+            ,
+            "id" : "<xsl:value-of select="position()"/>"
+            }
+            <xsl:if test="position()!=last()">,</xsl:if>
+        </xsl:for-each>
+        ]
+        }"""
     </xsl:template>
 
     <!--
         Template pour la génération d'une ExclusiveChoice question
     -->
-        <xsl:template name="ExclusiveChoice">
-            "questionTypeCode" : "ExclusiveChoice",
-            "specification" : """{
-               "questionTypeCode" : "ExclusiveChoice",
-               "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
-               "shuffled" : <xsl:choose><xsl:when test="shuffleanswers = true()">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose>,
-               "reponses" : [<xsl:for-each select="answer">
-                  {
-                     "libelleReponse" : "<xsl:value-of select="json:encode-string(text/text())"/>",
-                     "id" : "<xsl:value-of select="position()"/>"
-                  }<xsl:if test="position()!=last()">,</xsl:if></xsl:for-each>
-               ],
-               "indexBonneReponse": <xsl:for-each select="answer">
-                    <xsl:if test="@fraction &gt; 0">"<xsl:value-of select="position()"/>"</xsl:if>
-               </xsl:for-each>
-            }"""
-        </xsl:template>
+    <xsl:template name="ExclusiveChoice">
+        "questionTypeCode" : "ExclusiveChoice",
+        "specification" : """{
+        "questionTypeCode" : "ExclusiveChoice",
+        "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
+        "shuffled" :
+        <xsl:choose>
+            <xsl:when test="shuffleanswers = true()">true</xsl:when>
+            <xsl:otherwise>false</xsl:otherwise>
+        </xsl:choose>
+        ,
+        "reponses" : [
+        <xsl:for-each select="answer">
+            {
+            "libelleReponse" : "<xsl:value-of select="json:encode-string(text/text())"/>",
+            "id" : "<xsl:value-of select="position()"/>"
+            }
+            <xsl:if test="position()!=last()">,</xsl:if>
+        </xsl:for-each>
+        ],
+        "indexBonneReponse":
+        <xsl:for-each select="answer">
+            <xsl:if test="@fraction &gt; 0">"<xsl:value-of select="position()"/>"
+            </xsl:if>
+        </xsl:for-each>
+        }"""
+    </xsl:template>
 
 
     <!--
         Template pour la génération d'une Decimal question
         -->
-        <xsl:template name="Decimal">
-              "questionTypeCode":"Decimal",
-              "specification" : """{
-                "questionTypeCode":"Decimal",
-                "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
-                "valeur" : <xsl:value-of select="answer/text/text()"/>,
-                "unite": "<xsl:value-of select="units/unit[1]/unit_name/text()"/>",
-                "precision": <xsl:value-of select="answer/tolerance/text()"/>
-              }"""
-        </xsl:template>
+    <xsl:template name="Decimal">
+        "questionTypeCode":"Decimal",
+        "specification" : """{
+        "questionTypeCode":"Decimal",
+        "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
+        "valeur" : <xsl:value-of select="answer/text/text()"/>,
+        "unite": "<xsl:value-of select="units/unit[1]/unit_name/text()"/>",
+        "precision":
+        <xsl:value-of select="answer/tolerance/text()"/>
+        }"""
+    </xsl:template>
 
     <!--
          Template pour la génération d'une FillGap question
             -->
-         <xsl:template name="FillGap">
-             "questionTypeCode" : "FillGap",
-             "specification" : """{
-                "questionTypeCode" : "FillGap",
-                "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
-                "saisieLibre" : true,
-                "montrerLesMots" : false,
-                "texteATrous" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/> {<xsl:for-each select="answer"><xsl:choose>
-                 <xsl:when test="@fraction &gt; 0">=<xsl:value-of select="json:encode-string(normalize-space(text/text()))"/></xsl:when>
-                 <xsl:when test="@fraction &lt;= 0">~<xsl:value-of select="json:encode-string(normalize-space(text/text()))"/></xsl:when>
-                 </xsl:choose></xsl:for-each>}"
-             }"""
-         </xsl:template>
-
+    <xsl:template name="FillGap">
+        "questionTypeCode" : "FillGap",
+        "specification" : """{
+        "questionTypeCode" : "FillGap",
+        "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
+        "saisieLibre" : true,
+        "montrerLesMots" : false,
+        "texteATrous" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/> {
+        <xsl:for-each select="answer">
+            <xsl:choose>
+                <xsl:when test="@fraction &gt; 0">=<xsl:value-of
+                        select="json:encode-string(normalize-space(text/text()))"/>
+                </xsl:when>
+                <xsl:when test="@fraction &lt;= 0">~<xsl:value-of
+                        select="json:encode-string(normalize-space(text/text()))"/>
+                </xsl:when>
+            </xsl:choose>
+        </xsl:for-each>
+        }"
+        }"""
+    </xsl:template>
 
 
     <!-- Credit:  Bram Stein http://www.bramstein.com/projects/xsltjson/ -->
     <xsl:function name="json:encode-string" as="xs:string">
         <xsl:param name="string" as="xs:string"/>
-        <xsl:sequence select="normalize-space(replace(
-        					replace(
-        					replace(
-        					replace(
-        					replace(
-        					replace(
-        					replace(
-        					replace(
-        					replace($string,
-        						'\\','\\\\'),
-        						'/', '\\/'),
-        						'&quot;', '\\&quot;'),
-        						'&#xA;','\\n'),
-        						'&#xD;','\\r'),
-        						'&#x9;','\\t'),
-        						'\n','\\n'),
-        						'\r','\\r'),
-        						'\t','\\t'))"/>
+        <xsl:if test="$string">
+            <xsl:sequence select="normalize-space(replace(
+                                                replace(
+                                                replace(
+                                                replace(
+                                                replace(
+                                                replace(
+                                                replace(
+                                                replace(
+                                                replace($string,
+                                                        '\\','\\\\'),
+                                                        '/', '\\/'),
+                                                        '&quot;', '\\&quot;'),
+                                                        '&#xA;','\\n'),
+                                                        '&#xD;','\\r'),
+                                                        '&#x9;','\\t'),
+                                                        '\n','\\n'),
+                                                        '\r','\\r'),
+                                                        '\t','\\t'))"/>
+        </xsl:if>
+        <xsl:if test="not($string)">
+            <xsl:value-of select="$string"/>
+        </xsl:if>
     </xsl:function>
 
 </xsl:stylesheet>

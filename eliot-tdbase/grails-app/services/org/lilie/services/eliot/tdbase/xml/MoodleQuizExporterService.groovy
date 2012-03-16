@@ -60,7 +60,6 @@ class MoodleQuizExporterService {
    * @return
    */
   String toMoodleQuiz(Sujet sujet) {
-    new File("/home/bert/questions.json").write(sujet.questions.collect {it.specification}.toString(), "UTF-8")
     renderQuiz(sujet.questions)
   }
 
@@ -85,6 +84,7 @@ class MoodleQuizExporterService {
   private String renderQuiz(List<Question> question) {
     def writer = new StringWriter()
     def xml = new MarkupBuilder(writer)
+    xml.doubleQuotes = true
 
     xml.quiz() {
       question.each {
@@ -114,12 +114,13 @@ class MoodleQuizExporterService {
     xml.question(type: "matching") {
       questionHeader(xml, title, specification.libelle)
 
-      def fraction = 100 / specification.associations.size()
+      def size = specification.associations.size()
+      def fraction = size > 0 ? 100 / size : 0
 
       specification.associations.each {Association association ->
         xml.subquestion {
           xml.text association.participant1
-          xml.anwer(fraction: fraction) {xml.text association.participant2}
+          xml.answer(fraction: fraction) {xml.text association.participant2}
         }
       }
       xml.shuffleanswers false
@@ -201,7 +202,9 @@ class MoodleQuizExporterService {
   private void renderQuestion(MarkupBuilder xml, ExclusiveChoiceSpecification specification, String title) {
     xml.question(type: "multichoice") {
       questionHeader(xml, title, specification.libelle)
-      def badFraction = -100 / specification.reponses.size()
+
+      def size = specification.reponses.size()
+      def badFraction = size > 0 ? -100 / size : 0
 
       specification.reponses.eachWithIndex { ExclusiveChoiceSpecificationReponsePossible reponse, int i ->
         xml.answer(fraction: specification.indexBonneReponse.toInteger() == i + 1 ? 100 : badFraction) {
@@ -248,7 +251,7 @@ class MoodleQuizExporterService {
    * @param theQuestion
    */
   private void renderQuestion(MarkupBuilder xml, BooleanMatchSpecification specification, String title) {
-    xml.question(type: "shortAnswer") {
+    xml.question(type: "shortanswer") {
       questionHeader(xml, title, specification.libelle)
       specification.reponses.each {answer ->
         xml.answer(fraction: 100) {
@@ -265,7 +268,7 @@ class MoodleQuizExporterService {
    * @return
    */
   private String prependHeader(String xml) {
-    "<?xml version=\"1.0\" ?>\n" + xml
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml
   }
 
   private questionHeader(MarkupBuilder xml, String title, String libelle) {
