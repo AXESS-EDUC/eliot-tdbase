@@ -220,9 +220,10 @@ class FillGapSpecification implements QuestionSpecification {
     def endTokenIndex = getIndexOfToken('}', texte)
     assert texte.indexOf("{") == 0 && endTokenIndex
 
-    def gapText = texte.substring(1, endTokenIndex)
+    def gapText = texte.substring(1, endTokenIndex).trim()
 
     while (!gapText.isEmpty()) {
+
       assert (gapText[0] == '=' || gapText[0] == '~')
 
       def isCorrect = gapText[0] == '='
@@ -244,7 +245,7 @@ class FillGapSpecification implements QuestionSpecification {
    *
    * Pour un texte de 'titi=toto~tata' la reponse est 4.
    *
-   * @param text
+   * @param text              MQ
    * @return
    */
   private Integer getNextTrouTextBeginningToken(String text) {
