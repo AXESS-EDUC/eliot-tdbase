@@ -214,18 +214,14 @@
           </td>
         </tr>
       </g:else>
-      <g:if test="${sujet}">
-        <tr>
-          <td class="label">Doc. attachés :</td>
-          <td>
-            <g:select name="attachement.id" value=""
-                      noSelection="${['null': 'Attachez un document...']}"
-                      from="${attachementsSujets}"
-                      optionKey="id"
-                      optionValue="nom"/>
-          </td>
-        </tr>
-      </g:if>
+      <tr>
+        <td class="label">Doc. attachés :</td>
+        <td id="question_fichier">
+          <g:render template="QuestionEditionFichier"
+                    model="[question: question, attachementsSujet: attachementsSujets]"/>
+
+        </td>
+      </tr>
       <tr>
         <td class="label">Autonome&nbsp;:</td>
         <td>

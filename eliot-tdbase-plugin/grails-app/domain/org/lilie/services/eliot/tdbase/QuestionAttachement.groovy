@@ -36,10 +36,11 @@ import org.lilie.services.eliot.tice.Attachement
  */
 class QuestionAttachement implements Comparable {
 
-  Integer rang
+    Integer rang
 
   Question question
   Attachement attachement
+  Boolean estInsereDansLaQuestion = true
 
   static mapping = {
     table('td.question_attachement')

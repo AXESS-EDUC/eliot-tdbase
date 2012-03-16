@@ -1570,4 +1570,15 @@
         <dropSequence sequenceName="question_arborescence_id_seq" schemaName="td"/>
     </changeSet>
 
+    <changeSet id="40" author="fsil">
+        <comment>
+            Ajout colonne estInsereDansLaQuestion sur table question_attachement
+        </comment>
+        <addColumn tableName="question_attachement" schemaName="td">
+            <column name="est_insere_dans_la_question" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

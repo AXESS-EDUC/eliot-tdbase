@@ -56,7 +56,7 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
     question.save()
     def oldImageId = question.specificationObject?.attachmentId
     if (spec.fichier && !spec.fichier.empty) {
-      def questionAttachement = questionAttachementService.createAttachementForQuestion(
+      def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(
               spec.fichier, question)
 
       if (oldImageId) {
@@ -69,7 +69,7 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
     spec.icons.each {
       def iconImageId = it.attachmentId
       if (it.fichier && !it.fichier.empty) {
-        def questionAttachement = questionAttachementService.createAttachementForQuestion(
+        def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(
                 it.fichier, question)
 
         if (iconImageId) {

@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.Publication
@@ -80,7 +81,18 @@ class QuestionService implements ApplicationContextAware {
             copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
             specification: "{}"
     )
+
+
     question.properties = proprietes
+    // mise à jour attachement
+    if (question.attachementId) {
+      def attachement = Attachement.get(question.attachementId)
+      questionAttachementService.createAttachementForQuestion(attachement, question)
+    } else if (question.attachementFichier) {
+      questionAttachementService.createAttachementForQuestionFromMultipartFile(
+              question.attachementFichier, question)
+    }
+    // mise à jour spécification
     def specService = questionSpecificationServiceForQuestionType(question.type)
     specService.updateQuestionSpecificationForObject(question, specificationObject)
     question.save(flush: true)
@@ -172,7 +184,28 @@ class QuestionService implements ApplicationContextAware {
     }
 
     laQuestion.properties = proprietes
+    // mise à jour de l'attachement
+    if (laQuestion.attachementId) {
+      if (laQuestion.attachementId != laQuestion.attachement?.id) {
+        if (laQuestion.attachement) {
+          questionAttachementService.deleteQuestionAttachement(
+                  laQuestion.questionAttachements[0])
+        }
+        def attachement = Attachement.get(laQuestion.attachementId)
+        questionAttachementService.createAttachementForQuestion(attachement, laQuestion)
+      }
+    } else if (laQuestion.attachementFichier) {
+      if (laQuestion.attachement) {
+                questionAttachementService.deleteQuestionAttachement(
+                        laQuestion.questionAttachements[0])
+           }
+      questionAttachementService.createAttachementForQuestionFromMultipartFile(
+              laQuestion.attachementFichier,
+              laQuestion
+      )
+    }
 
+    // mise à jour de la spécification
     def specService = questionSpecificationServiceForQuestionType(laQuestion.type)
     specService.updateQuestionSpecificationForObject(laQuestion, specificationObject)
     laQuestion.save(flush: true)

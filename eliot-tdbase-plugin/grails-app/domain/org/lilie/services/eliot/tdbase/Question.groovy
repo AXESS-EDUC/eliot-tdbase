@@ -35,6 +35,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.springframework.web.multipart.MultipartFile
 
 /**
  * Classe représentant une question
@@ -68,6 +69,9 @@ class Question implements Artefact {
   CopyrightsType copyrightsType
   Publication publication
   SortedSet<QuestionAttachement> questionAttachements
+
+
+
 
   private def specificationObject
 
@@ -106,8 +110,27 @@ class Question implements Artefact {
           'questionService',
           'specificationObject',
           'estEnNotationManuelle',
-          'estInvariant'
+          'estInvariant',
+          'attachement',
+          'attachementId',
+          'attachementFichier',
+          'doitSupprimerAttachement'
   ]
+
+  // transients
+  Long attachementId
+  MultipartFile attachementFichier
+  Boolean doitSupprimerAttachement = false
+
+  /**
+   * Modifie la variable d'nstance doitSupprimerAttachement
+   * @param newValeur la nouvelle valeur
+   */
+  void setDoitSupprimerAttachement(Boolean newValeur) {
+    doitSupprimerAttachement = newValeur
+    attachementId = null
+    attachementFichier = null
+  }
 
   /**
    *
@@ -128,6 +151,17 @@ class Question implements Artefact {
    */
   List<Attachement> attachements() {
     return questionAttachements*.attachement
+  }
+
+  /**
+   * Retourne le premier attachement de la question si il existe
+   * @return le premier attachement de la question si il existe
+   */
+  Attachement getAttachement() {
+    if (questionAttachements.size() > 0) {
+      return questionAttachements[0].attachement
+    }
+    return null
   }
 
   /**

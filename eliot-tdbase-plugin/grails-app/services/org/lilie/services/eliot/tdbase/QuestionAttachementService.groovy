@@ -30,20 +30,12 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.AttachementService
-import org.lilie.services.eliot.tice.CopyrightsType
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.utils.ServiceEliotEnum
-import org.lilie.services.eliot.tice.utils.StringUtils
-import org.springframework.context.ApplicationContext
-import org.springframework.context.ApplicationContextAware
+import org.lilie.services.eliot.tice.ImageIds
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
-import org.springframework.transaction.annotation.Propagation
-import org.lilie.services.eliot.tice.Attachement
-import org.lilie.services.eliot.tice.ImageIds
 
 /**
  * Service de gestion des attachements questions
@@ -64,24 +56,15 @@ class QuestionAttachementService {
    * @return l'objet de type QuestionAttachement
    */
   @Transactional(propagation = Propagation.REQUIRED)
-  QuestionAttachement createAttachementForQuestion(MultipartFile fichier,
-                                                   Question question,
-                                                   Integer rang = 1) {
+  QuestionAttachement createAttachementForQuestionFromMultipartFile(MultipartFile fichier,
+                                                                    Question question,
+                                                                    Boolean estInsereDansLaQuestion,
+                                                                    Integer rang = 1) {
     def attachement = attachementService.createAttachementForMultipartFile(
             fichier
     )
-    QuestionAttachement questionAttachement = new QuestionAttachement(
-            question: question,
-            attachement: attachement,
-            rang: rang
-    )
-    questionAttachement.save()
-    // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
-    attachement.aSupprimer = false
-    question.addToQuestionAttachements(questionAttachement)
-    question.lastUpdated = new Date()
-    question.save()
-    return questionAttachement
+    return createAttachementForQuestion(attachement, question,
+                                        estInsereDansLaQuestion, rang)
   }
 
   /**
@@ -95,13 +78,32 @@ class QuestionAttachementService {
   @Transactional(propagation = Propagation.REQUIRED)
   QuestionAttachement createAttachementForQuestionFromImageIds(ImageIds fichier,
                                                                Question question,
+                                                               Boolean estInsereDansLaQuestion = true,
                                                                Integer rang = 1) {
     def attachement = attachementService.createAttachementForImageIds(
             fichier
     )
+    return createAttachementForQuestion(attachement, question,
+                                        estInsereDansLaQuestion, rang)
+  }
+
+  /**
+   * Creer un attachement pour une question
+   * @param fichier le fichier issu de la requête
+   * @param question la question
+   * @param proprietaire le proprietaire
+   * @param rang le rang
+   * @return l'objet de type QuestionAttachement
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  QuestionAttachement createAttachementForQuestion(Attachement attachement,
+                                                   Question question,
+                                                   Boolean estInsereDansLaQuestion = true,
+                                                   Integer rang = 1) {
     QuestionAttachement questionAttachement = new QuestionAttachement(
             question: question,
             attachement: attachement,
+            estInsereDansLaQuestion: estInsereDansLaQuestion,
             rang: rang
     )
     questionAttachement.save()
