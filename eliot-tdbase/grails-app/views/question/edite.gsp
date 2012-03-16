@@ -78,7 +78,7 @@
             id="${question.id}">Partager l'item</g:link>&nbsp; |
   </g:if>
   <g:else>
-    Partager l'item&nbsp;| &nbsp;
+    <span class="share">Partager l'item</span>&nbsp;| &nbsp;
   </g:else>
   </span>
   </span>
@@ -116,7 +116,7 @@
 <g:else>
   <div class="portal-tabs">
     <span class="portal-tabs-famille-liens">
-                Partager l'item&nbsp;| &nbsp;
+                <span class="share">Partager l'item</span>&nbsp;| &nbsp;
             </span>
             </span>
             <span class="portal-tabs-famille-liens">

@@ -95,7 +95,11 @@ styles for TDBase tables
 /*border:0;*/
 /*padding-top:15px;	*/
 /*}*/
-
+.portal-default_table{
+	margin: 0 10px;
+	width: auto;
+	border: 0;
+}
 div.portal-default_table tr {
     height: 10px;
 }
@@ -673,7 +677,8 @@ Style for the edition of a document or category (ToolBar)
     top: 2px;
 }
 
-.portal-tabs a {
+.portal-tabs a,
+.portal-tabs span {
     margin-left: 10px;
 }
 
@@ -681,11 +686,20 @@ Style for the edition of a document or category (ToolBar)
     color: #ec8e0c;
 }
 
-.portal-tabs a:first-child {
+.portal-tabs a:first-child,
+.portal-tabs span:first-child{
     margin-left: 0;
 }
 
-.portal-tabs a.add {
+.portal-tabs .share {
+    padding: 4px 4px 4px 20px;
+    background: url("../../images/eliot/picto-share.png") no-repeat 0 4px;
+}
+.portal-tabs a.share:hover {
+    background-position: 0 -22px;
+}
+
+.portal-tabs .add {
     padding: 4px 4px 4px 20px;
     background: url("../../images/eliot/picto-add.png") no-repeat 0 4px;
 }
@@ -694,7 +708,7 @@ Style for the edition of a document or category (ToolBar)
     background-position: 0 -22px;
 }
 
-.portal-tabs a.modify {
+.portal-tabs .modify {
     padding: 4px 4px 4px 20px;
     background: url("../../images/eliot/picto-modif.png") no-repeat 0 4px;
 }
@@ -732,13 +746,9 @@ Style for the edition of a document or category (Content)
     width: 100%;
 }
 
-.recherche.portal-form_container {
+.recherche.portal-form_container {}
 
-}
-
-.recherche.portal-form_container>table {
-    margin: 10px 0;
-}
+.recherche.portal-form_container>table {margin: 10px 0;}
 
 .recherche.portal-form_container,
 .corrige.portal-form_container,
@@ -775,6 +785,7 @@ Style for the edition of a document or category (Content)
     text-align: right;
     width: 70%;
 }
+	.portal-form_container.full{width: 100%;}
 
 .recherche.portal-form_container input[type=text] {
     width: 200px;
@@ -1030,11 +1041,30 @@ button.ui-button-icons-only{width: 3.2em;}
     padding-bottom: 20px;
     background-color: white;
 }
+	
+.edite.apercu.portal-form_container {background-color: whitesmoke;}
 
-.edite.apercu.portal-form_container {
-    background-color: whitesmoke;
-}
-
+	/* Style for item table detail */
+	.edite.apercu.portal-form_container  td.label{padding-right: 5px;}
+	
+	td.detail{
+		clear: both;
+		background-color: #fff;
+		padding: 10px!important;
+		margin-left: 10px;
+		
+		-moz-box-shadow: 10px 10px 5px #999;
+		-webkit-box-shadow: 10px 10px 5px #999;
+		box-shadow: 4px 4px 4px #d5d5d5;
+	}
+		td.detail>strong{font-size: 110%;color:#666;}
+		td.detail>div{
+			border-top: 1px dotted #ccc;
+			border-bottom: 1px dotted #ccc;
+			padding: 10px 0;
+			margin: 10px 0;
+		}
+		
 .edite.portal-form_container table td {
     padding: 2px 0;
 }
@@ -1211,3 +1241,21 @@ Style for frontpage Widget
 		color: #ec8e0c;
 		background-position: 8px -21px;
 	}
+	
+/*******************************************************************************
+
+Style for result table
+
+********************************************************************************/
+.portal-default_table .sanscopies td{
+	background-color: whitesmoke;
+	font-style: italic;
+	color: #999;
+	border: 1px dotted #cecece;
+}
+	.portal-default_table .sanscopies .even td{background-color: #fff;}
+.portal-default_table a.button{
+	position: relative;
+	top: -2px;
+	padding: 4px 8px 4px;
+}

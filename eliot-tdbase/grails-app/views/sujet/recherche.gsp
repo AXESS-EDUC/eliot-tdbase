@@ -116,7 +116,7 @@
 
 <div class="portal_pagination">
 	<p class="nb_result">${sujets.totalCount} résultat(s)</p>
-	<g:paginate total="${sujets.totalCount}" params="${rechercheCommand?.toParams()}"></g:paginate>
+	 <div class="pager"> Page(s) : <g:paginate total="${sujets.totalCount}" params="${rechercheCommand?.toParams()}"></g:paginate></div>
 </div>
   
 <div class="portal-default_results-list sujet">	

@@ -43,6 +43,10 @@
 </td>
 <td style="width: 40%; vertical-align: top;">
   <table>
+  	<tr>
+  		<td> </td>
+  		<td>&nbsp;</td>
+  	</tr>
     <tr>
       <td class="label">Titre :</td>
       <td>
