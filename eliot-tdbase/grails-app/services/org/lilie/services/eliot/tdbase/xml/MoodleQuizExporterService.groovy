@@ -139,7 +139,7 @@ class MoodleQuizExporterService {
       xml.answer(fraction: 100) {
         xml.text specification.valeur
         xml.unit(name: specification.unite, multiplier: 1)
-        xml.tollerance specification.precision
+        xml.tolerance specification.precision
       }
       correction(xml, specification.correction)
     }
@@ -179,7 +179,7 @@ class MoodleQuizExporterService {
         }
       }
       xml.shuffleanwers specification.shuffled ? 1 : 0
-      xml.single 0
+      xml.single "false"
       correction(xml, specification.correction)
     }
   }
@@ -212,7 +212,7 @@ class MoodleQuizExporterService {
         }
       }
       xml.shuffleanwers specification.shuffled ? 1 : 0
-      xml.single 1
+      xml.single "true"
       correction(xml, specification.correction)
     }
   }

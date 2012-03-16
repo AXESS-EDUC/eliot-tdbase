@@ -68,16 +68,13 @@ class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase implements
 
     def xmlOutput = moodleQuizExporterService.toMoodleQuiz(sujet)
 
-    
-    println xml
-
     Sujet sujet2 = sujetService.createSujet(personne1, SUJET_TITRE + "Re-import")
     MoodleQuizImportReport report2 = moodleQuizImporterService.importMoodleQuiz(
             xmlOutput.bytes, sujet2, sujet2.matiere, sujet2.niveau, personne1
     )
 
-    assert report2.nombreItemsTraites == 11
-    assert report2.itemsImportes.size() == 9
-    assert report2.itemsNonImportes.size() == 2
+    assert report2.nombreItemsTraites == 7
+    assert report2.itemsImportes.size() == 7
+    assert report2.itemsNonImportes.size() == 0
   }
 }
