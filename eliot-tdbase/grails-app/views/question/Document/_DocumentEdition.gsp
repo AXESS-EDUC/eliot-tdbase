@@ -26,11 +26,7 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<r:script>
-  $(document).ready(function() {
-    $("form").attr('enctype', 'multipart/form-data');
-  });
-</r:script>
+
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
   <td class="label">Auteur&nbsp;:</td>

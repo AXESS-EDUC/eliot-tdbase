@@ -85,12 +85,13 @@ class QuestionService implements ApplicationContextAware {
 
     question.properties = proprietes
     // mise à jour attachement
-    if (question.attachementId) {
-      def attachement = Attachement.get(question.attachementId)
-      questionAttachementService.createAttachementForQuestion(attachement, question)
-    } else if (question.attachementFichier) {
+    if (question.principalAttachementId) {
+      def attachement = Attachement.get(question.principalAttachementId)
+      questionAttachementService.createPrincipalAttachementForQuestion(
+              attachement, question)
+    } else if (question.principalAttachementFichier) {
       questionAttachementService.createAttachementForQuestionFromMultipartFile(
-              question.attachementFichier, question)
+              question.principalAttachementFichier, question)
     }
     // mise à jour spécification
     def specService = questionSpecificationServiceForQuestionType(question.type)
@@ -145,6 +146,7 @@ class QuestionService implements ApplicationContextAware {
             type: question.type,
             matiere: question.matiere,
             niveau: question.niveau,
+            principalAttachement: question.principalAttachement
             )
     questionCopie.save()
 
@@ -185,24 +187,27 @@ class QuestionService implements ApplicationContextAware {
 
     laQuestion.properties = proprietes
     // mise à jour de l'attachement
-    if (laQuestion.attachementId) {
-      if (laQuestion.attachementId != laQuestion.attachement?.id) {
-        if (laQuestion.attachement) {
-          questionAttachementService.deleteQuestionAttachement(
-                  laQuestion.questionAttachements[0])
+    if (laQuestion.principalAttachementId) {
+      if (laQuestion.principalAttachementId != laQuestion.principalAttachement?.id) {
+        if (laQuestion.principalAttachement) {
+          questionAttachementService.deletePrincipalAttachementForQuestion(
+                  laQuestion)
         }
-        def attachement = Attachement.get(laQuestion.attachementId)
-        questionAttachementService.createAttachementForQuestion(attachement, laQuestion)
+        def attachement = Attachement.get(laQuestion.principalAttachementId)
+        questionAttachementService.createPrincipalAttachementForQuestion(
+                attachement, laQuestion)
       }
-    } else if (laQuestion.attachementFichier) {
-      if (laQuestion.attachement) {
-                questionAttachementService.deleteQuestionAttachement(
-                        laQuestion.questionAttachements[0])
-           }
-      questionAttachementService.createAttachementForQuestionFromMultipartFile(
-              laQuestion.attachementFichier,
-              laQuestion
-      )
+    } else if (laQuestion.principalAttachementFichier) {
+      if (laQuestion.principalAttachement) {
+        questionAttachementService.deletePrincipalAttachementForQuestion(
+                laQuestion)
+      }
+      if (!laQuestion.principalAttachementFichier.isEmpty()) {
+        questionAttachementService.createPrincipalAttachementForQuestionFromMultipartFile(
+                laQuestion.principalAttachementFichier,
+                laQuestion
+        )
+      }
     }
 
     // mise à jour de la spécification

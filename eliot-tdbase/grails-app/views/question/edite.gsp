@@ -59,6 +59,7 @@
           $("#specifobject\\.libelle").val($("#question\\.titre").val());
         }
       });
+      $("form").attr('enctype', 'multipart/form-data');
       initButtons()
     });
   </r:script>
@@ -215,9 +216,9 @@
         </tr>
       </g:else>
       <tr>
-        <td class="label">Doc. attachés :</td>
+        <td class="label">Doc.&nbsp;attaché&nbsp;:</td>
         <td id="question_fichier">
-          <g:render template="QuestionEditionFichier"
+          <g:render template="/question/QuestionEditionFichier"
                     model="[question: question, attachementsSujet: attachementsSujets]"/>
 
         </td>

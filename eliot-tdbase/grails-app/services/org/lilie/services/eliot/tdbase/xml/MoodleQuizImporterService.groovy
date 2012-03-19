@@ -140,7 +140,7 @@ class MoodleQuizImporterService {
       }
       if (item.attachementInputId) {
         try {
-          questionAttachementService.createAttachementForQuestionFromImageIds(
+          questionAttachementService.createPrincipalAttachementForQuestionFromImageIds(
                 images.get(item.attachementInputId),
                 question
           )

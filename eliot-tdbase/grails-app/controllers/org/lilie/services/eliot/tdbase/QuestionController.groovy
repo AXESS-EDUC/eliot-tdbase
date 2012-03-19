@@ -173,9 +173,10 @@ class QuestionController {
   /**
    * supprime l'attachement d'une question
    */
-  def supprimeQuestionAttachement() {
+  def supprimePrincipalAttachement() {
     Question question = Question.get(params.id)
-    question.doitSupprimerAttachement = true
+    question.doitSupprimerPrincipalAttachement = true
+    question.principalAttachementEstInsereDansLaQuestion = null
     render(template: "/question/QuestionEditionFichier", model: [question: question])
   }
 
