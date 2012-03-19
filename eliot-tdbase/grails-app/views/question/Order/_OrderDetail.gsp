@@ -30,7 +30,7 @@
 
 <tr>
     <td class="label">Détail :</td>
-    <td>
+    <td class="detail">
         ${specifobject.libelle} <br/>
         <g:each status="i" in="${specifobject.orderedItems}" var="orderedItem">
             &nbsp;

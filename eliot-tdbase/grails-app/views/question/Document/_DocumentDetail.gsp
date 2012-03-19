@@ -33,9 +33,9 @@
 </r:script>
 
 <tr>
-    <td class="label">Détail :</td>
+    <td class="label">Détail&nbsp;:</td>
 
-    <td>
+    <td class="detail">
         <table>
             <tr>
                 <td><strong>Auteur :</strong></td>

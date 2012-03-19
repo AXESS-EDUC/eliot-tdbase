@@ -40,7 +40,7 @@
 	    <g:each in="${seances}"  status="i" var="seance">
 	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}">
 	      <em>${seance.groupeLibelle}</em><br/>
-	      <g:link title="${seance.sujet.titre}" controller="seance" action="edite" id="${seance.id}">${seance.sujet.titre}</g:link><br/>
+	      <g:link title="${seance.sujet.titre}" controller="seance" action="listeResultats" id="${seance.id}">${seance.sujet.titre}</g:link><br/>
 	        <strong> » Fin : </strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
 	      </li>
 	    </g:each>

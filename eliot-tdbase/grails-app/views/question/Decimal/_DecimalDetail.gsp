@@ -27,8 +27,8 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
-    <td class="label">Détail :</td>
-    <td>
+    <td class="label">Détail&nbsp;:</td>
+    <td class="detail">
         ${specifobject.libelle} <br/>
         ${specifobject.valeurAffichage}<br/>
         <g:if test="${specifobject.unite}">

@@ -27,7 +27,7 @@
   --}%
 <tr>
     <td class="label">Énoncé :</td>
-    <td>
+    <td class="detail">
         ${question.specificationObject.enonce}
     </td>
 </tr>

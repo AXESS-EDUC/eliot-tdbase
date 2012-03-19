@@ -28,7 +28,7 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
     <td class="label">Détail :</td>
-    <td>
+    <td class="detail">
         ${specifobject.libelle} <br/>
         <strong>Valeur cible :</strong>${specifobject.valeurAffichage}<br/>
         <strong>Précision :</strong>${specifobject.precisionAffichage}<br/>
