@@ -52,6 +52,6 @@
 <br/>
 <g:checkBox name="questionAttachements[0].estInsereDansLaQuestion"
                 title="Le document attaché est inséré dans le sujet"
-                checked="${question?.questionAttachements[0]?.estInsereDansLaQuestion}"/>
+                checked="${questionAttachement ? questionAttachement.estInsereDansLaQuestion : false}"/>
     Le document est inséré dans le sujet
 
