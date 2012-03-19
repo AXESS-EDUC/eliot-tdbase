@@ -152,7 +152,8 @@ class QuestionController {
     Personne personne = authenticatedPersonne
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
     Question nvelleQuestion = questionService.recopieQuestionDansSujet(sujetQuestion, personne)
-    redirect(action: 'edite', id: nvelleQuestion.id)
+    redirect(action: 'edite', id: nvelleQuestion.id,
+             params: [sujetId: sujetQuestion.sujet.id])
   }
 
   /**
@@ -175,9 +176,10 @@ class QuestionController {
   /**
    * supprime l'attachement d'une question
    */
-  def supprimeQuestionAttachement() {
+  def supprimePrincipalAttachement() {
     Question question = Question.get(params.id)
-    question.doitSupprimerAttachement = true
+    question.doitSupprimerPrincipalAttachement = true
+    question.principalAttachementEstInsereDansLaQuestion = null
     render(template: "/question/QuestionEditionFichier", model: [question: question])
   }
 
@@ -226,9 +228,9 @@ class QuestionController {
 
   /**
    *
-   * Action "enregistreInsert"
+   * Action "enregistreInsertNouvelItem"
    */
-  def enregistreInsert() {
+  def enregistreInsertNouvelItem() {
     Personne personne = authenticatedPersonne
     def specifObject = getSpecificationObjectFromParams(params)
     Long sujetId = params.sujetId as Long

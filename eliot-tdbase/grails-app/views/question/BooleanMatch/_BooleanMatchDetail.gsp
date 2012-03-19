@@ -27,8 +27,8 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
-    <td class="label">Détail :</td>
-    <td>
+    <td class="label">Détail&nbsp;:</td>
+    <td class="detail">
         <strong>Libellé:</strong> ${specifobject.libelle}  <br/>
         <strong>Réponse:</strong> ${specifobject.reponses} <br/>
         <g:if test="${specifobject.toutOuRien}">

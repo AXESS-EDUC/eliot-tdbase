@@ -46,13 +46,18 @@
 
   <div class="portal-messages">
   <li class="notice">
-  Groupe : ${seance.groupeLibelle}<br/>
-  Sujet : ${seance.sujet.titre} <br/>
-  Séance du ${seance.dateDebut.format('dd/MM/yy HH:mm')} au  ${seance.dateFin.format('dd/MM/yy HH:mm')}<br/>
+	  Groupe : ${seance.groupeLibelle}<br/>
+	  Sujet : ${seance.sujet.titre} <br/>
+	  Séance du ${seance.dateDebut.format('dd/MM/yy HH:mm')} au  ${seance.dateFin.format('dd/MM/yy HH:mm')}<br/><br/>
+	  <g:if test="${copies}">
+	  	<strong>Nombres de copies rendues : ${copies.size()} sur ${copies.size() + elevesSansCopies.size()}</strong>
+	  </g:if>
+	  <g:else>
+	    <strong>Aucun élève n'a rendu sa copie</strong>
+	  </g:else>
   </li>
   </div>
   <br/>
-<p><strong> Nombres de copies rendues : ${copies.size()} sur ${copies.size() + elevesSansCopies.size()}</strong></p>
   <g:if test="${copies}">
     <div class="portal-default_table">
       <table>
@@ -90,7 +95,7 @@
               ${copie.dateRemise?.format('dd/MM/yy  à HH:mm')}
             </td>
              <td>
-              <g:link action="visualiseCopie" controller="seance"
+              <g:link class="button work" action="visualiseCopie" controller="seance"
                       id="${seance.id}" title="Corriger la copie"
                       params="[max:1,offset:i]">
                 Corriger
@@ -98,25 +103,32 @@
             </td>
           </tr>
         </g:each>
+        
+        <g:if test="${elevesSansCopies}">
+          <g:each in="${elevesSansCopies}" var="eleve">
+           	<tr class="sanscopies">
+           		<td>${eleve.nomAffichage}</td>
+           		<td></td>
+           		<td></td>
+           		<td></td>
+           		<td></td>
+           		<td></td>
+           	</tr>
+           
+          </g:each>
+        
+        </g:if>
+        
         </tbody>
       </table>
     </div>
   </g:if>
   <g:else>
+  <!--
      <div class="portal_pagination">
-      <p class="nb_result">Aucun résultat</p>
+      <p class="nb_result">Aucun élève n'a rendu sa copie</p>
     </div>
+   -->
   </g:else>
-  <g:if test="${elevesSansCopies}">
-    <br/>
-    <p><strong>Élèves n'ayant pas rendu leur copie...</strong></p>
-    <ul>
-    <g:each in="${elevesSansCopies}" var="eleve">
-      <li>
-        ${eleve.nomAffichage}
-      </li>
-    </g:each>
-    </ul>
-  </g:if>
 </body>
 </html>

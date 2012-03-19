@@ -29,35 +29,35 @@
 <r:require module="fillGraphics_PreviewJS"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
-<div class="item">
-	<p class="title"><strong>${specifobject.libelle}</strong></p>
+<p class="title"><strong>${specifobject.libelle}</strong></p>
 
 <div class="fillgraphicsEditor">
-    <g:if test="${specifobject.attachmentId}">
-        <div class="imageContainer">
-            <et:viewAttachement
-                    attachement="${specifobject.attachement}"
-                    width="500"
-                    height="500"/>
-        </div>
-    </g:if>
+  <g:if test="${specifobject.attachmentId}">
+    <div class="imageContainer">
+      <et:viewAttachement
+              attachement="${specifobject.attachement}"
+              width="500"
+              height="500"/>
+    </div>
+  </g:if>
 
-    <g:each status="i" in="${specifobject.textZones}" var="textZone">
-        <div id="textZone_${i}" class="textZone" style=" top: ${textZone.topDistance}px; left: ${textZone.leftDistance}px;">
-            <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="3"
-                        style="width: ${textZone.width}px; height: ${textZone.height}px;"
-                        value="${textZone.text}" readonly="true" class="nonResizableTextArea"/>
-        </div>
-    </g:each>
+  <g:each status="i" in="${specifobject.textZones}" var="textZone">
+    <div id="textZone_${i}" class="textZone"
+         style=" top: ${textZone.topDistance}px; left: ${textZone.leftDistance}px;">
+      <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="3"
+                  style="width: ${textZone.width}px; height: ${textZone.height}px;"
+                  value="${textZone.text}" readonly="true"
+                  class="nonResizableTextArea"/>
+    </div>
+  </g:each>
 </div>
 <br>
 <g:if test="${specifobject.montrerLesMots}">
-    Montrer les mots : oui
+  Montrer les mots : oui
 </g:if>
 <g:else>
-    Montrer les mots : non
+  Montrer les mots : non
 </g:else>
 
 <br/>
-    <strong>Correction :</strong> <br/>${specifobject.correction}
-</div>
+<strong>Correction :</strong> <br/>${specifobject.correction}

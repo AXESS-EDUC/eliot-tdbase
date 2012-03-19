@@ -29,14 +29,13 @@
 
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<div class="item">
-    <p class="title"><strong>${specifobject.libelle}</strong></p>
-    <strong>Valeur attendue :</strong><g:textField name="listeQuestions[${indexQuestion}].specifobject.valeur"
-                                                   value="${specifobject.valeurAffichage}"
-                                                   size="10" disabled="true"/> <br/>
-    <strong>Précision : </strong>${specifobject.precisionAffichage}<br/>
-    <strong>Valeur minimale : </strong>${specifobject.valeurMinAffichage}<br/>
-    <strong>Valeur maximale : </strong>${specifobject.valeurMaxAffichage}<br/>
-    <strong>Pas : </strong>${specifobject.pasAffichage}<br/>
-    <strong>Correction : </strong> <br/>${specifobject.correction}
-</div>
+<p class="title"><strong>${specifobject.libelle}</strong></p>
+<strong>Valeur attendue :</strong><g:textField
+        name="listeQuestions[${indexQuestion}].specifobject.valeur"
+        value="${specifobject.valeurAffichage}"
+        size="10" disabled="true"/> <br/>
+<strong>Précision :</strong>${specifobject.precisionAffichage}<br/>
+<strong>Valeur minimale :</strong>${specifobject.valeurMinAffichage}<br/>
+<strong>Valeur maximale :</strong>${specifobject.valeurMaxAffichage}<br/>
+<strong>Pas :</strong>${specifobject.pasAffichage}<br/>
+<strong>Correction :</strong> <br/>${specifobject.correction}

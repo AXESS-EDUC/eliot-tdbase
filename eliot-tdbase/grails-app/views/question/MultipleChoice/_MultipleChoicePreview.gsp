@@ -26,7 +26,7 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<div class="item">
+
 	<p class="title"><strong>${specifobject.libelle}</strong></p>
 	<g:each in="${specifobject.reponses}" var="reponse" status="i">
 	  &nbsp;
@@ -37,4 +37,3 @@
 	</g:each>
 	<br/>
 	<strong>Correction :</strong> <br/>${specifobject.correction}
-</div>

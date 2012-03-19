@@ -70,7 +70,8 @@ class Question implements Artefact {
   Publication publication
   SortedSet<QuestionAttachement> questionAttachements
 
-
+  Attachement principalAttachement
+  Boolean principalAttachementEstInsereDansLaQuestion
 
 
   private def specificationObject
@@ -88,6 +89,8 @@ class Question implements Artefact {
     publication(nullable: true)
     paternite(nullable: true)
     exercice(nullable: true)
+    principalAttachement(nullable: true)
+    principalAttachementEstInsereDansLaQuestion(nullable: true)
     specification(validator: { val, obj, errors ->
       def objSpec = obj.getSpecificationObjectForJson(val)
       if (!objSpec.validate()) {
@@ -103,6 +106,7 @@ class Question implements Artefact {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
     cache(true)
+    principalAttachement(column: 'attachement_id', fetch: 'join')
     questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
   }
 
@@ -111,26 +115,29 @@ class Question implements Artefact {
           'specificationObject',
           'estEnNotationManuelle',
           'estInvariant',
-          'attachement',
-          'attachementId',
-          'attachementFichier',
-          'doitSupprimerAttachement'
+          'principalAttachementFichier',
+          'doitSupprimerPrincipalAttachement',
+          'principalAttachementId'
   ]
 
   // transients
-  Long attachementId
-  MultipartFile attachementFichier
-  Boolean doitSupprimerAttachement = false
+  // chaque question peut avoir au moins un attachement
+  MultipartFile principalAttachementFichier
+  Boolean doitSupprimerPrincipalAttachement = false
+  Long principalAttachementId = null
+
 
   /**
    * Modifie la variable d'nstance doitSupprimerAttachement
    * @param newValeur la nouvelle valeur
    */
-  void setDoitSupprimerAttachement(Boolean newValeur) {
-    doitSupprimerAttachement = newValeur
-    attachementId = null
-    attachementFichier = null
+  void setDoitSupprimerPrincipalAttachement(Boolean newValeur) {
+    doitSupprimerPrincipalAttachement = newValeur
+    principalAttachementFichier = null
+    principalAttachementId = null
   }
+
+
 
   /**
    *
@@ -151,17 +158,6 @@ class Question implements Artefact {
    */
   List<Attachement> attachements() {
     return questionAttachements*.attachement
-  }
-
-  /**
-   * Retourne le premier attachement de la question si il existe
-   * @return le premier attachement de la question si il existe
-   */
-  Attachement getAttachement() {
-    if (questionAttachements.size() > 0) {
-      return questionAttachements[0].attachement
-    }
-    return null
   }
 
   /**

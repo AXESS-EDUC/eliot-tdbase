@@ -30,91 +30,184 @@
 
 
 <g:set var="sujet" value="${copie.sujet}"/>
-<form method="post" class="edite">
-  <g:hiddenField name="copie.id" value="${copie.id}"/>
+<g:form method="post" class="edite">
+<g:hiddenField name="copie.id" value="${copie.id}"/>
 
-  <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
-  <g:set var="indexReponseNonVide" value="0"/>
-  <g:set var="indexQuestion" value="1"/>
-  <g:set var="exericeEnCours" value="${null}"/>
-  <g:set var="indexExercice" value="0"/>
-  <g:set var="indexQuestionInExercice" value="1"/>
-  <g:each in="${copie.reponses}" var="reponse">
-    <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
-    <g:set var="question" value="${sujetQuestion.question}"/>
-    <g:set var="sujetEnCours" value="${sujetQuestion.sujet}"/>
+<h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
+<g:set var="indexReponseNonVide" value="0"/>
+<g:set var="indexQuestion" value="1"/>
+<g:set var="exericeEnCours" value="${null}"/>
+<g:set var="indexExercice" value="0"/>
+<g:set var="indexQuestionInExercice" value="1"/>
+<g:set var="etaitDansUnExercice" value="${false}"/>
+
+<g:each in="${copie.reponses}" var="reponse">
+  <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
+  <g:set var="question" value="${sujetQuestion.question}"/>
+  <g:set var="sujetEnCours" value="${sujetQuestion.sujet}"/>
+
+  <g:if test="${etaitDansUnExercice && sujetEnCours != exericeEnCours}">
+      </div>
+      <!-- Fermeture div exercice  quand exercice termine-->
+      <g:set var="etaitDansUnExercice" value="${false}"/>
+    </g:if>
+
+
+  <g:if test="${sujetEnCours == sujet}">
+    <!-- -------------------------------- -->
+   <!-- mode question de premier niveau -->
+   <!-- -------------------------------- -->
+   <div class="tdbase-sujet-edition-question">
+    <g:if test="${question.type.interaction}">
+      <h1>Question ${indexQuestion}</h1>
+      <g:set var="indexQuestion" value="${indexQuestion.toInteger() + 1}"/>
+      <div class="tdbase-sujet-edition-question-points">
+        <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+          <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                              format="##0.00"/></em>
+          &nbsp;/&nbsp;<strong><g:formatNumber
+                number="${sujetQuestion.points}"
+                format="##0.00"/>&nbsp;point(s)</strong>
+        </div>
+      </div>
+
+      <div class="tdbase-sujet-edition-question-interaction">
+        <g:hiddenField
+                name="reponsesCopie.listeReponses[${indexReponseNonVide}].reponse.id"
+                value="${reponse.id}"/>
+        <g:render
+                template="/question/Interaction"
+                model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide]"/>
+
+        <g:set var="indexReponseNonVide"
+               value="${indexReponseNonVide.toInteger() + 1}"/>
+        <g:if test="${afficheCorrection}">
+          <g:render
+                  template="/question/${question.type.code}/${question.type.code}Correction"
+                  model="[question: question]"/>
+        </g:if>
+      </div>
+    </g:if>
+    <g:else>
+      <div class="tdbase-sujet-edition-question-interaction">
+        <g:render
+                template="/question/Preview"
+                model="[question: question]"/>
+      </div>
+    </g:else>
+  </g:if>
+  <g:elseif test="${sujetEnCours == exericeEnCours}">
+    <!-- -------------------------------- -->
+   <!-- mode question dans un sujet -->
+   <!-- -------------------------------- -->
+   <div class="tdbase-sujet-edition-question">
+    <g:if test="${question.type.interaction}">
+      <h1>${indexQuestionInExercice}</h1>
+      <g:set var="indexQuestionInExercice"
+             value="${indexQuestionInExercice.toInteger() + 1}"/>
+      <div class="tdbase-sujet-edition-question-points">
+        <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+          <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                              format="##0.00"/></em>
+          &nbsp;/&nbsp;<strong><g:formatNumber
+                number="${sujetQuestion.points}"
+                format="##0.00"/>&nbsp;point(s)</strong>
+        </div>
+      </div>
+      <div class="tdbase-sujet-edition-question-interaction">
+        <g:hiddenField
+                name="reponsesCopie.listeReponses[${indexReponseNonVide}].reponse.id"
+                value="${reponse.id}"/>
+        <g:render
+                template="/question/Interaction"
+                model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide]"/>
+
+        <g:set var="indexReponseNonVide"
+               value="${indexReponseNonVide.toInteger() + 1}"/>
+        <g:if test="${afficheCorrection}">
+          <g:render
+                  template="/question/${question.type.code}/${question.type.code}Correction"
+                  model="[question: question]"/>
+        </g:if>
+      </div>
+    </g:if>
+    <g:else>
+      <div class="tdbase-sujet-edition-question-interaction">
+        <g:render
+                template="/question/Preview"
+                model="[question: question]"/>
+      </div>
+    </g:else>
+
+  </g:elseif>
+  <g:else>
+    <!-- -------------------------------- -->
+  <!-- entrée dans un exerice -->
+  <!-- -------------------------------- -->
+    <g:set var="exericeEnCours" value="${sujetQuestion.sujet}"/>
+    <g:set var="indexQuestionInExercice" value="1"/>
+    <g:set var="indexExercice" value="${indexExercice.toInteger() + 1}"/>
+    <g:set var="etaitDansUnExercice" value="${true}"/>
+    <div id="exercice_${indexExercice}">
+
+    <h1>Exercice ${indexExercice}</h1>
 
     <div class="tdbase-sujet-edition-question">
+    <h1>${indexQuestionInExercice}</h1>
 
-      <g:if test="${question.type.interaction}">
-        <g:if test="${sujetEnCours == sujet}">
-          <h1>Question ${indexQuestion}</h1>
-          <g:set var="indexQuestion" value="${indexQuestion.toInteger() + 1}"/>
-        </g:if>
-        <g:elseif test="${sujetEnCours == exericeEnCours}">
-          <h1>${indexQuestionInExercice}</h1>
-          <g:set var="indexQuestionInExercice"
-                 value="${indexQuestionInExercice.toInteger() + 1}"/>
-        </g:elseif>
-        <g:else>
-          <g:set var="exericeEnCours" value="${sujetQuestion.sujet}"/>
-          <g:set var="indexQuestionInExercice" value="1"/>
-          <g:set var="indexExercice" value="${indexExercice.toInteger() + 1}"/>
-          <h1>Exercice ${indexExercice}</h1></div> <div class="tdbase-sujet-edition-question">
-          <h1>${indexQuestionInExercice}</h1>
-          <g:set var="indexQuestionInExercice"
-                 value="${indexQuestionInExercice.toInteger() + 1}"/>
+    <g:set var="indexQuestionInExercice"
+           value="${indexQuestionInExercice.toInteger() + 1}"/>
+    <g:if test="${question.type.interaction}">
+      <div class="tdbase-sujet-edition-question-points">
+              <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+                <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                                    format="##0.00"/></em>
+                &nbsp;/&nbsp;<strong><g:formatNumber
+                      number="${sujetQuestion.points}"
+                      format="##0.00"/>&nbsp;point(s)</strong>
+              </div>
+      </div>
+      <div class="tdbase-sujet-edition-question-interaction">
+              <g:hiddenField
+                      name="reponsesCopie.listeReponses[${indexReponseNonVide}].reponse.id"
+                      value="${reponse.id}"/>
+              <g:render
+                      template="/question/Interaction"
+                      model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide]"/>
 
-        </g:else>
-        <div class="tdbase-sujet-edition-question-points">
-          <div id="SujetSequenceQuestions-${sujetQuestion.id}">
-            <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
-                                format="##0.00"/></em>
-            &nbsp;/&nbsp;<strong><g:formatNumber
-                  number="${sujetQuestion.points}"
-                  format="##0.00"/>&nbsp;point(s)</strong>
-          </div>
-        </div>
+              <g:set var="indexReponseNonVide"
+                     value="${indexReponseNonVide.toInteger() + 1}"/>
+              <g:if test="${afficheCorrection}">
+                <g:render
+                        template="/question/${question.type.code}/${question.type.code}Correction"
+                        model="[question: question]"/>
+              </g:if>
+      </div>
+    </g:if>
+    <g:else>
+      <div class="tdbase-sujet-edition-question-interaction">
+        <g:render
+                template="/question/Preview"
+                model="[question: question]"/>
+      </div>
+    </g:else>
+  </g:else>
 
-        <div class="tdbase-sujet-edition-question-interaction">
+  </div> <!-- fermeture div class = tdbase-sujet-edition-question -->
 
-          <g:hiddenField
-                  name="reponsesCopie.listeReponses[${indexReponseNonVide}].reponse.id"
-                  value="${reponse.id}"/>
-          <g:render
-                  template="/question/${question.type.code}/${question.type.code}Interaction"
-                  model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide]"/>
-
-          <g:set var="indexReponseNonVide"
-                 value="${indexReponseNonVide.toInteger() + 1}"/>
-          <g:if test="${afficheCorrection}">
-            <g:render
-                    template="/question/${question.type.code}/${question.type.code}Correction"
-                    model="[question: question]"/>
-          </g:if>
-
-        </div>
-      </g:if>
-      <g:else>
-        <div class="tdbase-sujet-edition-question-interaction">
-          <g:render
-                  template="/question/${question.type.code}/${question.type.code}Preview"
-                  model="[question: question]"/>
-        </div>
-      </g:else>
-
-    </div>
-
-  </g:each>
-  <g:hiddenField name="nombreReponsesNonVides" value="${indexReponseNonVide}"/>
-  <div class="bottom">
-    <div class="form_actions">
-      <g:link action="${lienRetour.action}"
-              controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link>&nbsp;
-      |&nbsp;<g:actionSubmit value="Rendre la copie" action="rendLaCopie"
-                             class="button"
-                             title="Rendre la copie"/>
-    </div>
+</g:each>
+<g:if test="${etaitDansUnExercice}">
   </div>
-</form>
+</g:if>
+<g:hiddenField name="nombreReponsesNonVides" value="${indexReponseNonVide}"/>
+<div class="bottom">
+  <div class="form_actions">
+    <g:link action="${lienRetour.action}"
+            controller="${lienRetour.controller}"
+            params="${lienRetour.params}">Annuler</g:link>&nbsp;
+    |&nbsp;<g:actionSubmit value="Rendre la copie" action="rendLaCopie"
+                           class="button"
+                           title="Rendre la copie"/>
+  </div>
+</div>
+</g:form>

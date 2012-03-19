@@ -27,29 +27,29 @@
   --}%
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<div class="item">
-    <p class="title"><strong>${question.titre}</strong></p>
-    <strong>Auteur :</strong>${specifobject.auteur} <br/>
-    <strong>Source :</strong>${specifobject.source} <br/>
-    <g:if test="${specifobject.attachement}">
-        <br/>
-        <g:if test="${specifobject.estInsereDansLeSujet}">
-            <et:viewAttachement attachement="${specifobject.attachement}"/> <br/>
-        </g:if>
-        <g:else>
-            <g:link action="viewAttachement" controller="attachement"
-                    id="${specifobject.attachement.id}" target="_blank">
-                <g:message code="attachement.acces"/>
-            </g:link> <br/>
-        </g:else>
-    </g:if>
-    <g:if test="${specifobject.urlExterne}">
-        <br/>
-        <a href="${specifobject.urlExterne}" target="_blank">
-            <g:message code="attachement.acces"/>
-        </a> <br/>
-    </g:if>
-    <br/>
-</div>
+
+<p class="title"><strong>${question.titre}</strong></p>
+<strong>Auteur :</strong>${specifobject.auteur} <br/>
+<strong>Source :</strong>${specifobject.source} <br/>
+<g:if test="${specifobject.attachement}">
+  <br/>
+  <g:if test="${specifobject.estInsereDansLeSujet}">
+    <et:viewAttachement attachement="${specifobject.attachement}"/> <br/>
+  </g:if>
+  <g:else>
+    <g:link action="viewAttachement" controller="attachement"
+            id="${specifobject.attachement.id}" target="_blank">
+      <g:message code="attachement.acces"/>
+    </g:link> <br/>
+  </g:else>
+</g:if>
+<g:if test="${specifobject.urlExterne}">
+  <br/>
+  <a href="${specifobject.urlExterne}" target="_blank">
+    <g:message code="attachement.acces"/>
+  </a> <br/>
+</g:if>
+<br/>
+
 
 

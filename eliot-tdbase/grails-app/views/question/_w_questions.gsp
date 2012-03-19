@@ -46,8 +46,14 @@
 	      </li>
 	    </g:each>
 	  </ul>
+	  </div>
+	  </g:if>
+	  <g:else>
+	  	<p class="nb_result">${items.totalCount} item(s)</p>
+	  	<p class="none">Aucun items.</p>
+	  </g:else>
 	  
-  </div>
-  </g:if>
-	     <g:link controller="question" class="add" action="nouvelle">Créer un item</g:link>
- </div>
+	  <g:link controller="question" class="add" action="nouvelle">Créer un item</g:link></div>
+ 
+	     
+

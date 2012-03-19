@@ -93,7 +93,7 @@
             <g:if test="${question.type.interaction}">
                 <div class="tdbase-sujet-edition-question-interaction correction_copie">
                     <g:render
-                            template="/question/${question.type.code}/${question.type.code}Interaction"
+                            template="/question/Interaction"
                             model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide++]"/>
 
                     <g:if test="${copie.modaliteActivite.estPerimee()}">
@@ -107,7 +107,7 @@
                 <h1>&nbsp; ${question.type.nom}</h1>
 
                 <div class="tdbase-sujet-edition-question-interaction correction_copie">
-                    <g:render template="/question/${question.type.code}/${question.type.code}Preview"
+                    <g:render template="/question/Preview"
                               model="[question: question]"/>
                 </div>
             </g:else>

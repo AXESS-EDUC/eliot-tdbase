@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.oasis-open.org/docbook/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<!--
+  ~ Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
+  ~ This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
+  ~
+  ~  Lilie is free software. You can redistribute it and/or modify since
+  ~  you respect the terms of either (at least one of the both license) :
+  ~  - under the terms of the GNU Affero General Public License as
+  ~  published by the Free Software Foundation, either version 3 of the
+  ~  License, or (at your option) any later version.
+  ~  - the CeCILL-C as published by CeCILL-C; either version 1 of the
+  ~  License, or any later version
+  ~
+  ~  There are special exceptions to the terms and conditions of the
+  ~  licenses as they are applied to this software. View the full text of
+  ~  the exception in file LICENSE.txt in the directory of this software
+  ~  distribution.
+  ~
+  ~  Lilie is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  Licenses for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  and the CeCILL-C along with Lilie. If not, see :
+  ~  <http://www.gnu.org/licenses/> and
+  ~  <http://www.cecill.info/licences.fr.html>.
+  -->
+
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <info>
+        <title>Éliot-tdbase - Manuel enseignant</title>
+        <author>
+            <orgname>Ticetime</orgname>
+        </author>
+    </info>
+    <chapter>
+        <title>Glossaire éliot-tdbase</title>
+        <sect1>
+            <title>Item</title>
+            <para> Un item est une question, un élément d'énoncé ou un document qui compose un sujet.</para>
+            <para> Un item est crée par un enseignant. Il peut être partagé et donc réutilisé par d'autres enseignants</para>
+        </sect1>
+       <sect1>
+           <title>Question</title>
+           <para> Une question est un item particulier : c'est un item permettant une interaction avec
+               l'apprenant et dont le résultat de l'interaction est évaluable de manière automatique ou
+               manuelle par l'enseignant.</para>
+       </sect1>
+        <sect1>
+            <title>Type de Question</title>
+            <para> Le type d'interaction proposée par une question définit le type de cette
+                question.</para>
+            <para> Exemples de type de question : question à choix multiples, questions à choix
+                exclusif, graphique à compléter, textes à trous,...</para>
+        </sect1>
+        <sect1>
+            <title>Sujet</title>
+            <para> Un sujet est caractérisé par :</para>
+            <itemizedlist>
+                <listitem>
+                    <para> une liste d'items ordonnée ou non</para>
+                </listitem>
+                <listitem>
+                    <para> un barême définissant le nombre de points maximum affectés à chaque question
+                        composant le sujet.</para>
+                </listitem>
+            </itemizedlist>
+            <para> Un sujet est créé par un enseignant.</para>
+            <para> Un sujet peut-être partagé et donc réutilisé par d'autres enseignants.</para>
+        </sect1>
+        <sect1>
+            <title>Exercice</title>
+            <para> Un exercice est un sujet qui est aussi disponible sous forme d'item.</para>
+            <para> Un exercice est donc un item composé de plusieurs items.</para>
+            <para> Il est possible d'insérer un exercice dans un sujet.</para>
+        </sect1>
+        <sect1>
+            <title>Séance</title>
+            <para> Une séance spécifie l'accès à un sujet pour un groupe d'élèves donné sur une période
+                donnée. Une séance définit les modalités d'accès au sujet : est ce que l'élève peut
+                soumettre plusieurs fois ses résultats...</para>
+        </sect1>
+        <sect1>
+            <title>Copie</title>
+            <para> La liste des réponses faites par un élève sur un sujet dans le cadre d'une
+                séance.</para>
+            <para> Une copie fait l'objet d'une évaluation automatique et/ou manuelle.</para>
+        </sect1>
+        
+    </chapter>
+    <chapter>
+        <title>Fonctionnalités principales pour les enseignants</title>
+        <sect1>
+            <title>Éditions d'item et de sujet</title>
+            <para>Éliot-tdbase est un outil permettant l'édition des items et des sujets par les enseignants. 
+                En ce sens, eliot-tdbase est un outil de création de ressources pédagogiques.</para>
+            <para>Les copies d'écran ci-dessous présentent les interfaces d'édition d'un item ou
+                d'un sujet.
+            </para>    
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-edition-item.png" width="800px"/>
+                    </imageobject>
+                </inlinemediaobject><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-edition-sujet.png" width="800px"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </para>
+        </sect1>
+        <sect1>
+            <title>Partage d'un item ou d'un sujet</title>
+            <para>Quand un enseignant a crée un sujet ou un item, il peut décider de le partager avec la communauté 
+                des enseignants. L'action de partage est la mise à disposition de la ressource partagée sous les termes de la licence Creative Commons -  Paternité – Pas d'utilisation Commerciale – France (CC-BY-NC).
+                Les copies d'écran ci-dessous illustrent le résultat de l'action de partage sur un sujet.</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-partage-sujet-1.png" width="800px"/>
+                    </imageobject>
+                </inlinemediaobject>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-partage-sujet-2.png" width="800px"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </para>
+        </sect1>
+        <sect1>
+            <title>Accès à la base des items et des sujets partagés</title>
+            <para>Chaque enseignant dispose d'un moteur de recherche sur les ressources auxquels il a accès i.e. 
+                les ressources qu'il a créées mais aussi les ressources partagées par la communauté des enseignants. 
+                Les items accessibles peuvent être réutilisés dans différents sujets, les sujets accessibles peuvent être réutilisés dans différentes séances .
+                La copie d'écran ci-dessous illustre la recherche d'un item pour insertion dans un sujet.</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-recherche-item-sujet.png" width="800px"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </para>
+        </sect1>
+        <sect1>
+            <title>Import de Quiz Moodle</title>
+            <para>Il est possible pour un enseignant ayant créée des quiz dans Moodle d'importer ces quiz dans 
+                éliot-tdbase. La copie d'écran suivante présente un rapport d'import de quiz Moodle.</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-import-moodle.png" width="800px"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </para>
+        </sect1>
+        <sect1>
+            <title>Gestion des séances</title>
+            <para>L'enseignant peut créer à partir d'un sujet autant de séance qu'il souhaite en spécifiant 
+                le groupe d'élèves et les modalités d'accès à la séance.</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-seance.png" />
+                    </imageobject>
+                </inlinemediaobject>
+            </para>
+        </sect1>
+        <sect1>
+            <title>Annotation des copies</title>
+            <para>L'enseignant dispose d'une interface lui permettant d'annoter les copies de ses élèves rendues 
+                dans le cadre d'une séance.</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-annotation-copie.png" width="800px"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </para>
+        </sect1> 
+    </chapter>
+    <chapter>
+        <title>Fonctionnalités principales pour les élèves</title>
+        <sect1>
+            <title>Travaille sur ses copies</title>
+            <para>L'élève, lorsqu'il se connecte à eliot-tdbase, accède à la liste des séances programmées le concernant. 
+            </para>  
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-seances.png"/>
+                    </imageobject>
+                </inlinemediaobject>   
+            </para>
+            <para>Il dispose de l'interface lui permettant de travailler sur sa copie et de rendre sa copie.</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-travaille-copie.png" width="800px"/>
+                    </imageobject>
+                </inlinemediaobject>   
+            </para>
+        </sect1>
+        <sect1>
+            <title>Consultation des résultats</title>
+            <para>Lorsqu'une séance est terminée et que l'enseignant a annoté sa copie, l'élève peut accéder 
+                à sa note et à la correction de sa copie.</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-consultation-resultat.png" width="800px"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </para>
+        </sect1>
+        <sect1>
+            <title>Consultation des résultats par les parents</title>
+            <para>Un parent, lorsqu'il se connecte à éliot-tdbase, peut consulter les résultats et 
+                les copies de ses enfants.</para>
+            <para>
+                L'interface de consultation d'une copie est identique à celle de l'élève.
+            </para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/exemple-consultation-resultat.png" width="800px"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </para>
+        </sect1>
+    </chapter>
+    <chapter>
+        <title>L'éditeur d'items</title>
+        <para>Éliot-tdbase permet l'édition des items et des sujets.</para>
+        <para>L'objectif de ce chapitre est de présenté l'ensemble des types d'interaction qu'il est possible
+        de mettre en oeuvre avec éliot-tdbase.</para>
+        <sect1>
+            <title>Question de type texte à trous</title>
+            <sect2>
+                <title>Édition</title>
+                <para>La notation utilisée pour spécifier une question de type texte à trous s'inspire de la 
+                    notation Moodle GIFT concernant les items de type "Missing world"</para>
+            </sect2>
+            <sect2>
+               <title>Modalité d'évaluation</title>
+               <para>Evalation</para> 
+            </sect2>
+            
+        </sect1>
+    </chapter>
+</book>

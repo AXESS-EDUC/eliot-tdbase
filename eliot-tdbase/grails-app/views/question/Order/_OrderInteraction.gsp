@@ -29,27 +29,27 @@
 <style type="text/css">
 
 .draggableItem {
-    float: left;
-    margin: 0;
-    border: solid 1px #FFD324;
-    background: #FFF6BF;
-    color: #817134;
-    display: inline-block;
-    height: 1em;
-    width: 16em;
-    padding: 0.5em 0.5em 0.5em 0.5em;
-    text-decoration: none;
+  float: left;
+  margin: 0;
+  border: solid 1px #FFD324;
+  background: #FFF6BF;
+  color: #817134;
+  display: inline-block;
+  height: 1em;
+  width: 16em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  text-decoration: none;
 }
 
 .dropTarget {
-    float: left;
-    margin: 0;
-    border: solid 1px #808080;
-    background: #f5f5f5;
-    display: inline-block;
-    height: 2em;
-    width: 17em;
-    padding: 0.5em 0.5em 0.5em 0.5em;
+  float: left;
+  margin: 0;
+  border: solid 1px #808080;
+  background: #f5f5f5;
+  display: inline-block;
+  height: 2em;
+  width: 17em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
 }
 
 </style>
@@ -58,32 +58,32 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-<div class="item">
-    <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
-    <div id="orderQuestionContainment_${indexReponse}">
-        <table>
-            <g:each status="i" in="${questionspecifobject.orderedItems}"
-                    var="orderedItem">
-                <tr>
-                    <td id="dropTarget${indexReponse}_${i}" class="dropTarget">
 
-                        <div id="orderedItem${indexReponse}_${i}" class="orderedItemCell">
-                            <g:hiddenField id="orderedItem${indexReponse}_${i}_text"
-                                           name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].text"
-                                           value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}"/>
+<p class="title"><strong>${questionspecifobject.libelle}</strong></p>
 
-                            <span>${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}</span>
+<div id="orderQuestionContainment_${indexReponse}">
+  <table>
+    <g:each status="i" in="${questionspecifobject.orderedItems}"
+            var="orderedItem">
+      <tr>
+        <td id="dropTarget${indexReponse}_${i}" class="dropTarget">
 
-                            &nbsp;
-                            <g:select class="ordinalSelector"
-                                      name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].ordinal"
-                                      from="${questionspecifobject.selectableOrdinalList}"
-                                      value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.ordinal}"
-                                      noSelection="['0': 'Ordre']"/>
-                        </div>
-                    </td>
-                </tr>
-            </g:each>
-        </table>
-    </div>
+          <div id="orderedItem${indexReponse}_${i}" class="orderedItemCell">
+            <g:hiddenField id="orderedItem${indexReponse}_${i}_text"
+                           name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].text"
+                           value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}"/>
+
+            <span>${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}</span>
+
+            &nbsp;
+            <g:select class="ordinalSelector"
+                      name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].ordinal"
+                      from="${questionspecifobject.selectableOrdinalList}"
+                      value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.ordinal}"
+                      noSelection="['0': 'Ordre']"/>
+          </div>
+        </td>
+      </tr>
+    </g:each>
+  </table>
 </div>

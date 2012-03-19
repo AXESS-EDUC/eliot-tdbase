@@ -27,20 +27,19 @@
   --}%
 
 <r:script>
-    $(document).ready(function () {
-        $("form").attr('enctype', 'multipart/form-data');
-    });
+  $(document).ready(function () {
+    $("form").attr('enctype', 'multipart/form-data');
+  });
 </r:script>
 
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-<div class="item">
-    <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
-    <strong>Fichier :</strong>
-    <span id="specifobject_fichier_${indexReponse}">
-        <g:render template="/question/FileUpload/FileUploadInteractionFichier"
-                  model="[specifobject: reponsespecifobject, indexReponse: indexReponse]"/>
-    </span>
-    <br/>
-</div>
+<p class="title"><strong>${questionspecifobject.libelle}</strong></p>
+<strong>Fichier :</strong>
+<span id="specifobject_fichier_${indexReponse}">
+  <g:render template="/question/FileUpload/FileUploadInteractionFichier"
+            model="[specifobject: reponsespecifobject, indexReponse: indexReponse]"/>
+</span>
+<br/>
+

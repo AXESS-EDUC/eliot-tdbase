@@ -26,15 +26,16 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<div class="item">
-    <p class="title"><strong>${specifobject.libelle}</strong></p>
-    <g:each in="${specifobject.reponses}" var="reponse" status="i">
-        &nbsp;
-        <g:radio name="listeQuestions[${indexQuestion}].specifobject.indexBonneReponse"
-                 value="${reponse.id}" checked="${reponse.id == specifobject.indexBonneReponse}" disabled="true"/>
-        ${reponse.libelleReponse}
-        <br/>
-    </g:each>
-    <br/>
-    <strong>Correction :</strong> <br/>${specifobject.correction}
-</div>
+<p class="title"><strong>${specifobject.libelle}</strong></p>
+<g:each in="${specifobject.reponses}" var="reponse" status="i">
+  &nbsp;
+  <g:radio
+          name="listeQuestions[${indexQuestion}].specifobject.indexBonneReponse"
+          value="${reponse.id}"
+          checked="${reponse.id == specifobject.indexBonneReponse}"
+          disabled="true"/>
+  ${reponse.libelleReponse}
+  <br/>
+</g:each>
+<br/>
+<strong>Correction :</strong> <br/>${specifobject.correction}
