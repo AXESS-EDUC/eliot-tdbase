@@ -217,7 +217,7 @@
       <tr>
         <td class="label">Doc. attachés :</td>
         <td id="question_fichier">
-          <g:render template="QuestionEditionFichier"
+          <g:render template="/question/QuestionEditionFichier"
                     model="[question: question, attachementsSujet: attachementsSujets]"/>
 
         </td>

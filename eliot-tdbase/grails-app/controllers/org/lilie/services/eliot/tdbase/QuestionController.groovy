@@ -70,7 +70,7 @@ class QuestionController {
     Personne personne = authenticatedPersonne
     if (params.creation) {
       QuestionType questionType = QuestionType.get(params.questionTypeId)
-      question = new Question(type: questionType, titre: message(code: 'question.nouveau.titre'))
+      question = new Question(type: questionType, titre: message(code: 'question.nouveau.titre', questionService: questionService))
     } else {
       question = Question.get(params.id)
       questionEnEdition = true
@@ -79,7 +79,7 @@ class QuestionController {
     Sujet sujet = null
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId)
-      attachementsSujets = sujetService.findAttachementsDisponiblesForSujet(sujet,personne)
+      attachementsSujets = sujetService.findAttachementsDisponiblesForSujet(sujet, personne)
     }
     render(view: '/question/edite', model: [
             liens: breadcrumpsService.liens,

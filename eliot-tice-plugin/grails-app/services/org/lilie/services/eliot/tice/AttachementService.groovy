@@ -41,6 +41,7 @@ import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataStor
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import javax.mail.internet.MimeUtility
+import com.sun.mail.util.ASCIIUtility
 
 /**
  * Classe fournissant le service de gestion de breadcrumps
@@ -131,9 +132,12 @@ class AttachementService {
   }
 
   String encodeToBase64(Attachement attachement) {
-    ByteArrayOutputStream out = new ByteArrayOutputStream()
-    out << getInputStreamForAttachement(attachement)
-    MimeUtility.encode(out,'base64').toString()
+
+    ByteArrayOutputStream bos = new ByteArrayOutputStream()
+    OutputStream b64os = MimeUtility.encode(bos, 'base64')
+    b64os << getInputStreamForAttachement(attachement)
+    b64os.flush()
+    bos.toString()
   }
 
   /**

@@ -159,7 +159,7 @@ class Question implements Artefact {
    */
   Attachement getAttachement() {
     if (questionAttachements?.size() > 0) {
-      return questionAttachements[0].attachement
+      return questionAttachements.first().attachement
     }
     return null
   }

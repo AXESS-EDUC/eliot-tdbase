@@ -68,6 +68,11 @@ class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase implements
 
     def xmlOutput = moodleQuizExporterService.toMoodleQuiz(sujet)
 
+    // check that base64 encoding and decoding works.
+    
+    println xmlOutput
+    assertTrue(xmlOutput.contains("4AAQSkZJRgABAQEAqwCrAAD"))
+
     Sujet sujet2 = sujetService.createSujet(personne1, SUJET_TITRE + "Re-import")
     MoodleQuizImportReport report2 = moodleQuizImporterService.importMoodleQuiz(
             xmlOutput.bytes, sujet2, sujet2.matiere, sujet2.niveau, personne1
