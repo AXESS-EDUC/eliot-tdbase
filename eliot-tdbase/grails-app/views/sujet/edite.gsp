@@ -141,7 +141,7 @@
   </div>
 </g:if>
 <form method="post">
-  <div class="portal-form_container edite">
+  <div class="portal-form_container edite full">
     <span class="title">Titre :</span> <g:textField name="sujetTitre"
                                                     value="${titreSujet}"
                                                     size="80"/> <g:actionSubmit

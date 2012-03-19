@@ -45,10 +45,11 @@
 	      </li>
 	    </g:each>
 	  </ul>
+	  </div>
 	  </g:if>
 	  <g:else>
 	  	<p class="nb_result">${seances.totalCount} séance(s)</p>
 	  	<p class="none">Aucune séance en cours.</p>
 	  </g:else>
 	</div>
-</div>
+

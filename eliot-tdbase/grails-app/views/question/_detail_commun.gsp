@@ -67,7 +67,6 @@
           ${question.proprietaire.prenom} ${question.proprietaire.nom}
         </td>
       </tr>
-
       <tr>
         <td class="label">Type&nbsp;:</td>
         <td>

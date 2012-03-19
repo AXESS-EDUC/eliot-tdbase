@@ -28,9 +28,10 @@
 
 <tr>
     <td class="label">Détail :</td>
-    <td>
+    <td class="detail">
         <g:set var="specifobject" value="${question.specificationObject}"/>
-        ${specifobject.libelle} <br/>
+        <strong>${specifobject.libelle}</strong> <br/>
+        <div>
         <g:each in="${specifobject.reponses}" var="reponse">
             &nbsp;
             <g:checkBox name="specifobject.reponses[${i}].estUneBonneReponse"
@@ -38,7 +39,8 @@
             ${reponse.libelleReponse}
             <br/>
         </g:each>
-        <strong>Présentation aléatoire :</strong> ${specifobject.shuffled ? 'oui' : 'non'}<br/>
-        <strong>Correction :</strong> ${specifobject.correction}
+       	</div>
+        <p><strong>Présentation aléatoire :</strong> ${specifobject.shuffled ? 'oui' : 'non'}<br/>
+        <strong>Correction :</strong> ${specifobject.correction}</p>
     </td>
 </tr>

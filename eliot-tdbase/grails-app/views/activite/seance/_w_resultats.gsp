@@ -53,6 +53,7 @@
 	      </li>
 	    </g:each>
 	  </ul>
+	  </div>
 	  </g:if>
 	  <g:else>
 		  <p class="nb_result">${copies.totalCount} résultat(s)</p>

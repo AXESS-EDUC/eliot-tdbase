@@ -68,8 +68,8 @@
 </g:hasErrors>
 <g:if test="${request.messageCode}">
   <div class="portal-messages">
-    <g:message code="${request.messageCode}"
-               class="portal-messages success"/>
+    <li class="success"><g:message code="${request.messageCode}"
+               class="portal-messages success"/></li>
   </div>
 </g:if>
 <g:set var="sujet" value="${copie.sujet}"/>
