@@ -27,78 +27,89 @@
   --}%
 <h1>${question.titre}</h1>
 <table><tr>
-<td style="width: 60%; vertical-align: top;">
-  <table>
-    <tr>
-          <td class="label">Type :</td>
-          <td>
-            ${question.type.nom}
-          </td>
-        </tr>
-    <g:render
-            template="/question/${question.type.code}/${question.type.code}Detail"
-            model="[question: question]"/>
+  <td style="width: 60%; vertical-align: top;">
+    <table>
+      <tr>
+        <td class="label">Type&nbsp;:</td>
+        <td>
+          ${question.type.nom}
+        </td>
+      </tr>
+      <g:render
+              template="/question/${question.type.code}/${question.type.code}Detail"
+              model="[question: question]"/>
 
-  </table>
-</td>
-<td style="width: 40%; vertical-align: top;">
-  <table>
-    <tr>
-      <td class="label">Titre :</td>
-      <td>
-        ${question.titre}
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Auteur :</td>
-      <td>
-        ${question.proprietaire.prenom} ${question.proprietaire.nom}
-      </td>
-    </tr>
+    </table>
+  </td>
+  <td style="width: 40%; vertical-align: top;">
+    <table>
+      <tr>
+        <td class="label">Doc.&nbsp;attaché&nbsp;:</td>
+        <td>
+          <g:if test="${question.principalAttachement}">
+            <g:link action="viewAttachement" controller="attachement"
+                    id="${question.principalAttachement.id}" target="_blank">
+              ${question.principalAttachement.nomFichierOriginal}
+            </g:link>
+            <br/>
+          </g:if>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Titre&nbsp;:</td>
+        <td>
+          ${question.titre}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Auteur&nbsp;:</td>
+        <td>
+          ${question.proprietaire.prenom} ${question.proprietaire.nom}
+        </td>
+      </tr>
 
-    <tr>
-      <td class="label">Type :</td>
-      <td>
-        ${question.type.nom}
-      </td>
-    </tr>
+      <tr>
+        <td class="label">Type&nbsp;:</td>
+        <td>
+          ${question.type.nom}
+        </td>
+      </tr>
 
-    <tr>
-      <td class="label">Mati&egrave;re :</td>
-      <td>
-        ${question.matiere?.libelleLong}
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Niveau :</td>
-      <td>
-        ${question.niveau?.libelleLong}
-      </td>
-    </tr>
+      <tr>
+        <td class="label">Mati&egrave;re&nbsp;:</td>
+        <td>
+          ${question.matiere?.libelleLong}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Niveau&nbsp;:</td>
+        <td>
+          ${question.niveau?.libelleLong}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Autonome&nbsp;:</td>
+        <td>
+          <span>${question.estAutonome ? "oui" : "non"}</span>
+        </td>
+      </tr>
 
-    <tr>
-      <td class="label">Autonome&nbsp;:</td>
-      <td>
-        <span>${question.estAutonome ? "oui" : "non"}</span>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="label">Partage :</td>
-      <td>
-        <g:if test="${question.estPartage()}">
-          <a href="${question.copyrightsType.lien}"
-             target="_blank">${question.copyrightsType.presentation}</a>
-        </g:if>
-        <g:else>
-          cette question n'est pas partagée
-        </g:else>
-      </td>
-    </tr>
-    <g:if test="${question.paternite}">
-          <g:render template="/artefact/paternite"
-                    model="[paternite: question.paternite]"/>
-        </g:if>
-  </table>
-</td>
+      <tr>
+        <td class="label">Partage&nbsp;:</td>
+        <td>
+          <g:if test="${question.estPartage()}">
+            <a href="${question.copyrightsType.lien}"
+               target="_blank">${question.copyrightsType.presentation}</a>
+          </g:if>
+          <g:else>
+            cette question n'est pas partagée
+          </g:else>
+        </td>
+      </tr>
+      <g:if test="${question.paternite}">
+        <g:render template="/artefact/paternite"
+                  model="[paternite: question.paternite]"/>
+      </g:if>
+    </table>
+  </td>
 </tr></table>
