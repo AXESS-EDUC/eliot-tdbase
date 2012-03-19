@@ -161,7 +161,7 @@
       <g:if test="${question.type.interaction}">
         <div class="tdbase-sujet-edition-question-interaction">
           <g:render
-                  template="/question/${question.type.code}/${question.type.code}Interaction"
+                  template="/question/Interaction"
                   model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide++]"/>
 
           <g:render
@@ -174,7 +174,7 @@
 
         <div class="tdbase-sujet-edition-question-interaction">
           <g:render
-                  template="/question/${question.type.code}/${question.type.code}Preview"
+                  template="/question/Preview"
                   model="[question: question]"/>
         </div>
       </g:else>
