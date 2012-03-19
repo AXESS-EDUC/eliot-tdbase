@@ -44,8 +44,16 @@
 	      </li>
 	    </g:each>
 	  </ul>
-	  
 	</div>
-	</g:if>
-	     <g:link controller="sujet" class="add" action="nouveau">Créer un sujet</g:link>
- </div>
+	  
+  </g:if>
+  <g:else>
+	  	<p class="nb_result">${sujets.totalCount} sujet(s)</p>
+	  	<p class="none">Aucun sujets.</p>
+	</g:else>
+	  <g:link controller="sujet" class="add" action="nouveau">Créer un sujet</g:link></div>
+	  
+	
+	
+	     
+

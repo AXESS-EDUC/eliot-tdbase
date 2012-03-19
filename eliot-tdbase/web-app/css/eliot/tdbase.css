@@ -505,9 +505,8 @@ div.portal-default_results-list {
     position: relative;
 }
 
-div.portal-default_results-list.partiel {
-    width: 71.5%;
-}
+.portal_pagination.partiel{width: 70.5%;}
+div.portal-default_results-list.partiel {width: 71.5%;}
 
 div.portal-default_results-list>div {
     position: relative;
