@@ -132,12 +132,18 @@ class AttachementService {
   }
 
   String encodeToBase64(Attachement attachement) {
-
-    ByteArrayOutputStream bos = new ByteArrayOutputStream()
-    OutputStream b64os = MimeUtility.encode(bos, 'base64')
-    b64os << getInputStreamForAttachement(attachement)
-    b64os.flush()
-    bos.toString()
+    ByteArrayOutputStream bos
+    OutputStream b64os
+    try {
+      bos = new ByteArrayOutputStream()
+      b64os = MimeUtility.encode(bos, 'base64')
+      b64os << getInputStreamForAttachement(attachement)
+      b64os.flush()
+      bos.toString()
+    } finally {
+      bos?.close()
+      b64os?.close()
+    }
   }
 
   /**

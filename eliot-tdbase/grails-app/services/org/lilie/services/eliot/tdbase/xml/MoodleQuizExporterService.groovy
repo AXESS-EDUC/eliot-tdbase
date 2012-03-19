@@ -97,7 +97,7 @@ class MoodleQuizExporterService {
         if (it.type.code.equals("Composite")) {
           renderCompositeQuestion(xml, it)
         } else {
-          renderQuestion(xml, it.specificationObject, it.titre, it.attachement)
+          renderQuestion(xml, it.specificationObject, it.titre, it.principalAttachement)
         }
       }
     }
