@@ -173,7 +173,7 @@
           <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetQuestion.question)}">
             <li><g:link action="dupliqueDansSujet"
                         controller="question${sujetQuestion.question.type.code}"
-                        id="${sujetQuestion.id}" params="[sujetId:sujet.id]">Dupliquer&nbsp;et&nbsp;modifier</g:link></li>
+                        id="${sujetQuestion.id}">Dupliquer&nbsp;et&nbsp;modifier</g:link></li>
           </g:if>
           <g:else>
             <li>Dupliquer&nbsp;et&nbsp;modifier</li>
@@ -235,7 +235,7 @@
         <div class="tdbase-sujet-edition-question-preview">
           <g:set var="question" value="${sujetQuestion.question}"/>
           <g:render
-                  template="/question/${question.type.code}/${question.type.code}Preview"
+                  template="/question/Preview"
                   model="[question: question, indexQuestion: indexQuestion]"/>
         </div>
 

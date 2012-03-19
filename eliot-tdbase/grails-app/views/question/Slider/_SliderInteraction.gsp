@@ -49,12 +49,13 @@
   );
 </r:script>
 
-<div class="item">
-    <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
-    <strong>Valeur :</strong><g:textField id="valeur_slider_${indexReponse}"
-                                          name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse"
-                                          value="${reponsespecifobject?.valeurReponseAffichage}" size="10"/>
 
-    <div id="slider_${indexReponse}" style="width: 50%"></div>
+<p class="title"><strong>${questionspecifobject.libelle}</strong></p>
+<strong>Valeur :</strong><g:textField id="valeur_slider_${indexReponse}"
+                                      name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse"
+                                      value="${reponsespecifobject?.valeurReponseAffichage}"
+                                      size="10"/>
 
-</div>
+<div id="slider_${indexReponse}" style="width: 50%"></div>
+
+

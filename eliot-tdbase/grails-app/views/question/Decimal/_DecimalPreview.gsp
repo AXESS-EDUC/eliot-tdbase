@@ -29,7 +29,6 @@
 
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<div class="item">
     <p class="title"><strong>${specifobject.libelle}</strong></p>
 <g:textField name="listeQuestions[${indexQuestion}].specifobject.valeur" value="${specifobject.valeurAffichage}"
              size="10" disabled="true"/>
@@ -40,4 +39,3 @@
 </g:if>
 <strong>Précision :</strong> ${specifobject.precisionAffichage}<br/>
 <strong>Correction :</strong> <br/>${specifobject.correction}
-</div>

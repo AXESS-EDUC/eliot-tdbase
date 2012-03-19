@@ -555,10 +555,23 @@ class SujetService {
    * @param personne  la personne accedant aux attachements
    * @return  la liste des attachements disponibles dans le sujet
    */
-  List<Attachement> findAttachementsDisponiblesForSujet(Sujet sujet, Personne personne) {
+  Set<Attachement> findAttachementsDisponiblesForSujet(Sujet sujet, Personne personne) {
     assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(personne, sujet))
     Session  session = sessionFactory.currentSession
-    def query = session.createSQLQuery("\
+    def res = [] as Set
+    def query1 = session.createSQLQuery("\
+        select attach.* from \
+        tice.attachement attach, \
+        td.question quest,\
+        td.sujet_sequence_questions sujetQuest \
+        where \
+        attach.id = quest.attachement_id and\
+        quest.id = sujetQuest.question_id and\
+        sujetQuest.sujet_id = ?").addEntity("attach",Attachement.class)
+    
+    res.addAll(query1.setLong(0,sujet.id).list())
+
+    def query2 = session.createSQLQuery("\
     select attach.* from \
     tice.attachement attach, \
     td.question_attachement questAttach, \
@@ -567,7 +580,10 @@ class SujetService {
     attach.id = questAttach.attachement_id and\
     questAttach.question_id = sujetQuest.question_id and\
     sujetQuest.sujet_id = ?").addEntity("attach",Attachement.class)
-    query.setLong(0,sujet.id).list()
+    res.addAll(query2.setLong(0,sujet.id).list())
+    
+    res
+
   } 
 
   /**

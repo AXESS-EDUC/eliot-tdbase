@@ -27,7 +27,7 @@
   --}%
 
 <tr>
-    <td class="label">Détail :</td>
+    <td class="label">Détail&nbsp;:</td>
     <td class="detail">
         <g:set var="specifobject" value="${question.specificationObject}"/>
         <strong>${specifobject.libelle}</strong> <br/>

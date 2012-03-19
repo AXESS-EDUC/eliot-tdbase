@@ -90,7 +90,7 @@ class QuestionService implements ApplicationContextAware {
       questionAttachementService.createPrincipalAttachementForQuestion(
               attachement, question)
     } else if (question.principalAttachementFichier) {
-      questionAttachementService.createAttachementForQuestionFromMultipartFile(
+      questionAttachementService.createPrincipalAttachementForQuestionFromMultipartFile(
               question.principalAttachementFichier, question)
     }
     // mise à jour spécification

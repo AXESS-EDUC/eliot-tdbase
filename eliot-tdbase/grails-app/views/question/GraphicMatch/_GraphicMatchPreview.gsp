@@ -28,37 +28,35 @@
 <r:require module="graphicMatch_PreviewJS"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
-<div class="item">
-    <p class="title"><strong>${specifobject.libelle}</strong></p>
+<p class="title"><strong>${specifobject.libelle}</strong></p>
 
-    <div class="imageContainer">
-        <g:if test="${specifobject.attachement}">
-            <et:viewAttachement attachement="${specifobject.attachement}"
-                                width="500" height="500"/>
-        </g:if>
+<div class="imageContainer">
+  <g:if test="${specifobject.attachement}">
+    <et:viewAttachement attachement="${specifobject.attachement}"
+                        width="500" height="500"/>
+  </g:if>
 
-        <ul class="hotspots">
-            <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-                <li topDistance="${hotspot.topDistance}"
-                    leftDistance="${hotspot.leftDistance}" hotspotId="${hotspot.id}">
-                </li>
-            </g:each>
-        </ul>
+  <ul class="hotspots">
+    <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
+      <li topDistance="${hotspot.topDistance}"
+          leftDistance="${hotspot.leftDistance}" hotspotId="${hotspot.id}">
+      </li>
+    </g:each>
+  </ul>
 
-        <ul class="icons">
-            <g:each status="i" in="${specifobject.icons}" var="icon">
+  <ul class="icons">
+    <g:each status="i" in="${specifobject.icons}" var="icon">
 
-                <g:if test="${icon.attachment}">
-                    <li class="icon">
-                        <et:viewAttachement attachement="${icon.attachment}"
-                                            width="40" height="40"/>
-                        <br>
-                        avec Zone ${specifobject.graphicMatches[icon.id]}
-                    </li>
-                </g:if>
-            </g:each>
-        </ul>
-    </div>
-
-    <strong>Correction :</strong> <br/>${specifobject.correction}
+      <g:if test="${icon.attachment}">
+        <li class="icon">
+          <et:viewAttachement attachement="${icon.attachment}"
+                              width="40" height="40"/>
+          <br>
+          avec Zone ${specifobject.graphicMatches[icon.id]}
+        </li>
+      </g:if>
+    </g:each>
+  </ul>
 </div>
+
+<strong>Correction :</strong> <br/>${specifobject.correction}

@@ -25,8 +25,8 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
-<div class="item">
-    ${question.specificationObject.enonce}
-</div>
+
+${question.specificationObject.enonce}
+
 
 
