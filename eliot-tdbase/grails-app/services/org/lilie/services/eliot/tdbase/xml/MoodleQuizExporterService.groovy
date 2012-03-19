@@ -47,12 +47,18 @@ import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpecificationReponsePossible
 import org.lilie.services.eliot.tdbase.impl.booleanmatch.BooleanMatchSpecification
+import org.lilie.services.eliot.tice.Attachement
+
+import org.lilie.services.eliot.tice.AttachementService
 
 /**
  * Service d'export d'un quiz moodle.
  * @author bert poller
  */
 class MoodleQuizExporterService {
+
+
+  AttachementService attachementService
 
   /**
    * Exporter un sujet sous format d'un moodle quiz.
@@ -91,7 +97,7 @@ class MoodleQuizExporterService {
         if (it.type.code.equals("Composite")) {
           renderCompositeQuestion(xml, it)
         } else {
-          renderQuestion(xml, it.specificationObject, it.titre)
+          renderQuestion(xml, it.specificationObject, it.titre, it.attachement)
         }
       }
     }
@@ -101,7 +107,7 @@ class MoodleQuizExporterService {
 
   private void renderCompositeQuestion(MarkupBuilder xml, Question question) {
     question.exercice.questions.each {
-      renderQuestion(xml, it.specificationObject, "Question Composée -- " + it.titre)
+      renderQuestion(xml, it.specificationObject, "Question Composée -- " + it.titre, it.attachement)
     }
   }
 
@@ -110,7 +116,7 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, AssociateSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, AssociateSpecification specification, String title, Attachement attachement) {
     xml.question(type: "matching") {
       questionHeader(xml, title, specification.libelle)
 
@@ -124,6 +130,7 @@ class MoodleQuizExporterService {
         }
       }
       xml.shuffleanswers false
+      renderAttachment(xml, attachement)
       correction(xml, specification.correction)
     }
   }
@@ -133,7 +140,7 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, DecimalSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, DecimalSpecification specification, String title, Attachement attachement) {
     xml.question(type: "numerical") {
       questionHeader(xml, title, specification.libelle)
       xml.answer(fraction: 100) {
@@ -141,6 +148,7 @@ class MoodleQuizExporterService {
         xml.unit(name: specification.unite, multiplier: 1)
         xml.tolerance specification.precision
       }
+      renderAttachment(xml, attachement)
       correction(xml, specification.correction)
     }
   }
@@ -150,13 +158,14 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, IntegerSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, IntegerSpecification specification, String title, Attachement attachement) {
     xml.question(type: "numerical") {
       questionHeader(xml, title, specification.libelle)
       xml.answer(fraction: 100) {
         xml.text specification.valeur
         xml.unit(name: specification.unite, multiplier: 1)
       }
+      renderAttachment(xml, attachement)
       correction(xml, specification.correction)
     }
   }
@@ -166,7 +175,7 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, MultipleChoiceSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, MultipleChoiceSpecification specification, String title, Attachement attachement) {
     xml.question(type: "multichoice") {
       questionHeader(xml, title, specification.libelle)
 
@@ -180,6 +189,7 @@ class MoodleQuizExporterService {
       }
       xml.shuffleanwers specification.shuffled ? 1 : 0
       xml.single "false"
+      renderAttachment(xml, attachement)
       correction(xml, specification.correction)
     }
   }
@@ -199,7 +209,7 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, ExclusiveChoiceSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, ExclusiveChoiceSpecification specification, String title, Attachement attachement) {
     xml.question(type: "multichoice") {
       questionHeader(xml, title, specification.libelle)
 
@@ -213,6 +223,7 @@ class MoodleQuizExporterService {
       }
       xml.shuffleanwers specification.shuffled ? 1 : 0
       xml.single "true"
+      renderAttachment(xml, attachement)
       correction(xml, specification.correction)
     }
   }
@@ -222,13 +233,14 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, OpenSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, OpenSpecification specification, String title, Attachement attachement) {
 
     xml.question(type: "essay") {
       questionHeader(xml, title, specification.libelle)
       xml.answer(fraction: 0) {
         xml.text()
       }
+      renderAttachment(xml, attachement)
       correction(xml, specification.correction)
     }
 
@@ -239,9 +251,10 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, StatementSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, StatementSpecification specification, String title, Attachement attachement) {
     xml.question(type: "description") {
       questionHeader(xml, title, specification.enonce)
+      renderAttachment(xml, attachement)
     }
   }
 
@@ -250,7 +263,7 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, BooleanMatchSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, BooleanMatchSpecification specification, String title, Attachement attachement) {
     xml.question(type: "shortanswer") {
       questionHeader(xml, title, specification.libelle)
       specification.reponses.each {answer ->
@@ -258,6 +271,7 @@ class MoodleQuizExporterService {
           xml.text answer
         }
       }
+      renderAttachment(xml, attachement)
       correction(xml, specification.correction)
     }
   }
@@ -286,12 +300,22 @@ class MoodleQuizExporterService {
     }
   }
 
+  private renderAttachment(MarkupBuilder xml, Attachement attachement){
+
+    if(attachement && attachement.estUneImageAffichable())
+    {
+      xml.image "${attachement.chemin}/${attachement.nomFichierOriginal}"
+      xml.image_base64 attachementService.encodeToBase64(attachement)
+    }
+
+  }
+
   /**
    * Render the <question> tag for fill graphics questions.
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, FillGraphicsSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, FillGraphicsSpecification specification, String title, Attachement attachement) {
     // ne peut pas être renderisé
   }
 
@@ -300,7 +324,7 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, GraphicMatchSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, GraphicMatchSpecification specification, String title, Attachement attachement) {
     // ne peut pas être renderisé
   }
 
@@ -309,7 +333,7 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, OrderSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, OrderSpecification specification, String title, Attachement attachement) {
     // ne peut pas être renderisé
   }
 
@@ -318,7 +342,7 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, SliderSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, SliderSpecification specification, String title, Attachement attachement) {
     // ne peut pas être renderisé
   }
 
@@ -327,7 +351,7 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, FileUploadSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, FileUploadSpecification specification, String title, Attachement attachement) {
     // ne peut pas être renderisé
   }
 
@@ -336,7 +360,7 @@ class MoodleQuizExporterService {
    * @param xml
    * @param theQuestion
    */
-  private void renderQuestion(MarkupBuilder xml, FillGapSpecification specification, String title) {
+  private void renderQuestion(MarkupBuilder xml, FillGapSpecification specification, String title, Attachement attachement) {
     // ne peut pas être renderisé
   }
 }
