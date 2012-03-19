@@ -27,12 +27,11 @@
   --}%
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
-<div class="item">
-  <p class="title"><strong>${specifobject.libelle}</strong></p>
+<p class="title"><strong>${specifobject.libelle}</strong></p>
 <g:link action="viewAttachement" controller="attachement"
-            id="${specifobject.attachement.id}" target="_blank">
-      <g:message code="attachement.correction.acces"/>
- </g:link>
-  <br/>
-  	<strong>Correction :</strong> <br/>${specifobject.correction}
-</div>
+        id="${specifobject.attachement.id}" target="_blank">
+  <g:message code="attachement.correction.acces"/>
+</g:link>
+<br/>
+<strong>Correction :</strong> <br/>${specifobject.correction}
+

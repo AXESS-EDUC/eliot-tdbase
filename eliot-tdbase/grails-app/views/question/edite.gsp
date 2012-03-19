@@ -59,6 +59,7 @@
           $("#specifobject\\.libelle").val($("#question\\.titre").val());
         }
       });
+      $("form").attr('enctype', 'multipart/form-data');
       initButtons()
     });
   </r:script>
@@ -78,7 +79,7 @@
             id="${question.id}">Partager l'item</g:link>&nbsp; |
   </g:if>
   <g:else>
-    Partager l'item&nbsp;| &nbsp;
+    <span class="share">Partager l'item</span>&nbsp;| &nbsp;
   </g:else>
   </span>
   </span>
@@ -116,7 +117,7 @@
 <g:else>
   <div class="portal-tabs">
     <span class="portal-tabs-famille-liens">
-                Partager l'item&nbsp;| &nbsp;
+                <span class="share">Partager l'item</span>&nbsp;| &nbsp;
             </span>
             </span>
             <span class="portal-tabs-famille-liens">
@@ -215,7 +216,7 @@
         </tr>
       </g:else>
       <tr>
-        <td class="label">Doc. attachés :</td>
+        <td class="label">Doc.&nbsp;attaché&nbsp;:</td>
         <td id="question_fichier">
           <g:render template="/question/QuestionEditionFichier"
                     model="[question: question, attachementsSujet: attachementsSujets]"/>
@@ -254,13 +255,13 @@
   <g:hiddenField name="type.id" value="${question.typeId}"/>
 
   <div class="form_actions">
+    <g:hiddenField name="sujetId" value="${sujet?.id}"/>
     <g:link action="${lienRetour.action}"
             controller="${lienRetour.controller}"
             params="${lienRetour.params}">Annuler</g:link> |
-    <g:if test="${sujet}">
-      <g:hiddenField name="sujetId" value="${sujet.id}"/>
+    <g:if test="${sujet && !question.id}">
       <g:actionSubmit value="Enregistrer et insérer dans le sujet"
-                      action="enregistreInsert"
+                      action="enregistreInsertNouvelItem"
                       title="Enregistrer et insérer dans le sujet"
                       class="button"/>
     </g:if>

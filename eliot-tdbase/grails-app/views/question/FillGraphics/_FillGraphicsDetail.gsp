@@ -32,7 +32,7 @@
 <tr>
     <td class="label">Détail :</td>
 
-    <td>
+    <td class="detail">
         ${specifobject.libelle}
         <br/>
 

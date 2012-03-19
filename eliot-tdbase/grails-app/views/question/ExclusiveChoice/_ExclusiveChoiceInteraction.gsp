@@ -30,16 +30,17 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-<div class="item">
-    <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
-    <g:each status="i"
-            in="${questionspecifobject.shuffled ? questionspecifobject.reponsesAleatoires : questionspecifobject.reponses}"
-            var="reponsePossible">
-        &nbsp;
-        <g:radio name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.indexReponse"
-                 value="${reponsePossible.id}" checked="${reponsePossible.id == reponsespecifobject?.indexReponse}"/>
-        ${reponsePossible.libelleReponse}
-        <br/>
-    </g:each>
-</div>
+<p class="title"><strong>${questionspecifobject.libelle}</strong></p>
+<g:each status="i"
+        in="${questionspecifobject.shuffled ? questionspecifobject.reponsesAleatoires : questionspecifobject.reponses}"
+        var="reponsePossible">
+  &nbsp;
+  <g:radio
+          name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.indexReponse"
+          value="${reponsePossible.id}"
+          checked="${reponsePossible.id == reponsespecifobject?.indexReponse}"/>
+  ${reponsePossible.libelleReponse}
+  <br/>
+</g:each>
+
 

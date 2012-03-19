@@ -30,7 +30,6 @@
 
 <%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 
-<div class="item">
   <g:each in="${question.exercice.questionsSequences}"
           var="currentSujetQuestion" status="indexQuestion">
     <g:set var="currentQuestion" value="${currentSujetQuestion.question}"/>
@@ -40,5 +39,4 @@
     <br/>
   </g:each>
 
-</div>
 

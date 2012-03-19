@@ -29,7 +29,7 @@
 
 <tr>
     <td class="label">Détail :</td>
-    <td>
+    <td class="detail">
         ${specifobject.libelle}
         <br/>
         <strong>Texte à trous :</strong> ${specifobject.texteATrous}

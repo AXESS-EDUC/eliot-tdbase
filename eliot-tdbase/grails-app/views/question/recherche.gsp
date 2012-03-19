@@ -119,7 +119,7 @@
 </form>
 </g:if>
 <g:if test="${questions}">
-  <div class="portal_pagination">
+  <div class="portal_pagination partiel">
     <p class="nb_result">${questions.totalCount} résultat(s) </p> 
     <div class="pager"> Page(s) : <g:paginate
             total="${questions.totalCount}"

@@ -28,15 +28,16 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-<div class="item">
-    <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
-    <g:textField name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse"
-                 value="${reponsespecifobject?.valeurReponse}" size="10"/>
-    &nbsp;&nbsp;
-    <g:if test="${questionspecifobject.unite}">
-        ${questionspecifobject.unite}&nbsp;&nbsp;
-    </g:if>
-    Entrez un nombre entier.
-    <br/>
-</div>
+
+<p class="title"><strong>${questionspecifobject.libelle}</strong></p>
+<g:textField
+        name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeurReponse"
+        value="${reponsespecifobject?.valeurReponse}" size="10"/>
+&nbsp;&nbsp;
+<g:if test="${questionspecifobject.unite}">
+  ${questionspecifobject.unite}&nbsp;&nbsp;
+</g:if>
+Entrez un nombre entier.
+<br/>
+
 

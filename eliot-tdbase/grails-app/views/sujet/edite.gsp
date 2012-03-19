@@ -152,15 +152,17 @@
     </div>
 </g:if>
 <form method="post">
-    <div class="portal-form_container edite">
-        <span class="title">Titre :</span> <g:textField name="sujetTitre"
-                                                        value="${titreSujet}"
-                                                        size="80"/> <g:actionSubmit
-            action="enregistre" value="Enregistrer" class="button"/>
-    <g:if test="${sujetEnEdition}">
-        <g:hiddenField name="sujetId" value="${sujet.id}"/>
-    </g:if>
-    </div>
+
+  <div class="portal-form_container edite full">
+    <span class="title">Titre :</span> <g:textField name="sujetTitre"
+                                                    value="${titreSujet}"
+                                                    size="80"/> <g:actionSubmit
+          action="enregistre" value="Enregistrer" class="button"/>
+  <g:if test="${sujetEnEdition}">
+    <g:hiddenField name="sujetId" value="${sujet.id}"/>
+  </g:if>
+  </div>
+
 </form>
 <g:if test="${sujet}">
     <div class="tdbase-sujet-edition">
@@ -268,20 +270,22 @@
                              title="Cliquez pour modifier le barème...">
                             ${NumberUtils.formatFloat(sujetQuestion.points)}
                         </div>
-                        <span class="point">point(s)</span>
-                    </div>
-                </g:if>
-                <div class="tdbase-sujet-edition-question-preview">
-                    <g:set var="question" value="${sujetQuestion.question}"/>
-                    <g:render
-                            template="/question/${question.type.code}/${question.type.code}Preview"
-                            model="[question: question, indexQuestion: indexQuestion]"/>
-                </div>
+               
+            <span class="point">point(s)</span>
+          </div>
+        </g:if>
+        <div class="tdbase-sujet-edition-question-preview">
+          <g:set var="question" value="${sujetQuestion.question}"/>
+          <g:render
+                  template="/question/Preview"
+                  model="[question: question, indexQuestion: indexQuestion]"/>
+        </div>
 
-            </div>
+      </div>
 
-        </g:each>
-    </div>
+    </g:each>
+  </div>
+
 </g:if>
 </body>
 </html>

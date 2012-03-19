@@ -131,6 +131,80 @@ class QuestionAttachementService {
     }
   }
 
+  /**
+   * Creer un attachement pour une question
+   * @param fichier le fichier issu de la requête
+   * @param question la question
+   * @param proprietaire le proprietaire
+   * @param rang le rang
+   * @return l'objet de type Question
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  Question createPrincipalAttachementForQuestionFromMultipartFile(MultipartFile fichier,
+                                                                  Question question) {
+    def attachement = attachementService.createAttachementForMultipartFile(
+            fichier
+    )
+    return createPrincipalAttachementForQuestion(attachement, question)
+  }
+
+  /**
+   * Creer un attachement pour une question
+   * @param fichier le fichier
+   * @param question la question
+   * @param proprietaire le proprietaire
+   * @param rang le rang
+   * @return l'objet de type Question
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  Question createPrincipalAttachementForQuestionFromImageIds(ImageIds fichier,
+                                                             Question question) {
+    def attachement = attachementService.createAttachementForImageIds(
+            fichier
+    )
+
+    return createPrincipalAttachementForQuestion(attachement, question)
+  }
+
+  /**
+   * Creer un attachement pour une question
+   * @param fichier le fichier issu de la requête
+   * @param question la question
+   * @param proprietaire le proprietaire
+   * @param rang le rang
+   * @return l'objet de type Question
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  Question createPrincipalAttachementForQuestion(Attachement attachement,
+                                                 Question question) {
+    question.principalAttachement = attachement
+    // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
+    attachement.aSupprimer = false
+    question.lastUpdated = new Date()
+    if (question.principalAttachementEstInsereDansLaQuestion == null) {
+      question.principalAttachementEstInsereDansLaQuestion = true
+    }
+    question.save()
+    return question
+  }
+
+  /**
+   * Supprime le question attachement
+   * @param question l'objet représentant l'attachement à la question
+   */
+  @Transactional
+  def deletePrincipalAttachementForQuestion(Question question) {
+    def attachement = question.principalAttachement
+    question.principalAttachement = null
+    question.lastUpdated = new Date()
+    question.principalAttachementEstInsereDansLaQuestion = null
+    question.save()
+    def refCount = Question.countByPrincipalAttachement(attachement)
+    if (refCount == 0) {
+      attachement.delete()
+    }
+  }
+
 }
 
 

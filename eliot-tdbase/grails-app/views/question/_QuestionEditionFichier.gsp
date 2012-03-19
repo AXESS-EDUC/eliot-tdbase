@@ -26,14 +26,10 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<%@ page import="org.lilie.services.eliot.tdbase.QuestionAttachement" %>
-
-<g:set var="attachement" value="${question.attachement}"/>
-<g:if test="${!question.doitSupprimerAttachement && attachement}">
-  <g:set var="questionAttachement" value="${question.questionAttachements[0]}"/>
-  <g:hiddenField name="questionAttachementId" value="${questionAttachement.id}"/>
+<g:set var="attachement" value="${question.principalAttachement}"/>
+<g:if test="${!question.doitSupprimerPrincipalAttachement && attachement}">
   ${attachement.nomFichierOriginal}&nbsp;
-  <g:submitToRemote action="supprimeQuestionAttachement"
+  <g:submitToRemote action="supprimePrincipalAttachement"
                     controller="question${question.type.code}"
                     update="question_fichier"
                     value="Suppr" class="button"/>
@@ -41,17 +37,17 @@
 </g:if>
 <g:else>
   <g:if test="${attachementsSujet}">
-    <g:select name="attachementId"
+    <g:select name="principalAttachementId"
                         noSelection="${['null': 'Attacher un document...']}"
                         from="${attachementsSujet}"
                         optionKey="id"
                         optionValue="nom"/>  OU
   </g:if>
-  <input type="file" name="attachementFichier">
+  <input type="file" name="principalAttachementFichier">
 </g:else>
 <br/>
-<g:checkBox name="questionAttachements[0].estInsereDansLaQuestion"
+<g:checkBox name="principalAttachementEstInsereDansLaQuestion"
                 title="Le document attaché est inséré dans le sujet"
-                checked="${questionAttachement ? questionAttachement.estInsereDansLaQuestion : false}"/>
+                checked="${question.principalAttachementEstInsereDansLaQuestion}"/>
     Le document est inséré dans le sujet
 
