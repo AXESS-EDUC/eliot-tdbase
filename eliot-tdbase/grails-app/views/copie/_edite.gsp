@@ -102,7 +102,7 @@
    <!-- -------------------------------- -->
    <div class="tdbase-sujet-edition-question">
     <g:if test="${question.type.interaction}">
-      <h1>${indexQuestionInExercice}</h1>
+      <h2>Ex. ${indexExercice} → Question ${indexQuestionInExercice}</h2>
       <g:set var="indexQuestionInExercice"
              value="${indexQuestionInExercice.toInteger() + 1}"/>
       <div class="tdbase-sujet-edition-question-points">
@@ -148,12 +148,12 @@
     <g:set var="indexQuestionInExercice" value="1"/>
     <g:set var="indexExercice" value="${indexExercice.toInteger() + 1}"/>
     <g:set var="etaitDansUnExercice" value="${true}"/>
-    <div id="exercice_${indexExercice}">
+    <div class="exercice" id="exercice_${indexExercice}">
 
     <h1>Exercice ${indexExercice}</h1>
 
     <div class="tdbase-sujet-edition-question">
-    <h1>${indexQuestionInExercice}</h1>
+    <h2>Ex. ${indexExercice} → Question ${indexQuestionInExercice}</h2>
 
     <g:set var="indexQuestionInExercice"
            value="${indexQuestionInExercice.toInteger() + 1}"/>
