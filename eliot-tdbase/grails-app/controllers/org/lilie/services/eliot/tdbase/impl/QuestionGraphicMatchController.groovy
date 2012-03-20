@@ -39,7 +39,7 @@ import org.lilie.services.eliot.tdbase.impl.graphicmatch.MatchIcon
 class QuestionGraphicMatchController extends QuestionController {
 
   @Override
-  def getSpecificationObjectFromParams(Map params) {
+  protected def getSpecificationObjectFromParams(Map params) {
 
     def specifobject = new GraphicMatchSpecification()
     def size = params.specifobject.hotspots?.size

@@ -41,7 +41,6 @@ import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataStor
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import javax.mail.internet.MimeUtility
-import com.sun.mail.util.ASCIIUtility
 
 /**
  * Classe fournissant le service de gestion de breadcrumps

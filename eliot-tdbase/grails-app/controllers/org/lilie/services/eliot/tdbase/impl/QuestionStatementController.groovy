@@ -42,7 +42,7 @@ class QuestionStatementController extends QuestionController {
    * @param params les paramètres de la requête
    * @return l'objet représentant la spécification
    */
-  def getSpecificationObjectFromParams(Map params) {
+  protected def getSpecificationObjectFromParams(Map params) {
     return new StatementSpecification(params.specifobject)
   }
 }

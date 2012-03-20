@@ -63,7 +63,7 @@ class QuestionBooleanMatchController extends QuestionController {
    * @param params les paramètres de la requête
    * @return l'objet représentant la spécification
    */
-  def getSpecificationObjectFromParams(Map params) {
+  protected def getSpecificationObjectFromParams(Map params) {
     BooleanMatchSpecification specifobject = new BooleanMatchSpecification()
     String size = params.specifobject.reponses?.size
     if (size) {

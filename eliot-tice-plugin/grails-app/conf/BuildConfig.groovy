@@ -67,12 +67,12 @@ grails.project.dependency.resolution = {
   plugins {
 
     build(":tomcat:$grailsVersion",
-          ":release:1.0.0"
+          ":release:1.0.1"
     ) {
       export = false
     }
 
-    compile ":spring-security-core:1.2.7.1"
+    compile ":spring-security-core:1.2.7.2"
 
     compile(":hibernate:$grailsVersion") {
       export = false
@@ -87,5 +87,7 @@ grails.project.dependency.resolution = {
       excludes "groovy-all"
       export = false
     }
+
+    compile ":mail:1.0"
   }
 }

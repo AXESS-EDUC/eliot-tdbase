@@ -38,7 +38,7 @@ import org.lilie.services.eliot.tdbase.impl.fillgraphics.TextZone
 class QuestionFillGraphicsController extends QuestionController {
 
   @Override
-  def getSpecificationObjectFromParams(Map params) {
+  protected def getSpecificationObjectFromParams(Map params) {
 
     def specifobject = new FillGraphicsSpecification()
     def size = params.specifobject.textZones?.size

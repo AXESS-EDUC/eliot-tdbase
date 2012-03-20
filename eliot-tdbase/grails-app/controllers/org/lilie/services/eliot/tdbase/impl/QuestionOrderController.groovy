@@ -35,7 +35,7 @@ import org.lilie.services.eliot.tdbase.impl.order.OrderSpecification
 class QuestionOrderController extends QuestionController {
 
   @Override
-  def getSpecificationObjectFromParams(Map params) {
+  protected def getSpecificationObjectFromParams(Map params) {
 
     def specifobject = new OrderSpecification()
     def size = params.specifobject.orderedItems.size as Integer

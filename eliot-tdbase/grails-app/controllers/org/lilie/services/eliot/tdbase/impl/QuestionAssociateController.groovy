@@ -38,7 +38,7 @@ import org.lilie.services.eliot.tdbase.impl.associate.Association
 class QuestionAssociateController extends QuestionController {
 
   @Override
-  def getSpecificationObjectFromParams(Map params) {
+  protected def getSpecificationObjectFromParams(Map params) {
 
     def specifobject = new AssociateSpecification()
     def size = params.specifobject.associations.size as Integer

@@ -41,7 +41,7 @@ class QuestionSliderController extends QuestionController {
    * @param params les paramètres de la requête
    * @return l'objet représentant la spécification
    */
-  def getSpecificationObjectFromParams(Map params) {
+  protected def getSpecificationObjectFromParams(Map params) {
     def specifobject = new SliderSpecification()
     bindData(specifobject, params, "specifobject")
     return specifobject

@@ -68,7 +68,7 @@ class QuestionMultipleChoiceController extends QuestionController {
    * @param params les paramètres de la requête
    * @return l'objet représentant la spécification
    */
-  def getSpecificationObjectFromParams(Map params) {
+  protected def getSpecificationObjectFromParams(Map params) {
     def specifobject = new MultipleChoiceSpecification()
     def size = params.specifobject.reponses?.size as Integer
     if (size) {
