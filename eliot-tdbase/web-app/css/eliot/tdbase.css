@@ -902,6 +902,7 @@ button.ui-button-icons-only{width: 3.2em;}
     right: 70px;
     width: 120px;
 }
+	.edite .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points {margin-top: -28px;}
 
 .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points .editinplace {
     float: left;
@@ -1258,3 +1259,31 @@ Style for result table
 	top: -2px;
 	padding: 4px 8px 4px;
 }
+
+/*******************************************************************************
+
+ Exercices & Item/sujet composé
+
+********************************************************************************/
+.exercice{
+	position: relative;
+	padding: 0 10px 10px;
+    margin: 0 10px 10px;
+    border: none;
+    background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 12px;
+}
+.exercice h1{
+	padding: 13px 0 13px 30px;
+	margin: 0;
+	border-bottom: 1px dotted #CCC;
+}
+.exercice .tdbase-sujet-edition-question {
+    background: none;
+    padding: 0;
+    margin: 30px 0 0 30px;
+}
+.exercice .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points{margin-top: -20px;}
+.exercice h2{font-size: 125%;margin-bottom: 5px;}
+.exercice .tdbase-sujet-edition-question-interaction{margin-top: 0!important;border-color: #dbdddd;}
+.exercice .item{margin: 5px 0 0;}
+.exercice .item p.title{color: #333;}
