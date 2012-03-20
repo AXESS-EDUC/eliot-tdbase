@@ -91,7 +91,8 @@ class QuestionService implements ApplicationContextAware {
       def attachement = Attachement.get(question.principalAttachementId)
       questionAttachementService.createPrincipalAttachementForQuestion(
               attachement, question)
-    } else if (question.principalAttachementFichier) {
+    } else if (question.principalAttachementFichier &&
+               !question.principalAttachementFichier.isEmpty()) {
       questionAttachementService.createPrincipalAttachementForQuestionFromMultipartFile(
               question.principalAttachementFichier, question)
     }
