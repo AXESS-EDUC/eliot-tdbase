@@ -28,11 +28,13 @@
 
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
 import org.lilie.services.eliot.tice.utils.BootstrapService
+import org.lilie.services.eliot.tice.utils.ManuelsService
 
 class BootStrap {
 
   BootstrapService bootstrapService
   DbMigrationService dbMigrationService
+  ManuelsService manuelsService
 
   def init = { servletContext ->
 
@@ -44,6 +46,13 @@ class BootStrap {
 
     if (config.eliot.bootstrap.jeudetest) {
       bootstrapService.bootstrapJeuDeTestDevDemo()
+    }
+    
+    try {
+      manuelsService.addManuelDocumentUrls(config.eliot.manuels.documents.urlMap)
+    } catch (Exception e) {
+      log.error("manuels.urls.update.echec")
+      log.error(e.message)
     }
 
   }

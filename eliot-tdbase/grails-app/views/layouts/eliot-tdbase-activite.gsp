@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -63,6 +63,7 @@
         </li>
       </ul>
     </div>
+  <et:manuelLink fonctionEnum="${FonctionEnum.ELEVE}" class="portal-manuel"><g:message code="manuels.libellelien"/></et:manuelLink>
   <g:layoutBody/>
 </div>
 <r:layoutResources/>

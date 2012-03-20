@@ -28,7 +28,7 @@
 
 
 
-<%@ page import="org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
 <!doctype html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -58,6 +58,7 @@
       </li>
     </ul>
   </div>
+  <et:manuelLink fonctionEnum="${FonctionEnum.PERS_REL_ELEVE}" class="portal-manuel"><g:message code="manuels.libellelien"/></et:manuelLink>
   <g:layoutBody/>
 </div>
 

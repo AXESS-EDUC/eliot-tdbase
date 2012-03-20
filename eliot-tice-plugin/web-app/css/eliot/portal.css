@@ -1,5 +1,4 @@
-
-/* Hints use during developpement only 
+/* Hints use during developpement only
 .container .column { 
     border-bottom: 1px solid red;
 }
@@ -13,12 +12,13 @@ Common global styles
 body {
     margin: 0;
     color: #333;
-    background-color:#DCDDE2;
+    background-color: #DCDDE2;
     padding: 0;
-    text-align:center;
-    font-family: "Lucida Grande","Verdana","Arial","Sans-Serif";
+    text-align: center;
+    font-family: "Lucida Grande", "Verdana", "Arial", "Sans-Serif";
     font-size: 70%;
 }
+
 /* AS/olds:
 font-family: "verdana", "arial", "sans-serif", "helvetica";
 font-family: "Lucida Sans Unicode", "Lucida Sans", "verdana", "arial","helvetica";
@@ -35,78 +35,80 @@ a:hover {
 }
 
 .container {
-    text-align:left;
-    padding-top:0;
-    border:1px solid #8F8F8F;
+    text-align: left;
+    padding-top: 0;
+    border: 1px solid #8F8F8F;
     background-color: white;
 }
 
 .footer-container {
-    padding:2em;
-    padding-top:0;
+    padding: 2em;
+    padding-top: 0;
 }
 
 p {
     margin: 0pt 0pt 1em;
 }
 
-dl,dt,dd,ul,li {
-    margin: 0; 
+dl, dt, dd, ul, li {
+    margin: 0;
     padding: 0;
     list-style-type: none;
 }
 
 ul {
-    padding:0.3em;  
+    padding: 0.3em;
 }
 
 ul li {
     list-style-type: disc;
-    margin-left:2em;
+    margin-left: 2em;
 }
 
 ol li {
     list-style-type: decimal;
-    margin-left:2em;
+    margin-left: 2em;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1, h2, h3, h4, h5, h6 {
     color: #3F61A0;
     margin-bottom: 0em;
 }
 
 h1 {
     font-size: 1.7em;
-    font-family: "Georgia","Times New Roman",Times,serif;
+    font-family: "Georgia", "Times New Roman", Times, serif;
 }
+
 /* AS/old:
 font-size: 1.8em;
 */
 
 h2 {
-    font-size:1.5em;
+    font-size: 1.5em;
 }
 
 h4 {
-    font-size:1.25em;
+    font-size: 1.25em;
 }
 
 img {
-    margin-bottom:0;
+    margin-bottom: 0;
 }
 
 em {
-    background-color: transparent;  
+    background-color: transparent;
 }
 
 .separator {
-    border-color:#C4C4C4;
-    border-style:dotted none none;
-    border-width:1px 0pt 0pt;
-    height:1px;
-    margin:6px 0px;
-    width:100%;
+    border-color: #C4C4C4;
+    border-style: dotted none none;
+    border-width: 1px 0pt 0pt;
+    height: 1px;
+    margin: 6px 0px;
+    width: 100%;
 }
+
 /*******************************************************************************
 
 Portal Messages styles
@@ -115,14 +117,14 @@ Portal Messages styles
 .portal-messages {
     margin-bottom: 4px;
     margin-top: 4px;
-    padding:0;
+    padding: 0;
 }
 
 .portal-messages ul {
     padding: 0;
     margin: 0;
 }
-    
+
 .portal-messages li {
     list-style-type: none;
     padding: 3px;
@@ -133,9 +135,9 @@ Portal Messages styles
     background-color: transparent;
     color: #817134;
     border: solid 1px #FFD324;
-    background-image:url('../../images/eliot/ico12/info.gif');
-    background-repeat:no-repeat;
-    background-position:5px 5px;
+    background-image: url('../../images/eliot/ico12/info.gif');
+    background-repeat: no-repeat;
+    background-position: 5px 5px;
     padding: 5px 25px;
 }
 
@@ -143,25 +145,25 @@ Portal Messages styles
     background-color: transparent;
     color: #D12F19;
     border: solid 1px #FBC2C4;
-    background-image:url('../../images/eliot/ico12/warning.gif');
-    background-repeat:no-repeat;
-    background-position:5px 5px;
+    background-image: url('../../images/eliot/ico12/warning.gif');
+    background-repeat: no-repeat;
+    background-position: 5px 5px;
     padding: 5px 25px;
 }
 
 .portal-messages .success {
     /**background: #E6EFC2; */
-    background-color:transparent;
-    background-image:url('../../images/eliot/ico12/ok.gif');
-    background-repeat:no-repeat;
-    background-position:5px 5px;
+    background-color: transparent;
+    background-image: url('../../images/eliot/ico12/ok.gif');
+    background-repeat: no-repeat;
+    background-position: 5px 5px;
     color: #529214;
     border: solid 1px #C6D880;
     padding: 5px 25px;
 }
 
 .notice .notice, .error .error, .success .success {
-    border:0;
+    border: 0;
     background-color: transparent;
     background-image: none;
 }
@@ -172,19 +174,19 @@ Common helper styles
 
 ********************************************************************************/
 .reset-border {
-    border:0;
+    border: 0;
 }
 
 .valign-middle {
-    vertical-align: middle; 
+    vertical-align: middle;
 }
 
 .valign-top {
-    vertical-align: top;    
+    vertical-align: top;
 }
 
 .valign-bottom {
-    vertical-align: bottom; 
+    vertical-align: bottom;
 }
 
 /*******************************************************************************
@@ -193,21 +195,18 @@ Styles for the header
 
 ********************************************************************************/
 
-
 .portal-logo {
-    margin:0;
-    margin-top:14px;
+    margin: 0;
+    margin-top: 14px;
 }
 
 #logo {
     height: 54px;
-    width:164px;
+    width: 164px;
     background: no-repeat left url('../../images/eliot/logo.gif');
     text-align: right;
-    float:left;
+    float: left;
 }
-
-
 
 /*******************************************************************************
 
@@ -217,9 +216,9 @@ Styles for the footer
 
 #portal-footer {
     position: relative;
-    top:4em;
+    top: 4em;
     text-align: center;
-    margin-top:1em;
+    margin-top: 1em;
     font-size: 0.9em;
 }
 
@@ -240,7 +239,7 @@ Style for the  contextual menus :
     font-weight: bold;
     letter-spacing: 0.1em;
     font-size: 1.1em;
-    border-top : 1px solid gray;
+    border-top: 1px solid gray;
     border-bottom: 1px solid gray;
     line-height: 1.5;
 }
@@ -305,7 +304,7 @@ Style for the  contextual menus :
 }
 
 .portal-context_menu  ul ul li.actif a {
-    color: rgb(92, 92, 92); 
+    color: rgb(92, 92, 92);
 }
 
 /*******************************************************************************
@@ -315,16 +314,16 @@ Style for the  breadcrumbs :
 ********************************************************************************/
 
 .portal-breadcrumbs {
-  padding:10px;
-  margin-bottom: 4px;
-  margin-top: 4px;
-  text-align: left;
-  line-height: 0.5;
-  font-weight: bold !important;
+    padding: 10px;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    text-align: left;
+    line-height: 0.5;
+    font-weight: bold !important;
 }
 
 .portal-bc-separator {
-  font-weight: normal;
+    font-weight: normal;
 }
 
 /*******************************************************************************
@@ -334,9 +333,9 @@ Style for the RSS link box :
 ********************************************************************************/
 
 .portal-rss {
-  padding-right:0px;
-  margin: auto;
-  margin-top: 14px;
+    padding-right: 0px;
+    margin: auto;
+    margin-top: 14px;
 }
 
 /*******************************************************************************
@@ -345,7 +344,7 @@ Style for the search
 
 ********************************************************************************/
 .portal-search_box {
-    text-align:right;
+    text-align: right;
 }
 
 /*******************************************************************************
@@ -357,7 +356,7 @@ Style for the content
 #portal-content {
     text-align: left;
     height: 500px; /** POUR IE 6 */
-    padding:1em;
+    padding: 1em;
 }
 
 /** OVERRIDE pour les autres navigateurs, IE 6 n'y capte rien */
@@ -367,26 +366,26 @@ html>body #portal-content {
 }
 
 .portal-paragraph {
-    width:100%;
+    width: 100%;
     /** magie !*/
-    display:table;
-    border-bottom:2px dotted #C4C4C4;
-    padding-bottom:0.5em;
-    margin-bottom:2em;
+    display: table;
+    border-bottom: 2px dotted #C4C4C4;
+    padding-bottom: 0.5em;
+    margin-bottom: 2em;
     text-align: left;
 }
 
 .portal-paragraph .date {
-    margin:0;
-    padding:0;
-    color:#999999;
-    font-size: 0.9em;   
-    margin-top:-0.15em;
+    margin: 0;
+    padding: 0;
+    color: #999999;
+    font-size: 0.9em;
+    margin-top: -0.15em;
 }
 
 .portal-paragraph img {
-    margin-right:1em;
-    margin-bottom:1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
 }
 
 .portal-paragraph .comments {
@@ -394,14 +393,14 @@ html>body #portal-content {
 }
 
 .portal-file_paragraph {
-    padding-bottom:0;
-    padding-top:0.5em;
+    padding-bottom: 0;
+    padding-top: 0.5em;
 }
 
 .portal-file_paragraph img {
-    float:left;
-    width:48px;
-    height:48px;
+    float: left;
+    width: 48px;
+    height: 48px;
 }
 
 .portal-search_paragraph {
@@ -409,60 +408,59 @@ html>body #portal-content {
 }
 
 .portal-search_paragraph img {
-    float:left;
-    padding-right:0.25em;
-    width:24px;
-    height:24px 
+    float: left;
+    padding-right: 0.25em;
+    width: 24px;
+    height: 24px
 }
 
 .portal-search_paragraph i {
-    color:#6ea666;  
+    color: #6ea666;
 }
 
 .portal-discussion .no_comment {
-    padding:1em;    
+    padding: 1em;
 }
 
 .portal-discussion .comment {
     border-bottom: 1px dotted #ECECEC;
     border-top: 1px dotted #ECECEC;
-    padding:1em;
-    margin:0;   
+    padding: 1em;
+    margin: 0;
 }
 
 .comment h3 {
-    margin:0;
-    padding-left:1.3em;
-    color:#333333;
-    font-size:0.9em;
-    font-style:oblique;
-    font-weight:bold;
+    margin: 0;
+    padding-left: 1.3em;
+    color: #333333;
+    font-size: 0.9em;
+    font-style: oblique;
+    font-weight: bold;
     display: inline;
     line-height: 22px;
 }
 
-
 .comment .hidden h3 {
-    background-image:url('../../images/eliot/ico12/comment-hidden.gif');
-    background-repeat:no-repeat;
+    background-image: url('../../images/eliot/ico12/comment-hidden.gif');
+    background-repeat: no-repeat;
     background-position: left center;
     color: #8F8F8F;
 }
 
 .comment .visible h3 {
-    background-image:url('../../images/eliot/ico12/comment.gif');
-    background-repeat:no-repeat;
+    background-image: url('../../images/eliot/ico12/comment.gif');
+    background-repeat: no-repeat;
     background-position: left center;
 }
 
 .comment h3 .date {
-    color:#6F6F6F;
+    color: #6F6F6F;
     font-weight: normal;
     font-size: inherit;
 }
 
 .comment .hidden h3 .date {
-    color:#8F8F8F;
+    color: #8F8F8F;
 }
 
 .comment .actions {
@@ -470,7 +468,7 @@ html>body #portal-content {
 }
 
 .comment .header {
-    background-color:#F2F3F7;
+    background-color: #F2F3F7;
     vertical-align: baseline;
     height: 22px;
 }
@@ -485,14 +483,14 @@ html>body #portal-content {
 
 .comment p.author {
     border-left: 5px solid #728cbd;
-    padding-left:0.7em;
+    padding-left: 0.7em;
 }
 
 .add_comment {
-/*  border-top: 3px dotted #ECECEC; */
-    margin-left:auto;
-    margin-right:auto;
-    width:75%;
+    /*  border-top: 3px dotted #ECECEC; */
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
 }
 
 .add_comment textarea {
@@ -513,7 +511,7 @@ Style for the explorateur component
 }
 
 .portal-explorateur tr {
-    border-bottom:1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
 }
 
 .portal-explorateur td, .portal-explorateur th {
@@ -524,7 +522,7 @@ Style for the explorateur component
 }
 
 .portal-explorateur th {
-    border-bottom: 2px solid #728CBD;   
+    border-bottom: 2px solid #728CBD;
 }
 
 .portal-explorateur th img {
@@ -532,11 +530,11 @@ Style for the explorateur component
 }
 
 .portal-explorateur .toolbar {
-    border-bottom : 1px solid #728CBD;
-    border-top : 1px solid #728CBD;
-    padding-left:0.5em;
-    padding-top:0.5em;
-    padding-bottom:0;
+    border-bottom: 1px solid #728CBD;
+    border-top: 1px solid #728CBD;
+    padding-left: 0.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0;
     padding-right: 0.5em;
 }
 
@@ -569,12 +567,12 @@ span.action img {
 }
 
 .large img {
-    padding : 2px;
-    margin-top : 2px
+    padding: 2px;
+    margin-top: 2px
 }
 
 .small img {
-    padding : 1px;
+    padding: 1px;
 }
 
 /*******************************************************************************
@@ -583,17 +581,17 @@ Style for the edition of a document or category
 
 ********************************************************************************/
 .portal-tabs {
-    background-color:#E0E4EB;
-    border:1px solid #728CBD;
+    background-color: #E0E4EB;
+    border: 1px solid #728CBD;
     color: #999999;
-    padding:0.5em;
-    text-align:right;
+    padding: 0.5em;
+    text-align: right;
     margin-bottom: 4px;
     margin-top: 4px;
 }
 
 .portal-tabs a {
-    color:#3F61A0;
+    color: #3F61A0;
 }
 
 span.portal-tabs-famille-liens {
@@ -602,11 +600,9 @@ span.portal-tabs-famille-liens {
 }
 
 .portal-tab_content {
-    border:1px solid #728CBD;
-    padding:1em;
+    border: 1px solid #728CBD;
+    padding: 1em;
 }
-
-
 
 /*******************************************************************************
 
@@ -615,28 +611,28 @@ Style for forms :
 ********************************************************************************/
 
 .portal-form_container {
-    width:70%;
-    margin-left:15px;
-    margin-right:auto;
-    border:1px solid #728CBD;
+    width: 70%;
+    margin-left: 15px;
+    margin-right: auto;
+    border: 1px solid #728CBD;
 }
 
 .small-portal-form_container {
-    width:40%;
-    margin-left:auto;
-    margin-right:auto;
-    border:1px solid #728CBD;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #728CBD;
 }
 
 .portal-form_table {
-    border:0;
-    margin-left:auto;
-    margin-right:auto;
-    margin-top:1em;
+    border: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
 }
 
 .portal-form_table td {
-    border:0;   
+    border: 0;
 }
 
 .portal-form_table .label {
@@ -654,7 +650,7 @@ textarea, input, select {
     color: #111111;
     background-color: white;
     font-family: inherit;
-    font-size:1em;
+    font-size: 1em;
     vertical-align: middle;
 }
 
@@ -664,17 +660,16 @@ select[disabled="disabled"] {
 
 .portal-actions {
     margin-top: 0.5em;
-    background-color:#E0E4EB;
-    border:1px solid #728CBD;
-    color:#3F61A0;
-    padding:0.5em;
-    text-align:right;
-}   
+    background-color: #E0E4EB;
+    border: 1px solid #728CBD;
+    color: #3F61A0;
+    padding: 0.5em;
+    text-align: right;
+}
 
 .form_input_fields input, .form_actions input {
     width: auto;
-    font-family: verdana, "Lucida Sans Unicode", "Lucida Sans", arial,
-        helvetica;
+    font-family: verdana, "Lucida Sans Unicode", "Lucida Sans", arial, helvetica;
     font-size: 11px;
     font-weight: normal;
     color: #444444;
@@ -687,8 +682,7 @@ select[disabled="disabled"] {
 
 .form_input_fields input [type="text"], input.formInputText {
     width: auto;
-    font-family: verdana, "Lucida Sans Unicode", "Lucida Sans", arial,
-        helvetica;
+    font-family: verdana, "Lucida Sans Unicode", "Lucida Sans", arial, helvetica;
     font-size: 11px;
     color: #444444;
 }
@@ -708,13 +702,13 @@ select[disabled="disabled"] {
     border: 1px solid #728CBD;
     border-top-width: 0;
     color: #3F61A0;
-    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial,helvetica;
-    padding-top:0.5em;
-    padding-bottom:0.5em;
-    margin-left:15px;
-    margin-right:auto;
+    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial, helvetica;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-left: 15px;
+    margin-right: auto;
     text-align: right;
-    width:70%;
+    width: 70%;
 }
 
 /*******************************************************************************
@@ -722,28 +716,29 @@ select[disabled="disabled"] {
 Style for the search actor or group component  :
 
 ********************************************************************************/
-.portal-searchlist td:hover, .portal-searchlist td a:hover  {
-    background-color:#B5D5FF;   
+.portal-searchlist td:hover, .portal-searchlist td a:hover {
+    background-color: #B5D5FF;
 }
 
 .portal-searchlist .sub_entry {
     font-weight: normal;
-    font-size: 0.9em;   
+    font-size: 0.9em;
 }
 
 .portal-searchlist .head_entry {
-    font-weight: bold;  
+    font-weight: bold;
 }
+
 /*******************************************************************************
 
 Styles for the login page :
 
 ********************************************************************************/
 #portal-login {
-    width:450px;
-    margin-left:auto;
-    margin-right:auto;
-    border:1px solid #728CBD;
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #728CBD;
     margin-bottom: 0;
 }
 
@@ -754,14 +749,14 @@ Styles for the login page :
 }
 
 #portal-login .portal-form_table {
-    margin:0;
-    padding:0;  
+    margin: 0;
+    padding: 0;
 }
 
 #portal-login .login_form {
     width: 100%;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
 #portal-login .login_form tr {
@@ -784,31 +779,31 @@ Styles for the error pages :
 }
 
 #portal-error .portal-error_message {
-    width:70%;
-    margin-left:auto;
-    margin-right:auto;
-    border:1px solid #728CBD;
-    padding:4em;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #728CBD;
+    padding: 4em;
     margin-bottom: 0;
 }
 
 #portal-error .portal-error_message textarea {
-    width:100%;
+    width: 100%;
     height: 150px;
 }
 
 #portal-error .portal-actions {
-    margin-left:auto;
-    margin-right:auto;
-    text-align:center;
-    padding-right:4em;
-    padding-left:4em;
-    margin-top:0;
-    width:70%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-right: 4em;
+    padding-left: 4em;
+    margin-top: 0;
+    width: 70%;
 }
 
 #portal-error img {
-    margin-right:1em;   
+    margin-right: 1em;
 }
 
 /*******************************************************************************
@@ -816,7 +811,6 @@ Styles for the error pages :
 Style for tables in class  :
 
 ********************************************************************************/
-
 
 .portal-default_table {
     color: #555;
@@ -827,12 +821,10 @@ Style for tables in class  :
     font-size: 11px;
 }
 
-
-
 .portal-default_table thead {
     border: 1px solid #728CBD;
     color: #3F61A0;
-    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial,helvetica;
+    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial, helvetica;
     text-align: center;
 }
 
@@ -840,27 +832,27 @@ Style for tables in class  :
     background-color: #E0E4EB;
     border: 1px solid #728CBD;
     color: #3F61A0;
-    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial,helvetica;
+    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial, helvetica;
 }
 
 .portal-default_table tbody {
     background-color: #FFFFFF;
     border: 1px solid #6495ed;
-    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial,helvetica;
+    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial, helvetica;
 }
 
 .portal-default_table thead th {
     border: 1px solid #728CBD;
     padding: 5px;
     background-color: #D7DCE7;
-    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial,helvetica;
+    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial, helvetica;
     text-align: center;
 }
 
 .portal-default_table th {
     border: 1px solid #728CBD;
     padding: 5px;
-    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial,helvetica;
+    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial, helvetica;
     font-size: 11px;
     width: auto;
     text-align: center;
@@ -871,7 +863,7 @@ Style for tables in class  :
     border: 1px solid #728CBD;
     padding: 5px;
     text-align: center;
-    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial,helvetica;
+    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial, helvetica;
     vertical-align: top;
 }
 
@@ -896,10 +888,8 @@ tr.ligne2, tr.odd {
 }
 
 .portal-default_table caption img {
-    vertical-align:top;
+    vertical-align: top;
 }
-
-
 
 /*******************************************************************************
 
@@ -911,28 +901,30 @@ Styles relatives to pagination in tables
     margin-top: 15px;
     margin-bottom: 15px;
 }
-	.portal_pagination .nb_result{
-		text-align: left;
-		text-indent: 10px;
-	}
 
+.portal_pagination .nb_result {
+    text-align: left;
+    text-indent: 10px;
+}
 
 a.prevLink {
     border: solid 1px #b3bdd1; /* #d7dce7; */
     padding: 1px;
-    margin:1px;
+    margin: 1px;
     text-decoration: none;
 }
-a.nextLink  {
+
+a.nextLink {
     border: solid 1px #b3bdd1; /* #d7dce7; */
     padding: 1px;
-    margin:1px;
+    margin: 1px;
     text-decoration: none;
 }
+
 a.step {
     border: solid 1px #b3bdd1; /* #d7dce7; */
     padding: 1px;
-    margin:1px;
+    margin: 1px;
     text-decoration: none;
 }
 
@@ -940,18 +932,42 @@ a.prevLink:hover {
     background: #d7dce7;
     text-decoration: none;
 }
-a.nextLink:hover  {
+
+a.nextLink:hover {
     background: #d7dce7;
     text-decoration: none;
 }
-a.step:hover  {
+
+a.step:hover {
     background: #d7dce7;
     text-decoration: none;
 }
+
 span.currentStep {
     border: solid 1px #b3bdd1;
     background: #d7dce7;
     text-decoration: none;
     padding: 1px;
-    margin:1px;
+    margin: 1px;
+}
+
+/*******************************************************************************
+
+Styles relatives to manuel
+
+********************************************************************************/
+
+a.portal-manuel {
+    background-image: url('../../images/eliot/ico12/help.gif');
+    background-repeat: no-repeat;
+    background-position: left center;
+    float: right;
+    text-align: center;
+    padding-right: 5px;
+    padding-left: 15px;
+    display: block;
+}
+
+a.portal-manuel:hover {
+   text-decoration: none;
 }
