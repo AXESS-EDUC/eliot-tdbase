@@ -751,7 +751,8 @@ Style for the edition of a document or category (Content)
 
 .recherche.portal-form_container,
 .corrige.portal-form_container,
-.edite.portal-form_container {
+.edite.portal-form_container,
+.result.portal-form_container {
     padding: 5px 0;
     width: 70%;
     margin-left: 10px;
@@ -1280,10 +1281,34 @@ Style for result table
 .exercice .tdbase-sujet-edition-question {
     background: none;
     padding: 0;
-    margin: 30px 0 0 30px;
+    margin: 30px 0 10px 30px;
 }
 .exercice .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points{margin-top: -20px;}
 .exercice h2{font-size: 125%;margin-bottom: 5px;}
 .exercice .tdbase-sujet-edition-question-interaction{margin-top: 0!important;border-color: #dbdddd;}
 .exercice .item{margin: 5px 0 0;}
 .exercice .item p.title{color: #333;}
+
+/*******************************************************************************
+
+ Résultats vue parents
+
+********************************************************************************/
+.result.portal-form_container{padding: 15px 0 10px;}
+.result.portal-form_container select{margin-top: 0px;}
+.portal-default_results-list.sceance.resultats h1{
+	position: relative;
+	top: 3px;
+}
+.portal-default_results-list.sceance.resultats h2{
+	font-size: 1.2em;
+	margin: 2px 0;
+	padding-left: 45px;
+	color: #444;	
+}
+	.portal-default_results-list.sceance.resultats .note{color: #ec8e0c;}
+div.portal-default_results-list.sceance.resultats em{
+	color: #999;
+	padding: 0;
+	margin-bottom: 8px;
+}
