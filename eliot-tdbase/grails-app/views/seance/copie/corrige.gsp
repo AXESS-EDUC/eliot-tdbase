@@ -69,7 +69,7 @@
 <g:if test="${request.messageCode}">
   <div class="portal-messages">
     <li class="success"><g:message code="${request.messageCode}"
-               class="portal-messages success"/></li>
+                                   class="portal-messages success"/></li>
   </div>
 </g:if>
 <g:set var="sujet" value="${copie.sujet}"/>
@@ -121,66 +121,202 @@
 </form>
 
 <div class="correction_copie">
-  <h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
-  <g:set var="indexReponseNonVide" value="${0}"/>
-  <g:each in="${copie.reponses}" var="reponse">
-    <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
-    <div class="tdbase-sujet-edition-question">
-      <g:if test="${sujetQuestion.question.type.interaction}">
-        <h1>Question ${indexReponseNonVide + 1}</h1>
+<h1 class="tdbase-sujet-titre">${sujet.titre}</h1>
+<g:set var="indexReponseNonVide" value="0"/>
+<g:set var="indexQuestion" value="1"/>
+<g:set var="exericeEnCours" value="${null}"/>
+<g:set var="indexExercice" value="0"/>
+<g:set var="indexQuestionInExercice" value="1"/>
+<g:set var="etaitDansUnExercice" value="${false}"/>
 
-        <div class="tdbase-sujet-edition-question-points">
-          <div id="SujetSequenceQuestions-${sujetQuestion.id}">
-            <g:if test="${reponse}">
-              <g:if test="${reponse.estEnNotationManuelle()}">
-                <div class="editinplace" id="${reponse.id}"
-                     title="Cliquez pour modifier le nombre de points...">
-                  <g:formatNumber number="${reponse.correctionNoteCorrecteur}"
-                                  format="##0.00"/>
-                </div>
-              </g:if>
-              <g:else>
-                <em><g:formatNumber
-                        number="${reponse.correctionNoteAutomatique}"
-                        format="##0.00"/></em>
-              </g:else>
-            </g:if>
-            <g:else>
-              <span title="L'élève a rendu sa copie après l'ajout de cette réponse">Non&nbsp;évaluable</span>
-            </g:else>
-          &nbsp;/&nbsp;<strong><g:formatNumber number="${sujetQuestion.points}"
-                                               format="##0.00"/>&nbsp;point(s)</strong>
-          </div>
+<g:each in="${copie.reponses}" var="reponse">
+  <g:set var="sujetQuestion" value="${reponse.sujetQuestion}"/>
+  <g:set var="question" value="${sujetQuestion.question}"/>
+  <g:set var="sujetEnCours" value="${sujetQuestion.sujet}"/>
 
-        </div>
-
-      </g:if>
-
-      <g:set var="question" value="${sujetQuestion.question}"/>
-
-      <g:if test="${question.type.interaction}">
-        <div class="tdbase-sujet-edition-question-interaction">
-          <g:render
-                  template="/question/Interaction"
-                  model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide++]"/>
-
-          <g:render
-                  template="/question/${question.type.code}/${question.type.code}Correction"
-                  model="[question: question]"/>
-        </div>
-      </g:if>
-      <g:else>
-        <h1>${question.type.nom}</h1>
-
-        <div class="tdbase-sujet-edition-question-interaction">
-          <g:render
-                  template="/question/Preview"
-                  model="[question: question]"/>
-        </div>
-      </g:else>
-
+  <g:if test="${etaitDansUnExercice && sujetEnCours != exericeEnCours}">
     </div>
-  </g:each>
+<!-- Fermeture div exercice  quand exercice termine-->
+    <g:set var="etaitDansUnExercice" value="${false}"/>
+  </g:if>
+
+
+  <g:if test="${sujetEnCours == sujet}">
+    <!-- -------------------------------- -->
+   <!-- mode question de premier niveau -->
+   <!-- -------------------------------- -->
+   <div class="tdbase-sujet-edition-question">
+    <g:if test="${question.type.interaction}">
+      <h1>Question ${indexQuestion}</h1>
+      <g:set var="indexQuestion" value="${indexQuestion.toInteger() + 1}"/>
+      <div class="tdbase-sujet-edition-question-points">
+        <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+          <g:if test="${reponse.estEnNotationManuelle()}">
+            <div class="editinplace" id="${reponse.id}"
+                 title="Cliquez pour modifier le nombre de points...">
+              <g:formatNumber number="${reponse.correctionNoteCorrecteur}"
+                              format="##0.00"/>
+            </div>
+          </g:if>
+          <g:else>
+            <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                                format="##0.00"/></em>
+          </g:else>
+        &nbsp;/&nbsp;<strong><g:formatNumber
+                number="${sujetQuestion.points}"
+                format="##0.00"/>&nbsp;point(s)</strong>
+        </div>
+      </div>
+
+      <div class="tdbase-sujet-edition-question-interaction correction_copie">
+        <g:hiddenField
+                name="reponsesCopie.listeReponses[${indexReponseNonVide}].reponse.id"
+                value="${reponse.id}"/>
+        <g:render
+                template="/question/Interaction"
+                model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide]"/>
+
+        <g:set var="indexReponseNonVide"
+               value="${indexReponseNonVide.toInteger() + 1}"/>
+
+        <g:render
+                template="/question/${question.type.code}/${question.type.code}Correction"
+                model="[question: question]"/>
+
+      </div>
+    </g:if>
+    <g:else>
+      <div class="tdbase-sujet-edition-question-interaction correction_copie">
+        <g:render
+                template="/question/Preview"
+                model="[question: question]"/>
+      </div>
+    </g:else>
+  </g:if>
+  <g:elseif test="${sujetEnCours == exericeEnCours}">
+    <!-- -------------------------------- -->
+   <!-- mode question dans un sujet -->
+   <!-- -------------------------------- -->
+   <div class="tdbase-sujet-edition-question">
+    <g:if test="${question.type.interaction}">
+      <h2>Ex. ${indexExercice} → Question ${indexQuestionInExercice}</h2>
+      <g:set var="indexQuestionInExercice"
+             value="${indexQuestionInExercice.toInteger() + 1}"/>
+      <div class="tdbase-sujet-edition-question-points">
+        <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+          <g:if test="${reponse.estEnNotationManuelle()}">
+            <div class="editinplace" id="${reponse.id}"
+                 title="Cliquez pour modifier le nombre de points...">
+              <g:formatNumber number="${reponse.correctionNoteCorrecteur}"
+                              format="##0.00"/>
+            </div>
+          </g:if>
+          <g:else>
+            <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                                format="##0.00"/></em>
+          </g:else>
+        &nbsp;/&nbsp;<strong><g:formatNumber
+                number="${sujetQuestion.points}"
+                format="##0.00"/>&nbsp;point(s)</strong>
+        </div>
+      </div>
+
+      <div class="tdbase-sujet-edition-question-interaction correction_copie">
+        <g:hiddenField
+                name="reponsesCopie.listeReponses[${indexReponseNonVide}].reponse.id"
+                value="${reponse.id}"/>
+        <g:render
+                template="/question/Interaction"
+                model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide]"/>
+
+        <g:set var="indexReponseNonVide"
+               value="${indexReponseNonVide.toInteger() + 1}"/>
+
+        <g:render
+                template="/question/${question.type.code}/${question.type.code}Correction"
+                model="[question: question]"/>
+
+      </div>
+    </g:if>
+    <g:else>
+      <div class="tdbase-sujet-edition-question-interaction correction_copie">
+        <g:render
+                template="/question/Preview"
+                model="[question: question]"/>
+      </div>
+    </g:else>
+
+  </g:elseif>
+  <g:else>
+    <!-- -------------------------------- -->
+  <!-- entrée dans un exerice -->
+  <!-- -------------------------------- -->
+    <g:set var="exericeEnCours" value="${sujetQuestion.sujet}"/>
+    <g:set var="indexQuestionInExercice" value="1"/>
+    <g:set var="indexExercice" value="${indexExercice.toInteger() + 1}"/>
+    <g:set var="etaitDansUnExercice" value="${true}"/>
+    <div class="exercice" id="exercice_${indexExercice}">
+
+    <h1>Exercice ${indexExercice}</h1>
+
+    <div class="tdbase-sujet-edition-question">
+    <h2>Ex. ${indexExercice} → Question ${indexQuestionInExercice}</h2>
+
+    <g:set var="indexQuestionInExercice"
+           value="${indexQuestionInExercice.toInteger() + 1}"/>
+    <g:if test="${question.type.interaction}">
+      <div class="tdbase-sujet-edition-question-points">
+        <div id="SujetSequenceQuestions-${sujetQuestion.id}">
+          <g:if test="${reponse.estEnNotationManuelle()}">
+            <div class="editinplace" id="${reponse.id}"
+                 title="Cliquez pour modifier le nombre de points...">
+              <g:formatNumber number="${reponse.correctionNoteCorrecteur}"
+                              format="##0.00"/>
+            </div>
+          </g:if>
+          <g:else>
+            <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
+                                format="##0.00"/></em>
+          </g:else>
+        &nbsp;/&nbsp;<strong><g:formatNumber
+                number="${sujetQuestion.points}"
+                format="##0.00"/>&nbsp;point(s)</strong>
+        </div>
+      </div>
+
+      <div class="tdbase-sujet-edition-question-interaction correction_copie">
+        <g:hiddenField
+                name="reponsesCopie.listeReponses[${indexReponseNonVide}].reponse.id"
+                value="${reponse.id}"/>
+        <g:render
+                template="/question/Interaction"
+                model="[question: question, reponse: reponse, indexReponse: indexReponseNonVide]"/>
+
+        <g:set var="indexReponseNonVide"
+               value="${indexReponseNonVide.toInteger() + 1}"/>
+
+        <g:render
+                template="/question/${question.type.code}/${question.type.code}Correction"
+                model="[question: question]"/>
+
+      </div>
+    </g:if>
+    <g:else>
+      <div class="tdbase-sujet-edition-question-interaction correction_copie">
+        <g:render
+                template="/question/Preview"
+                model="[question: question]"/>
+      </div>
+    </g:else>
+  </g:else>
+
+  </div> <!-- fermeture div class = tdbase-sujet-edition-question -->
+
+</g:each>
+<g:if test="${etaitDansUnExercice}">
+</div>
+</g:if>
+
 </div>
 
 </body>
