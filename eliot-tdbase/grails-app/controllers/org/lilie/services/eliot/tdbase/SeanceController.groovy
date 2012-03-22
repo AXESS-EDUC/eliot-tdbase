@@ -132,7 +132,7 @@ class SeanceController {
     Personne personne = authenticatedPersonne
     modaliteActiviteService.supprimeModaliteActivite(seance,
                                                      personne)
-    redirect(action: "liste")
+    redirect(action: "liste", params: [bcInit:true])
   }
 
   /**

@@ -33,99 +33,118 @@
   <meta name="layout" content="eliot-tdbase"/>
   <r:require module="eliot-tice-ui"/>
   <r:script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('#menu-item-seances').addClass('actif');
       $(".datepicker").datetimepicker();
+      $('.delete-actif').click(function () {
+        return confirm('Êtes vous sur de vouloir supprimer la séance et toutes les copies associées ?');
+      });
     });
   </r:script>
   <title>TDBase - Edition d'une séance</title>
 </head>
 
 <body>
-  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
+<g:render template="/breadcrumps" plugin="eliot-tice-plugin"
+          model="[liens: liens]"/>
+<div class="portal-tabs">
+  <span class="portal-tabs-famille-liens">
+    <g:if test="${modaliteActivite.id}">
+    <g:link action="listeResultats" controller="seance" class="modify"
+            id="${modaliteActivite.id}">Corriger les copies</g:link> |
+    <g:link action="supprime" controller="seance" class="delete delete-actif"
+            id="${modaliteActivite.id}">Supprimer la séance</g:link>
+    </g:if>
+    <g:else>
+      <span class="modify">Corriger les copies</span> |
+      <span class="delete">Supprimer la séance</span>
+    </g:else>
+  </span>
+</div>
 
-  <g:hasErrors bean="${modaliteActivite}">
-    <div class="portal-messages">
-      <g:eachError>
-        <li class="error"><g:message error="${it}"/></li>
-      </g:eachError>
-    </div>
-  </g:hasErrors>
-  <g:if test="${request.messageCode}">
-    <div class="portal-messages">
-      <li class="success"><g:message code="${request.messageCode}"
-                     class="portal-messages success"/></li>
-    </div>
-  </g:if>
+<g:hasErrors bean="${modaliteActivite}">
+  <div class="portal-messages">
+    <g:eachError>
+      <li class="error"><g:message error="${it}"/></li>
+    </g:eachError>
+  </div>
+</g:hasErrors>
+<g:if test="${request.messageCode}">
+  <div class="portal-messages">
+    <li class="success"><g:message code="${request.messageCode}"
+                                   class="portal-messages success"/></li>
+  </div>
+</g:if>
 
 
-  <g:form method="post" controller="seance" action="edite">
-    <div class="portal-form_container edite">
-      <table>
+<g:form method="post" controller="seance" action="edite">
+  <div class="portal-form_container edite">
+    <table>
 
-        <tr>
-          <td class="label">Groupe&nbsp;:</td>
-          <td>
-            <g:if test="${modaliteActivite.structureEnseignement}">
-              <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong> &nbsp;&nbsp;&nbsp;
-              <g:select name="proprietesScolariteSelectionId"
-                        noSelection="${['null':'Changer de groupe...']}"
-                        from="${proprietesScolarite}"
-                        optionKey="id"
-                        optionValue="structureEnseignementNomAffichage"/>
-            </g:if>
-            <g:else>
-              <g:select name="proprietesScolariteSelectionId"
-                        noSelection="${['null':'Sélectionner de groupe...']}"
-                        from="${proprietesScolarite}"
-                        optionKey="id"
-                        optionValue="structureEnseignementNomAffichage"/>
-            </g:else>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Sujet&nbsp;:</td>
-          <td>
-              <strong>${modaliteActivite.sujet.titre}</strong> <br/>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Début&nbsp;:</td>
-          <td>
-            <g:textField name="dateDebut"
-                         value="${modaliteActivite.dateDebut.format('dd/MM/yyyy HH:mm')}"
-                         class="datepicker"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Fin&nbsp;:</td>
-          <td>
-            <g:textField name="dateFin"
-                         value="${modaliteActivite.dateFin.format('dd/MM/yyyy HH:mm')}"
-                         class="datepicker"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Copie&nbsp;améliorable&nbsp;:</td>
-          <td>
-            <g:checkBox name="copieAmeliorable" title="améliorable"
-                        checked="${modaliteActivite.copieAmeliorable}"/>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <g:hiddenField name="id" value="${modaliteActivite.id}"/>
-    <g:hiddenField id="sujetId" name="sujet.id" value="${modaliteActivite.sujet?.id}"/>
-    <div class="form_actions edite" style="width: 70%;margin-left: 15px;">
-      <g:link action="${lienRetour.action}"
-              controller="${lienRetour.controller}"
-              params="${lienRetour.params}">Annuler</g:link> |
-      <g:actionSubmit value="Enregistrer" class="button"
-                      action="enregistre"
-                      title="Enregistrer"/>
-    </div>
-    <br/><br/><br/><br/><br/>
-  </g:form>
+      <tr>
+        <td class="label">Groupe&nbsp;:</td>
+        <td>
+          <g:if test="${modaliteActivite.structureEnseignement}">
+            <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong> &nbsp;&nbsp;&nbsp;
+            <g:select name="proprietesScolariteSelectionId"
+                      noSelection="${['null': 'Changer de groupe...']}"
+                      from="${proprietesScolarite}"
+                      optionKey="id"
+                      optionValue="structureEnseignementNomAffichage"/>
+          </g:if>
+          <g:else>
+            <g:select name="proprietesScolariteSelectionId"
+                      noSelection="${['null': 'Sélectionner de groupe...']}"
+                      from="${proprietesScolarite}"
+                      optionKey="id"
+                      optionValue="structureEnseignementNomAffichage"/>
+          </g:else>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Sujet&nbsp;:</td>
+        <td>
+          <strong>${modaliteActivite.sujet.titre}</strong> <br/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Début&nbsp;:</td>
+        <td>
+          <g:textField name="dateDebut"
+                       value="${modaliteActivite.dateDebut.format('dd/MM/yyyy HH:mm')}"
+                       class="datepicker"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Fin&nbsp;:</td>
+        <td>
+          <g:textField name="dateFin"
+                       value="${modaliteActivite.dateFin.format('dd/MM/yyyy HH:mm')}"
+                       class="datepicker"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Copie&nbsp;améliorable&nbsp;:</td>
+        <td>
+          <g:checkBox name="copieAmeliorable" title="améliorable"
+                      checked="${modaliteActivite.copieAmeliorable}"/>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <g:hiddenField name="id" value="${modaliteActivite.id}"/>
+  <g:hiddenField id="sujetId" name="sujet.id"
+                 value="${modaliteActivite.sujet?.id}"/>
+  <div class="form_actions edite" style="width: 70%;margin-left: 15px;">
+    <g:link action="${lienRetour.action}"
+            controller="${lienRetour.controller}"
+            params="${lienRetour.params}">Annuler</g:link> |
+    <g:actionSubmit value="Enregistrer" class="button"
+                    action="enregistre"
+                    title="Enregistrer"/>
+  </div>
+  <br/><br/><br/><br/><br/>
+</g:form>
 
 </body>
 </html>

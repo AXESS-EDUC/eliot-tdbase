@@ -125,10 +125,8 @@ class QuestionController {
     Personne personne = authenticatedPersonne
     Question question = Question.get(params.id)
     questionService.supprimeQuestion(question, personne)
-    def lien = breadcrumpsService.lienRetour()
-    redirect(action: lien.action,
-             controller: lien.controller,
-             params: lien.params)
+    redirect(action: "mesItems", controller: "question",
+                 params: [bcInit: true])
 
   }
 

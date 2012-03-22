@@ -34,101 +34,119 @@
   <meta name="layout" content="eliot-tdbase"/>
   <r:require modules="jquery"/>
   <r:script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('#menu-item-seances').addClass('actif');
+      $('.delete').click(function () {
+        return confirm('Êtes vous sur de vouloir supprimer la séance et toutes les copies associées ?');
+      });
     });
   </r:script>
   <title>TDBase - Liste des résultats</title>
 </head>
 
 <body>
-  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
+<g:render template="/breadcrumps" plugin="eliot-tice-plugin"
+          model="[liens: liens]"/>
+<div class="portal-tabs">
+  <span class="portal-tabs-famille-liens">
+    <g:link action="edite" controller="seance" class="modify"
+            id="${seance.id}">Modifier la séance</g:link> |
+    <g:link action="supprime" controller="seance" class="delete"
+            id="${seance.id}">Supprimer la séance</g:link>
+  </span>
+</div>
 
-  <div class="portal-messages">
+<div class="portal-messages">
   <li class="notice">
-	  Groupe : ${seance.groupeLibelle}<br/>
-	  Sujet : ${seance.sujet.titre} <br/>
-	  Séance du ${seance.dateDebut.format('dd/MM/yy HH:mm')} au  ${seance.dateFin.format('dd/MM/yy HH:mm')}<br/><br/>
-	  <g:if test="${copies}">
-	  	<strong>Nombres de copies rendues : ${copies.size()} sur ${copies.size() + elevesSansCopies.size()}</strong>
-	  </g:if>
-	  <g:else>
-	    <strong>Aucun élève n'a rendu sa copie</strong>
-	  </g:else>
+    Groupe : ${seance.groupeLibelle}<br/>
+    Sujet : ${seance.sujet.titre} <br/>
+    Séance du ${seance.dateDebut.format('dd/MM/yy HH:mm')} au  ${seance.dateFin.format('dd/MM/yy HH:mm')}<br/><br/>
+    <g:if test="${copies}">
+      <strong>Nombres de copies rendues : ${copies.size()} sur ${copies.size() + elevesSansCopies.size()}</strong>
+    </g:if>
+    <g:else>
+      <strong>Aucun élève n'a rendu sa copie</strong>
+    </g:else>
   </li>
-  </div>
-  <br/>
-  <g:if test="${copies}">
-    <div class="portal-default_table">
-      <table>
-        <thead>
-        <tr>
-          <th>Élève</th>
-          <th>Note finale</th>
-          <th>Note auto.</th>
-          <th>Note prof.</th>
-          <th>Dernière remise</th>
-          <th>Copie</th>
+</div>
+<br/>
+<g:if test="${copies}">
+  <div class="portal-default_table">
+    <table>
+      <thead>
+      <tr>
+        <th>Élève</th>
+        <th>Note finale</th>
+        <th>Note auto.</th>
+        <th>Note prof.</th>
+        <th>Dernière remise</th>
+        <th>Copie</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <g:each in="${copies}" status="i" var="copie">
+        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+          <td>
+            ${copie.eleve.nomAffichage}
+          </td>
+          <td>
+            <g:formatNumber number="${copie.correctionNoteFinale}"
+                            format="##0.00"/>
+            / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
+          </td>
+          <td>
+            <g:formatNumber number="${copie.correctionNoteAutomatique}"
+                            format="##0.00"/>
+            / <g:formatNumber number="${copie.maxPointsAutomatique}"
+                              format="##0.00"/>
+          </td>
+          <td>
+            <g:formatNumber number="${copie.correctionNoteCorrecteur}"
+                            format="##0.00"/>
+            / <g:formatNumber number="${copie.maxPointsCorrecteur}"
+                              format="##0.00"/>
+
+          </td>
+          <td>
+            ${copie.dateRemise?.format('dd/MM/yy  à HH:mm')}
+          </td>
+          <td>
+            <g:link class="button work" action="visualiseCopie"
+                    controller="seance"
+                    id="${seance.id}" title="Corriger la copie"
+                    params="[max: 1, offset: i]">
+              Corriger
+            </g:link>
+          </td>
         </tr>
-        </thead>
+      </g:each>
 
-        <tbody>
-        <g:each in="${copies}" status="i" var="copie">
-          <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-            <td>
-              ${copie.eleve.nomAffichage}
-            </td>
-            <td>
-               <g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" />
-        / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
-            </td>
-            <td>
-              <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
-              / <g:formatNumber number="${copie.maxPointsAutomatique}" format="##0.00" />
-            </td>
-            <td>
-              <g:formatNumber number="${copie.correctionNoteCorrecteur}" format="##0.00" />
-                            / <g:formatNumber number="${copie.maxPointsCorrecteur}" format="##0.00" />
-
-            </td>
-            <td>
-              ${copie.dateRemise?.format('dd/MM/yy  à HH:mm')}
-            </td>
-             <td>
-              <g:link class="button work" action="visualiseCopie" controller="seance"
-                      id="${seance.id}" title="Corriger la copie"
-                      params="[max:1,offset:i]">
-                Corriger
-              </g:link>
-            </td>
+      <g:if test="${elevesSansCopies}">
+        <g:each in="${elevesSansCopies}" var="eleve">
+          <tr class="sanscopies">
+            <td>${eleve.nomAffichage}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
+
         </g:each>
-        
-        <g:if test="${elevesSansCopies}">
-          <g:each in="${elevesSansCopies}" var="eleve">
-           	<tr class="sanscopies">
-           		<td>${eleve.nomAffichage}</td>
-           		<td></td>
-           		<td></td>
-           		<td></td>
-           		<td></td>
-           		<td></td>
-           	</tr>
-           
-          </g:each>
-        
-        </g:if>
-        
-        </tbody>
-      </table>
-    </div>
-  </g:if>
-  <g:else>
+
+      </g:if>
+
+      </tbody>
+    </table>
+  </div>
+</g:if>
+<g:else>
   <!--
      <div class="portal_pagination">
       <p class="nb_result">Aucun élève n'a rendu sa copie</p>
     </div>
    -->
-  </g:else>
+</g:else>
 </body>
 </html>
