@@ -160,9 +160,9 @@
           <g:else>
             <li>Partager</li>
           </g:else>
-          <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
+          <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance)}">
             <li><g:link action="exporter"
-                        id="${sujet.id}">Exporter</g:link></li>
+                        id="${sujetInstance.id}">Exporter</g:link></li>
           </g:if>
           <g:else>
             <li>Exporter</li>
