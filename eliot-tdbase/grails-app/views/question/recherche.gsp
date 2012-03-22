@@ -49,91 +49,92 @@
   <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
 </g:if>
 <g:if test="${afficheFormulaire}">
-<form>
-  <div class="portal-form_container recherche">
-    <table>
-      <tr>
-        <td class="label">
-          Titre :
-        </td>
-        <td>
-          <g:textField name="patternTitre" title="titre"
-                       value="${rechercheCommand.patternTitre}"/>
-        </td>
-       
-        <td class="label">Type :
-        </td>
-        <td>
-          <g:select name="typeId" value="${rechercheCommand.typeId}"
-                    noSelection="${['null': 'Tous']}"
-                    from="${typesQuestion}"
-                    optionKey="id"
-                    optionValue="nom"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">
-          Contenu :
-        </td>
-        <td>
-          <g:textField name="patternSpecification" title="titre"
-                       value="${rechercheCommand.patternSpecification}"/>
-        </td>
-               <td class="label">Matière :
-        </td>
-        <td>
-          <g:select name="matiereId" value="${rechercheCommand.matiereId}"
-                    noSelection="${['null': 'Toutes']}"
-                    from="${matieres}"
-                    optionKey="id"
-                    optionValue="libelleLong"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Autonome :
-        </td>
-        <td>
-          <g:checkBox name="estAutonome" title="Autonome"
-                      checked="${rechercheCommand.estAutonome}"/>
-        </td>
-        
-        <td class="label">Niveau :
-        </td>
-        <td>
-          <g:select name="niveauId" value="${rechercheCommand.niveauId}"
-                    noSelection="${['null': 'Tous']}"
-                    from="${niveaux}"
-                    optionKey="id"
-                    optionValue="libelleLong"/>
-        </td>
-      </tr>
+  <form>
+    <div class="portal-form_container recherche">
+      <table>
+        <tr>
+          <td class="label">
+            Titre :
+          </td>
+          <td>
+            <g:textField name="patternTitre" title="titre"
+                         value="${rechercheCommand.patternTitre}"/>
+          </td>
 
-    </table>
-  </div>
+          <td class="label">Type :
+          </td>
+          <td>
+            <g:select name="typeId" value="${rechercheCommand.typeId}"
+                      noSelection="${['null': 'Tous']}"
+                      from="${typesQuestion}"
+                      optionKey="id"
+                      optionValue="nom"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">
+            Contenu :
+          </td>
+          <td>
+            <g:textField name="patternSpecification" title="titre"
+                         value="${rechercheCommand.patternSpecification}"/>
+          </td>
+          <td class="label">Matière :
+          </td>
+          <td>
+            <g:select name="matiereId" value="${rechercheCommand.matiereId}"
+                      noSelection="${['null': 'Toutes']}"
+                      from="${matieres}"
+                      optionKey="id"
+                      optionValue="libelleLong"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">Autonome :
+          </td>
+          <td>
+            <g:checkBox name="estAutonome" title="Autonome"
+                        checked="${rechercheCommand.estAutonome}"/>
+          </td>
 
-  <div class="form_actions recherche">
-    <g:hiddenField name="sujetId" value="${sujet?.id}"/>
-    <g:actionSubmit value="Rechercher" action="recherche"
-                    title="Lancer la recherche" class="button"/>
-  </div>
-</form>
+          <td class="label">Niveau :
+          </td>
+          <td>
+            <g:select name="niveauId" value="${rechercheCommand.niveauId}"
+                      noSelection="${['null': 'Tous']}"
+                      from="${niveaux}"
+                      optionKey="id"
+                      optionValue="libelleLong"/>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div class="form_actions recherche">
+      <g:hiddenField name="sujetId" value="${sujet?.id}"/>
+      <g:actionSubmit value="Rechercher" action="recherche"
+                      title="Lancer la recherche" class="button"/>
+    </div>
+  </form>
 </g:if>
 <g:if test="${questions}">
-	
-  	<div class="portal_pagination ${afficheFormulaire ? 'partiel' : ''} ">
-  	  	
-    <p class="nb_result">${questions.totalCount} résultat(s) </p> 
-    <div class="pager"> Page(s) : <g:paginate
+
+  <div class="portal_pagination ${afficheFormulaire ? 'partiel' : ''} ">
+
+    <p class="nb_result">${questions.totalCount} résultat(s)</p>
+
+    <div class="pager">Page(s) : <g:paginate
             total="${questions.totalCount}"
             params="${rechercheCommand?.toParams()}"></g:paginate></div>
   </div>
-  
-<div class="portal-default_results-list question  ${sujet ? 'partiel' : ''}">	
-	<g:each in="${questions}" status="i" var="questionInstance">
-	  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
-	  	<h1> ${fieldValue(bean: questionInstance, field: "titre")}</h1>
-	  	
-	  	<button id="${questionInstance.id}">Actions</button>
+
+  <div class="portal-default_results-list question  ${sujet ? 'partiel' : ''}">
+    <g:each in="${questions}" status="i" var="questionInstance">
+      <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+        <h1>${fieldValue(bean: questionInstance, field: "titre")}</h1>
+
+        <button id="${questionInstance.id}">Actions</button>
         <ul id="menu_actions_${questionInstance.id}"
             class="tdbase-menu-actions">
           <li><g:link action="detail"
@@ -177,6 +178,13 @@
           <g:else>
             <li>Partager</li>
           </g:else>
+          <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, questionInstance)}">
+            <li><g:link action="exporter" controller="question"
+                        id="${questionInstance.id}">Exporter</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Exporter</li>
+          </g:else>
           <li><hr/></li>
           <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
             <li><g:link action="supprime"
@@ -186,19 +194,20 @@
           <g:else>
             <li>Supprimer</li>
           </g:else>
-	  	</ul>
-	  	
-	  	<p class="date">Mise à jour le ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
-	  	<p>
-	  		<g:if test="${questionInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${questionInstance.niveau?.libelleLong} </g:if>	 
-	  		<g:if test="${questionInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${questionInstance.matiere?.libelleLong} </g:if>
-	  		<strong>» Autonome :</strong>  ${questionInstance.estAutonome ? 'oui' : 'non'}
-	  		<strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
-	  	</p>
-	  	  	
-	  </div>
-	</g:each>
-</div>
+        </ul>
+
+        <p class="date">Mise à jour le ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
+
+        <p>
+          <g:if test="${questionInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${questionInstance.niveau?.libelleLong}</g:if>
+          <g:if test="${questionInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${questionInstance.matiere?.libelleLong}</g:if>
+          <strong>» Autonome :</strong>  ${questionInstance.estAutonome ? 'oui' : 'non'}
+          <strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
+        </p>
+
+      </div>
+    </g:each>
+  </div>
 
 </g:if>
 <g:else>

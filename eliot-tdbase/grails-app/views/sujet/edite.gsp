@@ -30,9 +30,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta name="layout" content="eliot-tdbase"/>
-    <r:require module="eliot-tdbase-ui"/>
-    <r:script>
+  <meta name="layout" content="eliot-tdbase"/>
+  <r:require module="eliot-tdbase-ui"/>
+  <r:script>
     $(document).ready(function() {
       $('#menu-item-sujets').addClass('actif');
 
@@ -42,8 +42,8 @@
       });
       initButtons();
     });
-    </r:script>
-    <title>TDBase - Edition du sujet</title>
+  </r:script>
+  <title>TDBase - Edition du sujet</title>
 </head>
 
 <body>
@@ -51,105 +51,101 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <g:if test="${sujetEnEdition}">
-    <div class="portal-tabs">
-        <span class="portal-tabs-famille-liens">
-            <g:link action="ajouteElement" controller="sujet" class="add"
-                    id="${sujet.id}">Ajouter un item</g:link> |
-            <g:link action="editeProprietes" controller="sujet" class="modify"
-                    id="${sujet.id}">Modifier les propriétés du sujet</g:link>
-        </span>
-        <span class="portal-tabs-famille-liens">
-            <button id="toolbar_${sujet.id}">Actions</button>
-            <ul id="menu_actions_toolbar_${sujet.id}"
-                class="tdbase-menu-actions">
-                <li><g:link action="teste" id="${sujet.id}">
-                    Tester
-                </g:link>
-                </li>
-                <li><g:link action="ajouteSeance" id="${sujet.id}">
-                    Nouvelle&nbsp;séance
-                </g:link>
-                </li>
-                <li><hr/></li>
-                <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
-                    <li><g:link action="duplique"
-                                id="${sujet.id}">Dupliquer</g:link></li>
-                </g:if>
-                <g:else>
-                    <li>Dupliquer</li>
-                </g:else>
+  <div class="portal-tabs">
+    <span class="portal-tabs-famille-liens">
+      <g:link action="ajouteElement" controller="sujet" class="add"
+              id="${sujet.id}">Ajouter un item</g:link> |
+      <g:link action="editeProprietes" controller="sujet" class="modify"
+              id="${sujet.id}">Modifier les propriétés du sujet</g:link>
+    </span>
+    <span class="portal-tabs-famille-liens">
+      <button id="toolbar_${sujet.id}">Actions</button>
+      <ul id="menu_actions_toolbar_${sujet.id}"
+          class="tdbase-menu-actions">
+        <li><g:link action="teste" id="${sujet.id}">
+          Tester
+        </g:link>
+        </li>
+        <li><g:link action="ajouteSeance" id="${sujet.id}">
+          Nouvelle&nbsp;séance
+        </g:link>
+        </li>
+        <li><hr/></li>
+        <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
+          <li><g:link action="duplique"
+                      id="${sujet.id}">Dupliquer</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Dupliquer</li>
+        </g:else>
+        <li><hr/></li>
+        <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
+          <li><g:link action="partage"
+                      id="${sujet.id}">Partager</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Partager</li>
+        </g:else>
+        <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
+          <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Exporter</li>
+        </g:else>
 
-                <li><hr/></li>
-                <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
-                    <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
-                </g:if>
-                <g:else>
-                    <li>Exporter</li>
-                </g:else>
-
-
-                <li><hr/></li>
-                <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
-                    <li><g:link action="partage"
-                                id="${sujet.id}">Partager</g:link></li>
-                </g:if>
-                <g:else>
-                    <li>Partager</li>
-                </g:else>
-
-                <li><hr/></li>
-                <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
-                    <li><g:link action="supprime"
-                                id="${sujet.id}">Supprimer</g:link></li>
-                </g:if>
-                <g:else>
-                    <li>Supprimer</li>
-                </g:else>
-            </ul>
-        </span>
-    </div>
+        <li><hr/></li>
+        <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
+          <li><g:link action="supprime"
+                      id="${sujet.id}">Supprimer</g:link></li>
+        </g:if>
+        <g:else>
+          <li>Supprimer</li>
+        </g:else>
+      </ul>
+    </span>
+  </div>
 </g:if>
 <g:else>
-    <div class="portal-tabs" style="text-align: left">
-        <span class="portal-tabs-famille-liens">
-            <span class="add">Ajouter un item</span> |
-            <span class="modify">Modifier les propriétés du sujet</span>
-        </span>
-        <span class="portal-tabs-famille-liens">
-            <button id="sujet_nouveau">Actions</button>
-            <ul id="menu_actions_sujet_nouveau"
-                class="tdbase-menu-actions">
-                <li>
-                    Tester
-                </li>
-                <li>
-                    Nouvelle&nbsp;séance
-                </li>
-                <li><hr/></li>
-                <li>Dupliquer</li>
+  <div class="portal-tabs" style="text-align: left">
+    <span class="portal-tabs-famille-liens">
+      <span class="add">Ajouter un item</span> |
+      <span class="modify">Modifier les propriétés du sujet</span>
+    </span>
+    <span class="portal-tabs-famille-liens">
+      <button id="sujet_nouveau">Actions</button>
+      <ul id="menu_actions_sujet_nouveau"
+          class="tdbase-menu-actions">
+        <li>
+          Tester
+        </li>
+        <li>
+          Nouvelle&nbsp;séance
+        </li>
+        <li><hr/></li>
+        <li>Dupliquer</li>
 
-                <li><hr/></li>
-                <li>Partager</li>
+        <li><hr/></li>
+        <li>Partager</li>
 
-                <li><hr/></li>
-                <li>Supprimer</li>
-            </ul>
-        </span>
-    </div>
+        <li><hr/></li>
+        <li>Supprimer</li>
+      </ul>
+    </span>
+  </div>
 </g:else>
 <g:hasErrors bean="${sujet}">
-    <div class="portal-messages">
-        <g:eachError>
-            <li class="error"><g:message error="${it}"/></li>
-        </g:eachError>
-    </div>
+  <div class="portal-messages">
+    <g:eachError>
+      <li class="error"><g:message error="${it}"/></li>
+    </g:eachError>
+  </div>
 </g:hasErrors>
 <g:if test="${request.messageCode}">
-    <div class="portal-messages">
-        <li class="success"><g:message code="${request.messageCode}"
-                                       args="${request.messageArgs}"
-                                       class="portal-messages success"/></li>
-    </div>
+  <div class="portal-messages">
+    <li class="success"><g:message code="${request.messageCode}"
+                                   args="${request.messageArgs}"
+                                   class="portal-messages success"/></li>
+  </div>
 </g:if>
 <form method="post">
 
@@ -165,11 +161,11 @@
 
 </form>
 <g:if test="${sujet}">
-    <div class="tdbase-sujet-edition">
-        <g:each in="${sujet.questionsSequences}" var="sujetQuestion"
-                status="indexQuestion">
-            <div class="tdbase-sujet-edition-question">
-                <h1>Question ${indexQuestion + 1}</h1>
+  <div class="tdbase-sujet-edition">
+    <g:each in="${sujet.questionsSequences}" var="sujetQuestion"
+            status="indexQuestion">
+      <div class="tdbase-sujet-edition-question">
+        <h1>Question ${indexQuestion + 1}</h1>
 
         <button id="${sujetQuestion.id}">Actions</button>
         <ul id="menu_actions_${sujetQuestion.id}"
@@ -233,44 +229,26 @@
                       id="${sujetQuestion.id}">
             Retirer</g:link></li>
 
-                    <li><hr/></li>
+          <li><hr/></li>
 
-                    <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetQuestion.question)}">
-                        <li><g:link action="exporter" controller="question" id="${sujetQuestion.question.id}">Exporter</g:link></li>
-                    </g:if>
-                    <g:else>
-                        <li>Exporter</li>
-                    </g:else>
+          <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetQuestion.question)}">
+            <li><g:link action="exporter" controller="question"
+                        id="${sujetQuestion.question.id}">Exporter</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Exporter</li>
+          </g:else>
 
-                    <li><hr/></li>
-                    <li>
-                        <g:link action="ajouteElement" controller="sujet"
-                                id="${sujet.id}" params="[direction: 'avant',
-                                rang: indexQuestion]">
-                            Insérer&nbsp;un&nbsp;item&nbsp;avant
-                        </g:link>
-                    </li>
-                    <li>
-                        <g:link action="ajouteElement" controller="sujet"
-                                id="${sujet.id}" params="[rang: indexQuestion]">
-                            Insérer&nbsp;un&nbsp;item&nbsp;après
-                        </g:link>
-                    </li>
-                    <li><hr/></li>
-                    <li><g:link action="supprimeFromSujet" controller="sujet"
-                                id="${sujetQuestion.id}">
-                        Retirer</g:link></li>
+        </ul>
 
-                </ul>
+        <g:if test="${sujetQuestion.question.type.interaction}">
+          <div class="tdbase-sujet-edition-question-points">
+            <div class="editinplace"
+                 id="SujetSequenceQuestions-${sujetQuestion.id}"
+                 title="Cliquez pour modifier le barème...">
+              ${NumberUtils.formatFloat(sujetQuestion.points)}
+            </div>
 
-                <g:if test="${sujetQuestion.question.type.interaction}">
-                    <div class="tdbase-sujet-edition-question-points">
-                        <div class="editinplace"
-                             id="SujetSequenceQuestions-${sujetQuestion.id}"
-                             title="Cliquez pour modifier le barème...">
-                            ${NumberUtils.formatFloat(sujetQuestion.points)}
-                        </div>
-               
             <span class="point">point(s)</span>
           </div>
         </g:if>

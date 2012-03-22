@@ -33,7 +33,7 @@
   <meta name="layout" content="eliot-tdbase"/>
   <r:require module="eliot-tdbase-ui"/>
   <r:script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
       initButtons();
     });
@@ -43,83 +43,91 @@
 
 <body>
 
-  <g:render template="/breadcrumps" plugin="eliot-tice-plugin" model="[liens: liens]"/>
+<g:render template="/breadcrumps" plugin="eliot-tice-plugin"
+          model="[liens: liens]"/>
 <div class="portal-tabs">
-    <span class="portal-tabs-famille-liens">
-      <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujet)}">
+  <span class="portal-tabs-famille-liens">
+    <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujet)}">
       <g:link action="edite" controller="sujet" class="modify"
               id="${sujet.id}">Modifier le sujet</g:link> |
       <g:link action="editeProprietes" controller="sujet" class="modify"
               id="${sujet.id}">Modifier les propriétés du sujet</g:link>
+    </g:if>
+    <g:else>
+      <span class="add">Modifier le sujet</span> |
+      <span class="modify">Modifier les propriétés du sujet</span>
+    </g:else>
+  </span>
+  <span class="portal-tabs-famille-liens">
+    <button id="toolbar_${sujet.id}">Actions</button>
+    <ul id="menu_actions_toolbar_${sujet.id}"
+        class="tdbase-menu-actions">
+      <li><g:link action="ajouteSeance" id="${sujet.id}">
+        Nouvelle&nbsp;séance
+      </g:link>
+      </li>
+      <li><hr/></li>
+      <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
+        <li><g:link action="duplique"
+                    id="${sujet.id}">Dupliquer</g:link></li>
       </g:if>
       <g:else>
-        <span class="add">Modifier le sujet</span> |
-        <span class="modify">Modifier les propriétés du sujet</span>
+        <li>Dupliquer</li>
       </g:else>
-    </span>
-    <span class="portal-tabs-famille-liens">
-      <button id="toolbar_${sujet.id}">Actions</button>
-      <ul id="menu_actions_toolbar_${sujet.id}"
-          class="tdbase-menu-actions">
-        <li><g:link action="ajouteSeance" id="${sujet.id}">
-          Nouvelle&nbsp;séance
-        </g:link>
-        </li>
-        <li><hr/></li>
-        <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
-          <li><g:link action="duplique"
-                      id="${sujet.id}">Dupliquer</g:link></li>
-        </g:if>
-        <g:else>
-          <li>Dupliquer</li>
-        </g:else>
-        <li><hr/></li>
-        <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
-          <li><g:link action="partage"
-                      id="${sujet.id}">Partager</g:link></li>
-        </g:if>
-        <g:else>
-          <li>Partager</li>
-        </g:else>
-        <li><hr/></li>
-        <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
-          <li><g:link action="supprime"
-                      id="${sujet.id}">Supprimer</g:link></li>
-        </g:if>
-        <g:else>
-          <li>Supprimer</li>
-        </g:else>
-      </ul>
-    </span>
+      <li><hr/></li>
+      <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
+        <li><g:link action="partage"
+                    id="${sujet.id}">Partager</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Partager</li>
+      </g:else>
+      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
+        <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Exporter</li>
+      </g:else>
+      <li><hr/></li>
+      <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
+        <li><g:link action="supprime"
+                    id="${sujet.id}">Supprimer</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Supprimer</li>
+      </g:else>
+    </ul>
+  </span>
+</div>
+<g:hasErrors bean="${copie}">
+  <div class="portal-messages">
+    <g:eachError>
+      <li class="error"><g:message error="${it}"/></li>
+    </g:eachError>
   </div>
-  <g:hasErrors bean="${copie}">
-    <div class="portal-messages">
-      <g:eachError>
-        <li class="error"><g:message error="${it}"/></li>
-      </g:eachError>
-    </div>
-  </g:hasErrors>
-  <g:if test="${request.messageCode}">
-    <div class="portal-messages">
-      <li class="success"><g:message code="${request.messageCode}"
-                     class="portal-messages success"/></li>
-    </div>
-  </g:if>
+</g:hasErrors>
+<g:if test="${request.messageCode}">
+  <div class="portal-messages">
+    <li class="success"><g:message code="${request.messageCode}"
+                                   class="portal-messages success"/></li>
+  </div>
+</g:if>
 
 
-      <g:if test="${copie.dateRemise}">
-           <div class="portal-messages">
-             <li class="notice">
-             Note (correction automatique) :
-             <g:formatNumber number="${copie.correctionNoteAutomatique}" format="##0.00" />
-              / <g:formatNumber number="${copie.maxPoints}" format="##0.00" />
-             &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
-             </li>
-           </div>
-       </g:if>
+<g:if test="${copie.dateRemise}">
+  <div class="portal-messages">
+    <li class="notice">
+      Note (correction automatique) :
+      <g:formatNumber number="${copie.correctionNoteAutomatique}"
+                      format="##0.00"/>
+      / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
+      &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+    </li>
+  </div>
+</g:if>
 
-  <g:render template="/copie/edite" model="[lienRetour:lienRetour, copie:copie, afficheCorrection:afficheCorrection]"/>
-
+<g:render template="/copie/edite"
+          model="[lienRetour: lienRetour, copie: copie, afficheCorrection: afficheCorrection]"/>
 
 </body>
 </html>

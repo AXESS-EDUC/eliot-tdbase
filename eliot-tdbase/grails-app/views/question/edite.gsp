@@ -99,7 +99,13 @@
         <li>Dupliquer</li>
       </g:else>
       <li><hr/></li>
-      <li>Exporter</li>
+      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question)}">
+        <li><g:link action="exporter" controller="question"
+                    id="${question.id}">Exporter</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Exporter</li>
+      </g:else>
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, question)}">
         <li><g:link action="supprime"

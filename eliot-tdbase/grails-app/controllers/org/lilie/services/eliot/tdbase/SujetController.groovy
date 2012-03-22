@@ -440,7 +440,7 @@ class SujetController {
     def sujet = Sujet.get(params.id)
     def xml = sujet ? moodleQuizExporterService.toMoodleQuiz(sujet) :
               message(code: 'xml.export.sujet.inexistant', args: [params.id])
-
+    response.setHeader("Content-disposition","attachment; filename=export.xml")
     render(text: xml, contentType: "text/xml", encoding: "UTF-8")
   }
 

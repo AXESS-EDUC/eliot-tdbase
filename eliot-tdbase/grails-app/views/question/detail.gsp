@@ -50,58 +50,64 @@
   <div class="portal-tabs">
 
     <span class="portal-tabs-famille-liens">
-      <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur,question)}">
-        <g:link action="edite" class="modify"
-                id="${question.id}">Modifer l'item</g:link>&nbsp; |
+  <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, question)}">
+    <g:link action="edite" class="modify"
+            id="${question.id}">Modifer l'item</g:link>&nbsp; |
+  </g:if>
+  <g:else>
+    <span class="modify">Modifier l'item</span>&nbsp;| &nbsp;
+  </g:else>
+  </span>
+  </span>
+  <span class="portal-tabs-famille-liens">
+    <button id="${question.id}">Actions</button>
+    <ul id="menu_actions_${question.id}"
+        class="tdbase-menu-actions">
+      <g:if test="${sujet}">
+        <li><g:link action="insert"
+                    controller="question${question.type.code}"
+                    id="${question.id}"
+                    params="[sujetId: sujet?.id]">
+          Insérer&nbsp;dans&nbsp;le&nbsp;sujet
+        </g:link>
+        </li>
+      </g:if>
+      <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, question)}">
+        <li><g:link action="duplique"
+                    controller="question${question.type.code}"
+                    id="${question.id}">Dupliquer</g:link></li>
       </g:if>
       <g:else>
-        <span class="modify">Modifier l'item</span>&nbsp;| &nbsp;
+        <li>Dupliquer</li>
       </g:else>
-    </span>
-    </span>
-    <span class="portal-tabs-famille-liens">
-      <button id="${question.id}">Actions</button>
-              <ul id="menu_actions_${question.id}"
-                  class="tdbase-menu-actions">
-                <g:if test="${sujet}">
-                  <li><g:link action="insert"
-                              controller="question${question.type.code}"
-                              id="${question.id}"
-                              params="[sujetId: sujet?.id]">
-                    Insérer&nbsp;dans&nbsp;le&nbsp;sujet
-                  </g:link>
-                  </li>
-                </g:if>
-                <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, question)}">
-                  <li><g:link action="duplique"
-                              controller="question${question.type.code}"
-                              id="${question.id}">Dupliquer</g:link></li>
-                </g:if>
-                <g:else>
-                  <li>Dupliquer</li>
-                </g:else>
-                <li><hr/></li>
-                <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
-                  <li><g:link action="partage"
-                              controller="question${question.type.code}"
-                              id="${question.id}">Partager</g:link></li>
-                </g:if>
-                <g:else>
-                  <li>Partager</li>
-                </g:else>
-                  <li>Exporter</li>
-                <li><hr/></li>
-                <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, question)}">
-                  <li><g:link action="supprime"
-                              controller="question${question.type.code}"
-                              id="${question.id}">Supprimer</g:link></li>
-                </g:if>
-                <g:else>
-                  <li>Supprimer</li>
-                </g:else>
-      	  	</ul>
-    </span>
-    
+      <li><hr/></li>
+      <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
+        <li><g:link action="partage"
+                    controller="question${question.type.code}"
+                    id="${question.id}">Partager</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Partager</li>
+      </g:else>
+      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question)}">
+        <li><g:link action="exporter" controller="question"
+                    id="${question.id}">Exporter</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Exporter</li>
+      </g:else>
+      <li><hr/></li>
+      <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, question)}">
+        <li><g:link action="supprime"
+                    controller="question${question.type.code}"
+                    id="${question.id}">Supprimer</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Supprimer</li>
+      </g:else>
+    </ul>
+  </span>
+
   </div>
 </g:if>
 

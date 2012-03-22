@@ -114,75 +114,85 @@
 
 <g:if test="${sujets}">
 
-<div class="portal_pagination">
-	<p class="nb_result">${sujets.totalCount} résultat(s)</p>
-	 <div class="pager"> Page(s) : <g:paginate total="${sujets.totalCount}" params="${rechercheCommand?.toParams()}"></g:paginate></div>
-</div>
-  
-<div class="portal-default_results-list sujet">	
-	<g:each in="${sujets}" status="i" var="sujetInstance">
-	  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
-	  
-	  	<h1> ${fieldValue(bean: sujetInstance, field: "titre")}</h1>
-	  	
-	  	<button id="${sujetInstance.id}">Actions</button>
+  <div class="portal_pagination">
+    <p class="nb_result">${sujets.totalCount} résultat(s)</p>
+
+    <div class="pager">Page(s) : <g:paginate total="${sujets.totalCount}"
+                                             params="${rechercheCommand?.toParams()}"></g:paginate></div>
+  </div>
+
+  <div class="portal-default_results-list sujet">
+    <g:each in="${sujets}" status="i" var="sujetInstance">
+      <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+
+        <h1>${fieldValue(bean: sujetInstance, field: "titre")}</h1>
+
+        <button id="${sujetInstance.id}">Actions</button>
         <ul id="menu_actions_${sujetInstance.id}" class="tdbase-menu-actions">
-	          <li><g:link action="teste" id="${sujetInstance.id}">
-	            Tester
-	          </g:link>
-	          </li>
-	          <li><g:link action="ajouteSeance" id="${sujetInstance.id}">
-	            Nouvelle&nbsp;séance
-	          </g:link>
-	          </li>
-	          <li><hr/></li>
-	          <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetInstance)}">
-	            <li><g:link action="edite"
-	                        id="${sujetInstance.id}">Modifier</g:link></li>
-	          </g:if>
-	          <g:else>
-	            <li>Modifier</li>
-	          </g:else>
-	          <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetInstance)}">
-	            <li><g:link action="duplique"
-	                        id="${sujetInstance.id}">Dupliquer</g:link></li>
-	          </g:if>
-	          <g:else>
-	            <li>Dupliquer</li>
-	          </g:else>
-	          <li><hr/></li>
-	          <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujetInstance)}">
-	            <li><g:link action="partage"
-	                        id="${sujetInstance.id}">Partager</g:link></li>
-	          </g:if>
-	          <g:else>
-	            <li>Partager</li>
-	          </g:else>
-	          <li><hr/></li>
-	          <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujetInstance)}">
-	            <li><g:link action="supprime"
-	                        id="${sujetInstance.id}">Supprimer</g:link></li>
-	          </g:if>
-	          <g:else>
-	            <li>Supprimer</li>
-	          </g:else>
+          <li><g:link action="teste" id="${sujetInstance.id}">
+            Tester
+          </g:link>
+          </li>
+          <li><g:link action="ajouteSeance" id="${sujetInstance.id}">
+            Nouvelle&nbsp;séance
+          </g:link>
+          </li>
+          <li><hr/></li>
+          <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetInstance)}">
+            <li><g:link action="edite"
+                        id="${sujetInstance.id}">Modifier</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Modifier</li>
+          </g:else>
+          <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetInstance)}">
+            <li><g:link action="duplique"
+                        id="${sujetInstance.id}">Dupliquer</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Dupliquer</li>
+          </g:else>
+          <li><hr/></li>
+          <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujetInstance)}">
+            <li><g:link action="partage"
+                        id="${sujetInstance.id}">Partager</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Partager</li>
+          </g:else>
+          <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
+            <li><g:link action="exporter"
+                        id="${sujet.id}">Exporter</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Exporter</li>
+          </g:else>
+          <li><hr/></li>
+          <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujetInstance)}">
+            <li><g:link action="supprime"
+                        id="${sujetInstance.id}">Supprimer</g:link></li>
+          </g:if>
+          <g:else>
+            <li>Supprimer</li>
+          </g:else>
         </ul>
-        
-	  	<p class="date">Mise à jour le ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
-	  	<p>
-	  		<g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>	 
-	  		<g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière : </strong>${sujetInstance.matiere?.libelleLong} </g:if>
-	  		<g:if test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée : </strong>${fieldValue(bean: sujetInstance, field: "dureeMinutes")} </g:if>
-	  		<g:if test="${afficheFormulaire}">
-	  			<strong> » Auteur : </strong>${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom} 
-	  		</g:if> 
-	  		<strong> » Partagé : </strong>${sujetInstance.estPartage() ? 'oui' : 'non'}
-	  	</p>
-	  	
-	  </div>
-	</g:each>
-</div>
-	
+
+        <p class="date">Mise à jour le ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
+
+        <p>
+          <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau :</strong>${sujetInstance.niveau?.libelleLong}</g:if>
+          <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière :</strong>${sujetInstance.matiere?.libelleLong}</g:if>
+          <g:if test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée :</strong>${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</g:if>
+          <g:if test="${afficheFormulaire}">
+            <strong>» Auteur :</strong>${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}
+          </g:if>
+          <strong>» Partagé :</strong>${sujetInstance.estPartage() ? 'oui' : 'non'}
+        </p>
+
+      </div>
+    </g:each>
+  </div>
+
 </g:if>
 <g:else>
   <div class="portal_pagination">
