@@ -54,7 +54,8 @@ class ReponseAssociateSpecificationService extends ReponseSpecificationService<R
 
     specification.associations.each {
       if (specification.montrerColonneAGauche) {
-        association = it
+        association = new Association()
+        association.participant1 = it.participant1
         association.participant2 = ''
         valeursReponse << association
       } else {
