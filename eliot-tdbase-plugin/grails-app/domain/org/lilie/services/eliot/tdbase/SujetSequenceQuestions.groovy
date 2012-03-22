@@ -46,8 +46,14 @@ class SujetSequenceQuestions implements Comparable {
     noteSeuilPoursuite(nullable: true)
     question(validator: {val, obj ->
       if (val.type.interaction) {
-        if (SujetSequenceQuestions.countBySujetAndQuestion(obj.sujet, val)) {
+        def nb = SujetSequenceQuestions.countBySujetAndQuestion(obj.sujet, val)
+        if (nb > 1) {
           return ['invalid.doublonsquestioninteraction']
+        } else if (nb == 1) {
+          def sujQu = SujetSequenceQuestions.findBySujetAndQuestion(obj.sujet, val)
+          if (obj != sujQu) {
+            return ['invalid.doublonsquestioninteraction']
+          }
         }
       }
     })

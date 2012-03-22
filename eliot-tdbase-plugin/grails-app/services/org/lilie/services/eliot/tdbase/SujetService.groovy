@@ -546,6 +546,9 @@ class SujetService {
       leSujet.lastUpdated = new Date()
       leSujet.save()
     }
+    if (sujetQuestion.hasErrors()) {
+      log.error(sujetQuestion.errors.allErrors.toListString())
+    }
     return sujetQuestion
   }
 

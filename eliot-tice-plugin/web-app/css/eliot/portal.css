@@ -958,11 +958,12 @@ Styles relatives to manuel
 ********************************************************************************/
 
 a.portal-manuel {
-    background-image: url('../../images/eliot/ico12/help.gif');
+    background-image: url('../../images/eliot/aide/btn-help-navy.png');
     background-repeat: no-repeat;
     background-position: left center;
     float: right;
     text-align: center;
+    padding-top: 10px;
     padding-right: 5px;
     padding-left: 15px;
     display: block;
