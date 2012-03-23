@@ -61,7 +61,7 @@
     </tr>
   </table>
 
-  <h1>Items importes</h1>
+  <h1>Items importés</h1>
   <table>
     <g:each in="${flash.report.itemsImportes}" var="item">
       <tr>
@@ -70,7 +70,7 @@
     </g:each>
   </table>
 
-  <h1>Items non importes</h1>
+  <h1>Items non importés</h1>
   <table>
     <g:each in="${flash.report.itemsNonImportes}" var="item">
       <tr>
