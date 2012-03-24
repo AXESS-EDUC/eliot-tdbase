@@ -44,6 +44,9 @@ class NumberUtils {
    * @return la chaîne de caractère correspondant au format
    */
   static String formatFloat(Float nb) {
+    if (nb == null) {
+      return ''
+    }
     if (defaultDecimalFormat == null) {
       synchronized (NumberUtils.class) {
         if (defaultDecimalFormat == null) {

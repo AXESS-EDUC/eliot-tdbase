@@ -62,6 +62,10 @@
     <button id="toolbar_${sujet.id}">Actions</button>
     <ul id="menu_actions_toolbar_${sujet.id}"
         class="tdbase-menu-actions">
+      <li><g:link action="reinitialiseCopieTest" id="${copie.id}">
+              Réinitialiser la copie
+           </g:link>
+      </li>
       <li><g:link action="ajouteSeance" id="${sujet.id}">
         Nouvelle&nbsp;séance
       </g:link>

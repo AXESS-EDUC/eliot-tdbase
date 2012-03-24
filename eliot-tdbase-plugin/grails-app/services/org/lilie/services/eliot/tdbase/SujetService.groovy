@@ -627,7 +627,7 @@ class SujetService {
       supprimeQuestionFromSujet(it, supprimeur)
     }
     // on ne supprime pas les attachements (il n'y en a pas)
-    // on ne supprime pas la publication, elle est attachée au sujey si
+    // on ne supprime pas la publication, elle est attachée au sujet si
     // il y en une
 
     laQuestion.delete()

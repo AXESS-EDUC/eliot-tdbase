@@ -162,10 +162,22 @@
 </form>
 <g:if test="${sujet}">
   <div class="tdbase-sujet-edition">
-    <g:each in="${sujet.questionsSequences}" var="sujetQuestion"
-            status="indexQuestion">
+    <g:set var="indexQuestion" value="1"/>
+    <g:set var="indexExercice" value="1"/>
+    <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
+      <g:set var="question" value="${sujetQuestion.question}"/>
       <div class="tdbase-sujet-edition-question">
-        <h1>Question ${indexQuestion + 1}</h1>
+        <g:if test="${question.estComposite()}">
+          <h1>Exercice ${indexExercice}</h1>
+          <g:set var="indexExercice" value="${indexExercice.toInteger() + 1}"/>
+        </g:if>
+        <g:elseif test="${question.type.interaction}">
+          <h1>Question ${indexQuestion}</h1>
+          <g:set var="indexQuestion" value="${indexQuestion.toInteger() + 1}"/>
+        </g:elseif>
+        <g:else>
+          <h1>${question.type.nom}</h1>
+        </g:else>
 
         <button id="${sujetQuestion.id}">Actions</button>
         <ul id="menu_actions_${sujetQuestion.id}"
@@ -241,24 +253,30 @@
 
         </ul>
 
-        <g:if test="${sujetQuestion.question.type.interaction}">
-          <div class="tdbase-sujet-edition-question-points">
-            <div class="editinplace"
-                 id="SujetSequenceQuestions-${sujetQuestion.id}"
-                 title="Cliquez pour modifier le barème...">
-              ${NumberUtils.formatFloat(sujetQuestion.points)}
-            </div>
-
-            <span class="point">point(s)</span>
+        <g:if test="${question.estComposite()}">
+          <div class="tdbase-sujet-edition-question-preview">
+            <g:render
+                    template="/question/Preview"
+                    model="[question: question, indexExercice: indexExercice]"/>
           </div>
         </g:if>
-        <div class="tdbase-sujet-edition-question-preview">
-          <g:set var="question" value="${sujetQuestion.question}"/>
-          <g:render
-                  template="/question/Preview"
-                  model="[question: question, indexQuestion: indexQuestion]"/>
-        </div>
-
+        <g:else>
+          <g:if test="${question.type.interaction}">
+            <div class="tdbase-sujet-edition-question-points">
+              <div class="editinplace"
+                   id="SujetSequenceQuestions-${sujetQuestion.id}"
+                   title="Cliquez pour modifier le barème...">
+                ${NumberUtils.formatFloat(sujetQuestion.points)}
+              </div>
+              <span class="point">point(s)</span>
+            </div>
+          </g:if>
+          <div class="tdbase-sujet-edition-question-preview">
+            <g:render
+                    template="/question/Preview"
+                    model="[question: question, indexQuestion: indexQuestion]"/>
+          </div>
+        </g:else>
       </div>
 
     </g:each>

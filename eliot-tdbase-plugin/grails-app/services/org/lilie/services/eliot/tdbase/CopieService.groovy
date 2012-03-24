@@ -54,7 +54,12 @@ class CopieService {
    */
   @Transactional
   Copie getCopieTestForSujetAndPersonne(Sujet sujet, Personne personne) {
-    Copie copie = Copie.findBySujetAndEleve(sujet, personne)
+    def criteria = Copie.createCriteria()
+    Copie copie = criteria.get {
+      eq 'sujet', sujet
+      eq 'eleve', personne
+      eq 'estJetable', true
+    }
     if (copie == null) {
       copie = new Copie(
               eleve: personne,
@@ -68,6 +73,23 @@ class CopieService {
     createReponsesManquantesForCopie(copie)
     copie.save(flush: true)
     return copie
+  }
+
+  /**
+   * Supprime la copie jetable d'une personne donnée
+   * @param copie la copie
+   * @param personne la personne
+   */
+  @Transactional
+  def supprimeCopieJetableForPersonne(Copie copie, Personne personne) {
+    assert copie.estJetable
+    assert copie.eleve == personne
+    def reponses = []
+    reponses.addAll(copie.reponses)
+    reponses.each { reponse ->
+      reponseService.supprimeReponse(reponse, null)
+    }
+    copie.delete(flush: true)
   }
 
   /**
@@ -325,10 +347,10 @@ class CopieService {
 
   /**
    *
-   * @param seance  la séance
+   * @param seance la séance
    * @param lesCopies les copies de la séance en cours
-   * @param chercheur  la personne déclenchant la recherche
-   * @return  les élèves n'ayant pas encore rendus leur copies
+   * @param chercheur la personne déclenchant la recherche
+   * @return les élèves n'ayant pas encore rendus leur copies
    */
   List<Personne> findElevesSansCopieForModaliteActivite(ModaliteActivite seance,
                                                         List<Copie> lesCopies,

@@ -63,7 +63,7 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
 
     if (spec.fichier && !spec.fichier.empty) {
       def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(
-              spec.fichier, question)
+              spec.fichier, question, spec.estInsereDansLeSujet)
       if (oldQuestAttId) {
         questionAttachementService.deleteQuestionAttachement(
                 QuestionAttachement.get(oldQuestAttId))
@@ -140,7 +140,7 @@ class DocumentSpecification implements QuestionSpecification {
   Attachement getAttachement() {
     if (questionAttachementId) {
       QuestionAttachement questionAttachement = QuestionAttachement.get(questionAttachementId)
-      return questionAttachement.attachement
+      return questionAttachement?.attachement
     } else {
       return null
     }

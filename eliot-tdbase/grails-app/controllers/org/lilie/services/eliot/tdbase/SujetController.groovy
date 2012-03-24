@@ -198,6 +198,16 @@ class SujetController {
 
   /**
    *
+   * Action "reinitialiseCopieTest"
+   */
+  def reinitialiseCopieTest() {
+    Copie copie = Copie.get(params.id)
+    copieService.supprimeCopieJetableForPersonne(copie, authenticatedPersonne)
+    redirect(action: 'teste',params: [id: copie.sujet.id])
+  }
+
+  /**
+   *
    * Action rend la copie
    */
   def rendLaCopie() {

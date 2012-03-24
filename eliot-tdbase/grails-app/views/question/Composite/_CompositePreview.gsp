@@ -30,13 +30,25 @@
 
 <%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 
-  <g:each in="${question.exercice.questionsSequences}"
-          var="currentSujetQuestion" status="indexQuestion">
-    <g:set var="currentQuestion" value="${currentSujetQuestion.question}"/>
-    <g:render
-                    template="/question/${currentQuestion.type.code}/${currentQuestion.type.code}Preview"
-                    model="[question: currentQuestion, indexQuestion: indexQuestion]"/>
-    <br/>
-  </g:each>
+<g:each in="${question.exercice.questionsSequences}"
+        var="currentSujetQuestion" status="indexQuestionInExercice">
+  <g:set var="currentQuestion" value="${currentSujetQuestion.question}"/>
+  <g:if test="${currentQuestion.type.interaction}">
+    <h2>Ex. ${indexExercice} → Question ${indexQuestionInExercice}</h2>
+
+    <div class="tdbase-sujet-edition-question-points">
+      <span class="point" title="Barême non modifiable (modifier l'exercice pour modifier le barême)"
+             style="margin-top: 15px;">
+        ${NumberUtils.formatFloat(currentSujetQuestion.points)} point(s)</span>
+    </div>
+  </g:if>
+  <g:else>
+    <h2>Ex. ${indexExercice} → ${currentQuestion.type.nom}</h2>
+  </g:else>
+  <g:render
+          template="/question/${currentQuestion.type.code}/${currentQuestion.type.code}Preview"
+          model="[question: currentQuestion, indexQuestion: indexQuestionInExercice]"/>
+  <br/>
+</g:each>
 
 
