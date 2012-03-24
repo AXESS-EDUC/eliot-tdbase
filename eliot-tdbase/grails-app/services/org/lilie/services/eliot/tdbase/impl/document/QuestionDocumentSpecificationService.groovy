@@ -27,12 +27,12 @@
  */
 package org.lilie.services.eliot.tdbase.impl.document
 
+import grails.validation.Validateable
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
-import grails.validation.Validateable
 
 /**
  *
@@ -56,6 +56,11 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
   def updateQuestionSpecificationForObject(Question question, DocumentSpecification spec) {
 
     def oldQuestAttId = question.specificationObject?.questionAttachementId
+    def oldQuestAttach = QuestionAttachement.get(oldQuestAttId)
+    if (oldQuestAttId && !oldQuestAttach) {
+      // cela peut se produire quand un problème de validation est survenu
+      question.specificationObject.questionAttachementId = null
+    }
     spec.fichierEstVide = false
     // l'appel à "super" est necessaire avant pour la gestion d'une
     // nouvelle question
@@ -64,16 +69,16 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
     if (spec.fichier && !spec.fichier.empty) {
       def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(
               spec.fichier, question, spec.estInsereDansLeSujet)
-      if (oldQuestAttId) {
+      if (oldQuestAttach) {
         questionAttachementService.deleteQuestionAttachement(
-                QuestionAttachement.get(oldQuestAttId))
+                oldQuestAttach)
       }
       spec.questionAttachementId = questionAttachement.id
       spec.urlExterne = null
     } else if (spec.urlExterne) {
-      if (oldQuestAttId) {
+      if (oldQuestAttach) {
         questionAttachementService.deleteQuestionAttachement(
-                QuestionAttachement.get(oldQuestAttId))
+                oldQuestAttach)
       }
     }
 

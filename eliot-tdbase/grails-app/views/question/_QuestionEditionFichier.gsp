@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.Attachement" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -27,6 +28,11 @@
   --}%
 
 <g:set var="attachement" value="${question.principalAttachement}"/>
+<g:if test="${attachement}">
+  %{--on force une verif sur base car l'attacchement suite à une erreur de
+        validation, peut être dans le cache hibernate sant être en base--}%
+   <g:set var="attachement" value="${Attachement.findById(attachement.id)}"/>
+</g:if>
 <g:if test="${!question.doitSupprimerPrincipalAttachement && attachement}">
   ${attachement.nomFichierOriginal}&nbsp;
   <g:submitToRemote action="supprimePrincipalAttachement"

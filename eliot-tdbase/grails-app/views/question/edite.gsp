@@ -132,7 +132,7 @@
       class="tdbase-menu-actions">
     <li>Aperçu</li>
     <li><hr/></li>
-    <li>Dupliquer</li>>
+    <li>Dupliquer</li>
     <li>Exporter</li>
     <li><hr/></li>
     <li>Supprimer</li>

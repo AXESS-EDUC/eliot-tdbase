@@ -28,17 +28,23 @@
 
 <%@ page import="org.lilie.services.eliot.tdbase.QuestionAttachement" %>
 
-
 <g:if test="${specifobject.questionAttachementId}">
+  %{--utilisation de findBy pour ne pas passer par le cache de session--}%
   <g:set var="questionAttachement"
-         value="${QuestionAttachement.get(specifobject.questionAttachementId)}"/>
-  <g:hiddenField name="specifobject.questionAttachementId" value="${specifobject.questionAttachementId}"/>
-  ${questionAttachement.attachement.nomFichierOriginal}&nbsp;
-  <g:submitToRemote action="supprimeAttachement"
-                    controller="questionDocument"
-                    update="specifobject_fichier"
-                    value="Suppr" class="button"/>
-  <br/>
+         value="${QuestionAttachement.findById(specifobject.questionAttachementId)}"/>
+  <g:if test="${questionAttachement}">
+    <g:hiddenField name="specifobject.questionAttachementId"
+                   value="${specifobject.questionAttachementId}"/>
+    ${questionAttachement.attachement.nomFichierOriginal}&nbsp;
+    <g:submitToRemote action="supprimeAttachement"
+                      controller="questionDocument"
+                      update="specifobject_fichier"
+                      value="Suppr" class="button"/>
+    <br/>
+  </g:if>
+  <g:else>
+    <input type="file" name="specifobject.fichier">
+  </g:else>
 </g:if>
 <g:else>
   <input type="file" name="specifobject.fichier">
