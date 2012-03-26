@@ -335,7 +335,7 @@ class QuestionController {
 
   def mesItems() {
     params.max = Math.min(params.max ? params.int('max') : 5, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "question.mesitems.titre"))
     Personne personne = authenticatedPersonne
     def questions = questionService.findQuestionsForProprietaire(
             personne,
