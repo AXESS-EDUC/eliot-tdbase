@@ -179,7 +179,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
         ]
 ]
 
-// set url documentation
+// l'url des fichiers de documentation par fonction
 eliot.manuels.documents.urlMap = [
         "${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
         "${FonctionEnum.DOC.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",

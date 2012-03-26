@@ -1,4 +1,4 @@
-<plugin name='eliot-textes-plugin' version='0.5-SNAPSHOT' grailsVersion='2.0.0 &gt; *'>
+<plugin name='eliot-textes-plugin' version='0.5-SNAPSHOT' grailsVersion='2.0.1 &gt; *'>
   <author>Franck Silvestre - Fylab</author>
   <title>Eliot Textes  Plugin</title>
   <description>Plugin contenant les services métiers relatifs au cahier de textes"
@@ -48,21 +48,21 @@
   </dependencies>
   <plugins>
     <compile>
-      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
-      <plugin group='org.grails.plugins' name='hibernate' version='2.0.0' />
-      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
-      <plugin group='org.grails.plugins' name='mail' version='1.0' />
-      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
       <plugin group='org.grails.plugins' name='resources' version='1.1.5' />
+      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='mail' version='1.0' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.0.1' />
+      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
       <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
+      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
     </compile>
     <runtime>
-      <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
       <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
+      <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
     </runtime>
     <build>
+      <plugin group='org.grails.plugins' name='tomcat' version='2.0.1' />
       <plugin group='org.grails.plugins' name='release' version='1.0.0' />
-      <plugin group='org.grails.plugins' name='tomcat' version='2.0.0' />
     </build>
   </plugins>
   <runtimePluginRequirements />

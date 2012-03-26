@@ -15,6 +15,7 @@ bin
 *.rar
 *.tar
 *.zip
+*.sha1
 
 # Logs and databases #
 ######################
