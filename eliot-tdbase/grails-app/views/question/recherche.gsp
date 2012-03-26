@@ -123,10 +123,13 @@
   <div class="portal_pagination ${afficheFormulaire ? 'partiel' : ''} ">
 
     <p class="nb_result">${questions.totalCount} résultat(s)</p>
-
-    <div class="pager">Page(s) : <g:paginate
-            total="${questions.totalCount}"
-            params="${rechercheCommand?.toParams()}"></g:paginate></div>
+    <g:if test="${afficherPager}">
+      <div class="pager">
+        Page(s) : <g:paginate
+                total="${questions.totalCount}"
+                params="${rechercheCommand?.toParams()}"></g:paginate>
+      </div>
+    </g:if>
   </div>
 
   <div class="portal-default_results-list question  ${sujet ? 'partiel' : ''}">

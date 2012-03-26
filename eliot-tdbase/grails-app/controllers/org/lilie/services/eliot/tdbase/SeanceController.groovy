@@ -30,13 +30,12 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.json.JsonBuilder
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
-import grails.converters.JSON
-import groovy.json.JsonBuilder
 
 class SeanceController {
 
@@ -110,16 +109,22 @@ class SeanceController {
    * Action "recherche"
    */
   def liste() {
-    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    def maxItems = grailsApplication.config.eliot.listes.max
+    params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.liste.titre"))
     Personne personne = authenticatedPersonne
     def modalitesActivites = modaliteActiviteService.findModalitesActivitesForEnseignant(
             personne,
             params
     )
+    boolean affichePager = false
+    if (modalitesActivites.totalCount > maxItems) {
+      affichePager = true
+    }
     render(view: '/seance/liste', model: [
             liens: breadcrumpsService.liens,
-            seances: modalitesActivites
+            seances: modalitesActivites,
+            affichePager: affichePager
     ])
   }
 
@@ -132,7 +137,7 @@ class SeanceController {
     Personne personne = authenticatedPersonne
     modaliteActiviteService.supprimeModaliteActivite(seance,
                                                      personne)
-    redirect(action: "liste", params: [bcInit:true])
+    redirect(action: "liste", params: [bcInit: true])
   }
 
   /**
@@ -147,7 +152,7 @@ class SeanceController {
     def copies = copieService.findCopiesForModaliteActivite(
             seance,
             personne)
-    def elevesSansCopies =  copieService.findElevesSansCopieForModaliteActivite(
+    def elevesSansCopies = copieService.findElevesSansCopieForModaliteActivite(
             seance,
             copies,
             personne
@@ -156,7 +161,7 @@ class SeanceController {
             liens: breadcrumpsService.liens,
             seance: seance,
             copies: copies,
-            elevesSansCopies : elevesSansCopies
+            elevesSansCopies: elevesSansCopies
     ])
   }
 

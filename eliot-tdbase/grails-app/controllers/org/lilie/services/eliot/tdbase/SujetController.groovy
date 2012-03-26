@@ -36,7 +36,8 @@ class SujetController {
    * Action "recherche"
    */
   def recherche(RechercheSujetCommand rechCmd) {
-    params.max = Math.min(params.max ? params.int('max') : 5, 100)
+    def maxItems = grailsApplication.config.eliot.listes.max.recherche
+    params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     if (params.term) { // compatibilite avec autocomplete jquery
       rechCmd.patternTitre = params.term
     } else {
@@ -53,11 +54,16 @@ class SujetController {
             SujetType.get(rechCmd.typeId),
             params
     )
+    boolean affichePager = false
+    if (sujets.totalCount > maxItems) {
+      affichePager = true
+    }
     withFormat {
       html {
         [
                 liens: breadcrumpsService.liens,
                 afficheFormulaire: true,
+                affichePager: affichePager,
                 typesSujet: sujetService.getAllSujetTypes(),
                 matieres: profilScolariteService.findMatieresForPersonne(personne),
                 niveaux: profilScolariteService.findNiveauxForPersonne(personne),
@@ -78,15 +84,20 @@ class SujetController {
    * Action "mesSujets"
    */
   def mesSujets() {
-    params.max = Math.min(params.max ? params.int('max') : 5, 100)
+    def maxItems = grailsApplication.config.eliot.listes.max
+    params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.messujets.titre"))
     Personne personne = authenticatedPersonne
+    def sujets = sujetService.findSujetsForProprietaire(personne, params)
+    boolean affichePager = false
+    if (sujets.totalCount > maxItems) {
+      affichePager = true
+    }
     def model = [
             liens: breadcrumpsService.liens,
             afficheFormulaire: false,
-            sujets: sujetService.findSujetsForProprietaire(
-                    personne,
-                    params),
+            affichePager: affichePager,
+            sujets: sujets,
             artefactHelper: artefactAutorisationService,
             utilisateur: personne
     ]
@@ -203,7 +214,7 @@ class SujetController {
   def reinitialiseCopieTest() {
     Copie copie = Copie.get(params.id)
     copieService.supprimeCopieJetableForPersonne(copie, authenticatedPersonne)
-    redirect(action: 'teste',params: [id: copie.sujet.id])
+    redirect(action: 'teste', params: [id: copie.sujet.id])
   }
 
   /**
@@ -448,7 +459,7 @@ class SujetController {
     def sujet = Sujet.get(params.id)
     def xml = sujet ? moodleQuizExporterService.toMoodleQuiz(sujet) :
               message(code: 'xml.export.sujet.inexistant', args: [params.id])
-    response.setHeader("Content-disposition","attachment; filename=export.xml")
+    response.setHeader("Content-disposition", "attachment; filename=export.xml")
     render(text: xml, contentType: "text/xml", encoding: "UTF-8")
   }
 

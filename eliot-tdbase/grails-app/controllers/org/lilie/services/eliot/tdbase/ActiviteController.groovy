@@ -74,16 +74,22 @@ class ActiviteController {
    * Action "liste des séances"
    */
   def listeSeances() {
-    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    def maxItems = grailsApplication.config.eliot.listes.max
+    params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.liste.titre"))
     Personne personne = authenticatedPersonne
     def modalitesActivites = modaliteActiviteService.findModalitesActivitesForApprenant(
             personne,
             params
     )
+    boolean affichePager = false
+    if (modalitesActivites.totalCount > maxItems) {
+      affichePager = true
+    }
     render(view: '/activite/seance/liste', model: [
             liens: breadcrumpsService.liens,
-            seances: modalitesActivites
+            seances: modalitesActivites,
+            affichePager: affichePager
     ])
   }
 

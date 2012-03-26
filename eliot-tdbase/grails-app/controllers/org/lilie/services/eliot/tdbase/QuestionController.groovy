@@ -126,7 +126,7 @@ class QuestionController {
     Question question = Question.get(params.id)
     questionService.supprimeQuestion(question, personne)
     redirect(action: "mesItems", controller: "question",
-                 params: [bcInit: true])
+             params: [bcInit: true])
 
   }
 
@@ -299,7 +299,8 @@ class QuestionController {
    * Action "recherche"
    */
   def recherche(RechercheQuestionCommand rechCmd) {
-    params.max = Math.min(params.max ? params.int('max') : 5, 100)
+    def maxItems = grailsApplication.config.eliot.listes.max.recherche
+    params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
     Personne personne = authenticatedPersonne
     def questions = questionService.findQuestions(
@@ -318,6 +319,10 @@ class QuestionController {
     if (sujet) {
       afficheLiensModifier = false
     }
+    boolean affichePager = false
+    if (questions.totalCount > maxItems) {
+      affichePager = true
+    }
     [
             liens: breadcrumpsService.liens,
             afficheFormulaire: true,
@@ -328,13 +333,15 @@ class QuestionController {
             rechercheCommand: rechCmd,
             sujet: sujet,
             afficheLiensModifier: afficheLiensModifier,
+            afficherPager: affichePager,
             artefactHelper: artefactAutorisationService,
             utilisateur: personne
     ]
   }
 
   def mesItems() {
-    params.max = Math.min(params.max ? params.int('max') : 5, 100)
+    def maxItems = grailsApplication.config.eliot.listes.max
+    params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.mesitems.titre"))
     Personne personne = authenticatedPersonne
     def questions = questionService.findQuestionsForProprietaire(
@@ -342,11 +349,16 @@ class QuestionController {
             params
     )
     boolean afficheLiensModifier = true
+    boolean affichePager = false
+    if (questions.totalCount > maxItems) {
+      affichePager = true
+    }
     def model = [
             liens: breadcrumpsService.liens,
             afficheFormulaire: false,
             questions: questions,
             afficheLiensModifier: afficheLiensModifier,
+            afficherPager: affichePager,
             artefactHelper: artefactAutorisationService,
             utilisateur: personne
     ]
@@ -361,7 +373,7 @@ class QuestionController {
     Question question = Question.get(params.id)
     def xml = question ? moodleQuizExporterService.toMoodleQuiz(question) :
               message(code: 'xml.export.sujet.inexistant', args: [params.id])
-    response.setHeader("Content-disposition","attachment; filename=export.xml")
+    response.setHeader("Content-disposition", "attachment; filename=export.xml")
     render(text: xml, contentType: "text/xml", encoding: "UTF-8")
   }
 
