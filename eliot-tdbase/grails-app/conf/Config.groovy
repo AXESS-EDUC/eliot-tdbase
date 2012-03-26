@@ -180,7 +180,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
 ]
 
 // le nombre d'éléments max à afficher dans une liste de résultat
-eliot.listes.max.recherche = 5
+eliot.listes.maxrecherche = 5
 eliot.listes.max = 7
 
 // l'url des fichiers de documentation par fonction

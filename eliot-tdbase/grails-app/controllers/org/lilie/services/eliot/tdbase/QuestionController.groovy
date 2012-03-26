@@ -299,7 +299,7 @@ class QuestionController {
    * Action "recherche"
    */
   def recherche(RechercheQuestionCommand rechCmd) {
-    def maxItems = grailsApplication.config.eliot.listes.max.recherche
+    def maxItems = grailsApplication.config.eliot.listes.maxrecherche
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
     Personne personne = authenticatedPersonne

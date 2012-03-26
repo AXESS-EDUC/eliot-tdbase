@@ -36,7 +36,7 @@ class SujetController {
    * Action "recherche"
    */
   def recherche(RechercheSujetCommand rechCmd) {
-    def maxItems = grailsApplication.config.eliot.listes.max.recherche
+    def maxItems = grailsApplication.config.eliot.listes.maxrecherche
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     if (params.term) { // compatibilite avec autocomplete jquery
       rechCmd.patternTitre = params.term
@@ -414,6 +414,7 @@ class SujetController {
    * Action ajoute séance
    */
   def ajouteSeance() {
+    params.bcInit = true
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteseance.titre"))
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
