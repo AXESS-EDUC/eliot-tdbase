@@ -29,7 +29,7 @@
     &nbsp;
     <g:checkBox name="specifobject.reponses[${i}].estUneBonneReponse"
                 checked="${reponse.estUneBonneReponse}"/>
-    <g:textField name="specifobject.reponses[${i}].libelleReponse" size="45"
+    <g:textField name="specifobject.reponses[${i}].libelleReponse" size="44"
                  value="${reponse.libelleReponse}"/>
     &nbsp;
   <g:hiddenField name="specifobject.reponses[${i}].id" value="${reponse.id}"/>
