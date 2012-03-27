@@ -27,14 +27,19 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
-    <td class="label">Détail :</td>
-    <td class="detail">
-        ${specifobject.libelle} <br/>
-        <strong>Valeur cible :</strong>${specifobject.valeurAffichage}<br/>
-        <strong>Précision :</strong>${specifobject.precisionAffichage}<br/>
-        <strong>Valeur minimale :</strong>${specifobject.valeurMinAffichage}<br/>
-        <strong>Valeur maximale :</strong>${specifobject.valeurMaxAffichage}<br/>
-        <strong>Pas :</strong>${specifobject.pasAffichage}<br/>
-        <strong>Correction :</strong> ${specifobject.correction}
-    </td>
+  <td class="label">Détail&nbsp;:</td>
+  <td class="detail">
+    <strong>Libellé</strong>
+    <p>${specifobject.libelle}</p>
+    <p>
+      <strong>Valeur cible :</strong> ${specifobject.valeurAffichage}<br/>
+      <strong>Précision :</strong> ${specifobject.precisionAffichage}<br/>
+      <strong>Valeur minimale :</strong> ${specifobject.valeurMinAffichage}<br/>
+      <strong>Valeur maximale :</strong> ${specifobject.valeurMaxAffichage}<br/>
+      <strong>Pas :</strong>${specifobject.pasAffichage}
+    </p>
+
+    <strong>Correction :</strong>
+    <p>${specifobject.correction}</p>
+  </td>
 </tr>
