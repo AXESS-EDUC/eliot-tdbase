@@ -29,17 +29,18 @@
     <td class="label">Détail&nbsp;:</td>
     <td class="detail">
         <g:set var="specifobject" value="${question.specificationObject}"/>
-        ${specifobject.libelle} <br/>
+        <strong>Libellé</strong><p>${specifobject.libelle}</p>
         <g:each status="i" in="${specifobject.associations}" var="association">
             &nbsp;
-            <g:textField name="specifobject.associations[${i}].participant1" size="30"
+            <g:textField name="specifobject.associations[${i}].participant1" size="24"
                          value="${association.participant1}"/>
             &nbsp;
-            <g:textField name="specifobject.associations[${i}].participant2" size="30"
+            <g:textField name="specifobject.associations[${i}].participant2" size="24"
                          value="${association.participant2}"/>
             <br/>
         </g:each>
-
-        <strong>Correction :</strong> ${specifobject.correction}
+        <br/>
+        <strong>Correction :</strong> 
+        <p>${specifobject.correction}</p>
     </td>
 </tr>
