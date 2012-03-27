@@ -182,13 +182,13 @@
         <p class="date">Mise à jour le ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
 
         <p>
-          <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau :</strong>${sujetInstance.niveau?.libelleLong}</g:if>
-          <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière :</strong>${sujetInstance.matiere?.libelleLong}</g:if>
-          <g:if test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée :</strong>${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</g:if>
+          <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${sujetInstance.niveau?.libelleLong}</g:if>
+          <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${sujetInstance.matiere?.libelleLong}</g:if>
+          <g:if test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</g:if>
           <g:if test="${afficheFormulaire}">
-            <strong>» Auteur :</strong>${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}
+            <strong>» Auteur :</strong> ${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}
           </g:if>
-          <strong>» Partagé :</strong>${sujetInstance.estPartage() ? 'oui' : 'non'}
+          <strong>» Partagé :</strong> ${sujetInstance.estPartage() ? 'oui' : 'non'}
         </p>
 
       </div>

@@ -31,11 +31,11 @@
         status="i">
   ${texteATrouElement.valeurAsText()}
 </g:each>
-
-<br>
+<br/>
 <g:if test="${specifobject.montrerLesMots}">
-  <strong>Mots sugeres :</strong> ${specifobject.motsSugeres}
+<strong>Mots suggérés :</strong> ${specifobject.motsSugeres}
+  <br/>
 </g:if>
 
-  <strong>Correction :</strong> <br/>${specifobject.correction}
+ <strong>Correction :</strong> <br/>${specifobject.correction}
 

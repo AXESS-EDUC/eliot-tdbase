@@ -28,17 +28,18 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 <tr>
-    <td class="label">Détail :</td>
+    <td class="label">Détail&nbsp:</td>
     <td class="detail">
-        ${specifobject.libelle}
-        <br/>
-        <strong>Texte à trous :</strong> ${specifobject.texteATrous}
+        <strong>Libellé :</strong>
+        <p>${specifobject.libelle}</p>
+        
+        <strong>Texte à trous :</strong>
+        <p>${specifobject.texteATrous}</p>
 
-        <strong>Mots sugerés :</strong>
-
+        <strong>Mots suggérés :</strong>
         <p>${specifobject.motsSugeres}</p>
 
-        <strong>Presentation des troux :</strong>
+        <strong>Presentation des trous :</strong>
 
         <p><g:if test="${specifobject.saisieLibre}">Saisie libre</g:if><g:else>Choix dans le texte</g:else></p>
 
