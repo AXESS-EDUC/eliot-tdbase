@@ -43,8 +43,12 @@ class AttachementController {
     response.setHeader("Content-disposition", "filename=${attachement.nomFichierOriginal}")
     response.contentType = attachement.typeMime
     def is = attachementService.getInputStreamForAttachement(attachement)
-    response.outputStream << is
-    response.outputStream.flush()
+    if (attachement.typeMime?.contains('html')) {
+      render(is.text)
+    } else {
+      response.outputStream << is
+      response.outputStream.flush()
+    }
   }
 
 
