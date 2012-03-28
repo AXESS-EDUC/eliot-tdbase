@@ -30,8 +30,8 @@
 <p class="title"><strong>${specifobject.libelle}</strong></p>
 <g:each status="i" in="${specifobject.orderedItems}" var="orderedItem">
   &nbsp;
-  <g:textField name="specifobject.orderedItems[${i}].text" size="50"
-               value="${orderedItem.text}" disabled="true"/>
+  <g:textField name="specifobject.orderedItems[${i}].text" size="50" title="${orderedItem.text}"
+               value="${orderedItem.text}" disabled="true" style="margin-top: 5px; margin-bottom: 5px;"/>
   <br/>
 </g:each>
 <br/><strong>Correction :</strong> <br/>${specifobject.correction}

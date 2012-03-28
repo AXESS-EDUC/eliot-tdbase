@@ -36,7 +36,7 @@
   color: #817134;
   display: inline-block;
   height: 1em;
-  width: 16em;
+  width: 26em;
   padding: 0.5em 0.5em 0.5em 0.5em;
   text-decoration: none;
 }
@@ -48,7 +48,7 @@
   background: #f5f5f5;
   display: inline-block;
   height: 2em;
-  width: 17em;
+  width: 28em;
   padding: 0.5em 0.5em 0.5em 0.5em;
 }
 
