@@ -164,7 +164,7 @@
   <div class="tdbase-sujet-edition">
     <g:set var="indexQuestion" value="1"/>
     <g:set var="indexExercice" value="1"/>
-    <g:each in="${sujet.questionsSequences}" var="sujetQuestion">
+    <g:each in="${sujet.questionsSequences}" var="sujetQuestion" status="rang">
       <g:set var="question" value="${sujetQuestion.question}"/>
       <div class="tdbase-sujet-edition-question">
         <g:if test="${question.estComposite()}">
@@ -226,13 +226,13 @@
           <li>
             <g:link action="ajouteElement" controller="sujet"
                     id="${sujet.id}" params="[direction: 'avant',
-                    rang: indexQuestion]">
+                    rang: rang]">
               Insérer&nbsp;un&nbsp;item&nbsp;avant
             </g:link>
           </li>
           <li>
             <g:link action="ajouteElement" controller="sujet"
-                    id="${sujet.id}" params="[rang: indexQuestion]">
+                    id="${sujet.id}" params="[rang: rang]">
               Insérer&nbsp;un&nbsp;item&nbsp;après
             </g:link>
           </li>
