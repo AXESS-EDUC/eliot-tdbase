@@ -36,8 +36,23 @@
     $(document).ready(function () {
       $('#menu-item-seances').addClass('actif');
       $(".datepicker").datetimepicker();
+      var $confirmDialog = $("<div></div>")
+      							.html('Êtes vous sur de vouloir supprimer la séance avec toutes les copies associées ?')
+      							.dialog({
+      								autoOpen: false,
+      								title: "Suppression de la séance",
+      								modal: true,
+      								buttons : {
+      									"Annuler": function() {$(this).dialog("close");return false},
+      									'OK': function() {
+                                            $(this).dialog("close");
+                                            document.location = "${createLink(action:'supprime',controller: 'seance', id: modaliteActivite.id)}";
+                                            }
+      								}
+      							});
       $('.delete-actif').click(function () {
-        return confirm('Êtes vous sur de vouloir supprimer la séance et toutes les copies associées ?');
+        $confirmDialog.dialog('open');
+        return false;
       });
     });
   </r:script>
@@ -69,9 +84,9 @@
     </g:eachError>
   </div>
 </g:hasErrors>
-<g:if test="${request.messageCode}">
+<g:if test="${flash.messageCode}">
   <div class="portal-messages">
-    <li class="success"><g:message code="${request.messageCode}"
+    <li class="success"><g:message code="${flash.messageCode}"
                                    class="portal-messages success"/></li>
   </div>
 </g:if>

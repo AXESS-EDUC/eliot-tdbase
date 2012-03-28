@@ -51,14 +51,15 @@ class SeanceController {
  * Action "edite"
  */
   def edite() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
     ModaliteActivite modaliteActivite
     Personne personne = authenticatedPersonne
     if (params.creation) {
       modaliteActivite = new ModaliteActivite(enseignant: personne)
+      params.bcInit = true
     } else {
       modaliteActivite = ModaliteActivite.get(params.id)
     }
+    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
             personne)
     render(view: '/seance/edite', model: [
@@ -92,7 +93,8 @@ class SeanceController {
     }
 
     if (!modaliteActivite.hasErrors()) {
-      request.messageCode = "seance.enregistre.succes"
+      flash.messageCode = "seance.enregistre.succes"
+      redirect(action: "edite", id: modaliteActivite.id, params: [bcInit: true])
     }
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
             personne)

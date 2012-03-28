@@ -34,9 +34,6 @@
   <r:script>
     $(document).ready(function () {
       $('#menu-item-seances').addClass('actif');
-      $('.supprime').click(function () {
-        return confirm('Êtes vous sur de vouloir supprimer la séance et toutes les copies associées ?');
-      });
       initButtons();
     });
   </r:script>
@@ -51,47 +48,46 @@
   <div class="portal_pagination">
     <p class="nb_result">${seances.totalCount} résultat(s)</p>
     <g:if test="${affichePager}">
-    <div class="pager"> Page(s) : <g:paginate total="${seances.totalCount}"></g:paginate></div>
+      <div class="pager">Page(s) : <g:paginate
+              total="${seances.totalCount}"></g:paginate></div>
     </g:if>
   </div>
 
-	<div class="portal-default_results-list sceance">
-		<g:each in="${seances}" status="i" var="seance">
-		  <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
-		  	<h1> ${seance.sujet.titre}</h1>
-		  	
-		  	<button id="${seance.id}">Actions</button>
-		  	<ul id="menu_actions_${seance.id}"
-		  	    class="tdbase-menu-actions">
-		  	  <li><g:link action="listeResultats" controller="seance"
-		  	              id="${seance.id}">
-		  	    Corriger les copies
-		  	  </g:link>
-		  	  </li>
-		  	  <li><hr/></li>
-		  	  <li><g:link action="edite" controller="seance"
-		  	                      id="${seance.id}">
-		  	                Modifier
-		  	              </g:link>
-		  	  </li>
-		  	  <li><g:link action="supprime" controller="seance"
-		  	                                  id="${seance.id}" class="supprime">
-		  	      Supprimer
-		  	     </g:link>
-		  	  </li>
-		  	</ul>
-		  	<p><strong> » Groupe : </strong><b>${seance.groupeLibelle}</b></p>
-		  	<p>
-		  		
-		  		<g:if test="${seance.matiere?.libelleLong}"><strong>» Matière : </strong>${seance.matiere?.libelleLong}</g:if>
-		  		<strong> » Début de la séance : </strong>${seance.dateDebut.format('dd/MM/yy HH:mm')} 
-		  		<strong> » Fin : </strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
-		  	</p>
-		  	
-		  </div>
-		</g:each> 
-	</div>
-	
+  <div class="portal-default_results-list sceance">
+    <g:each in="${seances}" status="i" var="seance">
+      <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+        <h1>${seance.sujet.titre}</h1>
+
+        <button id="${seance.id}">Actions</button>
+        <ul id="menu_actions_${seance.id}"
+            class="tdbase-menu-actions">
+          <li><g:link action="listeResultats" controller="seance"
+                      id="${seance.id}">
+            Corriger les copies
+          </g:link>
+          </li>
+          <li><hr/></li>
+          <li><g:link action="edite" controller="seance"
+                      id="${seance.id}">
+            Modifier
+          </g:link>
+          </li>
+
+        </ul>
+
+        <p><strong>» Groupe :</strong><b>${seance.groupeLibelle}</b></p>
+
+        <p>
+
+          <g:if test="${seance.matiere?.libelleLong}"><strong>» Matière :</strong>${seance.matiere?.libelleLong}</g:if>
+          <strong>» Début de la séance :</strong>${seance.dateDebut.format('dd/MM/yy HH:mm')}
+          <strong>» Fin :</strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
+        </p>
+
+      </div>
+    </g:each>
+  </div>
+
 </g:if>
 <g:else>
   <div class="portal_pagination">

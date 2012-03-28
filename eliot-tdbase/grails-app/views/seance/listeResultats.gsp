@@ -32,12 +32,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="jquery"/>
+  <r:require modules="eliot-tice-ui"/>
   <r:script>
     $(document).ready(function () {
       $('#menu-item-seances').addClass('actif');
+      var $confirmDialog = $("<div></div>")
+            			    .html('Êtes vous sur de vouloir supprimer la séance avec toutes les copies associées ?')
+            			    .dialog({
+            					autoOpen: false,
+            				    title: "Suppression de la séance",
+            					modal: true,
+            					buttons : {
+            					    "Annuler": function() {$(this).dialog("close");return false},
+            						'OK': function() {
+                                        $(this).dialog("close");
+                                        document.location = "${createLink(action:'supprime',controller: 'seance', id: seance.id)}";
+                                        }
+            					}
+            			    });
       $('.delete').click(function () {
-        return confirm('Êtes vous sur de vouloir supprimer la séance et toutes les copies associées ?');
+              $confirmDialog.dialog('open');
+              return false;
       });
     });
   </r:script>
