@@ -113,25 +113,6 @@
                    class="portal-manuel"><g:message
             code="manuels.libellelien"/></et:manuelLink>
   </g:if>
-  <g:elseif
-          test="${SpringSecurityUtils.ifAllGranted(FonctionEnum.DIR.toRole())}">
-    <et:manuelLink fonctionEnum="${FonctionEnum.DIR}"
-                   class="portal-manuel"><g:message
-            code="manuels.libellelien"/></et:manuelLink>
-  </g:elseif>
-  <g:elseif
-          test="${SpringSecurityUtils.ifAllGranted(FonctionEnum.DOC.toRole())}">
-
-    <et:manuelLink fonctionEnum="${FonctionEnum.DOC}"
-                   class="portal-manuel"><g:message
-            code="manuels.libellelien"/></et:manuelLink>
-  </g:elseif>
-  <g:elseif
-          test="${SpringSecurityUtils.ifAllGranted(FonctionEnum.CTR.toRole())}">
-    <et:manuelLink fonctionEnum="${FonctionEnum.CTR}"
-                   class="portal-manuel"><g:message
-            code="manuels.libellelien"/></et:manuelLink>
-  </g:elseif>
 
 
   <g:layoutBody/>

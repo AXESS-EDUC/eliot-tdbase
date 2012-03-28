@@ -41,7 +41,6 @@
   <r:require module="eliot-tdbase"/>
   <g:layoutHead/>
   <r:layoutResources/>
-  <g:javascript src="eliot/portal-menu.js"/>
 </head>
 
 <body>

@@ -143,30 +143,18 @@ grails.plugins.springsecurity.interceptUrlMap = [
         ],
         '/dashboard/**': [
                 "${FonctionEnum.ENS.toRole()}",
-                "${FonctionEnum.DOC.toRole()}",
-                "${FonctionEnum.CTR.toRole()}",
-                "${FonctionEnum.DIR.toRole()}",
                 'IS_AUTHENTICATED_FULLY'
         ],
         '/sujet/**': [
                 "${FonctionEnum.ENS.toRole()}",
-                "${FonctionEnum.DOC.toRole()}",
-                "${FonctionEnum.CTR.toRole()}",
-                "${FonctionEnum.DIR.toRole()}",
                 'IS_AUTHENTICATED_FULLY'
         ],
         '/question/**': [
                 "${FonctionEnum.ENS.toRole()}",
-                "${FonctionEnum.DOC.toRole()}",
-                "${FonctionEnum.CTR.toRole()}",
-                "${FonctionEnum.DIR.toRole()}",
                 'IS_AUTHENTICATED_FULLY'
         ],
         '/seance/**': [
                 "${FonctionEnum.ENS.toRole()}",
-                "${FonctionEnum.DOC.toRole()}",
-                "${FonctionEnum.CTR.toRole()}",
-                "${FonctionEnum.DIR.toRole()}",
                 'IS_AUTHENTICATED_FULLY'
         ],
         '/activite/**': [
@@ -186,10 +174,7 @@ eliot.listes.max = 7
 // l'url des fichiers de documentation par fonction
 eliot.manuels.documents.urlMap = [
         "${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.DOC.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.CTR.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.DIR.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Direction/content/index.html",
-        //"${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
+        "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
         "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"
 ]
 
