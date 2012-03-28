@@ -76,7 +76,7 @@
     <resource>org.lilie.services.eliot.tice.utils.BreadcrumpsLien</resource>
     <resource>org.lilie.services.eliot.tice.utils.BreadcrumpsService</resource>
     <resource>org.lilie.services.eliot.tice.utils.InitialisationTestService</resource>
-    <resource>org.lilie.services.eliot.tice.utils.ManuelsService</resource>
+    <resource>org.lilie.services.eliot.tice.utils.PortailTagLibService</resource>
     <resource>org.lilie.services.eliot.tice.utils.ServiceEliotEnum</resource>
     <resource>org.lilie.services.eliot.tice.AttachementTagLib</resource>
     <resource>org.lilie.services.eliot.tice.ManuelTagLib</resource>

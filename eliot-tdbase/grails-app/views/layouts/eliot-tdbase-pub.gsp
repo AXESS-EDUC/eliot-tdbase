@@ -44,7 +44,7 @@
 </head>
 
 <body>
-<div class="container">
+<et:container class="container">
   <div class="portal-menu">
     <ul id="portal-hz-menu">
       <li>
@@ -53,7 +53,7 @@
     </ul>
   </div>
   <g:layoutBody/>
-</div>
+</et:container>
 <r:layoutResources/>
 
 </body>

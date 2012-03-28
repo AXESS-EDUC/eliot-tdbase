@@ -34,13 +34,13 @@ import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 /**
  * See the API for {@link grails.test.mixin.services.ServiceUnitTestMixin} for usage instructions
  */
-@TestFor(ManuelsService)
+@TestFor(PortailTagLibService)
 class ManuelServiceTests {
 
   private static final String URL1 = "/aide/documents/Manuel_Utilisateur_Tdbase_Enseignants.pdf"
   private static final String URL2 = "/aide/documents/Manuel_Utilisateur_Tdbase_Eleves.pdf"
   private static final String URL3 = "/aide/documents/Manuel_Utilisateur_Tdbase_Parents.pdf"
-  ManuelsService manuelsService = new ManuelsService()
+  PortailTagLibService portailTagLibService = new PortailTagLibService()
 
 
   void testaddManuelDocumentUrls() {
@@ -52,13 +52,13 @@ class ManuelServiceTests {
             "${FonctionEnum.ELEVE.name()}": URL2,
             "${FonctionEnum.PERS_REL_ELEVE.name()}": URL3
     ]
-    manuelsService.addManuelDocumentUrls(urlMap)
-    def url1 = manuelsService.findManuelDocumentUrlForFonction(FonctionEnum.ENS)
-    def url2 = manuelsService.findManuelDocumentUrlForFonction(FonctionEnum.DOC)
+    portailTagLibService.addManuelDocumentUrls(urlMap)
+    def url1 = portailTagLibService.findManuelDocumentUrlForFonction(FonctionEnum.ENS)
+    def url2 = portailTagLibService.findManuelDocumentUrlForFonction(FonctionEnum.DOC)
     assertEquals "url enseignant non conforme",URL1,url1
     assertEquals "url doc non conforme",URL1,url2
-    def url3 = manuelsService.findManuelDocumentUrlForFonction(FonctionEnum.ELEVE)
+    def url3 = portailTagLibService.findManuelDocumentUrlForFonction(FonctionEnum.ELEVE)
     assertEquals "url eleve non conforme",URL2,url3
-    assertNull manuelsService.findManuelDocumentUrlForFonction(FonctionEnum.ADF)
+    assertNull portailTagLibService.findManuelDocumentUrlForFonction(FonctionEnum.ADF)
   }
 }

@@ -28,13 +28,14 @@
 
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
 import org.lilie.services.eliot.tice.utils.BootstrapService
-import org.lilie.services.eliot.tice.utils.ManuelsService
+import org.lilie.services.eliot.tice.utils.PortailTagLibService
+import org.lilie.services.eliot.tice.utils.PortailTagLibService
 
 class BootStrap {
 
   BootstrapService bootstrapService
   DbMigrationService dbMigrationService
-  ManuelsService manuelsService
+  PortailTagLibService portailTagLibService
 
   def init = { servletContext ->
 
@@ -49,11 +50,15 @@ class BootStrap {
     }
     
     try {
-      manuelsService.addManuelDocumentUrls(config.eliot.manuels.documents.urlMap)
+      portailTagLibService.addManuelDocumentUrls(config.eliot.manuels.documents.urlMap)
     } catch (Exception e) {
       log.error("manuels.urls.update.echec")
       log.error(e.message)
     }
+
+    portailTagLibService.applicationInFrame = config.eliot.pages.container.forceDimensions
+    portailTagLibService.divHeight = config.eliot.pages.container.height
+    portailTagLibService.divWidth = config.eliot.pages.container.width
 
   }
 

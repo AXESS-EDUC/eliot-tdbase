@@ -43,7 +43,7 @@
 </head>
 
 <body>
-<div class="container">
+<et:container class="container">
     <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
       <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
     </g:if>
@@ -65,7 +65,7 @@
     </div>
   <et:manuelLink fonctionEnum="${FonctionEnum.ELEVE}" class="portal-manuel"><g:message code="manuels.libellelien"/></et:manuelLink>
   <g:layoutBody/>
-</div>
+</et:container>
 <r:layoutResources/>
 
 </body>

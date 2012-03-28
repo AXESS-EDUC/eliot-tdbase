@@ -29,10 +29,15 @@
 package org.lilie.services.eliot.tice.utils
 
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
+import org.codenarc.rule.basic.IntegerGetIntegerAstVisitor
 
-class ManuelsService {
+class PortailTagLibService {
 
   private manuelDocumentsUrl = [:]
+
+  Boolean applicationInFrame
+  Integer divHeight
+  Integer divWidth
 
   static transactional = false
 
@@ -65,4 +70,6 @@ class ManuelsService {
       addManuelDocumentUrlForFonction(urlMap.get(it), fonctionEnum)
     }
   }
+  
+
 }
