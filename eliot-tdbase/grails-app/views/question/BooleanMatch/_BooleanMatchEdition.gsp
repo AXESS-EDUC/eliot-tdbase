@@ -59,7 +59,7 @@
   </td>
 </tr>
 <tr>
-    <td class="label">Mode d'evalutation (Tout ou rien):</td>
+    <td class="label">Mode d'évalutation (Tout ou rien):</td>
     <td><g:checkBox name="specifobject.toutOuRien" checked="${specifobject.toutOuRien}"/></td>
 </tr>
 <tr>
