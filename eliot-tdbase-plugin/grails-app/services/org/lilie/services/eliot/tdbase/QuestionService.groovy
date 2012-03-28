@@ -82,8 +82,6 @@ class QuestionService implements ApplicationContextAware {
             specification: "{}"
     )
 
-    proprietes.remove('metaClass')
-    proprietes.remove('class')
     question.properties = proprietes
 
     // mise à jour attachement

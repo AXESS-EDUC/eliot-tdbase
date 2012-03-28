@@ -68,7 +68,7 @@
       </g:if>
 
 
-      <g:actionSubmit value="upload" action="enregistre" hidden="true"
+      <g:actionSubmit value="upload" action="enregistreEtPoursuisEdition" hidden="true"
                       id="iconUpload${i}"/>
 
       <input type="file" name="specifobject.icons[${i}].fichier"

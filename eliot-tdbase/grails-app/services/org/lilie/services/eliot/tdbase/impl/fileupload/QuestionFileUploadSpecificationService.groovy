@@ -69,7 +69,7 @@ class QuestionFileUploadSpecificationService extends QuestionSpecificationServic
 
     if (spec.fichier && !spec.fichier.empty) {
       def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(
-              spec.fichier, question)
+              spec.fichier, question,false)
       if (oldQuestAttId) {
         questionAttachementService.deleteQuestionAttachement(
                 QuestionAttachement.get(oldQuestAttId))

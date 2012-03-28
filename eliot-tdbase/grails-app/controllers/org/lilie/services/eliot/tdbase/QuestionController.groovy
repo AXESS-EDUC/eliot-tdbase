@@ -226,8 +226,40 @@ class QuestionController {
 
   /**
    *
-   * Action "enregistreInsertNouvelItem"
+   * Action "enregistreEtPoursuitEdition"
    */
+  def enregistreEtPoursuisEdition() {
+    Personne personne = authenticatedPersonne
+    def specifObject = getSpecificationObjectFromParams(params)
+    boolean questionEnEdition = true
+    Question question = Question.get(params.id)
+    if (question) {
+      questionService.updateProprietes(question, params, specifObject, personne)
+    } else {
+      question = questionService.createQuestion(params, specifObject, personne)
+      questionEnEdition = false
+    }
+    Sujet sujet = null
+    if (params.sujetId) {
+      sujet = Sujet.get(params.sujetId as Long)
+    }
+    render(view: '/question/edite', model: [
+            liens: breadcrumpsService.liens,
+            lienRetour: breadcrumpsService.lienRetour(),
+            question: question,
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujet: sujet,
+            questionEnEdition: questionEnEdition,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
+    ])
+  }
+
+/**
+ *
+ * Action "enregistreInsertNouvelItem"
+ */
   def enregistreInsertNouvelItem() {
     Personne personne = authenticatedPersonne
     def specifObject = getSpecificationObjectFromParams(params)
@@ -294,10 +326,10 @@ class QuestionController {
 
   }
 
-  /**
-   *
-   * Action "recherche"
-   */
+/**
+ *
+ * Action "recherche"
+ */
   def recherche(RechercheQuestionCommand rechCmd) {
     def maxItems = grailsApplication.config.eliot.listes.maxrecherche
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
@@ -365,10 +397,10 @@ class QuestionController {
     render(view: "recherche", model: model)
   }
 
-  /**
-   * Action pour exporter un sujet en XML.
-   * @return
-   */
+/**
+ * Action pour exporter un sujet en XML.
+ * @return
+ */
   def exporter() {
     Question question = Question.get(params.id)
     def xml = question ? moodleQuizExporterService.toMoodleQuiz(question) :
@@ -377,11 +409,11 @@ class QuestionController {
     render(text: xml, contentType: "text/xml", encoding: "UTF-8")
   }
 
-  /**
-   *
-   * @param params les paramètres de la requête
-   * @return l'objet représentant la spécification
-   */
+/**
+ *
+ * @param params les paramètres de la requête
+ * @return l'objet représentant la spécification
+ */
   protected def getSpecificationObjectFromParams(Map params) {}
 
 }

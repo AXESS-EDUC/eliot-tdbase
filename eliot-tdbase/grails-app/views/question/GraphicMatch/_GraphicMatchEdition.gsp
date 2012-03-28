@@ -44,7 +44,7 @@
     <input type="file" name="specifobject.fichier"
            onchange="$('#imageUpload').trigger('click');"/>
 
-    <g:actionSubmit value="upload" action="enregistre" title="Upload"
+    <g:actionSubmit value="upload" action="enregistreEtPoursuisEdition" title="Upload"
                     hidden="true"
                     id="imageUpload"/>
 

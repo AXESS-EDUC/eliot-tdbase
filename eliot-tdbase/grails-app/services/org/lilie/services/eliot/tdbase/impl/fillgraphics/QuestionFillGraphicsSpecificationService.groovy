@@ -57,7 +57,7 @@ class QuestionFillGraphicsSpecificationService extends QuestionSpecificationServ
     def oldImageId = question.specificationObject?.attachmentId
     if (spec.fichier && !spec.fichier.empty) {
       def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(
-              spec.fichier, question)
+              spec.fichier, question,true)
 
       if (oldImageId) {
         questionAttachementService.deleteQuestionAttachement(

@@ -30,7 +30,7 @@
 
 
 <tr>
-    <td class="label">Détail :</td>
+    <td class="label">Détail&nbsp;:</td>
     <td class="detail">
 
         ${specifobject.libelle}
@@ -39,24 +39,24 @@
         <div class="imageContainer">
             <g:if test="${specifobject.attachement}">
                 <et:viewAttachement attachement="${specifobject.attachement}"
-                                    width="500" height="500"/>
+                                    width="250" height="250"/>
             </g:if>
 
             <ul class="hotspots">
                 <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-                    <li topDistance="${hotspot.topDistance}"
-                        leftDistance="${hotspot.leftDistance}" hotspotId="${hotspot.id}">
+                    <li topDistance="${hotspot.topDistance/2}"
+                        leftDistance="${hotspot.leftDistance/2}" hotspotId="${hotspot.id}">
                     </li>
                 </g:each>
             </ul>
 
-            <ul class="icons">
+            <ul class="icons" style="width: 250px;">
                 <g:each status="i" in="${specifobject.icons}" var="icon">
 
                     <g:if test="${icon.attachment}">
                         <li class="icon">
                             <et:viewAttachement attachement="${icon.attachment}"
-                                                width="40" height="40"/>
+                                                width="20" height="20"/>
                             <br>
                             avec Zone ${specifobject.graphicMatches[icon.id]}
                         </li>

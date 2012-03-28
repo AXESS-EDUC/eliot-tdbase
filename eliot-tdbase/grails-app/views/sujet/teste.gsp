@@ -45,6 +45,7 @@
 
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
+%{--<div style="height: 540px; width: 931px;overflow: auto; ">--}%
 <div class="portal-tabs">
   <span class="portal-tabs-famille-liens">
     <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujet)}">
@@ -132,6 +133,6 @@
 
 <g:render template="/copie/edite"
           model="[lienRetour: lienRetour, copie: copie, afficheCorrection: afficheCorrection]"/>
-
+%{--</div>--}%
 </body>
 </html>

@@ -30,32 +30,33 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 <tr>
-    <td class="label">Détail :</td>
+    <td class="label">Détail&nbsp;:</td>
 
     <td class="detail">
-        ${specifobject.libelle}
-        <br/>
+        <strong>Libellé</strong>
+        <p>${specifobject.libelle} </p>
 
-        <div class="fillgraphicsEditor">
+        <div class="fillgraphicsEditor" style="width: 250px; height: 250px;">
             <g:if test="${specifobject.attachmentId}">
                 <div class="imageContainer">
                     <et:viewAttachement
                             attachement="${specifobject.attachement}"
-                            width="500"
-                            height="500"/>
+                            width="250"
+                            height="250"/>
                 </div>
             </g:if>
 
             <g:each status="i" in="${specifobject.textZones}" var="textZone">
                 <div id="textZone_${i}" class="textZone"
-                     style=" top: ${textZone.topDistance}px; left: ${textZone.leftDistance}px;">
+                     style=" top: ${textZone.topDistance/2}px; left: ${textZone.leftDistance/2}px;">
                     <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="3"
-                                style="width: ${textZone.width}px; height: ${textZone.height}px;"
+                                style="font-size: 0.5em; width: ${textZone.width/2}px; height: ${textZone.height/2}px;"
                                 value="${textZone.text}" readonly="true" class="nonResizableTextArea"/>
                 </div>
             </g:each>
         </div>
 
-        <strong>Correction :</strong> ${specifobject.correction}
+        <strong>Correction :</strong> 
+        <p>${specifobject.correction}</p>
     </td>
 </tr>
