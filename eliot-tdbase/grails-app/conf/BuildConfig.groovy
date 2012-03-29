@@ -34,7 +34,7 @@ grails.plugin.location.'eliot-tice-plugin' = "../eliot-tice-plugin"
 grails.plugin.location.'eliot-tdbase-plugin' = "../eliot-tdbase-plugin"
 grails.plugin.location.'eliot-textes-plugin' = "../eliot-textes-plugin"
 grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
-
+grails.plugin.location.'spring-security-cas' = '../grails-spring-security-cas'
 
 grails.project.war.file = "target/${appName}.war"
 
@@ -76,7 +76,7 @@ grails.project.dependency.resolution = {
     compile ":jquery:1.7.1"
     compile ":jquery-ui:1.8.15"
     compile ":resources:1.1.5"
-    //compile ":spring-security-cas:1.0.2"
+
     compile ":codenarc:0.15"
     compile(":gmetrics:0.3.1") {
       excludes "groovy-all"
