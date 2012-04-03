@@ -843,7 +843,7 @@ Style for the edition of a document or category (Content)
     -webkit-border-radius: 4px;
     border-radius: 4px;
     text-transform: uppercase;
-    color: #ec8e0c !important;
+    color: #244A92 !important;
     background: whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
 }
 .ui-button-text{
@@ -859,8 +859,8 @@ button.ui-button-icons-only{width: 3.2em;}
 .ui-icon ui-icon-triangle-1-s{right: .3em!important;}
 
 .ui-button:hover, .button:hover, .ui-button.active {
-    border: 1px solid #fbcb09;
-    background: #fdf5ce url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
+    border: 1px solid #8f9cca;
+    background: #F3F6FB url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
     color: #ec8e0c;
     cursor: pointer;
 }
@@ -1312,3 +1312,11 @@ div.portal-default_results-list.sceance.resultats em{
 	padding: 0;
 	margin-bottom: 8px;
 }
+
+/*******************************************************************************
+
+ Surcharge jQuery UI
+
+********************************************************************************/
+.ui-state-hover .ui-icon, 
+.ui-state-focus .ui-icon {background-image: url(images/ui-icons_ef8c08_256x240.png);}
