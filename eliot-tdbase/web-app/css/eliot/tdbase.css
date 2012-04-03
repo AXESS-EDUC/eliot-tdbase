@@ -386,7 +386,7 @@ Style custom eliot-tdbase
     z-index: 100;
     background-color: white;
     padding: 10px;
-    border: 1px solid #ec8e0c;
+    border: 1px solid #3F61A0;
     min-width: 120px;
 }
 
@@ -404,7 +404,7 @@ Style custom eliot-tdbase
 }
 
 .tdbase-menu-actions li a:hover {
-    color: #ec8e0c;
+    color: #3F61A0;
 }
 
 .tdbase-menu-actions hr {
@@ -1318,5 +1318,6 @@ div.portal-default_results-list.sceance.resultats em{
  Surcharge jQuery UI
 
 ********************************************************************************/
+.ui-state-default .ui-icon,
 .ui-state-hover .ui-icon, 
-.ui-state-focus .ui-icon {background-image: url(images/ui-icons_ef8c08_256x240.png);}
+.ui-state-focus .ui-icon {background-image: url(../../images/eliot/ui-icons_3F61A0_256x240.png)!important;}
