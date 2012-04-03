@@ -59,7 +59,7 @@
         <td class="label">Mati&egrave;re&nbsp;:</td>
         <td>
           <g:select name="matiereId" value="${sujet.matiere?.id}"
-                    noSelection="${['null': 'Sélectionner une matière...']}"
+                    noSelection="${['null': g.message(code:"default.select.null")]}"
                     from="${matieres}"
                     optionKey="id"
                     optionValue="libelleLong"/>
@@ -69,7 +69,7 @@
         <td class="label">Niveau&nbsp;:</td>
         <td>
           <g:select name="niveauId" value="${sujet.niveau?.id}"
-                    noSelection="${['null': 'Sélectionner un niveau...']}"
+                    noSelection="${['null': g.message(code:"default.select.null")]}"
                     from="${niveaux}"
                     optionKey="id"
                     optionValue="libelleLong"/>

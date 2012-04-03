@@ -109,7 +109,7 @@
           </g:if>
           <g:else>
             <g:select name="proprietesScolariteSelectionId"
-                      noSelection="${['null': 'Sélectionner de groupe...']}"
+                      noSelection="${['null': g.message(code:"default.select.null")]}"
                       from="${proprietesScolarite}"
                       optionKey="id"
                       optionValue="structureEnseignementNomAffichage"/>

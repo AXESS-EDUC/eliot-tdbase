@@ -26,10 +26,10 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <tr>
-  <td class="label">Détail :</td>
+  <td class="label">Détail&nbsp;:</td>
   <td class="detail">
     <g:set var="specifobject" value="${question.specificationObject}"/>
-    <strong>Libellé</strong><p>${specifobject.libelle} </p>
+    <strong><g:message code="question.propriete.libelle"/></strong><p>${specifobject.libelle} </p>
       <strong>Correction</strong>
         <p><g:link action="viewAttachement" controller="attachement"
                     id="${specifobject.attachement.id}" target="_blank">

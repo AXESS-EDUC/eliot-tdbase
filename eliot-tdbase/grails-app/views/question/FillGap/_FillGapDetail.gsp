@@ -30,7 +30,7 @@
 <tr>
     <td class="label">Détail&nbsp:</td>
     <td class="detail">
-        <strong>Libellé :</strong>
+        <strong><g:message code="question.propriete.libelle"/></strong>
         <p>${specifobject.libelle}</p>
         
         <strong>Texte à trous :</strong>

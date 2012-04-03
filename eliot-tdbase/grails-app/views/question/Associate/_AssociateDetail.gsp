@@ -29,7 +29,7 @@
     <td class="label">Détail&nbsp;:</td>
     <td class="detail">
         <g:set var="specifobject" value="${question.specificationObject}"/>
-        <strong>Libellé</strong><p>${specifobject.libelle}</p>
+        <strong><g:message code="question.propriete.libelle"/></strong><p>${specifobject.libelle}</p>
         <g:each status="i" in="${specifobject.associations}" var="association">
             &nbsp;
             <g:textField name="specifobject.associations[${i}].participant1" size="24"

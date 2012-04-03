@@ -70,7 +70,7 @@ class QuestionController {
     Personne personne = authenticatedPersonne
     if (params.creation) {
       QuestionType questionType = QuestionType.get(params.questionTypeId)
-      question = new Question(type: questionType, titre: message(code: 'question.nouveau.titre', questionService: questionService))
+      question = new Question(type: questionType, titre: "")
     } else {
       question = Question.get(params.id)
       questionEnEdition = true

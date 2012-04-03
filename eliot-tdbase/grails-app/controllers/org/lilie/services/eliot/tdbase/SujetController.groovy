@@ -112,7 +112,7 @@ class SujetController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
     render(view: "edite", model: [
             liens: breadcrumpsService.liens,
-            titreSujet: message(code: "sujet.nouveau.titre"),
+            titreSujet: "",
             peutSupprimerSujet: false,
             peutPartagerSujet: false
     ])

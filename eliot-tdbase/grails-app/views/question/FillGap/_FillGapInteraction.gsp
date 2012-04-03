@@ -47,7 +47,7 @@
               name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"
               from="${texteATrouElement.valeur*.text}"
               value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
-              noSelection="['': 'Faites votre choix']"/>
+              noSelection="${['': g.message(code:"default.select.null")]}"/>
     </g:else>
     <g:set var="index" value="${index.toInteger() + 1}"/>
   </g:else>

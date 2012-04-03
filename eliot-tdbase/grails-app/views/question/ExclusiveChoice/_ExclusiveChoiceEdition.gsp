@@ -28,7 +28,7 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
   <td class="label">
-    Libell&eacute;&nbsp;:
+    <g:message code="question.propriete.libelle"/>&nbsp;:
   </td>
   <td>
     <g:textArea
@@ -60,7 +60,7 @@
   </td>
 </tr>
 <tr>
-    <td class="label">Présentation;&nbsp;aléatoire;&nbsp;:</td>
+    <td class="label">Présentation&nbsp;aléatoire&nbsp;:</td>
     <td><g:checkBox name="specifobject.shuffled"
                     checked="${specifobject.shuffled}"/></td>
 </tr>

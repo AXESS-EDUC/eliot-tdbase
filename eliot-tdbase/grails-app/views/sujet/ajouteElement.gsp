@@ -73,7 +73,7 @@
         <g:hiddenField name="creation" value="true"/>
         Une question de type <g:select name="questionTypeId"
                                        id="select_creation"
-                                       noSelection="${['null': 'Sélectionnez...']}"
+                                       noSelection="${['null': g.message(code:"default.select.null")]}"
                                        from="${typesQuestionSupportesPourCreation}"
                                        optionKey="id"
                                        optionValue="nom"/>
@@ -101,7 +101,7 @@
               controller="question" name="form_select_recherche">
         <g:hiddenField name="sujetId" value="${sujet.id}"/>
         Une question de type <g:select name="typeId" id="select_recherche"
-                                       noSelection="${['null': 'Sélectionnez...']}"
+                                       noSelection="${['null': g.message(code:"default.select.null")]}"
                                        from="${typesQuestionSupportes}"
                                        optionKey="id"
                                        optionValue="nom"/>

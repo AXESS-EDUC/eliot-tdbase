@@ -70,7 +70,7 @@
                   controller="question">
             <g:hiddenField name="creation" value="true"/>
             Une question de type <g:select name="questionTypeId"
-                                           noSelection="${['null':'Sélectionnez...']}"
+                                           noSelection="${['null': g.message(code:"default.select.null")]}"
                                            from="${typesQuestionSupportes}"
                                            optionKey="id"
                                            optionValue="nom"/>

@@ -26,7 +26,7 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 <tr>
-    <td class="label">Énoncé :</td>
+    <td class="label">Énoncé&nbsp;:</td>
     <td class="detail">
         ${question.specificationObject.enonce}
     </td>

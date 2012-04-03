@@ -31,7 +31,7 @@
 <tr>
     <td class="label">Détail&nbsp;:</td>
     <td class="detail">
-      <strong>Libellé</strong>
+      <strong><g:message code="question.propriete.libelle"/></strong>
         <p>${specifobject.libelle}</p>
         <g:each status="i" in="${specifobject.orderedItems}" var="orderedItem">
             &nbsp;

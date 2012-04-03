@@ -28,7 +28,7 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
   <td class="label">
-    Lib&eacute;ll&eacute;:
+    <g:message code="question.propriete.libelle"/>&nbsp;:
   </td>
   <td>
     <g:textArea

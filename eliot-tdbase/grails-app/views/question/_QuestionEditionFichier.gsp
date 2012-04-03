@@ -44,7 +44,7 @@
 <g:else>
   <g:if test="${attachementsSujet}">
     <g:select name="principalAttachementId"
-                        noSelection="${['null': 'Attacher un document...']}"
+              noSelection="${['null': g.message(code:"default.select.null")]}"
                         from="${attachementsSujet}"
                         optionKey="id"
                         optionValue="nom"/>  OU

@@ -182,7 +182,7 @@
           <td class="label">Mati&egrave;re :</td>
           <td>
             <g:select name="matiere.id" value="${sujet.matiereId}"
-                      noSelection="${['null': 'Sélectionner une matière...']}"
+                      noSelection="${['null': g.message(code:"default.select.null")]}"
                       from="${matieres}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -192,7 +192,7 @@
           <td class="label">Niveau :</td>
           <td>
             <g:select name="niveau.id" value="${sujet.niveauId}"
-                      noSelection="${['null': 'Sélectionner un niveau...']}"
+                      noSelection="${['null': g.message(code:"default.select.null")]}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -204,7 +204,7 @@
           <td class="label">Mati&egrave;re :</td>
           <td>
             <g:select name="matiere.id" value="${question.matiereId}"
-                      noSelection="${['null': 'Sélectionner une matière...']}"
+                      noSelection="${['null': g.message(code:"default.select.null")]}"
                       from="${matieres}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -214,7 +214,7 @@
           <td class="label">Niveau :</td>
           <td>
             <g:select name="niveau.id" value="${question.niveauId}"
-                      noSelection="${['null': 'Sélectionner un niveau...']}"
+                      noSelection="${['null': g.message(code:"default.select.null")]}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -222,7 +222,7 @@
         </tr>
       </g:else>
       <tr>
-        <td class="label">Doc.&nbsp;attaché&nbsp;:</td>
+        <td class="label"><g:message code="question.propriete.principalAttachement"/>&nbsp;:</td>
         <td id="question_fichier">
           <g:render template="/question/QuestionEditionFichier"
                     model="[question: question, attachementsSujet: attachementsSujets]"/>

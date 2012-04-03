@@ -44,7 +44,7 @@
   <td style="width: 40%; vertical-align: top;">
     <table>
       <tr>
-        <td class="label">Doc.&nbsp;attaché&nbsp;:</td>
+        <td class="label"><g:message code="question.propriete.principalAttachement"/>&nbsp;:</td>
         <td>
           <g:if test="${question.principalAttachement}">
             <g:link action="viewAttachement" controller="attachement"
