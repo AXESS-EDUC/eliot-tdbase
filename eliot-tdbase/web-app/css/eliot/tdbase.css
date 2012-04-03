@@ -633,9 +633,10 @@ Style for the edition of a document or category (ToolBar)
 }
 
 .portal-messages .notice {
-    background-color: #fbffd9;
+    background-color: #F3F6FB;
+    border: 1px solid #3F61A0;
     background-position: 5px 10px;
-    color: #ec8e0c;
+    color: #3F61A0;
     margin: 10px;
     padding: 10px 25px;
 }
