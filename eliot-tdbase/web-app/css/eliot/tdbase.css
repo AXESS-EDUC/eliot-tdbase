@@ -1027,13 +1027,13 @@ button.ui-button-icons-only{width: 3.2em;}
 
 /***** Liste Sceance élève ****/
 .button.work:before {
-    content: url("../../images/eliot/picto-work.png");
+    content: url("../../images/eliot/picto-work-blue.png");
     position: relative;
     top: 2px;
 }
 
 .button.voir:before {
-    content: url("../../images/eliot/picto-voir.png");
+    content: url("../../images/eliot/picto-voir-blue.png");
     position: relative;
     top: 2px;
 }
