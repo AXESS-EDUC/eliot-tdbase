@@ -699,22 +699,14 @@ Style for the edition of a document or category (ToolBar)
 }
 
 .portal-tabs .add {
-    padding: 4px 4px 4px 20px;
-    background: url("../../images/eliot/picto-add.png") no-repeat 0 4px;
-}
-
-.portal-tabs a.add:hover {
-    background-position: 0 -22px;
+    padding: 4px 4px 4px 22px;
+    background: url("../../images/eliot/add16x16.gif") no-repeat 0 2px;
 }
 
 .portal-tabs .modify {
-    padding: 4px 4px 4px 20px;
-    background: url("../../images/eliot/edit.png") no-repeat 0 1px;
+    padding: 4px 4px 4px 22px;
+    background: url("../../images/eliot/edit.png") no-repeat 0 2px;
 }
-
-/*.portal-tabs a.modify:hover {
-    background-position: 0 -22px;
-}*/
 
 .portal-tabs a.share {
     padding: 4px 4px 4px 20px;
@@ -1227,7 +1219,7 @@ Style for frontpage Widget
     text-align: left;
     margin: 1px 0 0px;
     padding: 6px 10px 8px 30px;
-    background:#f0f0f0 url("../../images/eliot/picto-add.png") no-repeat 8px 6px;
+    background:#f0f0f0 url("../../images/eliot/add16x16.gif") no-repeat 7px 5px;
 
     -webkit-border-bottom-right-radius: 6px;
 	-webkit-border-bottom-left-radius: 6px;
@@ -1238,10 +1230,7 @@ Style for frontpage Widget
     /*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
 	.widget a.add:hover,
-	.widget a.add:focus{
-		color: #ec8e0c;
-		background-position: 8px -21px;
-	}
+	.widget a.add:focus{color: #ec8e0c;}
 	
 /*******************************************************************************
 
