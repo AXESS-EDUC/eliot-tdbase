@@ -305,7 +305,7 @@ Style custom eliot-tdbase
     /*border: 1px solid #ec8e0c;*/
     width: 24%;
     float: right;
-    background-color: #fbffd9;
+    background-color: #F3F6FB;
 
     /*-moz-box-shadow:0px 0px 8px #bababa;
      -webkit-box-shadow:0px 0px 8px #bababa;
@@ -321,8 +321,8 @@ Style custom eliot-tdbase
 .tdbase-sujet-liste-elements h4 {
     margin: 0 10px;
     padding: 5px 0 7px;
-    border-bottom: 1px solid #ec8e0c;
-    color: #ec8e0c;
+    border-bottom: 1px solid #3F61A0;
+    color: #3F61A0;
     background: url("../../images/eliot/picto-sujet.png") no-repeat 100% 0;
 
     -moz-box-shadow: 0px 1px 0px #fff;
@@ -846,6 +846,7 @@ Style for the edition of a document or category (Content)
     color: #244A92 !important;
     background: whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
 }
+
 .ui-button-text{
 	padding-top: 2px!important;
 	padding-bottom: 3px!important;
