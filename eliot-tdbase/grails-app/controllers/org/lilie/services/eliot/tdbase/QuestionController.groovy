@@ -91,7 +91,8 @@ class QuestionController {
             artefactHelper: artefactAutorisationService,
             utilisateur: personne,
             questionEnEdition: questionEnEdition,
-            attachementsSujets: attachementsSujets
+            attachementsSujets: attachementsSujets,
+            annulationNonPossible: params.annulationNonPossible
     ])
   }
 
@@ -139,6 +140,7 @@ class QuestionController {
     Question question = Question.get(params.id)
     Question nvelleQuestion = questionService.recopieQuestion(question, personne)
     params.id = nvelleQuestion.id
+    params.annulationNonPossible = true
     redirect(action: 'edite', id: nvelleQuestion.id, params: params)
   }
 
@@ -151,7 +153,7 @@ class QuestionController {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
     Question nvelleQuestion = questionService.recopieQuestionDansSujet(sujetQuestion, personne)
     redirect(action: 'edite', id: nvelleQuestion.id,
-             params: [sujetId: sujetQuestion.sujet.id])
+             params: [sujetId: sujetQuestion.sujet.id, annulationNonPossible:true])
   }
 
   /**
