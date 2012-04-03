@@ -710,12 +710,12 @@ Style for the edition of a document or category (ToolBar)
 
 .portal-tabs .modify {
     padding: 4px 4px 4px 20px;
-    background: url("../../images/eliot/picto-modif.png") no-repeat 0 4px;
+    background: url("../../images/eliot/edit.png") no-repeat 0 1px;
 }
 
-.portal-tabs a.modify:hover {
+/*.portal-tabs a.modify:hover {
     background-position: 0 -22px;
-}
+}*/
 
 .portal-tabs a.share {
     padding: 4px 4px 4px 20px;
