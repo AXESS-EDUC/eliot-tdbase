@@ -98,7 +98,7 @@ public class Personne {
    * @return le nom d'affichage
    */
   String getNomAffichage() {
-    "$prenom $nom"
+    "$nom $prenom"
   }
 
 }
