@@ -758,7 +758,8 @@ Style for the edition of a document or category (Content)
 
 .recherche.form_actions,
 .corrige.form_actions,
-.edite.form_actions {
+.edite.form_actions,
+.form_actions {
     background: none;
     border: none;
     border-top-width: 0;
@@ -767,10 +768,10 @@ Style for the edition of a document or category (Content)
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     margin-left: 10px;
-    margin-right: auto;
+    margin-right: 10px;
     margin-bottom: -20px;
     text-align: right;
-    width: 70%;
+    width: auto;
 }
 	.portal-form_container.full{width: 100%;}
 
@@ -952,7 +953,8 @@ button.ui-button-icons-only{width: 3.2em;}
 }
 
 .teste .form_actions,
-.edite .form_actions {
+.edite .form_actions,
+.edite.form_actions {
     border: none;
     border-top: 1px dotted #ccc;
     background-color: #f0f0f0;
@@ -960,7 +962,8 @@ button.ui-button-icons-only{width: 3.2em;}
     width: auto;
     display: block;
 }
-
+	.edite.form_actions{margin: 20px 10px;padding-right: 15px;}
+	
 .teste .form_actions .button {
     margin-right: 20px;
 }
