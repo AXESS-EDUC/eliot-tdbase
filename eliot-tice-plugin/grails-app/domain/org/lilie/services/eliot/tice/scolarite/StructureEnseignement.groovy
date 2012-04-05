@@ -52,6 +52,7 @@ public class StructureEnseignement {
   String type
   Etablissement etablissement
   String code
+  Niveau niveau
 
   /**
    * Numéro de version de l'import STS qui a engendré la création ou la
