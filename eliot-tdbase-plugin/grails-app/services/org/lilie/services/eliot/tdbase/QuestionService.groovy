@@ -83,6 +83,7 @@ class QuestionService implements ApplicationContextAware {
     )
 
     question.properties = proprietes
+    question.save(flush: true)
 
     // mise à jour attachement
     if (question.principalAttachementId) {
