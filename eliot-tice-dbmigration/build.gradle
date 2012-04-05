@@ -2,8 +2,8 @@ group = "org.lilie.services.eliot"
 artefactId = "eliot-tice-dbmigration"
 version = "0.5-SNAPSHOT"
 
-versionSchemaEliot = "2.7.1-A1"
-classifierSchemaEliot = "A1"
+versionSchemaEliot = "2.7.1-RC1"
+// classifierSchemaEliot =
 
 apply plugin: 'idea'
 apply plugin: 'java'
@@ -26,12 +26,12 @@ configurations {
 
 
 dependencies {
-  liquibase group: 'org.liquibase', name: 'liquibase-core', version: '2.0.1'
+  liquibase group: 'org.liquibase', name: 'liquibase-core', version: '2.0.2'
   liquibase group: 'postgresql', name: 'postgresql', version: '8.4-702.jdbc4'
 
-  liquibase group: 'org.lilie.services.eliot', name:'eliot-securite-commons', version:"${versionSchemaEliot}", classifier:"${classifierSchemaEliot}"
-  liquibase group: 'org.lilie.services.eliot', name:'eliot-demon-commons', version:"${versionSchemaEliot}", classifier:"${classifierSchemaEliot}"
-  liquibase group: 'org.lilie.services.eliot', name:'eliot-scolarite-commons', version:"${versionSchemaEliot}", classifier:"${classifierSchemaEliot}"
+  liquibase group: 'org.lilie.services.eliot', name:'eliot-securite-commons', version:"${versionSchemaEliot}"
+  liquibase group: 'org.lilie.services.eliot', name:'eliot-demon-commons', version:"${versionSchemaEliot}"
+  liquibase group: 'org.lilie.services.eliot', name:'eliot-scolarite-commons', version:"${versionSchemaEliot}"
 
   deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
 }
