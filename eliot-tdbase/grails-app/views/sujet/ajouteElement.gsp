@@ -56,7 +56,7 @@
       <g:link action="edite"
               controller="question${QuestionTypeEnum.Statement}"
               params="[creation: true, questionTypeId: QuestionTypeEnum.Statement.id, sujetId: sujet.id]">
-        Un élément d'énoncé
+        Un énoncé
       </g:link>
     </li>
     <li>
@@ -87,7 +87,7 @@
     <li>
       <g:link action="recherche" controller="question"
               params="[typeId: QuestionTypeEnum.Statement.id, sujetId: sujet.id]">
-        Un élément d'énoncé
+        Un énoncé
       </g:link>
     </li>
     <li>

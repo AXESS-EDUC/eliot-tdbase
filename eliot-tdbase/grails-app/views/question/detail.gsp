@@ -52,7 +52,7 @@
     <span class="portal-tabs-famille-liens">
   <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, question)}">
     <g:link action="edite" class="modify"
-            id="${question.id}">Modifer l'item</g:link>&nbsp; |
+            id="${question.id}">Modifier l'item</g:link>&nbsp; |
   </g:if>
   <g:else>
     <span class="modify">Modifier l'item</span>&nbsp;| &nbsp;

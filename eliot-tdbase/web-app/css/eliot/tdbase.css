@@ -305,7 +305,7 @@ Style custom eliot-tdbase
     /*border: 1px solid #ec8e0c;*/
     width: 24%;
     float: right;
-    background-color: #fbffd9;
+    background-color: #F3F6FB;
 
     /*-moz-box-shadow:0px 0px 8px #bababa;
      -webkit-box-shadow:0px 0px 8px #bababa;
@@ -321,8 +321,8 @@ Style custom eliot-tdbase
 .tdbase-sujet-liste-elements h4 {
     margin: 0 10px;
     padding: 5px 0 7px;
-    border-bottom: 1px solid #ec8e0c;
-    color: #ec8e0c;
+    border-bottom: 1px solid #3F61A0;
+    color: #3F61A0;
     background: url("../../images/eliot/picto-sujet.png") no-repeat 100% 0;
 
     -moz-box-shadow: 0px 1px 0px #fff;
@@ -386,7 +386,7 @@ Style custom eliot-tdbase
     z-index: 100;
     background-color: white;
     padding: 10px;
-    border: 1px solid #ec8e0c;
+    border: 1px solid #3F61A0;
     min-width: 120px;
 }
 
@@ -404,7 +404,7 @@ Style custom eliot-tdbase
 }
 
 .tdbase-menu-actions li a:hover {
-    color: #ec8e0c;
+    color: #3F61A0;
 }
 
 .tdbase-menu-actions hr {
@@ -626,16 +626,16 @@ Style for the edition of a document or category (ToolBar)
 ********************************************************************************/
 /* Surcharge "portal.css" */
 .portal-messages .success {
-    background-color: #f8ffeb;
     background-position: 5px 10px;
     margin: 10px;
     padding: 10px 25px;
 }
 
 .portal-messages .notice {
-    background-color: #fbffd9;
+    background-color: #F3F6FB;
+    border: 1px solid #3F61A0;
     background-position: 5px 10px;
-    color: #ec8e0c;
+    color: #3F61A0;
     margin: 10px;
     padding: 10px 25px;
 }
@@ -681,10 +681,6 @@ Style for the edition of a document or category (ToolBar)
     margin-left: 10px;
 }
 
-.portal-tabs a:hover {
-    color: #ec8e0c;
-}
-
 .portal-tabs a:first-child,
 .portal-tabs span:first-child{
     margin-left: 0;
@@ -699,21 +695,13 @@ Style for the edition of a document or category (ToolBar)
 }
 
 .portal-tabs .add {
-    padding: 4px 4px 4px 20px;
-    background: url("../../images/eliot/picto-add.png") no-repeat 0 4px;
-}
-
-.portal-tabs a.add:hover {
-    background-position: 0 -22px;
+    padding: 4px 4px 4px 22px;
+    background: url("../../images/eliot/add16x16.gif") no-repeat 0 2px;
 }
 
 .portal-tabs .modify {
-    padding: 4px 4px 4px 20px;
-    background: url("../../images/eliot/picto-modif.png") no-repeat 0 4px;
-}
-
-.portal-tabs a.modify:hover {
-    background-position: 0 -22px;
+    padding: 4px 4px 4px 22px;
+    background: url("../../images/eliot/edit.png") no-repeat 0 2px;
 }
 
 .portal-tabs a.share {
@@ -758,8 +746,7 @@ Style for the edition of a document or category (Content)
     margin-left: 10px;
     margin-right: auto;
 
-    background-color: whiteSmoke;
-    background: #fdf5ce;
+    background-color: #F3F6FB;
     color: #999999;
     border: none;
 
@@ -771,7 +758,8 @@ Style for the edition of a document or category (Content)
 
 .recherche.form_actions,
 .corrige.form_actions,
-.edite.form_actions {
+.edite.form_actions,
+.form_actions {
     background: none;
     border: none;
     border-top-width: 0;
@@ -780,10 +768,10 @@ Style for the edition of a document or category (Content)
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     margin-left: 10px;
-    margin-right: auto;
+    margin-right: 10px;
     margin-bottom: -20px;
     text-align: right;
-    width: 70%;
+    width: auto;
 }
 	.portal-form_container.full{width: 100%;}
 
@@ -793,7 +781,7 @@ Style for the edition of a document or category (Content)
 
 .portal-form_container .title {
     font-size: 1.6em;
-    margin-right: 5px;
+    margin-right: 10px;
     padding: 0 0 4px 30px;
     background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;
     font-weight: bold;
@@ -843,9 +831,10 @@ Style for the edition of a document or category (Content)
     -webkit-border-radius: 4px;
     border-radius: 4px;
     text-transform: uppercase;
-    color: #ec8e0c !important;
+    color: #244A92 !important;
     background: whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
 }
+
 .ui-button-text{
 	padding-top: 2px!important;
 	padding-bottom: 3px!important;
@@ -859,8 +848,8 @@ button.ui-button-icons-only{width: 3.2em;}
 .ui-icon ui-icon-triangle-1-s{right: .3em!important;}
 
 .ui-button:hover, .button:hover, .ui-button.active {
-    border: 1px solid #fbcb09;
-    background: #fdf5ce url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
+    border: 1px solid #8f9cca;
+    background: #F3F6FB url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
     color: #ec8e0c;
     cursor: pointer;
 }
@@ -964,7 +953,8 @@ button.ui-button-icons-only{width: 3.2em;}
 }
 
 .teste .form_actions,
-.edite .form_actions {
+.edite .form_actions,
+.edite.form_actions {
     border: none;
     border-top: 1px dotted #ccc;
     background-color: #f0f0f0;
@@ -972,7 +962,8 @@ button.ui-button-icons-only{width: 3.2em;}
     width: auto;
     display: block;
 }
-
+	.edite.form_actions{margin: 20px 10px;padding-right: 15px;}
+	
 .teste .form_actions .button {
     margin-right: 20px;
 }
@@ -1026,13 +1017,13 @@ button.ui-button-icons-only{width: 3.2em;}
 
 /***** Liste Sceance élève ****/
 .button.work:before {
-    content: url("../../images/eliot/picto-work.png");
+    content: url("../../images/eliot/picto-work-blue.png");
     position: relative;
     top: 2px;
 }
 
 .button.voir:before {
-    content: url("../../images/eliot/picto-voir.png");
+    content: url("../../images/eliot/picto-voir-blue.png");
     position: relative;
     top: 2px;
 }
@@ -1066,9 +1057,7 @@ button.ui-button-icons-only{width: 3.2em;}
 			margin: 10px 0;
 		}
 		
-.edite.portal-form_container table td {
-    padding: 2px 0;
-}
+.edite.portal-form_container table td {padding: 2px 10px 2px 0;}
 
 .edite.portal-form_container h1 {
     padding-left: 50px;
@@ -1227,7 +1216,7 @@ Style for frontpage Widget
     text-align: left;
     margin: 1px 0 0px;
     padding: 6px 10px 8px 30px;
-    background:#f0f0f0 url("../../images/eliot/picto-add.png") no-repeat 8px 6px;
+    background:#f0f0f0 url("../../images/eliot/add16x16.gif") no-repeat 7px 5px;
 
     -webkit-border-bottom-right-radius: 6px;
 	-webkit-border-bottom-left-radius: 6px;
@@ -1237,11 +1226,6 @@ Style for frontpage Widget
 	border-bottom-left-radius: 6px;
     /*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
-	.widget a.add:hover,
-	.widget a.add:focus{
-		color: #ec8e0c;
-		background-position: 8px -21px;
-	}
 	
 /*******************************************************************************
 
@@ -1312,3 +1296,52 @@ div.portal-default_results-list.sceance.resultats em{
 	padding: 0;
 	margin-bottom: 8px;
 }
+
+
+
+/*******************************************************************************
+
+ Surcharge jQuery UI
+
+********************************************************************************/
+.ui-state-default .ui-icon,
+.ui-state-hover .ui-icon, 
+.ui-state-focus .ui-icon {background-image: url(../../images/eliot/ui-icons_3F61A0_256x240.png)!important;}
+
+.ui-widget-header {
+	border: 1px solid #3F61A0;
+	background: #3F61A0 url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+	border: 1px solid #8f9cca;
+    background: #F3F6FB url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+	color: #3F61A0;
+	font-weight: normal;
+}
+
+
+/*******************************************************************************
+
+ Item type Document > formulaire > choix d'un fichier
+
+********************************************************************************/
+.edite.portal-form_container input[type=text]{width: 404px;}
+
+tr.file{
+	position: relative;
+	display: block;
+	margin-top: 5px;
+}
+tr.file td{
+	position: absolute;
+	left: 530px;
+	top: -40px;
+}
+	tr.file td.label{min-width: 80px;text-align: left;}
+	tr.file td#specifobject_fichier{left: 600px;}
+	
+	@media screen and (-webkit-min-device-pixel-ratio:0) {
+	  tr.file td#specifobject_fichier{margin-top: -2px;}
+	}

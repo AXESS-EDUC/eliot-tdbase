@@ -88,7 +88,7 @@
             id)
             VALUES
             ('Tous droits réservés',
-             'Ce(tte) oeuvre est mise à disposition selon les termes du droit d''auteur émanant du code de la propriété intellectuelle.',
+             'Cette oeuvre est mise à disposition selon les termes du droit d''auteur émanant du code de la propriété intellectuelle.',
              'http://www.legifrance.gouv.fr/affichCode.do?cidTexte=LEGITEXT000006069414',
               null,
               true,
@@ -98,7 +98,7 @@
               true,
             1),
             ('(CC) BY-NC-SA',
-             'Ce(tte) oeuvre est mise à disposition selon les termes de la Licence Creative Commons Paternité - Pas d''Utilisation Commerciale - Partage à l''Identique 2.0 France',
+             'Cette oeuvre est mise à disposition selon les termes de la Licence Creative Commons Paternité - Pas d''Utilisation Commerciale - Partage à l''Identique 2.0 France',
              'http://creativecommons.org/licenses/by-nc-sa/2.0/fr/',
               'CC-BY-NC-SA.png',
               true,
@@ -169,7 +169,7 @@
                 id)
                 VALUES
                 ('(CC) BY-NC',
-                 'Ce(tte) oeuvre est mise à disposition selon les termes de la Licence Creative Commons Paternité - Pas d''Utilisation Commerciale - France',
+                 'Cette oeuvre est mise à disposition selon les termes de la Licence Creative Commons Paternité - Pas d''Utilisation Commerciale - France',
                  'http://creativecommons.org/licenses/by-nc/2.0/fr/',
                   'CC-BY-NC.png',
                   true,
