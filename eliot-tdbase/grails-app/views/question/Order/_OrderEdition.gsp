@@ -51,19 +51,21 @@
         R&eacute;ponse(s):
     </td>
     <td>
-        <ul>
-            <li id="order_reponses" style="list-style: none">
+      <table>
+        <tr>
+            <td id="order_reponses">
                 <g:render template="/question/Order/OrderEditionReponses"
                           model="[specifobject: specifobject]"/>
-            </li>
-            <li style="list-style: none;">
+            </td>
+            <td>
                 <g:submitToRemote title="Ajouter un nouveau element" value="Ajouter"
                                   action="ajouteItem"
                                   controller="questionOrder"
                                   update="order_reponses"
                                   class="button"/>
-            </li>
-        </ul>
+            </td>
+        </tr>
+      </table>
     </td>
 </tr>
 <tr>

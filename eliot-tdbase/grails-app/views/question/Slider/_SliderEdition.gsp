@@ -48,27 +48,27 @@
     <td>
         <table style="float: left; width:200px;">
             <tr>
-                <td>Valeur attendue :</td>
+                <td>Valeur&nbsp;attendue&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.valeur" value="${specifobject.valeurAffichage}" size="10"/>
                 </td>
 
             </tr>
             <tr>
-                <td>Précision :</td>
+                <td>Précision&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.precision" value="${specifobject.precisionAffichage}" size="10"/>
                 </td>
             </tr>
             <tr>
-                <td>Valeur minimale :</td>
+                <td>Valeur&nbsp;minimale&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.valeurMin" value="${specifobject.valeurMinAffichage}" size="10"/>
                 </td>
 
             </tr>
             <tr>
-                <td>Valeur maximale :</td>
+                <td>Valeur&nbsp;maximale&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.valeurMax" value="${specifobject.valeurMaxAffichage}"
                                  size="10"/><br/>
@@ -76,7 +76,7 @@
 
             </tr>
             <tr>
-                <td>Pas:</td>
+                <td>Pas&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.pas" value="${specifobject.pasAffichage}" size="10"/>
                 </td>
