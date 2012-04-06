@@ -58,20 +58,16 @@
                               controller="questionFillGraphics"
                               update="fillgraphicsEditor"
                               onComplete="afterTextZoneAdded()"/>
+
+          <div id="fillgraphicsEditor" class="fillgraphicsEditor">
+                      <g:render
+                              template="/question/FillGraphics/FillGraphicsReponses"
+                              model="[specifobject: specifobject]"/>
+                  </div>
         </g:if>
     </td>
 </tr>
 
-<tr>
-    <td></td>
-    <td>
-        <div id="fillgraphicsEditor" class="fillgraphicsEditor">
-            <g:render
-                    template="/question/FillGraphics/FillGraphicsReponses"
-                    model="[specifobject: specifobject]"/>
-        </div>
-    </td>
-</tr>
 <tr>
     <td class="label">Montrer les mots:</td>
     <td><g:checkBox name="specifobject.montrerLesMots" checked="${specifobject.montrerLesMots}"/></td>
