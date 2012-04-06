@@ -80,6 +80,7 @@ public class StructureEnseignement {
     type(nullable: false, inList: [TYPE_CLASSE, TYPE_GROUPE])
     etablissement(nullable: false)
     code(nullable: true)
+    niveau(nullable: true)
   }
 
   static mapping = {
