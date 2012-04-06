@@ -34,8 +34,8 @@ grails.project.test.reports.dir = "target/test-reports"
 
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
-versionSchemaEliot = "2.7.1-A1"
-classifierSchemaEliot = "A1"
+versionSchemaEliot = "2.7.1-RC1"
+
 
 grails.project.dependency.resolution = {
 
@@ -58,9 +58,9 @@ grails.project.dependency.resolution = {
     runtime "postgresql:postgresql:8.4-702.jdbc4"
     compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.1'
     runtime group: 'org.lilie.services.eliot', name: 'eliot-tice-dbmigration', version: '0.5-SNAPSHOT'
-    runtime group: 'org.lilie.services.eliot', name: 'eliot-securite-commons', version: "${versionSchemaEliot}", classifier: "${classifierSchemaEliot}"
-    runtime group: 'org.lilie.services.eliot', name: 'eliot-demon-commons', version: "${versionSchemaEliot}", classifier: "${classifierSchemaEliot}"
-    runtime group: 'org.lilie.services.eliot', name: 'eliot-scolarite-commons', version: "${versionSchemaEliot}", classifier: "${classifierSchemaEliot}"
+    runtime group: 'org.lilie.services.eliot', name: 'eliot-securite-commons', version: "${versionSchemaEliot}"
+    runtime group: 'org.lilie.services.eliot', name: 'eliot-demon-commons', version: "${versionSchemaEliot}"
+    runtime group: 'org.lilie.services.eliot', name: 'eliot-scolarite-commons', version: "${versionSchemaEliot}"
 
   }
 
