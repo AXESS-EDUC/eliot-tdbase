@@ -31,14 +31,14 @@
 <tr>
   <td class="label">Auteur&nbsp;:</td>
   <td>
-    <input type="text" value="${specifobject.auteur}"
+    <input size="75" type="text" value="${specifobject.auteur}"
            name="specifobject.auteur"/>
   </td>
 </tr>
 <tr>
   <td class="label">Source&nbsp;:</td>
   <td>
-    <input type="text" value="${specifobject.source}"
+    <input size="75" type="text" value="${specifobject.source}"
            name="specifobject.source"/>
   </td>
 </tr>
@@ -55,16 +55,16 @@
 <tr>
   <td class="label">URL externe&nbsp;:</td>
   <td>
-    <input type="text" value="${specifobject.urlExterne}"
+    <input size="75" type="text" value="${specifobject.urlExterne}"
            name="specifobject.urlExterne"/>
   </td>
 </tr>
-<!--<tr>
+<tr>
   <td class="label">OU</td>
   <td>&nbsp;</td>
-</tr>-->
-<tr class="file">
-  <td class="label">ou Fichier&nbsp;:</td>
+</tr>
+<tr>
+  <td class="label">Fichier&nbsp;:</td>
   <td id="specifobject_fichier">
     <g:render template="/question/Document/DocumentEditionFichier"
               model="[specifobject:specifobject]"/>

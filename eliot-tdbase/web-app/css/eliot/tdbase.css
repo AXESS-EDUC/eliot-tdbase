@@ -1321,28 +1321,3 @@ div.portal-default_results-list.sceance.resultats em{
 	color: #3F61A0;
 	font-weight: normal;
 }
-
-
-/*******************************************************************************
-
- Item type Document > formulaire > choix d'un fichier
-
-********************************************************************************/
-.edite.portal-form_container input[type=text]{width: 404px;}
-
-tr.file{
-	position: relative;
-	display: block;
-	margin-top: 5px;
-}
-tr.file td{
-	position: absolute;
-	left: 530px;
-	top: -40px;
-}
-	tr.file td.label{min-width: 80px;text-align: left;}
-	tr.file td#specifobject_fichier{left: 600px;}
-	
-	@media screen and (-webkit-min-device-pixel-ratio:0) {
-	  tr.file td#specifobject_fichier{margin-top: -2px;}
-	}
