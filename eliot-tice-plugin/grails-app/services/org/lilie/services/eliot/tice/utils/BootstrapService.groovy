@@ -52,7 +52,6 @@ class BootstrapService {
   ProfilScolariteService profilScolariteService
   SessionFactory sessionFactory
 
-  private static final String DEFAULT_PORTEUR_CODE = "DEFAULT"
   private static final String UTILISATEUR_1_LOGIN = "_test_mary"
   private static final String UTILISATEUR_1_LOGIN_ALIAS = "ens1"
   private static final String UTILISATEUR_1_PASSWORD = "ens1"
@@ -460,9 +459,11 @@ class BootstrapService {
               code: DEFAULT_CODE_PORTEUR_ENT,
               perimetre: perimetre,
               urlAccesEnt: DEFAULT_URL_ACCES_ENT,
-              urlRetourLogout: DEFAULT_URL_RETOUR_LOGOUT
+              urlRetourLogout: DEFAULT_URL_RETOUR_LOGOUT,
+              nom: 'Porteur Default pour tests et dev',
+              nomCourt: 'Porteur Default'
       ).save()
-      perimetre.idEnregistrementCible = porteurEnt.id
+      perimetre.enregistrementCibleId = porteurEnt.id
       perimetre.save()
     }
 

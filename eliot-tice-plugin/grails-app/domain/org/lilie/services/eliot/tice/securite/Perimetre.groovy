@@ -35,7 +35,7 @@ package org.lilie.services.eliot.tice.securite
 class Perimetre {
 
   String nomEntiteCible
-  Long idEnregistrementCible
+  Long enregistrementCibleId
   Boolean estActive = false
   Long importId
   Date dateDesactivation
@@ -46,7 +46,7 @@ class Perimetre {
     estActive(nullable: true)
     importId(nullable: true)
     dateDesactivation(nullable: true)
-    idEnregistrementCible(nullable: true)
+    enregistrementCibleId(nullable: true)
     perimetreParent(nullable: true)
   }
 
