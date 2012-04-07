@@ -35,11 +35,16 @@ import org.lilie.services.eliot.tice.annuaire.SourceImport
 import org.lilie.services.eliot.tice.annuaire.UtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.*
+import org.lilie.services.eliot.tice.annuaire.PorteurEnt
+import org.lilie.services.eliot.tice.securite.Perimetre
 
 class BootstrapService {
 
   static transactional = false
   public static final String DEMO_ENVIRONMENT = "demo"
+  private static final String DEFAULT_URL_ACCES_ENT = "http://localhost:8080/eliot-tdbase"
+  private static final String DEFAULT_URL_RETOUR_LOGOUT = "http://localhost:8080/eliot-tdbase"
+
 
 
   UtilisateurService utilisateurService
@@ -47,6 +52,7 @@ class BootstrapService {
   ProfilScolariteService profilScolariteService
   SessionFactory sessionFactory
 
+  private static final String DEFAULT_PORTEUR_CODE = "DEFAULT"
   private static final String UTILISATEUR_1_LOGIN = "_test_mary"
   private static final String UTILISATEUR_1_LOGIN_ALIAS = "ens1"
   private static final String UTILISATEUR_1_PASSWORD = "ens1"
@@ -100,6 +106,7 @@ class BootstrapService {
     changeLoginAliasMotdePassePourEnseignant1()
     initialiseEleve2EnvDevelopment()
     initialiseRespEleve1EnvDevelopment()
+    initialisePorteurEnt()
   }
 
   /**
@@ -114,6 +121,7 @@ class BootstrapService {
       initialiseStructuresEnseignementsEnvDevelopmentTest()
       initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
       initialiseProprietesScolaritesEleveEnvDevelopmentTest()
+      initialisePorteurEnt()
     }
 
   }
@@ -441,6 +449,26 @@ class BootstrapService {
     }
   }
 
+  private def initialisePorteurEnt() {
+    PorteurEnt porteurEnt = PorteurEnt.findByCode(DEFAULT_PORTEUR_CODE)
+    if (!porteurEnt) {
+      Perimetre perimetre = new Perimetre(
+              estActive: true,
+              nomEntiteCible: PorteurEnt.class.name
+      ).save()
+      porteurEnt = new PorteurEnt(
+              code: DEFAULT_CODE_PORTEUR_ENT,
+              perimetre: perimetre,
+              urlAccesEnt: DEFAULT_URL_ACCES_ENT,
+              urlRetourLogout: DEFAULT_URL_RETOUR_LOGOUT
+      ).save()
+      perimetre.idEnregistrementCible = porteurEnt.id
+      perimetre.save()
+    }
+
+
+  }
+
   // methode utilitaires
 
   private ResponsableEleve createResponsableEleve(Personne resp, Personne eleve) {
@@ -480,4 +508,6 @@ class BootstrapService {
     sessionFactory.currentSession.flush()
 
   }
+
+
 }

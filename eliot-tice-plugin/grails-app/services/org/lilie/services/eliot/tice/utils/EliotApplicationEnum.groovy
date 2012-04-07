@@ -31,11 +31,25 @@
 package org.lilie.services.eliot.tice.utils
 
 
-enum ServiceEliotEnum {
-  tdbase,
-  textes,
-  notes,
-  absences,
-  agenda,
-  docs
+enum EliotApplicationEnum {
+  ABSENCES('absences'),
+  AGENDA('agenda'),
+  DEMON_DOCS('demonDocs'),
+  DEMON_SCOLARITE('demonScolarite'),
+  DOCS('docs'),
+  MESSAGERIE('messagerie'),
+  NOTES('notes'),
+  SCOLARITE('scolarite'),
+  TEXTES('textes'),
+  TDBASE('tdbase')
+
+  private String code
+
+  private EliotApplicationEnum(String code) {
+    this.code = code
+  }
+
+  String getCode() {
+    return code
+  }
 }
