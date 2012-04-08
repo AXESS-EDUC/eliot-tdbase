@@ -33,6 +33,7 @@ grails.views.gsp.encoding = "UTF-8"
 environments {
   test {
     eliot.eliotApplicationEnum = EliotApplicationEnum.NOT_AN_APPLICATION
+    eliot.requestHeaderPorteur = "ENT_PORTEUR"
     eliot.not_an_application.nomApplication = "TicePlugin"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
     //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()

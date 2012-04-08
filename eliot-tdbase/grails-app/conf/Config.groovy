@@ -1,5 +1,7 @@
 import grails.plugins.springsecurity.SecurityConfigType
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
+import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
+import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -28,6 +30,12 @@ import org.lilie.services.eliot.tice.scolarite.FonctionEnum
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
+
+//
+//  L'application enum  et le nom du header indentifiant le porteur
+//
+eliot.eliotApplicationEnum = EliotApplicationEnum.TDBASE
+eliot.requestHeaderPorteur = "ENT_PORTEUR"
 
 /**
  * Chargement des configurations externalisées
@@ -64,8 +72,7 @@ grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
         all: '*/*',
         json: ['application/json', 'text/json'],
         form: 'application/x-www-form-urlencoded',
-        multipartForm: 'multipart/form-data'
-]
+        multipartForm: 'multipart/form-data']
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
@@ -138,35 +145,19 @@ grails.plugins.springsecurity.cas.active = false
 
 // set security rbac
 //
-grails.plugins.springsecurity.interceptUrlMap = [
-        '/': [
-                'IS_AUTHENTICATED_FULLY'
-        ],
-        '/dashboard/**': [
-                "${FonctionEnum.ENS.toRole()}",
-                'IS_AUTHENTICATED_FULLY'
-        ],
-        '/sujet/**': [
-                "${FonctionEnum.ENS.toRole()}",
-                'IS_AUTHENTICATED_FULLY'
-        ],
-        '/question/**': [
-                "${FonctionEnum.ENS.toRole()}",
-                'IS_AUTHENTICATED_FULLY'
-        ],
-        '/seance/**': [
-                "${FonctionEnum.ENS.toRole()}",
-                'IS_AUTHENTICATED_FULLY'
-        ],
-        '/activite/**': [
-                "${FonctionEnum.ELEVE.toRole()}",
-                'IS_AUTHENTICATED_FULLY'
-        ],
-        '/resultats/**': [
-                "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-                'IS_AUTHENTICATED_FULLY'
-        ]
-]
+grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
+        '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
+                'IS_AUTHENTICATED_FULLY'],
+        '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
+                'IS_AUTHENTICATED_FULLY'],
+        '/question/**': ["${FonctionEnum.ENS.toRole()}",
+                'IS_AUTHENTICATED_FULLY'],
+        '/seance/**': ["${FonctionEnum.ENS.toRole()}",
+                'IS_AUTHENTICATED_FULLY'],
+        '/activite/**': ["${FonctionEnum.ELEVE.toRole()}",
+                'IS_AUTHENTICATED_FULLY'],
+        '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+                'IS_AUTHENTICATED_FULLY']]
 
 // le nombre d'éléments max à afficher dans une liste de résultat
 eliot.listes.maxrecherche = 5
@@ -180,17 +171,23 @@ eliot.pages.container.height = 629
 eliot.pages.container.width = 931
 
 // l'url des fichiers de documentation par fonction
-eliot.manuels.documents.urlMap = [
-        "${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
         "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
-        "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"
-]
+        "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"]
 
 environments {
   test {
     eliot.fichiers.racine = '/tmp'
+    eliot.tdbase.nomApplication = "eliot-tdbase"
+    eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
+    //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+    //eliot.not_an_application.urlServeur = "http//localhost:8080"
   }
   development {
+    eliot.tdbase.nomApplication = "eliot-tdbase"
+    eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
+    //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+    //eliot.not_an_application.urlServeur = "http//localhost:8080"
     // autorise l'identification via url get
     grails.plugins.springsecurity.apf.postOnly = false
     // application de la migration  définie dans eliot-tice-dbmigration
@@ -202,26 +199,21 @@ environments {
     eliot.fichiers.maxsize.mega = 10
     // configuration des liens du menu portail et des annonces portail
     eliot.portail.menu.affichage = true
-    eliot.portail.menu.liens = [
-            [
-                    url: "http://wwww.ticetime.com",
-                    libelle: "ticetime"
-            ],
-            [
-                    url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                    libelle: "eliot-tdbase sur Github"
-            ]
-    ]
-    eliot.portail.news = [
-            "Environnement DEVELOPPEMENT",
+    eliot.portail.menu.liens = [[url: "http://wwww.ticetime.com",
+            libelle: "ticetime"],
+            [url: "https://github.com/ticetime/eliot-tdbase/wiki",
+                    libelle: "eliot-tdbase sur Github"]]
+    eliot.portail.news = ["Environnement DEVELOPPEMENT",
             "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
             "Login / mot de passe enseignant : ens1 / ens1",
             "Login / mot de passe élève 1 : elv1 / elv1",
             "Login / mot de passe élève 2 : elv2 / elv2",
-            "Login / mot de passe parent 1 : resp1 / resp1"
-    ]
+            "Login / mot de passe parent 1 : resp1 / resp1"]
   }
   testlilie {
+    eliot.tdbase.nomApplication = "eliot-tdbase"
+    eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+    eliot.not_an_application.urlServeur = "http//localhost:8080"
     // determine si eliot-tdbase doit s'executer en mode intégration Lilie
     eliot.portail.lilie = true
     // cas is not activated by default
@@ -240,20 +232,12 @@ environments {
     eliot.fichiers.maxsize.mega = 10
     // configuration des liens du menu portail et des annonces portail
     eliot.portail.menu.affichage = true
-    eliot.portail.menu.liens = [
-            [
-                    url: "http://wwww.ticetime.com",
-                    libelle: "ticetime"
-            ],
-            [
-                    url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                    libelle: "eliot-tdbase sur Github"
-            ]
-    ]
-    eliot.portail.news = [
-            "Environnement TESTLILIE",
-            "Login / mot de passe : voir base de test eliot/lilie"
-    ]
+    eliot.portail.menu.liens = [[url: "http://wwww.ticetime.com",
+            libelle: "ticetime"],
+            [url: "https://github.com/ticetime/eliot-tdbase/wiki",
+                    libelle: "eliot-tdbase sur Github"]]
+    eliot.portail.news = ["Environnement TESTLILIE",
+            "Login / mot de passe : voir base de test eliot/lilie"]
   }
 }
 

@@ -32,6 +32,7 @@ import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.PortailTagLibService
 
 import org.lilie.services.eliot.tice.utils.EliotUrlProvider
+import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 
 class PortailTagLib {
 
@@ -55,10 +56,12 @@ class PortailTagLib {
     if (attrs.fonctionEnum) {
       FonctionEnum fonctionEnum = attrs.fonctionEnum
       def url = portailTagLibService.findManuelDocumentUrlForFonction(fonctionEnum)
-      if (url) {
-        // todofsil : à terminer
-        // trouver le code porteur ds la requête
-        lnkUrl = eliotUrlProvider.getUrlServeur(request.codePorteur, attrs.applicationEnum) + url
+      if (url?.startsWith("http://")) {
+        lnkUrl =  url
+      } else if (url) {
+        def code = request.getHeader("${eliotUrlProvider.requestHeaderPorteur}")
+        def porteurEnt = PorteurEnt.findByCode(code, [cached: true])
+        lnkUrl = eliotUrlProvider.getUrlServeur(porteurEnt)+ url
       }
     }
     if (lnkUrl == "#") {

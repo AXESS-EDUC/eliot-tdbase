@@ -1,3 +1,6 @@
+import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
+import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
+
 // configuration for plugin testing - will not be included in the plugin zip
 
 log4j = {
@@ -28,5 +31,9 @@ grails.views.gsp.encoding = "UTF-8"
 environments {
   test {
     eliot.fichiers.racine = "/tmp"
+    eliot.eliotApplicationEnum = EliotApplicationEnum.NOT_AN_APPLICATION
+    eliot.requestHeaderPorteur = "ENT_PORTEUR"
+    eliot.not_an_application.nomApplication = "TdbasePlugin"
+    eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
   }
 }

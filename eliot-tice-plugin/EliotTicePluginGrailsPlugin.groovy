@@ -94,6 +94,14 @@ class EliotTicePluginGrailsPlugin {
     //
     def conf = ConfigurationHolder.config
 
+    String reqHeaderPorteur = conf.eliot.requestHeaderPorteur ?: null
+    if (!reqHeaderPorteur) {
+      def message = """
+                    Le paramètre eliot.requestHeaderPorteur n'a pas été configuré
+                    """
+      throw new IllegalStateException(message)
+    }
+
     EliotApplicationEnum applicationEnum = conf.eliot.eliotApplicationEnum ?: null
     if (!applicationEnum) {
       def message = """
@@ -137,6 +145,7 @@ class EliotTicePluginGrailsPlugin {
     }
 
     eliotUrlProvider(EliotUrlProvider) { bean ->
+      requestHeaderPorteur = reqHeaderPorteur
       nomApplication = nomAppl
       urlServeurResolutionEnum = urlServeurResolEnum
       urlServeurFromConfiguration = urlServeurFromConfig

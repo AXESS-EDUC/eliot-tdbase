@@ -42,6 +42,7 @@ class EliotUrlProvider {
 
   static transactional = false
 
+  String requestHeaderPorteur
   String nomApplication
   UrlServeurResolutionEnum urlServeurResolutionEnum
   String urlServeurFromConfiguration
@@ -63,7 +64,7 @@ class EliotUrlProvider {
         url = urlServeurFromConfiguration
         break;
       case UrlServeurResolutionEnum.ANNUAIRE_PORTEUR:
-        url = porteurEnt.urlAccesEnt
+        url = porteurEnt?.urlAccesEnt ?: ""
         break;
       default: throw new IllegalStateException("$urlServeurResolutionEnum n'est pas un mode géré")
     }
