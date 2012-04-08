@@ -181,13 +181,13 @@ environments {
     eliot.tdbase.nomApplication = "eliot-tdbase"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
     //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
-    //eliot.not_an_application.urlServeur = "http//localhost:8080"
+    //eliot.tdbase.urlServeur = "http//localhost:8080"
   }
   development {
     eliot.tdbase.nomApplication = "eliot-tdbase"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
     //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
-    //eliot.not_an_application.urlServeur = "http//localhost:8080"
+    //eliot.tdbase.urlServeur = "http//localhost:8080"
     // autorise l'identification via url get
     grails.plugins.springsecurity.apf.postOnly = false
     // application de la migration  définie dans eliot-tice-dbmigration
@@ -213,7 +213,7 @@ environments {
   testlilie {
     eliot.tdbase.nomApplication = "eliot-tdbase"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
-    eliot.not_an_application.urlServeur = "http//localhost:8080"
+    eliot.tdbase.urlServeur = "http//localhost:8080"
     // determine si eliot-tdbase doit s'executer en mode intégration Lilie
     eliot.portail.lilie = true
     // cas is not activated by default
