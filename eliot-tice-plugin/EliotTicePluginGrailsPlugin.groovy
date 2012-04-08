@@ -8,7 +8,7 @@ import org.lilie.services.eliot.tice.annuaire.impl.LilieUtilisateurService
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
 import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
-import org.lilie.services.eliot.tice.utils.EliotUrlService
+import org.lilie.services.eliot.tice.utils.EliotUrlProvider
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 
 /*
@@ -90,7 +90,7 @@ class EliotTicePluginGrailsPlugin {
       bean.initMethod = 'initFileDataStore'
     }
 
-    // configure la gestion d'EliotUrlService
+    // configure la gestion d'EliotUrlProvider
     //
     def conf = ConfigurationHolder.config
 
@@ -119,7 +119,6 @@ class EliotTicePluginGrailsPlugin {
     }
     UrlServeurResolutionEnum urlServeurResolEnum = UrlServeurResolutionEnum.valueOf(UrlServeurResolutionEnum.class,
                                                                                     urlResolutionMode.toUpperCase())
-
     String urlServeurFromConfig = null
     if (urlServeurResolEnum == UrlServeurResolutionEnum.CONFIGURATION) {
       if (conf.eliot."${applicationEnum.code}".urlServeur) {
@@ -137,7 +136,7 @@ class EliotTicePluginGrailsPlugin {
       throw new IllegalStateException(message)
     }
 
-    eliotUrlService(EliotUrlService) { bean ->
+    eliotUrlProvider(EliotUrlProvider) { bean ->
       nomApplication = nomAppl
       urlServeurResolutionEnum = urlServeurResolEnum
       urlServeurFromConfiguration = urlServeurFromConfig

@@ -38,43 +38,13 @@ import org.lilie.services.eliot.tice.annuaire.PorteurEnt
  * @author jtra
  * @author franck silvestre
  */
-class EliotUrlService {
+class EliotUrlProvider {
 
   static transactional = false
 
   String nomApplication
   UrlServeurResolutionEnum urlServeurResolutionEnum
   String urlServeurFromConfiguration
-
-
-  /**
-   * Construit une url pour un porteur, 1 application Eliot, 1 contrôleur et
-   * 1 action
-   * @param porteurEnt
-   * @param application
-   * @param controller
-   * @param action
-   * @return une url
-   * @throws IllegalStateException Si les données fournies n'ont pas permis de
-   * construire une url valide (données invalides en base pour le porteur,
-   * configuration manquante ou incorrecte pour l'application, ou controleur ou
-   * action incorrect
-   */
-  String getUrl(PorteurEnt porteurEnt,
-                String controller,
-                String action) {
-
-    String urlServeur = getUrlServeur(porteurEnt)
-
-    String url = "$urlServeur/$nomApplication/$controller/$action/"
-
-    UrlValidator urlValidator = new UrlValidator()
-    if (!urlValidator.isValid(url)) {
-      throw new IllegalStateException("$url n'est pas une url valide")
-    }
-
-    return url
-  }
 
 
 
@@ -93,7 +63,7 @@ class EliotUrlService {
         url = urlServeurFromConfiguration
         break;
       case UrlServeurResolutionEnum.ANNUAIRE_PORTEUR:
-        url = getUrlServeurFromPorteurEnt(porteurEnt)
+        url = porteurEnt.urlAccesEnt
         break;
       default: throw new IllegalStateException("$urlServeurResolutionEnum n'est pas un mode géré")
     }
@@ -106,15 +76,6 @@ class EliotUrlService {
     return url
   }
 
-
-  /**
-   * Retourne l'url serveur du porteur associé à la securiteSession
-   * @param porteurEnt
-   * @return une url
-   */
-  public String getUrlServeurFromPorteurEnt(PorteurEnt porteurEnt) {
-    return porteurEnt.urlAccesEnt
-  }
 }
 
 

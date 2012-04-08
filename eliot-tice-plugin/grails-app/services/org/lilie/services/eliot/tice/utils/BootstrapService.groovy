@@ -52,6 +52,8 @@ class BootstrapService {
   ProfilScolariteService profilScolariteService
   SessionFactory sessionFactory
 
+  static final String DEFAULT_CODE_PORTEUR_ENT = "ENT"
+
   private static final String UTILISATEUR_1_LOGIN = "_test_mary"
   private static final String UTILISATEUR_1_LOGIN_ALIAS = "ens1"
   private static final String UTILISATEUR_1_PASSWORD = "ens1"
@@ -73,7 +75,7 @@ class BootstrapService {
   private static final String RESP_1_PRENOM = "Emilie"
 
 
-  private static final String DEFAULT_CODE_PORTEUR_ENT = "ENT"
+
   private static final String UAI_LYCEE = 'TEST_L'
   private static final String UAI_COLLEGE = 'TEST_C'
   private static final String UAI_PREFIXE = 'TEST_'

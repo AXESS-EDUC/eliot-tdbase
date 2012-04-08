@@ -30,13 +30,14 @@ package org.lilie.services.eliot.tice
 
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.PortailTagLibService
-import org.lilie.services.eliot.tice.utils.EliotUrlService
+
+import org.lilie.services.eliot.tice.utils.EliotUrlProvider
 
 class PortailTagLib {
 
   static namespace = "et"
   PortailTagLibService portailTagLibService
-  EliotUrlService eliotUrlService
+  EliotUrlProvider eliotUrlProvider
 
   /**
    * Affiche le lien vers le manuel.
@@ -57,7 +58,7 @@ class PortailTagLib {
       if (url) {
         // todofsil : à terminer
         // trouver le code porteur ds la requête
-        lnkUrl = eliotUrlService.getUrlServeur(request.codePorteur, attrs.applicationEnum) + url
+        lnkUrl = eliotUrlProvider.getUrlServeur(request.codePorteur, attrs.applicationEnum) + url
       }
     }
     if (lnkUrl == "#") {
