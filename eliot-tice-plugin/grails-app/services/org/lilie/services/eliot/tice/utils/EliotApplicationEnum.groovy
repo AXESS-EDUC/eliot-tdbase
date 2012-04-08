@@ -41,7 +41,9 @@ enum EliotApplicationEnum {
   NOTES('notes'),
   SCOLARITE('scolarite'),
   TEXTES('textes'),
-  TDBASE('tdbase')
+  TDBASE('tdbase'),
+  // utile pour test
+  NOT_AN_APPLICATION('not_an_application')
 
   private String code
 

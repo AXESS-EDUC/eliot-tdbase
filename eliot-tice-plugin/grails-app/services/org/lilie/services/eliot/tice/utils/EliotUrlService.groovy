@@ -42,6 +42,10 @@ class EliotUrlService {
 
   static transactional = false
 
+  String nomApplication
+  UrlServeurResolutionEnum urlServeurResolutionEnum
+  String urlServeurFromConfiguration
+
 
   /**
    * Construit une url pour un porteur, 1 application Eliot, 1 contrôleur et
@@ -57,41 +61,22 @@ class EliotUrlService {
    * action incorrect
    */
   String getUrl(PorteurEnt porteurEnt,
-                EliotApplicationEnum application,
                 String controller,
                 String action) {
 
-    String urlServeur = getUrlServeur(porteurEnt,application)
-
-    String nomApplication = getNomApplication(application)
+    String urlServeur = getUrlServeur(porteurEnt)
 
     String url = "$urlServeur/$nomApplication/$controller/$action/"
 
     UrlValidator urlValidator = new UrlValidator()
     if (!urlValidator.isValid(url)) {
-      throw new IllegalStateException(
-          "$url n'est pas une url valide"
-      )
+      throw new IllegalStateException("$url n'est pas une url valide")
     }
 
     return url
   }
 
-  /**
-   * @param application
-   * @return retourne le nom d'application pour application utilisé dans l'url
-   */
-  private String getNomApplication(EliotApplicationEnum application) {
 
-    if (!ConfigurationHolder.config?.eliot?."${application.code}"?.nomApplication) {
-      throw new IllegalStateException(
-          "La variable eliot.${application.code}.nomApplication n'a pas " +
-              "été configurée"
-      )
-    }
-
-    return ConfigurationHolder.config?.eliot?."${application.code}"?.nomApplication
-  }
 
   /**
    * Retourne l'url serveur d'une application
@@ -99,33 +84,18 @@ class EliotUrlService {
    * @param application
    * @return
    */
-  String getUrlServeur(PorteurEnt porteurEnt, EliotApplicationEnum application) {
-
-    if (!ConfigurationHolder.config?.eliot?.urlResolution?.mode) {
-      throw new IllegalStateException(
-          "La variable eliot.urlResolution.mode n'a pas été configurée"
-      )
-    }
-
-    String strMode = ConfigurationHolder.config.eliot.urlResolution.mode
-
-    UrlServeurResolutionMode mode = UrlServeurResolutionMode.valueOf(
-        UrlServeurResolutionMode.class,
-        strMode.toUpperCase()
-    )
+  String getUrlServeur(PorteurEnt porteurEnt) {
 
     String url
 
-    switch (mode) {
-      case UrlServeurResolutionMode.CONFIGURATION:
-        url = getUrlServeurFromConfiguration(application)
+    switch (urlServeurResolutionEnum) {
+      case UrlServeurResolutionEnum.CONFIGURATION:
+        url = urlServeurFromConfiguration
         break;
-      case UrlServeurResolutionMode.ANNUAIRE_PORTEUR:
+      case UrlServeurResolutionEnum.ANNUAIRE_PORTEUR:
         url = getUrlServeurFromPorteurEnt(porteurEnt)
         break;
-      default: throw new IllegalStateException(
-          "$mode n'est pas un mode géré"
-      )
+      default: throw new IllegalStateException("$urlServeurResolutionEnum n'est pas un mode géré")
     }
 
     // Suppression du dernier / s'il existe
@@ -136,28 +106,6 @@ class EliotUrlService {
     return url
   }
 
-  /**
-   * Retourne l'url serveur d'une application telle que définie dans la
-   * configuration
-   * (soit par la variable eliot.commons.urlServeur, soit pour la variable
-   * eliot.<application>.urlServeur)
-   * @param application
-   * @return
-   */
-  private String getUrlServeurFromConfiguration(EliotApplicationEnum application) {
-
-    if (ConfigurationHolder.config?.eliot?."$application.code"?.urlServeur) {
-      return ConfigurationHolder.config?.eliot?."$application.code"?.urlServeur
-    }
-    if (ConfigurationHolder.config?.eliot?.commons?.urlServeur) {
-      return ConfigurationHolder.config?.eliot?.commons?.urlServeur
-    }
-
-    throw new IllegalStateException(
-        "L'url serveur de l'application ${application.code} n'a pas " +
-            "été configurée"
-    )
-  }
 
   /**
    * Retourne l'url serveur du porteur associé à la securiteSession

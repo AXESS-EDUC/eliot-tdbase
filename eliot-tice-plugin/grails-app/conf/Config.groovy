@@ -1,3 +1,5 @@
+import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
+
 // configuration for plugin testing - will not be included in the plugin zip
 
 log4j = {
@@ -29,6 +31,10 @@ grails.views.gsp.encoding = "UTF-8"
 
 environments {
   test {
+    eliot.eliotApplicationEnum = EliotApplicationEnum.NOT_AN_APPLICATION
+    eliot.not_an_application.nomApplication = "TicePlugin"
+    eliot.urlResolution.mode = "configuration"
+    eliot.not_an_application.urlServeur = "http//localhost:8080"
     eliot.fichiers.racine = "/tmp"
   }
 }

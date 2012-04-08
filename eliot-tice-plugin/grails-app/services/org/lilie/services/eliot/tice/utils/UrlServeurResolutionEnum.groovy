@@ -32,7 +32,7 @@ package org.lilie.services.eliot.tice.utils
  * Enumération des modes de résolution d'url serveur
  * @author jtra
  */
-public enum UrlServeurResolutionMode {
+public enum UrlServeurResolutionEnum {
 
   // La ou les urls sont définies par configuration
   // eliot.urlServeur.commons pour définir l'url serveur de toutes les applications Eliot

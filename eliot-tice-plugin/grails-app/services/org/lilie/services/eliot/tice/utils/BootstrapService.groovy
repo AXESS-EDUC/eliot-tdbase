@@ -449,7 +449,7 @@ class BootstrapService {
   }
 
   private def initialisePorteurEnt() {
-    PorteurEnt porteurEnt = PorteurEnt.findByCode(DEFAULT_PORTEUR_CODE)
+    PorteurEnt porteurEnt = PorteurEnt.findByCode(DEFAULT_CODE_PORTEUR_ENT)
     if (!porteurEnt) {
       Perimetre perimetre = new Perimetre(
               estActive: true,
