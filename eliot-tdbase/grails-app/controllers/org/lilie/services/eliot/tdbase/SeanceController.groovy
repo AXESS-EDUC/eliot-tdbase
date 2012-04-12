@@ -60,14 +60,11 @@ class SeanceController {
       modaliteActivite = ModaliteActivite.get(params.id)
     }
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
-    def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
-            personne)
-    render(view: '/seance/edite', model: [
-            liens: breadcrumpsService.liens,
+    def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
+    render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             modaliteActivite: modaliteActivite,
-            proprietesScolarite: proprietesScolarite
-    ])
+            proprietesScolarite: proprietesScolarite])
   }
 
   /**
@@ -95,15 +92,13 @@ class SeanceController {
     if (!modaliteActivite.hasErrors()) {
       flash.messageCode = "seance.enregistre.succes"
       redirect(action: "edite", id: modaliteActivite.id, params: [bcInit: true])
+    } else {
+      def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
+      render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
+              lienRetour: breadcrumpsService.lienRetour(),
+              modaliteActivite: modaliteActivite,
+              proprietesScolarite: proprietesScolarite])
     }
-    def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
-            personne)
-    render(view: '/seance/edite', model: [
-            liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
-            modaliteActivite: modaliteActivite,
-            proprietesScolarite: proprietesScolarite
-    ])
   }
 
   /**
@@ -115,19 +110,15 @@ class SeanceController {
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.liste.titre"))
     Personne personne = authenticatedPersonne
-    def modalitesActivites = modaliteActiviteService.findModalitesActivitesForEnseignant(
-            personne,
-            params
-    )
+    def modalitesActivites = modaliteActiviteService.findModalitesActivitesForEnseignant(personne,
+                                                                                         params)
     boolean affichePager = false
     if (modalitesActivites.totalCount > maxItems) {
       affichePager = true
     }
-    render(view: '/seance/liste', model: [
-            liens: breadcrumpsService.liens,
+    render(view: '/seance/liste', model: [liens: breadcrumpsService.liens,
             seances: modalitesActivites,
-            affichePager: affichePager
-    ])
+            affichePager: affichePager])
   }
 
   /**
@@ -151,20 +142,15 @@ class SeanceController {
 
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
-    def copies = copieService.findCopiesForModaliteActivite(
-            seance,
-            personne)
-    def elevesSansCopies = copieService.findElevesSansCopieForModaliteActivite(
-            seance,
-            copies,
-            personne
-    )
-    render(view: '/seance/listeResultats', model: [
-            liens: breadcrumpsService.liens,
+    def copies = copieService.findCopiesForModaliteActivite(seance,
+                                                            personne)
+    def elevesSansCopies = copieService.findElevesSansCopieForModaliteActivite(seance,
+                                                                               copies,
+                                                                               personne)
+    render(view: '/seance/listeResultats', model: [liens: breadcrumpsService.liens,
             seance: seance,
             copies: copies,
-            elevesSansCopies: elevesSansCopies
-    ])
+            elevesSansCopies: elevesSansCopies])
   }
 
   /**
@@ -175,16 +161,13 @@ class SeanceController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
-    List<Copie> copies = copieService.findCopiesForModaliteActivite(
-            seance,
-            personne,
-            params)
-    render(view: '/seance/copie/corrige', model: [
-            liens: breadcrumpsService.liens,
+    List<Copie> copies = copieService.findCopiesForModaliteActivite(seance,
+                                                                    personne,
+                                                                    params)
+    render(view: '/seance/copie/corrige', model: [liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             copies: copies,
-            seance: seance
-    ])
+            seance: seance])
   }
 
   /**
@@ -196,19 +179,16 @@ class SeanceController {
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     if (!copieNotation.hasErrors()) {
       Copie copie = Copie.get(copieNotation.copieId)
-      copieService.updateAnnotationAndModulationForCopie(
-              copieNotation.copieAnnotation,
-              copieNotation.copiePointsModulation,
-              copie,
-              personne)
+      copieService.updateAnnotationAndModulationForCopie(copieNotation.copieAnnotation,
+                                                         copieNotation.copiePointsModulation,
+                                                         copie,
+                                                         personne)
       request.messageCode = "copie.correction.succes"
     }
-    List<Copie> copies = copieService.findCopiesForModaliteActivite(
-            seance,
-            personne,
-            params)
-    render(view: '/seance/copie/corrige', model: [
-            liens: breadcrumpsService.liens,
+    List<Copie> copies = copieService.findCopiesForModaliteActivite(seance,
+                                                                    personne,
+                                                                    params)
+    render(view: '/seance/copie/corrige', model: [liens: breadcrumpsService.liens,
             lienRetour: breadcrumpsService.lienRetour(),
             copies: copies,
             seance: seance,

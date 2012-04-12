@@ -414,7 +414,6 @@ class SujetController {
    * Action ajoute séance
    */
   def ajouteSeance() {
-    params.bcInit = true
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteseance.titre"))
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
