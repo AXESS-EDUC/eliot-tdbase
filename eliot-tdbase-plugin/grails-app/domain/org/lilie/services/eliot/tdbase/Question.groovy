@@ -82,6 +82,7 @@ class Question implements Artefact {
 
 
   static constraints = {
+    titre(blank: false)
     specificationNormalise(nullable: true)
     etablissement(nullable: true)
     matiere(nullable: true)
