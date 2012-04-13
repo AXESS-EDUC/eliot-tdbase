@@ -59,9 +59,10 @@
 
 <form method="post" action="#" class="sujet">
   <div class="portal-form_container edite">
+    <p style="font-style: italic; margin-bottom: 2em"><span class="obligatoire">*</span> indique une information obligatoire</p>
     <table>
       <tr>
-        <td class="label title">Titre:</td>
+        <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:</td>
         <td>
           <input size="80" type="text" value="${sujet.titre}" name="titre"/>
         </td>
@@ -71,7 +72,7 @@
         <td>&nbsp;</td>
       </tr>
       <tr>
-        <td class="label">Type&nbsp;:</td>
+        <td class="label">Type<span class="obligatoire">*</span>&nbsp;:</td>
         <td>
           <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
                     from="${typesSujet}"
@@ -103,7 +104,7 @@
         <td class="label">Dur&eacute;e&nbsp;:</td>
         <td>
           <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}"/>
-          <i>(en minutes)</i>
+          (en minutes)
         </td>
       </tr>
 

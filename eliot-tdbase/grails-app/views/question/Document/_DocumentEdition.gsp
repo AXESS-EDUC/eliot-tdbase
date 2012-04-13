@@ -29,14 +29,14 @@
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
-  <td class="label">Auteur&nbsp;:</td>
+  <td class="label">Auteur<span class="obligatoire">*</span>&nbsp;:</td>
   <td>
     <input size="75" type="text" value="${specifobject.auteur}"
            name="specifobject.auteur"/>
   </td>
 </tr>
 <tr>
-  <td class="label">Source&nbsp;:</td>
+  <td class="label">Source<span class="obligatoire">*</span>&nbsp;:</td>
   <td>
     <input size="75" type="text" value="${specifobject.source}"
            name="specifobject.source"/>
@@ -53,7 +53,7 @@
   </td>
 </tr>
 <tr>
-  <td class="label">URL externe&nbsp;:</td>
+  <td class="label">URL externe<span class="obligatoire">*</span>&nbsp;:</td>
   <td>
     <input size="75" type="text" value="${specifobject.urlExterne}"
            name="specifobject.urlExterne"/>
@@ -64,7 +64,7 @@
   <td>&nbsp;</td>
 </tr>
 <tr>
-  <td class="label">Fichier&nbsp;:</td>
+  <td class="label">Fichier<span class="obligatoire">*</span>&nbsp;:</td>
   <td id="specifobject_fichier">
     <g:render template="/question/Document/DocumentEditionFichier"
               model="[specifobject:specifobject]"/>

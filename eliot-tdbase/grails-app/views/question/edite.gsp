@@ -162,10 +162,10 @@
 <g:form method="post" controller="question${question.type.code}"
         class="question">
   <div class="portal-form_container edite" style="width: 69%;">
+    <p style="font-style: italic; margin-bottom: 2em"><span class="obligatoire">*</span> indique une information obligatoire</p>
     <table>
-
       <tr>
-        <td class="label title">Titre :</td>
+        <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:</td>
         <td>
           <input size="75" type="text" value="${question.titre}"
                  name="titre" id="question.titre"/><br/><br/>

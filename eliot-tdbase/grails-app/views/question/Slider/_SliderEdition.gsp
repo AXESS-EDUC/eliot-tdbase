@@ -32,7 +32,7 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
     <td class="label">
-      <g:message code="question.propriete.libelle"/>&nbsp;:
+      <g:message code="question.propriete.libelle"/><span class="obligatoire">*</span>&nbsp;:
     </td>
     <td>
         <g:textArea
@@ -48,7 +48,7 @@
     <td>
         <table style="float: left; width:200px;">
             <tr>
-                <td>Valeur&nbsp;attendue&nbsp;:</td>
+                <td>Valeur&nbsp;attendue<span class="obligatoire">*</span>&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.valeur" value="${specifobject.valeurAffichage}" size="10"/>
                 </td>
@@ -61,14 +61,14 @@
                 </td>
             </tr>
             <tr>
-                <td>Valeur&nbsp;minimale&nbsp;:</td>
+                <td>Valeur&nbsp;minimale<span class="obligatoire">*</span>&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.valeurMin" value="${specifobject.valeurMinAffichage}" size="10"/>
                 </td>
 
             </tr>
             <tr>
-                <td>Valeur&nbsp;maximale&nbsp;:</td>
+                <td>Valeur&nbsp;maximale<span class="obligatoire">*</span>&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.valeurMax" value="${specifobject.valeurMaxAffichage}"
                                  size="10"/><br/>
@@ -76,7 +76,7 @@
 
             </tr>
             <tr>
-                <td>Pas&nbsp;:</td>
+                <td>Pas<span class="obligatoire">*</span>&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.pas" value="${specifobject.pasAffichage}" size="10"/>
                 </td>

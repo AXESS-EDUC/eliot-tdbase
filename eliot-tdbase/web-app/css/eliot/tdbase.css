@@ -35,6 +35,10 @@ textarea {
     vertical-align: top;
 }
 
+.obligatoire {
+    color: red;
+}
+
 .portal-form_container table {
     border: 0;
     margin-left: auto;

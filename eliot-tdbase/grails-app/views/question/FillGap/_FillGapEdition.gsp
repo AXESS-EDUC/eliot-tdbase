@@ -29,7 +29,7 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
     <td class="label">
-      <g:message code="question.propriete.libelle"/>&nbsp;:
+      <g:message code="question.propriete.libelle"/><span class="obligatoire">*</span>&nbsp;:
     </td>
     <td>
         <g:textArea
@@ -40,8 +40,12 @@
 </tr>
 
 <tr>
-    <td class="label">R&eacute;ponse:</td>
+    <td class="label">R&eacute;ponse<span class="obligatoire">*</span>&nbsp;:</td>
     <td>
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
         <g:textArea
                 name="specifobject.texteATrous"
                 rows="10" cols="55"
@@ -51,14 +55,14 @@
     </td>
 </tr>
 <tr>
-    <td class="label">Montrer les mots:</td>
+    <td class="label">Montrer&nbsp;les&nbsp;mots&nbsp;:</td>
     <td>
         <g:checkBox name="specifobject.montrerLesMots"
                     checked="${specifobject.montrerLesMots}"/>
     </td>
 </tr>
 <tr>
-    <td class="label">Presentation des trous:</td>
+    <td class="label">Présentation des trous<span class="obligatoire">*</span>&nbsp;:</td>
     <td>
         <g:radioGroup name="specifobject.saisieLibre"
                       labels="['Saisie Libre', 'Choix dans le texte']"
@@ -71,6 +75,10 @@
 <tr>
     <td class="label">Correction:</td>
     <td>
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
         <g:textArea
                 name="specifobject.correction"
                 rows="10" cols="55"

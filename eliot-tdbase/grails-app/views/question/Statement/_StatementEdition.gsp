@@ -27,6 +27,11 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
+    <td class="label">Énoncé<span class="obligatoire">*</span>&nbsp;:</td>
+    <td>
+    </td>
+</tr>
+<tr>
     <td colspan="2">
         <g:textArea
                 name="specifobject.enonce"
@@ -35,6 +40,7 @@
                 id="specifobject.enonce"/>
     </td>
 </tr>
+
 
 <r:script>
     tinyMCE.execCommand("mceAddControl", true, "specifobject.enonce");
