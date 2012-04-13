@@ -71,9 +71,9 @@
           <div id="orderedItem${indexReponse}_${i}" class="orderedItemCell">
             <g:hiddenField id="orderedItem${indexReponse}_${i}_text"
                            name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].text"
-                           value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}"/>
+                           value="${orderedItem.text}"/>
 
-            <span>${reponsespecifobject?.valeursDeReponse?.getAt(i)?.text}</span>
+            <span>${orderedItem.text}</span>
 
             &nbsp;
             <g:select class="ordinalSelector"
