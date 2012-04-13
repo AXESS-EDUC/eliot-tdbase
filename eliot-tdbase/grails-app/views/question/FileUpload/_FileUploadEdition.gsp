@@ -29,7 +29,7 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
   <td class="label">
-    <g:message code="question.propriete.libelle"/>&nbsp;:
+    <g:message code="question.propriete.libelle"/><span class="obligatoire">*</span>&nbsp;:
   </td>
   <td>
     <g:textArea
@@ -50,6 +50,10 @@
     Correction:
   </td>
   <td>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
     <g:textArea
             name="specifobject.correction"
             rows="5" cols="55"

@@ -31,14 +31,14 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 <tr>
-  <td class="label"><g:message code="question.propriete.libelle"/>&nbsp;:</td>
+  <td class="label"><g:message code="question.propriete.libelle"/><span class="obligatoire">*</span>&nbsp;:</td>
   <td>
     <g:textField name="specifobject.libelle" value="${specifobject.libelle}"
                  size="75"/>
   </td>
 </tr>
 <tr>
-  <td class="label">R&eacute;ponse:</td>
+  <td class="label">R&eacute;ponse&nbsp;:</td>
   <td>
 
     <input type="file" name="specifobject.fichier"

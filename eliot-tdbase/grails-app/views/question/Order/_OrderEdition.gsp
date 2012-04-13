@@ -37,7 +37,7 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
     <td class="label">
-      <g:message code="question.propriete.libelle"/>&nbsp;:
+      <g:message code="question.propriete.libelle"/><span class="obligatoire">*</span>&nbsp;:
     </td>
     <td>
         <g:textArea
@@ -48,7 +48,7 @@
 </tr>
 <tr>
     <td class="label">
-        R&eacute;ponse(s):
+        R&eacute;ponses<span class="obligatoire">*</span>&nbsp;:
     </td>
     <td>
       <table>
@@ -57,7 +57,7 @@
                 <g:render template="/question/Order/OrderEditionReponses"
                           model="[specifobject: specifobject]"/>
             </td>
-            <td>
+            <td style="vertical-align: bottom;">
                 <g:submitToRemote title="Ajouter un nouveau element" value="Ajouter"
                                   action="ajouteItem"
                                   controller="questionOrder"

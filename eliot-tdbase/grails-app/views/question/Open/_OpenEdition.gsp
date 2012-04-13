@@ -34,7 +34,7 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
   <td class="label">
-    <g:message code="question.propriete.libelle"/>&nbsp;:
+    <g:message code="question.propriete.libelle"/><span class="obligatoire">*</span>&nbsp;:
   </td>
   <td>
     <g:textArea
@@ -45,7 +45,7 @@
 </tr>
 <tr>
   <td class="label">
-    R&eacute;ponse:
+    R&eacute;ponse<span class="obligatoire">*</span>&nbsp;:
   </td>
   <td>
     <g:textField name="specifobject.nombreLignesReponse"

@@ -104,7 +104,7 @@ class BooleanMatchSpecification implements QuestionSpecification {
 
   static constraints = {
     libelle blank: false
-    reponses nullable: false
+    reponses minSize: 1
   }
 
 }

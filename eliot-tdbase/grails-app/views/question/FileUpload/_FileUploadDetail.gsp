@@ -31,10 +31,12 @@
     <g:set var="specifobject" value="${question.specificationObject}"/>
     <strong><g:message code="question.propriete.libelle"/></strong><p>${specifobject.libelle} </p>
       <strong>Correction</strong>
+        <g:if test="${specifobject.attachement}">
         <p><g:link action="viewAttachement" controller="attachement"
                     id="${specifobject.attachement.id}" target="_blank">
               <g:message code="attachement.correction.acces"/>
          </g:link> </p>
+        </g:if>
       <p>${specifobject.correction}</p>
   </td>
 </tr>

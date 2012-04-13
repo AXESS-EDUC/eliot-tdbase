@@ -53,15 +53,14 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
   @Override
   def updateQuestionSpecificationForObject(Question question, GraphicMatchSpecification spec) {
 
-    question.save()
+    super.updateQuestionSpecificationForObject(question, spec)
+
     def oldImageId = question.specificationObject?.attachmentId
     if (spec.fichier && !spec.fichier.empty) {
-      def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(
-              spec.fichier, question,true)
+      def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(spec.fichier, question, true)
 
       if (oldImageId) {
-        questionAttachementService.deleteQuestionAttachement(
-                QuestionAttachement.get(oldImageId))
+        questionAttachementService.deleteQuestionAttachement(QuestionAttachement.get(oldImageId))
       }
       spec.attachmentId = questionAttachement.id
     }
@@ -69,12 +68,10 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
     spec.icons.each {
       def iconImageId = it.attachmentId
       if (it.fichier && !it.fichier.empty) {
-        def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(
-                it.fichier, question,true)
+        def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(it.fichier, question, true)
 
         if (iconImageId) {
-          questionAttachementService.deleteQuestionAttachement(
-                  QuestionAttachement.get(iconImageId))
+          questionAttachementService.deleteQuestionAttachement(QuestionAttachement.get(iconImageId))
         }
         it.attachmentId = questionAttachement.id
       }
@@ -148,15 +145,13 @@ class GraphicMatchSpecification implements QuestionSpecification {
 
   @Override
   Map toMap() {
-    [
-            questionTypeCode: questionTypeCode,
+    [questionTypeCode: questionTypeCode,
             libelle: libelle,
             correction: correction,
             graphicMatches: graphicMatches,
             attachmentId: attachmentId,
             hotspots: hotspots.collect {it.toMap()},
-            icons: icons.collect {it.toMap()},
-    ]
+            icons: icons.collect {it.toMap()},]
   }
 
   /**
@@ -168,6 +163,11 @@ class GraphicMatchSpecification implements QuestionSpecification {
       return QuestionAttachement.get(attachmentId).attachement
     }
     null
+  }
+
+
+  static constraints = {
+    libelle blank: false
   }
 }
 
@@ -201,11 +201,9 @@ class Hotspot {
    * @return une map des attributs de l'objet.
    */
   Map toMap() {
-    [
-            topDistance: topDistance,
+    [topDistance: topDistance,
             leftDistance: leftDistance,
-            id: id
-    ]
+            id: id]
   }
 }
 
