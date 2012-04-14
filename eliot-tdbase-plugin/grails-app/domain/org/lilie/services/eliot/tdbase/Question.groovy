@@ -36,6 +36,8 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.springframework.web.multipart.MultipartFile
+import org.springframework.validation.ObjectError
+import org.springframework.validation.Errors
 
 /**
  * Classe représentant une question
@@ -95,10 +97,19 @@ class Question implements Artefact {
     specification(validator: { val, obj, errors ->
       def objSpec = obj.getSpecificationObjectForJson(val)
       if (!objSpec.validate()) {
-        objSpec.errors.allErrors.each {
-          errors.reject(it.code, it.arguments, it.defaultMessage)
+        Errors objErrors =  objSpec.errors
+        objErrors.allErrors.each { ObjectError objErr  ->
+          def code =  objErr.code
+          if (objErr.arguments[0]=='libelle') {
+             code = 'question.libelle.blank'
+          }
+          if (objErr.arguments[0]=='reponses') {
+                       code = 'question.reponses.min'
+          }
+          errors.reject(code, objErr.arguments, objErr.defaultMessage)
         }
       }
+
     })
   }
 

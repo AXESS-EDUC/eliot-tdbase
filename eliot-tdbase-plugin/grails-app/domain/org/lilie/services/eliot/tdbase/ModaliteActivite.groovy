@@ -77,6 +77,11 @@ class ModaliteActivite {
       }
       return true
     })
+    dateFin(validator: { val, obj ->
+      if (!val.after(obj.dateDebut)) {
+        return ['invalid.dateFinAvantDateDebut']
+      }
+    })
     matiere(nullable: true)
   }
 

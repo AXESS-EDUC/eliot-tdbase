@@ -64,7 +64,7 @@
       <tr>
         <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:</td>
         <td>
-          <input size="80" type="text" value="${sujet.titre}" name="titre"/>
+          <input size="80" type="text" value="${sujet.titre}" name="titre" />
         </td>
       </tr>
       <tr>
