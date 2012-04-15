@@ -37,7 +37,15 @@
       initButtons();
     });
   </r:script>
-  <title>TDBase - Recherche de contributions</title>
+  <title>
+  <g:if test="${afficheFormulaire}">
+   <g:message code="question.recherche.head.title" />
+   </g:if>
+   <g:else>
+     <g:message code="question.recherche.mesItems.head.title" />
+   </g:else>
+   </title>
+  </title>
 </head>
 
 <body>

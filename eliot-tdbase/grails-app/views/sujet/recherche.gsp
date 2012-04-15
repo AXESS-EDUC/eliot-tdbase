@@ -35,7 +35,14 @@
       initButtons();
     });
   </r:script>
-  <title>TDBase - Recherche de sujets</title>
+  <title>
+  <g:if test="${afficheFormulaire}">
+  <g:message code="sujet.recherche.head.title" />
+  </g:if>
+  <g:else>
+    <g:message code="sujet.recherche.mesSujets.head.title" />
+  </g:else>
+  </title>
 </head>
 
 <body>

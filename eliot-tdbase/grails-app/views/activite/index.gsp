@@ -38,7 +38,7 @@
       $('#menu-item-accueil').addClass('actif');
     });
   </r:script>
-  <title>TDBase - Accueil</title>
+  <title><g:message code="activite.index.head.title" /></title>
 </head>
 
 <body>

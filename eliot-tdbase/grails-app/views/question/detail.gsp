@@ -38,7 +38,7 @@
       initButtons();
     });
   </r:script>
-  <title>TDBase - Détail d'un item</title>
+  <title><g:message code="question.detail.head.title" /></title>
 </head>
 
 <body>

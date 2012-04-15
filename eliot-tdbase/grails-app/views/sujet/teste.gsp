@@ -38,7 +38,7 @@
       initButtons();
     });
   </r:script>
-  <title>TDBase - Teste d'un sujet</title>
+  <title><g:message code="sujet.teste.head.title" /></title>
 </head>
 
 <body>

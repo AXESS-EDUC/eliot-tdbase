@@ -56,7 +56,7 @@
       });
     });
   </r:script>
-  <title>TDBase - Liste des résultats</title>
+  <title><g:message code="seance.listeResultats.head.title" /></title>
 </head>
 
 <body>

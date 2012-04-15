@@ -40,7 +40,7 @@
       })
     });
   </r:script>
-  <title>TDBase - Nouvel item</title>
+  <title><g:message code="question.nouvelle.head.title" /></title>
 </head>
 
 <body>

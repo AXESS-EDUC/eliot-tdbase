@@ -38,7 +38,7 @@
       $("form").attr('enctype', 'multipart/form-data');
     });
   </r:script>
-  <title>TDBase - Import d'un fichier Moodle XML dans le sujet</title>
+  <title><g:message code="sujet.editeImportMoodleXML.head.title" /></title>
 </head>
 
 <body>

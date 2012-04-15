@@ -40,7 +40,7 @@
       $('#menu-item-resultats').addClass('actif');
     });
   </r:script>
-  <title>TDBase - Liste des résultats</title>
+  <title><g:message code="activite.seance.resultats.head.title" /></title>
 </head>
 
 <body>

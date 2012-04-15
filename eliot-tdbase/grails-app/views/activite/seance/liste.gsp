@@ -39,7 +39,7 @@
       initButtons();
     });
   </r:script>
-  <title>TDBase - Liste des séances</title>
+  <title><g:message code="activite.seance.liste.head.title" /></title>
 </head>
 
 <body>

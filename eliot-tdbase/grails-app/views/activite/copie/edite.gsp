@@ -43,7 +43,7 @@
   </g:if>
     });
   </r:script>
-  <title>TDBase - Edition d'une copie</title>
+  <title><g:message code="activite.copie.edite.head.title" /></title>
 </head>
 
 <body>

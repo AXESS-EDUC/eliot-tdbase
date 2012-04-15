@@ -41,7 +41,7 @@
       })
     });
   </r:script>
-  <title>TDBase - Ajout d'un item</title>
+  <title><g:message code="sujet.ajouteElement.head.title" /></title>
 </head>
 
 <body>

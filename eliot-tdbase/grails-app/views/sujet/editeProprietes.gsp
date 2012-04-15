@@ -36,7 +36,7 @@
       $('#menu-item-sujets').addClass('actif');
     });
   </r:script>
-  <title>TDBase - Edition des propriétés du sujet</title>
+  <title><g:message code="sujet.editeProprietes.head.title"/></title>
 </head>
 
 <body>

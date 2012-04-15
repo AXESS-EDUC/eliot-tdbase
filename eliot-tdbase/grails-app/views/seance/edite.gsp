@@ -56,7 +56,7 @@
       });
     });
   </r:script>
-  <title>TDBase - Edition d'une séance</title>
+  <title><g:message code="seance.edite.head.title"/></title>
 </head>
 
 <body>

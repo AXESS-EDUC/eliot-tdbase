@@ -45,7 +45,7 @@
         });
     });
   </r:script>
-  <title>TDBase - Edition d'une copie</title>
+  <title><g:message code="seance.copie.corrige.head.title"/> </title>
 </head>
 
 <body>

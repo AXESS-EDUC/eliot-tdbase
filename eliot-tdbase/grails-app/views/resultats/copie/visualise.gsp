@@ -35,7 +35,7 @@
 <head>
     <meta name="layout" content="eliot-tdbase-resultats"/>
     <r:require module="seanceCopie_VisualiseJS"/>
-    <title>TDBase - Visualisation d'une copie</title>
+    <title><g:message code="resultats.copie.visulalise.head.title" /></title>
 </head>
 
 <body>

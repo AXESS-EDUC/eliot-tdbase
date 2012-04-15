@@ -37,7 +37,7 @@
       $('#menu-item-sujets').addClass('actif');
     });
   </r:script>
-  <title>TDBase - Rapport d'import du fichier Moodle XML dans le sujet</title>
+  <title><g:message code="sujet.rapportImportMoodleXML.head.title" /></title>
 </head>
 
 <body>

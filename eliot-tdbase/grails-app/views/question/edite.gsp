@@ -63,7 +63,7 @@
       initButtons()
     });
   </r:script>
-  <title>TDBase - Edition d'un item</title>
+  <title><g:message code="question.edite.head.title"/></title>
 </head>
 
 <body>

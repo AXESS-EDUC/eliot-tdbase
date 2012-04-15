@@ -38,7 +38,7 @@
       })
     });
   </r:script>
-  <title>TDBase - Liste des résultats</title>
+  <title><g:message code="resultats.liste.head.title" /></title>
 </head>
 
 <body>

@@ -41,7 +41,7 @@
       $('.interaction').attr('disabled', true);
     });
   </r:script>
-  <title>TDBase - Visualisation d'une copie</title>
+  <title><g:message code="activite.copie.visualise.head.title" /></title>
 </head>
 
 <body>
