@@ -1,4 +1,5 @@
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
+import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -32,6 +33,9 @@ import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 //
 
 grails.serverURL = "http://www.ticetime.com/eliot-tdbase"
+eliot.tdbase.nomApplication = "eliot-tdbase"
+eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+eliot.tdbase.urlServeur = "http://www.ticetime.com/"
 
 // determine si eliot-tdbase doit s'executer en mode intégration Lilie
 //

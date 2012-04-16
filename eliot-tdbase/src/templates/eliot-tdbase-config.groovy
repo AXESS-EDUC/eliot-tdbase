@@ -1,4 +1,5 @@
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
+import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -32,6 +33,9 @@ import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 //
 
 grails.serverURL = "http://localhost:8080/eliot-tdbase"
+eliot.tdbase.nomApplication = "eliot-tdbase"
+eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+eliot.tdbase.urlServeur = "http//localhost:8080"
 
 // cas is not activated by default
 //
