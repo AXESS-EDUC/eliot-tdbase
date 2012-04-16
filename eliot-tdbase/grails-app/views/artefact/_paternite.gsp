@@ -47,8 +47,8 @@ $(document).ready(function () {
         strPub = strPub2 ;
        }
        paterniteHtml += paterniteItem.auteur + strPub  ;
-       var datePub = new Date(paterniteItem.datePublication)
-       paterniteHtml +=  datePub.getDate() +"/" + (datePub.getMonth()+1) + "/" + datePub.getFullYear() + "<br/>"
+       var dateArray = paterniteItem.datePublication.substring(0,10).split("-") ;
+       paterniteHtml += dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0] + "<br/>"
     }
     $("#paternite").html(paterniteHtml) ;
   });
