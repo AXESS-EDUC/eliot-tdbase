@@ -255,11 +255,6 @@
 
   <div class="form_actions">
     <g:hiddenField name="sujetId" value="${sujet?.id}"/>
-    <g:if test="${!annulationNonPossible}">
-      <g:link action="${lienRetour.action}"
-            controller="${lienRetour.controller}"
-            params="${lienRetour.params}">Annuler</g:link> |
-    </g:if>
     <g:if test="${sujet && !question.id}">
 
       <g:actionSubmit value="Enregistrer et insérer dans le sujet"

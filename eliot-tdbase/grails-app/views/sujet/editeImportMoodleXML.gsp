@@ -85,8 +85,6 @@
   </div>
   <g:hiddenField name="sujetId" value="${sujet.id}"/>
   <div class="form_actions">
-    <g:link action="${lienRetour.action}" controller="${lienRetour.controller}"
-            params="${lienRetour.params}">Annuler</g:link> |
     <g:actionSubmit value="Importer" action="importMoodleXML"
                     class="button"
                     title="Importer"/>

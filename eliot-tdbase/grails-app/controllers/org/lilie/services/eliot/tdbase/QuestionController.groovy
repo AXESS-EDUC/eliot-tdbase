@@ -83,7 +83,6 @@ class QuestionController {
     }
     render(view: '/question/edite', model: [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
@@ -111,7 +110,6 @@ class QuestionController {
     }
     render(view: '/question/detail', model: [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             question: question,
             sujet: sujet,
             artefactHelper: artefactAutorisationService,
@@ -206,7 +204,6 @@ class QuestionController {
     if (question.hasErrors()) {
       render(view: '/question/edite', model: [
               liens: breadcrumpsService.liens,
-              lienRetour: breadcrumpsService.lienRetour(),
               question: question,
               matieres: profilScolariteService.findMatieresForPersonne(personne),
               niveaux: profilScolariteService.findNiveauxForPersonne(personne),
@@ -247,7 +244,6 @@ class QuestionController {
     }
     render(view: '/question/edite', model: [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
@@ -280,7 +276,6 @@ class QuestionController {
     if (question.hasErrors()) {
       render(view: '/question/edite', model: [
               liens: breadcrumpsService.liens,
-              lienRetour: breadcrumpsService.lienRetour(),
               question: question,
               sujet: sujet,
               matieres: profilScolariteService.findMatieresForPersonne(personne),

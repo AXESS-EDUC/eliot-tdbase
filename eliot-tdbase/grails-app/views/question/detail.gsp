@@ -130,19 +130,17 @@
 
 </div>
 
+<g:if test="${sujet && !flash.messageCode}">
 <div class="form_actions edite">
-  <g:link action="${lienRetour.action}" class="button"
-          controller="${lienRetour.controller}"
-          params="${lienRetour.params}">Retour</g:link>&nbsp;
-  <g:if test="${sujet && !flash.messageCode}">|
+
     <g:link action="insert"
             title="Insérer dans le sujet" id="${question.id}"
             params="[sujetId: sujet?.id]" class="button">
-      Insérer dans le sujet &nbsp;
+      Insérer dans le sujet
     </g:link>
-  </g:if>
   <br/><br/><br/><br/><br/><br/>
 </div>
+</g:if>
 
 </body>
 </html>

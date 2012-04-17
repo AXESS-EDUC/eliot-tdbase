@@ -124,7 +124,7 @@
 </g:if>
 
 <g:render template="/copie/edite"
-          model="[lienRetour: lienRetour, copie: copie, afficheCorrection: copie.modaliteActivite.estPerimee()]"/>
+          model="[copie: copie, afficheCorrection: copie.modaliteActivite.estPerimee()]"/>
 
 </body>
 </html>

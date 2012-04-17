@@ -104,7 +104,6 @@ class ActiviteController {
     Copie copie = copieService.getCopieForModaliteActiviteAndEleve(seance, eleve)
     render(view: '/activite/copie/edite', model: [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             copie: copie
     ])
   }
@@ -136,7 +135,6 @@ class ActiviteController {
 
     render(view: '/activite/copie/edite', model: [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             copie: copie
     ])
   }

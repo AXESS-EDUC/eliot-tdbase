@@ -198,7 +198,6 @@ class SujetController {
     Copie copie = copieService.getCopieTestForSujetAndPersonne(sujet, personne)
     [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             copie: copie,
             afficheCorrection: false,
             sujet: sujet,
@@ -244,7 +243,6 @@ class SujetController {
 
     render(view: '/sujet/teste', model: [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             copie: copie,
             afficheCorrection: true,
             sujet: copie.sujet,
@@ -263,7 +261,6 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     render(view: "editeProprietes", model: [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             sujet: sujet,
             typesSujet: sujetService.getAllSujetTypes(),
             matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
@@ -376,7 +373,6 @@ class SujetController {
     }
     render(view: "editeProprietes", model: [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             sujet: sujetModifie,
             typesSujet: sujetService.getAllSujetTypes(),
             matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
@@ -423,7 +419,6 @@ class SujetController {
             personne)
     render(view: '/seance/edite', model: [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             modaliteActivite: modaliteActivite,
             proprietesScolarite: proprietesScolarite
     ])
@@ -473,7 +468,6 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     [
             liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             sujet: sujet,
             matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
             niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)

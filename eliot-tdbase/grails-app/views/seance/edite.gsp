@@ -151,9 +151,6 @@
   <g:hiddenField id="sujetId" name="sujet.id"
                  value="${modaliteActivite.sujet?.id}"/>
   <div class="form_actions edite">
-    <g:link action="${lienRetour.action}"
-            controller="${lienRetour.controller}"
-            params="${lienRetour.params}">Annuler</g:link> |
     <g:actionSubmit value="Enregistrer" class="button"
                     action="enregistre"
                     title="Enregistrer"/>

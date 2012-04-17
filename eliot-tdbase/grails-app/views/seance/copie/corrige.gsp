@@ -111,10 +111,6 @@
   </div>
 
   <div class="form_actions corrige">
-    <g:link action="${lienRetour.action}"
-            controller="${lienRetour.controller}"
-            params="${lienRetour.params}">Annuler</g:link>&nbsp;
-    |&nbsp;
     <g:actionSubmit value="Enregistrer" action="enregistreCopie" class="button"
                     title="Enregistrer" id="${seance.id}"/>
   </div>

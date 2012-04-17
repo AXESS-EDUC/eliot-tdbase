@@ -62,7 +62,6 @@ class SeanceController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             modaliteActivite: modaliteActivite,
             proprietesScolarite: proprietesScolarite])
   }
@@ -95,7 +94,6 @@ class SeanceController {
     } else {
       def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
       render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
-              lienRetour: breadcrumpsService.lienRetour(),
               modaliteActivite: modaliteActivite,
               proprietesScolarite: proprietesScolarite])
     }
@@ -165,7 +163,6 @@ class SeanceController {
                                                                     personne,
                                                                     params)
     render(view: '/seance/copie/corrige', model: [liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             copies: copies,
             seance: seance])
   }
@@ -189,7 +186,6 @@ class SeanceController {
                                                                     personne,
                                                                     params)
     render(view: '/seance/copie/corrige', model: [liens: breadcrumpsService.liens,
-            lienRetour: breadcrumpsService.lienRetour(),
             copies: copies,
             seance: seance,
             copieNotation: copieNotation

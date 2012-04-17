@@ -202,10 +202,7 @@
 <g:hiddenField name="nombreReponsesNonVides" value="${indexReponseNonVide}"/>
 <div class="bottom">
   <div class="form_actions">
-    <g:link action="${lienRetour.action}"
-            controller="${lienRetour.controller}"
-            params="${lienRetour.params}">Annuler</g:link>&nbsp;
-    |&nbsp;<g:actionSubmit value="Rendre la copie" action="rendLaCopie"
+    <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
                            class="button"
                            title="Rendre la copie"/>
   </div>
