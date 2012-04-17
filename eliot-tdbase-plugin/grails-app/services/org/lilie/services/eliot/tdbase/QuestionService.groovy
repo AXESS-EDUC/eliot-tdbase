@@ -323,7 +323,6 @@ class QuestionService implements ApplicationContextAware {
                                String patternTitre,
                                String patternAuteur,
                                String patternSpecification,
-                               Boolean estAutonome,
                                Matiere matiere,
                                Niveau niveau,
                                QuestionType questionType,
@@ -351,9 +350,6 @@ class QuestionService implements ApplicationContextAware {
       }
       if (patternSpecification) {
         like "specificationNormalise", "%${StringUtils.normalise(patternSpecification)}%"
-      }
-      if (estAutonome) {
-        eq "estAutonome", true
       }
       if (matiere) {
         eq "matiere", matiere

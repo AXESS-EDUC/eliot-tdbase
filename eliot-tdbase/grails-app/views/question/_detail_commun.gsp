@@ -86,12 +86,6 @@
           ${question.niveau?.libelleLong}
         </td>
       </tr>
-      <tr>
-        <td class="label">Autonome&nbsp;:</td>
-        <td>
-          <span>${question.estAutonome ? "oui" : "non"}</span>
-        </td>
-      </tr>
 
       <tr>
         <td class="label">Partage&nbsp;:</td>

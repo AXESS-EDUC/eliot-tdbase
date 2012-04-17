@@ -32,14 +32,14 @@
 
     <g:submitToRemote id="${i}"
                       name="hotspotSupressButton"
-                      title="Supprimer un hotspot"
+                      title="Supprimer une zone"
                       value="X"
                       action="supprimeHotspot"
                       controller="questionGraphicMatch"
                       update="hotspotsEtIcons"
                       onComplete="afterHotspotDeleted()"/>
 
-    <span class="hotspotLabel">Hotspot: ${hotspot.id}</span>
+    <span class="hotspotLabel">Zone de dépôt : ${hotspot.id}</span>
     <g:hiddenField class="idField" name="specifobject.hotspots[${i}].id"
                    value="${hotspot.id}"/>
 
@@ -61,7 +61,7 @@
 <ul>
   <g:each status="i" in="${specifobject.icons}" var="icon">
     <li class="editIcon">
-      <strong>Hotspot ${specifobject.graphicMatches.getAt(icon.id)}:</strong>
+      <strong>Zone de dépôt ${specifobject.graphicMatches.getAt(icon.id)}:</strong>
 
       <g:if test="${icon.attachmentId}">
         <et:viewAttachement attachement="${icon.attachment}" width="40" height="40"/>

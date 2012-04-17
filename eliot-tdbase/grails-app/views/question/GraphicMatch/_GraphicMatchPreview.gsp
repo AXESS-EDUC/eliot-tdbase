@@ -52,7 +52,7 @@
           <et:viewAttachement attachement="${icon.attachment}"
                               width="40" height="40"/>
           <br>
-          avec Zone ${specifobject.graphicMatches[icon.id]}
+          avec zone de dépôt ${specifobject.graphicMatches[icon.id]}
         </li>
       </g:if>
     </g:each>

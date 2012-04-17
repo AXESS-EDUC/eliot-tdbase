@@ -53,7 +53,7 @@
 
     <g:if test="${specifobject.attachmentId}">
 
-      <g:submitToRemote title="Ajouter un hotspot" value="Ajouter Hotspot"
+      <g:submitToRemote title="Ajouter une zone" value="Ajouter une zone"
                         action="ajouteHotspot"
                         controller="questionGraphicMatch"
                         update="hotspotsEtIcons"

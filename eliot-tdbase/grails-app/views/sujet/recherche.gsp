@@ -76,7 +76,7 @@
             Description :
           </td>
           <td>
-            <g:textField name="patternPresentation" title="titre"
+            <g:textField name="patternPresentation" title="description"
                          value="${rechercheCommand.patternPresentation}"/>
           </td>
           <td width="20"/>
@@ -94,7 +94,7 @@
           <td class="label">Auteur :
           </td>
           <td>
-            <g:textField name="patternAuteur" title="titre"
+            <g:textField name="patternAuteur" title="auteur"
                          value="${rechercheCommand.patternAuteur}"/>
           </td>
           <td width="20"/>

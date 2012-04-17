@@ -229,13 +229,6 @@
 
         </td>
       </tr>
-      <tr>
-        <td class="label">Autonome&nbsp;:</td>
-        <td>
-          <g:checkBox name="estAutonome" title="Autonome"
-                      checked="${question.estAutonome}"/>
-        </td>
-      </tr>
       <g:render
               template="/question/${question.type.code}/${question.type.code}Edition"
               model="[question: question]"/>

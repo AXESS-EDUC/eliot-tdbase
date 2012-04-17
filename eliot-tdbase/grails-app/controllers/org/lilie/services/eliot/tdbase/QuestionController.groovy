@@ -342,7 +342,6 @@ class QuestionController {
             rechCmd.patternTitre,
             rechCmd.patternAuteur,
             rechCmd.patternSpecification,
-            rechCmd.estAutonome,
             Matiere.get(rechCmd.matiereId),
             Niveau.get(rechCmd.niveauId),
             QuestionType.get(rechCmd.typeId),
@@ -423,7 +422,6 @@ class QuestionController {
 
 class RechercheQuestionCommand {
   String patternTitre
-  Boolean estAutonome
   String patternAuteur
   String patternSpecification
 
@@ -435,7 +433,6 @@ class RechercheQuestionCommand {
   Map toParams() {
     [
             patternTitre: patternTitre,
-            estAutonome: estAutonome,
             patternPresentation: patternSpecification,
             matiereId: matiereId,
             typeId: typeId,

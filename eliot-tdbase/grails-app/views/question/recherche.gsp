@@ -84,7 +84,7 @@
             Contenu :
           </td>
           <td>
-            <g:textField name="patternSpecification" title="titre"
+            <g:textField name="patternSpecification" title="contenu"
                          value="${rechercheCommand.patternSpecification}"/>
           </td>
           <td class="label">Matière :
@@ -98,11 +98,11 @@
           </td>
         </tr>
         <tr>
-          <td class="label">Autonome :
+          <td class="label">Auteur :
           </td>
           <td>
-            <g:checkBox name="estAutonome" title="Autonome"
-                        checked="${rechercheCommand.estAutonome}"/>
+            <g:textField name="patternAuteur" title="auteur"
+                                    value="${rechercheCommand.patternAuteur}"/>
           </td>
 
           <td class="label">Niveau :
@@ -212,7 +212,7 @@
         <p>
           <g:if test="${questionInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${questionInstance.niveau?.libelleLong}</g:if>
           <g:if test="${questionInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${questionInstance.matiere?.libelleLong}</g:if>
-          <strong>» Autonome :</strong>  ${questionInstance.estAutonome ? 'oui' : 'non'}
+          <strong>» Type :</strong>  ${questionInstance.type.nom}
           <strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
         </p>
 

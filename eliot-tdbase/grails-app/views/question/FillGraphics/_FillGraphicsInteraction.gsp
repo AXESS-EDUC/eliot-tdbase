@@ -62,6 +62,6 @@
 </div>
 
 <g:if test="${specifobject.montrerLesMots}">
-  <span class="label">Mots sugeres :</span> ${specifobject.motsSugeres}
+  <span class="label">Mots suggérés :</span> ${specifobject.motsSugeres}
 </g:if>
 <br>
