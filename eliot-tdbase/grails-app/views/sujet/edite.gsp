@@ -169,7 +169,6 @@
       <div class="tdbase-sujet-edition-question">
         <g:if test="${question.estComposite()}">
           <h1>Exercice ${indexExercice}</h1>
-          <g:set var="indexExercice" value="${indexExercice.toInteger() + 1}"/>
         </g:if>
         <g:elseif test="${question.type.interaction}">
           <h1>Question ${indexQuestion}</h1>
@@ -201,7 +200,7 @@
           </g:else>
           <li><hr/></li>
           <li>
-            <g:if test="${indexQuestion > 0}">
+            <g:if test="${rang > 0}">
               <g:link action="remonteElement" controller="sujet"
                       id="${sujetQuestion.id}">
                 Déplacer&nbsp;vers&nbsp;le&nbsp;haut
@@ -212,7 +211,7 @@
             </g:else>
           </li>
           <li>
-            <g:if test="${indexQuestion < sujet.questionsSequences.size() - 1}">
+            <g:if test="${rang < sujet.questionsSequences.size() - 1}">
               <g:link action="descendElement" controller="sujet"
                       id="${sujetQuestion.id}">
                 Déplacer&nbsp;vers&nbsp;le&nbsp;bas
@@ -259,6 +258,7 @@
                     template="/question/Preview"
                     model="[question: question, indexExercice: indexExercice]"/>
           </div>
+          <g:set var="indexExercice" value="${indexExercice.toInteger() + 1}"/>
         </g:if>
         <g:else>
           <g:if test="${question.type.interaction}">

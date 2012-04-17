@@ -30,12 +30,13 @@
 
 <%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
 
+<g:set var="indexQuestionInExercice" value="1"/>
 <g:each in="${question.exercice.questionsSequences}"
-        var="currentSujetQuestion" status="indexQuestionInExercice">
+        var="currentSujetQuestion" >
   <g:set var="currentQuestion" value="${currentSujetQuestion.question}"/>
   <g:if test="${currentQuestion.type.interaction}">
     <h2>Ex. ${indexExercice} → Question ${indexQuestionInExercice}</h2>
-
+    <g:set var="indexQuestionInExercice" value="${indexQuestionInExercice.toInteger() +1}"/>
     <div class="tdbase-sujet-edition-question-points">
       <span class="point" title="Barême non modifiable (modifier l'exercice pour modifier le barême)"
              style="margin-top: 15px;">

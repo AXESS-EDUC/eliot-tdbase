@@ -154,10 +154,10 @@
 
     <div class="tdbase-sujet-edition-question">
 
-    <g:set var="indexQuestionInExercice"
-           value="${indexQuestionInExercice.toInteger() + 1}"/>
     <g:if test="${question.type.interaction}">
       <h2>Ex. ${indexExercice} → Question ${indexQuestionInExercice}</h2>
+      <g:set var="indexQuestionInExercice"
+                 value="${indexQuestionInExercice.toInteger() + 1}"/>
       <div class="tdbase-sujet-edition-question-points">
               <div id="SujetSequenceQuestions-${sujetQuestion.id}">
                 <em><g:formatNumber number="${reponse.correctionNoteAutomatique}"
