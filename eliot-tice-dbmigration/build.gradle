@@ -26,7 +26,7 @@ configurations {
 
 
 dependencies {
-  liquibase group: 'org.liquibase', name: 'liquibase-core', version: '2.0.2'
+  liquibase group: 'org.liquibase', name: 'liquibase-core', version: '2.0.1'
   liquibase group: 'postgresql', name: 'postgresql', version: '8.4-702.jdbc4'
 
   liquibase group: 'org.lilie.services.eliot', name:'eliot-securite-commons', version:"${versionSchemaEliot}"
@@ -82,7 +82,7 @@ dataSourceConfigFile = "${projectDir}/DataSource.groovy"
 /**
  * Configuration de la tache update
  * Pour lancer en mode dev : gradle update
- * Pour lancer en mode test : gradle update -Penvironnment=test
+ * Pour lancer en mode test : gradle update -Penvironment=test
  */
 task update(dependsOn: build) {
   if (!project.hasProperty('environment')) {

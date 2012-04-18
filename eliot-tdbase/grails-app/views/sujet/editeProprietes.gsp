@@ -50,12 +50,7 @@
     </g:eachError>
   </div>
 </g:hasErrors>
-<g:if test="${request.messageCode}">
-  <div class="portal-messages">
-    <li class="success"><g:message code="${request.messageCode}"
-                                   class="portal-messages success"/></li>
-  </div>
-</g:if>
+
 
 <form method="post" action="#" class="sujet">
   <div class="portal-form_container edite">

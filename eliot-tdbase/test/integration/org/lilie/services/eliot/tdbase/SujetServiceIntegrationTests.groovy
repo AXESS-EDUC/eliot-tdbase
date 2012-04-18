@@ -76,7 +76,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
     assertNotNull(sujet)
     if (sujet.hasErrors()) {
-      log.severe("${sujet.errors}")
+      log.error(sujet.errors.allErrors.toListString())
     }
     assertFalse(sujet.hasErrors())
 
@@ -86,6 +86,22 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     assertFalse(sujet.ordreQuestionsAleatoire)
     assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
   }
+
+  void testCreateSujetWithCreateOrUpdateSujet() {
+
+      Sujet sujet = sujetService.updateProprietes(new Sujet(),[titre: SUJET_2_TITRE],personne1)
+      assertNotNull(sujet)
+      if (sujet.hasErrors()) {
+        log.error(sujet.errors.allErrors.toListString())
+      }
+      assertFalse(sujet.hasErrors())
+
+      assertEquals(personne1, sujet.proprietaire)
+      assertFalse(sujet.accesPublic)
+      assertFalse(sujet.accesSequentiel)
+      assertFalse(sujet.ordreQuestionsAleatoire)
+      assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
+    }
 
   void testFindSujetsForProprietaire() {
     Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)

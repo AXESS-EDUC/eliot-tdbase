@@ -50,7 +50,7 @@
 
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
-<g:if test="${sujetEnEdition}">
+
   <div class="portal-tabs">
     <span class="portal-tabs-famille-liens">
       <g:link action="ajouteElement" controller="sujet" class="add"
@@ -104,35 +104,8 @@
       </ul>
     </span>
   </div>
-</g:if>
-<g:else>
-  <div class="portal-tabs" style="text-align: left">
-    <span class="portal-tabs-famille-liens">
-      <span class="add">Ajouter un item</span> |
-      <span class="modify">Modifier les propriétés du sujet</span>
-    </span>
-    <span class="portal-tabs-famille-liens">
-      <button id="sujet_nouveau">Actions</button>
-      <ul id="menu_actions_sujet_nouveau"
-          class="tdbase-menu-actions">
-        <li>
-          Tester
-        </li>
-        <li>
-          Nouvelle&nbsp;séance
-        </li>
-        <li><hr/></li>
-        <li>Dupliquer</li>
 
-        <li><hr/></li>
-        <li>Partager</li>
 
-        <li><hr/></li>
-        <li>Supprimer</li>
-      </ul>
-    </span>
-  </div>
-</g:else>
 <g:hasErrors bean="${sujet}">
   <div class="portal-messages">
     <g:eachError>
@@ -140,26 +113,18 @@
     </g:eachError>
   </div>
 </g:hasErrors>
-<g:if test="${request.messageCode}">
+<g:if test="${flash.messageCode}">
   <div class="portal-messages">
-    <li class="success"><g:message code="${request.messageCode}"
-                                   args="${request.messageArgs}"
+    <li class="success"><g:message code="${flash.messageCode}"
+                                   args="${flash.messageArgs}"
                                    class="portal-messages success"/></li>
   </div>
 </g:if>
-<form method="post">
 
   <div class="portal-form_container edite full">
-    <span class="title">Titre :</span> <g:textField name="sujetTitre"
-                                                    value="${titreSujet}"
-                                                    size="80"/> <g:actionSubmit
-          action="enregistre" value="Enregistrer" class="button"/>
-  <g:if test="${sujetEnEdition}">
-    <g:hiddenField name="sujetId" value="${sujet.id}"/>
-  </g:if>
+    <span class="title">${sujet.titre}</span>
   </div>
 
-</form>
 <g:if test="${sujet}">
   <div class="tdbase-sujet-edition">
     <g:set var="indexQuestion" value="1"/>

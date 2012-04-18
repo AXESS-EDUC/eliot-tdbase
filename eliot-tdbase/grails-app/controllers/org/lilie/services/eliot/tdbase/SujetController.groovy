@@ -9,7 +9,6 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
-import org.lilie.services.eliot.tice.utils.Breadcrumps
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.springframework.web.multipart.MultipartFile
@@ -44,24 +43,21 @@ class SujetController {
       breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.recherche.titre"))
     }
     Personne personne = authenticatedPersonne
-    def sujets = sujetService.findSujets(
-            personne,
-            rechCmd.patternTitre,
-            rechCmd.patternAuteur,
-            rechCmd.patternPresentation,
-            Matiere.get(rechCmd.matiereId),
-            Niveau.get(rechCmd.niveauId),
-            SujetType.get(rechCmd.typeId),
-            params
-    )
+    def sujets = sujetService.findSujets(personne,
+                                         rechCmd.patternTitre,
+                                         rechCmd.patternAuteur,
+                                         rechCmd.patternPresentation,
+                                         Matiere.get(rechCmd.matiereId),
+                                         Niveau.get(rechCmd.niveauId),
+                                         SujetType.get(rechCmd.typeId),
+                                         params)
     boolean affichePager = false
     if (sujets.totalCount > maxItems) {
       affichePager = true
     }
     withFormat {
       html {
-        [
-                liens: breadcrumpsService.liens,
+        [liens: breadcrumpsService.liens,
                 afficheFormulaire: true,
                 affichePager: affichePager,
                 typesSujet: sujetService.getAllSujetTypes(),
@@ -70,8 +66,7 @@ class SujetController {
                 sujets: sujets,
                 rechercheCommand: rechCmd,
                 artefactHelper: artefactAutorisationService,
-                utilisateur: personne
-        ]
+                utilisateur: personne]
       }
       js {
         render sujets.collect { [id: it.id, value: it.titre] as JSON }
@@ -93,14 +88,12 @@ class SujetController {
     if (sujets.totalCount > maxItems) {
       affichePager = true
     }
-    def model = [
-            liens: breadcrumpsService.liens,
+    def model = [liens: breadcrumpsService.liens,
             afficheFormulaire: false,
             affichePager: affichePager,
             sujets: sujets,
             artefactHelper: artefactAutorisationService,
-            utilisateur: personne
-    ]
+            utilisateur: personne]
     render(view: "recherche", model: model)
   }
 
@@ -110,12 +103,27 @@ class SujetController {
    */
   def nouveau() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
-    render(view: "edite", model: [
-            liens: breadcrumpsService.liens,
-            titreSujet: "",
-            peutSupprimerSujet: false,
-            peutPartagerSujet: false
-    ])
+    Personne proprietaire = authenticatedPersonne
+    render(view: "editeProprietes", model: [liens: breadcrumpsService.liens,
+            sujet: new Sujet(),
+            typesSujet: sujetService.getAllSujetTypes(),
+            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
+  }
+
+  /**
+   *
+   * Action "editeProprietes"
+   */
+  def editeProprietes() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.editeproprietes.titre"))
+    Sujet sujet = Sujet.get(params.id)
+    Personne proprietaire = authenticatedPersonne
+    render(view: "editeProprietes", model: [liens: breadcrumpsService.liens,
+            sujet: sujet,
+            typesSujet: sujetService.getAllSujetTypes(),
+            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
   }
 
   /**
@@ -126,16 +134,52 @@ class SujetController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.edite.titre"))
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
-    [
-            liens: breadcrumpsService.liens,
+    [liens: breadcrumpsService.liens,
             titreSujet: sujet.titre,
             sujet: sujet,
             sujetEnEdition: true,
             peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
             peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
             artefactHelper: artefactAutorisationService,
-            utilisateur: personne
-    ]
+            utilisateur: personne]
+  }
+
+  /**
+   *
+   * Action "enregistrerPropriete
+   */
+  def enregistrePropriete() {
+    Sujet sujet = Sujet.get(params.id)
+    if (!sujet) {
+      sujet = new Sujet()
+    }
+    Personne proprietaire = authenticatedPersonne
+    sujet = sujetService.updateProprietes(sujet, params, proprietaire)
+    if (!sujet.hasErrors()) {
+      flash.messageCode = "sujet.enregistre.succes"
+      redirect(action: 'detailProprietes', id: sujet.id)
+      return
+    }
+    render(view: "editeProprietes", model: [liens: breadcrumpsService.liens,
+            sujet: sujet,
+            typesSujet: sujetService.getAllSujetTypes(),
+            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
+  }
+
+  /**
+   *
+   */
+  def detailProprietes() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.edite.titre"))
+    Personne personne = authenticatedPersonne
+    Sujet sujet = Sujet.get(params.id)
+    [liens: breadcrumpsService.liens,
+            sujet: sujet,
+            peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
+            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne]
   }
 
   /**
@@ -160,19 +204,19 @@ class SujetController {
     }
 
     if (!sujet.hasErrors()) {
-      request.messageCode = "sujet.partage.succes"
-      request.messageArgs = [sujet.copyrightsType.presentation]
+      flash.messageCode = "sujet.partage.succes"
+      flash.messageArgs = [sujet.copyrightsType.presentation]
+      redirect(action: 'edite', id: sujet.id)
+      return
     }
-    render(view: '/sujet/edite', model: [
-            liens: breadcrumpsService.liens,
+    render(view: '/sujet/edite', model: [liens: breadcrumpsService.liens,
             titreSujet: sujet.titre,
             sujet: sujet,
             sujetEnEdition: true,
             peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
             peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
             artefactHelper: artefactAutorisationService,
-            utilisateur: personne
-    ])
+            utilisateur: personne])
 
   }
 
@@ -196,14 +240,12 @@ class SujetController {
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
     Copie copie = copieService.getCopieTestForSujetAndPersonne(sujet, personne)
-    [
-            liens: breadcrumpsService.liens,
+    [liens: breadcrumpsService.liens,
             copie: copie,
             afficheCorrection: false,
             sujet: sujet,
             artefactHelper: artefactAutorisationService,
-            utilisateur: personne
-    ]
+            utilisateur: personne]
   }
 
   /**
@@ -241,31 +283,12 @@ class SujetController {
                                                   eleve)
     request.messageCode = "copie.enregistre.succes"
 
-    render(view: '/sujet/teste', model: [
-            liens: breadcrumpsService.liens,
+    render(view: '/sujet/teste', model: [liens: breadcrumpsService.liens,
             copie: copie,
             afficheCorrection: true,
             sujet: copie.sujet,
             artefactHelper: artefactAutorisationService,
-            utilisateur: eleve
-    ])
-  }
-
-  /**
-   *
-   * Action "editeProprietes"
-   */
-  def editeProprietes() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.editeproprietes.titre"))
-    Sujet sujet = Sujet.get(params.id)
-    Personne proprietaire = authenticatedPersonne
-    render(view: "editeProprietes", model: [
-            liens: breadcrumpsService.liens,
-            sujet: sujet,
-            typesSujet: sujetService.getAllSujetTypes(),
-            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
-    ])
+            utilisateur: eleve])
   }
 
   /**
@@ -276,14 +299,12 @@ class SujetController {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
     Personne proprietaire = authenticatedPersonne
     Sujet sujet = sujetService.supprimeQuestionFromSujet(sujetQuestion, proprietaire)
-    render(view: '/sujet/edite', model: [
-            sujet: sujet,
+    render(view: '/sujet/edite', model: [sujet: sujet,
             titreSujet: sujet.titre,
             sujetEnEdition: true,
             liens: breadcrumpsService.liens,
             artefactHelper: artefactAutorisationService,
-            utilisateur: proprietaire
-    ])
+            utilisateur: proprietaire])
   }
 
 /**
@@ -294,14 +315,12 @@ class SujetController {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
     Personne proprietaire = authenticatedPersonne
     Sujet sujet = sujetService.inverseQuestionAvecLaPrecedente(sujetQuestion, proprietaire)
-    render(view: '/sujet/edite', model: [
-            sujet: sujet,
+    render(view: '/sujet/edite', model: [sujet: sujet,
             titreSujet: sujet.titre,
             sujetEnEdition: true,
             liens: breadcrumpsService.liens,
             artefactHelper: artefactAutorisationService,
-            utilisateur: proprietaire
-    ])
+            utilisateur: proprietaire])
   }
 
   /**
@@ -312,72 +331,12 @@ class SujetController {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
     Personne proprietaire = authenticatedPersonne
     Sujet sujet = sujetService.inverseQuestionAvecLaSuivante(sujetQuestion, proprietaire)
-    render(view: '/sujet/edite', model: [
-            sujet: sujet,
+    render(view: '/sujet/edite', model: [sujet: sujet,
             titreSujet: sujet.titre,
             sujetEnEdition: true,
             liens: breadcrumpsService.liens,
             artefactHelper: artefactAutorisationService,
-            utilisateur: proprietaire
-    ])
-  }
-
-  /**
-   *
-   * Action "enregistrer"
-   */
-  def enregistre(NouveauSujetCommand sujetCmd) {
-    Sujet sujet
-    boolean sujetEnEdition = false
-    Personne personne = authenticatedPersonne
-    if (sujetCmd.sujetId) {
-      sujet = Sujet.get(sujetCmd.sujetId)
-      sujetEnEdition = true
-      sujetService.updateTitreSujet(sujet, sujetCmd.sujetTitre, personne)
-    } else {
-      sujet = sujetService.createSujet(personne, sujetCmd.sujetTitre)
-    }
-    if (!sujet.hasErrors()) {
-      request.messageCode = "sujet.enregistre.succes"
-      if (!sujetEnEdition) {
-        def params = [:]
-        params."${Breadcrumps.PARAM_BREADCRUMPS_INIT}" = true
-        params.id = sujet.id
-        params.action = "edite"
-        params.controller = "sujet"
-        breadcrumpsService.manageBreadcrumps(params,
-                                             message(code: "sujet.edite.titre"))
-        sujetEnEdition = true
-      }
-    }
-    render(view: "edite", model: [
-            liens: breadcrumpsService.liens,
-            titreSujet: sujet.titre,
-            sujet: sujet,
-            sujetEnEdition: sujetEnEdition,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne
-    ])
-  }
-
-  /**
-   *
-   * Action "enregistrerPropriete
-   */
-  def enregistrePropriete() {
-    Sujet sujet = Sujet.get(params.id)
-    Personne proprietaire = authenticatedPersonne
-    Sujet sujetModifie = sujetService.updateProprietes(sujet, params, proprietaire)
-    if (!sujet.hasErrors()) {
-      request.messageCode = "sujet.enregistre.succes"
-    }
-    render(view: "editeProprietes", model: [
-            liens: breadcrumpsService.liens,
-            sujet: sujetModifie,
-            typesSujet: sujetService.getAllSujetTypes(),
-            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
-    ])
+            utilisateur: proprietaire])
   }
 
   /**
@@ -398,12 +357,10 @@ class SujetController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"), props)
     Sujet sujet = Sujet.get(params.id)
 
-    [
-            sujet: sujet,
+    [sujet: sujet,
             liens: breadcrumpsService.liens,
             typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes,
-            typesQuestionSupportesPourCreation: questionService.typesQuestionsInteractionSupportesPourCreation
-    ]
+            typesQuestionSupportesPourCreation: questionService.typesQuestionsInteractionSupportesPourCreation]
   }
 
   /**
@@ -415,13 +372,10 @@ class SujetController {
     Sujet sujet = Sujet.get(params.id)
     def modaliteActivite = new ModaliteActivite(enseignant: personne,
                                                 sujet: sujet)
-    def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(
-            personne)
-    render(view: '/seance/edite', model: [
-            liens: breadcrumpsService.liens,
+    def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
+    render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
             modaliteActivite: modaliteActivite,
-            proprietesScolarite: proprietesScolarite
-    ])
+            proprietesScolarite: proprietesScolarite])
   }
 
   /**
@@ -466,12 +420,10 @@ class SujetController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.importmoodlexml.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
-    [
-            liens: breadcrumpsService.liens,
+    [liens: breadcrumpsService.liens,
             sujet: sujet,
             matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
-    ]
+            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)]
 
   }
 
@@ -498,12 +450,11 @@ class SujetController {
     }
     if (importSuccess) {
       try {
-        MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(
-                fichier.bytes,
-                sujet,
-                matiere,
-                niveau,
-                proprietaire)
+        MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(fichier.bytes,
+                                                                                   sujet,
+                                                                                   matiere,
+                                                                                   niveau,
+                                                                                   proprietaire)
         flash.report = report
       } catch (Exception e) {
         flash.errorMessageCode = e.message
@@ -538,10 +489,6 @@ class UpdatePointsCommand {
   Float update_value
 }
 
-class NouveauSujetCommand {
-  String sujetTitre
-  Long sujetId
-}
 
 class RechercheSujetCommand {
   String patternTitre
@@ -553,14 +500,12 @@ class RechercheSujetCommand {
   Long niveauId
 
   Map toParams() {
-    [
-            patternTitre: patternTitre,
+    [patternTitre: patternTitre,
             patternAuteur: patternAuteur,
             patternPresentation: patternPresentation,
             matiereId: matiereId,
             typeId: typeId,
-            niveauId: niveauId
-    ]
+            niveauId: niveauId]
   }
 
 }

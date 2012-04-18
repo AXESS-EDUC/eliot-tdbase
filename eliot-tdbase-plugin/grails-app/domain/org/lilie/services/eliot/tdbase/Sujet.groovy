@@ -35,6 +35,7 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 
+
 /**
  * Classe représentant un sujet
  * @author franck Silvestre
@@ -43,7 +44,7 @@ class Sujet implements Artefact {
 
   String titre
   String titreNormalise
-  int versionSujet
+  int versionSujet = 1
 
   Date dateCreated
   Date lastUpdated
@@ -57,10 +58,10 @@ class Sujet implements Artefact {
   Float noteMax
   Float noteAutoMax
   Float noteEnseignantMax
-  Boolean publie
-  Boolean accesPublic
-  Boolean accesSequentiel
-  Boolean ordreQuestionsAleatoire
+  Boolean publie = false
+  Boolean accesPublic = false
+  Boolean accesSequentiel = false
+  Boolean ordreQuestionsAleatoire = false
 
   String paternite
 
@@ -99,6 +100,7 @@ class Sujet implements Artefact {
     publication(nullable: true)
     presentation(nullable: true)
     presentationNormalise(nullable: true)
+    titreNormalise(nullable: true)
     annotationPrivee(nullable: true)
     nbQuestions(nullable: true)
     dureeMinutes(nullable: true)
