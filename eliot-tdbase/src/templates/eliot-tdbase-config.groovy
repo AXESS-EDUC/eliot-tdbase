@@ -63,6 +63,13 @@ eliot.bootstrap.jeudetest = true
 eliot.fichiers.racine = '/tmp/eliot-root'
 eliot.fichiers.maxsize.mega = 10
 
+// les dimensions de div continer à prendre en compte si nécessaire
+eliot.pages.container.forceDimensions = true
+// hauteur en pixel : ne s'applique que si forceDimensions est à true
+eliot.pages.container.height = 629
+// largeur en pixel : ne s'applique que si forceDimensions est à true
+eliot.pages.container.width = 931
+
 // configuration des liens du menu portail et des annonces portail
 //
 eliot.portail.menu.affichage = true
