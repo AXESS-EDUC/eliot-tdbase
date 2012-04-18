@@ -266,6 +266,8 @@ class SujetService {
  * @param niveau le niveau
  * @param paginationAndSortingSpec les specifications pour l'ordre et
  * la pagination
+ * @param uniquementSujetsChercheur flag indiquant si la recherche ne porte
+ * que sur les sujets du chercheur
  * @return la liste des sujets
  */
   List<Sujet> findSujets(Personne chercheur,
@@ -275,6 +277,7 @@ class SujetService {
                          Matiere matiere,
                          Niveau niveau,
                          SujetType sujetType,
+                         Boolean uniquementSujetsChercheur = false,
                          Map paginationAndSortingSpec = null) {
     if (!chercheur) {
       throw new IllegalArgumentException("sujet.recherche.chercheur.null")
@@ -285,21 +288,6 @@ class SujetService {
 
     def criteria = Sujet.createCriteria()
     List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
-      if (patternAuteur) {
-        String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
-        proprietaire {
-          or {
-            like "nomNormalise", patternAuteurNormalise
-            like "prenomNormalise", patternAuteurNormalise
-          }
-        }
-      }
-      if (patternTitre) {
-        like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
-      }
-      if (patternPresentation) {
-        like "presentationNormalise", "%${StringUtils.normalise(patternPresentation)}%"
-      }
       if (matiere) {
         eq "matiere", matiere
       }
@@ -309,10 +297,32 @@ class SujetService {
       if (sujetType) {
         eq "sujetType", sujetType
       }
-      or {
+      if (uniquementSujetsChercheur) {
         eq 'proprietaire', chercheur
-        eq 'publie', true
+      } else {
+        or {
+          eq 'proprietaire', chercheur
+          eq 'publie', true
+        }
+        if (patternAuteur) {
+          String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
+          proprietaire {
+            or {
+              like "nomNormalise", patternAuteurNormalise
+              like "prenomNormalise", patternAuteurNormalise
+            }
+          }
+        }
       }
+
+      if (patternTitre) {
+        like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
+      }
+      if (patternPresentation) {
+        like "presentationNormalise", "%${StringUtils.normalise(patternPresentation)}%"
+      }
+
+
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
         def orderArg = paginationAndSortingSpec['order'] ?: 'desc'

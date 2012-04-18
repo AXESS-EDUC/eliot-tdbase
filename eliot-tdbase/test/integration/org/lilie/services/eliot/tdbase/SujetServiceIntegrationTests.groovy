@@ -141,6 +141,12 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
 
     assertEquals(1, res.size())
 
+    // verification du fonctionnement du flag "uniquementSujetChercheurs")
+    res = sujetService.findSujets(personne2, null, null,
+                                      null, null, null, null, true)
+
+    assertEquals(0, res.size())
+
     res = sujetService.findSujets(personne1, null, null,
                                   null, null, null, null)
 

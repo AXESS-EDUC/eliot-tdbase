@@ -1,6 +1,5 @@
 package org.lilie.services.eliot.tdbase
 
-import grails.converters.JSON
 import grails.plugins.springsecurity.SpringSecurityService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
@@ -43,35 +42,37 @@ class SujetController {
       breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.recherche.titre"))
     }
     Personne personne = authenticatedPersonne
+    def rechercheUniquementSujetsChercheur = false
+    def moiLabel = message(code: "eliot.label.me").toString().toUpperCase()
+    def patternAuteur = rechCmd.patternAuteur
+    if (moiLabel == rechCmd.patternAuteur?.toUpperCase()) {
+      rechercheUniquementSujetsChercheur = true
+      patternAuteur = null
+    }
     def sujets = sujetService.findSujets(personne,
                                          rechCmd.patternTitre,
-                                         rechCmd.patternAuteur,
+                                         patternAuteur,
                                          rechCmd.patternPresentation,
                                          Matiere.get(rechCmd.matiereId),
                                          Niveau.get(rechCmd.niveauId),
                                          SujetType.get(rechCmd.typeId),
+                                         rechercheUniquementSujetsChercheur,
                                          params)
     boolean affichePager = false
     if (sujets.totalCount > maxItems) {
       affichePager = true
     }
-    withFormat {
-      html {
-        [liens: breadcrumpsService.liens,
-                afficheFormulaire: true,
-                affichePager: affichePager,
-                typesSujet: sujetService.getAllSujetTypes(),
-                matieres: profilScolariteService.findMatieresForPersonne(personne),
-                niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-                sujets: sujets,
-                rechercheCommand: rechCmd,
-                artefactHelper: artefactAutorisationService,
-                utilisateur: personne]
-      }
-      js {
-        render sujets.collect { [id: it.id, value: it.titre] as JSON }
-      }
-    }
+
+    [liens: breadcrumpsService.liens,
+            afficheFormulaire: true,
+            affichePager: affichePager,
+            typesSujet: sujetService.getAllSujetTypes(),
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujets: sujets,
+            rechercheCommand: rechCmd,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne]
   }
 
   /**

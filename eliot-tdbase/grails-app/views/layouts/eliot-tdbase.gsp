@@ -70,12 +70,7 @@
           <li title="Rechercher">
             <g:link controller="sujet" action="recherche"
                     title="Rechercher des sujets"
-                    params="[bcInit: true]">Rechercher</g:link>
-          </li>
-          <li title="Mes sujets">
-            <g:link controller="sujet" action="mesSujets"
-                    title="Mes sujets"
-                    params="[bcInit: true]">Mes sujets</g:link>
+                    params="[bcInit: true, patternAuteur: message(code:'eliot.label.me')]">Rechercher</g:link>
           </li>
         </ul>
       </li>
