@@ -57,7 +57,8 @@
                               action="ajouteTextZone"
                               controller="questionFillGraphics"
                               update="fillgraphicsEditor"
-                              onComplete="afterTextZoneAdded()"/>
+                              onComplete="afterTextZoneAdded()"
+                              class="button"/>
 
           <div id="fillgraphicsEditor" class="fillgraphicsEditor">
                       <g:render
