@@ -168,7 +168,7 @@ class SujetController {
    *
    */
   def detailProprietes() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.edite.titre"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.detailproprietes.titre"))
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
     [liens: breadcrumpsService.liens,
