@@ -30,7 +30,7 @@
     <g:radio name="specifobject.indexBonneReponse"
              value="${reponse.id}" checked="${reponse.id == specifobject.indexBonneReponse}"/>
 
-    <g:textField name="specifobject.reponses[${i}].libelleReponse" size="44"
+    <g:textField name="specifobject.reponses[${i}].libelleReponse" size="40"
                  value="${reponse.libelleReponse}"/>
 
     <g:hiddenField name="specifobject.reponses[${i}].id" value="${reponse.id}"/>
