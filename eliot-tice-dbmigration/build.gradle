@@ -51,7 +51,7 @@ repositorySnapshots = "ticetimesnapshot"
 
 /**
  * Configuration de la tache upload archives
- 
+ */
 uploadArchives {
   if (!project.hasProperty('environment')) {
     project.environment = 'development'
@@ -73,7 +73,7 @@ uploadArchives {
     }
   }
 }
-*/
+
 // Lancement liquibase
 
 
