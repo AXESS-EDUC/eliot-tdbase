@@ -178,7 +178,7 @@ class Sujet implements Artefact {
 
   @Override
   boolean estPartage() {
-    publication != null
+    publicationId != null
   }
 
   @Override

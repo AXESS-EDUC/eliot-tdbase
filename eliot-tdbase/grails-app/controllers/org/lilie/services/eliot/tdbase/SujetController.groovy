@@ -36,11 +36,7 @@ class SujetController {
   def recherche(RechercheSujetCommand rechCmd) {
     def maxItems = grailsApplication.config.eliot.listes.maxrecherche
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
-    if (params.term) { // compatibilite avec autocomplete jquery
-      rechCmd.patternTitre = params.term
-    } else {
-      breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.recherche.titre"))
-    }
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.recherche.titre"))
     Personne personne = authenticatedPersonne
     def rechercheUniquementSujetsChercheur = false
     def moiLabel = message(code: "eliot.label.me").toString().toUpperCase()

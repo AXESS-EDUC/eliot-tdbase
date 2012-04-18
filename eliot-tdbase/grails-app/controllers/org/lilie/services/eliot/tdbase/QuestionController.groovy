@@ -53,10 +53,8 @@ class QuestionController {
    */
   def nouvelle() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
-    [
-            liens: breadcrumpsService.liens,
-            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation
-    ]
+    [liens: breadcrumpsService.liens,
+            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation]
   }
 
 /**
@@ -81,8 +79,7 @@ class QuestionController {
       sujet = Sujet.get(params.sujetId)
       attachementsSujets = sujetService.findAttachementsDisponiblesForSujet(sujet, personne)
     }
-    render(view: '/question/edite', model: [
-            liens: breadcrumpsService.liens,
+    render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
@@ -91,8 +88,7 @@ class QuestionController {
             utilisateur: personne,
             questionEnEdition: questionEnEdition,
             attachementsSujets: attachementsSujets,
-            annulationNonPossible: params.annulationNonPossible
-    ])
+            annulationNonPossible: params.annulationNonPossible])
   }
 
   /**
@@ -108,13 +104,11 @@ class QuestionController {
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId)
     }
-    render(view: '/question/detail', model: [
-            liens: breadcrumpsService.liens,
+    render(view: '/question/detail', model: [liens: breadcrumpsService.liens,
             question: question,
             sujet: sujet,
             artefactHelper: artefactAutorisationService,
-            utilisateur: personne
-    ])
+            utilisateur: personne])
   }
 
   /**
@@ -151,7 +145,7 @@ class QuestionController {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
     Question nvelleQuestion = questionService.recopieQuestionDansSujet(sujetQuestion, personne)
     redirect(action: 'edite', id: nvelleQuestion.id,
-             params: [sujetId: sujetQuestion.sujet.id, annulationNonPossible:true])
+             params: [sujetId: sujetQuestion.sujet.id, annulationNonPossible: true])
   }
 
   /**
@@ -202,16 +196,14 @@ class QuestionController {
       sujet = Sujet.get(params.sujetId as Long)
     }
     if (question.hasErrors()) {
-      render(view: '/question/edite', model: [
-              liens: breadcrumpsService.liens,
+      render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
               question: question,
               matieres: profilScolariteService.findMatieresForPersonne(personne),
               niveaux: profilScolariteService.findNiveauxForPersonne(personne),
               sujet: sujet,
               questionEnEdition: questionEnEdition,
               artefactHelper: artefactAutorisationService,
-              utilisateur: personne
-      ])
+              utilisateur: personne])
     } else {
       flash.messageCode = "question.enregistre.succes"
       def params = [:]
@@ -242,16 +234,14 @@ class QuestionController {
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId as Long)
     }
-    render(view: '/question/edite', model: [
-            liens: breadcrumpsService.liens,
+    render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,
             questionEnEdition: questionEnEdition,
             artefactHelper: artefactAutorisationService,
-            utilisateur: personne
-    ])
+            utilisateur: personne])
   }
 
 /**
@@ -263,19 +253,16 @@ class QuestionController {
     def specifObject = getSpecificationObjectFromParams(params)
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
-    Integer rang = breadcrumpsService.getValeurPropriete(
-            SujetController.PROP_RANG_INSERTION)
+    Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
     boolean questionEnEdition = false
-    Question question = questionService.createQuestionAndInsertInSujet(
-            params,
-            specifObject,
-            sujet,
-            personne,
-            rang)
+    Question question = questionService.createQuestionAndInsertInSujet(params,
+                                                                       specifObject,
+                                                                       sujet,
+                                                                       personne,
+                                                                       rang)
 
     if (question.hasErrors()) {
-      render(view: '/question/edite', model: [
-              liens: breadcrumpsService.liens,
+      render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
               question: question,
               sujet: sujet,
               matieres: profilScolariteService.findMatieresForPersonne(personne),
@@ -283,8 +270,7 @@ class QuestionController {
               sujet: sujet,
               peutSupprimer: false,
               questionEnEdition: questionEnEdition,
-              peutPartagerQuestion: false
-      ])
+              peutPartagerQuestion: false])
     } else {
       flash.messageCode = "question.enregistre.succes"
       redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
@@ -302,20 +288,17 @@ class QuestionController {
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
     Question question = Question.get(params.id)
-    Integer rang = breadcrumpsService.getValeurPropriete(
-            SujetController.PROP_RANG_INSERTION)
+    Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
     sujetService.insertQuestionInSujet(question, sujet, personne, rang)
     if (sujet.hasErrors()) {
-      render(view: '/sujet/edite', model: [
-              liens: breadcrumpsService.liens,
+      render(view: '/sujet/edite', model: [liens: breadcrumpsService.liens,
               titreSujet: sujet.titre,
               sujet: sujet,
               sujetEnEdition: true,
               peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
               peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
               artefactHelper: artefactAutorisationService,
-              utilisateur: personne
-      ])
+              utilisateur: personne])
     } else {
       flash.messageCode = "question.enregistreinsert.succes"
       redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
@@ -332,16 +315,22 @@ class QuestionController {
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
     Personne personne = authenticatedPersonne
-    def questions = questionService.findQuestions(
-            personne,
-            rechCmd.patternTitre,
-            rechCmd.patternAuteur,
-            rechCmd.patternSpecification,
-            Matiere.get(rechCmd.matiereId),
-            Niveau.get(rechCmd.niveauId),
-            QuestionType.get(rechCmd.typeId),
-            params
-    )
+    def rechercheUniquementQuestionsChercheur = false
+    def moiLabel = message(code: "eliot.label.me").toString().toUpperCase()
+    def patternAuteur = rechCmd.patternAuteur
+    if (moiLabel == rechCmd.patternAuteur?.toUpperCase()) {
+      rechercheUniquementQuestionsChercheur = true
+      patternAuteur = null
+    }
+    def questions = questionService.findQuestions(personne,
+                                                  rechCmd.patternTitre,
+                                                  patternAuteur,
+                                                  rechCmd.patternSpecification,
+                                                  Matiere.get(rechCmd.matiereId),
+                                                  Niveau.get(rechCmd.niveauId),
+                                                  QuestionType.get(rechCmd.typeId),
+                                                  rechercheUniquementQuestionsChercheur,
+                                                  params)
     Sujet sujet = Sujet.get(rechCmd.sujetId)
     boolean afficheLiensModifier = true
     if (sujet) {
@@ -351,8 +340,7 @@ class QuestionController {
     if (questions.totalCount > maxItems) {
       affichePager = true
     }
-    [
-            liens: breadcrumpsService.liens,
+    [liens: breadcrumpsService.liens,
             afficheFormulaire: true,
             typesQuestion: questionService.getTypesQuestionsSupportes(),
             matieres: profilScolariteService.findMatieresForPersonne(personne),
@@ -363,8 +351,7 @@ class QuestionController {
             afficheLiensModifier: afficheLiensModifier,
             afficherPager: affichePager,
             artefactHelper: artefactAutorisationService,
-            utilisateur: personne
-    ]
+            utilisateur: personne]
   }
 
   def mesItems() {
@@ -372,24 +359,20 @@ class QuestionController {
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.mesitems.titre"))
     Personne personne = authenticatedPersonne
-    def questions = questionService.findQuestionsForProprietaire(
-            personne,
-            params
-    )
+    def questions = questionService.findQuestionsForProprietaire(personne,
+                                                                 params)
     boolean afficheLiensModifier = true
     boolean affichePager = false
     if (questions.totalCount > maxItems) {
       affichePager = true
     }
-    def model = [
-            liens: breadcrumpsService.liens,
+    def model = [liens: breadcrumpsService.liens,
             afficheFormulaire: false,
             questions: questions,
             afficheLiensModifier: afficheLiensModifier,
             afficherPager: affichePager,
             artefactHelper: artefactAutorisationService,
-            utilisateur: personne
-    ]
+            utilisateur: personne]
     render(view: "recherche", model: model)
   }
 
@@ -427,6 +410,7 @@ class RechercheQuestionCommand {
 
   Map toParams() {
     [
+            patternAuteur: patternAuteur,
             patternTitre: patternTitre,
             patternPresentation: patternSpecification,
             matiereId: matiereId,

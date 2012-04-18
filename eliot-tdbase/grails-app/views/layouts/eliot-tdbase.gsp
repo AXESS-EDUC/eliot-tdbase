@@ -88,13 +88,8 @@
           <li title="Rechercher">
             <g:link controller="question" action="recherche"
                     title="Rechercher des items"
-                    params="[bcInit: true]">Rechercher</g:link>
+                    params="[bcInit: true, patternAuteur: message(code:'eliot.label.me')]">Rechercher</g:link>
 
-          </li>
-          <li title="Mes items">
-            <g:link controller="question" action="mesItems"
-                    title="Mes items"
-                    params="[bcInit: true]">Mes items</g:link>
           </li>
 
         </ul>
