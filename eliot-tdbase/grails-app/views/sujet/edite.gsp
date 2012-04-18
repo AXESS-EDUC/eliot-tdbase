@@ -37,6 +37,7 @@
       $('#menu-item-sujets').addClass('actif');
 
       $(".editinplace").editInPlace({
+        default_text:"",
       	bg_out: "#fff",
         url: "${g.createLink(controller: 'sujet', action: 'updatePoints')}"
       });

@@ -33,6 +33,7 @@
   <r:script>
     $(document).ready(function () {
         $(".editinplace").editInPlace({
+            default_text:"",
             url:"${g.createLink(controller: 'seance', action: 'updateReponseNote')}",
             success:function (jsonRes) {
                 var res = JSON.parse(jsonRes);
