@@ -35,6 +35,7 @@
   <r:script>
     $(document).ready(function () {
       $('#menu-item-seances').addClass('actif');
+      $('select[name="proprietesScolariteSelectionId"]').focus();
       $(".datepicker").datetimepicker();
       var $confirmDialog = $("<div></div>")
       							.html('Êtes vous sur de vouloir supprimer la séance avec toutes les copies associées ?')
@@ -127,7 +128,7 @@
         <td>
           <g:textField name="dateDebut"
                        value="${modaliteActivite.dateDebut.format('dd/MM/yyyy HH:mm')}"
-                       class="datepicker"/>
+                       class="datepicker" />
         </td>
       </tr>
       <tr>

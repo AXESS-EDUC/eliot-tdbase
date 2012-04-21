@@ -34,6 +34,7 @@
   <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
+      $('input[name="titre"]').focus();
     });
   </r:script>
   <title><g:message code="sujet.editeProprietes.head.title"/></title>
@@ -59,7 +60,7 @@
       <tr>
         <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:</td>
         <td>
-          <input size="80" type="text" value="${sujet.titre}" name="titre" />
+          <input size="80" type="text" value="${sujet.titre}" name="titre" tabindex="1"/>
         </td>
       </tr>
       <tr>
@@ -72,7 +73,7 @@
           <g:select name="sujetType.id" value="${sujet.sujetType?.id}"
                     from="${typesSujet}"
                     optionKey="id"
-                    optionValue="nom"/>
+                    optionValue="nom" tabindex="2"/>
         </td>
       </tr>
       <tr>
@@ -82,7 +83,7 @@
                     noSelection="${['null': g.message(code:"default.select.null")]}"
                     from="${matieres}"
                     optionKey="id"
-                    optionValue="libelleLong"/>
+                    optionValue="libelleLong" tabindex="3"/>
         </td>
       </tr>
       <tr>
@@ -92,13 +93,13 @@
                     noSelection="${['null': g.message(code:"default.select.null")]}"
                     from="${niveaux}"
                     optionKey="id"
-                    optionValue="libelleLong"/>
+                    optionValue="libelleLong" tabindex="4"/>
         </td>
       </tr>
       <tr>
         <td class="label">Dur&eacute;e&nbsp;:</td>
         <td>
-          <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}"/>
+          <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}" tabindex="5"/>
           (en minutes)
         </td>
       </tr>
@@ -107,7 +108,7 @@
         <td class="label">Ordre&nbsp;questions&nbsp;:</td>
         <td>
           <g:checkBox name="ordreQuestionsAleatoire"
-                      checked="${sujet.ordreQuestionsAleatoire}"/>
+                      checked="${sujet.ordreQuestionsAleatoire}" tabindex="5"/>
           Al&eacute;atoire</td>
       </tr>
 
@@ -115,7 +116,7 @@
         <td class="label">Description&nbsp;:</td>
         <td>
           <g:textArea cols="56" rows="10" name="presentation"
-                      value="${sujet.presentation}"/>
+                      value="${sujet.presentation}" tabindex="6"/>
         </td>
       </tr>
       <tr>
@@ -140,7 +141,7 @@
   <div class="form_actions">
     <g:actionSubmit value="Enregistrer" action="enregistrePropriete"
                     class="button"
-                    title="Enregistrer"/>
+                    title="Enregistrer" tabindex="7"/>
   </div>
 </form>
 
