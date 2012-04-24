@@ -140,6 +140,37 @@ class ActiviteController {
   }
 
   /**
+     *
+     * Action enregistre  la copie
+     */
+    def enregistreLaCopie() {
+      Copie copie = Copie.get(params.copie.id)
+      def nombreReponses = params.nombreReponsesNonVides as Integer
+      ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
+      nombreReponses.times {
+        reponsesCopie.listeReponses << new ReponseCopie()
+      }
+      bindData(reponsesCopie, params, "reponsesCopie")
+
+      reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
+        def reponse = Reponse.get(reponseCopie.reponse.id)
+        reponseCopie.reponse = reponse
+        reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
+      }
+      bindData(reponsesCopie, params, "reponsesCopie")
+      Personne eleve = authenticatedPersonne
+      copieService.updateCopieForListeReponsesCopie(copie,
+                                                    reponsesCopie.listeReponses,
+                                                    eleve)
+      request.messageCode = "copie.enregistre.succes"
+
+      render(view: '/activite/copie/edite', model: [
+              liens: breadcrumpsService.liens,
+              copie: copie
+      ])
+    }
+
+  /**
    * Action liste résulats
    *
    */

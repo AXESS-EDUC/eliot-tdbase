@@ -43,7 +43,7 @@
   </g:if>
     });
   </r:script>
-  <title><g:message code="activite.copie.edite.head.title" /></title>
+  <title><g:message code="activite.copie.edite.head.title"/></title>
 </head>
 
 <body>
@@ -96,22 +96,22 @@
 </g:if>
 <g:if test="${copie.modaliteActivite.estOuverte()}">
   <ul>
-    <g:if test="${copie.dateRemise}">
-      <div class="portal-messages">
-        <li class="notice">
+
+    <div class="portal-messages">
+      <li class="notice">
+        Date dernier enregistrement : <span id="date_enregistrement">${copie.dateEnregistrement?.format('dd/MM/yy  à HH:mm')}</span>
+        <g:if test="${copie.dateRemise}">
+          &nbsp;&nbsp;   &nbsp;&nbsp;
           Note (correction automatique) :
           <strong><g:formatNumber number="${copie.correctionNoteAutomatique}"
                                   format="##0.00"/></strong>
           / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
-        &nbsp;&nbsp;   &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+          &nbsp;&nbsp;   &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
 
-          <g:if test="${!copie.estModifiable()}">
-            <br/><br/><strong>La copie n'est plus modifiable.</strong>
-          </g:if>
-        </li>
-      </div>
-    </g:if>
-    <g:else>
+        </g:if>
+      </li>
+    </div>
+
       <g:if test="${!copie.estModifiable()}">
         <div class="portal-messages">
           <li class="notice">
@@ -119,7 +119,6 @@
           </li>
         </div>
       </g:if>
-    </g:else>
   </ul>
 </g:if>
 
