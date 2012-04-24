@@ -65,7 +65,11 @@
 <div class="portal-tabs">
   <span class="portal-tabs-famille-liens">
     <g:link action="edite" controller="seance" class="modify"
-            id="${seance.id}">Modifier la séance</g:link> |
+            id="${seance.id}">Modifier la séance</g:link>
+    <g:if test="${grailsApplication.config.eliot.interfacage.notes}"> |
+      <g:link action="edite" controller="seance" class="share" title="Met à jour les notes dans la gestion des notes"
+                        id="${seance.id}">Mettre à jour les notes</g:link>
+    </g:if>|
     <g:link action="supprime" controller="seance" class="delete"
             id="${seance.id}">Supprimer la séance</g:link>
   </span>

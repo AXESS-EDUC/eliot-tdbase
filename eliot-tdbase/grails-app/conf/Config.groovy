@@ -143,6 +143,7 @@ grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptU
 grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 grails.plugins.springsecurity.cas.active = false
 
+
 // set security rbac
 //
 grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
@@ -158,6 +159,15 @@ grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY']
                 'IS_AUTHENTICATED_FULLY'],
         '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
                 'IS_AUTHENTICATED_FULLY']]
+
+
+//  support de l'interfaçage eliot-notes
+//
+eliot.interfacage.notes = true
+
+//  support de l'interfaçage eliot-textes
+//
+eliot.interfacage.textes = true
 
 // le nombre d'éléments max à afficher dans une liste de résultat
 eliot.listes.maxrecherche = 5

@@ -47,7 +47,7 @@
       									"Annuler": function() {$(this).dialog("close");return false},
       									'OK': function() {
                                             $(this).dialog("close");
-                                            document.location = "${createLink(action:'supprime',controller: 'seance', id: modaliteActivite.id)}";
+                                            document.location = "${createLink(action: 'supprime', controller: 'seance', id: modaliteActivite.id)}";
                                             }
       								}
       							});
@@ -55,6 +55,12 @@
         $confirmDialog.dialog('open');
         return false;
       });
+    $('#gestionEvaluation').change(function() {
+               $('#edition_devoir').toggle();
+               })
+    $('#gestionActivite').change(function() {
+                   $('#edition_activite').toggle();
+                   })
     });
   </r:script>
   <title><g:message code="seance.edite.head.title"/></title>
@@ -66,10 +72,10 @@
 <div class="portal-tabs">
   <span class="portal-tabs-famille-liens">
     <g:if test="${modaliteActivite.id}">
-    <g:link action="listeResultats" controller="seance" class="modify"
-            id="${modaliteActivite.id}">Corriger les copies</g:link> |
-    <g:link action="supprime" controller="seance" class="delete delete-actif"
-            id="${modaliteActivite.id}">Supprimer la séance</g:link>
+      <g:link action="listeResultats" controller="seance" class="modify"
+              id="${modaliteActivite.id}">Corriger les copies</g:link> |
+      <g:link action="supprime" controller="seance" class="delete delete-actif"
+              id="${modaliteActivite.id}">Supprimer la séance</g:link>
     </g:if>
     <g:else>
       <span class="modify">Corriger les copies</span> |
@@ -110,7 +116,7 @@
           </g:if>
           <g:else>
             <g:select name="proprietesScolariteSelectionId"
-                      noSelection="${['null': g.message(code:"default.select.null")]}"
+                      noSelection="${['null': g.message(code: "default.select.null")]}"
                       from="${proprietesScolarite}"
                       optionKey="id"
                       optionValue="structureEnseignementNomAffichage"/>
@@ -128,7 +134,7 @@
         <td>
           <g:textField name="dateDebut"
                        value="${modaliteActivite.dateDebut.format('dd/MM/yyyy HH:mm')}"
-                       class="datepicker" />
+                       class="datepicker"/>
         </td>
       </tr>
       <tr>
@@ -140,12 +146,75 @@
         </td>
       </tr>
       <tr>
-        <td class="label">Copie&nbsp;améliorable&nbsp;:</td>
+        <td class="label"></td>
         <td>
           <g:checkBox name="copieAmeliorable" title="améliorable"
-                      checked="${modaliteActivite.copieAmeliorable}"/>
+                      checked="${modaliteActivite.copieAmeliorable}"/> <span
+                class="label">Copie&nbsp;améliorable</span>
         </td>
       </tr>
+      <g:if test="${grailsApplication.config.eliot.interfacage.notes}">
+        <tr>
+          <td class="label"></td>
+          <td>
+            <g:checkBox name="gestionEvaluation" id="gestionEvaluation"
+                        title="Liée à un devoir dans la gestion des notes"
+                        checked="${modaliteActivite.evaluationId}"/>
+            <span class="label">Liée à un devoir dans la gestion des notes</span>
+            <table id="edition_devoir"
+                   style="display: ${modaliteActivite.evaluationId ? 'table' : 'none'}">
+              <tr>
+                <td class="label" style="width: 110px;">Matières&nbsp;:</td>
+                <td><g:select name="matiereId"
+                              noSelection="${['null': 'Faites votre choix...']}"
+                              from="${proprietesScolarite}"
+                              optionKey="id"
+                              optionValue="matiere"/></td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </g:if>
+      <g:if test="${grailsApplication.config.eliot.interfacage.textes}">
+        <tr>
+          <td class="label"></td>
+          <td>
+            <g:checkBox name="gestionActivite"
+                        title="Liée à une activité dans le cahier de textes"
+                        checked="${modaliteActivite.activiteId}"/>
+            <span class="label">Liée à une activité dans le cahier de textes</span>
+            <table id="edition_activite"
+                   style="display: ${modaliteActivite.activiteId ? 'table' : 'none'}">
+              <tr>
+                <td class="label"
+                    style="width: 110px;">Cahier&nbsp;de&nbsp;textes&nbsp;:</td>
+                <td><g:select name="cahierId"
+                              noSelection="${['null': 'Faites votre choix...']}"
+                              from="${proprietesScolarite}"
+                              optionKey="id"
+                              optionValue="matiere"/></td>
+              </tr>
+              <tr>
+                <td class="label" style="width: 110px;">Chapitre&nbsp;:</td>
+                <td><g:select name="chapitreId"
+                              noSelection="${['null': 'Faites votre choix...']}"
+                              from="${proprietesScolarite}"
+                              optionKey="id"
+                              optionValue="matiere"/></td>
+              </tr>
+              <tr>
+                <td class="label" style="width: 110px;">Contexte&nbsp;:</td>
+                <td><g:select name="chapitreId"
+                              noSelection="${['null': 'En classe']}"
+                              from="${proprietesScolarite}"
+                              optionKey="id"
+                              optionValue="matiere"/></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </g:if>
     </table>
   </div>
   <g:hiddenField name="id" value="${modaliteActivite.id}"/>
