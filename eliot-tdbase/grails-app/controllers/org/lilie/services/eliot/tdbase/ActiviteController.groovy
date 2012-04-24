@@ -128,7 +128,7 @@ class ActiviteController {
     }
     bindData(reponsesCopie, params, "reponsesCopie")
     Personne eleve = authenticatedPersonne
-    copieService.updateCopieForListeReponsesCopie(copie,
+    copieService.updateCopieRemiseForListeReponsesCopie(copie,
                                                   reponsesCopie.listeReponses,
                                                   eleve)
     request.messageCode = "copie.enregistre.succes"

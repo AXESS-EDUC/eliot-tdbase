@@ -61,11 +61,9 @@ class CopieService {
       eq 'estJetable', true
     }
     if (copie == null) {
-      copie = new Copie(
-              eleve: personne,
-              sujet: sujet,
-              estJetable: true
-      )
+      copie = new Copie(eleve: personne,
+                        sujet: sujet,
+                        estJetable: true)
       if (!copie.save() || copie.hasErrors()) {
         return copie
       }
@@ -106,12 +104,10 @@ class CopieService {
 
     Copie copie = Copie.findByModaliteActiviteAndEleve(seance, eleve)
     if (copie == null) {
-      copie = new Copie(
-              modaliteActivite: seance,
-              eleve: eleve,
-              sujet: seance.sujet,
-              estJetable: false
-      )
+      copie = new Copie(modaliteActivite: seance,
+                        eleve: eleve,
+                        sujet: seance.sujet,
+                        estJetable: false)
       if (!copie.save() || copie.hasErrors()) {
         return copie
       }
@@ -135,11 +131,9 @@ class CopieService {
         it.question.exercice.questionsSequences.each { qs ->
           Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, qs)
           if (reponse == null) {
-            reponse = reponseService.createReponse(
-                    copie,
-                    qs,
-                    copie.eleve
-            )
+            reponse = reponseService.createReponse(copie,
+                                                   qs,
+                                                   copie.eleve)
             aCreeDesReponses = true
           }
           reponsesComposite << reponse
@@ -148,11 +142,9 @@ class CopieService {
       } else {
         Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
         if (reponse == null) {
-          reponse = reponseService.createReponse(
-                  copie,
-                  it,
-                  copie.eleve
-          )
+          reponse = reponseService.createReponse(copie,
+                                                 it,
+                                                 copie.eleve)
           aCreeDesReponses = true
         }
         reponses << reponse
@@ -174,6 +166,8 @@ class CopieService {
 
   /**
    * Met à jour la copie en prenant en compte la liste de réponses soumises
+   *  sans mettre à jour la date de remise. Permet d'enregistrer la copie sans
+   *  la considérer comme remise par l'élève
    * @param copie la copie
    * @param reponsesCopie les réponses soumises
    * @param eleve l'élève
@@ -201,7 +195,7 @@ class CopieService {
         nbGlobalPointsCorrecteur += reponse.sujetQuestion.points
       }
     }
-    copie.dateRemise = new Date()
+
     if (noteGlobaleAuto < 0) {
       noteGlobaleAuto = 0
     }
@@ -219,6 +213,24 @@ class CopieService {
     copie.correctionNoteFinale += copie.pointsModulation
     copie.save()
     return copie
+  }
+
+  /**
+   * Met à jour la copie remise en prenant en compte la liste de réponses soumises
+   * @param copie la copie
+   * @param reponsesCopie les réponses soumises
+   * @param eleve l'élève
+   * @return la copie mise à jour
+   */
+  @Transactional
+  Copie updateCopieRemiseForListeReponsesCopie(Copie copie,
+                                               List<ReponseCopie> reponsesCopie,
+                                               Personne eleve) {
+
+    assert (copie.eleve == eleve && copie.estModifiable())
+    copie.dateRemise = new Date()
+
+    return updateCopieForListeReponsesCopie(copie, reponsesCopie,eleve)
   }
 
   /**
@@ -255,11 +267,10 @@ class CopieService {
    * @return la copie mise à jour
    */
   @Transactional
-  Copie updateAnnotationAndModulationForCopie(
-          String annotation,
-          Float pointsModulation,
-          Copie copie,
-          Personne enseignant) {
+  Copie updateAnnotationAndModulationForCopie(String annotation,
+                                              Float pointsModulation,
+                                              Copie copie,
+                                              Personne enseignant) {
 
     assert (copie.modaliteActivite.enseignant == enseignant)
 

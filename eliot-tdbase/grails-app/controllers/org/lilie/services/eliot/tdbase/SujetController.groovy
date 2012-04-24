@@ -22,7 +22,6 @@ class SujetController {
   QuestionService questionService
   CopieService copieService
   ReponseService reponseService
-  SpringSecurityService springSecurityService
   ProfilScolariteService profilScolariteService
   BreadcrumpsService breadcrumpsService
   MoodleQuizImporterService moodleQuizImporterService
@@ -275,7 +274,7 @@ class SujetController {
     }
     bindData(reponsesCopie, params, "reponsesCopie")
     Personne eleve = authenticatedPersonne
-    copieService.updateCopieForListeReponsesCopie(copie,
+    copieService.updateCopieRemiseForListeReponsesCopie(copie,
                                                   reponsesCopie.listeReponses,
                                                   eleve)
     request.messageCode = "copie.enregistre.succes"
