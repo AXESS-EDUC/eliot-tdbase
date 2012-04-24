@@ -33,14 +33,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase-activite"/>
+  <r:require module="seanceCopie_Common"/>
   <r:script>
     $(document).ready(function() {
       $('#menu-item-seances').addClass('actif');
       <g:if test="${!copie.estModifiable()}">
-    $(':checkbox').attr('disabled',true);
-    $('textarea').attr('disabled', true);
-    $('.interaction').attr('disabled', true);
-  </g:if>
+        new SeanceCopieCommon().deactivateFormElements();
+      </g:if>
     });
   </r:script>
   <title><g:message code="activite.copie.edite.head.title"/></title>
@@ -99,7 +98,8 @@
 
     <div class="portal-messages">
       <li class="notice">
-        Date dernier enregistrement : <span id="date_enregistrement">${copie.dateEnregistrement?.format('dd/MM/yy  à HH:mm')}</span>
+        Date dernier enregistrement : <span
+              id="date_enregistrement">${copie.dateEnregistrement?.format('dd/MM/yy  à HH:mm')}</span>
         <g:if test="${copie.dateRemise}">
           &nbsp;&nbsp;   &nbsp;&nbsp;
           Note (correction automatique) :
@@ -112,13 +112,13 @@
       </li>
     </div>
 
-      <g:if test="${!copie.estModifiable()}">
-        <div class="portal-messages">
-          <li class="notice">
-            <strong>La copie n'est plus modifiable.</strong>
-          </li>
-        </div>
-      </g:if>
+    <g:if test="${!copie.estModifiable()}">
+      <div class="portal-messages">
+        <li class="notice">
+          <strong>La copie n'est plus modifiable.</strong>
+        </li>
+      </div>
+    </g:if>
   </ul>
 </g:if>
 

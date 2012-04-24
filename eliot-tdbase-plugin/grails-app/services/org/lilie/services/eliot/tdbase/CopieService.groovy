@@ -359,6 +359,7 @@ class CopieService {
     def criteria = Copie.createCriteria()
     List<Copie> copies = criteria.list(paginationSpec) {
       eq 'modaliteActivite', seance
+      isNotNull 'dateRemise'
       eleve {
         order 'nom', 'asc'
       }

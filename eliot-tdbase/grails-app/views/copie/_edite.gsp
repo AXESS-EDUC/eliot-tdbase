@@ -199,6 +199,7 @@
 <g:if test="${etaitDansUnExercice}">
   </div>
 </g:if>
+<g:if test="${copie.estModifiable()}">
 <g:hiddenField name="nombreReponsesNonVides" value="${indexReponseNonVide}"/>
 <div class="bottom">
   <div class="form_actions">
@@ -210,4 +211,5 @@
                            title="Enregistrer et rendre la copie"/>
   </div>
 </div>
+</g:if>
 </g:form>

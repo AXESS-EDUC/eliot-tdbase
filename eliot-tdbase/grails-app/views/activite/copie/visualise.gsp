@@ -33,14 +33,6 @@
 <head>
   <meta name="layout" content="eliot-tdbase-activite"/>
   <r:require module="seanceCopie_VisualiseJS"/>
-  <r:script>
-    $(document).ready(function() {
-      $('#menu-item-seances').addClass('actif');
-      $(':checkbox').attr('disabled',true);
-      $('textarea').attr('disabled', true);
-      $('.interaction').attr('disabled', true);
-    });
-  </r:script>
   <title><g:message code="activite.copie.visualise.head.title" /></title>
 </head>
 
