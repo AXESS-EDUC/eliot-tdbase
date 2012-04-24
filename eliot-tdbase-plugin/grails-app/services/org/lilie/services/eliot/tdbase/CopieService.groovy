@@ -166,8 +166,8 @@ class CopieService {
 
   /**
    * Met à jour la copie en prenant en compte la liste de réponses soumises
-   *  sans mettre à jour la date de remise. Permet d'enregistrer la copie sans
-   *  la considérer comme remise par l'élève
+   *  sans mettre à jour la date de remise ni les évaluations. Permet
+   *  d'enregistrer la copie sans la considérer comme remise par l'élève
    * @param copie la copie
    * @param reponsesCopie les réponses soumises
    * @param eleve l'élève
@@ -179,6 +179,35 @@ class CopieService {
                                          Personne eleve) {
 
     assert (copie.eleve == eleve && copie.estModifiable())
+    copie.dateEnregistrement = new Date()
+
+    reponsesCopie.each { ReponseCopie reponseCopie ->
+      Reponse reponse = reponseCopie.reponse
+      reponseService.updateSpecification(reponse,
+                                         reponseCopie.specificationObject,
+                                         eleve)
+    }
+
+    copie.save()
+    return copie
+  }
+
+  /**
+   * Met à jour la copie remise en prenant en compte la liste de réponses soumises
+   * et en les évaluant.
+   * @param copie la copie
+   * @param reponsesCopie les réponses soumises
+   * @param eleve l'élève
+   * @return la copie mise à jour
+   */
+  @Transactional
+  Copie updateCopieRemiseForListeReponsesCopie(Copie copie,
+                                               List<ReponseCopie> reponsesCopie,
+                                               Personne eleve) {
+
+    assert (copie.eleve == eleve && copie.estModifiable())
+    copie.dateRemise = new Date()
+    copie.dateEnregistrement = copie.dateRemise
 
     def noteGlobaleAuto = 0
     def nbGlobalPointsAuto = 0
@@ -213,24 +242,6 @@ class CopieService {
     copie.correctionNoteFinale += copie.pointsModulation
     copie.save()
     return copie
-  }
-
-  /**
-   * Met à jour la copie remise en prenant en compte la liste de réponses soumises
-   * @param copie la copie
-   * @param reponsesCopie les réponses soumises
-   * @param eleve l'élève
-   * @return la copie mise à jour
-   */
-  @Transactional
-  Copie updateCopieRemiseForListeReponsesCopie(Copie copie,
-                                               List<ReponseCopie> reponsesCopie,
-                                               Personne eleve) {
-
-    assert (copie.eleve == eleve && copie.estModifiable())
-    copie.dateRemise = new Date()
-
-    return updateCopieForListeReponsesCopie(copie, reponsesCopie,eleve)
   }
 
   /**

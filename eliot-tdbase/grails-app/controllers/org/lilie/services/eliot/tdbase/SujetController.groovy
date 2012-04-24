@@ -277,7 +277,7 @@ class SujetController {
     copieService.updateCopieRemiseForListeReponsesCopie(copie,
                                                   reponsesCopie.listeReponses,
                                                   eleve)
-    request.messageCode = "copie.enregistre.succes"
+    request.messageCode = "copie.remise.succes"
 
     render(view: '/sujet/teste', model: [liens: breadcrumpsService.liens,
             copie: copie,
@@ -286,6 +286,39 @@ class SujetController {
             artefactHelper: artefactAutorisationService,
             utilisateur: eleve])
   }
+
+  /**
+     *
+     * Action enregistre la copie (sans remise)
+     */
+    def enregistreLaCopie() {
+      Copie copie = Copie.get(params.copie.id)
+      def nombreReponses = params.nombreReponsesNonVides as Integer
+      ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
+      nombreReponses.times {
+        reponsesCopie.listeReponses << new ReponseCopie()
+      }
+      bindData(reponsesCopie, params, "reponsesCopie")
+
+      reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
+        def reponse = Reponse.get(reponseCopie.reponse.id)
+        reponseCopie.reponse = reponse
+        reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
+      }
+      bindData(reponsesCopie, params, "reponsesCopie")
+      Personne eleve = authenticatedPersonne
+      copieService.updateCopieForListeReponsesCopie(copie,
+                                                    reponsesCopie.listeReponses,
+                                                    eleve)
+      request.messageCode = "copie.enregistre.succes"
+
+      render(view: '/sujet/teste', model: [liens: breadcrumpsService.liens,
+              copie: copie,
+              afficheCorrection: copie.dateRemise,
+              sujet: copie.sujet,
+              artefactHelper: artefactAutorisationService,
+              utilisateur: eleve])
+    }
 
   /**
    *

@@ -38,5 +38,6 @@
 
     <!--<include file="migrations/schema.tdbase/referentiel/changelog-20110706-4.xml"/>-->
     <include file="migrations/schema.tdbase/referentiel/changelog-20120417-125.xml"/>
+    <include file="migrations/schema.tdbase/changelog-20120424-137.xml"/>
 
 </databaseChangeLog>

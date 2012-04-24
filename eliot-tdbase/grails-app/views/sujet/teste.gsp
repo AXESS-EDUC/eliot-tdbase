@@ -54,7 +54,7 @@
               id="${sujet.id}">Modifier les propriétés du sujet</g:link>
     </g:if>
     <g:else>
-      <span class="add">Modifier le sujet</span> |
+      <span class="modify">Modifier le sujet</span> |
       <span class="modify">Modifier les propriétés du sujet</span>
     </g:else>
   </span>

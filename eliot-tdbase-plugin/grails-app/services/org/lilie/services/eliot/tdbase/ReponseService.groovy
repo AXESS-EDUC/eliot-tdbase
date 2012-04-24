@@ -106,6 +106,25 @@ class ReponseService implements ApplicationContextAware {
   }
 
   /**
+     * Modifie les proprietes de la réponse passée en paramètre
+     * @param reponse la reponse
+     * @param specificationObject l'objet specification
+     * @param proprietaire le proprietaire
+     * @return la réponse avec la note correction automatique mise à jour
+     */
+    @Transactional
+    Reponse updateSpecification(Reponse reponse, def specificationObject,
+                                         Personne proprietaire) {
+
+      assert (reponse.eleve == proprietaire && reponse.questionType.interaction)
+
+      QuestionType qtype = reponse.sujetQuestion.question.type
+      def specService = reponseSpecificationServiceForQuestionType(qtype)
+      specService.updateReponseSpecificationForObject(reponse, specificationObject)
+      return reponse
+    }
+
+  /**
    * Récupère un template de spécification de réponse
    * @param reponse la réponse pour laquelle on souhaite récupéré un template de
    * spécification de réponse

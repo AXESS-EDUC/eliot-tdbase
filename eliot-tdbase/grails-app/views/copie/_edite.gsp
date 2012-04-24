@@ -202,9 +202,12 @@
 <g:hiddenField name="nombreReponsesNonVides" value="${indexReponseNonVide}"/>
 <div class="bottom">
   <div class="form_actions">
-    <g:actionSubmit value="Rendre la copie" action="rendLaCopie"
+    <g:actionSubmit value="Enregistrer la copie" action="enregistreLaCopie"
+                               class="button"
+                               title="Enregistrer la copie sans la rendre"/>
+    <g:actionSubmit value="Enregistrer et rendre la copie" action="rendLaCopie"
                            class="button"
-                           title="Rendre la copie"/>
+                           title="Enregistrer et rendre la copie"/>
   </div>
 </div>
 </g:form>

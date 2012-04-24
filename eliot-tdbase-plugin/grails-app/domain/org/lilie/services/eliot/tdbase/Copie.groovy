@@ -36,6 +36,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
  */
 class Copie {
 
+  Date dateEnregistrement
   Date dateRemise
   String correctionAnnotation
   Date correctionDate
@@ -59,6 +60,7 @@ class Copie {
   static hasMany = [reponses: Reponse]
 
   static constraints = {
+    dateEnregistrement(nullable: true)
     dateRemise(nullable: true)
     correctionAnnotation(nullable: true)
     correctionDate(nullable: true)

@@ -174,7 +174,7 @@ eliot.listes.maxrecherche = 5
 eliot.listes.max = 7
 
 // les dimensions de div continer à prendre en compte si nécessaire
-eliot.pages.container.forceDimensions = true
+eliot.pages.container.forceDimensions = false
 // hauteur en pixel : ne s'applique que si forceDimensions est à true
 eliot.pages.container.height = 629
 // largeur en pixel : ne s'applique que si forceDimensions est à true
