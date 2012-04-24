@@ -31,14 +31,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require module="eliot-tdbase-ui"/>
-  <r:script>
-    $(document).ready(function () {
-      $('#menu-item-sujets').addClass('actif');
-      initButtons();
-    });
-  </r:script>
-  <title><g:message code="sujet.teste.head.title" /></title>
+<r:require module="eliot-tdbase-ui"/>
+<r:script>
+  $(document).ready(function () {
+    $('#menu-item-sujets').addClass('actif');
+    initButtons();
+  });
+</r:script>
+<title><g:message code="sujet.teste.head.title"/></title>
 </head>
 
 <body>
@@ -63,8 +63,8 @@
     <ul id="menu_actions_toolbar_${sujet.id}"
         class="tdbase-menu-actions">
       <li><g:link action="reinitialiseCopieTest" id="${copie.id}">
-              Réinitialiser la copie
-           </g:link>
+        Réinitialiser la copie
+      </g:link>
       </li>
       <li><g:link action="ajouteSeance" id="${sujet.id}">
         Nouvelle&nbsp;séance
@@ -118,19 +118,24 @@
 </g:if>
 
 
-<g:if test="${copie.dateRemise}">
+
   <div class="portal-messages">
     <li class="notice">
-      Note (correction automatique) :
-      <g:formatNumber number="${copie.correctionNoteAutomatique}"
-                      format="##0.00"/>
-      / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
-      &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+      Date dernier enregistrement : <span
+            id="date_enregistrement">${copie.dateEnregistrement?.format(message(code: 'default.date.format'))}</span>
+      <g:if test="${copie.dateRemise}">
+        &nbsp;&nbsp;   &nbsp;&nbsp;
+        Note (correction automatique) :
+        <g:formatNumber number="${copie.correctionNoteAutomatique}"
+                        format="##0.00"/>
+        / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
+        &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+      </g:if>
     </li>
   </div>
-</g:if>
 
-<g:render template="/copie/edite"
-          model="[ copie: copie, afficheCorrection: afficheCorrection]"/>
-</body>
-</html>
+
+  <g:render template="/copie/edite"
+            model="[copie: copie, afficheCorrection: afficheCorrection]"/>
+  </body>
+  </html>

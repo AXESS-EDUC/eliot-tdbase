@@ -1,6 +1,5 @@
 package org.lilie.services.eliot.tdbase
 
-import grails.plugins.springsecurity.SpringSecurityService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImporterService
@@ -275,8 +274,8 @@ class SujetController {
     bindData(reponsesCopie, params, "reponsesCopie")
     Personne eleve = authenticatedPersonne
     copieService.updateCopieRemiseForListeReponsesCopie(copie,
-                                                  reponsesCopie.listeReponses,
-                                                  eleve)
+                                                        reponsesCopie.listeReponses,
+                                                        eleve)
     request.messageCode = "copie.remise.succes"
 
     render(view: '/sujet/teste', model: [liens: breadcrumpsService.liens,
@@ -288,30 +287,33 @@ class SujetController {
   }
 
   /**
-     *
-     * Action enregistre la copie (sans remise)
-     */
-    def enregistreLaCopie() {
-      Copie copie = Copie.get(params.copie.id)
-      def nombreReponses = params.nombreReponsesNonVides as Integer
-      ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
-      nombreReponses.times {
-        reponsesCopie.listeReponses << new ReponseCopie()
-      }
-      bindData(reponsesCopie, params, "reponsesCopie")
+   *
+   * Action enregistre la copie (sans remise)
+   */
+  def enregistreLaCopie() {
+    Copie copie = Copie.get(params.copie.id)
+    def nombreReponses = params.nombreReponsesNonVides as Integer
+    ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
+    nombreReponses.times {
+      reponsesCopie.listeReponses << new ReponseCopie()
+    }
+    bindData(reponsesCopie, params, "reponsesCopie")
 
-      reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
-        def reponse = Reponse.get(reponseCopie.reponse.id)
-        reponseCopie.reponse = reponse
-        reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
-      }
-      bindData(reponsesCopie, params, "reponsesCopie")
-      Personne eleve = authenticatedPersonne
-      copieService.updateCopieForListeReponsesCopie(copie,
-                                                    reponsesCopie.listeReponses,
-                                                    eleve)
+    reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
+      def reponse = Reponse.get(reponseCopie.reponse.id)
+      reponseCopie.reponse = reponse
+      reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
+    }
+    bindData(reponsesCopie, params, "reponsesCopie")
+    Personne eleve = authenticatedPersonne
+    copieService.updateCopieForListeReponsesCopie(copie,
+                                                  reponsesCopie.listeReponses,
+                                                  eleve)
+
+    if (request.xhr) {
+      render copie.dateEnregistrement?.format(message(code:'default.date.format'))
+    } else {
       request.messageCode = "copie.enregistre.succes"
-
       render(view: '/sujet/teste', model: [liens: breadcrumpsService.liens,
               copie: copie,
               afficheCorrection: copie.dateRemise,
@@ -319,6 +321,7 @@ class SujetController {
               artefactHelper: artefactAutorisationService,
               utilisateur: eleve])
     }
+  }
 
   /**
    *

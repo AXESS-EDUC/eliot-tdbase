@@ -99,7 +99,7 @@
     <div class="portal-messages">
       <li class="notice">
         Date dernier enregistrement : <span
-              id="date_enregistrement">${copie.dateEnregistrement?.format('dd/MM/yy  à HH:mm')}</span>
+              id="date_enregistrement">${copie.dateEnregistrement?.format(message(code:'default.date.format'))}</span>
         <g:if test="${copie.dateRemise}">
           &nbsp;&nbsp;   &nbsp;&nbsp;
           Note (correction automatique) :
