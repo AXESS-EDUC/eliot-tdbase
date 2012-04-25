@@ -35,7 +35,7 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 versionSchemaEliot = "2.7.1-RC1"
-
+versionTDBase = "2.0.0-SNAPSHOT"
 
 grails.project.dependency.resolution = {
 
@@ -57,10 +57,7 @@ grails.project.dependency.resolution = {
 
     runtime "postgresql:postgresql:8.4-702.jdbc4"
     compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.1'
-    runtime group: 'org.lilie.services.eliot', name: 'eliot-tice-dbmigration', version: '2.0.0-SNAPSHOT'
-    runtime group: 'org.lilie.services.eliot', name: 'eliot-securite-commons', version: "${versionSchemaEliot}"
-    runtime group: 'org.lilie.services.eliot', name: 'eliot-demon-commons', version: "${versionSchemaEliot}"
-    runtime group: 'org.lilie.services.eliot', name: 'eliot-scolarite-commons', version: "${versionSchemaEliot}"
+    runtime group: 'org.lilie.services.eliot', name: 'eliot-tice-dbmigration-all', version: "${versionTDBase}"
 
   }
 

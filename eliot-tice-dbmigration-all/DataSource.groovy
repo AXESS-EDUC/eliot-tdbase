@@ -60,5 +60,5 @@ environments {
 }
 
 liquibase {
-  changelogfile = "migrations/changelog-tice-dbmigration.xml"
+  changelogfile = "migrations/changelog-tice-dbmigration-all.xml"
 }

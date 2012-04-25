@@ -33,11 +33,7 @@
      xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
     <include file="changelogs/scolarite/release-changes.xml"/>
-    <!--<include file="migrations/schema.tice/changelog-20110624-6.xml"/>-->
-    <!--<include file="migrations/schema.tdbase/changelog-20110704-4.xml"/>-->
+    <include file="migrations/changelog-tice-dbmigration.xml"/>
 
-    <!--<include file="migrations/schema.tdbase/referentiel/changelog-20110706-4.xml"/>-->
-    <include file="migrations/schema.tdbase/referentiel/changelog-20120417-125.xml"/>
-    <include file="migrations/schema.tdbase/changelog-20120424-137.xml"/>
 
 </databaseChangeLog>

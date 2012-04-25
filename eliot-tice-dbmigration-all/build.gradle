@@ -1,7 +1,9 @@
 group = "org.lilie.services.eliot"
-artefactId = "eliot-tice-dbmigration"
+artefactId = "eliot-tice-dbmigration-all"
 version = "2.0.0-SNAPSHOT"
 
+versionSchemaEliot = "2.7.1-RC1"
+// classifierSchemaEliot =
 
 apply plugin: 'idea'
 apply plugin: 'java'
@@ -14,18 +16,27 @@ repositories {
   maven {
     url "http://www.ticetime.com/nexus/content/repositories/releases/"
   }
+  maven {
+      url "http://www.ticetime.com/nexus/content/repositories/snapshots/"
+  }
 }
 
 configurations {
-  liquibase
+  liquibase.extendsFrom compile
   deploiementArtefact
 }
 
 
 
 dependencies {
-  liquibase group: 'org.liquibase', name: 'liquibase-core', version: '2.0.1'
-  liquibase group: 'postgresql', name: 'postgresql', version: '8.4-702.jdbc4'
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.1'
+  compile group: 'postgresql', name: 'postgresql', version: '8.4-702.jdbc4'
+
+  compile group: 'org.lilie.services.eliot', name:'eliot-securite-commons', version:"${versionSchemaEliot}"
+  compile group: 'org.lilie.services.eliot', name:'eliot-demon-commons', version:"${versionSchemaEliot}"
+  compile group: 'org.lilie.services.eliot', name:'eliot-scolarite-commons', version:"${versionSchemaEliot}"
+
+  compile group:'org.lilie.services.eliot', name:'eliot-tice-dbmigration', version:"${version}"
 
   deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
 }
