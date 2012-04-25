@@ -31,14 +31,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-<r:require module="eliot-tdbase-ui"/>
-<r:script>
-  $(document).ready(function () {
-    $('#menu-item-sujets').addClass('actif');
-    initButtons();
-  });
-</r:script>
-<title><g:message code="sujet.teste.head.title"/></title>
+  <g:if test="${copie.estModifiable()}">
+    <r:require module="copieEdite_CopieModifiableEnTest"/>
+  </g:if>
+  <g:else>
+    <r:require module="copieEdite_CopieNonModifiableEnTest"/>
+  </g:else>
+
+  <title><g:message code="sujet.teste.head.title"/></title>
 </head>
 
 <body>
@@ -119,23 +119,23 @@
 
 
 
-  <div class="portal-messages">
-    <li class="notice">
-      Date dernier enregistrement : <span
-            id="date_enregistrement">${copie.dateEnregistrement?.format(message(code: 'default.date.format'))}</span>
-      <g:if test="${copie.dateRemise}">
-        &nbsp;&nbsp;   &nbsp;&nbsp;
-        Note (correction automatique) :
-        <g:formatNumber number="${copie.correctionNoteAutomatique}"
-                        format="##0.00"/>
-        / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
-        &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
-      </g:if>
-    </li>
-  </div>
+<div class="portal-messages">
+  <li class="notice">
+    Date dernier enregistrement : <span
+          id="date_enregistrement">${copie.dateEnregistrement?.format(message(code: 'default.date.format'))}</span>
+    <g:if test="${copie.dateRemise}">
+      &nbsp;&nbsp;   &nbsp;&nbsp;
+   Note (correction automatique) :
+      <g:formatNumber number="${copie.correctionNoteAutomatique}"
+                      format="##0.00"/>
+      / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
+      &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+    </g:if>
+  </li>
+</div>
 
 
-  <g:render template="/copie/edite"
-            model="[copie: copie, afficheCorrection: afficheCorrection]"/>
-  </body>
-  </html>
+<g:render template="/copie/edite"
+          model="[copie: copie, afficheCorrection: afficheCorrection]"/>
+</body>
+</html>

@@ -220,28 +220,3 @@
     </div>
   </g:if>
 </g:form>
-<g:if test="${copie.estModifiable()}">
-  <r:script>
-    $(document).ready(function () {
-      $("#hb_enregistre_copie").hide()
-
-      $('#date_enregistrement').ajaxError(function () {
-        $(this).text("${message(code:'copie.enregistre.echec')}");
-      });
-
-      var laCopieAchange = false;
-      $(":input").change(function () {
-        laCopieAchange = true;
-      })
-
-      var tid = setInterval(enregistreCopieSiModifiee, 5000);
-
-      function enregistreCopieSiModifiee() {
-        if (laCopieAchange == true) {
-          laCopieAchange = false
-          $('#hb_enregistre_copie').trigger('click');
-        }
-      }
-    });
-  </r:script>
-</g:if>

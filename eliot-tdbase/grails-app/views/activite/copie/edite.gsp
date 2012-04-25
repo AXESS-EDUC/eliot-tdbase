@@ -33,15 +33,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase-activite"/>
-  <r:require module="seanceCopie_Common"/>
-  <r:script>
-    $(document).ready(function() {
-      $('#menu-item-seances').addClass('actif');
-      <g:if test="${!copie.estModifiable()}">
-        new SeanceCopieCommon().deactivateFormElements();
-      </g:if>
-    });
-  </r:script>
+  <g:if test="${copie.estModifiable()}">
+    <r:require module="copieEdite_CopieModifiable"/>
+  </g:if>
+  <g:else>
+    <r:require module="copieEdite_CopieNonModifiable"/>
+  </g:else>
+
   <title><g:message code="activite.copie.edite.head.title"/></title>
 </head>
 

@@ -115,8 +115,9 @@ modules = {
     resource url: [dir: 'js/question/fillgraphics/preview', file: 'load.js']
   }
 
+
   seanceCopie_Common {
-    dependsOn "eliot-tice-ui"
+    dependsOn "eliot-tdbase-ui"
     resource url: [dir: 'js/seance/copie', file: 'common.js']
   }
 
@@ -128,5 +129,27 @@ modules = {
   seanceCopie_VisualiseJS {
     dependsOn "seanceCopie_Common"
     resource url: [dir: 'js/seance/copie', file: 'visualise.js']
+  }
+
+
+
+  copieEdite_CopieModifiable {
+    dependsOn "eliot-tdbase-ui"
+    resource url: [dir: 'js/copie/edite', file: 'editeCopieModifiable.js']
+  }
+
+  copieEdite_CopieNonModifiable {
+    dependsOn "seanceCopie_Common"
+    resource url: [dir: 'js/copie/edite', file: 'editeCopieNonModifiable.js']
+  }
+
+  copieEdite_CopieModifiableEnTest {
+    dependsOn "eliot-tdbase-ui"
+    resource url: [dir: 'js/copie/edite', file: 'editeCopieModifiableEnTest.js']
+  }
+
+  copieEdite_CopieNonModifiableEnTest {
+    dependsOn "seanceCopie_Common"
+    resource url: [dir: 'js/copie/edite', file: 'editeCopieNonModifiableEnTest.js']
   }
 }
