@@ -74,8 +74,9 @@ class SpringSecurityCasGrailsPlugin {
 
     // add the filter-mapping right after the last filter
     def mappingLocation = xml.'filter'
-    // TODO  this gets in there 2x
-    mappingLocation + {
+    // FSIL : patch to the repetition of filter mapping element
+    // before was : mappingLocation + {
+    mappingLocation[mappingLocation.size()-1] + {
       'filter-mapping' {
         'filter-name'('CAS Single Sign Out Filter')
         'url-pattern'('/*')

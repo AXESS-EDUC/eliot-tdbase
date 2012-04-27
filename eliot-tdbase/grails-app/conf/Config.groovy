@@ -141,7 +141,7 @@ grails.controllers.defaultScope = "session"
 grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
-grails.plugins.springsecurity.cas.active = false
+
 
 
 // set security rbac
@@ -187,6 +187,7 @@ eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime
 
 environments {
   test {
+    grails.plugins.springsecurity.cas.active = false
     eliot.fichiers.racine = '/tmp'
     eliot.tdbase.nomApplication = "eliot-tdbase"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
@@ -194,6 +195,7 @@ environments {
     //eliot.tdbase.urlServeur = "http//localhost:8080"
   }
   development {
+    grails.plugins.springsecurity.cas.active = false
     eliot.tdbase.nomApplication = "eliot-tdbase"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
     //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
@@ -248,6 +250,11 @@ environments {
                     libelle: "eliot-tdbase sur Github"]]
     eliot.portail.news = ["Environnement TESTLILIE",
             "Login / mot de passe : voir base de test eliot/lilie"]
+  }
+  production {
+    // paramètres par defaut de CAS
+    grails.plugins.springsecurity.cas.active = true
+    grails.plugins.springsecurity.cas.useSingleSignout = true
   }
 }
 
