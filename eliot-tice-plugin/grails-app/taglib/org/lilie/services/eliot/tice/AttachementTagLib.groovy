@@ -67,7 +67,7 @@ class AttachementTagLib {
       } else {
         out << '<a target="_blank" href="' << link << '">' <<
         g.message(code: "attachement.acces") <<
-        '<//a>'
+        '</a>'
       }
     }
   }
