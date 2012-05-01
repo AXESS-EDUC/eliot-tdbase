@@ -77,7 +77,7 @@
 		  	<g:if test="${seance.matiere?.libelleLong}">
 		  	<p><strong>» Matière : </strong>${seance.matiere?.libelleLong}</p>
 		  	</g:if>
-		  	<p><em>(Scéance du :  ${seance.dateDebut.format('dd/MM/yy HH:mm')}  au ${seance.dateFin.format('dd/MM/yy HH:mm')})</em></p>
+		  	<p><em>(Séance du :  ${seance.dateDebut.format('dd/MM/yy HH:mm')}  au ${seance.dateFin.format('dd/MM/yy HH:mm')})</em></p>
 		  </div>
 		</g:each> 
 	</div>

@@ -75,7 +75,7 @@
     	  	
     	  	<h2>∟ <span>${seance.sujet.titre}</span></h2>
     	  	<p>
-    	  		<em>(Scéance du :  ${seance.dateDebut.format('dd/MM/yy HH:mm')}  au ${seance.dateFin.format('dd/MM/yy HH:mm')})</em>
+    	  		<em>(Séance du :  ${seance.dateDebut.format('dd/MM/yy HH:mm')}  au ${seance.dateFin.format('dd/MM/yy HH:mm')})</em>
     	  	</p>
     	  	<p class="note">
     	  		<strong> » Note finale : </strong><b><g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" /> / <g:formatNumber number="${copie.maxPoints}" format="##0.00" /></b>
