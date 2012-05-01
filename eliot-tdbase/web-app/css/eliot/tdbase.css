@@ -1303,25 +1303,3 @@ div.portal-default_results-list.sceance.resultats em{
 
 
 
-/*******************************************************************************
-
- Surcharge jQuery UI
-
-********************************************************************************/
-.ui-state-default .ui-icon,
-.ui-state-hover .ui-icon, 
-.ui-state-focus .ui-icon {background-image: url(../../images/eliot/ui-icons_3F61A0_256x240.png)!important;}
-
-.ui-widget-header {
-	border: 1px solid #3F61A0;
-	background-image:none!important;
-	background-color: #3F61A0;
-}
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
-	border: 1px solid #8f9cca;
-    background: #F3F6FB url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
-}
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-	color: #3F61A0;
-	font-weight: normal;
-}
