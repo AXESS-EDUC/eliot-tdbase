@@ -128,6 +128,7 @@ class SliderSpecification implements QuestionSpecification {
     valeur nullable: false
     valeurMin(nullable: false)
     valeurMax(nullable: false)
+    precision(nullable: false)
     pas(nullable: false)
   }
 

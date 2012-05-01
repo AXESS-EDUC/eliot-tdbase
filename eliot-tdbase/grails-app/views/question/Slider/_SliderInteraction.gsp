@@ -28,7 +28,7 @@
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 
-<r:require module="eliot-tice-ui"/>
+<r:require module="eliot-tdbase-ui"/>
 <r:script>
   $(document).ready( function() {
   		$( "#slider_${indexReponse}" ).slider({

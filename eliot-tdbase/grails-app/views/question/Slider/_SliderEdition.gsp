@@ -55,7 +55,7 @@
 
             </tr>
             <tr>
-                <td>Précision&nbsp;:</td>
+                <td>Précision<span class="obligatoire">*</span>&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.precision" value="${specifobject.precisionAffichage}" size="10"/>
                 </td>
