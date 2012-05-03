@@ -5,9 +5,7 @@
 }
 
 .imageContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
 }
 
 .textZone {

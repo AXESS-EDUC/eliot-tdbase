@@ -28,8 +28,7 @@
 <r:require module="graphicMatch_InteractionJS"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
-<div class="imageContainer item" qualifier="interaction"
-     indexReponse="${indexReponse}">
+<div class="imageContainer" qualifier="interaction" indexReponse="${indexReponse}" id="imageContainer_${indexReponse}">
     <p class="title"><strong>${specifobject.libelle}</strong></p>
   <g:if test="${specifobject.attachmentId}">
     <et:viewAttachement
