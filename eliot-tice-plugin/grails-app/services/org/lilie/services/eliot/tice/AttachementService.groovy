@@ -130,6 +130,11 @@ class AttachementService {
     dataRecord.stream
   }
 
+  /**
+   * Encode en base 64 un attachement
+   * @param attachement l'attachement à econder
+   * @return  l'attachement encodé
+   */
   String encodeToBase64(Attachement attachement) {
     ByteArrayOutputStream bos
     OutputStream b64os
