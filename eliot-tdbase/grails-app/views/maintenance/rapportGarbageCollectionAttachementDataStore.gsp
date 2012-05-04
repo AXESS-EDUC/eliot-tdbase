@@ -26,7 +26,6 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase-maintenance"/>
@@ -40,12 +39,13 @@
 
 <div style="margin-left: 30px;">
 <h2>
-  Copies supprimmées enregistrées au plus tard le
-  ${rapport.dateDernierEnregistrementCopiesSupprimees.format(message(code:'default.date.format'))}
+  Garbage collection du
+  ${rapport.dateGarbageCollection.format(message(code:'default.date.format'))}
 </h2>
 <p>
-  Nombre de copies supprimées : ${rapport.nombreDeCopiesSupprimees}    <br/>
-  Nombre de réponses supprimées : ${rapport.nombreDeReponsesSupprimees}
+  Nombre de fichiers vérifiés : ${rapport.nombreFichiersVerifies}    <br/>
+  Nombre de fichiers supprimés : ${rapport.nombreFichiersSupprimes} <br/>
+  Nombre de fichiers à supprimer non supprimés : ${rapport.nombreFichiersASupprimerNonSupprimes}
 </p>
 </div>
 </body>

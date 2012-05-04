@@ -86,7 +86,7 @@ class CopieJobService {
 }
 
 class SupprimeCopiesJetablesRapport {
-  Integer nombreDeCopiesSupprimees = 0
-  Integer nombreDeReponsesSupprimees = 0
+  Long nombreDeCopiesSupprimees = 0
+  Long nombreDeReponsesSupprimees = 0
   Date dateDernierEnregistrementCopiesSupprimees
 }

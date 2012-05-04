@@ -28,20 +28,22 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+import org.lilie.services.eliot.tice.AttachementJobService
+import org.lilie.services.eliot.tice.GarbageCollectionDataStoreRapport
 
 class MaintenanceController {
 
   CopieJobService copieJobService
   BreadcrumpsService breadcrumpsService
+  AttachementJobService attachementJobService
 
   /**
    * Accueil maintenance
    * @return
    */
   def index() {
-    breadcrumpsService.manageBreadcrumps(
-            params,
-            message(code: message(code:message(code:"maintenance.index.title"))))
+    breadcrumpsService.manageBreadcrumps(params,
+                                         message(code: message(code: message(code: "maintenance.index.title"))))
     [liens: breadcrumpsService.liens]
   }
 
@@ -50,14 +52,25 @@ class MaintenanceController {
    * de plus de 10 jours
    */
   def supprimeCopiesJetables() {
-    breadcrumpsService.manageBreadcrumps(
-            params,
-            message(code: message(code:"maintenance.supprimecopiesjetables.title")))
+    breadcrumpsService.manageBreadcrumps(params,
+                                         message(code: message(code: "maintenance.supprimecopiesjetables.title")))
     def nbJ = params?.nbJ as Integer
     SupprimeCopiesJetablesRapport rapport = copieJobService.supprimeCopiesJetablesForNombreJoursPasses(nbJ)
     render(view: '/maintenance/rapportSupprimeCopieJetable',
-           model:[liens: breadcrumpsService.liens,rapport: rapport])
+           model: [liens: breadcrumpsService.liens, rapport: rapport])
   }
+
+  /**
+   * Action de garbage collection des fichiers du datastore
+   */
+  def garbageCollectAttachementDataStore() {
+    breadcrumpsService.manageBreadcrumps(params,
+                                         message(code: message(code: message(code:"maintenance.garbagecollectiondatastore.title"))))
+    GarbageCollectionDataStoreRapport rapport = attachementJobService.garbageCollectDataStore()
+    render(view: '/maintenance/rapportGarbageCollectionAttachementDataStore',
+           model: [liens: breadcrumpsService.liens, rapport: rapport])
+  }
+
 
 }
 
