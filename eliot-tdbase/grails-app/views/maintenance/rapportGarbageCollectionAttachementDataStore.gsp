@@ -47,6 +47,7 @@
   Nombre de fichiers supprimés : ${rapport.nombreFichiersSupprimes} <br/>
   Nombre de fichiers à supprimer non supprimés : ${rapport.nombreFichiersASupprimerNonSupprimes}
 </p>
+  <p>Consultez les logs de l'application pour voir le détail des fichiers supprimés.</p>
 </div>
 </body>
 </html>
