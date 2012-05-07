@@ -47,7 +47,6 @@ import org.springframework.context.ApplicationContext
 class MoodleQuizImporterServiceIntegrationTests extends GroovyTestCase implements ApplicationContextAware {
 
   private static final String SUJET_1_TITRE = "Sujet test 1"
-  private static final String SUJET_2_TITRE = "Sujet test 2"
   static final INPUT = 'org/lilie/services/eliot/tdbase/xml/exemples/quiz-exemple-20120229-0812.xml'
 
 
@@ -57,12 +56,9 @@ class MoodleQuizImporterServiceIntegrationTests extends GroovyTestCase implement
   Utilisateur utilisateur2
   Personne personne2
   StructureEnseignement struct1ere
-  SessionFactory sessionFactory
 
   TdBaseInitialisationTestService tdBaseInitialisationTestService
-  QuestionService questionService
   SujetService sujetService
-  ModaliteActiviteService modaliteActiviteService
   MoodleQuizImporterService moodleQuizImporterService
 
 

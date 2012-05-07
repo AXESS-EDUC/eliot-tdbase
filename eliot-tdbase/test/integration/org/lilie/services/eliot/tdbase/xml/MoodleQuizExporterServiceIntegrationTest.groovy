@@ -1,29 +1,23 @@
 package org.lilie.services.eliot.tdbase.xml
 
-import org.lilie.services.eliot.tdbase.QuestionService
 import org.lilie.services.eliot.tdbase.Sujet
 
 import org.springframework.context.ApplicationContext
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
-import org.hibernate.SessionFactory
+
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tdbase.SujetService
-import org.lilie.services.eliot.tdbase.ModaliteActiviteService
 import org.springframework.context.ApplicationContextAware
 
-/**
- * Created by IntelliJ IDEA.
- * User: bert
- * Date: 08/03/12
- * Time: 14:54
- * To change this template use File | Settings | File Templates.
- */
+
+
 class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase implements ApplicationContextAware {
 
   private static final String SUJET_TITRE = "Sujet test 1"
   static final INPUT = 'org/lilie/services/eliot/tdbase/xml/exemples/quiz-exemple-20120229-0812.xml'
+
 
   ApplicationContext applicationContext
   Utilisateur utilisateur1
@@ -31,12 +25,10 @@ class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase implements
   Utilisateur utilisateur2
   Personne personne2
   StructureEnseignement struct1ere
-  SessionFactory sessionFactory
+
 
   TdBaseInitialisationTestService tdBaseInitialisationTestService
-  QuestionService questionService
   SujetService sujetService
-  ModaliteActiviteService modaliteActiviteService
   MoodleQuizImporterService moodleQuizImporterService
   MoodleQuizExporterService moodleQuizExporterService
 
