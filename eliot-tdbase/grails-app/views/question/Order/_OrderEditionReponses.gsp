@@ -31,10 +31,8 @@
                  value="${orderedItem.text}" maxlength="50" style="margin-top: 5px; margin-bottom: 5px;"/>
     &nbsp;
 
-    <g:select name="specifobject.orderedItems[${i}].ordinal" value="${orderedItem.ordinal}"
-              from="${specifobject.selectableOrdinalList}" style="width: 4em;"/>
+    <g:hiddenField name="specifobject.orderedItems[${i}].ordinal" value="${i+1}"/>
 
-    &nbsp;
     <g:submitToRemote id="${i}" value="Suppr" title="Supprimer l'element" action="supprimeItem"
                       controller="questionOrder" update="order_reponses" class="button"/>
     <br/>

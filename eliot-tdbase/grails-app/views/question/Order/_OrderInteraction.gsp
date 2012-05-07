@@ -63,7 +63,7 @@
 
 <div id="orderQuestionContainment_${indexReponse}">
   <table>
-    <g:each status="i" in="${questionspecifobject.orderedItems}"
+    <g:each status="i" in="${questionspecifobject.shuffledItems}"
             var="orderedItem">
       <tr>
         <td id="dropTarget${indexReponse}_${i}" class="dropTarget">

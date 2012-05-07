@@ -106,6 +106,26 @@ class OrderSpecification implements QuestionSpecification {
     selectableOrdinalList
   }
 
+  def getShuffledItems() {
+    def shuffledItems = []
+    orderedItems.each {shuffledItems << it}
+
+    Collections.shuffle(shuffledItems)
+    while (ordinalsAreSame(shuffledItems, orderedItems)) {
+      Collections.shuffle(shuffledItems)
+    }
+    shuffledItems
+  }
+
+  private boolean ordinalsAreSame(List<Item> left, List<Item> right) {
+    for (i in 0..left.size()) {
+      if (!left[i]?.ordinal.equals(right[i]?.ordinal)) {
+        return false
+      }
+    }
+    true
+  }
+
   static constraints = {
     libelle blank: false
     orderedItems minSize: 2
