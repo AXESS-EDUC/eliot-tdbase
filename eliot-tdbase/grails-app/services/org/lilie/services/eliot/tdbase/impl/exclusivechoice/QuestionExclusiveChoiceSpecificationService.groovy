@@ -99,14 +99,12 @@ class ExclusiveChoiceSpecification implements QuestionSpecification {
   }
 
   def Map toMap() {
-    [
-            questionTypeCode: questionTypeCode,
+    [questionTypeCode: questionTypeCode,
             libelle: libelle,
             correction: correction,
             reponses: reponses*.toMap(),
             indexBonneReponse: indexBonneReponse,
-            shuffled: shuffled
-    ]
+            shuffled: shuffled]
   }
 
   List<ExclusiveChoiceSpecificationReponsePossible> getReponsesAleatoires() {
@@ -117,7 +115,11 @@ class ExclusiveChoiceSpecification implements QuestionSpecification {
 
   static constraints = {
     libelle blank: false
-    reponses minSize: 2
+    reponses minSize: 2, validator: { val, obj ->
+      if (!obj.indexBonneReponse) {
+        return ['pasdebonnereponse']
+      }
+    }
   }
 
   private createReponsePossibles(ExclusiveChoiceSpecificationReponsePossible reponse) {
@@ -162,9 +164,7 @@ class ExclusiveChoiceSpecificationReponsePossible {
   }
 
   def toMap() {
-    [
-            libelleReponse: libelleReponse,
-            id: id
-    ]
+    [libelleReponse: libelleReponse,
+            id: id]
   }
 }

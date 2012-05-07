@@ -95,13 +95,11 @@ class MultipleChoiceSpecification implements QuestionSpecification {
   }
 
   def Map toMap() {
-    [
-            questionTypeCode: questionTypeCode,
+    [questionTypeCode: questionTypeCode,
             libelle: libelle,
             correction: correction,
             reponses: reponses*.toMap(),
-            shuffled: shuffled
-    ]
+            shuffled: shuffled]
   }
 
   List<MultipleChoiceSpecificationReponsePossible> getReponsesAleatoires() {
@@ -112,7 +110,11 @@ class MultipleChoiceSpecification implements QuestionSpecification {
 
   static constraints = {
     libelle blank: false
-    reponses minSize: 2
+    reponses minSize: 2 , validator: {
+             if (!auMoinsUneReponsePossible(it)) {
+               return  ['pasdebonnereponse']
+             }
+    }
   }
 
   private createReponsePossibles(MultipleChoiceSpecificationReponsePossible reponse) {
@@ -121,6 +123,23 @@ class MultipleChoiceSpecification implements QuestionSpecification {
 
   private createReponsePossibles(Map params) {
     new MultipleChoiceSpecificationReponsePossible(params)
+  }
+
+  /**
+   * Indique si au moins une réponse possible est bonne
+   * @return true si il y a au moins une bonne reponse
+   */
+  private static boolean auMoinsUneReponsePossible(def reponsesPossibles) {
+    def res = false
+    if (reponsesPossibles) {
+      for (int i = 0; i < reponsesPossibles.size(); i++) {
+        if (reponsesPossibles[i].estUneBonneReponse) {
+          res = true
+          break
+        }
+      }
+    }
+    res
   }
 }
 
@@ -149,11 +168,9 @@ class MultipleChoiceSpecificationReponsePossible {
   }
 
   def toMap() {
-    [
-            libelleReponse: libelleReponse,
+    [libelleReponse: libelleReponse,
             estUneBonneReponse: estUneBonneReponse,
-            id: id
-    ]
+            id: id]
   }
 
 }

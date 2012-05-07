@@ -104,7 +104,12 @@ class Question implements Artefact {
              code = 'question.libelle.blank'
           }
           if (objErr.arguments[0]=='reponses') {
-                       code = 'question.reponses.min'
+            if (objErr.code.startsWith("minSize")) {
+              code = 'question.reponses.min'
+            }
+            if (objErr.code.startsWith("pasdebonnereponse")) {
+                          code = 'question.reponses.pasdebonnereponse'
+            }
           }
           errors.reject(code, objErr.arguments, objErr.defaultMessage)
         }
