@@ -65,7 +65,11 @@ class Copie {
     correctionAnnotation(nullable: true)
     correctionDate(nullable: true)
     correctionNoteAutomatique(nullable: true)
-    correctionNoteFinale(nullable: true)
+    correctionNoteFinale(nullable: true, validator: { val, obj ->
+       if (val && val > obj.maxPoints) {
+         return ['notetropgrande']
+       }
+    })
     correctionNoteCorrecteur(nullable: true)
     correctionNoteNonNumerique(nullable: true)
     maxPoints(nullable: true)

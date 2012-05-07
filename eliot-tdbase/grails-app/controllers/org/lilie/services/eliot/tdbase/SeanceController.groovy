@@ -174,13 +174,20 @@ class SeanceController {
   def enregistreCopie(CopieNotationCommand copieNotation) {
     Personne personne = authenticatedPersonne
     ModaliteActivite seance = ModaliteActivite.get(params.id)
+    def allErrors = null
     if (!copieNotation.hasErrors()) {
       Copie copie = Copie.get(copieNotation.copieId)
       copieService.updateAnnotationAndModulationForCopie(copieNotation.copieAnnotation,
                                                          copieNotation.copiePointsModulation,
                                                          copie,
                                                          personne)
-      request.messageCode = "copie.correction.succes"
+      if (!copie.hasErrors()) {
+        request.messageCode = "copie.correction.succes"
+      } else {
+        copie.errors.allErrors.each {
+          copieNotation.errors.reject("copie.${it.code}")
+        }
+      }
     }
     List<Copie> copies = copieService.findCopiesForModaliteActivite(seance,
                                                                     personne,
@@ -206,9 +213,13 @@ class SeanceController {
       def points = nvelleNote.update_value
       // met à jour
       def copie = copieService.updateNoteForReponse(points, reponse, enseignant)
-      def noteRep = NumberUtils.formatFloat(points)
-      def noteFinale = NumberUtils.formatFloat(copie.correctionNoteFinale)
-      render new JsonBuilder([nvelleNote.element_id.toString(), noteRep, noteFinale]).toString()
+      if (copie.hasErrors()) {
+        render new JsonBuilder([nvelleNote.element_id.toString(), params.original_html]).toString()
+      } else {
+        def noteRep = NumberUtils.formatFloat(points)
+        def noteFinale = NumberUtils.formatFloat(copie.correctionNoteFinale)
+        render new JsonBuilder([nvelleNote.element_id.toString(), noteRep, noteFinale]).toString()
+      }
     } catch (Exception e) {
       log.info(e.message)
       render new JsonBuilder([nvelleNote.element_id.toString(), params.original_html]).toString()
@@ -223,6 +234,7 @@ class CopieNotationCommand {
   Long copieId
   String copieAnnotation
   Float copiePointsModulation
+
 }
 
 class UpdateReponseNoteCommand {

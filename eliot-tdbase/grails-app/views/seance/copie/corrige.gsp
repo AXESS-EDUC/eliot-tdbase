@@ -60,7 +60,8 @@
 </g:paginate>
 </div>
 <g:set var="copie" value="${copies[0]}"/>
-<g:hasErrors bean="${copieNotation}">
+
+<g:hasErrors>
   <div class="portal-messages">
     <g:eachError>
       <li class="error"><g:message error="${it}"/></li>
@@ -110,7 +111,8 @@
       </tr>
     </table>
   </div>
-
+  <g:hiddenField name="copieNoteFinale" value="${NumberUtils.formatFloat(copie.correctionNoteFinale ?: 0)}"/>
+  <g:hiddenField name="copieMaxPoints" value="${copie.maxPoints}"/>
   <div class="form_actions corrige">
     <g:actionSubmit value="Enregistrer" action="enregistreCopie" class="button"
                     title="Enregistrer" id="${seance.id}"/>

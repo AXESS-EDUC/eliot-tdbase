@@ -104,7 +104,7 @@
     <table>
 
       <tr>
-        <td class="label">Groupe&nbsp;:</td>
+        <td class="label">Groupe<span class="obligatoire">*</span>&nbsp;:</td>
         <td>
           <g:if test="${modaliteActivite.structureEnseignement}">
             <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong> &nbsp;&nbsp;&nbsp;
