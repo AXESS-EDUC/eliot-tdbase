@@ -106,6 +106,18 @@ class OrderSpecification implements QuestionSpecification {
     selectableOrdinalList
   }
 
+  def getShuffledItems()
+  {
+    def shuffledItems = [] 
+    orderedItems.each {shuffledItems << it}
+    
+    println shuffledItems - orderedItems
+    
+    Collections.shuffle(shuffledItems)
+    
+    shuffledItems
+  }
+
   static constraints = {
     libelle blank: false
     orderedItems minSize: 2
