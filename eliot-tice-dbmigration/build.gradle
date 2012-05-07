@@ -1,6 +1,6 @@
-group = "org.lilie.services.eliot"
-artefactId = "eliot-tice-dbmigration"
-version = "2.0.0-SNAPSHOT"
+project.group = "org.lilie.services.eliot"
+project.ext.artefactId = "eliot-tice-dbmigration"
+project.version = "2.0.0-SNAPSHOT"
 
 
 apply plugin: 'idea'
@@ -38,19 +38,22 @@ dependencies {
  *  La config du repository est au format des parametres attendus par Grails
  *  pour ne pas avoir à dupliquer les informations de connexion au repositoty
  */
-userHome = System.properties['user.home']
-repositoryConfigFile = "${userHome}/.grails/settings.groovy"
-repositoryReleases = "ticetimereleases"
-repositorySnapshots = "ticetimesnapshot"
+project.ext {
+  userHome = System.properties['user.home']
+  repositoryConfigFile = "${userHome}/.grails/settings.groovy"
+  repositoryReleases = "ticetimereleases"
+  repositorySnapshots = "ticetimesnapshot"
+
+}
 
 /**
  * Configuration de la tache upload archives
  */
 uploadArchives {
   if (!project.hasProperty('environment')) {
-    project.environment = 'development'
+    project.ext.environment = 'development'
   }
-  project.configRepository = new ConfigSlurper(project.environment).parse(
+  project.ext.configRepository = new ConfigSlurper(project.environment).parse(
           new File(repositoryConfigFile).toURL())
 
   repositories.mavenDeployer {
@@ -71,7 +74,7 @@ uploadArchives {
 // Lancement liquibase
 
 
-dataSourceConfigFile = "${projectDir}/DataSource.groovy"
+project.ext.dataSourceConfigFile = "${projectDir}/DataSource.groovy"
 
 /**
  * Configuration de la tache update
@@ -80,9 +83,9 @@ dataSourceConfigFile = "${projectDir}/DataSource.groovy"
  */
 task update(dependsOn: build) {
   if (!project.hasProperty('environment')) {
-    project.environment = 'development'
+    project.ext.environment = 'development'
   }
-  project.configDataSource = new ConfigSlurper(project.environment).parse(new File(dataSourceConfigFile).toURL())
+  project.ext.configDataSource = new ConfigSlurper(project.environment).parse(new File(dataSourceConfigFile).toURL())
   displayConfig(configDataSource)
   ant.path(id: 'classpath') {
     ant.pathelement(path: configurations.liquibase.asPath)
