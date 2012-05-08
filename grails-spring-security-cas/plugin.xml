@@ -1,4 +1,4 @@
-<plugin name='spring-security-cas' version='1.0.2' grailsVersion='2.0.1 &gt; *'>
+<plugin name='spring-security-cas' version='1.0.2' grailsVersion='2.0.3 &gt; *'>
   <author>Burt Beckwith</author>
   <authorEmail>beckwithb@vmware.com</authorEmail>
   <title>Jasig CAS support for the Spring Security plugin.</title>
@@ -34,13 +34,13 @@
   </dependencies>
   <plugins>
     <compile>
-      <plugin group='org.grails.plugins' name='hibernate' version='2.0.1' />
-      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
-      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
-      <plugin group='org.grails.plugins' name='resources' version='1.1.5' />
       <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
+      <plugin group='org.grails.plugins' name='resources' version='1.1.5' />
       <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
       <plugin group='org.grails.plugins' name='mail' version='1.0' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.0.3' />
+      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
     </compile>
     <runtime>
       <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
@@ -48,7 +48,7 @@
     </runtime>
     <build>
       <plugin group='org.grails.plugins' name='release' version='1.0.0' />
-      <plugin group='org.grails.plugins' name='tomcat' version='2.0.1' />
+      <plugin group='org.grails.plugins' name='tomcat' version='2.0.3' />
     </build>
   </plugins>
   <runtimePluginRequirements />
