@@ -1,0 +1,217 @@
+==============================================================================
+===                                  Jmol                                  ===
+==============================================================================
+     Jmol: un visor Java de c�digo abierto para estructuras qu�micas en 
+        tres dimensiones, con prestaciones para compuestos qu�micos, 
+                    cristales, materiales y biomol�culas.
+==============================================================================
+
+Jmol es un visor de mol�culas y un editor; es de c�digo abierto y est� 
+escrito en Java.
+
+Toda la informaci�n est� disponible en http://www.jmol.org/
+
+Las preguntas o comentarios relativos a su uso deben enviarse a 
+jmol-users@lists.sourceforge.net  (en ingl�s)
+
+Las preguntas, comentarios y sugerencias relativos a su desarrollo deben
+enviarse a jmol-developers@lists.sf.net  (en ingl�s)
+
+
+Lista de archivos incluidos:
+--------------------
+
+
+== Archivos con informaci�n ==
+
+=== LEAME.txt ===
+Este archivo.
+
+=== README.txt ===
+La versi�n en ingl�s de LEAME.txt
+
+=== COPYRIGHT.txt ===
+Informaci�n sobre los derechos de copia relativos a Jmol y a sus componentes de
+terceros.
+
+=== LICENSE.txt ===
+Los t�rminos de uso y distribuci�n de Jmol (licencia GNU LGPL).
+
+=== CHANGES.txt ===
+Una lista hist�rica con las prestaciones a�adidas en cada versi�n de Jmol.
+
+
+== Archivos por lotes ==
+Estos archivos pueden usarse para iniciar la aplicaci�n Jmol desde una consola
+de instrucciones ("l�nea de comandos") y, en particular, para forzar una cierta 
+combinaci�n de par�metros
+(v�ase http://wiki.jmol.org/index.php/Jmol_Application#Command_line_options).
+
+=== jmol ===
+(Un tipo de archivo por lotes para iniciar la aplicaci�n Jmol.)
+
+=== jmol.bat ===
+Archivo por lotes para iniciar la aplicaci�n Jmol en Windows.
+
+=== jmol.mac ===
+(Un tipo de archivo por lotes para iniciar la aplicaci�n Jmol.)
+
+=== jmol.sh ===
+Un archivo de instrucciones para iniciar la aplicaci�n Jmol en sistemas de tipo 
+Unix, por ejemplo Linux, BSD, Solaris o Cygwin para Windows.
+
+
+== Archivos de la aplicaci�n Jmol ==
+�sta se usa como un programa aut�nomo.
+
+=== Jmol.jar ===
+El archivo ejecutable de la aplicaci�n Jmol (un programa escrito en Java). 
+Funciona como cualquier otro programa: se abre en su propia ventana, se puede 
+redimensionar o minimizar, se puede arrastrar y soltar archivos sobre �l, tiene 
+una barra superior de men�, puede abrir y grabar archivos, etc. Puede ejecutarse
+desde la l�nea de comandos (particularmente, usando los archivos por lotes que 
+se describen m�s arriba) pero, si Java est� correctamente configurado en tu 
+sistema, normalmente basta con hacer doble clic en este archivo.
+(Para obtener m�s informaci�n, consulte 
+http://wiki.jmol.org/index.php/Jmol_Application#Starting_Jmol_Application ).
+
+=== JmolData.jar ===
+Esta es una versi�n reducida de Jmol.jar que carece de las capacidades de
+visualizaci�n. De alg�n modo, contradice as� el concepto (cl�sico) de lo que es
+jmol, pero con JmolData y algunas instrucciones bien dise�adas es posible 
+obtener casi cualquier informaci�n de un modelo y exponerla del modo que se 
+quiera.
+
+Funciona s�lo desde la "l�nea de comandos" y est� dise�ada para extraer datos de
+un modelo o grupo de ellos. S�lo pueden usarse instrucciones que no tengan 
+relaci�n con la visualizaci�n: hay enlaces pero no "varillas", �tomos pero no
+"esferas de puntos", h�lices pero no "esquem�ticos".
+
+
+== Archivos de la miniaplicaci�n Jmol ==
+�sta se usa como parte de p�ginas web.
+
+=== Jmol.js ===
+�sta es la bilioteca de funciones, escrita en el lenguaje JavaScript, que ayuda 
+en la preparaci�n de p�ginas web que usen la miniaplicaci�n Jmol sin necesidad 
+de conocer y escribir c�digo detallado espec�fico para la miniaplicaci�n.
+
+Esta biblioteca usa por defecto la versi�n subdividida de la miniaplicaci�n 
+(firmada o no).
+
+Est� documentada en detalle en http://jmol.org/jslibrary/ 
+
+=== JmolApplet0.jar  y  JmolApplet0(diversosSufijos).jar ===
+�sta es la miniaplicaci�n, es decir, una versi�n del programa que s�lo funciona
+cuando se incluye dentro de una p�gina web.
+
+La miniaplicaci�n se divide en varios trozos de acuerdo con su funcionalidad, de
+modo que si una p�gina no precisa determinado componente, �ste no se descargar� 
+desde el servidor. Aun as�, se recomienda que pongas todos los archivos 
+JmolApplet0*.jar en el servidor, incluso si tus p�ginas no usan sus 
+prestaciones, pues tanto el men� emergente como la consola permiten a los 
+usuarios acceder a funciones de Jmol que t� no hayas previsto.
+
+Esta versi�n subdividida es la que se usa de forma predeterminada si utilizas 
+Jmol.js (que es el m�todo recomendado). Para ello, basta usar la forma m�s 
+simple de jmolInitialize(), indicando s�lo la carpeta que contiene el conjunto
+de archivos jar:
+ jmolInitialize("carpeta-que-contiene-los-archivos-jar")
+por ejemplo,
+ jmolInitialize(".")  
+      (si los archivos jar est�n en la misma carpeta que la p�gina web)
+ jmolInitialize("../jmol") 
+      (si los archivos jar est�n en una carpeta paralela, llamada 'jmol')
+
+=== JmolAppletSigned0.jar  y  JmolAppletSigned0(diversosSufijos).jar ===
+Una versi�n equivalente de la miniaplicaci�n, pero en este caso "firmada" (un
+t�rmino de seguridad en Java). Esto significa que el visitante de la p�gina web
+debe autorizarla para que se ejecute, pero al hacerlo conseguir� un acceso a
+archivos con menos restricciones. Por ejemplo, podr� acceder a archivos en 
+cualquier parte de su ordenador y en cualquier servidor web.
+
+Habitualmente, los usuarios recibir�n un aviso pidi�ndoles que acepten el 
+"certificado" o que "conf�en" en la miniaplicaci�n (vea las observaciones a 
+continuaci�n). Debes tener esto en cuenta si decides usar JmolAppletSigned.jar.
+Aparte de leer archivos, Jmol no usa actualmente otras posibilidades de las
+miniaplicaciones firmadas, tales como acceso al portapapeles del sistema o
+escritura de archivos. Utiliza esta versi�n s�lo si sabes lo que est�s haciendo
+y has considerado las cuestiones de seguridad.
+
+Para llamar a esta versi�n desde Jmol.js, utiliza la forma:
+ jmolInitialize("carpeta-que-contiene-los-archivos-jar", true)
+o bien
+ jmolInitialize("carpeta-que-contiene-los-archivos-jar", "JmolAppletSigned0.jar")
+
+Observaciones:
+* La pol�tica de seguridad que solicita que se conf�e en la miniaplicaci�n
+  podr�a no estar siempre activa en los sistemas de los usuarios.
+* El mensaje solicitando permiso se mostrar� para cada uno de los 14 o m�s
+  archivos jar que se pueden cargar.
+* El usuario puede tener la posibilidad de confiar en la miniaplicaci�n de
+  forma permanente y as� evitar dar permiso cada vez que visite una p�gina que
+  utiliza Jmol.
+
+=== JmolApplet.jar ===
+Se trata en este caso de la miniaplicaci�n en forma de un archivo "todo en uno" 
+o "monol�tico", que se mantiene principalmente por compatibilidad con p�ginas
+antiguas que lo invoquen expl�citamente. 
+Este archivo �nico es equivalente al conjunto de todos los archivos 
+JmolApplet0*.jar, explicados m�s arriba.
+El m�todo recomendado es el uso de la versi�n subdividida (JmolApplet0.jar etc.).
+En particular, Jmol.js utiliza de forma predeterminada la versi�n subdividida.
+
+Te puede interesar utilizar este archivo si quieres mantener sencillo tu sitio 
+web, o si s�lo quieres actualizar un archivo jar cuando lleguen versiones nuevas
+de Jmol. Sin embargo, este Jmol se cargar� algo m�s lentamente que las versiones
+subdivididas (descritas arriba), puesto que es preciso que se descarguen al 
+equipo del usuario todos los m�dulos (2 MB en total), sean o no necesarios,
+antes de que se pueda mostrar una estructura.
+
+Para llamar a JmolApplet.jar desde Jmol.js:
+
+a) ponlo en la misma carpeta que contiene la p�gina HTML que lo
+   requiere y no uses jmolInitialize()
+   
+o bien
+
+b) identif�calo expl�citamente en jmolInitialize(), por ejemplo:
+   jmolInitialize("carpeta-que-contiene-los-archivos-jar", "JmolApplet.jar")
+
+=== JmolAppletSigned.jar ===
+Una versi�n equivalente de la miniaplicaci�n monol�tica, pero en este caso es 
+una miniaplicaci�n "firmada" (terminolog�a de seguridad en el lenguaje Java). 
+Esto significa que para ejecutarse debe previamente ser autorizada por el 
+usuario visitante de la p�gina web y, de ser as�, habr� menos restricciones de 
+seguridad para el acceso a archivos. Por ejemplo, podr� acceder a archivos en 
+cualquier parte del ordenador del usuario y en cualquier otro servidor web.
+
+Habitualmente, los usuarios recibir�n un aviso prgunt�ndoles si quieren 
+"aceptar el certificado" o si "conf�an" en la miniaplicaci�n; sin embargo, esta 
+prestaci�n de seguridad no siempre est� activada. Si decides usar 
+JmolAppletSigned.jar, debes tener esto en cuenta. Aparte de la lectura de 
+archivos, Jmol no utiliza ninguna otra capacidad propia de las miniaplicaciones 
+firmadas, como acceder al portapapeles del sistema o grabar archivos. Utiliza la
+miniaplicaci�n firmada s�lo si sabes lo que est�s haciendo y has tenido en 
+cuenta las cuestiones de seguridad.
+
+Para llamar a JmolAppletSigned.jar desde Jmol.js:
+ jmolInitialize("carpeta-que-contiene-los-archivos-jar", "JmolAppletSigned.jar")
+
+=== JmolSmilesApplet.jar ===
+Este archivo no se incluya actualmente en el paquete de distribuci�n, pero
+puede obtenerse del sitio de desarrollo.
+
+Se trata de una miniaplicaci�n liviana, sin una interfaz visible, que permite
+verificar c�digos SMILES. Esto es especialmente �til para comparar 
+estereoqu�mica, por ejemplo con estructuras dibujadas usando la miniaplicaci�n
+JME.
+
+La misma funcionalidad est� incluida en la miniaplicaci�n normal JmolApplet.
+
+                   
+== Notas ==
+Teniendo en cuenta las descripciones anteriores, observar�s que el paquete
+de distribuci�n de Jmol contiene 4 copias completas de la miniaplicaci�n
+(firmada or no, subdividida o no).
+---------------------------

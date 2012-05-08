@@ -30,7 +30,7 @@
 <head>
   <meta name="layout" content="eliot-tdbase"/>
   <r:require modules="eliot-tdbase-ui"/>
-  <g:external dir="js/eliot/tiny_mce/tiny_mce.js" plugin="eliot-tice-plugin"/>
+  <r:external dir="js/eliot/tiny_mce" file="tiny_mce.js" plugin="eliot-tice-plugin" disposition="head"/>
   <script type="text/javascript">
     tinyMCE.init({
                    // General options

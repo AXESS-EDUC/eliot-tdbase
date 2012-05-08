@@ -167,7 +167,8 @@ enum DocumentTypeEnum {
   TEXTE,
   GRAPHIQUE,
   TABLEAU,
-  APPLET
+  APPLET,
+  JMOL
 
   String getName() {
     return name()

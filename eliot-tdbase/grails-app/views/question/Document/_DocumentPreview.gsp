@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tdbase.impl.document.DocumentTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -34,7 +35,13 @@
 <g:if test="${specifobject.attachement}">
   <br/>
   <g:if test="${specifobject.estInsereDansLeSujet}">
-    <et:viewAttachement attachement="${specifobject.attachement}"/> <br/>
+    <g:if test="${specifobject.type == DocumentTypeEnum.JMOL.name}">
+      <r:external dir="js/lib/jmol" file="Jmol.js" disposition="head"/>
+      <et:viewJmolAttachement attachement="${specifobject.attachement}"/>
+    </g:if>
+    <g:else>
+      <et:viewAttachement attachement="${specifobject.attachement}"/>
+    </g:else><br/>
   </g:if>
   <g:else>
     <g:link action="viewAttachement" controller="attachement"

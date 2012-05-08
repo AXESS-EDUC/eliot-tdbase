@@ -54,6 +54,10 @@ class AccueilController {
     }
   }
 
+  def ignore() {
+    render ("Canceled")
+  }
+
 }
 
 
