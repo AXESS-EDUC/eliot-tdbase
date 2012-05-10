@@ -26,14 +26,8 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-
-<%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-  <meta name="layout" content="eliot-tdbase-attachement"/>
-  <title>TDBase - Jmol</title>
-</head>
-<body>
-    <et:viewJmolAttachement attachement="${attachement}" width="600"/>
-</body>
-</html>
+<r:require module="jmol"/>
+<script type="text/javascript">
+      jmolInitialize("${jmolPath}");
+      jmolApplet(${appletWidth},"load ${fileLink}")
+</script>

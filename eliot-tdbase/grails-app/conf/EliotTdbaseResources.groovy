@@ -40,6 +40,11 @@ modules = {
     resource url: [dir: 'css/eliot', file: 'tdbase-ui.css']
   }
 
+  jmol {
+    resource url: [dir: 'js/lib/jmol', file: 'Jmol.js'],
+             disposition: 'head'
+  }
+
   modernizr {
     resource id: 'js', url: [dir: 'js/lib', file: 'modernizr.js'],
              disposition: 'head', nominify: true
