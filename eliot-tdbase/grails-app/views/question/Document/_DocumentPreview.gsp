@@ -36,8 +36,7 @@
   <br/>
   <g:if test="${specifobject.estInsereDansLeSujet}">
     <g:if test="${specifobject.type == DocumentTypeEnum.JMOL.name}">
-      <r:external base="${grailsApplication.config.eliot.jmol.serverURL}"
-                  dir="js/lib/jmol" file="Jmol.js" disposition="head"/>
+      <r:external dir="${grailsApplication.config.eliot.jmol.resourcesURI}" file="Jmol.js" disposition="head"/>
       <et:viewJmolAttachement attachement="${specifobject.attachement}"/>
     </g:if>
     <g:else>

@@ -66,8 +66,8 @@
                    value="${specifobject.attachement}"/>
 
             <g:if test="${specifobject.type == DocumentTypeEnum.JMOL.name}">
-              <r:external base="${grailsApplication.config.eliot.jmol.serverURL}"
-                          dir="js/lib/jmol" file="Jmol.js" disposition="head"/>
+              <r:external dir="${grailsApplication.config.eliot.jmol.resourcesURI}" file="Jmol.js"
+                          disposition="head"/>
               <et:viewJmolAttachement attachement="${attachement}" width="200"/>
             </g:if>
             <g:else>

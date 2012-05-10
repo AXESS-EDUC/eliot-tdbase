@@ -38,8 +38,7 @@
 <html>
 <head>
   <title>TDBase - Jmol</title>
-  <r:external base="${grailsApplication.config.eliot.jmol.serverURL}"
-              dir="js/lib/jmol" file="Jmol.js" disposition="head"/>
+  <r:external dir="${grailsApplication.config.eliot.jmol.resourcesURI}" file="Jmol.js" disposition="head"/>
 </head>
 <body>
     <et:viewJmolAttachement attachement="${attachement}" width="600"/>

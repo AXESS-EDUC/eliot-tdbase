@@ -51,8 +51,7 @@ class AttachementCustomTagLib {
       def link = createLink(action: 'viewAttachement',
                                  controller: 'attachement',
                                  id: attachement.id)
-      def jmolPath = createLink(base:"${grailsApplication.config.eliot.jmol.serverURL}",
-                                uri: '/js/lib/jmol')
+      def jmolPath = createLink(uri: "${grailsApplication.config.eliot.jmol.resourcesURI}")
 
       out << '''
       <script type="text/javascript">

@@ -189,10 +189,10 @@ eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime
         "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"]
 
 
-// l'UR du serveur web hébergeant Jmol
-// les ressources JS et Applet Java Jmol sont recherchées dans l'URI 'js/lib/jmol'
-// relative au serveur Web hébergeant Jmol :
-eliot.jmol.serverURL="${grails.serverURL}"
+
+// les ressources JS et Applet Java Jmol sont recherchées dans l'URI
+// relative au serveur Grails (l'URI doit commencer par '/'):
+eliot.jmol.resourcesURI="/js/lib/jmol/"
 
 environments {
   test {
