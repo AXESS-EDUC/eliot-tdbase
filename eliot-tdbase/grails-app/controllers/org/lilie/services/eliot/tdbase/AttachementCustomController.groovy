@@ -26,44 +26,23 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.Attachement
 
+class AttachementCustomController {
 
-class AttachementCustomTagLib {
 
-
-  static namespace = "et"
-
-/**
- * Affiche un fichier JMOL en utilisant l'applet JMOL.
- *
- * @attr attachement REQUIRED l'attachement à afficher
- */
-  def viewJmolAttachement = { attrs ->
-    if (attrs.attachement) {
-      Attachement attachement = attrs.attachement
-      def width = "400"
-      if (attrs.width) {
-        width = attrs.width
-      }
-      def link = createLink(action: 'viewAttachement',
-                                 controller: 'attachement',
-                                 id: attachement.id)
-      def jmolPath = createLink(base:"${grailsApplication.config.eliot.jmol.serverURL}",
-                                uri: '/js/lib/jmol')
-
-      out << '''
-      <script type="text/javascript">
-      jmolInitialize("''' << jmolPath << '''");
-      jmolApplet(''' << width << ' ,"load ' << link << '")'
-      out << '''
-      </script>
-      '''
-
-    }
+  /**
+   *
+   * Action de visulaisation d'un fichier
+   */
+  def viewJmolAttachement() {
+    [attachement:Attachement.get(params.id)]
   }
 
 
 }
+
+

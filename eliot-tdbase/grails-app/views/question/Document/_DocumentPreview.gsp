@@ -36,7 +36,8 @@
   <br/>
   <g:if test="${specifobject.estInsereDansLeSujet}">
     <g:if test="${specifobject.type == DocumentTypeEnum.JMOL.name}">
-      <r:external dir="js/lib/jmol" file="Jmol.js" disposition="head"/>
+      <r:external base="${grailsApplication.config.eliot.jmol.serverURL}"
+                  dir="js/lib/jmol" file="Jmol.js" disposition="head"/>
       <et:viewJmolAttachement attachement="${specifobject.attachement}"/>
     </g:if>
     <g:else>
@@ -44,10 +45,18 @@
     </g:else><br/>
   </g:if>
   <g:else>
-    <g:link action="viewAttachement" controller="attachement"
-            id="${specifobject.attachement.id}" target="_blank">
-      <g:message code="attachement.acces"/>
-    </g:link> <br/>
+    <g:if test="${specifobject.type == DocumentTypeEnum.JMOL.name}">
+      <g:link action="viewJmolAttachement" controller="attachementCustom"
+                    id="${specifobject.attachement.id}" target="_blank">
+              <g:message code="attachement.acces"/>
+            </g:link>
+    </g:if>
+    <g:else>
+      <g:link action="viewAttachement" controller="attachement"
+              id="${specifobject.attachement.id}" target="_blank">
+        <g:message code="attachement.acces"/>
+      </g:link>
+    </g:else><br/>
   </g:else>
 </g:if>
 <g:if test="${specifobject.urlExterne}">

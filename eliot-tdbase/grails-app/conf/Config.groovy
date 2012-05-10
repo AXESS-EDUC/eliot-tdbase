@@ -177,7 +177,7 @@ eliot.listes.maxrecherche = 5
 eliot.listes.max = 7
 
 // les dimensions de div continer à prendre en compte si nécessaire
-eliot.pages.container.forceDimensions = false
+eliot.pages.container.forceDimensions = true
 // hauteur en pixel : ne s'applique que si forceDimensions est à true
 eliot.pages.container.height = 629
 // largeur en pixel : ne s'applique que si forceDimensions est à true
@@ -187,6 +187,12 @@ eliot.pages.container.width = 931
 eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
         "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
         "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"]
+
+
+// l'UR du serveur web hébergeant Jmol
+// les ressources JS et Applet Java Jmol sont recherchées dans l'URI 'js/lib/jmol'
+// relative au serveur Web hébergeant Jmol :
+eliot.jmol.serverURL="${grails.serverURL}"
 
 environments {
   test {
