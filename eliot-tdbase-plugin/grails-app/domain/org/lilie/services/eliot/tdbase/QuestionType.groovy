@@ -67,7 +67,7 @@ class QuestionType {
  *  <li>Order - ordre à rétablir</li>
  *  <li>Associate - associate</li>
  *  <li>Slider - curseur à déplacer</li>
- *  <li>GraphicMatch - correspondance en glisser déposer</li>
+ *  <li>GraphicMatch - association graphique</li>
  *  <li>Document - présentation d'un document (pas d'interaction) </li>
  *  <li>Statement - élément d'énoncé (pas d'interaction)</li>
  *

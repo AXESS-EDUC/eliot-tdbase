@@ -35,7 +35,7 @@ import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
- *   Service pour les specifications de reponses de type 'glisser-déposer'.
+ *   Service pour les specifications de reponses de type 'association graphique'.
  */
 class ReponseGraphicMatchSpecificationService extends
         ReponseSpecificationService<ReponseGraphicMatchSpecification> {
@@ -63,7 +63,7 @@ class ReponseGraphicMatchSpecificationService extends
 }
 
 /**
- * Specifications de reponses de type 'glisser-déposer'.
+ * Specifications de reponses de type 'association graphique'.
  */
 class ReponseGraphicMatchSpecification implements ReponseSpecification {
   String questionTypeCode = QuestionTypeEnum.GraphicMatch.name()

@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
 
 /**
- * Service des specifications de questions de type glisser-déposer.
+ * Service des specifications de questions de type association graphique.
  */
 class QuestionGraphicMatchSpecificationService extends QuestionSpecificationService<GraphicMatchSpecification> {
 
@@ -82,7 +82,7 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
 }
 
 /**
- * Représente un objet de spécification pour une question de type glisser-déposer.
+ * Représente un objet de spécification pour une question de type association graphique.
  */
 @Validateable
 class GraphicMatchSpecification implements QuestionSpecification {
@@ -208,7 +208,7 @@ class Hotspot {
 }
 
 /**
- * Une icone que l'on peut glisser dans un hotspot.
+ * Une icone que l'on peut associer avec un hotspot.
  */
 class MatchIcon {
 
