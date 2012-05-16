@@ -40,8 +40,8 @@
 <tr>
     <td class="label">R&eacute;ponse&nbsp;:</td>
 
-    <td id="uploadDisclaimer">
-    <span >Afin de saisir la réponse, veuillez d'abord completer le <b>Titre</b> et le nom de la <b>Question</b>.</span>
+    <td id="reponseDisclaimer">
+        <span>${message(code: 'question.reponses.disclaimer')}</span>
     </td>
     <td id="reponseZone">
 
@@ -89,31 +89,4 @@
                 value="${specifobject.correction}"/>
     </td>
 </tr>
-
-<r:script>
-    $(document).ready(function () {
-
-        validate();
-
-        $("#question\\.titre").blur(function () {
-            validate();
-        });
-
-        $("#specifobject\\.libelle").blur(function () {
-             validate();
-        });
-
-        function validate()
-        {
-            if ($("#question\\.titre").val() != "" && $("#specifobject\\.libelle").val() != "") {
-                $('#reponseZone').show();
-                $('#uploadDisclaimer').hide();
-            } else {
-                $('#reponseZone').hide();
-                $('#uploadDisclaimer').show();
-            }
-        }
-    });
-
-</r:script>
 
