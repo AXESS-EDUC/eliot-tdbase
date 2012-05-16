@@ -2,7 +2,7 @@ project.group = "org.lilie.services.eliot"
 project.ext.artefactId = "eliot-tice-dbmigration-all"
 project.version = "2.0.0-SNAPSHOT"
 
-project.ext.versionSchemaEliot = "2.7.1-RC1"
+project.ext.versionSchemaEliot = "2.8.0-RCTICETIME"
 // classifierSchemaEliot =
 
 apply plugin: 'idea'
@@ -29,12 +29,12 @@ configurations {
 
 
 dependencies {
-  compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.1'
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.2'
   compile group: 'postgresql', name: 'postgresql', version: '8.4-702.jdbc4'
 
-  compile group: 'org.lilie.services.eliot', name:'eliot-securite-commons', version:"${versionSchemaEliot}"
+  compile group: 'org.lilie.services.eliot', name:'eliot-securite-dbmigration', version:"${versionSchemaEliot}"
   compile group: 'org.lilie.services.eliot', name:'eliot-demon-commons', version:"${versionSchemaEliot}"
-  compile group: 'org.lilie.services.eliot', name:'eliot-scolarite-commons', version:"${versionSchemaEliot}"
+  compile group: 'org.lilie.services.eliot', name:'eliot-scolarite-dbmigration', version:"${versionSchemaEliot}"
 
   compile group:'org.lilie.services.eliot', name:'eliot-tice-dbmigration', version:"${version}"
 
