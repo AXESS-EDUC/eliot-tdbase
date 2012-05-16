@@ -47,4 +47,14 @@
         </update>
     </changeSet>
 
+    <changeSet id="2" author="fsil">
+        <comment>
+            Mise à jour de la table question type
+        </comment>
+        <update tableName="question_type" schemaName="td">
+            <column name="nom" value="Association graphique"></column>
+            <where>id = 14</where>
+        </update>
+    </changeSet>
+
 </databaseChangeLog>
