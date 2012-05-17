@@ -31,6 +31,8 @@ package org.lilie.services.eliot.tice.webservices.rest.client
 import groovy.text.SimpleTemplateEngine
 import groovyx.net.http.HTTPBuilder
 import org.apache.http.client.ClientProtocolException
+import groovyx.net.http.ContentType
+import groovy.json.JsonSlurper
 
 /**
  * Classe représentant un client de webservices Rest pour une opération
@@ -70,7 +72,12 @@ class RestClient {
       }
       response.success = { resp, contentResp ->
         operation.onSucess(resp, contentResp)
-        result = contentResp
+        if (operation.contentType == ContentType.JSON) {
+          def slurper =  new JsonSlurper()
+          result = slurper.parseText(contentResp.toString())
+        } else {
+          result = contentResp
+        }
       }
     }
     result

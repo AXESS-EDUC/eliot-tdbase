@@ -32,6 +32,7 @@ import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 
 
+
 class RestClientTests extends GroovyTestCase{
 
   RestOperationDirectory restOperationDirectory = new RestOperationDirectory()
@@ -57,6 +58,7 @@ class RestClientTests extends GroovyTestCase{
     assert restOperation.invocationCount == 1
     assert restOperation.successCount == 1
     assertNotNull(resp)
+    assertEquals()
     println("Reponse : ${resp.toString()}")
   }
 }
