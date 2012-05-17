@@ -96,7 +96,7 @@ public interface RestOperation {
    * @param response la réponse complète
    * @param bodyContent le contenu de la réponse
    */
-  def onSucess(def response, String bodyContent)
+  def onSucess(def response, def bodyContent)
 
   /**
    * Traitement à réaliser en cas d'obtention d'une erreur

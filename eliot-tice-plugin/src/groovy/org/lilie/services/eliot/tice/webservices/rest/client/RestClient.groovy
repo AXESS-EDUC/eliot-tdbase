@@ -63,9 +63,9 @@ class RestClient {
     def http = new HTTPBuilder(operation.urlServer)
     http.authConfig = operation.authConfig
     http.request(operation.method, operation.contentType) {
-      url.path = getUrlPath(operation.uriTemplate, parameters, httpParameters)
+      uri = operation.urlServer + getUrlPath(operation.uriTemplate, parameters, httpParameters)
       if (operation.requestBodyTemplate) {
-        url.body = getBody(operation.requestBodyTemplate, requestContentParameters)
+        body = getBody(operation.requestBodyTemplate, requestContentParameters)
       }
       response.success = { resp, contentResp ->
         operation.onSucess(resp, contentResp)
