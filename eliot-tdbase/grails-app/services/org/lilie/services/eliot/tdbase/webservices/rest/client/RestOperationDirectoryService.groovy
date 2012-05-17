@@ -26,43 +26,30 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.webservices.rest.client
+package org.lilie.services.eliot.tdbase.webservices.rest.client
 
-import groovyx.net.http.AuthConfig
-import groovyx.net.http.ContentType
-import groovyx.net.http.Method
-import groovy.util.logging.Log
+import org.lilie.services.eliot.tice.webservices.rest.client.RestOperationDirectory
+import org.lilie.services.eliot.tice.webservices.rest.client.GenericRestOperation
 
 /**
- * Implementation d'une RestOperation générique avec propriétés
+ * Service d'initiaisation de l'annuaire des opérations de web services Rest
  * @author franck Silvestre
  */
-@Log
-class GenericRestOperation implements RestOperation {
+class RestOperationDirectoryService {
 
-  Long invocationCount = 0
-  Long successCount = 0
-  Long failureCount = 0
+  static transactional = false
+  RestOperationDirectory restOperationDirectory
 
-  String operationName
-  String description
-  String urlServer
-  String uriTemplate
-  String requestBodyTemplate
-  Method method
-
-  ContentType contentType
-  String responseContentStructure
-
-  def onSucess(def response,def bodyContent) {
-    invocationCount++
-    successCount++
-    log.info(bodyContent.toString())
+  /**
+   * Enregistre les opérations de webservices rest
+   * @param operations  la liste des opérations sous forme de map
+   */
+  def registerOperationsFromMaps(List<Map> operations) {
+      operations.each { Map operationMap ->
+         restOperationDirectory.addOperation(new GenericRestOperation(
+                 operationMap))
+      }
   }
 
-  def onError(Object error) {
-    invocationCount++
-    failureCount++
-    log.severe(error.toString())
-  }
 }
+

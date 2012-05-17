@@ -40,15 +40,14 @@ class RestClientTests extends GroovyTestCase{
 
 
   void testRestClientInvokeOperation() {
-    RestOperation restOperation = new GenericRestOperation(authConfig: null,
-                                                           contentType: ContentType.JSON,
-                                                           description: "test de http://localhost:8080/eliot-test-webservices/api-rest/v2/cahiers/1/chapitres",
+    RestOperation restOperation = new GenericRestOperation(contentType: ContentType.JSON,
+                                                           description: "test de http://localhost:8090/eliot-test-webservices/api-rest/v2/cahiers/1/chapitres",
                                                            operationName: "op1",
                                                            method: Method.GET,
                                                            requestBodyTemplate: null,
                                                            responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
-                                                           urlServer: "http://localhost:8080",
-                                                           uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres',)
+                                                           urlServer: "http://localhost:8090",
+                                                           uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres')
     restOperationDirectory.addOperation(restOperation)
     def resp = restClient.invokeOperation(
             "op1",
@@ -58,7 +57,6 @@ class RestClientTests extends GroovyTestCase{
     assert restOperation.invocationCount == 1
     assert restOperation.successCount == 1
     assertNotNull(resp)
-    assertEquals()
     println("Reponse : ${resp.toString()}")
   }
 }

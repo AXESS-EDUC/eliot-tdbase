@@ -64,7 +64,7 @@ class RestClient {
 
     def result = null
     def http = new HTTPBuilder(operation.urlServer)
-    http.authConfig = operation.authConfig
+    // todofsil gestion authconfig http.authConfig = ...
     http.request(operation.method, operation.contentType) {
       uri = operation.urlServer + getUrlPath(operation.uriTemplate, parameters, httpParameters)
       if (operation.requestBodyTemplate) {

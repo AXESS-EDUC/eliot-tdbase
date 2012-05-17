@@ -43,7 +43,10 @@ eliot.requestHeaderPorteur = "ENT_PORTEUR"
 
 // Fichier charge si present dans le classpath : utile pour déploiement
 // d'une application de démonstration après téléchargement
-grails.config.locations = ["classpath:${appName}-config.groovy"]
+grails.config.locations = [
+        "classpath:${appName}-config.groovy",
+        "classpath:WebServicesRestOperationsConfig.groovy"
+]
 
 // Fichier de configuration externe commun à toutes les applications Eliot
 def eliotcommonsConfigLocation = System.properties["eliot-commons.config.location"]

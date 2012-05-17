@@ -53,10 +53,6 @@ public interface RestOperation {
    */
   String getUrlServer()
 
-  /**
-   * @return  l'auth config de l'opération
-   */
-  AuthConfig getAuthConfig()
 
   /**
    * Fournit le format de l'Uri de la ressource sous la forme d'un template

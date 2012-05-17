@@ -26,16 +26,18 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+import org.lilie.services.eliot.tdbase.webservices.rest.client.RestOperationDirectoryService
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
 import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.lilie.services.eliot.tice.utils.PortailTagLibService
-import org.lilie.services.eliot.tice.utils.PortailTagLibService
+import groovyx.net.http.AuthConfig
 
 class BootStrap {
 
   BootstrapService bootstrapService
   DbMigrationService dbMigrationService
   PortailTagLibService portailTagLibService
+  RestOperationDirectoryService restOperationDirectoryService
 
   def init = { servletContext ->
 
@@ -48,7 +50,7 @@ class BootStrap {
     if (config.eliot.bootstrap.jeudetest) {
       bootstrapService.bootstrapJeuDeTestDevDemo()
     }
-    
+
     try {
       portailTagLibService.addManuelDocumentUrls(config.eliot.manuels.documents.urlMap)
     } catch (Exception e) {
@@ -59,6 +61,14 @@ class BootStrap {
     portailTagLibService.applicationInFrame = config.eliot.pages.container.forceDimensions
     portailTagLibService.divHeight = config.eliot.pages.container.height
     portailTagLibService.divWidth = config.eliot.pages.container.width
+
+    def operations = config.eliot.webservices.rest.client.operations
+    if (operations) {
+      def user = config.eliot.webservices.rest.client.user
+      def password = config.eliot.webservices.rest.client.password
+      restOperationDirectoryService.registerOperationsFromMaps(operations)
+
+    }
 
   }
 
