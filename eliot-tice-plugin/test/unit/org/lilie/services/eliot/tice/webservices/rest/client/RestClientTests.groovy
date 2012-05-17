@@ -49,12 +49,14 @@ class RestClientTests extends GroovyTestCase{
                                                            urlServer: "http://localhost:8080",
                                                            uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres',)
     restOperationDirectory.addOperation(restOperation)
-    restClient.invokeOperation(
+    def resp = restClient.invokeOperation(
             "op1",
             [cahierId: 1],
             null
     )
     assert restOperation.invocationCount == 1
     assert restOperation.successCount == 1
+    assertNotNull(resp)
+    println("Reponse : ${resp.toString()}")
   }
 }

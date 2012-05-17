@@ -60,6 +60,7 @@ class RestClient {
       throw new RestOperationDoesNotExistsInDirectoryException()
     }
 
+    def result = null
     def http = new HTTPBuilder(operation.urlServer)
     http.authConfig = operation.authConfig
     http.request(operation.method, operation.contentType) {
@@ -69,9 +70,10 @@ class RestClient {
       }
       response.success = { resp, contentResp ->
         operation.onSucess(resp, contentResp)
+        result = contentResp
       }
     }
-
+    result
   }
 
   private String getUrlPath(String uriTemplate, Map parameters, Map httpParameters) {
