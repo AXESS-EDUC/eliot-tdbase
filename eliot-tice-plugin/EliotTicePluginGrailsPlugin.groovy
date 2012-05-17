@@ -10,6 +10,8 @@ import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.EliotUrlProvider
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
+import org.lilie.services.eliot.tice.webservices.rest.client.RestOperationDirectory
+import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -88,6 +90,14 @@ class EliotTicePluginGrailsPlugin {
     dataStore(AttachementDataStore) { bean ->
       path = ConfigurationHolder.config.eliot.fichiers.racine ?: null
       bean.initMethod = 'initFileDataStore'
+    }
+
+    // Configure l'annuaire d'opération de webservices REST
+    //
+    restOperationDirectory(RestOperationDirectory)
+
+    restClient(RestClient) {
+      restOperationDirectory = ref("restOperationDirectory")
     }
 
     // configure la gestion d'EliotUrlProvider

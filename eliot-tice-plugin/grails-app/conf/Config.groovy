@@ -31,6 +31,15 @@ grails.views.default.codec = "none" // none, html, base64
 grails.views.gsp.encoding = "UTF-8"
 
 environments {
+  development {
+      eliot.eliotApplicationEnum = EliotApplicationEnum.NOT_AN_APPLICATION
+      eliot.requestHeaderPorteur = "ENT_PORTEUR"
+      eliot.not_an_application.nomApplication = "TicePlugin"
+      eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
+      //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+      //eliot.not_an_application.urlServeur = "http//localhost:8080"
+      eliot.fichiers.racine = "/tmp"
+  }
   test {
     eliot.eliotApplicationEnum = EliotApplicationEnum.NOT_AN_APPLICATION
     eliot.requestHeaderPorteur = "ENT_PORTEUR"
