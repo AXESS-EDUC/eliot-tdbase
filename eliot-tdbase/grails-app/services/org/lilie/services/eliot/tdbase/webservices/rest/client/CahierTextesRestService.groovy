@@ -29,30 +29,32 @@
 package org.lilie.services.eliot.tdbase.webservices.rest.client
 
 import org.lilie.services.eliot.tice.webservices.rest.client.GenericRestOperation
-import org.lilie.services.eliot.tice.webservices.rest.client.RestOperationDirectory
 import org.lilie.services.eliot.tice.webservices.rest.client.RestOperation
+import org.lilie.services.eliot.tice.webservices.rest.client.RestOperationDirectory
+import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
+import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
  * Service d'initiaisation de l'annuaire des opérations de web services Rest
  * @author franck Silvestre
  */
-class RestOperationDirectoryService {
+class CahierTextesRestService {
 
   static transactional = false
-  RestOperationDirectory restOperationDirectory
+  RestClient restClient
 
   /**
-   * Enregistre les opérations de webservices rest
-   * @param operations la liste des opérations sous forme de map
+   * Récupère la structure en chapitre d'un cahier de textes identifié
+   * par son Id
+   * @param cahierId l'id du cahier
+   * @param personne la personne effectuant la demande
+   * @return  une map représentant la structure du cahier
    */
-  def registerOperationsFromMaps(List<Map> operations) {
-    log.info("REST enregistrement operations...")
-    operations.each { Map operationMap ->
-      RestOperation operation = new GenericRestOperation(operationMap)
-      restOperationDirectory.addOperation(operation)
-      log.info("Enregistrement operation : ${operation.operationName}")
-    }
-    log.info("REST Operations enregistrees: ${restOperationDirectory.operationCount()}")
+  def getStructureChapitresForCahierId(Long cahierId, Personne personne) {
+    restClient.invokeOperation('getStructureChapitresForCahierId',
+                               [cahierId:cahierId],
+                               [utilisateurPersonneId: personne.id]
+                               )
   }
 
 }
