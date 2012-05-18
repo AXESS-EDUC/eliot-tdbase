@@ -30,7 +30,7 @@ import org.lilie.services.eliot.tdbase.webservices.rest.client.RestOperationDire
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
 import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.lilie.services.eliot.tice.utils.PortailTagLibService
-import groovyx.net.http.AuthConfig
+
 
 class BootStrap {
 
@@ -63,11 +63,12 @@ class BootStrap {
     portailTagLibService.divWidth = config.eliot.pages.container.width
 
     def operations = config.eliot.webservices.rest.client.operations
+    def dir = restOperationDirectoryService.restOperationDirectory
+
     if (operations) {
       def user = config.eliot.webservices.rest.client.user
       def password = config.eliot.webservices.rest.client.password
       restOperationDirectoryService.registerOperationsFromMaps(operations)
-
     }
 
   }

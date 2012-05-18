@@ -66,4 +66,18 @@ class RestOperationDirectory {
       operations.remove(operation)
     }
   }
+
+  /**
+   * @return  le nombre d'opérations enregistrées
+   */
+  def operationCount() {
+    return operations.size()
+  }
+
+  /**
+   * @return  la listes des noms d'opération enregistrées
+   */
+  Set<String> getOperationNames() {
+    return operations.keySet()
+  }
 }

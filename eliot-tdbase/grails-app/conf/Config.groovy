@@ -2,6 +2,8 @@ import grails.plugins.springsecurity.SecurityConfigType
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
+import groovyx.net.http.ContentType
+import groovyx.net.http.Method
 
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -41,11 +43,12 @@ eliot.requestHeaderPorteur = "ENT_PORTEUR"
  * Chargement des configurations externalisées
  */
 
+
+
 // Fichier charge si present dans le classpath : utile pour déploiement
 // d'une application de démonstration après téléchargement
 grails.config.locations = [
-        "classpath:${appName}-config.groovy",
-        "classpath:WebServicesRestOperationsConfig.groovy"
+        "classpath:${appName}-config.groovy"
 ]
 
 // Fichier de configuration externe commun à toutes les applications Eliot
@@ -136,6 +139,9 @@ log4j = {
         'net.sf.ehcache.hibernate'
 
   warn 'org.mortbay.log'
+
+  info 'grails.app'
+
 }
 
 grails.controllers.defaultScope = "session"
@@ -284,4 +290,37 @@ environments {
   }
 }
 
+
+// Configurations des opérations de webservices Rest
+//
+
+environments {
+  development {
+    eliot.webservices.rest.client.user = "eliot-tdbase"
+    eliot.webservices.rest.client.password = "eliot-tdbase"
+    eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitresForCahierId",
+            description: "Retourne la liste arborescente de chapitres d'un cahier",
+            contentType: ContentType.JSON,
+            method: Method.GET,
+            requestBodyTemplate: null,
+            responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
+            urlServer: "http://localhost:8090",
+            uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres']]
+
+  }
+  test {
+    eliot.webservices.rest.client.user = "eliot-tdbase"
+    eliot.webservices.rest.client.password = "eliot-tdbase"
+    eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitresForCahierId",
+            description: "Retourne la liste arborescente de chapitres d'un cahier",
+            contentType: ContentType.JSON,
+            method: Method.GET,
+            requestBodyTemplate: null,
+            responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
+            urlServer: "http://localhost:8090",
+            uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres']]
+
+  }
+
+}
 
