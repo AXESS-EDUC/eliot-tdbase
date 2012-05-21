@@ -62,6 +62,8 @@ class SeanceController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
+            afficheLienCreationDevoir: false,
+            afficheLienCreationActivite: false,
             modaliteActivite: modaliteActivite,
             proprietesScolarite: proprietesScolarite])
   }

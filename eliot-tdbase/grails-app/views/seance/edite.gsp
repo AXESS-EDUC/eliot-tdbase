@@ -55,14 +55,22 @@
         $confirmDialog.dialog('open');
         return false;
       });
-    $('#gestionEvaluation').change(function() {
+    $('#gestionEvaluation').click(function() {
                $('#edition_devoir').toggle();
                })
-    $('#gestionActivite').change(function() {
+    $('#gestionActivite').click(function() {
                    $('#edition_activite').toggle();
                    })
     });
   </r:script>
+  <style type='text/css' media='screen'>
+  .inform {
+    display: block;
+    width: 50%;
+    margin: 2px;
+    text-transform: none;
+  }
+  </style>
   <title><g:message code="seance.edite.head.title"/></title>
 </head>
 
@@ -157,22 +165,27 @@
         <tr>
           <td class="label"></td>
           <td>
-            <g:checkBox name="gestionEvaluation" id="gestionEvaluation"
-                        title="Liée à un devoir dans la gestion des notes"
-                        checked="${modaliteActivite.evaluationId}"/>
-            <span class="label">Liée à un devoir dans la gestion des notes</span>
-            <table id="edition_devoir"
-                   style="display: ${modaliteActivite.evaluationId ? 'table' : 'none'}">
-              <tr>
-                <td class="label" style="width: 110px;">Matières&nbsp;:</td>
-                <td><g:select name="matiereId"
-                              noSelection="${['null': 'Faites votre choix...']}"
-                              from="${proprietesScolarite}"
-                              optionKey="id"
-                              optionValue="matiere"/></td>
-              </tr>
+            <g:if test="${afficheLienCreationDevoir}">
+              <a id="gestionEvaluation" class="button inform"
+                 title="Créer un devoir dans Notes">Créer un devoir dans Notes</a>
 
-            </table>
+              <table id="edition_devoir"
+                     style="display: ${modaliteActivite.evaluationId ? 'table' : 'none'}">
+                <tr>
+                  <td class="label"
+                      style="width: 110px;">Classe/groupe&nbsp;-&nbsp;Matière&nbsp;:</td>
+                  <td><g:select name="matiereId"
+                                noSelection="${['null': 'Faites votre choix...']}"
+                                from="${proprietesScolarite}"
+                                optionKey="id"
+                                optionValue="matiere"/></td>
+                </tr>
+
+              </table>
+            </g:if>
+            <g:else>
+              <span class="label">Un devoir est lié à la séance dans Notes.</span>
+            </g:else>
           </td>
         </tr>
       </g:if>
@@ -180,38 +193,43 @@
         <tr>
           <td class="label"></td>
           <td>
-            <g:checkBox name="gestionActivite"
-                        title="Liée à une activité dans le cahier de textes"
-                        checked="${modaliteActivite.activiteId}"/>
-            <span class="label">Liée à une activité dans le cahier de textes</span>
-            <table id="edition_activite"
-                   style="display: ${modaliteActivite.activiteId ? 'table' : 'none'}">
-              <tr>
-                <td class="label"
-                    style="width: 110px;">Cahier&nbsp;de&nbsp;textes&nbsp;:</td>
-                <td><g:select name="cahierId"
-                              noSelection="${['null': 'Faites votre choix...']}"
-                              from="${proprietesScolarite}"
-                              optionKey="id"
-                              optionValue="matiere"/></td>
-              </tr>
-              <tr>
-                <td class="label" style="width: 110px;">Chapitre&nbsp;:</td>
-                <td><g:select name="chapitreId"
-                              noSelection="${['null': 'Faites votre choix...']}"
-                              from="${proprietesScolarite}"
-                              optionKey="id"
-                              optionValue="matiere"/></td>
-              </tr>
-              <tr>
-                <td class="label" style="width: 110px;">Contexte&nbsp;:</td>
-                <td><g:select name="chapitreId"
-                              noSelection="${['null': 'En classe']}"
-                              from="${proprietesScolarite}"
-                              optionKey="id"
-                              optionValue="matiere"/></td>
-              </tr>
-            </table>
+            <g:if test="${afficheLienCreationActivite}">
+
+              <a id="gestionActivite" class="button inform"
+                 title="Créer une activité dans le cahier de textes"/>
+              Créer une activité dans le Cahier de textes</a>
+              <table id="edition_activite"
+                     style="display: ${modaliteActivite.activiteId ? 'table' : 'none'}">
+                <tr>
+                  <td class="label"
+                      style="width: 110px;">Cahier&nbsp;de&nbsp;textes&nbsp;:</td>
+                  <td><g:select name="cahierId"
+                                noSelection="${['null': 'Faites votre choix...']}"
+                                from="${proprietesScolarite}"
+                                optionKey="id"
+                                optionValue="matiere"/></td>
+                </tr>
+                <tr>
+                  <td class="label" style="width: 110px;">Chapitre&nbsp;:</td>
+                  <td><g:select name="chapitreId"
+                                noSelection="${['null': 'Faites votre choix...']}"
+                                from="${proprietesScolarite}"
+                                optionKey="id"
+                                optionValue="matiere"/></td>
+                </tr>
+                <tr>
+                  <td class="label" style="width: 110px;">Contexte&nbsp;:</td>
+                  <td><g:select name="chapitreId"
+                                noSelection="${['null': 'En classe']}"
+                                from="${proprietesScolarite}"
+                                optionKey="id"
+                                optionValue="matiere"/></td>
+                </tr>
+              </table>
+            </g:if>
+            <g:else>
+              <span class="label">Une activité a été créée pour la séance dans le Cahier de textes.</span>
+            </g:else>
           </td>
         </tr>
       </g:if>

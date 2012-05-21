@@ -406,6 +406,8 @@ class SujetController {
                                                 sujet: sujet)
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
+            afficheLienCreationDevoir:true,
+            afficheLienCreationActivite:true,
             modaliteActivite: modaliteActivite,
             proprietesScolarite: proprietesScolarite])
   }
