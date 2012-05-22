@@ -67,7 +67,7 @@
     <g:link action="edite" controller="seance" class="modify"
             id="${seance.id}">Modifier la séance</g:link>
     <g:if test="${grailsApplication.config.eliot.interfacage.notes}"> |
-      <g:link action="edite" controller="seance" class="share" title="Met à jour les notes dans la gestion des notes"
+      <g:link action="edite" controller="seance" class="share" title="Mise à jour des notes du devoir lié à la séance"
                         id="${seance.id}">Mettre à jour les notes</g:link>
     </g:if>|
     <g:link action="supprime" controller="seance" class="delete"

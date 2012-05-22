@@ -206,7 +206,7 @@ class ModaliteActiviteService {
   }
 
   /**
-   * Indique si la modalité activité à un devoir de Notes attaché
+   * Indique si la modalité activité a un devoir de Notes attaché
    * @param modaliteActivite la modalite activité
    * @param personne la personne déclenchant l'opération
    * @return true si la modalité activité a un devoir Notes associé
