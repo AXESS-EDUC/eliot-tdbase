@@ -60,7 +60,7 @@
                         onComplete="afterHotspotAdded()"
                         class="button"/>
 
-      <div id="imageContainer">
+      <div class="imageContainer">
         <et:viewAttachement
                 attachement="${specifobject.attachement}"
                 width="500"

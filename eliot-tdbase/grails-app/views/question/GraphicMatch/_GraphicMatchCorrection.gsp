@@ -43,6 +43,8 @@
                     leftDistance="${hotspot.leftDistance}"
                     id="hotspot_correction_${indexReponse}_${hotspot.id}"
                     hotspotId="${hotspot.id}"
+                    width="${hotspot.width}"
+                    height="${hotspot.height}"
                     class="hotspot">
                 </li>
             </g:each>
@@ -54,7 +56,9 @@
                 <g:if test="${icon.attachment}">
                     <li class="icon" id="icon_correction_${indexReponse}_${icon.id}">
                         <et:viewAttachement attachement="${icon.attachment}"
-                                            width="40" height="40"/>
+                                            width="${specifobject.getCorrespondingHotspot(icon.id).width-5}"
+                                            height="${specifobject.getCorrespondingHotspot(icon.id).height-5}"/>
+
                         <span class="zoneLabel"><br>avec Zone</span>
                         <span
                                 class="hotspotSelector">${specifobject.graphicMatches[icon.id]}</span>

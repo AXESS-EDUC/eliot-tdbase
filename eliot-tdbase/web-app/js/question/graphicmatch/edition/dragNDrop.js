@@ -34,8 +34,7 @@ function initDragNDrop() {
     function initWidgets() {
         //hide html tags
         $(".hotspotLabel").hide();
-        $(".offLeft").hide();
-        $(".offTop").hide();
+        $(".hotspotAttribute").hide();
 
         // style html tags
         $('[name="hotspotSupressButton"]').each(function () {
@@ -43,9 +42,16 @@ function initDragNDrop() {
         });
         $('.hotspot').addClass('hotspotStyle');
         $('.hotspot').addClass('unHighlightedHotspot');
+
         // make hotspots draggable
         $(".hotspot").draggable({containment:'#theImage', stack:'div'});
 
+        // make hotspots resizable
+        $(".hotspot").resizable({containment:'#theImage', stack:'div', handles:"se", stop:function (event, ui) {
+            onResize($(this), ui)
+        }});
+
+        resizeHotspots();
         positionHotspots();
         addHotpotIds();
     }
@@ -59,8 +65,8 @@ function initDragNDrop() {
 
     function positionHotspots() {
         $(".hotspot").each(function () {
-            var offLeft = $(this).children('.offLeft').val();
-            var offTop = $(this).children('.offTop').val();
+            var offLeft = $(this).children('#offLeft').val();
+            var offTop = $(this).children('#offTop').val();
             $(this).position({
                                  of:$("#theImage"), my:"left top", at:"left top",
                                  offset:offLeft + " " + offTop, collision:"none"
@@ -77,8 +83,8 @@ function initDragNDrop() {
         var hotspotLeft = $('#' + hotspotId).position().left - imageLeft;
         var hotspotTop = $('#' + hotspotId).position().top - imageTop;
 
-        $("#" + hotspotId + ">input.offLeft").val(hotspotLeft);
-        $("#" + hotspotId + ">input.offTop").val(hotspotTop);
+        $("#" + hotspotId + ">input#offLeft").val(hotspotLeft);
+        $("#" + hotspotId + ">input#offTop").val(hotspotTop);
     }
 
     function addHotpotIds() {
@@ -89,5 +95,23 @@ function initDragNDrop() {
             $(this).append("<span class='hotspotId'>" + id + "</span>");
 
         });
+    }
+
+    function resizeHotspots(){
+
+        $(".hotspot").each(function () {
+
+            var width = $(this).children('#width').val();
+            var height = $(this).children('#height').val();
+            $(this).css("width", width);
+            $(this).css("height", height);
+        });
+
+    }
+
+    function onResize(hotSpot, ui) {
+        var hotspotId = $(hotSpot).attr("id");
+        $("#" + hotspotId + ">input#width").val(ui.size.width);
+        $("#" + hotspotId + ">input#height").val(ui.size.height);
     }
 }

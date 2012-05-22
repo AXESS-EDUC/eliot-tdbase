@@ -44,6 +44,8 @@
           leftDistance="${hotspot.leftDistance}"
           id="hotspot_interaction_${indexReponse}_${hotspot.id}"
           hotspotId="${hotspot.id}"
+          width="${hotspot.width}"
+          height="${hotspot.height}"
           class="hotspot">
       </li>
     </g:each>
@@ -55,7 +57,8 @@
         <li id="icon_interaction_${indexReponse}_${icon.id}" class="icon">
 
           <et:viewAttachement attachement="${icon.attachment}"
-                              width="40" height="40"/>
+                              width="${specifobject.getCorrespondingHotspot(icon.id).width-5}"
+                              height="${specifobject.getCorrespondingHotspot(icon.id).height-5}"/>
 
           <g:select
                   id="icon_interaction_${indexReponse}_${icon.id}_graphicMatch"

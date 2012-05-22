@@ -43,10 +43,14 @@ function Common() {
 
             var offLeft = $(this).attr('leftdistance');
             var offTop = $(this).attr('topdistance');
+            var width = $(this).attr('width');
+            var height = $(this).attr('height');
 
             hotspotDiv.css('position', 'absolute');
             hotspotDiv.css('top', offTop + 'px');
             hotspotDiv.css('left', offLeft + 'px');
+            hotspotDiv.css("width", width + 'px');
+            hotspotDiv.css("height", height + 'px');
             $(this).remove();
         });
     };

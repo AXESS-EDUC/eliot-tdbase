@@ -57,23 +57,26 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
 
     def oldImageId = question.specificationObject?.attachmentId
     if (spec.fichier && !spec.fichier.empty) {
-      def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(spec.fichier, question, true)
+      def backgroundImage = questionAttachementService.createAttachementForQuestionFromMultipartFile(spec.fichier, question, true)
 
       if (oldImageId) {
         questionAttachementService.deleteQuestionAttachement(QuestionAttachement.get(oldImageId))
       }
-      spec.attachmentId = questionAttachement.id
+      spec.attachmentId = backgroundImage.id
     }
 
     spec.icons.each {
       def iconImageId = it.attachmentId
       if (it.fichier && !it.fichier.empty) {
-        def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(it.fichier, question, true)
+        def icon = questionAttachementService.createAttachementForQuestionFromMultipartFile(it.fichier, question, true)
+
+        icon.attachement.dimension
+
 
         if (iconImageId) {
           questionAttachementService.deleteQuestionAttachement(QuestionAttachement.get(iconImageId))
         }
-        it.attachmentId = questionAttachement.id
+        it.attachmentId = icon.id
       }
     }
 
@@ -165,6 +168,15 @@ class GraphicMatchSpecification implements QuestionSpecification {
     null
   }
 
+  /**
+   * Retourne l'hotspot qui corresponds à une icone.
+   * @param iconId
+   * @return
+   */
+  Hotspot getCorrespondingHotspot(String iconId)
+  {
+    hotspots.find {it.id ==  graphicMatches[iconId]}
+  }
 
   static constraints = {
     libelle blank: false
@@ -192,6 +204,16 @@ class Hotspot {
   int leftDistance = 0
 
   /**
+   * La largeur de la zone de text.
+   */
+  int width = 50
+
+  /**
+   * La hauteur de la zone de text.
+   */
+  int height = 50
+
+  /**
    * Constructeur par defaut.
    */
   Hotspot() { super()}
@@ -201,9 +223,13 @@ class Hotspot {
    * @return une map des attributs de l'objet.
    */
   Map toMap() {
-    [topDistance: topDistance,
+    [
+            topDistance: topDistance,
             leftDistance: leftDistance,
-            id: id]
+            width: width,
+            height: height,
+            id: id
+    ]
   }
 }
 

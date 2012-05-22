@@ -45,7 +45,10 @@
             <ul class="hotspots">
                 <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
                     <li topDistance="${hotspot.topDistance/2}"
-                        leftDistance="${hotspot.leftDistance/2}" hotspotId="${hotspot.id}">
+                        leftDistance="${hotspot.leftDistance/2}"
+                        hotspotId="${hotspot.id}"
+                        width="${hotspot.width/2}"
+                        height="${hotspot.height/2}">
                     </li>
                 </g:each>
             </ul>

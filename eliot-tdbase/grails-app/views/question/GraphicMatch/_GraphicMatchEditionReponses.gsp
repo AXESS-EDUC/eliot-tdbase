@@ -28,7 +28,7 @@
   --}%
 
 <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-  <div id="hotspot_${i}" class="hotspot">
+  <div id="hotspot_${i}" class="hotspot" style="width: ${hotspot.width}; height: ${hotspot.height}">
 
     <g:submitToRemote id="${i}"
                       name="hotspotSupressButton"
@@ -40,18 +40,21 @@
                       onComplete="afterHotspotDeleted()"/>
 
     <span class="hotspotLabel">Zone de dépôt : ${hotspot.id}</span>
-    <g:hiddenField class="idField" name="specifobject.hotspots[${i}].id"
-                   value="${hotspot.id}"/>
+    <g:hiddenField class="idField" name="specifobject.hotspots[${i}].id" value="${hotspot.id}"/>
 
     <span class="hotspotLabel">Top:</span>
-    <g:textField class="offTop"
-                 name="specifobject.hotspots[${i}].topDistance"
-                 value="${hotspot.topDistance}" size="3"/>
+    <g:textField class="hotspotAttribute" id="offTop" name="specifobject.hotspots[${i}].topDistance" value="${hotspot.topDistance}" size="3"/>
 
     <span class="hotspotLabel">Left:</span>
-    <g:textField class="offLeft"
-                 name="specifobject.hotspots[${i}].leftDistance"
-                 value="${hotspot.leftDistance}" size="3"/>
+    <g:textField class="hotspotAttribute" id="offLeft" name="specifobject.hotspots[${i}].leftDistance" value="${hotspot.leftDistance}" size="3"/>
+
+    <span class="hotspotLabel">Width:</span>
+    <g:textField class="hotspotAttribute" id="width" name="specifobject.hotspots[${i}].width" value="${hotspot.width}" size="3"/>
+
+     <span class="hotspotLabel">Height:</span>
+    <g:textField class="hotspotAttribute" id="height" name="specifobject.hotspots[${i}].height" value="${hotspot.height}" size="3"/>
+
+
   </div>
 </g:each>
 
@@ -74,13 +77,10 @@
       <input type="file" name="specifobject.icons[${i}].fichier"
              onchange="$('#iconUpload${i}').trigger('click');"/>
 
-      <g:hiddenField id="graphicMatch_${icon.id}"
-                     name="specifobject.graphicMatches[${icon.id}]"
+      <g:hiddenField id="graphicMatch_${icon.id}" name="specifobject.graphicMatches[${icon.id}]"
                      value="${specifobject.graphicMatches.getAt(icon.id)}"/>
-      <g:hiddenField name="specifobject.icons[${i}].attachmentId"
-                     value="${icon.attachmentId}"/>
-      <g:hiddenField name="specifobject.icons[${i}].id"
-                     value="${icon.id}"/>
+      <g:hiddenField name="specifobject.icons[${i}].attachmentId" value="${icon.attachmentId}"/>
+      <g:hiddenField name="specifobject.icons[${i}].id" value="${icon.id}"/>
     </li>
   </g:each>
 </ul>
