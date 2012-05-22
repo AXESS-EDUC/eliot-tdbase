@@ -61,16 +61,16 @@ class ModaliteActivite {
   StructureEnseignement structureEnseignement
   Matiere matiere
 
-  Activite activite
-  Evaluation evaluation
+  Long activiteId
+  Long evaluationId
   Boolean copieAmeliorable = true
 
   static constraints = {
     responsable(nullable: true)
     groupe(nullable: true)
     etablissement(nullable: true)
-    activite(nullable: true)
-    evaluation(nullable: true)
+    activiteId(nullable: true)
+    evaluationId(nullable: true)
     structureEnseignement(nullable: true, validator: { val, obj ->
       if (val == null) {
         return (obj.groupe != null && obj.etablissement != null)

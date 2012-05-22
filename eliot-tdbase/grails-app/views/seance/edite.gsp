@@ -66,7 +66,7 @@
   <style type='text/css' media='screen'>
   .inform {
     display: block;
-    width: 50%;
+    width: 53%;
     margin: 2px;
     text-transform: none;
   }
@@ -112,15 +112,10 @@
     <table>
 
       <tr>
-        <td class="label">Groupe<span class="obligatoire">*</span>&nbsp;:</td>
+        <td class="label">Classe/groupe<span class="obligatoire">*</span>&nbsp;:</td>
         <td>
           <g:if test="${modaliteActivite.structureEnseignement}">
-            <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong> &nbsp;&nbsp;&nbsp;
-            <g:select name="proprietesScolariteSelectionId"
-                      noSelection="${['null': 'Changer de groupe...']}"
-                      from="${proprietesScolarite}"
-                      optionKey="id"
-                      optionValue="structureEnseignementNomAffichage"/>
+            <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong>
           </g:if>
           <g:else>
             <g:select name="proprietesScolariteSelectionId"
@@ -183,9 +178,9 @@
 
               </table>
             </g:if>
-            <g:else>
+            <g:if test="${afficheDevoirCree}">
               <span class="label">Un devoir est lié à la séance dans Notes.</span>
-            </g:else>
+            </g:if>
           </td>
         </tr>
       </g:if>
@@ -227,9 +222,9 @@
                 </tr>
               </table>
             </g:if>
-            <g:else>
+            <g:if test="${afficheActiviteCreee}">
               <span class="label">Une activité a été créée pour la séance dans le Cahier de textes.</span>
-            </g:else>
+            </g:if>
           </td>
         </tr>
       </g:if>

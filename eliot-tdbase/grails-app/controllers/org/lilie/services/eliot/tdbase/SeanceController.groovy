@@ -53,17 +53,31 @@ class SeanceController {
   def edite() {
     ModaliteActivite modaliteActivite
     Personne personne = authenticatedPersonne
+    def afficheLienCreationDevoir = false
+    def afficheLienCreationActivite = false
+    def afficheActiviteCreee = false
+    def afficheDevoirCree = false
     if (params.creation) {
       modaliteActivite = new ModaliteActivite(enseignant: personne)
       params.bcInit = true
     } else {
       modaliteActivite = ModaliteActivite.get(params.id)
+      afficheLienCreationDevoir = modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(modaliteActivite,personne)
+      afficheLienCreationActivite = modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(modaliteActivite,personne)
+      if (!afficheLienCreationDevoir) {
+        afficheDevoirCree = modaliteActiviteService.modaliteActiviteHasNotesDevoir(modaliteActivite, personne)
+      }
+      if (!afficheLienCreationActivite) {
+        afficheActiviteCreee = modaliteActiviteService.modaliteActiviteHasTextesActivite(modaliteActivite, personne)
+      }
     }
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
-            afficheLienCreationDevoir: false,
-            afficheLienCreationActivite: false,
+            afficheLienCreationDevoir: afficheLienCreationDevoir,
+            afficheLienCreationActivite: afficheLienCreationActivite,
+            afficheActiviteCreee: afficheActiviteCreee,
+            afficheDevoirCree: afficheDevoirCree,
             modaliteActivite: modaliteActivite,
             proprietesScolarite: proprietesScolarite])
   }
