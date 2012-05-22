@@ -30,6 +30,8 @@ package org.lilie.services.eliot.tdbase.impl.graphicmatch
 
 import grails.validation.Validateable
 import org.lilie.services.eliot.tice.Attachement
+import org.lilie.services.eliot.tice.AttachementService
+import org.lilie.services.eliot.tice.Dimension
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
@@ -43,6 +45,8 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
    * Le service qui gère les pieces jointes à une question.
    */
   QuestionAttachementService questionAttachementService
+  AttachementService attachementService
+
 
   @Override
   GraphicMatchSpecification createSpecification(Map map) {
@@ -68,19 +72,29 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
     spec.icons.each {
       def iconImageId = it.attachmentId
       if (it.fichier && !it.fichier.empty) {
-        def icon = questionAttachementService.createAttachementForQuestionFromMultipartFile(it.fichier, question, true)
 
-        icon.attachement.dimension
-
-
+        //delete previous attachment
         if (iconImageId) {
           questionAttachementService.deleteQuestionAttachement(QuestionAttachement.get(iconImageId))
         }
-        it.attachmentId = icon.id
+
+        // create new attachment
+        def attachement = attachementService.createAttachementForMultipartFile(it.fichier)
+
+        if (dimensionsAreCorrect(attachement)) {
+          def questionAttachement = questionAttachementService.createAttachementForQuestion(attachement, question)
+          it.attachmentId = questionAttachement.id
+        } else {
+          it.attachmentSizeOk = false
+        }
       }
     }
 
     super.updateQuestionSpecificationForObject(question, spec)
+  }
+
+  private boolean dimensionsAreCorrect(Attachement attachement) {
+    attachement.dimension.compareTo(new Dimension(hauteur: 500, largeur: 500)) < 1
   }
 }
 
@@ -173,9 +187,8 @@ class GraphicMatchSpecification implements QuestionSpecification {
    * @param iconId
    * @return
    */
-  Hotspot getCorrespondingHotspot(String iconId)
-  {
-    hotspots.find {it.id ==  graphicMatches[iconId]}
+  Hotspot getCorrespondingHotspot(String iconId) {
+    hotspots.find {it.id == graphicMatches[iconId]}
   }
 
   static constraints = {
@@ -251,11 +264,14 @@ class MatchIcon {
    */
   MultipartFile fichier
 
+
+  boolean attachmentSizeOk  = true
+
   /**
    * Conversion de l'objet en map.
    * @return une map des attributs de l'objet.
    */
-  Map toMap() {[id: id, attachmentId: attachmentId]}
+  Map toMap() {[id: id, attachmentId: attachmentId, attachmentSizeOk : attachmentSizeOk ]}
 
   /**
    * Retourne l'attachement correspondant
@@ -263,7 +279,7 @@ class MatchIcon {
    */
   Attachement getAttachment() {
     if (attachmentId) {
-      return QuestionAttachement.get(attachmentId).attachement
+      return QuestionAttachement.get(attachmentId)?.attachement
     }
     null
   }

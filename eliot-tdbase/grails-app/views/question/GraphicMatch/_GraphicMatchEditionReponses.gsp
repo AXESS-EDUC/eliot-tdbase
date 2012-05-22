@@ -28,61 +28,70 @@
   --}%
 
 <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-  <div id="hotspot_${i}" class="hotspot" style="width: ${hotspot.width}; height: ${hotspot.height}">
+    <div id="hotspot_${i}" class="hotspot" style="width: ${hotspot.width}; height: ${hotspot.height}">
 
-    <g:submitToRemote id="${i}"
-                      name="hotspotSupressButton"
-                      title="Supprimer une zone"
-                      value="X"
-                      action="supprimeHotspot"
-                      controller="questionGraphicMatch"
-                      update="hotspotsEtIcons"
-                      onComplete="afterHotspotDeleted()"/>
+        <g:submitToRemote id="${i}"
+                          name="hotspotSupressButton"
+                          title="Supprimer une zone"
+                          value="X"
+                          action="supprimeHotspot"
+                          controller="questionGraphicMatch"
+                          update="hotspotsEtIcons"
+                          onComplete="afterHotspotDeleted()"/>
 
-    <span class="hotspotLabel">Zone de dépôt : ${hotspot.id}</span>
-    <g:hiddenField class="idField" name="specifobject.hotspots[${i}].id" value="${hotspot.id}"/>
+        <span class="hotspotLabel">Zone de dépôt : ${hotspot.id}</span>
+        <g:hiddenField class="idField" name="specifobject.hotspots[${i}].id" value="${hotspot.id}"/>
 
-    <span class="hotspotLabel">Top:</span>
-    <g:textField class="hotspotAttribute" id="offTop" name="specifobject.hotspots[${i}].topDistance" value="${hotspot.topDistance}" size="3"/>
+        <span class="hotspotLabel">Top:</span>
+        <g:textField class="hotspotAttribute" id="offTop" name="specifobject.hotspots[${i}].topDistance"
+                     value="${hotspot.topDistance}" size="3"/>
 
-    <span class="hotspotLabel">Left:</span>
-    <g:textField class="hotspotAttribute" id="offLeft" name="specifobject.hotspots[${i}].leftDistance" value="${hotspot.leftDistance}" size="3"/>
+        <span class="hotspotLabel">Left:</span>
+        <g:textField class="hotspotAttribute" id="offLeft" name="specifobject.hotspots[${i}].leftDistance"
+                     value="${hotspot.leftDistance}" size="3"/>
 
-    <span class="hotspotLabel">Width:</span>
-    <g:textField class="hotspotAttribute" id="width" name="specifobject.hotspots[${i}].width" value="${hotspot.width}" size="3"/>
+        <span class="hotspotLabel">Width:</span>
+        <g:textField class="hotspotAttribute" id="width" name="specifobject.hotspots[${i}].width"
+                     value="${hotspot.width}" size="3"/>
 
-     <span class="hotspotLabel">Height:</span>
-    <g:textField class="hotspotAttribute" id="height" name="specifobject.hotspots[${i}].height" value="${hotspot.height}" size="3"/>
+        <span class="hotspotLabel">Height:</span>
+        <g:textField class="hotspotAttribute" id="height" name="specifobject.hotspots[${i}].height"
+                     value="${hotspot.height}" size="3"/>
 
-
-  </div>
+    </div>
 </g:each>
 
 <g:hiddenField name="specifobject.hotspots.size"
                value="${specifobject.hotspots?.size()}"/>
 
 <ul>
-  <g:each status="i" in="${specifobject.icons}" var="icon">
-    <li class="editIcon">
-      <strong>Zone de dépôt ${specifobject.graphicMatches.getAt(icon.id)}:</strong>
+    <g:each status="i" in="${specifobject.icons}" var="icon">
 
-      <g:if test="${icon.attachmentId}">
-        <et:viewAttachement attachement="${icon.attachment}" width="40" height="40"/>
-      </g:if>
+        <li class="editIcon">
+
+            <strong>Zone de dépôt ${specifobject.graphicMatches.getAt(icon.id)}:</strong>
+
+            <g:if test="${!icon.attachmentSizeOk}">
+                <span class="error-details"><g:message code="question.icon.attachment.toobig"/></span>
+            </g:if>
+
+            <g:if test="${icon.attachmentId}">
+                <et:viewAttachement attachement="${icon.attachment}" width="40" height="40"/>
+            </g:if>
 
 
-      <g:actionSubmit value="upload" action="enregistreEtPoursuisEdition" hidden="true"
-                      id="iconUpload${i}"/>
+            <g:actionSubmit value="upload" action="enregistreEtPoursuisEdition" hidden="true"
+                            id="iconUpload${i}"/>
 
-      <input type="file" name="specifobject.icons[${i}].fichier"
-             onchange="$('#iconUpload${i}').trigger('click');"/>
+            <input type="file" name="specifobject.icons[${i}].fichier"
+                   onchange="$('#iconUpload${i}').trigger('click');"/>
 
-      <g:hiddenField id="graphicMatch_${icon.id}" name="specifobject.graphicMatches[${icon.id}]"
-                     value="${specifobject.graphicMatches.getAt(icon.id)}"/>
-      <g:hiddenField name="specifobject.icons[${i}].attachmentId" value="${icon.attachmentId}"/>
-      <g:hiddenField name="specifobject.icons[${i}].id" value="${icon.id}"/>
-    </li>
-  </g:each>
+            <g:hiddenField id="graphicMatch_${icon.id}" name="specifobject.graphicMatches[${icon.id}]"
+                           value="${specifobject.graphicMatches.getAt(icon.id)}"/>
+            <g:hiddenField name="specifobject.icons[${i}].attachmentId" value="${icon.attachmentId}"/>
+            <g:hiddenField name="specifobject.icons[${i}].id" value="${icon.id}"/>
+        </li>
+    </g:each>
 </ul>
 
 <g:hiddenField name="specifobject.icons.size"

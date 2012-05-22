@@ -94,11 +94,25 @@ class Attachement {
 
 }
 
-class Dimension {
+class Dimension implements Comparable<Dimension> {
   Integer largeur
   Integer hauteur
 
   String toString() {
     "dim    h: $hauteur     l: $largeur"
+  }
+
+  @Override
+  int compareTo(Dimension other) {
+    if (largeur == other.largeur && hauteur == other.hauteur) {
+      return 0
+    }
+
+    if (largeur > other.largeur || hauteur > other.hauteur) {
+      return 1
+    }
+
+    return -1
+
   }
 }
