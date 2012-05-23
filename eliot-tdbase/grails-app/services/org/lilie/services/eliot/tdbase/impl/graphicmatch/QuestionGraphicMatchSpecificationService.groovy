@@ -80,7 +80,7 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
         // create new attachment
         def iconAttachement = attachementService.createAttachementForMultipartFile(it.fichier)
 
-        if (dimensionsAreCorrect(iconAttachement, QuestionAttachement.get(spec.attachmentId))) {
+        if (dimensionsAreCorrect(iconAttachement, QuestionAttachement.get(spec.attachmentId).attachement)) {
           def questionAttachement = questionAttachementService.createAttachementForQuestion(iconAttachement, question)
           it.attachmentId = questionAttachement.id
         } else {
