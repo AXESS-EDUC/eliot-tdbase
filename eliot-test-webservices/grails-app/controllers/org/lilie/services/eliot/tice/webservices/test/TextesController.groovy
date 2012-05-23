@@ -34,7 +34,7 @@ class TextesController {
 
   def getStructure() {
     def cid = params.cahierId as Long
-    if (cid == 1) {
+    if (cid > 0) {
       String resp = new JsonBuilder([cahierId: cid,
                                             kind: "eliot-textes#chapitres#structure-chapitres",
                                             "cahier-racine": [[kind: "eliot-textes#chapitre#avec-chapitres-fils",
@@ -51,7 +51,7 @@ class TextesController {
                                                                     nom: "Chap 2.1"], [kind: "eliot-textes#chapitre#avec-chapitres-fils",
                                                                     id: 4,
                                                                     class: "org.lilie.service.eliot.textes.Chapitre",
-                                                                    nom: "Chap 2.2",]]],
+                                                                    nom: "Chap 2.2"]]],
 
                                                     [kind: "eliot-textes#chapitre#avec-chapitres-fils",
                                                             id: 5,
@@ -63,7 +63,7 @@ class TextesController {
                                                                     nom: "Chap 3.1"], [kind: "eliot-textes#chapitre#avec-chapitres-fils",
                                                                     id: 7,
                                                                     class: "org.lilie.service.eliot.textes.Chapitre",
-                                                                    nom: "Chap 3.2",]]]
+                                                                    nom: "Chap 3.2"]]]
 
                                             ]
 
@@ -79,6 +79,46 @@ class TextesController {
 
   }
 
+  def getCahiersService() {
+    def utilisateurPersonneId = params.utilisateurPersonneId as Long
+    def structureEnseignementId = params.structureEnseignementId as Long
+    def matiereId = params.matiereId as Long
+    String resp = new JsonBuilder([kind: "PaginatedList",
+                                          offset: 0,
+                                          pageSize: 20,
+                                          total: 3,
+                                          items: [[kind: "eliot-textes#cahier-service#standard",
+                                                  class: "org.lilie.services.eliot.textes.CahierDeTextes",
+                                                  id: 1,
+                                                  nom: "cahier 1...",
+                                                  description: "C'est le cahier 1",
+                                                  estVise: true,
+                                                  dateCreation: new Date() - 150,
+                                                  service: [kind: "eliot#service#standard",
+                                                          class: "org.lilie.services.eliot.scolarite.Service",
+                                                          id: 1]],
+                                                  [kind: "eliot-textes#cahier-service#standard",
+                                                          class: "org.lilie.services.eliot.textes.CahierDeTextes",
+                                                          id: 2,
+                                                          nom: "cahier 2...",
+                                                          description: "C'est le cahier 2",
+                                                          estVise: true,
+                                                          dateCreation: new Date() - 150,
+                                                          service: [kind: "eliot#service#standard",
+                                                                  class: "org.lilie.services.eliot.scolarite.Service",
+                                                                  id: 2]],
+                                                  [kind: "eliot-textes#cahier-service#standard",
+                                                          class: "org.lilie.services.eliot.textes.CahierDeTextes",
+                                                          id: 3,
+                                                          nom: "cahier 3...",
+                                                          description: "C'est le cahier 3",
+                                                          estVise: true,
+                                                          dateCreation: new Date() - 150,
+                                                          service: [kind: "eliot#service#standard",
+                                                                  class: "org.lilie.services.eliot.scolarite.Service",
+                                                                  id: 3]]]]).toPrettyString()
+    render(text: resp, contentType: "application/json", encoding: "UTF-8")
+  }
 
 }
 

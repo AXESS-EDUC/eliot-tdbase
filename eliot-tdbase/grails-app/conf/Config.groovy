@@ -1,9 +1,9 @@
 import grails.plugins.springsecurity.SecurityConfigType
+import groovyx.net.http.ContentType
+import groovyx.net.http.Method
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
-import groovyx.net.http.ContentType
-import groovyx.net.http.Method
 
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -43,13 +43,9 @@ eliot.requestHeaderPorteur = "ENT_PORTEUR"
  * Chargement des configurations externalisées
  */
 
-
-
 // Fichier charge si present dans le classpath : utile pour déploiement
 // d'une application de démonstration après téléchargement
-grails.config.locations = [
-        "classpath:${appName}-config.groovy"
-]
+grails.config.locations = ["classpath:${appName}-config.groovy"]
 
 // Fichier de configuration externe commun à toutes les applications Eliot
 def eliotcommonsConfigLocation = System.properties["eliot-commons.config.location"]
@@ -151,8 +147,6 @@ grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 
-
-
 // set security rbac
 //
 grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
@@ -169,9 +163,7 @@ grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY']
         '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/maintenance/**': ["${FonctionEnum.CD.toRole()}",
-                        'IS_AUTHENTICATED_FULLY']]
-
-
+                'IS_AUTHENTICATED_FULLY']]
 
 //  support de l'interfaçage eliot-notes
 //
@@ -197,11 +189,9 @@ eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime
         "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
         "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"]
 
-
-
 // les ressources JS et Applet Java Jmol sont recherchées dans l'URI
 // relative au serveur Grails (l'URI doit commencer par '/'):
-eliot.jmol.resourcesURI="/js/lib/jmol/"
+eliot.jmol.resourcesURI = "/js/lib/jmol/"
 
 environments {
   test {
@@ -290,7 +280,6 @@ environments {
   }
 }
 
-
 // Configurations des opérations de webservices Rest
 //
 
@@ -305,7 +294,15 @@ environments {
             requestBodyTemplate: null,
             responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
             urlServer: "http://localhost:8090",
-            uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres']]
+            uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres'],
+            [operationName: "getCahiersForStructureMatiereAndEnseignant",
+                    description: "Retourne la liste des cahiers pour une structure, une matière et un enseignant donné",
+                    contentType: ContentType.JSON,
+                    method: Method.GET,
+                    requestBodyTemplate: null,
+                    responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+                    urlServer: "http://localhost:8090",
+                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service']]
 
   }
   test {
@@ -318,7 +315,15 @@ environments {
             requestBodyTemplate: null,
             responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
             urlServer: "http://localhost:8090",
-            uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres']]
+            uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres'],
+            [operationName: "getCahiersForStructureMatiereAndEnseignant",
+                    description: "Retourne la liste des cahiers pour une structure, une matière et un enseignant donné",
+                    contentType: ContentType.JSON,
+                    method: Method.GET,
+                    requestBodyTemplate: null,
+                    responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+                    urlServer: "http://localhost:8090",
+                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service']]
 
   }
 

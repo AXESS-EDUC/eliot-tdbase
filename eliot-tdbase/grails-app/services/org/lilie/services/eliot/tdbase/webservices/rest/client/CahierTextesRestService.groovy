@@ -28,11 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.webservices.rest.client
 
-import org.lilie.services.eliot.tice.webservices.rest.client.GenericRestOperation
-import org.lilie.services.eliot.tice.webservices.rest.client.RestOperation
-import org.lilie.services.eliot.tice.webservices.rest.client.RestOperationDirectory
 import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
-import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
  * Service d'initiaisation de l'annuaire des opérations de web services Rest
@@ -46,15 +42,78 @@ class CahierTextesRestService {
   /**
    * Récupère la structure en chapitre d'un cahier de textes identifié
    * par son Id
+   * Format de la réponse
+   * <code>
+   *   [cahierId: 1,
+   *    kind: "eliot-textes#chapitres#structure-chapitres",
+   *    "cahier-racine": [
+   *      [kind: "eliot-textes#chapitre#avec-chapitres-fils",
+   *        id: 1,
+   *        class: "org.lilie.service.eliot.textes.Chapitre",
+   *        nom: "Chap 1"],
+   *      [kind: "eliot-textes#chapitre#avec-chapitres-fils",
+   *        id: 2,
+   *        class: "org.lilie.service.eliot.textes.Chapitre",
+   *        nom: "Chap 2",
+   *        "chapitres-fils": [[
+   *            kind: "eliot-textes#chapitre#avec-chapitres-fils",
+   *            id: 3,
+   *            class: "org.lilie.service.eliot.textes.Chapitre",
+   *            nom: "Chap 2.1"],
+   *            [kind: "eliot-textes#chapitre#avec-chapitres-fils",
+   *            id: 4,
+   *            class: "org.lilie.service.eliot.textes.Chapitre",
+   *            nom: "Chap 2.2",]]],
+   *     ...]
+   *   </code>
    * @param cahierId l'id du cahier
-   * @param personne la personne effectuant la demande
-   * @return  une map représentant la structure du cahier
+   * @param personneId l'id de la personne effectuant la demande
+   * @return une map représentant la structure du cahier
    */
-  def getStructureChapitresForCahierId(Long cahierId, Personne personne) {
+  def getStructureChapitresForCahierId(Long cahierId, Long personneId) {
     restClient.invokeOperation('getStructureChapitresForCahierId',
-                               [cahierId:cahierId],
-                               [utilisateurPersonneId: personne.id]
-                               )
+                               [cahierId: cahierId],
+                               [utilisateurPersonneId: personneId])
+  }
+
+  /**
+   * Récupère les cahiers pour une structure d'enseignement, une matière et un
+   * enseignant donné.
+   * Format de la réponse
+   * <code>
+   *   [kind: "PaginatedList",
+   *    offset: 0,
+   *    pageSize: 20,
+   *    total: 3,
+   *    items: [
+   *    [kind: "eliot-textes#cahier-service#standard",
+   *    class: "org.lilie.services.eliot.textes.CahierDeTextes",
+   *    id: 1,
+   *    nom: "cahier 1...",
+   *    description: "C'est le cahier 1",
+   *    estVise: true,
+   *    dateCreation: new Date() - 150,
+   *    service: [kind: "eliot#service#standard",
+   *      class: "org.lilie.services.eliot.scolarite.Service",
+   *      id: 1
+   *      ]
+   *    ],
+   *    ...
+   *    ]
+   * </code>
+   * @param structEnsId l'identifiant de la structure d'enseignement
+   * @param matiereId l'identifiant de la matière
+   * @param personneId l'identifiant de l'enseignant
+   * @return la map représentant la liste des cahiers
+   */
+  def getCahiersForStructureMatiereAndEnseignant(Long structEnsId,
+                                                 Long matiereId,
+                                                 Long personneId) {
+    restClient.invokeOperation('getCahiersForStructureMatiereAndEnseignant',
+                               null,
+                               [structureEnseignementId: structEnsId,
+                                       matiereId: matiereId,
+                                       utilisateurPersonneId: personneId])
   }
 
 }
