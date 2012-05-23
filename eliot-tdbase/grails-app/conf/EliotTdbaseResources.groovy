@@ -113,6 +113,8 @@ modules = {
 
   fillGraphics_InteractionJS {
     dependsOn "fillGraphics_Common"
+    resource url: [dir: 'js/question/fillgraphics/interaction', file: 'dragNDrop.polyfill.js']
+    resource url: [dir: 'js/question/fillgraphics/interaction', file: 'dragNDrop.js']
     resource url: [dir: 'js/question/fillgraphics/interaction', file: 'load.js']
   }
 

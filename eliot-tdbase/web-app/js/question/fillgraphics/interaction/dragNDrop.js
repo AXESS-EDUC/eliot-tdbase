@@ -26,10 +26,16 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-new Common().resizeFillgraphicsEditor();
-new Common().displaySuggestedWords();
-if (Modernizr.touch) {
-    initDragNDropPolyFill();
-} else {
-    initDragNDrop();
+function initDragNDrop() {
+
+    initWidgets();
+    registerEventHandlers();
+
+    function initWidgets() {
+
+    }
+
+    function registerEventHandlers() {
+
+    }
 }

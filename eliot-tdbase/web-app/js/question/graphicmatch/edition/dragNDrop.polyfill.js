@@ -27,7 +27,11 @@
  */
 function initDragNDropPolyFill() {
 
-// do nothing.
-// on utilise l'html de base.
+    /**
+     * Remove Overflow properties. Because its badly supported on tactile devices.
+     */
+    $("div.container").css("overflow", "");
+    $("div.container").css("height", "");
+    $("div.container").css("width", "");
 
 }

@@ -25,11 +25,12 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
+function initDragNDropPolyFill() {
 
-new Common().resizeFillgraphicsEditor();
-new Common().displaySuggestedWords();
-if (Modernizr.touch) {
-    initDragNDropPolyFill();
-} else {
-    initDragNDrop();
+    /**
+     * Remove Overflow properties. Because its badly supported on tactile devices.
+     */
+    $("div.container").css("overflow", "");
+    $("div.container").css("height", "");
+    $("div.container").css("width", "");
 }
