@@ -31,7 +31,6 @@ package org.lilie.services.eliot.tdbase.impl.graphicmatch
 import grails.validation.Validateable
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.AttachementService
-import org.lilie.services.eliot.tice.Dimension
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import org.lilie.services.eliot.tdbase.*
@@ -79,13 +78,14 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
         }
 
         // create new attachment
-        def attachement = attachementService.createAttachementForMultipartFile(it.fichier)
+        def iconAttachement = attachementService.createAttachementForMultipartFile(it.fichier)
 
-        if (dimensionsAreCorrect(attachement)) {
-          def questionAttachement = questionAttachementService.createAttachementForQuestion(attachement, question)
+        if (dimensionsAreCorrect(iconAttachement, QuestionAttachement.get(spec.attachmentId))) {
+          def questionAttachement = questionAttachementService.createAttachementForQuestion(iconAttachement, question)
           it.attachmentId = questionAttachement.id
         } else {
           it.attachmentSizeOk = false
+          iconAttachement.delete(flush: true)
         }
       }
     }
@@ -93,8 +93,14 @@ class QuestionGraphicMatchSpecificationService extends QuestionSpecificationServ
     super.updateQuestionSpecificationForObject(question, spec)
   }
 
-  private boolean dimensionsAreCorrect(Attachement attachement) {
-    attachement.dimension.compareTo(new Dimension(hauteur: 500, largeur: 500)) < 1
+  /**
+   * Verifier si la taille de l'icône est inferieure à celle du image de base.
+   * @param icon attachement de l'icône
+   * @param backgroundImage attachemetn de l'image de base.
+   * @return boolean resultat.
+   */
+  private boolean dimensionsAreCorrect(Attachement icon, Attachement backgroundImage) {
+    icon.dimension.compareTo(backgroundImage.dimension) < 1
   }
 }
 
@@ -265,13 +271,13 @@ class MatchIcon {
   MultipartFile fichier
 
 
-  boolean attachmentSizeOk  = true
+  boolean attachmentSizeOk = true
 
   /**
    * Conversion de l'objet en map.
    * @return une map des attributs de l'objet.
    */
-  Map toMap() {[id: id, attachmentId: attachmentId, attachmentSizeOk : attachmentSizeOk ]}
+  Map toMap() {[id: id, attachmentId: attachmentId, attachmentSizeOk: attachmentSizeOk]}
 
   /**
    * Retourne l'attachement correspondant
