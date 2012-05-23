@@ -200,9 +200,9 @@
                       style="width: 110px;">Cahier&nbsp;de&nbsp;textes&nbsp;:</td>
                   <td><g:select name="cahierId"
                                 noSelection="${['null': 'Faites votre choix...']}"
-                                from="${proprietesScolarite}"
+                                from="${cahiers}"
                                 optionKey="id"
-                                optionValue="matiere"/></td>
+                                optionValue="nom"/></td>
                 </tr>
                 <tr>
                   <td class="label" style="width: 110px;">Chapitre&nbsp;:</td>

@@ -28,9 +28,9 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.transform.ToString
 import org.lilie.services.eliot.tdbase.webservices.rest.client.CahierTextesRestService
 import org.lilie.services.eliot.tice.annuaire.Personne
-import groovy.transform.ToString
 
 /**
  * Service d'initiaisation de l'annuaire des opérations de web services Rest
@@ -55,8 +55,10 @@ class CahierTextesService {
     def personneId = personne.id
     def restRes = cahierTextesRestService.getCahiersForStructureMatiereAndEnseignant(structId, matId, personneId)
     def res = []
-    restRes.items.each {
-      res << new CahierTextesInfo(id: it.id, nom: it.nom)
+    if (restRes) {
+      restRes.items.each {
+        res << new CahierTextesInfo(id: it.id, nom: it.nom)
+      }
     }
     res
   }
@@ -71,20 +73,22 @@ class CahierTextesService {
     def restRes = cahierTextesRestService.getStructureChapitresForCahierId(cahierId, peronne.id)
     def res = []
     def rang = 0
-    setupChapitreInfos(restRes["cahier-racine"], rang, res)
+    if (restRes) {
+      setupChapitreInfos(restRes["cahier-racine"], rang, res)
+    }
     res
   }
 
   private def setupChapitreInfos(List listeIn, Integer rang, List listeOut) {
-     listeIn.each {
-       def nom = new StringBuilder()
-       rang.times() {
-         nom << " "
-       }
-       nom << it.nom
-       listeOut << new ChapitreInfo(id: it.id, nomAvecIndentation: nom.toString())
-       setupChapitreInfos(it["chapitres-fils"], rang + 2,listeOut)
-     }
+    listeIn.each {
+      def nom = new StringBuilder()
+      rang.times() {
+        nom << " "
+      }
+      nom << it.nom
+      listeOut << new ChapitreInfo(id: it.id, nomAvecIndentation: nom.toString())
+      setupChapitreInfos(it["chapitres-fils"], rang + 2, listeOut)
+    }
   }
 
 }

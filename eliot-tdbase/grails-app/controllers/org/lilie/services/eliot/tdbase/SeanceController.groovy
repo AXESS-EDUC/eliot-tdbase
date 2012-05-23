@@ -45,6 +45,7 @@ class SeanceController {
   ModaliteActiviteService modaliteActiviteService
   CopieService copieService
   ProfilScolariteService profilScolariteService
+  CahierTextesService cahierTextesService
 
 /**
  *
@@ -57,6 +58,7 @@ class SeanceController {
     def afficheLienCreationActivite = false
     def afficheActiviteCreee = false
     def afficheDevoirCree = false
+    List<CahierTextesInfo> cahiers = []
     if (params.creation) {
       modaliteActivite = new ModaliteActivite(enseignant: personne)
       params.bcInit = true
@@ -69,6 +71,8 @@ class SeanceController {
       }
       if (!afficheLienCreationActivite) {
         afficheActiviteCreee = modaliteActiviteService.modaliteActiviteHasTextesActivite(modaliteActivite, personne)
+      } else {
+        cahiers = cahierTextesService.findCahiersTextesInfoByModaliteActivite(modaliteActivite,personne)
       }
     }
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
@@ -79,7 +83,8 @@ class SeanceController {
             afficheActiviteCreee: afficheActiviteCreee,
             afficheDevoirCree: afficheDevoirCree,
             modaliteActivite: modaliteActivite,
-            proprietesScolarite: proprietesScolarite])
+            proprietesScolarite: proprietesScolarite,
+            cahiers:cahiers])
   }
 
   /**
@@ -243,6 +248,7 @@ class SeanceController {
   }
 
 
+
 }
 
 
@@ -257,3 +263,4 @@ class UpdateReponseNoteCommand {
   Long element_id
   Float update_value
 }
+

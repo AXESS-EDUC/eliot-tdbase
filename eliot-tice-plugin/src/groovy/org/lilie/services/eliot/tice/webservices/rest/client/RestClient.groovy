@@ -28,17 +28,18 @@
 
 package org.lilie.services.eliot.tice.webservices.rest.client
 
-import groovy.text.SimpleTemplateEngine
-import groovyx.net.http.HTTPBuilder
-import org.apache.http.client.ClientProtocolException
-import groovyx.net.http.ContentType
 import groovy.json.JsonSlurper
+import groovy.text.SimpleTemplateEngine
+import groovy.util.logging.Log4j
+import groovyx.net.http.ContentType
+import groovyx.net.http.HTTPBuilder
 
 /**
  * Classe représentant un client de webservices Rest pour une opération
  * disponible dans l'annuaire des opérations
  * @author franck Silvestre
  */
+@Log4j
 class RestClient {
 
   RestOperationDirectory restOperationDirectory
@@ -53,9 +54,7 @@ class RestClient {
                       Map parameters,
                       Map httpParameters,
                       Map requestContentParameters = null)
-  throws RestOperationDoesNotExistsInDirectoryException,
-         ClientProtocolException,
-         IOException {
+  throws RestOperationDoesNotExistsInDirectoryException {
 
     def operation = restOperationDirectory.getOperationByName(operationName)
     if (!operation) {
@@ -65,40 +64,47 @@ class RestClient {
     def result = null
     def http = new HTTPBuilder(operation.urlServer)
     // todofsil gestion authconfig http.authConfig = ...
-    http.request(operation.method, operation.contentType) {
-      uri = operation.urlServer + getUrlPath(operation.uriTemplate, parameters, httpParameters)
-      if (operation.requestBodyTemplate) {
-        body = getBody(operation.requestBodyTemplate, requestContentParameters)
-      }
-      response.success = { resp, contentResp ->
-        operation.onSucess(resp, contentResp)
-        if (operation.contentType == ContentType.JSON) {
-          def slurper =  new JsonSlurper()
-          result = slurper.parseText(contentResp.toString())
-        } else {
-          result = contentResp
+    try {
+      http.request(operation.method, operation.contentType) {
+        uri = operation.urlServer + getUrlPath(operation.uriTemplate, parameters, httpParameters)
+        if (operation.requestBodyTemplate) {
+          body = getBody(operation.requestBodyTemplate, requestContentParameters)
+        }
+        response.success = { resp, contentResp ->
+          operation.onSucess(resp, contentResp)
+          if (operation.contentType == ContentType.JSON) {
+            def slurper = new JsonSlurper()
+            result = slurper.parseText(contentResp.toString())
+          } else {
+            result = contentResp
+          }
+        }
+        response.failure = { resp ->
+          log.error("Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}")
         }
       }
+    } catch (Exception e) {
+      log.error(e.message, e)
     }
     result
   }
 
   private String getUrlPath(String uriTemplate, Map parameters, Map httpParameters) {
     // resoud le template
-        def engine = new SimpleTemplateEngine()
-        def template = engine.createTemplate(uriTemplate)
-        def urlPath = template.make(parameters).toString()
-        // resoud les parametres http
-        if (httpParameters) {
-          def strB = new StringBuilder()
-          strB << '?'
-          httpParameters.each { key, val ->
-            strB << key << '=' << val.encodeAsURL() << '&'
-          }
-          strB.deleteCharAt(strB.length()-1)
-          urlPath += strB.toString()
-        }
-        urlPath
+    def engine = new SimpleTemplateEngine()
+    def template = engine.createTemplate(uriTemplate)
+    def urlPath = template.make(parameters).toString()
+    // resoud les parametres http
+    if (httpParameters) {
+      def strB = new StringBuilder()
+      strB << '?'
+      httpParameters.each { key, val ->
+        strB << key << '=' << val.encodeAsURL() << '&'
+      }
+      strB.deleteCharAt(strB.length() - 1)
+      urlPath += strB.toString()
+    }
+    urlPath
   }
 
 
