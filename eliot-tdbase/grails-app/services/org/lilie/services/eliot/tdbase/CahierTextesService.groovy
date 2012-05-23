@@ -79,6 +79,7 @@ class CahierTextesService {
     res
   }
 
+
   private def setupChapitreInfos(List listeIn, Integer rang, List listeOut) {
     listeIn.each {
       def nom = new StringBuilder()
@@ -122,4 +123,9 @@ class ChapitreInfo {
     return nomAvecIndentation?.trim()
   }
 
+}
+
+enum ActiviteContext {
+  EN_CLASSE,
+  MAISON
 }

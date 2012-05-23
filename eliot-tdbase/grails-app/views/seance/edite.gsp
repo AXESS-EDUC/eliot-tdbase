@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tdbase.ActiviteContext" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -214,11 +215,8 @@
                 </tr>
                 <tr>
                   <td class="label" style="width: 110px;">Contexte&nbsp;:</td>
-                  <td><g:select name="chapitreId"
-                                noSelection="${['null': 'En classe']}"
-                                from="${proprietesScolarite}"
-                                optionKey="id"
-                                optionValue="matiere"/></td>
+                  <td><g:select name="activiteContexteId"
+                                from="${ActiviteContext.values()}"/></td>
                 </tr>
               </table>
             </g:if>
