@@ -43,6 +43,7 @@ function initDragNDrop() {
         //hide html elements
         $('.hotspotSelector').hide();
         $('.imageContainer>.hotspotStyle').html('');
+
         // make elements draggable and droppable
         $(".imageContainer[qualifier=interaction]>.icons>.icon").each(function () {
             var containmentObjectId = '#' + $(this).parents('.imageContainer').attr('id');

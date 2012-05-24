@@ -26,16 +26,154 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
 function initDragNDrop() {
 
-    initWidgets();
-    registerEventHandlers();
+    /**
+     * Items that are currently dropped in a drop target.
+     */
+    var droppedItems = {};
 
-    function initWidgets() {
+    $(".fillgraphicsEditor").each(function () {
+        var editorID = $(this).attr('id');
+
+        if (showSuggestedWords(editorID)) {
+            initWidgets(editorID);
+            registerEventHandlers(editorID);
+        }
+
+    });
+
+    function showSuggestedWords(editorID) {
+        return $(".suggestedWords[id=" + editorID + "]").attr("show") == "true";
+    }
+
+    function initWidgets(editorID) {
+
+        var fillgraphicsEditor = '.fillgraphicsEditor[id=' + editorID + ']';
+        var suggestedWords = fillgraphicsEditor + '>.suggestedWords>.suggestedWordsList>.suggestedWord';
+
+
+        //hide textareas and dimension textzone divs
+        $(fillgraphicsEditor + '>.textZone>textarea').each(function () {
+            $(this).hide();
+            var width = $(this).css("width");
+            var height = $(this).css("height");
+            $(this).parent('.textZone').css("width", width);
+            $(this).parent('.textZone').css("height", height);
+        });
+
+        // make elements draggable and droppable
+
+        $(suggestedWords).draggable({containment:fillgraphicsEditor, stack:".suggestedWords"});
+
+        $(fillgraphicsEditor + '>.textZone').droppable();
+
+        positionSuggestedWords(fillgraphicsEditor);
+    }
+
+    function registerEventHandlers(editorID) {
+
+        var fillgraphicsEditor = '.fillgraphicsEditor[id=' + editorID + ']';
+        var suggestedWords = fillgraphicsEditor + '>.suggestedWords>.suggestedWordsList>.suggestedWord';
+
+        $(fillgraphicsEditor + '>.textZone').bind("dropover", function (event, ui) {
+            onDropOver($(this), ui.draggable);
+        });
+
+        $(fillgraphicsEditor + '>.textZone').bind("dropout", function (event, ui) {
+            onDropOut($(this), ui.draggable);
+        });
+
+        $(suggestedWords).bind("dragstop", function () {
+            onDragStop($(this));
+        })
+    }
+
+    function onDropOut(dropTarget, draggable) {
+        var dropTargetId = dropTarget.attr('id');
+        var draggableId = draggable.attr('id');
+
+        if (dropTargetId in droppedItems && droppedItems[dropTargetId] == draggableId) {
+            unHighlight(dropTarget);
+            setFieldValue(dropTargetId, "");
+            delete droppedItems[dropTargetId];
+        }
+    }
+
+    function onDropOver(dropTarget, draggable) {
+        var dropTargetId = dropTarget.attr('id');
+        var draggableId = draggable.attr('id');
+
+        if (!(dropTargetId in droppedItems)) {
+            highlight(dropTarget);
+            setFieldValue(dropTargetId, draggable.attr("word"));
+            droppedItems[dropTargetId] = draggableId;
+        }
+    }
+
+    function onDragStop(draggable) {
+        var draggableId = draggable.attr("id");
+
+        for (var dropTargetId in droppedItems) {
+            if (droppedItems[dropTargetId] == draggableId) {
+                putDraggableIntoDroppable(draggableId, dropTargetId);
+            }
+        }
+    }
+
+    function putDraggableIntoDroppable(draggableId, droppableId) {
+        var droppableCenter = {top:0, left:0};
+        var draggablePosition = {top:0, left:0};
+        var droppableDimension = {width:0, height:0};
+        var draggableDimension = {width:0, height:0};
+        var droppablePosition = $('#' + droppableId).position();
+
+        droppableDimension.width = $('#' + droppableId).outerWidth(true);
+        droppableDimension.height = $('#' + droppableId).outerHeight(true);
+
+        draggableDimension.width = $('#' + draggableId).outerWidth(true);
+        draggableDimension.height = $('#' + draggableId).outerHeight(true);
+
+        droppableCenter.top = Math.round(droppablePosition.top + droppableDimension.height / 2);
+        droppableCenter.left = Math.round(droppablePosition.left + droppableDimension.width / 2);
+
+        draggablePosition.top = Math.round(droppableCenter.top - draggableDimension.height / 2);
+        draggablePosition.left = Math.round(droppableCenter.left - draggableDimension.width / 2);
+
+        $('#' + draggableId).css('position', 'absolute');
+        $('#' + draggableId).css('top', draggablePosition.top);
+        $('#' + draggableId).css('left', draggablePosition.left);
+    }
+
+    function highlight(dropTarget) {
+        dropTarget.removeClass("unHighlighted");
+        dropTarget.addClass("highlighted");
+    }
+
+    function unHighlight(dropTarget) {
+        dropTarget.removeClass("highlighted");
+        dropTarget.addClass("unHighlighted");
+    }
+
+    function setFieldValue(fieldId, value) {
+        $('#' + fieldId + ">textArea").val(value);
+    }
+
+    function positionSuggestedWords(fillgraphicsEditorSelector) {
+
+        $(fillgraphicsEditorSelector + ">.textZone").each(function () {
+
+            var textZoneValue = $(this).children('textArea').val();
+            var suggestedWord = fillgraphicsEditorSelector + '>.suggestedWords>.suggestedWordsList>.suggestedWord[word=' + textZoneValue + ']';
+
+            if (textZoneValue != "" && $(suggestedWord).length == 1) {
+                putDraggableIntoDroppable($(suggestedWord).attr('id'), $(this).attr('id'));
+                highlight($(this));
+            }
+        });
 
     }
 
-    function registerEventHandlers() {
 
-    }
 }

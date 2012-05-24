@@ -33,7 +33,7 @@
 
 <p class="title"><strong>${specifobject.libelle}</strong></p>
 
-<div class="fillgraphicsEditor">
+<div class="fillgraphicsEditor" id="${indexReponse}">
     <g:if test="${specifobject.attachmentId}">
         <div class="imageContainer">
             <et:viewAttachement
@@ -59,16 +59,21 @@
 
         </div>
     </g:each>
-</div>
-<br>
 
-<div class="suggestedWords" id="${indexReponse}" show="${specifobject.montrerLesMots}">
-    <span class="label">Mots suggérés :</span>
-    <ul class="suggestedWordsList">
-        <g:each in="${specifobject.motsSugeres}" var="suggestedWord">
-            <li class="suggestedWord">${suggestedWord}</li>
-        </g:each>
-    </ul>
-</div>
 
+
+    <div class="suggestedWords" id="${indexReponse}" show="${specifobject.montrerLesMots}">
+        <span class="label">Mots suggérés :</span>
+        <ul class="suggestedWordsList">
+            <g:each in="${specifobject.motsSugeres}" var="suggestedWord" status="i">
+                <li class="suggestedWord"
+                    id="suggestedWord_${indexReponse}_${i}"
+                    word="${suggestedWord}">
+                    ${suggestedWord}
+                </li>
+            </g:each>
+        </ul>
+    </div>
+
+</div>
 <br>

@@ -47,7 +47,8 @@ function Common() {
 
             if($(this).attr("show")=="true")
             {
-                $(this).css("display", "inline");
+                //$(this).css("display", "inline");
+                $(this).show();
             }
         });
     }
