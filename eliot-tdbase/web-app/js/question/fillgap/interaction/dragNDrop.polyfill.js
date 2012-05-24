@@ -25,17 +25,12 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-function Common() {
+function initDragNDropPolyFill() {
 
     /**
-     * Une fonction qui reajuste la taille du fillgraphicsEditor en
-     * fonction de la taille de l'image d'arrière plan.
+     * Remove Overflow properties. Because its badly supported on tactile devices.
      */
-    this.resizeFillgraphicsEditor = function () {
-
-        $('.imageContainer').each(function () {
-            var height = $(this).css('height');
-            $(this).parents('.fillgraphicsEditor').css('height', height);
-        });
-    }
+    $("div.container").css("overflow", "");
+    $("div.container").css("height", "");
+    $("div.container").css("width", "");
 }

@@ -25,36 +25,48 @@
   -  <http://www.gnu.org/licenses/> and
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
+<r:require module="fillGap_InteractionJS"/>
 
 <g:set var="questionspecifobject" value="${question.specificationObject}"/>
 <g:set var="reponsespecifobject" value="${reponse?.specificationObject}"/>
 <g:set var="index" value="0"/>
 
 <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
-<g:each in="${questionspecifobject.texteATrousStructure}"
-        var="texteATrouElement" status="i">
-    <g:if test="${texteATrouElement.isTextElement()}">
-        ${texteATrouElement.valeur}
-    </g:if>
-    <g:else>
-        <g:if test="${questionspecifobject.modeDeSaisie == 'MDR'}">
 
-            <g:select
-                    name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"
-                    from="${texteATrouElement.valeur*.text}"
-                    value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
-                    noSelection="${['': g.message(code: "default.select.null")]}"/>
+<div>
+    <g:each in="${questionspecifobject.texteATrousStructure}"
+            var="texteATrouElement" status="i">
+        <g:if test="${texteATrouElement.isTextElement()}">
+            ${texteATrouElement.valeur}
         </g:if>
         <g:else>
-            <g:textField
-                    value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
-                    name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"/>
-        </g:else>
-        <g:set var="index" value="${index.toInteger() + 1}"/>
-    </g:else>
-</g:each>
+            <g:if test="${questionspecifobject.modeDeSaisie == 'MDR'}">
 
-<br>
-<g:if test="${questionspecifobject.modeDeSaisie == 'MLM'}">
-    Mots suggérés : ${questionspecifobject.motsSugeres}
-</g:if>
+                <g:select
+                        name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"
+                        from="${texteATrouElement.valeur*.text}"
+                        value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
+                        noSelection="${['': g.message(code: "default.select.null")]}"/>
+            </g:if>
+            <g:else>
+                <g:textField
+                        value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
+                        name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"/>
+            </g:else>
+            <g:set var="index" value="${index.toInteger() + 1}"/>
+        </g:else>
+    </g:each>
+
+    <div class="gapWords" id="${indexReponse}" show="${questionspecifobject.modeDeSaisie == 'MLM'}">
+        <span class="label">Mots suggérés :</span>
+        <ul class="gapWordsList">
+            <g:each in="${questionspecifobject.motsSugeres}" var="gapWord" status="i">
+                <li class="gapWord"
+                    id="gapWord_${indexReponse}_${i}"
+                    word="${gapWord}">
+                    ${gapWord}
+                </li>
+            </g:each>
+        </ul>
+    </div>
+</div>

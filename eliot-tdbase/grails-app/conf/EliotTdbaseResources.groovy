@@ -104,6 +104,11 @@ modules = {
     resource url: [dir: 'js/question/fillgraphics', file: 'common.js']
   }
 
+  fillGap_Common {
+    dependsOn "modernizr", "eliot-tice-ui"
+    resource url: [dir: 'css/question/fillgap', file: 'style.css']
+  }
+
   fillGraphics_EditionJS {
     dependsOn "fillGraphics_Common"
     resource url: [dir: 'js/question/fillgraphics/edition', file: 'dragNDrop.polyfill.js']
@@ -116,6 +121,13 @@ modules = {
     resource url: [dir: 'js/question/fillgraphics/interaction', file: 'dragNDrop.polyfill.js']
     resource url: [dir: 'js/question/fillgraphics/interaction', file: 'dragNDrop.js']
     resource url: [dir: 'js/question/fillgraphics/interaction', file: 'load.js']
+  }
+
+  fillGap_InteractionJS {
+    dependsOn "fillGap_Common"
+    resource url: [dir: 'js/question/fillgap/interaction', file: 'dragNDrop.polyfill.js']
+    resource url: [dir: 'js/question/fillgap/interaction', file: 'dragNDrop.js']
+    resource url: [dir: 'js/question/fillgap/interaction', file: 'load.js']
   }
 
   fillGraphics_PreviewJS {

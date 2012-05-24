@@ -27,6 +27,10 @@
  */
 
 new Common().displaySuggestedWords();
+
+// Rends les mots suggérés visibles, si show="true".
+$('.suggestedWords[show=true]').show();
+
 if (Modernizr.touch) {
     initDragNDropPolyFill();
 } else {

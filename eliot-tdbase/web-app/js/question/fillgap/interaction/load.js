@@ -25,17 +25,12 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-function Common() {
 
-    /**
-     * Une fonction qui reajuste la taille du fillgraphicsEditor en
-     * fonction de la taille de l'image d'arrière plan.
-     */
-    this.resizeFillgraphicsEditor = function () {
+//Display gap words if they shall be shown.
+$('.gapWords[show=true]').show();
 
-        $('.imageContainer').each(function () {
-            var height = $(this).css('height');
-            $(this).parents('.fillgraphicsEditor').css('height', height);
-        });
-    }
+if (Modernizr.touch) {
+    initDragNDropPolyFill();
+} else {
+    initDragNDrop();
 }
