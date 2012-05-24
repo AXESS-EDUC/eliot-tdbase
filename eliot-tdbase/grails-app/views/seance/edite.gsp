@@ -228,7 +228,7 @@
                   <td class="label" style="width: 110px;">Contexte&nbsp;:</td>
                   <td><g:select name="activiteContexteId"
                                 from="${ActiviteContext.values()}"
-                                valueMessagePrefix="textes.activite.modalite"/></td>
+                                valueMessagePrefix="textes.activite.contexte"/></td>
                 </tr>
               </table>
             </g:if>
