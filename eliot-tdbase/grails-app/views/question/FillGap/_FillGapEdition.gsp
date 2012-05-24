@@ -55,19 +55,13 @@
     </td>
 </tr>
 <tr>
-    <td class="label">Montrer&nbsp;les&nbsp;mots&nbsp;:</td>
+    <td class="label">Mode de saisie<span class="obligatoire">*</span>&nbsp;:</td>
     <td>
-        <g:checkBox name="specifobject.montrerLesMots"
-                    checked="${specifobject.montrerLesMots}"/>
-    </td>
-</tr>
-<tr>
-    <td class="label">Présentation des trous<span class="obligatoire">*</span>&nbsp;:</td>
-    <td>
-        <g:radioGroup name="specifobject.saisieLibre"
-                      labels="['Saisie Libre', 'Choix dans le texte']"
-                      values="[true, false]"
-                      value="${specifobject.saisieLibre}">
+        <g:radioGroup name="specifobject.modeDeSaisie"
+                      labels="['Montrer les mots','Saisie libre', 'Menu déroulant']"
+                      values="['MLM', 'SL', 'MDR']"
+                      value="${specifobject.modeDeSaisie}"
+                      >
             <span>${it.label} ${it.radio}</span>
         </g:radioGroup>
     </td>

@@ -31,17 +31,23 @@
     <td class="label">Détail&nbsp:</td>
     <td class="detail">
         <strong><g:message code="question.propriete.libelle"/></strong>
+
         <p>${specifobject.libelle}</p>
-        
+
         <strong>Texte à trous :</strong>
+
         <p>${specifobject.texteATrous}</p>
 
-        <strong>Mots suggérés :</strong>
-        <p>${specifobject.motsSugeres}</p>
+        <strong>Mode de saisie :</strong>
 
-        <strong>Presentation des trous :</strong>
-
-        <p><g:if test="${specifobject.saisieLibre}">Saisie libre</g:if><g:else>Choix dans le texte</g:else></p>
+        <p>
+            <g:radioGroup name="specifobject.modeDeSaisie"
+                          labels="['Montrer les mots', 'Saisie libre', 'Menu déroulant']"
+                          values="['MLM', 'SL', 'MDR']"
+                          value="${specifobject.modeDeSaisie}" disabled="true">
+                <span>${it.label} ${it.radio}</span>
+            </g:radioGroup>
+        </p>
 
         <strong>Correction :</strong> ${specifobject.correction}
 

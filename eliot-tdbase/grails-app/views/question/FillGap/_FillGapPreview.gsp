@@ -32,7 +32,7 @@
   ${texteATrouElement.valeurAsText()}
 </g:each>
 <br/>
-<g:if test="${specifobject.montrerLesMots}">
+<g:if test="${specifobject.modeDeSaisie== 'MLM'}">
 <strong>Mots suggérés :</strong> ${specifobject.motsSugeres}
   <br/>
 </g:if>
