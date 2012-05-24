@@ -59,6 +59,7 @@ class SeanceController {
     def afficheActiviteCreee = false
     def afficheDevoirCree = false
     List<CahierTextesInfo> cahiers = []
+    List<ChapitreInfo> chapitres = []
     if (params.creation) {
       modaliteActivite = new ModaliteActivite(enseignant: personne)
       params.bcInit = true
@@ -84,7 +85,21 @@ class SeanceController {
             afficheDevoirCree: afficheDevoirCree,
             modaliteActivite: modaliteActivite,
             proprietesScolarite: proprietesScolarite,
-            cahiers:cahiers])
+            cahiers:cahiers,
+            chapitres:chapitres])
+  }
+
+  /**
+   * Action updateChapitres
+   */
+  def updateChapitres() {
+    Personne personne = authenticatedPersonne
+    List<ChapitreInfo> chapitres = []
+    if (params.cahierId != 'null') {
+      def cahierId = params.cahierId as Long
+      chapitres = cahierTextesService.getChapitreInfosForCahierId(cahierId,personne)
+    }
+    render(view: "/seance/_selectChapitres", model: [chapitres:chapitres])
   }
 
   /**

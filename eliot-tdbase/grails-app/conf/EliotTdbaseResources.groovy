@@ -32,6 +32,7 @@ modules = {
     dependsOn 'eliot-tice'
     resource url: [dir: 'images/eliot', file: 'tdbasefavicon.ico']
     resource url: [dir: 'css/eliot', file: 'tdbase.css']
+    resource url: [dir: 'js', file: 'application.js']
   }
 
   'eliot-tdbase-ui' {

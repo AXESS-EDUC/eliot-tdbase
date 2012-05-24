@@ -62,6 +62,13 @@
     $('#gestionActivite').click(function() {
                    $('#edition_activite').toggle();
                    })
+    $('#cahierId').change(function() {
+        $.get("${createLink(action: 'updateChapitres', controller: 'seance')}",
+                { cahierId: $(this).val()},
+                function(data) {
+                    $('#selectChapitres').html(data)
+                })
+    })
     });
   </r:script>
   <style type='text/css' media='screen'>
@@ -70,6 +77,9 @@
     width: 53%;
     margin: 2px;
     text-transform: none;
+  }
+  #chapitreId option {
+    white-space: pre;
   }
   </style>
   <title><g:message code="seance.edite.head.title"/></title>
@@ -198,25 +208,27 @@
                      style="display: ${modaliteActivite.activiteId ? 'table' : 'none'}">
                 <tr>
                   <td class="label"
-                      style="width: 110px;">Cahier&nbsp;de&nbsp;textes&nbsp;:</td>
+                      style="width: 110px;">Cahier&nbsp;de&nbsp;textes<span class="obligatoire">*</span>&nbsp;:</td>
                   <td><g:select name="cahierId"
                                 noSelection="${['null': 'Faites votre choix...']}"
                                 from="${cahiers}"
                                 optionKey="id"
-                                optionValue="nom"/></td>
+                                optionValue="nom"/>
+                    <span id="spinner" class="spinner" style="display:none;">
+                    <g:message code="spinner.alt" default="Loading&hellip;"/></span>
+                  </td>
                 </tr>
                 <tr>
                   <td class="label" style="width: 110px;">Chapitre&nbsp;:</td>
-                  <td><g:select name="chapitreId"
-                                noSelection="${['null': 'Faites votre choix...']}"
-                                from="${proprietesScolarite}"
-                                optionKey="id"
-                                optionValue="matiere"/></td>
+                  <td id="selectChapitres">
+                    <g:render template="selectChapitres" model="[chapitres:chapitres]"/>
+                  </td>
                 </tr>
                 <tr>
                   <td class="label" style="width: 110px;">Contexte&nbsp;:</td>
                   <td><g:select name="activiteContexteId"
-                                from="${ActiviteContext.values()}"/></td>
+                                from="${ActiviteContext.values()}"
+                                valueMessagePrefix="textes.activite.modalite"/></td>
                 </tr>
               </table>
             </g:if>

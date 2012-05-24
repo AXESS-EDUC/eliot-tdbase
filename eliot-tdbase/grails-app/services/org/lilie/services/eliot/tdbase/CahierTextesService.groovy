@@ -84,7 +84,7 @@ class CahierTextesService {
     listeIn.each {
       def nom = new StringBuilder()
       rang.times() {
-        nom << " "
+        nom << ". "
       }
       nom << it.nom
       listeOut << new ChapitreInfo(id: it.id, nomAvecIndentation: nom.toString())
@@ -120,8 +120,10 @@ class ChapitreInfo {
    * @return le nom sans indentation
    */
   String getNom() {
-    return nomAvecIndentation?.trim()
+    nomAvecIndentation?.trim()
   }
+
+
 
 }
 
