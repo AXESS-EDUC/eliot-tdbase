@@ -31,66 +31,66 @@ function initDragNDrop() {
 
     /**
      * Items that are currently dropped in a drop target.
-     *//*
+     */
     var droppedItems = {};
 
-    $(".fillgraphicsEditor").each(function () {
-        var editorID = $(this).attr('id');
+    $(".fillGapTextContainer").each(function () {
+        var containerID = $(this).attr('id');
 
-        if (showSuggestedWords(editorID)) {
-            initWidgets(editorID);
-            registerEventHandlers(editorID);
+        if (showSuggestedWords(containerID)) {
+            initWidgets(containerID);
+            registerEventHandlers(containerID);
         }
 
     });
 
-    function showSuggestedWords(editorID) {
-        return $(".suggestedWords[id=" + editorID + "]").attr("show") == "true";
+    function showSuggestedWords(containerID) {
+        return $(".gapWords[id=" + containerID + "]").attr("show") == "true";
     }
 
-    function initWidgets(editorID) {
+    function initWidgets(containerID) {
 
-        var fillgraphicsEditor = '.fillgraphicsEditor[id=' + editorID + ']';
-        var suggestedWords = fillgraphicsEditor + '>.suggestedWords>.suggestedWordsList>.suggestedWord';
+        var fillGapTextContainer = '.fillGapTextContainer[id=' + containerID + ']';
+        var gapWords = fillGapTextContainer + '>.gapWords>.gapWordsList>.gapWord';
 
+        //hide gap textField
+        $(fillGapTextContainer + '>.gapText>.gapElement>.gapField').hide();
 
-        //hide textareas and dimension textzone divs
-        $(fillgraphicsEditor + '>.textZone>textarea').each(function () {
-            $(this).hide();
-            var width = $(this).css("width");
-            var height = $(this).css("height");
-            $(this).parent('.textZone').css("width", width);
-            $(this).parent('.textZone').css("height", height);
-        });
+        // set up drop zone
+        $(fillGapTextContainer + '>.gapText>.gapElement').addClass("dropZone");
+        for (i = 0; i <= 20; i++) {
+            $(fillGapTextContainer + '>.gapText>.gapElement').append("&nbsp;");
+        }
 
         // make elements draggable and droppable
+        $(gapWords).draggable({containment:fillGapTextContainer, stack:".gapWord"});
+        $(fillGapTextContainer + '>.gapText>.gapElement').droppable();
 
-        $(suggestedWords).draggable({containment:fillgraphicsEditor, stack:".suggestedWords"});
-
-        $(fillgraphicsEditor + '>.textZone').droppable();
-
-        positionSuggestedWords(fillgraphicsEditor);
+        positionSuggestedWords(fillGapTextContainer);
     }
 
-    function registerEventHandlers(editorID) {
+    function registerEventHandlers(containerID) {
 
-        var fillgraphicsEditor = '.fillgraphicsEditor[id=' + editorID + ']';
-        var suggestedWords = fillgraphicsEditor + '>.suggestedWords>.suggestedWordsList>.suggestedWord';
+        var fillGapTextContainer = '.fillGapTextContainer[id=' + containerID + ']';
+        var gapElements = $(fillGapTextContainer + '>.gapText>.gapElement');
+        var gapWords = $(fillGapTextContainer + '>.gapWords>.gapWordsList>.gapWord');
 
-        $(fillgraphicsEditor + '>.textZone').bind("dropover", function (event, ui) {
+        gapElements.bind("dropover", function (event, ui) {
             onDropOver($(this), ui.draggable);
         });
 
-        $(fillgraphicsEditor + '>.textZone').bind("dropout", function (event, ui) {
+        gapElements.bind("dropout", function (event, ui) {
             onDropOut($(this), ui.draggable);
         });
 
-        $(suggestedWords).bind("dragstop", function () {
+        gapWords.bind("dragstop", function () {
             onDragStop($(this));
         })
     }
 
+
     function onDropOut(dropTarget, draggable) {
+
         var dropTargetId = dropTarget.attr('id');
         var draggableId = draggable.attr('id');
 
@@ -102,6 +102,7 @@ function initDragNDrop() {
     }
 
     function onDropOver(dropTarget, draggable) {
+
         var dropTargetId = dropTarget.attr('id');
         var draggableId = draggable.attr('id');
 
@@ -146,6 +147,7 @@ function initDragNDrop() {
         $('#' + draggableId).css('left', draggablePosition.left);
     }
 
+
     function highlight(dropTarget) {
         dropTarget.removeClass("unHighlighted");
         dropTarget.addClass("highlighted");
@@ -157,23 +159,61 @@ function initDragNDrop() {
     }
 
     function setFieldValue(fieldId, value) {
-        $('#' + fieldId + ">textArea").val(value);
+        $('#' + fieldId + ">input").val(value);
     }
 
-    function positionSuggestedWords(fillgraphicsEditorSelector) {
+    function positionSuggestedWords(fillGapTextContainer) {
 
-        $(fillgraphicsEditorSelector + ">.textZone").each(function () {
 
-            var textZoneValue = $(this).children('textArea').val();
-            var suggestedWord = fillgraphicsEditorSelector + '>.suggestedWords>.suggestedWordsList>.suggestedWord[word=' + textZoneValue + ']';
+        var gapElements = $(fillGapTextContainer + '>.gapText>.gapElement');
 
-            if (textZoneValue != "" && $(suggestedWord).length == 1) {
-                putDraggableIntoDroppable($(suggestedWord).attr('id'), $(this).attr('id'));
+        $(gapElements).each(function () {
+
+            var textFieldValue = $(this).children('input').val();
+            var matchingGapWords = fillGapTextContainer + ">.gapWords>.gapWordsList>.gapWord[word='" + textFieldValue + "']";
+
+
+            if (textFieldValue != "" && $(matchingGapWords).length > 0) {
+
+                var draggableId = getNotYetDraggedGapWordId(matchingGapWords);
+                var dropTargetId = $(this).attr('id');
+
+                putDraggableIntoDroppable(draggableId, dropTargetId);
                 highlight($(this));
+                droppedItems[dropTargetId] = draggableId;
             }
         });
+    }
 
-    }*/
+    /**
+     * Cherche parmis les mots suggerés ceux qui ne sont pas encore placés dans un trou.
+     * @param matchingGapWords
+     */
+    function getNotYetDraggedGapWordId(matchingGapWords) {
+        var result;
+
+        $(matchingGapWords).each(function () {
+
+            var draggableId = $(this).attr('id');
+            var hit = false;
+
+            // see if present in list of already dragged items
+            for (var dropTargetId in droppedItems) {
+                if (droppedItems[dropTargetId] == draggableId) {
+                    hit = true;
+                }
+            }
+
+            // if not present then we have found a result.
+            if (!hit) {
+                result = draggableId;
+            }
+
+        });
+
+        return result;
+
+    }
 
 
 }

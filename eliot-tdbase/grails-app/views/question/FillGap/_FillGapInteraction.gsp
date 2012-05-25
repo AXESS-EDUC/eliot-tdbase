@@ -33,30 +33,39 @@
 
 <p class="title"><strong>${questionspecifobject.libelle}</strong></p>
 
-<div>
-    <g:each in="${questionspecifobject.texteATrousStructure}"
-            var="texteATrouElement" status="i">
-        <g:if test="${texteATrouElement.isTextElement()}">
-            ${texteATrouElement.valeur}
-        </g:if>
-        <g:else>
-            <g:if test="${questionspecifobject.modeDeSaisie == 'MDR'}">
+<div class="fillGapTextContainer" id="${indexReponse}">
+    <br>
+    <div class="gapText">
 
-                <g:select
-                        name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"
-                        from="${texteATrouElement.valeur*.text}"
-                        value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
-                        noSelection="${['': g.message(code: "default.select.null")]}"/>
+        <g:each in="${questionspecifobject.texteATrousStructure}" var="texteATrouElement" status="i">
+            <g:if test="${texteATrouElement.isTextElement()}">
+                <span class="textElement">${texteATrouElement.valeur}</span>
             </g:if>
-            <g:else>
-                <g:textField
-                        value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
-                        name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"/>
-            </g:else>
-            <g:set var="index" value="${index.toInteger() + 1}"/>
-        </g:else>
-    </g:each>
 
+            <g:else>
+                <g:if test="${questionspecifobject.modeDeSaisie == 'MDR'}">
+                    <span class="textElement">
+                    <g:select
+                            name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"
+                            from="${texteATrouElement.valeur*.text}"
+                            value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
+                            noSelection="${['': g.message(code: "default.select.null")]}"/>
+                    <span>
+                </g:if>
+                <g:else>
+                    <span class="gapElement" id="gapElement_${indexReponse}_${i}"">
+
+                    <g:textField
+                            class="gapField"
+                            value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
+                            name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"/>
+                    </span>
+                </g:else>
+                <g:set var="index" value="${index.toInteger() + 1}"/>
+            </g:else>
+        </g:each>
+    </div>
+     <br>
     <div class="gapWords" id="${indexReponse}" show="${questionspecifobject.modeDeSaisie == 'MLM'}">
         <span class="label">Mots suggérés :</span>
         <ul class="gapWordsList">

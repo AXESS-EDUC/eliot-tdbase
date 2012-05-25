@@ -1,20 +1,15 @@
-/*
-.fillgraphicsEditor {
-    position: relative;
-    width: 500px;
-    height: 500px;
-}
-
-.imageContainer {
+.fillGapTextContainer {
     position: relative;
 }
 
+.textElement{
+    line-height: 30px;
+}
 
-.textZone {
-    z-index: 1;
-    position: absolute;
+.dropZone {
     border: solid 1px #808080;
     background: rgba(245, 245, 245, 0.9);
+    padding: 5px;
 }
 
 .highlighted {
@@ -24,11 +19,9 @@
 .unHighlighted {
     background: rgba(245, 245, 245, 0.9);
 }
- */
 
 .gapWords {
     display: none;
-
 }
 
 .gapWordsList {
@@ -45,5 +38,4 @@
     color: #817134;
     margin: 5px;
     float: left;
-    z-index: 1;
 }
