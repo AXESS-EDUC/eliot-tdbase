@@ -73,7 +73,10 @@ class ModaliteActivite {
     evaluationId(nullable: true)
     structureEnseignement(nullable: true, validator: { val, obj ->
       if (val == null) {
-        return (obj.groupe != null && obj.etablissement != null)
+        if (obj.groupe != null && obj.etablissement != null) {
+          return true
+        }
+        return ['invalid.groupenonselectionne']
       }
       return true
     })
