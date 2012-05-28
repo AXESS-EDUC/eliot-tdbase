@@ -167,8 +167,15 @@ class SeanceController {
   def supprime() {
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
+    if (seance.activiteId) {
+      flash.messageSuppressionTextesCode = "seance.suppression.activitenonsupprimee"
+    }
+    if (seance.evaluationId) {
+      flash.messageSuppressionNotesCode = "seance.suppression.devoirnonsupprime"
+    }
     modaliteActiviteService.supprimeModaliteActivite(seance,
                                                      personne)
+    flash.messageSuppressionCode = "seance.suppression.succes"
     redirect(action: "liste", params: [bcInit: true])
   }
 
