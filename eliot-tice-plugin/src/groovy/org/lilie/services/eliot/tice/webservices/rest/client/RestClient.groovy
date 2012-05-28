@@ -42,6 +42,8 @@ import groovyx.net.http.HTTPBuilder
 @Log4j
 class RestClient {
 
+  String authBasicUser
+  String authBasicPassword
   RestOperationDirectory restOperationDirectory
 
   /**
@@ -63,7 +65,8 @@ class RestClient {
 
     def result = null
     def http = new HTTPBuilder(operation.urlServer)
-    // todofsil gestion authconfig http.authConfig = ...
+    http.auth.basic authBasicUser, authBasicPassword
+
     try {
       http.request(operation.method, operation.contentType) {
         uri = operation.urlServer + getUrlPath(operation.uriTemplate, parameters, httpParameters)

@@ -28,17 +28,20 @@
 
 package org.lilie.services.eliot.tice.webservices.rest.client
 
+import groovy.util.logging.Log4j
+
 /**
  * Classe représentant un annuaire d'opérations
  * @author franck Silvestre
  */
+@Log4j
 class RestOperationDirectory {
 
   private Map operations = [:]
 
   /**
    * Ajoute une opération à l'annuaire
-   * @param operation  l'opération à ajouter à l'annuaire
+   * @param operation l'opération à ajouter à l'annuaire
    * @return
    */
   def addOperation(RestOperation operation) {
@@ -50,7 +53,7 @@ class RestOperationDirectory {
   /**
    * Récupère une opération par son nom
    * @param operationName le nom de l'opération recherchée
-   * @return  l'opération recherchée ou null si elle n'existe pas
+   * @return l'opération recherchée ou null si elle n'existe pas
    */
   RestOperation getOperationByName(String operationName) {
     return operations.get(operationName)
@@ -68,16 +71,30 @@ class RestOperationDirectory {
   }
 
   /**
-   * @return  le nombre d'opérations enregistrées
+   * @return le nombre d'opérations enregistrées
    */
   def operationCount() {
     return operations.size()
   }
 
   /**
-   * @return  la listes des noms d'opération enregistrées
+   * @return la listes des noms d'opération enregistrées
    */
   Set<String> getOperationNames() {
     return operations.keySet()
+  }
+
+  /**
+   * Enregistre les opérations de webservices rest
+   * @param operations la liste des opérations sous forme de map
+   */
+  def registerOperationsFromMaps(List<Map> operations) {
+    log.info("REST enregistrement de ${operations.size()} operations...")
+    operations.each { Map operationMap ->
+      RestOperation operation = new GenericRestOperation(operationMap)
+      addOperation(operation)
+      log.info("Enregistrement operation : ${operation.operationName}")
+    }
+    log.info("REST Operations enregistrees: ${operationCount()}")
   }
 }

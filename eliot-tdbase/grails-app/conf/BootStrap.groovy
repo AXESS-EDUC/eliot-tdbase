@@ -26,7 +26,6 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-import org.lilie.services.eliot.tdbase.webservices.rest.client.RestOperationDirectoryService
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
 import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.lilie.services.eliot.tice.utils.PortailTagLibService
@@ -37,7 +36,6 @@ class BootStrap {
   BootstrapService bootstrapService
   DbMigrationService dbMigrationService
   PortailTagLibService portailTagLibService
-  RestOperationDirectoryService restOperationDirectoryService
 
   def init = { servletContext ->
 
@@ -62,14 +60,6 @@ class BootStrap {
     portailTagLibService.divHeight = config.eliot.pages.container.height
     portailTagLibService.divWidth = config.eliot.pages.container.width
 
-    def operations = config.eliot.webservices.rest.client.operations
-    def dir = restOperationDirectoryService.restOperationDirectory
-
-    if (operations) {
-      def user = config.eliot.webservices.rest.client.user
-      def password = config.eliot.webservices.rest.client.password
-      restOperationDirectoryService.registerOperationsFromMaps(operations)
-    }
 
   }
 

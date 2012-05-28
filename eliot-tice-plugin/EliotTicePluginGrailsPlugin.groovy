@@ -10,8 +10,8 @@ import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.EliotUrlProvider
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
-import org.lilie.services.eliot.tice.webservices.rest.client.RestOperationDirectory
 import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
+import org.lilie.services.eliot.tice.webservices.rest.client.RestOperationDirectory
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -62,9 +62,11 @@ class EliotTicePluginGrailsPlugin {
 
   def doWithSpring = {
 
+    def conf = ConfigurationHolder.config
+
     // configure la gestion de l'annuaire
     //
-    if (ConfigurationHolder.config.eliot.portail.lilie) {
+    if (conf.eliot.portail.lilie) {
 
       utilisateurService(LilieUtilisateurService) {
         springSecurityService = ref("springSecurityService")
@@ -88,21 +90,27 @@ class EliotTicePluginGrailsPlugin {
     // Configure la gestion du datastore
     //
     dataStore(AttachementDataStore) { bean ->
-      path = ConfigurationHolder.config.eliot.fichiers.racine ?: null
+      path = conf.eliot.fichiers.racine ?: null
       bean.initMethod = 'initFileDataStore'
     }
 
     // Configure l'annuaire d'opération de webservices REST
     //
+
     restOperationDirectory(RestOperationDirectory)
 
+    def user = conf.eliot.webservices.rest.client.user
+    def password = conf.eliot.webservices.rest.client.password
+
     restClient(RestClient) {
+      authBasicUser = user
+      authBasicPassword = password
       restOperationDirectory = ref("restOperationDirectory")
+      println "Auth Basic user for Web services client REST : ${user}"
     }
 
     // configure la gestion d'EliotUrlProvider
     //
-    def conf = ConfigurationHolder.config
 
     String reqHeaderPorteur = conf.eliot.requestHeaderPorteur ?: null
     if (!reqHeaderPorteur) {
@@ -161,6 +169,21 @@ class EliotTicePluginGrailsPlugin {
       urlServeurFromConfiguration = urlServeurFromConfig
     }
 
+  }
+
+  def doWithApplicationContext = { appCtx ->
+
+    // enregistre les clients des opérations de webservice REST
+    //
+    def conf = ConfigurationHolder.config
+
+    def operations = conf.eliot.webservices.rest.client.operations
+    def restOperationDirectory = appCtx.restOperationDirectory
+
+    if (operations) {
+      restOperationDirectory.registerOperationsFromMaps(operations)
+    }
+    println "Web services REST client operations count : ${restOperationDirectory.operationCount()}"
   }
 
   def doWithDynamicMethods = { ctx ->
