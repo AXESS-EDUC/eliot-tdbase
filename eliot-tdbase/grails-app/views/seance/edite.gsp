@@ -78,6 +78,7 @@
     margin: 2px;
     text-transform: none;
   }
+
   #chapitreId option {
     white-space: pre;
   }
@@ -123,7 +124,8 @@
     <table>
 
       <tr>
-        <td class="label">Classe/groupe<span class="obligatoire">*</span>&nbsp;:</td>
+        <td class="label">Classe/groupe<span class="obligatoire">*</span>&nbsp;:
+        </td>
         <td>
           <g:if test="${modaliteActivite.structureEnseignement}">
             <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong>
@@ -167,6 +169,14 @@
                 class="label">Copie&nbsp;améliorable</span>
         </td>
       </tr>
+      <g:if test="${lienBookmarkable}">
+        <tr>
+          <td class="label">Permalien&nbsp;</td>
+          <td>
+            ${lienBookmarkable}
+          </td>
+        </tr>
+      </g:if>
       <g:if test="${grailsApplication.config.eliot.interfacage.notes}">
         <tr>
           <td class="label"></td>
@@ -202,26 +212,29 @@
             <g:if test="${afficheLienCreationActivite}">
 
               <a id="gestionActivite" class="button inform"
-                 title="Créer une activité dans le cahier de textes"/>
-              Créer une activité dans le Cahier de textes</a>
+                 title="Créer une activité dans le cahier de textes">
+                Créer une activité dans le Cahier de textes</a>
               <table id="edition_activite"
                      style="display: ${modaliteActivite.activiteId ? 'table' : 'none'}">
                 <tr>
                   <td class="label"
-                      style="width: 110px;">Cahier&nbsp;de&nbsp;textes<span class="obligatoire">*</span>&nbsp;:</td>
+                      style="width: 110px;">Cahier&nbsp;de&nbsp;textes<span
+                          class="obligatoire">*</span>&nbsp;:</td>
                   <td><g:select name="cahierId"
                                 noSelection="${['null': 'Faites votre choix...']}"
                                 from="${cahiers}"
                                 optionKey="id"
                                 optionValue="nom"/>
                     <span id="spinner" class="spinner" style="display:none;">
-                    <g:message code="spinner.alt" default="Loading&hellip;"/></span>
+                      <g:message code="spinner.alt"
+                                 default="Loading&hellip;"/></span>
                   </td>
                 </tr>
                 <tr>
                   <td class="label" style="width: 110px;">Chapitre&nbsp;:</td>
                   <td id="selectChapitres">
-                    <g:render template="selectChapitres" model="[chapitres:chapitres]"/>
+                    <g:render template="selectChapitres"
+                              model="[chapitres: chapitres]"/>
                   </td>
                 </tr>
                 <tr>

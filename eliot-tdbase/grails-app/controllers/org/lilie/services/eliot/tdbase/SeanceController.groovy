@@ -58,6 +58,7 @@ class SeanceController {
     def afficheLienCreationActivite = false
     def afficheActiviteCreee = false
     def afficheDevoirCree = false
+    def lienBookmarkable = null
     List<CahierTextesInfo> cahiers = []
     List<ChapitreInfo> chapitres = []
     if (params.creation) {
@@ -65,6 +66,8 @@ class SeanceController {
       params.bcInit = true
     } else {
       modaliteActivite = ModaliteActivite.get(params.id)
+      lienBookmarkable = createLink(controller: "accueil",action: "activite",id: modaliteActivite.id,
+                                    absolute: true, params: [sujetId: modaliteActivite.sujetId])
       afficheLienCreationDevoir = modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(modaliteActivite,personne)
       afficheLienCreationActivite = modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(modaliteActivite,personne)
       if (!afficheLienCreationDevoir) {
@@ -79,6 +82,7 @@ class SeanceController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
+            lienBookmarkable: lienBookmarkable,
             afficheLienCreationDevoir: afficheLienCreationDevoir,
             afficheLienCreationActivite: afficheLienCreationActivite,
             afficheActiviteCreee: afficheActiviteCreee,

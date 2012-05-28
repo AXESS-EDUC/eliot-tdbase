@@ -150,6 +150,7 @@ grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 // set security rbac
 //
 grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
+        '/index/**':['IS_AUTHENTICATED_FULLY'],
         '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
@@ -204,6 +205,7 @@ environments {
   }
   development {
     grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
+            '/index/**':['IS_AUTHENTICATED_FULLY'],
             '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
