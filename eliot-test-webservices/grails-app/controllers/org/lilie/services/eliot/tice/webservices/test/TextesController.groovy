@@ -120,5 +120,14 @@ class TextesController {
     render(text: resp, contentType: "application/json", encoding: "UTF-8")
   }
 
+  def insertActivite() {
+    def utilisateurPersonneId = params.utilisateurPersonneId as Long
+    def actId = 1
+    String resp = new JsonBuilder([kind : "eliot-textes#activite#id",
+    class : "org.lilie.services.eliot.textes.Activite",
+    id : actId]).toPrettyString()
+    render(text: resp, contentType: "application/json", encoding: "UTF-8")
+  }
+
 }
 

@@ -177,7 +177,7 @@
       </tr>
       <g:if test="${lienBookmarkable}">
         <tr>
-          <td class="label">Permalien&nbsp;</td>
+          <td class="label">Permalien&nbsp;:</td>
           <td>
             ${lienBookmarkable}
           </td>

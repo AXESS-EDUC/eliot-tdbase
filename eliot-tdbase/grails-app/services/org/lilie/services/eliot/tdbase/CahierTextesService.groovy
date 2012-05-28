@@ -94,20 +94,30 @@ class CahierTextesService {
                                           Long chapitreId,
                                           ActiviteContext activiteContext,
                                           ModaliteActivite seance,
+                                          String description,
+                                          String urlSeance,
                                           Personne personne) {
     assert (personne == seance.enseignant)
-    Long res = null
+    def res = cahierTextesRestService.insertActivite(cahierId,
+                                                     chapitreId,
+                                                     activiteContext.name(),
+                                                     personne.id,
+                                                     seance.sujet.titre,
+                                                     description,
+                                                     seance.dateDebut,
+                                                     urlSeance)
+    def activiteId = null
     if (res) {
-      seance.activiteId = res
+      activiteId =  res.id as Long
+      seance.activiteId = activiteId
       try {
         seance.save(failOnError: true)
       } catch (Exception e) {
         log.error(e.message)
-        res = null
+        activiteId = null
       }
     }
-    return res
-
+    activiteId
   }
 
   private def setupChapitreInfos(List listeIn, Integer rang, List listeOut) {

@@ -66,17 +66,17 @@ class SeanceController {
       params.bcInit = true
     } else {
       modaliteActivite = ModaliteActivite.get(params.id)
-      lienBookmarkable = createLink(controller: "accueil",action: "activite",id: modaliteActivite.id,
+      lienBookmarkable = createLink(controller: "accueil", action: "activite", id: modaliteActivite.id,
                                     absolute: true, params: [sujetId: modaliteActivite.sujetId])
-      afficheLienCreationDevoir = modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(modaliteActivite,personne)
-      afficheLienCreationActivite = modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(modaliteActivite,personne)
+      afficheLienCreationDevoir = modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(modaliteActivite, personne)
+      afficheLienCreationActivite = modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(modaliteActivite, personne)
       if (!afficheLienCreationDevoir) {
         afficheDevoirCree = modaliteActiviteService.modaliteActiviteHasNotesDevoir(modaliteActivite, personne)
       }
       if (!afficheLienCreationActivite) {
         afficheActiviteCreee = modaliteActiviteService.modaliteActiviteHasTextesActivite(modaliteActivite, personne)
       } else {
-        cahiers = cahierTextesService.findCahiersTextesInfoByModaliteActivite(modaliteActivite,personne)
+        cahiers = cahierTextesService.findCahiersTextesInfoByModaliteActivite(modaliteActivite, personne)
       }
     }
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
@@ -89,8 +89,8 @@ class SeanceController {
             afficheDevoirCree: afficheDevoirCree,
             modaliteActivite: modaliteActivite,
             proprietesScolarite: proprietesScolarite,
-            cahiers:cahiers,
-            chapitres:chapitres])
+            cahiers: cahiers,
+            chapitres: chapitres])
   }
 
   /**
@@ -101,9 +101,9 @@ class SeanceController {
     List<ChapitreInfo> chapitres = []
     if (params.cahierId != 'null') {
       def cahierId = params.cahierId as Long
-      chapitres = cahierTextesService.getChapitreInfosForCahierId(cahierId,personne)
+      chapitres = cahierTextesService.getChapitreInfosForCahierId(cahierId, personne)
     }
-    render(view: "/seance/_selectChapitres", model: [chapitres:chapitres])
+    render(view: "/seance/_selectChapitres", model: [chapitres: chapitres])
   }
 
   /**
@@ -130,26 +130,7 @@ class SeanceController {
 
     if (!modaliteActivite.hasErrors()) {
       flash.messageCode = "seance.enregistre.succes"
-      // lien vers cahier de textes
-      Long cahierId = null
-      Long chapitreId = null
-      ActiviteContext activiteContext = ActiviteContext.EN_CLASSE
-      if (params.cahierId) {
-        cahierId = params.cahierId as Long
-        if (params.chapitreId) {
-          chapitreId = params.chapitreId as Long
-        }
-        if (params.activiteContextId) {
-          activiteContext = ActiviteContext.valueOf(ActiviteContext.class,
-                                                    params.activiteContextId)
-        }
-        Long actId = cahierTextesService.createAcitiviteForModaliteActivite(
-                cahierId,chapitreId, activiteContext, modaliteActivite,personne
-        )
-        if (!actId) {
-          flash.messageTextesCode = "seance.enregistre.liencahiertextes.erreur"
-        }
-      }
+      tryInsertActiviteForModaliteActivite(modaliteActivite, params, personne)
       redirect(action: "edite", id: modaliteActivite.id, params: [bcInit: true])
     } else {
       def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
@@ -286,6 +267,32 @@ class SeanceController {
     }
   }
 
+
+  private tryInsertActiviteForModaliteActivite(ModaliteActivite modaliteActivite, def params, Personne personne) {
+    // lien vers cahier de textes
+    Long cahierId = null
+    Long chapitreId = null
+    ActiviteContext activiteContext = ActiviteContext.EN_CLASSE
+    if (params.cahierId) {
+      cahierId = params.cahierId as Long
+      if (params.chapitreId) {
+        chapitreId = params.chapitreId as Long
+      }
+      if (params.activiteContextId) {
+        activiteContext = ActiviteContext.valueOf(ActiviteContext.class,
+                                                  params.activiteContextId)
+      }
+      String urlSeance = createLink(controller: "accueil", action: "activite",
+                                    id: modaliteActivite.id,absolute: true,
+                                    params: [sujetId: modaliteActivite.sujetId])
+      Long actId = cahierTextesService.createAcitiviteForModaliteActivite(
+              cahierId,chapitreId,activiteContext,modaliteActivite,
+              "Séance TDBase",urlSeance, personne)
+      if (!actId) {
+        flash.messageTextesCode = "seance.enregistre.liencahiertextes.erreur"
+      }
+    }
+  }
 
 
 }

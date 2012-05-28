@@ -46,7 +46,7 @@ class RestOperationDirectoryService {
    * @param operations la liste des opérations sous forme de map
    */
   def registerOperationsFromMaps(List<Map> operations) {
-    log.info("REST enregistrement operations...")
+    log.info("REST enregistrement de ${operations.size()} operations...")
     operations.each { Map operationMap ->
       RestOperation operation = new GenericRestOperation(operationMap)
       restOperationDirectory.addOperation(operation)

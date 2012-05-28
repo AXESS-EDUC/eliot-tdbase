@@ -150,7 +150,7 @@ grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 // set security rbac
 //
 grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
-        '/index/**':['IS_AUTHENTICATED_FULLY'],
+        '/p/**': ['IS_AUTHENTICATED_FULLY'],
         '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
@@ -205,7 +205,7 @@ environments {
   }
   development {
     grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
-            '/index/**':['IS_AUTHENTICATED_FULLY'],
+            '/p/**': ['IS_AUTHENTICATED_FULLY'],
             '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
@@ -304,7 +304,27 @@ environments {
                     requestBodyTemplate: null,
                     responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                     urlServer: "http://localhost:8090",
-                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service']]
+                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service'],
+            [operationName: "insertActivite",
+                    description: "Insert une activité dans un cahier de textes",
+                    contentType: ContentType.JSON,
+                    method: Method.POST,
+                    requestBodyTemplate: '''
+                                            {
+                                            "kind" : "eliot-textes#activite#insert",
+                                            "class" : "org.lilie.services.eliot.textes.Activite",
+                                            "titre" : "$titre",
+                                            "cahier-id" : $cahierId,
+                                            "chapitre-parent-id" : $chapitreId,
+                                            "dates" : "$dateActivite",
+                                            "contexteActivite" : "$contexteActivite",
+                                            "description" : "$description",
+                                            "urlRessource" : "$urlSeance"
+                                            }
+                                            ''',
+                    responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+                    urlServer: "http://localhost:8090",
+                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/activite']]
 
   }
   test {
@@ -325,7 +345,27 @@ environments {
                     requestBodyTemplate: null,
                     responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                     urlServer: "http://localhost:8090",
-                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service']]
+                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service'],
+            [operationName: "insertActivite",
+                    description: "Insert une activité dans un cahier de textes",
+                    contentType: ContentType.JSON,
+                    method: Method.POST,
+                    requestBodyTemplate: '''
+                                {
+                                "kind" : "eliot-textes#activite#insert",
+                                "class" : "org.lilie.services.eliot.textes.Activite",
+                                "titre" : "$titre",
+                                "cahier-id" : $cahierId,
+                                "chapitre-parent-id" : $chapitreId,
+                                "dates" : "$dateActivite",
+                                "contexteActivite" : "$contexteActivite",
+                                "description" : "$description",
+                                "urlRessource" : "$urlSeance"
+                                }
+                                ''',
+                    responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+                    urlServer: "http://localhost:8090",
+                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/activite']]
 
   }
 

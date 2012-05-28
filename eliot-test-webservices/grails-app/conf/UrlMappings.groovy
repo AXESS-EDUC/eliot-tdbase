@@ -9,6 +9,7 @@ class UrlMappings {
 
     "/api-rest/v2/cahiers/$cahierId/chapitres"(controller: 'textes',action: 'getStructure')
     "/api-rest/v2/cahiers-service"(controller: 'textes',action: 'getCahiersService')
+    "/api-rest/v2/cahiers/$cahierId/activite"(controller: 'textes',action: 'insertActivite')
 
     "/"(view: "/index")
     "500"(view: '/error')

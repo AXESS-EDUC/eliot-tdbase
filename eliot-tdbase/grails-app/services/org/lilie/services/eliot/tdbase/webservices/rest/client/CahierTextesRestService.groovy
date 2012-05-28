@@ -116,5 +116,44 @@ class CahierTextesRestService {
                                        utilisateurPersonneId: personneId])
   }
 
+  /**
+   * Insert une activité dans un cahier de texte
+   * Format de la réponse
+   * <code>
+   *   [kind : "eliot-textes#activite#id",
+   *    class : "org.lilie.services.eliot.textes.Activite",
+   *   id : activiteId]
+   * </code>
+   * @param cahierId l'id du cahier de texte
+   * @param chapitreId  l'id du chapitre dans lequel on insert l'activité
+   * @param activiteContext  le contexte d'activité : "EN_CLASSE" ou "MAISON"
+   * @param personneId l'id de la personne déclenchant l'insertion
+   * @param titre le titre de l'activité
+   * @param description  la description de l'activité
+   * @param dateActivite  la date de l'activité
+   * @param urlSeance  l'url de la séance
+   * @return l'id de l'activite créee ou null
+   */
+  def insertActivite(Long cahierId,
+                     Long chapitreId,
+                     String activiteContext,
+                     Long personneId,
+                     String titre,
+                     String description,
+                     Date dateActivite,
+                     String urlSeance) {
+    restClient.invokeOperation('insertActivite',
+                               [cahierId: cahierId],
+                               [utilisateurPersonneId: personneId],
+                               [titre: titre,
+                                       cahierId: cahierId,
+                                       chapitreId: chapitreId,
+                                       dateActivite: dateActivite,
+                                       contexteActivite: activiteContext,
+                                       description: description,
+                                       urlSeance: urlSeance
+                               ])
+  }
+
 }
 
