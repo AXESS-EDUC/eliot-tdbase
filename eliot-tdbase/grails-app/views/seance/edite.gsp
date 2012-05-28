@@ -117,6 +117,12 @@
                                    class="portal-messages success"/></li>
   </div>
 </g:if>
+<g:if test="${flash.messageTextesCode}">
+  <div class="portal-messages">
+    <li class="notice"><g:message code="${flash.messageTextesCode}"
+                                   class="portal-messages notice"/></li>
+  </div>
+</g:if>
 
 
 <g:form method="post" controller="seance" action="edite">

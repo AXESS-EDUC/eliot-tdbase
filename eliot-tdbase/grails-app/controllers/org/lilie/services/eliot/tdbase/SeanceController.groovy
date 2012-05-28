@@ -130,6 +130,26 @@ class SeanceController {
 
     if (!modaliteActivite.hasErrors()) {
       flash.messageCode = "seance.enregistre.succes"
+      // lien vers cahier de textes
+      Long cahierId = null
+      Long chapitreId = null
+      ActiviteContext activiteContext = ActiviteContext.EN_CLASSE
+      if (params.cahierId) {
+        cahierId = params.cahierId as Long
+        if (params.chapitreId) {
+          chapitreId = params.chapitreId as Long
+        }
+        if (params.activiteContextId) {
+          activiteContext = ActiviteContext.valueOf(ActiviteContext.class,
+                                                    params.activiteContextId)
+        }
+        Long actId = cahierTextesService.createAcitiviteForModaliteActivite(
+                cahierId,chapitreId, activiteContext, modaliteActivite,personne
+        )
+        if (!actId) {
+          flash.messageTextesCode = "seance.enregistre.liencahiertextes.erreur"
+        }
+      }
       redirect(action: "edite", id: modaliteActivite.id, params: [bcInit: true])
     } else {
       def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)

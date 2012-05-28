@@ -31,6 +31,7 @@ package org.lilie.services.eliot.tdbase
 import groovy.transform.ToString
 import org.lilie.services.eliot.tdbase.webservices.rest.client.CahierTextesRestService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Service d'initiaisation de l'annuaire des opérations de web services Rest
@@ -79,6 +80,35 @@ class CahierTextesService {
     res
   }
 
+  /**
+   * Creer une activite dans le cahier de textes pour une séance tdbase
+   * @param cahierId l'id du cahier dans lequel on crée l'activité
+   * @param chapitreId l'id du chapitre dans lequel on créé l'activité
+   * @param activiteContext le contexte de l'activité
+   * @param seance la séance pour laquelle con créé l'activité
+   * @param personne la personne déclenchant l'opération
+   * @return l'id de l'activité du cahier de textes qui a été créée
+   */
+  @Transactional
+  Long createAcitiviteForModaliteActivite(Long cahierId,
+                                          Long chapitreId,
+                                          ActiviteContext activiteContext,
+                                          ModaliteActivite seance,
+                                          Personne personne) {
+    assert (personne == seance.enseignant)
+    Long res = null
+    if (res) {
+      seance.activiteId = res
+      try {
+        seance.save(failOnError: true)
+      } catch (Exception e) {
+        log.error(e.message)
+        res = null
+      }
+    }
+    return res
+
+  }
 
   private def setupChapitreInfos(List listeIn, Integer rang, List listeOut) {
     listeIn.each {
@@ -122,10 +152,9 @@ class ChapitreInfo {
   String getNom() {
     nomAvecIndentation?.trim()
   }
-
-
-
 }
+
+
 
 enum ActiviteContext {
   EN_CLASSE,

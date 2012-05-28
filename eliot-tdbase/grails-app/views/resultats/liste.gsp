@@ -83,7 +83,7 @@
                 id="${copie.id}" title="Visualiser la copie">
         </g:link>
 
-        <h2>∟ <span>${seance.sujet.titre}</span></h2>
+        <h2><span>${seance.sujet.titre}</span></h2>
 
         <p>
           <em>(Séance du :  ${seance.dateDebut.format('dd/MM/yy HH:mm')}  au ${seance.dateFin.format('dd/MM/yy HH:mm')})</em>
