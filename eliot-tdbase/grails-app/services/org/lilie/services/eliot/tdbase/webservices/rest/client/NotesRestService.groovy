@@ -30,7 +30,6 @@ package org.lilie.services.eliot.tdbase.webservices.rest.client
 
 import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
 
-
 /**
  * Service d'initiaisation de l'annuaire des opérations de web services Rest
  * @author franck Silvestre
@@ -42,7 +41,7 @@ class NotesRestService {
 
   /**
    * Récupère les services évaluables pour une séance donnée
-   * format de la réponse
+   * format de la réponse :
    * <code>
    * [kind: "List",
    *  total: 3,
@@ -63,19 +62,45 @@ class NotesRestService {
    *  ]
    *  ]
    *  </code
-   * @param structureId  l'id de la structure enseignement concernée
+   * @param structureId l'id de la structure enseignement concernée
    * @param date la date de début de la séance
-   * @param enseignantId  l'id de l'enseignant concerné
-   * @return  la map correspondant aux services trouvés
+   * @param enseignantId l'id de l'enseignant concerné
+   * @return la map correspondant aux services trouvés
    */
   def findServicesEvaluablesByStrunctureAndDateAndEnseignant(Long structureId,
                                                              Date date,
                                                              Long enseignantId) {
-      restClient.invokeOperation('findServicesEvaluablesByStrunctureAndDateAndEnseignant',
-                                 null,
-                                 [structureEnseignementId:structureId,
-                                         date:date.format("yyyy-MM-dd'T'HH:mm:ss"),
-                                         enseignantId:enseignantId])
+    restClient.invokeOperation('findServicesEvaluablesByStrunctureAndDateAndEnseignant',
+                               null,
+                               [structureEnseignementId: structureId,
+                                       date: date.format("yyyy-MM-dd'T'HH:mm:ss"),
+                                       enseignantId: enseignantId])
+  }
+
+  /**
+   * Créer un devoir dans le module Notes
+   * Format de la réponse :
+   * <code>
+   *   [kind : "eliot-notes#evaluation#id",
+   *    class : "org.lilie.services.eliot.notes.Evaluation",
+   *   id : 1]
+   * </code>
+   * @param serviceId l'id du service évaluable pour lequel on créé le devoir
+   * @param typePeriodeId l'id de la période
+   * @param sousMatiereId l'id de la sous matiere
+   * @param enseignantId l'id de l'enseignant
+   * @return la map correspondant au devoir crée
+   */
+  def createDevoir(String titre,Long serviceId, Long typePeriodeId,
+                   Long sousMatiereId, Long enseignantId) {
+    restClient.invokeOperation('createDevoir',
+                               null,
+                               null,
+                               [titre:titre,
+                                       serviceId: serviceId,
+                                       typePeriodeId: typePeriodeId,
+                                       sousMatiereId: sousMatiereId,
+                                       enseignantId: enseignantId])
   }
 }
 

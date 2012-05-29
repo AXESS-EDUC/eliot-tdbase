@@ -337,7 +337,25 @@ environments {
                                 requestBodyTemplate: null,
                                 responseContentStructure: "List<eliot-notes#services#standard>",
                                 urlServer: "http://localhost:8090",
-                                uriTemplate: '/eliot-test-webservices/api-rest/v2/services-evaluables']]
+                                uriTemplate: '/eliot-test-webservices/api-rest/v2/services-evaluables'],
+            [operationName: "createDevoir",
+                                description: "Insert un devoir dans le module Notes",
+                                contentType: ContentType.JSON,
+                                method: Method.POST,
+                                requestBodyTemplate: '''
+                                                        {
+                                                        "kind" : "eliot-notes#evaluation#insert",
+                                                        "class" : "org.lilie.services.eliot.notes.Evaluation",
+                                                        "titre" : "$titre",
+                                                        "service-id" : $serviceId,
+                                                        "type-periode-id" : $typePeriodeId,
+                                                        "sous-matiere-id" : $sousMatiereId,
+                                                        "enseignant-id" : $enseignantId
+                                                        }
+                                                        ''',
+                                responseContentStructure: "eliot-notes#evaluation#id>",
+                                urlServer: "http://localhost:8090",
+                                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/evaluation']]
 
   }
   test {

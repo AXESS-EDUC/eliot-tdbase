@@ -76,10 +76,13 @@ class NotesService {
                     ModaliteActivite seance,
                     Personne personne) {
     assert (personne == seance.enseignant)
-    // todofsil cabler au client de rest services
-    def res = [id: 1]
+    def res = notesRestService.createDevoir(seance.sujet.titre,
+                                            serviceInfo.id,
+                                            serviceInfo.typePeriodeId,
+                                            serviceInfo.sousMatiereId,
+                                            personne.id)
     def evaluationId = null
-    if (res) {
+    if (res?.id) {
       evaluationId = res.id as Long
       seance.evaluationId = evaluationId
       try {

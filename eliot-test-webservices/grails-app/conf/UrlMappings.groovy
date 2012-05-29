@@ -11,7 +11,7 @@ class UrlMappings {
     "/api-rest/v2/cahiers-service"(controller: 'textes',action: 'getCahiersService')
     "/api-rest/v2/cahiers/$cahierId/activite"(controller: 'textes',action: 'insertActivite')
     "/api-rest/v2/services-evaluables" (controller: 'notes',action: 'getServicesEvaluables')
-
+    "/api-rest/v2/cahiers/evaluation" (controller: 'notes',action: 'createDevoir')
     "/"(view: "/index")
     "500"(view: '/error')
   }
