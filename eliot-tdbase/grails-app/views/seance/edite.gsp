@@ -196,11 +196,11 @@
                 <tr>
                   <td class="label"
                       style="width: 110px;">Classe/groupe&nbsp;-&nbsp;Matière&nbsp;:</td>
-                  <td><g:select name="matiereId"
+                  <td><g:select name="serviceId"
                                 noSelection="${['null': 'Faites votre choix...']}"
-                                from="${proprietesScolarite}"
+                                from="${services}"
                                 optionKey="id"
-                                optionValue="matiere"/></td>
+                                optionValue="libelle"/></td>
                 </tr>
 
               </table>

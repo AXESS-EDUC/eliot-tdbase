@@ -46,6 +46,7 @@ class SeanceController {
   CopieService copieService
   ProfilScolariteService profilScolariteService
   CahierTextesService cahierTextesService
+  NotesService notesService
 
 /**
  *
@@ -59,6 +60,7 @@ class SeanceController {
     def afficheActiviteCreee = false
     def afficheDevoirCree = false
     def lienBookmarkable = null
+    List<ServiceInfo> services = []
     List<CahierTextesInfo> cahiers = []
     List<ChapitreInfo> chapitres = []
     if (params.creation) {
@@ -72,6 +74,8 @@ class SeanceController {
       afficheLienCreationActivite = modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(modaliteActivite, personne)
       if (!afficheLienCreationDevoir) {
         afficheDevoirCree = modaliteActiviteService.modaliteActiviteHasNotesDevoir(modaliteActivite, personne)
+      } else {
+        services = notesService.findServicesEvaluablesByModaliteActivite(modaliteActivite, personne)
       }
       if (!afficheLienCreationActivite) {
         afficheActiviteCreee = modaliteActiviteService.modaliteActiviteHasTextesActivite(modaliteActivite, personne)
@@ -79,7 +83,7 @@ class SeanceController {
         cahiers = cahierTextesService.findCahiersTextesInfoByModaliteActivite(modaliteActivite, personne)
       }
     }
-    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"), [services:services])
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
             lienBookmarkable: lienBookmarkable,
@@ -90,7 +94,8 @@ class SeanceController {
             modaliteActivite: modaliteActivite,
             proprietesScolarite: proprietesScolarite,
             cahiers: cahiers,
-            chapitres: chapitres])
+            chapitres: chapitres,
+            services:services])
   }
 
   /**
@@ -131,6 +136,7 @@ class SeanceController {
     if (!modaliteActivite.hasErrors()) {
       flash.messageCode = "seance.enregistre.succes"
       tryInsertActiviteForModaliteActivite(modaliteActivite, params, personne)
+      tryInsertDevoirForModaliteActivite(modaliteActivite,params,personne)
       redirect(action: "edite", id: modaliteActivite.id, params: [bcInit: true])
     } else {
       def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
@@ -274,15 +280,20 @@ class SeanceController {
     }
   }
 
-
+  /**
+   * Essayer de creer l'activité dans le cahier de textes
+   * @param modaliteActivite  la séance
+   * @param params  les params de la requête
+   * @param personne  la personne déclenchant l'opération
+   */
   private tryInsertActiviteForModaliteActivite(ModaliteActivite modaliteActivite, def params, Personne personne) {
     // lien vers cahier de textes
     Long cahierId = null
     Long chapitreId = null
     ActiviteContext activiteContext = ActiviteContext.EN_CLASSE
-    if (params.cahierId) {
+    if (params.cahierId && params.cahierId != 'null') {
       cahierId = params.cahierId as Long
-      if (params.chapitreId) {
+      if (params.chapitreId && params.chapitreId != 'null') {
         chapitreId = params.chapitreId as Long
       }
       if (params.activiteContextId) {
@@ -301,7 +312,28 @@ class SeanceController {
     }
   }
 
-
+  /**
+     * Essayer de creer le devoir dans le module notes
+     * @param modaliteActivite  la séance
+     * @param params  les params de la requête
+     * @param personne  la personne déclenchant l'opération
+     */
+  private tryInsertDevoirForModaliteActivite(ModaliteActivite modaliteActivite, def params, Personne personne) {
+      // lien vers notes
+      Long serviceId = null
+      if (params.serviceId && params.serviceId != 'null') {
+        serviceId = params.serviceId as Long
+        List<ServiceInfo> services = breadcrumpsService.getValeurPropriete('services')
+        ServiceInfo service = services.find {it.id == serviceId}
+        Long evalId = null
+        if (service) {
+          evalId = notesService.createDevoir(service, modaliteActivite,personne)
+        }
+        if (!evalId) {
+          flash.messageNotesCode = "seance.enregistre.liennotes.erreur"
+        }
+      }
+    }
 }
 
 

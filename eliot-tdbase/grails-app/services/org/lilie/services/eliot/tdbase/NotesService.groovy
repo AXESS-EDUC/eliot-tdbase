@@ -29,7 +29,6 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 
 /**
  * Service pour interaction avec le module Notes
@@ -40,21 +39,18 @@ class NotesService {
   static transactional = false
 
   /**
-   * Récupère les services évaluables pour une structure donnée, à une date donnée
-   * pour un enseignat donné
-   * @param struct la structure d'enseignement
-   * @param date la date de début de la séance
+   * Récupère les services évaluables pour une séance donnée
+   * @param seance la séance
    * @param enseignant l'enseignant concerné par le devoir
    * @return la liste des services évaluables
    */
-  List<ServiceInfo> findServicesEvaluablesByStructureAndDateAndEnseignant(StructureEnseignement struct,
-                                                                          ModaliteActivite seance,
-                                                                          Personne enseignant) {
+  List<ServiceInfo> findServicesEvaluablesByModaliteActivite(ModaliteActivite seance,
+                                                             Personne enseignant) {
     assert (enseignant == seance.enseignant)
     // todofsil cabler au client de web services
-    [new ServiceInfo(id: 1, libelle: "1ES1(A)-AGL1-TP (T2)",typePeriodeId: 1,sousMatiereId: 1),
-            new ServiceInfo(id: 2, libelle: "1ES1(B)-AGL1-TP (T2)",typePeriodeId: 1,sousMatiereId: 2),
-            new ServiceInfo(id: 3, libelle: "1ES1(B)-AGL1 (T2)",typePeriodeId: 1,sousMatiereId: 1)]
+    [new ServiceInfo(id: 1, libelle: "1ES1(A)-AGL1-TP (T2)", typePeriodeId: 1, sousMatiereId: 1),
+            new ServiceInfo(id: 2, libelle: "1ES1(B)-AGL1-TP (T2)", typePeriodeId: 1, sousMatiereId: 2),
+            new ServiceInfo(id: 3, libelle: "1ES1(B)-AGL1 (T2)", typePeriodeId: 1, sousMatiereId: 1)]
   }
 
   /**
@@ -64,11 +60,9 @@ class NotesService {
    * @param personne la personne déclenchant l'opération
    * @return
    */
-  Long createDevoir(Long serviceId,
-                                       Long typePeriodeId,
-                                       Long sousMatiereId,
-                                       ModaliteActivite seance,
-                                       Personne personne) {
+  Long createDevoir(ServiceInfo serviceInfo,
+                    ModaliteActivite seance,
+                    Personne personne) {
     assert (personne == seance.enseignant)
     // todofsil cabler au client de rest services
     def res = [id: 1]
@@ -88,13 +82,13 @@ class NotesService {
 
   /**
    * Met à jour les notes d'un devoir pour une séance donnée
-   * @param devoirId  l'id du devoir
-   * @param notes  la map contenant les notes (key : id de l'élève, value: la note)
+   * @param devoirId l'id du devoir
+   * @param notes la map contenant les notes (key : id de l'élève, value: la note)
    * @param seance la seance concernée
-   * @param personne  la personne déclenchant l'opération
+   * @param personne la personne déclenchant l'opération
    * @return
    */
-  Long updateNotes(Long devoirId,Map<Long,Float> notes, ModaliteActivite seance,
+  Long updateNotes(Long devoirId, Map<Long, Float> notes, ModaliteActivite seance,
                    Personne personne) {
     assert (personne == seance.enseignant)
     // todofsil cabler au client de rest services

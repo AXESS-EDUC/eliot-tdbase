@@ -118,9 +118,9 @@ public class Service {
   static mapping = {
     table 'ent.service'
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.services_id_seq']
-    structureEnseignement column: 'id_structure_enseignement', fetch: 'join'
-    matiere column: 'id_matiere', fetch: 'join'
-    modaliteCours column: 'id_modalite_cours', fetch: 'join'
+    structureEnseignement  fetch: 'join'
+    matiere fetch: 'join'
+    modaliteCours fetch: 'join'
     cache true
   }
 
