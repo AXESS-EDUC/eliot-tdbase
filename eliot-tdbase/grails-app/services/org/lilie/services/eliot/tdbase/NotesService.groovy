@@ -36,6 +36,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
  */
 class NotesService {
 
+  CopieService copieService
   static transactional = false
 
   /**
@@ -88,11 +89,20 @@ class NotesService {
    * @param personne la personne déclenchant l'opération
    * @return
    */
-  Long updateNotes(Long devoirId, Map<Long, Float> notes, ModaliteActivite seance,
+  Long updateNotes(ModaliteActivite seance,
                    Personne personne) {
     assert (personne == seance.enseignant)
+    def copies = copieService.findCopiesForModaliteActivite(seance,
+                                                            personne)
+    if (copies) {
+      def notes = [:]
+      copies.each { Copie copie ->
+        notes.put(copie.eleveId, copie.correctionNoteFinale)
+      }
+      log.info(notes.toMapString())
+    }
     // todofsil cabler au client de rest services
-    devoirId
+    seance.evaluationId
   }
 
 

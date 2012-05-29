@@ -206,7 +206,7 @@
               </table>
             </g:if>
             <g:if test="${afficheDevoirCree}">
-              <span class="label">Un devoir est lié à la séance dans Notes.</span>
+              <span class="label"><g:message code="seance.label.devoirlie" /></span>
             </g:if>
           </td>
         </tr>
@@ -252,7 +252,7 @@
               </table>
             </g:if>
             <g:if test="${afficheActiviteCreee}">
-              <span class="label">Une activité a été créée pour la séance dans le Cahier de textes.</span>
+              <span class="label"><g:message code="seance.label.activitetextesliee" /></span>
             </g:if>
           </td>
         </tr>

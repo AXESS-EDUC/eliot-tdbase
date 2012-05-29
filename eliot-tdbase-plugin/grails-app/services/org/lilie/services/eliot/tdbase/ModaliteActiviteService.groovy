@@ -184,13 +184,14 @@ class ModaliteActiviteService {
     // note technique
     // le check de l'existence d'une activité s'effectue sans web services pour des
     // raisons  de perf
+    // todofsil remettre le test
     Activite act = Activite.get(actId)
-    if (!act) {
-      modaliteActivite.activiteId = null
-      if(modaliteActivite.save()) {
-        return false
-      }
-    }
+//    if (!act) {
+//      modaliteActivite.activiteId = null
+//      if(modaliteActivite.save()) {
+//        return false
+//      }
+//    }
     return true
   }
 
@@ -220,13 +221,14 @@ class ModaliteActiviteService {
     // note technique
     // le check de l'existence d'un devoir s'effectue sans web services pour des
     // raisons  de perf
+    // todofsil remettre le test
     Evaluation eval = Evaluation.get(evalId)
-    if (!eval) {
-      modaliteActivite.evaluationId = null
-      if (modaliteActivite.save()) {
-        return false
-      }
-    }
+//    if (!eval) {
+//      modaliteActivite.evaluationId = null
+//      if (modaliteActivite.save()) {
+//        return false
+//      }
+//    }
     return true
   }
 
