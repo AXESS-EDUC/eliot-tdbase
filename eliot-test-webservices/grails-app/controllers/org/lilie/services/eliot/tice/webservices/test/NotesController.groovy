@@ -60,11 +60,21 @@ class NotesController {
   }
 
   def createDevoir() {
-        def evalId = 36
-        String resp = new JsonBuilder([kind : "eliot-notes#evaluation#id",
-        class : "org.lilie.services.eliot.notes.Evaluation",
-        id : evalId]).toPrettyString()
-        render(text: resp, contentType: "application/json", encoding: "UTF-8")
+    def evalId = 36
+    String resp = new JsonBuilder([kind: "eliot-notes#evaluation#id",
+                                          class: "org.lilie.services.eliot.notes.Evaluation",
+                                          id: evalId]).toPrettyString()
+    render(text: resp, contentType: "application/json", encoding: "UTF-8")
+  }
+
+  def updateNotes() {
+    println("INFO - updateNotes contenu requete: ")
+    println(request.inputStream.text)
+    def evalId = 36
+    String resp = new JsonBuilder([kind: "eliot-notes#evaluation#id",
+                                          class: "org.lilie.services.eliot.notes.Evaluation",
+                                          id: evalId]).toPrettyString()
+    render(text: resp, contentType: "application/json", encoding: "UTF-8")
   }
 
 }

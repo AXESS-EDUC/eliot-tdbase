@@ -110,12 +110,18 @@ class NotesService {
                                                             personne)
     if (copies) {
       def notes = [:]
+      def evalId = null
       copies.each { Copie copie ->
         notes.put(copie.eleveId, copie.correctionNoteFinale)
       }
-      log.info(notes.toMapString())
+      def res = notesRestService.updateNotes(seance.evaluationId,
+                                             notes,
+                                             personne.id)
+      if(res?.id) {
+        evalId = res.id as Long
+      }
+      return evalId
     }
-    // todofsil cabler au client de rest services
     seance.evaluationId
   }
 

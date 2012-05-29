@@ -29,6 +29,7 @@
 package org.lilie.services.eliot.tdbase.webservices.rest.client
 
 import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
+import groovy.json.JsonBuilder
 
 /**
  * Service d'initiaisation de l'annuaire des opérations de web services Rest
@@ -85,6 +86,7 @@ class NotesRestService {
    *    class : "org.lilie.services.eliot.notes.Evaluation",
    *   id : 1]
    * </code>
+   *
    * @param serviceId l'id du service évaluable pour lequel on créé le devoir
    * @param typePeriodeId l'id de la période
    * @param sousMatiereId l'id de la sous matiere
@@ -101,6 +103,30 @@ class NotesRestService {
                                        typePeriodeId: typePeriodeId,
                                        sousMatiereId: sousMatiereId,
                                        enseignantId: enseignantId])
+  }
+
+  /**
+   * Met à jour les notes pour un devoir
+   * Format réponse :
+   * <code>
+   *   [kind : "eliot-notes#evaluation#id",
+   *    class : "org.lilie.services.eliot.notes.Evaluation",
+   *   id : 1]
+   * </code>
+   *
+   * @param devoirId l'id du devoir
+   * @param notes la map contenant les notes (key: eleve Id, value: note)
+   * @param enseignantId  l'id de l'enseignant
+   * @return
+   */
+  def updateNotes(Long devoirId, Map<Long,Float> notes, Long enseignantId) {
+    def notesJson = new JsonBuilder(notes).toPrettyString()
+    restClient.invokeOperation('updateNotes',
+                                   null,
+                                   null,
+                                   [evaluationId:devoirId,
+                                           notesJson: notesJson,
+                                           enseignantId: enseignantId])
   }
 }
 
