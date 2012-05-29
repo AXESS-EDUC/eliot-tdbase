@@ -302,7 +302,7 @@ environments {
             responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
             urlServer: "http://localhost:8090",
             uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres'],
-            [operationName: "getCahiersForStructureMatiereAndEnseignant",
+            [operationName: "findCahiersByStructureMatiereAndEnseignant",
                     description: "Retourne la liste des cahiers pour une structure, une matière et un enseignant donné",
                     contentType: ContentType.JSON,
                     method: Method.GET,
@@ -310,7 +310,7 @@ environments {
                     responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                     urlServer: "http://localhost:8090",
                     uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service'],
-            [operationName: "insertActivite",
+            [operationName: "createTextesActivite",
                     description: "Insert une activité dans un cahier de textes",
                     contentType: ContentType.JSON,
                     method: Method.POST,
@@ -329,7 +329,15 @@ environments {
                                             ''',
                     responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                     urlServer: "http://localhost:8090",
-                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/activite']]
+                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/activite'],
+            [operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
+                                description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
+                                contentType: ContentType.JSON,
+                                method: Method.GET,
+                                requestBodyTemplate: null,
+                                responseContentStructure: "List<eliot-notes#services#standard>",
+                                urlServer: "http://localhost:8090",
+                                uriTemplate: '/eliot-test-webservices/api-rest/v2/services-evaluables']]
 
   }
   test {
@@ -344,7 +352,7 @@ environments {
             responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
             urlServer: "http://localhost:8090",
             uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres'],
-            [operationName: "getCahiersForStructureMatiereAndEnseignant",
+            [operationName: "findCahiersByStructureMatiereAndEnseignant",
                     description: "Retourne la liste des cahiers pour une structure, une matière et un enseignant donné",
                     contentType: ContentType.JSON,
                     method: Method.GET,
@@ -352,7 +360,7 @@ environments {
                     responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                     urlServer: "http://localhost:8090",
                     uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service'],
-            [operationName: "insertActivite",
+            [operationName: "createTextesActivite",
                     description: "Insert une activité dans un cahier de textes",
                     contentType: ContentType.JSON,
                     method: Method.POST,

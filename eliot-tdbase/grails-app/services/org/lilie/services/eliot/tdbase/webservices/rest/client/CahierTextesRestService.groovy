@@ -106,10 +106,10 @@ class CahierTextesRestService {
    * @param personneId l'identifiant de l'enseignant
    * @return la map représentant la liste des cahiers
    */
-  def getCahiersForStructureMatiereAndEnseignant(Long structEnsId,
+  def findCahiersByStructureMatiereAndEnseignant(Long structEnsId,
                                                  Long matiereId,
                                                  Long personneId) {
-    restClient.invokeOperation('getCahiersForStructureMatiereAndEnseignant',
+    restClient.invokeOperation('findCahiersByStructureMatiereAndEnseignant',
                                null,
                                [structureEnseignementId: structEnsId,
                                        matiereId: matiereId,
@@ -134,7 +134,7 @@ class CahierTextesRestService {
    * @param urlSeance  l'url de la séance
    * @return l'id de l'activite créee ou null
    */
-  def insertActivite(Long cahierId,
+  def createTextesActivite(Long cahierId,
                      Long chapitreId,
                      String activiteContext,
                      Long personneId,
@@ -142,7 +142,7 @@ class CahierTextesRestService {
                      String description,
                      Date dateActivite,
                      String urlSeance) {
-    restClient.invokeOperation('insertActivite',
+    restClient.invokeOperation('createTextesActivite',
                                [cahierId: cahierId],
                                [utilisateurPersonneId: personneId],
                                [titre: titre,

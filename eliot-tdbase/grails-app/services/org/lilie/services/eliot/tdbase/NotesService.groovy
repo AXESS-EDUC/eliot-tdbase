@@ -29,6 +29,7 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tdbase.webservices.rest.client.NotesRestService
 
 /**
  * Service pour interaction avec le module Notes
@@ -37,6 +38,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 class NotesService {
 
   CopieService copieService
+  NotesRestService notesRestService
   static transactional = false
 
   /**
@@ -48,10 +50,19 @@ class NotesService {
   List<ServiceInfo> findServicesEvaluablesByModaliteActivite(ModaliteActivite seance,
                                                              Personne enseignant) {
     assert (enseignant == seance.enseignant)
-    // todofsil cabler au client de web services
-    [new ServiceInfo(id: 1, libelle: "1ES1(A)-AGL1-TP (T2)", typePeriodeId: 1, sousMatiereId: 1),
-            new ServiceInfo(id: 2, libelle: "1ES1(B)-AGL1-TP (T2)", typePeriodeId: 1, sousMatiereId: 2),
-            new ServiceInfo(id: 3, libelle: "1ES1(B)-AGL1 (T2)", typePeriodeId: 1, sousMatiereId: 1)]
+    def res = notesRestService.findServicesEvaluablesByStrunctureAndDateAndEnseignant(seance.structureEnseignementId,
+                                                                                      seance.dateDebut,
+                                                                                      enseignant.id)
+    def services = []
+    if (res?.items) {
+       res.items.each {
+         services << new ServiceInfo(id: it.id,
+                                     libelle:it.libelle,
+                                     typePeriodeId: it.typePeriodeId,
+                                     sousMatiereId: it.sousMatiereId)
+       }
+    }
+    services
   }
 
   /**

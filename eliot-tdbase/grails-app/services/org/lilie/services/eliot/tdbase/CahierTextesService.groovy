@@ -54,7 +54,7 @@ class CahierTextesService {
     def structId = seance.structureEnseignementId
     def matId = seance.matiereId
     def personneId = personne.id
-    def restRes = cahierTextesRestService.getCahiersForStructureMatiereAndEnseignant(structId, matId, personneId)
+    def restRes = cahierTextesRestService.findCahiersByStructureMatiereAndEnseignant(structId, matId, personneId)
     def res = []
     if (restRes) {
       restRes.items.each {
@@ -100,7 +100,7 @@ class CahierTextesService {
                                           String urlSeance,
                                           Personne personne) {
     assert (personne == seance.enseignant)
-    def res = cahierTextesRestService.insertActivite(cahierId,
+    def res = cahierTextesRestService.createTextesActivite(cahierId,
                                                      chapitreId,
                                                      activiteContext.name(),
                                                      personne.id,
