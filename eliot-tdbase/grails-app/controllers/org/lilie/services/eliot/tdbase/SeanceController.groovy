@@ -292,7 +292,7 @@ class SeanceController {
       String urlSeance = createLink(controller: "accueil", action: "activite",
                                     id: modaliteActivite.id,absolute: true,
                                     params: [sujetId: modaliteActivite.sujetId])
-      Long actId = cahierTextesService.createAcitiviteForModaliteActivite(
+      Long actId = cahierTextesService.createTextesActivite(
               cahierId,chapitreId,activiteContext,modaliteActivite,
               "Séance TDBase",urlSeance, personne)
       if (!actId) {

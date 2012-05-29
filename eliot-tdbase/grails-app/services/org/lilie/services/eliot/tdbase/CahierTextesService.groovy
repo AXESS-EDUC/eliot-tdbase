@@ -34,7 +34,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.springframework.transaction.annotation.Transactional
 
 /**
- * Service d'initiaisation de l'annuaire des opérations de web services Rest
+ * Service pour interaction avec cahier de textes
  * @author franck Silvestre
  */
 class CahierTextesService {
@@ -86,11 +86,13 @@ class CahierTextesService {
    * @param chapitreId l'id du chapitre dans lequel on créé l'activité
    * @param activiteContext le contexte de l'activité
    * @param seance la séance pour laquelle con créé l'activité
+   * @param description la description de la séance
+   * @param urlSeance l'url de la séance
    * @param personne la personne déclenchant l'opération
    * @return l'id de l'activité du cahier de textes qui a été créée
    */
   @Transactional
-  Long createAcitiviteForModaliteActivite(Long cahierId,
+  Long createTextesActivite(Long cahierId,
                                           Long chapitreId,
                                           ActiviteContext activiteContext,
                                           ModaliteActivite seance,
