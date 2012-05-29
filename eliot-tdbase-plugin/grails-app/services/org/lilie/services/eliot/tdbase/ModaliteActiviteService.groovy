@@ -164,9 +164,11 @@ class ModaliteActiviteService {
    * @param personne la personne déclenchant l'opération
    * @return true si il est possible de creer une activité dans le cahier de textes
    */
-  boolean canCreateTextesActiviteForModaliteActivite(ModaliteActivite modaliteActivite, Personne personne) {
+  boolean canCreateTextesActiviteForModaliteActivite(ModaliteActivite modaliteActivite,
+                                                     Personne personne,
+                                                     Boolean strongCheck = true ) {
     assert (modaliteActivite?.enseignant == personne)
-    !modaliteActiviteHasTextesActivite(modaliteActivite,personne)
+    !modaliteActiviteHasTextesActivite(modaliteActivite, personne, strongCheck)
   }
 
   /**
@@ -175,7 +177,9 @@ class ModaliteActiviteService {
    * @param personne la personne déclenchant l'opération
    * @return true si la modalité activité a une activité de cahier de textes associée
    */
-  boolean modaliteActiviteHasTextesActivite(ModaliteActivite modaliteActivite, Personne personne) {
+  boolean modaliteActiviteHasTextesActivite(ModaliteActivite modaliteActivite,
+                                            Personne personne,
+                                            Boolean strongCheck = true) {
     assert (modaliteActivite?.enseignant == personne)
     Long actId = modaliteActivite.activiteId
     if (!actId) {
@@ -184,14 +188,15 @@ class ModaliteActiviteService {
     // note technique
     // le check de l'existence d'une activité s'effectue sans web services pour des
     // raisons  de perf
-    // todofsil remettre le test
-    Activite act = Activite.get(actId)
-//    if (!act) {
-//      modaliteActivite.activiteId = null
-//      if(modaliteActivite.save()) {
-//        return false
-//      }
-//    }
+    if (strongCheck) {
+      Activite act = Activite.get(actId)
+      if (!act) {
+        modaliteActivite.activiteId = null
+        if (modaliteActivite.save()) {
+          return false
+        }
+      }
+    }
     return true
   }
 
@@ -201,9 +206,11 @@ class ModaliteActiviteService {
    * @param personne la personne déclenchant l'opération
    * @return true si il est possible de creer un devoir dans Notes
    */
-  boolean canCreateNotesDevoirForModaliteActivite(ModaliteActivite modaliteActivite, Personne personne) {
+  boolean canCreateNotesDevoirForModaliteActivite(ModaliteActivite modaliteActivite,
+                                                  Personne personne,
+                                                  Boolean strongCheck = true) {
     assert (modaliteActivite?.enseignant == personne)
-    !modaliteActiviteHasNotesDevoir(modaliteActivite,personne)
+    !modaliteActiviteHasNotesDevoir(modaliteActivite, personne, strongCheck)
   }
 
   /**
@@ -212,7 +219,9 @@ class ModaliteActiviteService {
    * @param personne la personne déclenchant l'opération
    * @return true si la modalité activité a un devoir Notes associé
    */
-  boolean modaliteActiviteHasNotesDevoir(ModaliteActivite modaliteActivite, Personne personne) {
+  boolean modaliteActiviteHasNotesDevoir(ModaliteActivite modaliteActivite,
+                                         Personne personne,
+                                         Boolean strongCheck = true) {
     assert (modaliteActivite?.enseignant == personne)
     Long evalId = modaliteActivite.evaluationId
     if (!evalId) {
@@ -221,14 +230,15 @@ class ModaliteActiviteService {
     // note technique
     // le check de l'existence d'un devoir s'effectue sans web services pour des
     // raisons  de perf
-    // todofsil remettre le test
-    Evaluation eval = Evaluation.get(evalId)
-//    if (!eval) {
-//      modaliteActivite.evaluationId = null
-//      if (modaliteActivite.save()) {
-//        return false
-//      }
-//    }
+    if (strongCheck) {
+      Evaluation eval = Evaluation.get(evalId)
+      if (!eval) {
+        modaliteActivite.evaluationId = null
+        if (modaliteActivite.save()) {
+          return false
+        }
+      }
+    }
     return true
   }
 

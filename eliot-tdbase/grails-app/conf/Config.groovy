@@ -166,6 +166,10 @@ grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY']
         '/maintenance/**': ["${FonctionEnum.CD.toRole()}",
                 'IS_AUTHENTICATED_FULLY']]
 
+// l'interfacage doit il effectuer des contrôles fort sur les "pseudo
+// clés étrangères"
+eliot.interfacage.strongCheck = true
+
 //  support de l'interfaçage eliot-notes
 //
 eliot.interfacage.notes = true
@@ -287,6 +291,7 @@ environments {
 
 environments {
   development {
+    eliot.interfacage.strongCheck = false
     eliot.webservices.rest.client.user = "eliot-tdbase"
     eliot.webservices.rest.client.password = "eliot-tdbase"
     eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitresForCahierId",
@@ -328,6 +333,7 @@ environments {
 
   }
   test {
+    eliot.interfacage.strongCheck = false
     eliot.webservices.rest.client.user = "eliot-tdbase"
     eliot.webservices.rest.client.password = "eliot-tdbase"
     eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitresForCahierId",

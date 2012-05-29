@@ -68,19 +68,32 @@ class SeanceController {
       params.bcInit = true
     } else {
       modaliteActivite = ModaliteActivite.get(params.id)
-      lienBookmarkable = createLink(controller: "accueil", action: "activite", id: modaliteActivite.id,
-                                    absolute: true, params: [sujetId: modaliteActivite.sujetId])
-      afficheLienCreationDevoir = modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(modaliteActivite, personne)
-      afficheLienCreationActivite = modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(modaliteActivite, personne)
+      lienBookmarkable = createLink(controller: "accueil", action: "activite",
+                                    id: modaliteActivite.id,
+                                    absolute: true,
+                                    params: [sujetId: modaliteActivite.sujetId])
+      def strongCheck = grailsApplication.config.eliot.interfacage.strongCheck as Boolean
+      afficheLienCreationDevoir = modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(modaliteActivite,
+                                                                                                  personne,
+                                                                                                  strongCheck)
+      afficheLienCreationActivite = modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(modaliteActivite,
+                                                                                                       personne,
+                                                                                                       strongCheck)
       if (!afficheLienCreationDevoir) {
-        afficheDevoirCree = modaliteActiviteService.modaliteActiviteHasNotesDevoir(modaliteActivite, personne)
+        afficheDevoirCree = modaliteActiviteService.modaliteActiviteHasNotesDevoir(modaliteActivite,
+                                                                                   personne,
+                                                                                   strongCheck)
       } else {
-        services = notesService.findServicesEvaluablesByModaliteActivite(modaliteActivite, personne)
+        services = notesService.findServicesEvaluablesByModaliteActivite(modaliteActivite,
+                                                                         personne)
       }
       if (!afficheLienCreationActivite) {
-        afficheActiviteCreee = modaliteActiviteService.modaliteActiviteHasTextesActivite(modaliteActivite, personne)
+        afficheActiviteCreee = modaliteActiviteService.modaliteActiviteHasTextesActivite(modaliteActivite,
+                                                                                         personne,
+                                                                                         strongCheck)
       } else {
-        cahiers = cahierTextesService.findCahiersTextesInfoByModaliteActivite(modaliteActivite, personne)
+        cahiers = cahierTextesService.findCahiersTextesInfoByModaliteActivite(modaliteActivite,
+                                                                              personne)
       }
     }
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"), [services: services])
@@ -194,7 +207,10 @@ class SeanceController {
 
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
-    def afficheLienMiseAjourNote = modaliteActiviteService.modaliteActiviteHasNotesDevoir(seance, personne)
+    def strongCheck = grailsApplication.config.eliot.interfacage.strongCheck as Boolean
+    def afficheLienMiseAjourNote = modaliteActiviteService.modaliteActiviteHasNotesDevoir(seance,
+                                                                                          personne,
+                                                                                          strongCheck)
     def copies = copieService.findCopiesForModaliteActivite(seance,
                                                             personne)
     def elevesSansCopies = copieService.findElevesSansCopieForModaliteActivite(seance,
