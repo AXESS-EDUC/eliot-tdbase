@@ -57,9 +57,7 @@ class NotesService {
     if (res?.items) {
        res.items.each {
          services << new ServiceInfo(id: it.id,
-                                     libelle:it.libelle,
-                                     typePeriodeId: it.typePeriodeId,
-                                     sousMatiereId: it.sousMatiereId)
+                                     libelle:it.libelle)
        }
     }
     services
@@ -76,10 +74,11 @@ class NotesService {
                     ModaliteActivite seance,
                     Personne personne) {
     assert (personne == seance.enseignant)
+    // todofsil calculer de la note max d'un sujet
     def res = notesRestService.createDevoir(seance.sujet.titre,
                                             serviceInfo.id,
-                                            serviceInfo.typePeriodeId,
-                                            serviceInfo.sousMatiereId,
+                                            seance.dateDebut,
+                                            seance.sujet.noteMax,
                                             personne.id)
     def evaluationId = null
     if (res?.id) {
@@ -109,6 +108,7 @@ class NotesService {
     def copies = copieService.findCopiesForModaliteActivite(seance,
                                                             personne)
     if (copies) {
+      // todofsil gerer les notes au format attendu
       def notes = [:]
       def evalId = null
       copies.each { Copie copie ->
@@ -131,6 +131,4 @@ class NotesService {
 class ServiceInfo {
   Long id
   String libelle
-  Long typePeriodeId
-  Long sousMatiereId
 }

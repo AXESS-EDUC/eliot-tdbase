@@ -28,8 +28,8 @@
 
 package org.lilie.services.eliot.tdbase.webservices.rest.client
 
-import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
 import groovy.json.JsonBuilder
+import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
 
 /**
  * Service d'initiaisation de l'annuaire des opérations de web services Rest
@@ -72,10 +72,11 @@ class NotesRestService {
                                                              Date date,
                                                              Long enseignantId) {
     restClientForNotes.invokeOperation('findServicesEvaluablesByStrunctureAndDateAndEnseignant',
-                               null,
-                               [structureEnseignementId: structureId,
-                                       date: date.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
-                                       enseignantId: enseignantId])
+                                       null,
+                                       [structureEnseignementId: structureId,
+                                               date: date.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
+                                               enseignantPersonneId: enseignantId,
+                                               utilisateurPersonneId: enseignantId])
   }
 
   /**
@@ -93,16 +94,14 @@ class NotesRestService {
    * @param enseignantId l'id de l'enseignant
    * @return la map correspondant au devoir crée
    */
-  def createDevoir(String titre,Long serviceId, Long typePeriodeId,
-                   Long sousMatiereId, Long enseignantId) {
+  def createDevoir(String titre, Long serviceId, Date date, Float noteMax, Long personneId) {
     restClientForNotes.invokeOperation('createDevoir',
-                               null,
-                               null,
-                               [titre:titre,
-                                       serviceId: serviceId,
-                                       typePeriodeId: typePeriodeId,
-                                       sousMatiereId: sousMatiereId,
-                                       enseignantId: enseignantId])
+                                       null,
+                                       [utilisateurPersonneId: personneId],
+                                       [titre: titre,
+                                               serviceId: serviceId,
+                                               date: date.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
+                                               noteMax: noteMax])
   }
 
   /**
@@ -116,17 +115,17 @@ class NotesRestService {
    *
    * @param devoirId l'id du devoir
    * @param notes la map contenant les notes (key: eleve Id, value: note)
-   * @param enseignantId  l'id de l'enseignant
+   * @param enseignantId l'id de l'enseignant
    * @return
    */
-  def updateNotes(Long devoirId, Map<Long,Float> notes, Long enseignantId) {
+  def updateNotes(Long devoirId, Map<Long, Float> notes, Long enseignantId) {
     def notesJson = new JsonBuilder(notes).toPrettyString()
     restClientForNotes.invokeOperation('updateNotes',
-                                   null,
-                                   null,
-                                   [evaluationId:devoirId,
-                                           notesJson: notesJson,
-                                           enseignantId: enseignantId])
+                                       [evaluationId: devoirId],
+                                       [utilisateurPersonneId: enseignantId],
+                                       [evaluationId: devoirId,
+                                               notesJson: notesJson,
+                                               enseignantId: enseignantId])
   }
 }
 

@@ -38,9 +38,9 @@ class UrlMappings {
     "/api-rest/v2/cahiers/$cahierId/chapitres"(controller: 'textes',action: 'getStructure')
     "/api-rest/v2/cahiers-service"(controller: 'textes',action: 'getCahiersService')
     "/api-rest/v2/cahiers/$cahierId/activites-interactives"(controller: 'textes',action: 'insertActivite')
-    "/api-rest/v2/services-evaluables" (controller: 'notes',action: 'getServicesEvaluables')
-    "/api-rest/v2/cahiers/evaluation" (controller: 'notes',action: 'createDevoir')
-    "/api-rest/v2/cahiers/evaluation/notes" (controller: 'notes',action: 'updateNotes')
+    "/api-rest/v2/evaluation-contextes" (controller: 'notes',action: 'getServicesEvaluables')
+    "/api-rest/v2/evaluations" (controller: 'notes',action: 'createDevoir')
+    "/api-rest/v2/evaluations/$evaluationId/notes" (controller: 'notes',action: 'updateNotes')
     "/"(view: "/index")
     "500"(view: '/error')
   }

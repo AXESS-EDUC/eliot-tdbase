@@ -357,9 +357,9 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 contentType: ContentType.JSON,
                 method: Method.GET,
                 requestBodyTemplate: null,
-                responseContentStructure: "List<eliot-notes#services#standard>",
+                responseContentStructure: "List<eliot-notes#evaluation-contextes#standard>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/eliot-test-webservices/api-rest/v2/services-evaluables'],
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/evaluation-contextes'],
         [operationName: "createDevoir",
                 description: "Insert un devoir dans le module Notes",
                 contentType: ContentType.JSON,
@@ -369,19 +369,18 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                   "kind" : "eliot-notes#evaluation#insert",
                                   "class" : "org.lilie.services.eliot.notes.Evaluation",
                                   "titre" : "$titre",
-                                  "service-id" : $serviceId,
-                                  "type-periode-id" : $typePeriodeId,
-                                  "sous-matiere-id" : $sousMatiereId,
-                                  "enseignant-id" : $enseignantId
+                                  "date" : $date,
+                                  "noteMax" : $noteMax,
+                                  "referentielEvaluationId" : $serviceId,
                                    }
                                    ''',
                 responseContentStructure: "eliot-notes#evaluation#id>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/evaluation'],
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/evaluations'],
         [operationName: "updateNotes",
                 description: "Met à jour les notes d'un devoir dans le module Notes",
                 contentType: ContentType.JSON,
-                method: Method.POST,
+                method: Method.PUT,
                 requestBodyTemplate: '''
                                  {
                                  "kind" : "eliot-notes#evaluation#update#notes",
@@ -393,4 +392,4 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                  ''',
                 responseContentStructure: "eliot-notes#evaluation#id>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/evaluation/notes']]
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/evaluations/$evaluationId/notes']]

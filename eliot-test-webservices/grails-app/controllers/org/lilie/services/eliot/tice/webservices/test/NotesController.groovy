@@ -33,29 +33,23 @@ import groovy.json.JsonBuilder
 class NotesController {
 
   def getServicesEvaluables() {
-    def enseignantId = params.enseignantId as Long
+    def enseignantPersonneId = params.enseignantId as Long
     def structureEnseignementId = params.structureEnseignementId as Long
     def date = params.date
     String resp = new JsonBuilder([kind: "List",
                                           total: 3,
-                                          items: [[kind: "eliot-notes#services#standard",
+                                          items: [[kind: "eliot-notes#evaluation-contextes#standard",
                                                   class: "org.lilie.services.eliot.textes.CahierDeTextes",
                                                   id: 1,
-                                                  libelle: "1ES1(A)-AGL1-TP (T2)",
-                                                  typePeriodeId: 2,
-                                                  sousMatiereId: 1,],
-                                                  [kind: "eliot-notes#services#standard",
+                                                  libelle: "1ES1(A)-AGL1-TP (T2)"],
+                                                  [kind: "eliot-notes#evaluation-contextes#standard",
                                                           class: "org.lilie.services.eliot.textes.CahierDeTextes",
                                                           id: 2,
-                                                          libelle: "1ES1(A)-AGL1-Oral (T2)",
-                                                          typePeriodeId: 2,
-                                                          sousMatiereId: 2,],
-                                                  [kind: "eliot-notes#services#standard",
+                                                          libelle: "1ES1(A)-AGL1-Oral (T2)"],
+                                                  [kind: "eliot-notes#evaluation-contextes#standard",
                                                           class: "org.lilie.services.eliot.textes.CahierDeTextes",
-                                                          id: 1,
-                                                          libelle: "1ES1(A)-AGL1 (T2)",
-                                                          typePeriodeId: 2,
-                                                          sousMatiereId: 1,]]]).toPrettyString()
+                                                          id: 3,
+                                                          libelle: "1ES1(A)-AGL1 (T2)"]]]).toPrettyString()
     render(text: resp, contentType: "application/json", encoding: "UTF-8")
   }
 
@@ -72,7 +66,8 @@ class NotesController {
   def updateNotes() {
     println("INFO - updateNotes contenu requete: ")
     println(request.inputStream.text)
-    def evalId = 36
+    def evalId = params.evaluationId as Long
+    println("evaluation id : $evalId")
     String resp = new JsonBuilder([kind: "eliot-notes#evaluation#id",
                                           class: "org.lilie.services.eliot.notes.Evaluation",
                                           id: evalId]).toPrettyString()
