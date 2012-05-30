@@ -43,8 +43,6 @@ import org.lilie.services.eliot.tice.HashConstantes
 class RelCahierActeur implements Serializable {
   static mapping = {
     table 'entcdt.rel_cahier_acteur'
-    cahierDeTextes column: 'id_cahier_de_textes'
-    acteur column: 'id_acteur'
     id composite: ['cahierDeTextes', 'acteur']
     version false
   }

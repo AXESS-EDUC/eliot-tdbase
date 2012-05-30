@@ -31,7 +31,9 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.notes.Evaluation
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.textes.Activite
 import org.springframework.transaction.annotation.Transactional
 
 /**
@@ -52,9 +54,7 @@ class ModaliteActiviteService {
    */
   @Transactional
   ModaliteActivite createModaliteActivite(Map proprietes, Personne proprietaire) {
-    ModaliteActivite modaliteActivite = new ModaliteActivite(
-            enseignant: proprietaire
-    )
+    ModaliteActivite modaliteActivite = new ModaliteActivite(enseignant: proprietaire)
     modaliteActivite.properties = proprietes
     modaliteActivite.save(flush: true)
     return modaliteActivite
@@ -147,7 +147,9 @@ class ModaliteActiviteService {
   /**
    * Supprime une modalite activité
    * @param modaliteActivite la modalite à supprimer
+   * @param personne la personne déclenchant la suppression
    */
+  @Transactional
   def supprimeModaliteActivite(ModaliteActivite modaliteActivite, Personne personne) {
 
     assert (modaliteActivite?.enseignant == personne)
@@ -156,6 +158,89 @@ class ModaliteActiviteService {
     modaliteActivite.delete()
   }
 
+  /**
+   * Indique si il est possible de créer une activité dans le cahier de texte
+   * @param modaliteActivite la modalite activité
+   * @param personne la personne déclenchant l'opération
+   * @return true si il est possible de creer une activité dans le cahier de textes
+   */
+  boolean canCreateTextesActiviteForModaliteActivite(ModaliteActivite modaliteActivite,
+                                                     Personne personne,
+                                                     Boolean strongCheck = true ) {
+    assert (modaliteActivite?.enseignant == personne)
+    !modaliteActiviteHasTextesActivite(modaliteActivite, personne, strongCheck)
+  }
+
+  /**
+   * Indique si la modalité activité à une activité du cahier de textes attachée
+   * @param modaliteActivite la modalite activité
+   * @param personne la personne déclenchant l'opération
+   * @return true si la modalité activité a une activité de cahier de textes associée
+   */
+  boolean modaliteActiviteHasTextesActivite(ModaliteActivite modaliteActivite,
+                                            Personne personne,
+                                            Boolean strongCheck = true) {
+    assert (modaliteActivite?.enseignant == personne)
+    Long actId = modaliteActivite.activiteId
+    if (!actId) {
+      return false
+    }
+    // note technique
+    // le check de l'existence d'une activité s'effectue sans web services pour des
+    // raisons  de perf
+    if (strongCheck) {
+      Activite act = Activite.get(actId)
+      if (!act) {
+        modaliteActivite.activiteId = null
+        if (modaliteActivite.save()) {
+          return false
+        }
+      }
+    }
+    return true
+  }
+
+  /**
+   * verifie si il est possible de créer un devoir dans Notes
+   * @param modaliteActivite la modalite activité
+   * @param personne la personne déclenchant l'opération
+   * @return true si il est possible de creer un devoir dans Notes
+   */
+  boolean canCreateNotesDevoirForModaliteActivite(ModaliteActivite modaliteActivite,
+                                                  Personne personne,
+                                                  Boolean strongCheck = true) {
+    assert (modaliteActivite?.enseignant == personne)
+    !modaliteActiviteHasNotesDevoir(modaliteActivite, personne, strongCheck)
+  }
+
+  /**
+   * Indique si la modalité activité a un devoir de Notes attaché
+   * @param modaliteActivite la modalite activité
+   * @param personne la personne déclenchant l'opération
+   * @return true si la modalité activité a un devoir Notes associé
+   */
+  boolean modaliteActiviteHasNotesDevoir(ModaliteActivite modaliteActivite,
+                                         Personne personne,
+                                         Boolean strongCheck = true) {
+    assert (modaliteActivite?.enseignant == personne)
+    Long evalId = modaliteActivite.evaluationId
+    if (!evalId) {
+      return false
+    }
+    // note technique
+    // le check de l'existence d'un devoir s'effectue sans web services pour des
+    // raisons  de perf
+    if (strongCheck) {
+      Evaluation eval = Evaluation.get(evalId)
+      if (!eval) {
+        modaliteActivite.evaluationId = null
+        if (modaliteActivite.save()) {
+          return false
+        }
+      }
+    }
+    return true
+  }
 
 }
 

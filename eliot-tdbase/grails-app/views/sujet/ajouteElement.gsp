@@ -41,7 +41,7 @@
       })
     });
   </r:script>
-  <title><g:message code="sujet.ajouteElement.head.title" /></title>
+  <title><g:message code="sujet.ajouteElement.head.title"/></title>
 </head>
 
 <body>
@@ -73,7 +73,7 @@
         <g:hiddenField name="creation" value="true"/>
         Une question de type <g:select name="questionTypeId"
                                        id="select_creation"
-                                       noSelection="${['null': g.message(code:"default.select.null")]}"
+                                       noSelection="${['null': g.message(code: "default.select.null")]}"
                                        from="${typesQuestionSupportesPourCreation}"
                                        optionKey="id"
                                        optionValue="nom"/>
@@ -97,19 +97,21 @@
       </g:link>
     </li>
     <li>
-      <g:form method="get" action="recherche"
-              controller="question" name="form_select_recherche">
-        <g:hiddenField name="sujetId" value="${sujet.id}"/>
-        Une question de type <g:select name="typeId" id="select_recherche"
-                                       noSelection="${['null': g.message(code:"default.select.null")]}"
-                                       from="${typesQuestionSupportes}"
-                                       optionKey="id"
-                                       optionValue="nom"/>
-      </g:form>
+      <g:link action="recherche" controller="question"
+              params="[sujetId: sujet.id]">
+        Une question
+      </g:link>
+    </li>
+    <li>
+      <g:link action="recherche" controller="question"
+              params="[typeId: QuestionTypeEnum.Composite.id, sujetId: sujet.id]">
+        Un exercice
+      </g:link>
     </li>
   </ul>
 
-  <h1><g:link action="editeImportMoodleXML" controller="sujet" id="${sujet.id}">Importer et ajouter un quiz Moodle...</g:link></h1>
+  <h1><g:link action="editeImportMoodleXML" controller="sujet"
+              id="${sujet.id}">Importer et ajouter un quiz Moodle...</g:link></h1>
 
 </div>
 

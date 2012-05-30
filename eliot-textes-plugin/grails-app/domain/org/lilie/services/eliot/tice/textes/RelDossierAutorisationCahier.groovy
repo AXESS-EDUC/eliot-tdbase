@@ -43,8 +43,6 @@ class RelDossierAutorisationCahier implements Serializable {
 
   static mapping = {
     table 'entcdt.rel_dossier_autorisation_cahier'
-    dossier column: 'id_dossier'
-    autorisation column: 'id_autorisation'
     id composite: ['dossier', 'autorisation']
     version false
   }

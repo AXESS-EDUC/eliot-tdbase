@@ -117,7 +117,11 @@
   </div>
 </g:if>
 
-
+<g:if test="${flash.messageCode}">
+  <div class="portal-messages">
+    <li class="notice"><g:message code="${flash.messageCode}"/></li>
+  </div>
+</g:if>
 
 <div class="portal-messages">
   <li class="notice">

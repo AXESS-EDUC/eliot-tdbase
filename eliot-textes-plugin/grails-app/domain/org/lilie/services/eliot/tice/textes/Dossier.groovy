@@ -82,7 +82,7 @@ class Dossier {
   static mapping = {
     table 'entcdt.dossier'
     id column: 'id', generator: 'sequence', params: [sequence: 'entcdt.dossier_id_seq']
-    proprietaire column: 'id_acteur'
+    proprietaire column: 'acteur_id'
     version false
   }
 

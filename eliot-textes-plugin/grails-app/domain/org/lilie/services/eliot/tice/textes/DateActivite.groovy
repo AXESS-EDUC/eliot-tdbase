@@ -39,7 +39,6 @@ class DateActivite {
   static mapping = {
     table 'entcdt.date_activite'
     id column: 'id', generator: 'sequence', params: [sequence: 'entcdt.date_activite_id_seq']
-    activite column: 'id_activite'
     sort dateActivite: 'desc'
     version false
   }

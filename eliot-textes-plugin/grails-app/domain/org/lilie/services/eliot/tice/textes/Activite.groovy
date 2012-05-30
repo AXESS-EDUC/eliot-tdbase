@@ -246,12 +246,7 @@ class Activite {
   static mapping = {
     table 'entcdt.activite'
     id column: 'id', generator: 'sequence', params: [sequence: 'entcdt.activite_id_seq']
-    item column: 'id_item', fetch: 'join'
-    typeActivite column: 'id_type_activite'
-    contexteActivite column: 'id_contexte_activite'
-    chapitre column: 'id_chapitre'
-    cahierDeTextes column: 'id_cahier_de_textes'
-    auteur column: 'id_auteur'
+    item  fetch: 'join'
     version false
   }
 }

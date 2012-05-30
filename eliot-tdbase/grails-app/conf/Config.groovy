@@ -1,4 +1,6 @@
 import grails.plugins.springsecurity.SecurityConfigType
+import groovyx.net.http.ContentType
+import groovyx.net.http.Method
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
@@ -133,6 +135,9 @@ log4j = {
         'net.sf.ehcache.hibernate'
 
   warn 'org.mortbay.log'
+
+  info 'grails.app'
+
 }
 
 grails.controllers.defaultScope = "session"
@@ -142,11 +147,10 @@ grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 
-
-
 // set security rbac
 //
 grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
+        '/p/**': ['IS_AUTHENTICATED_FULLY'],
         '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
@@ -160,9 +164,11 @@ grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY']
         '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/maintenance/**': ["${FonctionEnum.CD.toRole()}",
-                        'IS_AUTHENTICATED_FULLY']]
+                'IS_AUTHENTICATED_FULLY']]
 
-
+// l'interfacage doit il effectuer des contrôles fort sur les "pseudo
+// clés étrangères"
+eliot.interfacage.strongCheck = true
 
 //  support de l'interfaçage eliot-notes
 //
@@ -188,11 +194,9 @@ eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime
         "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
         "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"]
 
-
-
 // les ressources JS et Applet Java Jmol sont recherchées dans l'URI
 // relative au serveur Grails (l'URI doit commencer par '/'):
-eliot.jmol.resourcesURI="/js/lib/jmol/"
+eliot.jmol.resourcesURI = "/js/lib/jmol/"
 
 environments {
   test {
@@ -205,6 +209,7 @@ environments {
   }
   development {
     grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
+            '/p/**': ['IS_AUTHENTICATED_FULLY'],
             '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
@@ -281,4 +286,110 @@ environments {
   }
 }
 
+// Configurations des opérations de webservices Rest
+//
 
+environments {
+  development {
+    eliot.interfacage.strongCheck = false
+    // rest client config for textes
+    eliot.webservices.rest.client.textes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+    // rest client config for notes
+    eliot.webservices.rest.client.notes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+  }
+  test {
+    eliot.interfacage.strongCheck = false
+    // rest client config for textes
+    eliot.webservices.rest.client.textes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+    // rest client config for notes
+    eliot.webservices.rest.client.notes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+  }
+
+}
+
+eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitresForCahierId",
+        description: "Retourne la liste arborescente de chapitres d'un cahier",
+        contentType: ContentType.JSON,
+        method: Method.GET,
+        requestBodyTemplate: null,
+        responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
+        urlServer: "http://localhost:8090",
+        uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres'],
+        [operationName: "findCahiersByStructureMatiereAndEnseignant",
+                description: "Retourne la liste des cahiers pour une structure, une matière et un enseignant donné",
+                contentType: ContentType.JSON,
+                method: Method.GET,
+                requestBodyTemplate: null,
+                responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+                //urlServer: "http://localhost:8090",
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service'],
+        [operationName: "createTextesActivite",
+                description: "Insert une activité dans un cahier de textes",
+                contentType: ContentType.JSON,
+                method: Method.POST,
+                requestBodyTemplate: '''
+                                            {
+                                            "kind" : "eliot-textes#activite#insert",
+                                            "class" : "org.lilie.services.eliot.textes.Activite",
+                                            "titre" : "$titre",
+                                            "cahier-id" : $cahierId,
+                                            "chapitre-parent-id" : $chapitreId,
+                                            "dates" : "$dateActivite",
+                                            "contexteActivite" : "$contexteActivite",
+                                            "description" : "$description",
+                                            "urlRessource" : "$urlSeance"
+                                            }
+                                            ''',
+                responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+                //urlServer: "http://localhost:8090",
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/activite'],
+        [operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
+                description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
+                contentType: ContentType.JSON,
+                method: Method.GET,
+                requestBodyTemplate: null,
+                responseContentStructure: "List<eliot-notes#services#standard>",
+                urlServer: "http://localhost:8090",
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/services-evaluables'],
+        [operationName: "createDevoir",
+                description: "Insert un devoir dans le module Notes",
+                contentType: ContentType.JSON,
+                method: Method.POST,
+                requestBodyTemplate: '''
+                                  {
+                                  "kind" : "eliot-notes#evaluation#insert",
+                                  "class" : "org.lilie.services.eliot.notes.Evaluation",
+                                  "titre" : "$titre",
+                                  "service-id" : $serviceId,
+                                  "type-periode-id" : $typePeriodeId,
+                                  "sous-matiere-id" : $sousMatiereId,
+                                  "enseignant-id" : $enseignantId
+                                   }
+                                   ''',
+                responseContentStructure: "eliot-notes#evaluation#id>",
+                //urlServer: "http://localhost:8090",
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/evaluation'],
+        [operationName: "updateNotes",
+                description: "Met à jour les notes d'un devoir dans le module Notes",
+                contentType: ContentType.JSON,
+                method: Method.POST,
+                requestBodyTemplate: '''
+                                 {
+                                 "kind" : "eliot-notes#evaluation#update#notes",
+                                 "class" : "org.lilie.services.eliot.notes.Evaluation",
+                                 "evaluation-id" : $evaluationId,
+                                 "notes": $notesJson,
+                                 "enseignant-id" : $enseignantId
+                                 }
+                                 ''',
+                responseContentStructure: "eliot-notes#evaluation#id>",
+                //urlServer: "http://localhost:8090",
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/evaluation/notes']]
