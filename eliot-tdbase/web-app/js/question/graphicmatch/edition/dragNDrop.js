@@ -30,6 +30,7 @@ function initDragNDrop() {
 
     initWidgets();
     registerEventHandlers();
+    validateForm();
 
     function initWidgets() {
         //hide html tags
@@ -61,6 +62,14 @@ function initDragNDrop() {
         $(".hotspot").bind("dragstop", function () {
             onDragStop($(this));
         })
+
+        $("#question\\.titre").blur(function () {
+            validateForm();
+        });
+
+        $("#specifobject\\.libelle").blur(function () {
+            validateForm();
+        });
     }
 
     function positionHotspots() {
@@ -97,6 +106,7 @@ function initDragNDrop() {
         });
     }
 
+
     function resizeHotspots(){
 
         $(".hotspot").each(function () {
@@ -113,5 +123,15 @@ function initDragNDrop() {
         var hotspotId = $(hotSpot).attr("id");
         $("#" + hotspotId + ">input#width").val(ui.size.width);
         $("#" + hotspotId + ">input#height").val(ui.size.height);
+    }
+
+    function validateForm() {
+        if ($("#question\\.titre").val() != "" && $("#specifobject\\.libelle").val() != "") {
+            $('#reponseZone').show();
+            $('#reponseDisclaimer').hide();
+        } else {
+            $('#reponseZone').hide();
+            $('#reponseDisclaimer').show();
+        }
     }
 }

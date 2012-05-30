@@ -30,6 +30,7 @@ function initDragNDrop() {
 
     initWidgets();
     registerEventHandlers();
+    validateForm();
 
     function initWidgets() {
         $(".textZone").draggable({containment:'#fillgraphicsEditor', stack:'div'});
@@ -43,6 +44,14 @@ function initDragNDrop() {
     function registerEventHandlers() {
         $(".textZone").bind("dragstop", function () {
             onDragStop($(this));
+        });
+
+        $("#question\\.titre").blur(function () {
+            validateForm();
+        });
+
+        $("#specifobject\\.libelle").blur(function () {
+            validateForm();
         });
     }
 
@@ -70,5 +79,15 @@ function initDragNDrop() {
                 offset:offLeft + " " + offTop, collision:"none"
             });
         });
+    }
+
+    function validateForm() {
+        if ($("#question\\.titre").val() != "" && $("#specifobject\\.libelle").val() != "") {
+            $('#reponseZone').show();
+            $('#reponseDisclaimer').hide();
+        } else {
+            $('#reponseZone').hide();
+            $('#reponseDisclaimer').show();
+        }
     }
 }

@@ -31,57 +31,63 @@
 <g:set var="specifobject" value="${question.specificationObject}"/>
 
 <tr>
-  <td class="label"><g:message code="question.propriete.libelle"/><span class="obligatoire">*</span>&nbsp;:</td>
-  <td>
-    <g:textField name="specifobject.libelle" value="${specifobject.libelle}"
-                 size="75"/>
-  </td>
+    <td class="label"><g:message code="question.propriete.libelle"/><span class="obligatoire">*</span>&nbsp;:</td>
+    <td>
+        <g:textField name="specifobject.libelle" value="${specifobject.libelle}"
+                     size="75"/>
+    </td>
 </tr>
 <tr>
-  <td class="label">R&eacute;ponse&nbsp;:</td>
-  <td>
+    <td class="label">R&eacute;ponse&nbsp;:</td>
 
-    <input type="file" name="specifobject.fichier"
-           onchange="$('#imageUpload').trigger('click');"/>
+    <td id="reponseDisclaimer">
+        <span>${message(code: 'question.reponses.disclaimer')}</span>
+    </td>
+    <td id="reponseZone">
 
-    <g:actionSubmit value="upload" action="enregistreEtPoursuisEdition" title="Upload"
-                    hidden="true"
-                    id="imageUpload"/>
+        <input type="file" name="specifobject.fichier"
+               onchange="$('#imageUpload').trigger('click');"/>
 
-    <g:hiddenField name="specifobject.attachmentId"
-                   value="${specifobject.attachmentId}"/>
+        <g:actionSubmit value="upload" action="enregistreEtPoursuisEdition" title="Upload"
+                        hidden="true"
+                        id="imageUpload"/>
 
-    <g:if test="${specifobject.attachmentId}">
+        <g:hiddenField name="specifobject.attachmentId"
+                       value="${specifobject.attachmentId}"/>
 
-      <g:submitToRemote title="Ajouter une zone" value="Ajouter une zone"
-                        action="ajouteHotspot"
-                        controller="questionGraphicMatch"
-                        update="hotspotsEtIcons"
-                        onComplete="afterHotspotAdded()"
-                        class="button"/>
+        <g:if test="${specifobject.attachmentId}">
 
-      <div class="imageContainer">
-        <et:viewAttachement
-                attachement="${specifobject.attachement}"
-                width="500"
-                height="500"
-                id="theImage"/>
 
-        <div id="hotspotsEtIcons">
-          <g:render
-                  template="/question/GraphicMatch/GraphicMatchEditionReponses"
-                  model="[specifobject: specifobject]"/>
-        </div>
-      </div>
-    </g:if>
-  </td>
+            <g:submitToRemote title="Ajouter une zone" value="Ajouter une zone"
+                              action="ajouteHotspot"
+                              controller="questionGraphicMatch"
+                              update="hotspotsEtIcons"
+                              onComplete="afterHotspotAdded()"
+                              class="button"/>
+
+            <div id="imageContainer">
+                <et:viewAttachement
+                        attachement="${specifobject.attachement}"
+                        width="500"
+                        height="500"
+                        id="theImage"/>
+
+                <div id="hotspotsEtIcons">
+                    <g:render
+                            template="/question/GraphicMatch/GraphicMatchEditionReponses"
+                            model="[specifobject: specifobject]"/>
+                </div>
+            </div>
+        </g:if>
+    </td>
 </tr>
 <tr>
-  <td class="label">Correction:</td>
-  <td>
-    <g:textArea
-            name="specifobject.correction"
-            rows="10" cols="55"
-            value="${specifobject.correction}"/>
-  </td>
+    <td class="label">Correction:</td>
+    <td>
+        <g:textArea
+                name="specifobject.correction"
+                rows="10" cols="55"
+                value="${specifobject.correction}"/>
+    </td>
 </tr>
+
