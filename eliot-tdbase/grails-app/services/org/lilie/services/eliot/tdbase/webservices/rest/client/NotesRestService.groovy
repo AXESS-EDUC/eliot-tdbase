@@ -74,7 +74,7 @@ class NotesRestService {
     restClientForNotes.invokeOperation('findServicesEvaluablesByStrunctureAndDateAndEnseignant',
                                null,
                                [structureEnseignementId: structureId,
-                                       date: date.format("yyyy-MM-dd'T'HH:mm:ss"),
+                                       date: date.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
                                        enseignantId: enseignantId])
   }
 

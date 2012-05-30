@@ -60,6 +60,8 @@ class NotesController {
   }
 
   def createDevoir() {
+    println("INFO - createDevoir contenu requete: ")
+            println(request.inputStream.text)
     def evalId = 36
     String resp = new JsonBuilder([kind: "eliot-notes#evaluation#id",
                                           class: "org.lilie.services.eliot.notes.Evaluation",

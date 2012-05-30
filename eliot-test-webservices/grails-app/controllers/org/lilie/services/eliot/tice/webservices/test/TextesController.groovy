@@ -121,6 +121,8 @@ class TextesController {
   }
 
   def insertActivite() {
+    println("INFO - insertActivite contenu requete: ")
+        println(request.inputStream.text)
     def utilisateurPersonneId = params.utilisateurPersonneId as Long
     def actId = 1
     String resp = new JsonBuilder([kind : "eliot-textes#activite#id",

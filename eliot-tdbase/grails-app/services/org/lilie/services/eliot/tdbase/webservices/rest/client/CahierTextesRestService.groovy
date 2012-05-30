@@ -126,7 +126,7 @@ class CahierTextesRestService {
    * </code>
    * @param cahierId l'id du cahier de texte
    * @param chapitreId  l'id du chapitre dans lequel on insert l'activité
-   * @param activiteContext  le contexte d'activité : "EN_CLASSE" ou "MAISON"
+   * @param activiteContext  le contexte d'activité : "CLA" ou "MAI"
    * @param personneId l'id de la personne déclenchant l'insertion
    * @param titre le titre de l'activité
    * @param description  la description de l'activité
@@ -140,7 +140,8 @@ class CahierTextesRestService {
                      Long personneId,
                      String titre,
                      String description,
-                     Date dateActivite,
+                     Date dateDebutActivite,
+                     Date dateFinActivite,
                      String urlSeance) {
     restClientForTextes.invokeOperation('createTextesActivite',
                                [cahierId: cahierId],
@@ -148,7 +149,8 @@ class CahierTextesRestService {
                                [titre: titre,
                                        cahierId: cahierId,
                                        chapitreId: chapitreId,
-                                       dateActivite: dateActivite,
+                                       dateDebutActivite: dateDebutActivite.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
+                                       dateFinActivite: dateFinActivite.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
                                        contexteActivite: activiteContext,
                                        description: description,
                                        urlSeance: urlSeance

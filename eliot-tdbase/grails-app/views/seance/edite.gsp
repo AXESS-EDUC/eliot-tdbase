@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.ActiviteContext" %>
+<%@ page import="org.lilie.services.eliot.tdbase.ContexteActivite" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -246,7 +246,7 @@
                 <tr>
                   <td class="label" style="width: 110px;">Contexte&nbsp;:</td>
                   <td><g:select name="activiteContexteId"
-                                from="${ActiviteContext.values()}"
+                                from="${ContexteActivite.values()}"
                                 valueMessagePrefix="textes.activite.contexte"/></td>
                 </tr>
               </table>

@@ -94,7 +94,7 @@ class CahierTextesService {
   @Transactional
   Long createTextesActivite(Long cahierId,
                                           Long chapitreId,
-                                          ActiviteContext activiteContext,
+                                          ContexteActivite activiteContext,
                                           ModaliteActivite seance,
                                           String description,
                                           String urlSeance,
@@ -107,6 +107,7 @@ class CahierTextesService {
                                                      seance.sujet.titre,
                                                      description,
                                                      seance.dateDebut,
+                                                     seance.dateFin,
                                                      urlSeance)
     def activiteId = null
     if (res) {
@@ -168,7 +169,7 @@ class ChapitreInfo {
 
 
 
-enum ActiviteContext {
-  EN_CLASSE,
-  MAISON
+enum ContexteActivite {
+  CLA, // en classe
+  MAI  // à la maison
 }

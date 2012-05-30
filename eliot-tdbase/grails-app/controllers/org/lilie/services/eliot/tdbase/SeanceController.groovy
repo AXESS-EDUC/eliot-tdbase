@@ -328,14 +328,14 @@ class SeanceController {
     // lien vers cahier de textes
     Long cahierId = null
     Long chapitreId = null
-    ActiviteContext activiteContext = ActiviteContext.EN_CLASSE
+    ContexteActivite activiteContext = ContexteActivite.CLA
     if (params.cahierId && params.cahierId != 'null') {
       cahierId = params.cahierId as Long
       if (params.chapitreId && params.chapitreId != 'null') {
         chapitreId = params.chapitreId as Long
       }
       if (params.activiteContextId) {
-        activiteContext = ActiviteContext.valueOf(ActiviteContext.class,
+        activiteContext = ContexteActivite.valueOf(ContexteActivite.class,
                                                   params.activiteContextId)
       }
       String urlSeance = createLink(controller: "accueil", action: "activite",
