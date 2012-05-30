@@ -292,29 +292,50 @@ environments {
 environments {
   development {
     eliot.interfacage.strongCheck = false
-    eliot.webservices.rest.client.user = "eliot-tdbase"
-    eliot.webservices.rest.client.password = "eliot-tdbase"
-    eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitresForCahierId",
-            description: "Retourne la liste arborescente de chapitres d'un cahier",
-            contentType: ContentType.JSON,
-            method: Method.GET,
-            requestBodyTemplate: null,
-            responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
-            urlServer: "http://localhost:8090",
-            uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres'],
-            [operationName: "findCahiersByStructureMatiereAndEnseignant",
-                    description: "Retourne la liste des cahiers pour une structure, une matière et un enseignant donné",
-                    contentType: ContentType.JSON,
-                    method: Method.GET,
-                    requestBodyTemplate: null,
-                    responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
-                    urlServer: "http://localhost:8090",
-                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service'],
-            [operationName: "createTextesActivite",
-                    description: "Insert une activité dans un cahier de textes",
-                    contentType: ContentType.JSON,
-                    method: Method.POST,
-                    requestBodyTemplate: '''
+    // rest client config for textes
+    eliot.webservices.rest.client.textes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+    // rest client config for notes
+    eliot.webservices.rest.client.notes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+  }
+  test {
+    eliot.interfacage.strongCheck = false
+    // rest client config for textes
+    eliot.webservices.rest.client.textes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+    // rest client config for notes
+    eliot.webservices.rest.client.notes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+  }
+
+}
+
+eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitresForCahierId",
+        description: "Retourne la liste arborescente de chapitres d'un cahier",
+        contentType: ContentType.JSON,
+        method: Method.GET,
+        requestBodyTemplate: null,
+        responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
+        urlServer: "http://localhost:8090",
+        uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres'],
+        [operationName: "findCahiersByStructureMatiereAndEnseignant",
+                description: "Retourne la liste des cahiers pour une structure, une matière et un enseignant donné",
+                contentType: ContentType.JSON,
+                method: Method.GET,
+                requestBodyTemplate: null,
+                responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+                //urlServer: "http://localhost:8090",
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service'],
+        [operationName: "createTextesActivite",
+                description: "Insert une activité dans un cahier de textes",
+                contentType: ContentType.JSON,
+                method: Method.POST,
+                requestBodyTemplate: '''
                                             {
                                             "kind" : "eliot-textes#activite#insert",
                                             "class" : "org.lilie.services.eliot.textes.Activite",
@@ -327,22 +348,22 @@ environments {
                                             "urlRessource" : "$urlSeance"
                                             }
                                             ''',
-                    responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
-                    urlServer: "http://localhost:8090",
-                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/activite'],
-            [operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
-                    description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
-                    contentType: ContentType.JSON,
-                    method: Method.GET,
-                    requestBodyTemplate: null,
-                    responseContentStructure: "List<eliot-notes#services#standard>",
-                    urlServer: "http://localhost:8090",
-                    uriTemplate: '/eliot-test-webservices/api-rest/v2/services-evaluables'],
-            [operationName: "createDevoir",
-                    description: "Insert un devoir dans le module Notes",
-                    contentType: ContentType.JSON,
-                    method: Method.POST,
-                    requestBodyTemplate: '''
+                responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+                //urlServer: "http://localhost:8090",
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/activite'],
+        [operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
+                description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
+                contentType: ContentType.JSON,
+                method: Method.GET,
+                requestBodyTemplate: null,
+                responseContentStructure: "List<eliot-notes#services#standard>",
+                urlServer: "http://localhost:8090",
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/services-evaluables'],
+        [operationName: "createDevoir",
+                description: "Insert un devoir dans le module Notes",
+                contentType: ContentType.JSON,
+                method: Method.POST,
+                requestBodyTemplate: '''
                                   {
                                   "kind" : "eliot-notes#evaluation#insert",
                                   "class" : "org.lilie.services.eliot.notes.Evaluation",
@@ -353,14 +374,14 @@ environments {
                                   "enseignant-id" : $enseignantId
                                    }
                                    ''',
-                    responseContentStructure: "eliot-notes#evaluation#id>",
-                    urlServer: "http://localhost:8090",
-                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/evaluation'],
-            [operationName: "updateNotes",
-                    description: "Met à jour les notes d'un devoir dans le module Notes",
-                    contentType: ContentType.JSON,
-                    method: Method.POST,
-                    requestBodyTemplate: '''
+                responseContentStructure: "eliot-notes#evaluation#id>",
+                //urlServer: "http://localhost:8090",
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/evaluation'],
+        [operationName: "updateNotes",
+                description: "Met à jour les notes d'un devoir dans le module Notes",
+                contentType: ContentType.JSON,
+                method: Method.POST,
+                requestBodyTemplate: '''
                                  {
                                  "kind" : "eliot-notes#evaluation#update#notes",
                                  "class" : "org.lilie.services.eliot.notes.Evaluation",
@@ -369,18 +390,6 @@ environments {
                                  "enseignant-id" : $enseignantId
                                  }
                                  ''',
-                    responseContentStructure: "eliot-notes#evaluation#id>",
-                    urlServer: "http://localhost:8090",
-                    uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/evaluation/notes']]
-
-  }
-  test {
-    eliot.interfacage.strongCheck = false
-    eliot.webservices.rest.client.user = "eliot-tdbase"
-    eliot.webservices.rest.client.password = "eliot-tdbase"
-    eliot.webservices.rest.client.operations = []
-
-  }
-
-}
-
+                responseContentStructure: "eliot-notes#evaluation#id>",
+                //urlServer: "http://localhost:8090",
+                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/evaluation/notes']]

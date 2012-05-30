@@ -37,7 +37,7 @@ import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
 class CahierTextesRestService {
 
   static transactional = false
-  RestClient restClient
+  RestClient restClientForTextes
 
   /**
    * Récupère la structure en chapitre d'un cahier de textes identifié
@@ -71,7 +71,7 @@ class CahierTextesRestService {
    * @return une map représentant la structure du cahier
    */
   def getStructureChapitresForCahierId(Long cahierId, Long personneId) {
-    restClient.invokeOperation('getStructureChapitresForCahierId',
+    restClientForTextes.invokeOperation('getStructureChapitresForCahierId',
                                [cahierId: cahierId],
                                [utilisateurPersonneId: personneId])
   }
@@ -109,7 +109,7 @@ class CahierTextesRestService {
   def findCahiersByStructureMatiereAndEnseignant(Long structEnsId,
                                                  Long matiereId,
                                                  Long personneId) {
-    restClient.invokeOperation('findCahiersByStructureMatiereAndEnseignant',
+    restClientForTextes.invokeOperation('findCahiersByStructureMatiereAndEnseignant',
                                null,
                                [structureEnseignementId: structEnsId,
                                        matiereId: matiereId,
@@ -142,7 +142,7 @@ class CahierTextesRestService {
                      String description,
                      Date dateActivite,
                      String urlSeance) {
-    restClient.invokeOperation('createTextesActivite',
+    restClientForTextes.invokeOperation('createTextesActivite',
                                [cahierId: cahierId],
                                [utilisateurPersonneId: personneId],
                                [titre: titre,

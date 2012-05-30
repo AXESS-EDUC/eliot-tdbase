@@ -38,7 +38,7 @@ import groovy.json.JsonBuilder
 class NotesRestService {
 
   static transactional = false
-  RestClient restClient
+  RestClient restClientForNotes
 
   /**
    * Récupère les services évaluables pour une séance donnée
@@ -71,7 +71,7 @@ class NotesRestService {
   def findServicesEvaluablesByStrunctureAndDateAndEnseignant(Long structureId,
                                                              Date date,
                                                              Long enseignantId) {
-    restClient.invokeOperation('findServicesEvaluablesByStrunctureAndDateAndEnseignant',
+    restClientForNotes.invokeOperation('findServicesEvaluablesByStrunctureAndDateAndEnseignant',
                                null,
                                [structureEnseignementId: structureId,
                                        date: date.format("yyyy-MM-dd'T'HH:mm:ss"),
@@ -95,7 +95,7 @@ class NotesRestService {
    */
   def createDevoir(String titre,Long serviceId, Long typePeriodeId,
                    Long sousMatiereId, Long enseignantId) {
-    restClient.invokeOperation('createDevoir',
+    restClientForNotes.invokeOperation('createDevoir',
                                null,
                                null,
                                [titre:titre,
@@ -121,7 +121,7 @@ class NotesRestService {
    */
   def updateNotes(Long devoirId, Map<Long,Float> notes, Long enseignantId) {
     def notesJson = new JsonBuilder(notes).toPrettyString()
-    restClient.invokeOperation('updateNotes',
+    restClientForNotes.invokeOperation('updateNotes',
                                    null,
                                    null,
                                    [evaluationId:devoirId,

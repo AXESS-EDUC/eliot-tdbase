@@ -99,14 +99,28 @@ class EliotTicePluginGrailsPlugin {
 
     restOperationDirectory(RestOperationDirectory)
 
-    def user = conf.eliot.webservices.rest.client.user
-    def password = conf.eliot.webservices.rest.client.password
+    def user = conf.eliot.webservices.rest.client.textes.user
+    def password = conf.eliot.webservices.rest.client.textes.password
+    def url = conf.eliot.webservices.rest.client.textes.urlServer
 
-    restClient(RestClient) {
+    restClientForTextes(RestClient) {
       authBasicUser = user
       authBasicPassword = password
+      urlServer = url
       restOperationDirectory = ref("restOperationDirectory")
-      println "Auth Basic user for Web services client REST : ${user}"
+      println "Auth Basic user for textes Web services client REST : ${user}"
+    }
+
+    def userNotes = conf.eliot.webservices.rest.client.notes.user
+    def passwordNotes = conf.eliot.webservices.rest.client.notes.password
+    def urlNotes = conf.eliot.webservices.rest.client.notes.urlServer
+
+    restClientForNotes(RestClient) {
+      authBasicUser = userNotes
+      authBasicPassword = passwordNotes
+      urlServer = urlNotes
+      restOperationDirectory = ref("restOperationDirectory")
+      println "Auth Basic user for Notes Web services client REST : ${userNotes}"
     }
 
     // configure la gestion d'EliotUrlProvider

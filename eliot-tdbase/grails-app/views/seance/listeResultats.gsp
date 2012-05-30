@@ -86,7 +86,7 @@
   </g:if>
   <g:if test="${flash.messageErreurNotesCode}">
     <li class="error">
-      <g:message code="${flash.messageErreursNoteCode}"/>
+      <g:message code="${flash.messageErreurNotesCode}"/>
     </li>
   </g:if>
   <li class="notice">

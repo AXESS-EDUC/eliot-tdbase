@@ -44,6 +44,7 @@ class RestClient {
 
   String authBasicUser
   String authBasicPassword
+  String urlServer
   RestOperationDirectory restOperationDirectory
 
   /**
@@ -64,12 +65,13 @@ class RestClient {
     }
 
     def result = null
-    def http = new HTTPBuilder(operation.urlServer)
+    def url = operation.urlServer ?: urlServer
+    def http = new HTTPBuilder(url)
     http.auth.basic authBasicUser, authBasicPassword
 
     try {
       http.request(operation.method, operation.contentType) {
-        uri = operation.urlServer + getUrlPath(operation.uriTemplate, parameters, httpParameters)
+        uri = url + getUrlPath(operation.uriTemplate, parameters, httpParameters)
         if (operation.requestBodyTemplate) {
           body = getBody(operation.requestBodyTemplate, requestContentParameters)
         }
