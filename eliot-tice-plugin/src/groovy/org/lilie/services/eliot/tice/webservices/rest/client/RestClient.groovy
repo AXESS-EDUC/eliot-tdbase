@@ -67,7 +67,9 @@ class RestClient {
     def result = null
     def url = operation.urlServer ?: urlServer
     def http = new HTTPBuilder(url)
-    http.auth.basic authBasicUser, authBasicPassword
+    if (authBasicUser && authBasicPassword) {
+      http.auth.basic authBasicUser, authBasicPassword
+    }
 
     try {
       http.request(operation.method, operation.contentType) {

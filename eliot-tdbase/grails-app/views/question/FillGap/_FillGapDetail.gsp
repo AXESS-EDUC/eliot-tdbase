@@ -45,7 +45,7 @@
                           labels="['Montrer les mots', 'Saisie libre', 'Menu déroulant']"
                           values="['MLM', 'SL', 'MDR']"
                           value="${specifobject.modeDeSaisie}" disabled="true">
-                <span>${it.label} ${it.radio}</span>
+                <span>${it.radio} ${it.label} <br/></span>
             </g:radioGroup>
         </p>
 
