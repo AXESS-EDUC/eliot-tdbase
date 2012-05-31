@@ -70,13 +70,15 @@ class NotesRestService {
    */
   def findServicesEvaluablesByStrunctureAndDateAndEnseignant(Long structureId,
                                                              Date date,
-                                                             Long enseignantId) {
+                                                             Long enseignantId,
+                                                             String codePorteur = null) {
     restClientForNotes.invokeOperation('findServicesEvaluablesByStrunctureAndDateAndEnseignant',
                                        null,
                                        [structureEnseignementId: structureId,
                                                date: date.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
                                                enseignantPersonneId: enseignantId,
-                                               utilisateurPersonneId: enseignantId])
+                                               utilisateurPersonneId: enseignantId,
+                                               codePorteur: codePorteur])
   }
 
   /**
@@ -94,10 +96,13 @@ class NotesRestService {
    * @param enseignantId l'id de l'enseignant
    * @return la map correspondant au devoir crée
    */
-  def createDevoir(String titre, Long serviceId, Date date, Float noteMax, Long personneId) {
+  def createDevoir(String titre, Long serviceId, Date date, Float noteMax,
+                   Long personneId,
+                   String codePorteur = null) {
     restClientForNotes.invokeOperation('createDevoir',
                                        null,
-                                       [utilisateurPersonneId: personneId],
+                                       [utilisateurPersonneId: personneId,
+                                       codePorteur: codePorteur],
                                        [titre: titre,
                                                serviceId: serviceId,
                                                date: date.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
@@ -118,11 +123,13 @@ class NotesRestService {
    * @param enseignantId l'id de l'enseignant
    * @return
    */
-  def updateNotes(Long devoirId, Map<Long, Float> notes, Long enseignantId) {
+  def updateNotes(Long devoirId, Map<Long, Float> notes, Long enseignantId,
+                  String codePorteur = null) {
     def notesJson = new JsonBuilder(notes).toPrettyString()
     restClientForNotes.invokeOperation('updateNotes',
                                        [evaluationId: devoirId],
-                                       [utilisateurPersonneId: enseignantId],
+                                       [utilisateurPersonneId: enseignantId,
+                                       codePorteur: codePorteur],
                                        [notesJson: notesJson])
   }
 }

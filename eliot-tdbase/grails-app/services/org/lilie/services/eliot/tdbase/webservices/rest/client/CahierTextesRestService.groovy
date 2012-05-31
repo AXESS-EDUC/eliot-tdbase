@@ -70,10 +70,12 @@ class CahierTextesRestService {
    * @param personneId l'id de la personne effectuant la demande
    * @return une map représentant la structure du cahier
    */
-  def getStructureChapitresForCahierId(Long cahierId, Long personneId) {
+  def getStructureChapitresForCahierId(Long cahierId, Long personneId,
+                                       String codePorteur = null) {
     restClientForTextes.invokeOperation('getStructureChapitresForCahierId',
-                               [cahierId: cahierId],
-                               [utilisateurPersonneId: personneId])
+                                        [cahierId: cahierId],
+                                        [utilisateurPersonneId: personneId,
+                                        codePorteur: codePorteur])
   }
 
   /**
@@ -107,11 +109,13 @@ class CahierTextesRestService {
    * @return la map représentant la liste des cahiers
    */
   def findCahiersByStructureMatiereAndEnseignant(Long structEnsId,
-                                                 Long personneId) {
+                                                 Long personneId,
+                                                 codePorteur = null) {
     restClientForTextes.invokeOperation('findCahiersByStructureMatiereAndEnseignant',
-                               null,
-                               [structureEnseignementId: structEnsId,
-                                       utilisateurPersonneId: personneId])
+                                        null,
+                                        [structureEnseignementId: structEnsId,
+                                                utilisateurPersonneId: personneId,
+                                                codePorteur: codePorteur])
   }
 
   /**
@@ -123,36 +127,37 @@ class CahierTextesRestService {
    *   id : activiteId]
    * </code>
    * @param cahierId l'id du cahier de texte
-   * @param chapitreId  l'id du chapitre dans lequel on insert l'activité
-   * @param activiteContext  le contexte d'activité : "CLA" ou "MAI"
+   * @param chapitreId l'id du chapitre dans lequel on insert l'activité
+   * @param activiteContext le contexte d'activité : "CLA" ou "MAI"
    * @param personneId l'id de la personne déclenchant l'insertion
    * @param titre le titre de l'activité
-   * @param description  la description de l'activité
-   * @param dateActivite  la date de l'activité
-   * @param urlSeance  l'url de la séance
+   * @param description la description de l'activité
+   * @param dateActivite la date de l'activité
+   * @param urlSeance l'url de la séance
    * @return l'id de l'activite créee ou null
    */
   def createTextesActivite(Long cahierId,
-                     Long chapitreId,
-                     String activiteContext,
-                     Long personneId,
-                     String titre,
-                     String description,
-                     Date dateDebutActivite,
-                     Date dateFinActivite,
-                     String urlSeance) {
+                           Long chapitreId,
+                           String activiteContext,
+                           Long personneId,
+                           String titre,
+                           String description,
+                           Date dateDebutActivite,
+                           Date dateFinActivite,
+                           String urlSeance,
+                           codePorteur = null) {
     restClientForTextes.invokeOperation('createTextesActivite',
-                               [cahierId: cahierId],
-                               [utilisateurPersonneId: personneId],
-                               [titre: titre,
-                                       cahierId: cahierId,
-                                       chapitreId: chapitreId,
-                                       dateDebutActivite: dateDebutActivite.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
-                                       dateFinActivite: dateFinActivite.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
-                                       contexteActivite: activiteContext,
-                                       description: description,
-                                       urlSeance: urlSeance
-                               ])
+                                        [cahierId: cahierId],
+                                                                         [utilisateurPersonneId: personneId,
+                                                                                 codePorteur: codePorteur],
+                                                                         [titre: titre,
+                                                                                 cahierId: cahierId,
+                                                                                 chapitreId: chapitreId,
+                                                                                 dateDebutActivite: dateDebutActivite.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
+                                                                                 dateFinActivite: dateFinActivite.format("yyyy-MM-dd'T'HH:mm:ss'Z'"),
+                                                                                 contexteActivite: activiteContext,
+                                                                                 description: description,
+                                                                                 urlSeance: urlSeance])
   }
 
 }

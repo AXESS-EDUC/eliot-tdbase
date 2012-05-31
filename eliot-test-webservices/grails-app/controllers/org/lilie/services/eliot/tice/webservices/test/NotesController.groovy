@@ -33,7 +33,11 @@ import groovy.json.JsonBuilder
 class NotesController {
 
   def getServicesEvaluables() {
-    def enseignantPersonneId = params.enseignantId as Long
+    println("INFO - getServicesEvaluables porteur et user: ")
+    println("Porteur ENT : ${params.codePorteur}")
+
+    def enseignantPersonneId = params.enseignantPersonneId as Long
+    println("enseignantPersonneId : ${enseignantPersonneId}")
     def structureEnseignementId = params.structureEnseignementId as Long
     def date = params.date
     String resp = new JsonBuilder([kind: "List",
