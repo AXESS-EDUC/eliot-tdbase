@@ -381,7 +381,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 method: Method.PUT,
                 requestBodyTemplate: '''
                                  {
-                                 "kind" : "eliot-notes#evaluation#update#notes",
+                                 "kind" : "eliot-notes#evaluation-notes#standard",
                                  "notes": $notesJson
                                  }
                                  ''',

@@ -114,10 +114,10 @@ class NotesService {
                                                             personne)
     if (copies) {
       // todofsil gerer les notes au format attendu
-      def notes = [:]
+      def notes = []
       def evalId = null
       copies.each { Copie copie ->
-        notes.put(copie.eleveId, copie.correctionNoteFinale)
+        notes << new EleveNote(eleveId: copie.eleveId,valeurNote: copie.correctionNoteFinale)
       }
       def res = notesRestService.updateNotes(seance.evaluationId,
                                              notes,
@@ -137,4 +137,9 @@ class NotesService {
 class ServiceInfo {
   Long id
   String libelle
+}
+
+class EleveNote {
+  Long eleveId
+  Float valeurNote
 }

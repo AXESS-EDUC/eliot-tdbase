@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.webservices.rest.client
 
 import groovy.json.JsonBuilder
 import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
+import org.lilie.services.eliot.tdbase.EleveNote
 
 /**
  * Service d'initiaisation de l'annuaire des opérations de web services Rest
@@ -123,9 +124,16 @@ class NotesRestService {
    * @param enseignantId l'id de l'enseignant
    * @return
    */
-  def updateNotes(Long devoirId, Map<Long, Float> notes, Long enseignantId,
+  def updateNotes(Long devoirId, List<EleveNote> notes, Long enseignantId,
                   String codePorteur = null) {
-    def notesJson = new JsonBuilder(notes).toPrettyString()
+    def notesTrans = []
+    notes.each {
+      notesTrans << [kind:'eliot-notes#notes#standard',
+              'eleve-personne-id': it.eleveId,
+              'valeur': it.valeurNote.toString()
+      ]
+    }
+    def notesJson = new JsonBuilder(notesTrans).toPrettyString()
     restClientForNotes.invokeOperation('updateNotes',
                                        [evaluationId: devoirId],
                                        [utilisateurPersonneId: enseignantId,
