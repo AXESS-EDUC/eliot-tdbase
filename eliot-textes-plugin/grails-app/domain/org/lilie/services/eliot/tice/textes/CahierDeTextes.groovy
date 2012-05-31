@@ -48,11 +48,9 @@ class CahierDeTextes {
   static mapping = {
     table 'entcdt.cahier_de_textes'
     id column: 'id', generator: 'sequence', params: [sequence: 'entcdt.cahier_de_textes_id_seq']
-    item column: 'id_item', fetch: 'join'
-    service column: 'id_service', fetch: 'join'
-    fichier column: 'id_fichier'
-    anneeScolaire column: 'annee_scolaire_id', fetch: 'join'
-    parentIncorporation column: 'id_parent_incorporation'
+    item fetch: 'join'
+    service fetch: 'join'
+    anneeScolaire fetch: 'join'
     version false
     cache true
   }

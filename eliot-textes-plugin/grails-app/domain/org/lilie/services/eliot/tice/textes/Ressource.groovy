@@ -39,8 +39,6 @@ class Ressource {
   static mapping = {
     table 'entcdt.ressource'
     id column: 'id', generator: 'sequence', params: [sequence: 'entcdt.ressource_id_seq']
-    activite column: 'id_activite'
-    fichier column: 'id_fichier'
     version false
   }
   Long id

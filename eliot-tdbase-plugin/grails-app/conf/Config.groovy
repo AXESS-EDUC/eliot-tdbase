@@ -35,5 +35,15 @@ environments {
     eliot.requestHeaderPorteur = "ENT_PORTEUR"
     eliot.not_an_application.nomApplication = "TdbasePlugin"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
+
+    eliot.interfacage.strongCheck = false
+    // rest client config for textes
+    eliot.webservices.rest.client.textes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+    // rest client config for notes
+    eliot.webservices.rest.client.notes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
   }
 }

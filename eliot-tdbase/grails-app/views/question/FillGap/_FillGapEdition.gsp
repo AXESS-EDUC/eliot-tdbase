@@ -62,7 +62,7 @@
                       values="['MLM', 'SL', 'MDR']"
                       value="${specifobject.modeDeSaisie}"
                       >
-            <span>${it.label} ${it.radio}</span>
+            <span>${it.radio} ${it.label}<br/></span>
         </g:radioGroup>
     </td>
 </tr>

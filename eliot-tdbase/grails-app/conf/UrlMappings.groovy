@@ -15,7 +15,7 @@ class UrlMappings {
 
     "/"(controller: "accueil")
 
-
+    "/p/activite/$id/sujet/$sujetId"(controller: "accueil", action: "activite")
 
     "500"(view: '/error')
   }

@@ -35,28 +35,69 @@
 package org.lilie.services.eliot.tdbase
 
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.FonctionService
-
-
-
 
 class AccueilController {
 
   FonctionService fonctionService
+  CopieService copieService
 
+  /**
+   * Accueil tdbase
+   */
   def index() {
     if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionEleve().authority)) {
-      redirect(controller: 'activite', action: 'index', params: [bcInit:true])
+      redirect(controller: 'activite', action: 'index', params: [bcInit: true])
     } else if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionResponsableEleve().authority)) {
-      redirect(controller: 'resultats', action: 'liste', params: [bcInit:true])
+      redirect(controller: 'resultats', action: 'liste', params: [bcInit: true])
     } else {
-      redirect(controller: 'dashboard', action: 'index', params: [bcInit:true])
+      redirect(controller: 'dashboard', action: 'index', params: [bcInit: true])
     }
   }
 
-  def ignore() {
-    render ("Canceled")
+  /**
+   * Accueil activite : lien d'accès à une séance ou à un sujet via le cahier de
+   * textes ou une URL externe
+   */
+  def activite() {
+    params.bcInit = true
+    def seance = ModaliteActivite.get(params.id)
+    if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionEleve().authority)) {
+      if (!seance) {
+        flash.messageCode = "seance.nondisponible"
+        redirect(controller: 'activite', action: 'listeSeances', params: params)
+      } else if (seance.estOuverte()) {
+        redirect(controller: 'activite', action: 'travailleCopie', params: params)
+      } else {
+        Personne personne = authenticatedPersonne
+        Copie copie = copieService.getCopieForModaliteActiviteAndEleve(seance, personne)
+        redirect(controller: 'activite', action: 'visualiseCopie',id: copie.id, params: [bcInit: true])
+      }
+    } else if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionResponsableEleve().authority)) {
+      if (!seance) {
+        flash.messageCode = "seance.nondisponible"
+      } else if (seance.estOuverte()) {
+        flash.messageCode = "seance.resultats.nondisponible"
+      }
+      redirect(controller: 'resultats', action: 'liste', params: [bcInit: true])
+    } else {
+      if (!seance) {
+        flash.messageCode = "seance.nondisponible.sujet.disponible"
+        redirect(controller:'sujet', action: 'teste', id: params.sujetId, params: [bcInit: true])
+      } else {
+        redirect(controller: 'seance', action: 'listeResultats', params: params)
+      }
+    }
   }
+
+/**
+ * Hack pour requête Jmol
+ */
+  def ignore() {
+    render("Canceled")
+  }
+
 
 }
 

@@ -29,7 +29,7 @@
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
 import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.lilie.services.eliot.tice.utils.PortailTagLibService
-import org.lilie.services.eliot.tice.utils.PortailTagLibService
+
 
 class BootStrap {
 
@@ -48,7 +48,7 @@ class BootStrap {
     if (config.eliot.bootstrap.jeudetest) {
       bootstrapService.bootstrapJeuDeTestDevDemo()
     }
-    
+
     try {
       portailTagLibService.addManuelDocumentUrls(config.eliot.manuels.documents.urlMap)
     } catch (Exception e) {
@@ -59,6 +59,7 @@ class BootStrap {
     portailTagLibService.applicationInFrame = config.eliot.pages.container.forceDimensions
     portailTagLibService.divHeight = config.eliot.pages.container.height
     portailTagLibService.divWidth = config.eliot.pages.container.width
+
 
   }
 

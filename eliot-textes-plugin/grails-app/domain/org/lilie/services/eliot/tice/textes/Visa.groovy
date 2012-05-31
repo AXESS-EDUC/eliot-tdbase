@@ -45,7 +45,6 @@ public class Visa {
     table 'entcdt.visa'
     id column: 'id', generator: 'sequence', params: [sequence: 'entcdt.visa_id_seq']
     auteur column: 'auteur_personne_id'
-    cahierVise column: 'cahier_vise_id'
     version false
   }
 

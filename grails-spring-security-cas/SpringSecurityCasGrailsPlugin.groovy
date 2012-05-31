@@ -16,7 +16,6 @@
 import org.codehaus.groovy.grails.plugins.springsecurity.SecurityFilterPosition
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 
-import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
 import org.jasig.cas.client.proxy.Cas20ProxyRetriever
 import org.jasig.cas.client.proxy.ProxyGrantingTicketStorageImpl
 import org.jasig.cas.client.session.SingleSignOutFilter

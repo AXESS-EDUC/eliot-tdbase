@@ -46,7 +46,7 @@
             					    "Annuler": function() {$(this).dialog("close");return false},
             						'OK': function() {
                                         $(this).dialog("close");
-                                        document.location = "${createLink(action:'supprime',controller: 'seance', id: seance.id)}";
+                                        document.location = "${createLink(action: 'supprime', controller: 'seance', id: seance.id)}";
                                         }
             					}
             			    });
@@ -56,7 +56,7 @@
       });
     });
   </r:script>
-  <title><g:message code="seance.listeResultats.head.title" /></title>
+  <title><g:message code="seance.listeResultats.head.title"/></title>
 </head>
 
 <body>
@@ -66,9 +66,12 @@
   <span class="portal-tabs-famille-liens">
     <g:link action="edite" controller="seance" class="modify"
             id="${seance.id}">Modifier la séance</g:link>
-    <g:if test="${grailsApplication.config.eliot.interfacage.notes}"> |
-      <g:link action="edite" controller="seance" class="share" title="Met à jour les notes dans la gestion des notes"
-                        id="${seance.id}">Mettre à jour les notes</g:link>
+    <g:if test="${grailsApplication.config.eliot.interfacage.notes}">
+      <g:if test="${afficheLienMiseAjourNote}">|
+        <g:link action="updateNotesDevoir" controller="seance" class="share"
+                title="Mise à jour des notes du devoir lié à la séance"
+                id="${seance.id}">Mettre à jour les notes</g:link>
+      </g:if>
     </g:if>|
     <g:link action="supprime" controller="seance" class="delete"
             id="${seance.id}">Supprimer la séance</g:link>
@@ -76,6 +79,16 @@
 </div>
 
 <div class="portal-messages">
+  <g:if test="${flash.messageCode}">
+    <li class="success">
+      <g:message code="${flash.messageCode}"/>
+    </li>
+  </g:if>
+  <g:if test="${flash.messageErreurNotesCode}">
+    <li class="error">
+      <g:message code="${flash.messageErreurNotesCode}"/>
+    </li>
+  </g:if>
   <li class="notice">
     Groupe : ${seance.groupeLibelle}<br/>
     Sujet : ${seance.sujet.titre} <br/>

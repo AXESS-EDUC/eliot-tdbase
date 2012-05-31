@@ -39,8 +39,6 @@ import org.lilie.services.eliot.tice.HashConstantes
 class RelActiviteActeur implements Serializable {
   static mapping = {
     table 'entcdt.rel_activite_acteur'
-    activite column: 'id_activite'
-    acteur column: 'id_acteur'
     id composite: ['activite', 'acteur']
     version false
   }

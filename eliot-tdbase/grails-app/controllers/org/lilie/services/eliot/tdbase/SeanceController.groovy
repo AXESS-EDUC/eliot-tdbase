@@ -45,6 +45,8 @@ class SeanceController {
   ModaliteActiviteService modaliteActiviteService
   CopieService copieService
   ProfilScolariteService profilScolariteService
+  CahierTextesService cahierTextesService
+  NotesService notesService
 
 /**
  *
@@ -53,17 +55,73 @@ class SeanceController {
   def edite() {
     ModaliteActivite modaliteActivite
     Personne personne = authenticatedPersonne
+    def afficheLienCreationDevoir = false
+    def afficheLienCreationActivite = false
+    def afficheActiviteCreee = false
+    def afficheDevoirCree = false
+    def lienBookmarkable = null
+    List<ServiceInfo> services = []
+    List<CahierTextesInfo> cahiers = []
+    List<ChapitreInfo> chapitres = []
     if (params.creation) {
       modaliteActivite = new ModaliteActivite(enseignant: personne)
       params.bcInit = true
     } else {
       modaliteActivite = ModaliteActivite.get(params.id)
+      lienBookmarkable = createLink(controller: "accueil", action: "activite",
+                                    id: modaliteActivite.id,
+                                    absolute: true,
+                                    params: [sujetId: modaliteActivite.sujetId])
+      def strongCheck = grailsApplication.config.eliot.interfacage.strongCheck as Boolean
+      afficheLienCreationDevoir = modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(modaliteActivite,
+                                                                                                  personne,
+                                                                                                  strongCheck)
+      afficheLienCreationActivite = modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(modaliteActivite,
+                                                                                                       personne,
+                                                                                                       strongCheck)
+      if (!afficheLienCreationDevoir) {
+        afficheDevoirCree = modaliteActiviteService.modaliteActiviteHasNotesDevoir(modaliteActivite,
+                                                                                   personne,
+                                                                                   strongCheck)
+      } else {
+        services = notesService.findServicesEvaluablesByModaliteActivite(modaliteActivite,
+                                                                         personne)
+      }
+      if (!afficheLienCreationActivite) {
+        afficheActiviteCreee = modaliteActiviteService.modaliteActiviteHasTextesActivite(modaliteActivite,
+                                                                                         personne,
+                                                                                         strongCheck)
+      } else {
+        cahiers = cahierTextesService.findCahiersTextesInfoByModaliteActivite(modaliteActivite,
+                                                                              personne)
+      }
     }
-    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"), [services: services])
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
+            lienBookmarkable: lienBookmarkable,
+            afficheLienCreationDevoir: afficheLienCreationDevoir,
+            afficheLienCreationActivite: afficheLienCreationActivite,
+            afficheActiviteCreee: afficheActiviteCreee,
+            afficheDevoirCree: afficheDevoirCree,
             modaliteActivite: modaliteActivite,
-            proprietesScolarite: proprietesScolarite])
+            proprietesScolarite: proprietesScolarite,
+            cahiers: cahiers,
+            chapitres: chapitres,
+            services: services])
+  }
+
+  /**
+   * Action updateChapitres
+   */
+  def updateChapitres() {
+    Personne personne = authenticatedPersonne
+    List<ChapitreInfo> chapitres = []
+    if (params.cahierId != 'null') {
+      def cahierId = params.cahierId as Long
+      chapitres = cahierTextesService.getChapitreInfosForCahierId(cahierId, personne)
+    }
+    render(view: "/seance/_selectChapitres", model: [chapitres: chapitres])
   }
 
   /**
@@ -90,6 +148,8 @@ class SeanceController {
 
     if (!modaliteActivite.hasErrors()) {
       flash.messageCode = "seance.enregistre.succes"
+      tryInsertActiviteForModaliteActivite(modaliteActivite, params, personne)
+      tryInsertDevoirForModaliteActivite(modaliteActivite, params, personne)
       redirect(action: "edite", id: modaliteActivite.id, params: [bcInit: true])
     } else {
       def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
@@ -126,8 +186,15 @@ class SeanceController {
   def supprime() {
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
+    if (seance.activiteId) {
+      flash.messageSuppressionTextesCode = "seance.suppression.activitenonsupprimee"
+    }
+    if (seance.evaluationId) {
+      flash.messageSuppressionNotesCode = "seance.suppression.devoirnonsupprime"
+    }
     modaliteActiviteService.supprimeModaliteActivite(seance,
                                                      personne)
+    flash.messageSuppressionCode = "seance.suppression.succes"
     redirect(action: "liste", params: [bcInit: true])
   }
 
@@ -140,6 +207,10 @@ class SeanceController {
 
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
+    def strongCheck = grailsApplication.config.eliot.interfacage.strongCheck as Boolean
+    def afficheLienMiseAjourNote = modaliteActiviteService.modaliteActiviteHasNotesDevoir(seance,
+                                                                                          personne,
+                                                                                          strongCheck)
     def copies = copieService.findCopiesForModaliteActivite(seance,
                                                             personne)
     def elevesSansCopies = copieService.findElevesSansCopieForModaliteActivite(seance,
@@ -147,8 +218,29 @@ class SeanceController {
                                                                                personne)
     render(view: '/seance/listeResultats', model: [liens: breadcrumpsService.liens,
             seance: seance,
+            afficheLienMiseAjourNote: afficheLienMiseAjourNote,
             copies: copies,
             elevesSansCopies: elevesSansCopies])
+  }
+
+  /**
+   * Action de mise à jour des notes
+   */
+  def updateNotesDevoir() {
+    ModaliteActivite seance = ModaliteActivite.get(params.id)
+    Personne personne = authenticatedPersonne
+    def copies = copieService.findCopiesForModaliteActivite(seance,
+                                                            personne)
+    def notes = [:]
+    copies.each { Copie copie ->
+        notes.put(copie.eleveId, copie.correctionNoteFinale)
+    }
+    if (notesService.updateNotes(seance,personne)) {
+      flash.messageCode = "seance.updatenotes.succes"
+    } else {
+      flash.messageErreurNotesCode = "seance.updatenotes.echec"
+    }
+    redirect(action: 'listeResultats',id: seance.id,controller: 'seance')
   }
 
   /**
@@ -226,7 +318,59 @@ class SeanceController {
     }
   }
 
+  /**
+   * Essayer de creer l'activité dans le cahier de textes
+   * @param modaliteActivite la séance
+   * @param params les params de la requête
+   * @param personne la personne déclenchant l'opération
+   */
+  private tryInsertActiviteForModaliteActivite(ModaliteActivite modaliteActivite, def params, Personne personne) {
+    // lien vers cahier de textes
+    Long cahierId = null
+    Long chapitreId = null
+    ContexteActivite activiteContext = ContexteActivite.CLA
+    if (params.cahierId && params.cahierId != 'null') {
+      cahierId = params.cahierId as Long
+      if (params.chapitreId && params.chapitreId != 'null') {
+        chapitreId = params.chapitreId as Long
+      }
+      if (params.activiteContextId) {
+        activiteContext = ContexteActivite.valueOf(ContexteActivite.class,
+                                                  params.activiteContextId)
+      }
+      String urlSeance = createLink(controller: "accueil", action: "activite",
+                                    id: modaliteActivite.id, absolute: true,
+                                    params: [sujetId: modaliteActivite.sujetId])
+      Long actId = cahierTextesService.createTextesActivite(cahierId, chapitreId, activiteContext, modaliteActivite,
+                                                            "Séance TDBase", urlSeance, personne)
+      if (!actId) {
+        flash.messageTextesCode = "seance.enregistre.liencahiertextes.erreur"
+      }
+    }
+  }
 
+  /**
+   * Essayer de creer le devoir dans le module notes
+   * @param modaliteActivite la séance
+   * @param params les params de la requête
+   * @param personne la personne déclenchant l'opération
+   */
+  private tryInsertDevoirForModaliteActivite(ModaliteActivite modaliteActivite, def params, Personne personne) {
+    // lien vers notes
+    Long serviceId = null
+    if (params.serviceId && params.serviceId != 'null') {
+      serviceId = params.serviceId as Long
+      List<ServiceInfo> services = breadcrumpsService.getValeurPropriete('services')
+      ServiceInfo service = services.find {it.id == serviceId}
+      Long evalId = null
+      if (service) {
+        evalId = notesService.createDevoir(service, modaliteActivite, personne)
+      }
+      if (!evalId) {
+        flash.messageNotesCode = "seance.enregistre.liennotes.erreur"
+      }
+    }
+  }
 }
 
 
@@ -241,3 +385,4 @@ class UpdateReponseNoteCommand {
   Long element_id
   Float update_value
 }
+

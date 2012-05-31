@@ -39,7 +39,10 @@
 
 <tr>
     <td class="label">R&eacute;ponse:</td>
-    <td>
+    <td id="reponseDisclaimer">
+        <span>${message(code: 'question.reponses.disclaimer')}</span>
+    </td>
+    <td id="reponseZone">
         <input type="file" name="specifobject.fichier"
                onchange="$('#imageUpload').trigger('click');"/>
 

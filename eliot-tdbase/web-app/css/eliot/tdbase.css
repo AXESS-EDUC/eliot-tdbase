@@ -1294,7 +1294,9 @@ Style for result table
 	padding-left: 45px;
 	color: #444;	
 }
-	.portal-default_results-list.sceance.resultats .note{color: #ec8e0c;}
+
+.portal-default_results-list.sceance.resultats .note{color: #ec8e0c;}
+
 div.portal-default_results-list.sceance.resultats em{
 	color: #999;
 	padding: 0;

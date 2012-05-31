@@ -66,10 +66,12 @@ class Enseignement implements Serializable {
 //  ]
 
   static mapping = {
-    table 'ent.rel_enseignant_service'
-    enseignant column: 'id_enseignant', fetch: 'join'
-    service column: 'id_service', fetch: 'join'
-    id composite: ['enseignant', 'service']
+    table 'ent.enseignement'
+    enseignant fetch: 'join'
+    service  fetch: 'join'
+    id column: 'id',
+           generator: 'sequence',
+           params: [sequence: 'ent.enseignement_id_seq']
   }
 
   def String toString() {

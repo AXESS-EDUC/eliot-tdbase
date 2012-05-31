@@ -59,7 +59,7 @@ class QuestionSpecificationServiceTests extends GroovyTestCase {
 
     new FillGapSpecification([
                                      libelle: "Please fill in the gaps.",
-                                     montrerLesMots: true,
+                                     modeDeSaisie: "MLM",
                                      texteATrous: "The color of blood is {=red}. Major blood vessels are {~feet=arteries=veins} and {=veins=arteries~hair~\\~moo\\}\\=\\{}.",
                                      correction: "The color of blood is red. Major blood vessels are arteries and veins."
                              ])

@@ -281,8 +281,7 @@
         "specification" : """{
         "questionTypeCode" : "FillGap",
         "libelle" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/>",
-        "saisieLibre" : true,
-        "montrerLesMots" : false,
+        "modeDeSaisie" : "SL",
         "texteATrous" : "<xsl:value-of select="json:encode-string(questiontext/text/text())"/> {
         <xsl:for-each select="answer">
             <xsl:choose>

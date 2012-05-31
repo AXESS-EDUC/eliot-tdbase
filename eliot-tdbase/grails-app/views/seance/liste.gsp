@@ -43,7 +43,22 @@
 <body>
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
-
+<g:if test="${flash.messageSuppressionCode}">
+  <div class="portal-messages">
+    <li class="success">
+      <g:message code="${flash.messageSuppressionCode}"
+                 class="portal-messages success"/>
+      <g:if test="${flash.messageSuppressionTextesCode}">
+        <g:message code="${flash.messageSuppressionTextesCode}"
+                   class="portal-messages success"/>
+      </g:if>
+      <g:if test="${flash.messageSuppressionNotesCode}">
+        <g:message code="${flash.messageSuppressionNotesCode}"
+                   class="portal-messages success"/>
+      </g:if>
+    </li>
+  </div>
+</g:if>
 <g:if test="${seances}">
   <div class="portal_pagination">
     <p class="nb_result">${seances.totalCount} résultat(s)</p>

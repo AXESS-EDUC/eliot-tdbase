@@ -41,8 +41,6 @@ import org.lilie.services.eliot.tice.HashConstantes
 class RelCahierGroupe implements Serializable {
   static mapping = {
     table 'entcdt.rel_cahier_groupe'
-    cahierDeTextes column: 'id_cahier_de_textes'
-    groupe column: 'id_groupe'
     id composite: ['cahierDeTextes', 'groupe']
     version false
   }

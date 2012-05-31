@@ -47,6 +47,11 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 
+<g:if test="${flash.messageCode}">
+  <div class="portal-messages">
+    <li class="notice"><g:message code="${flash.messageCode}"/></li>
+  </div>
+</g:if>
 <g:if test="${seances}">
   <div class="portal_pagination">
     <p class="nb_result">${seances.totalCount} résultat(s)</p>

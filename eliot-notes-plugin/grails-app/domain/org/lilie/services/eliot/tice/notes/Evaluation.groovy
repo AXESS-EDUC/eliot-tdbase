@@ -79,8 +79,6 @@ class Evaluation {
     id column: 'id',
        generator: 'sequence',
        params: [sequence: 'entnotes.evaluation_id_seq']
-    // la declaration d'une cle composite ne fonctionne qu'implicitement
-    //enseignement column :  ['enseignant_id', 'service_id']
 
     // l'enregistrement dans le tableau de jointure est enlevé par
     // cascade quand l'évaluation est supprimée
@@ -89,16 +87,8 @@ class Evaluation {
             key: 'evaluation_id',
             column: 'periode_id'
     ]
-    titre column: 'titre'
-    dateEvaluation column: 'date_evaluation'
-    description column: 'description'
-    coefficient column: 'coefficient'
-    noteMaxPossible column: 'note_max_possible'
     publiable column: 'est_publiable'
-    dateCreation column: 'date_creation'
-    ordre column: 'ordre'
-    moyenne column: 'moyenne'
-    modaliteMatiere column: 'modalite_matiere_id'
+
   }
 
   /**

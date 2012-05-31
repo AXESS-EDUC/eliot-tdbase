@@ -7,13 +7,10 @@
   <resources>
     <resource>org.lilie.services.eliot.tice.textes.Activite</resource>
     <resource>org.lilie.services.eliot.tice.textes.CahierDeTextes</resource>
-    <resource>org.lilie.services.eliot.tice.textes.CahierDeTextesCopieInfo</resource>
     <resource>org.lilie.services.eliot.tice.textes.Chapitre</resource>
     <resource>org.lilie.services.eliot.tice.textes.ContexteActivite</resource>
     <resource>org.lilie.services.eliot.tice.textes.DateActivite</resource>
     <resource>org.lilie.services.eliot.tice.textes.Dossier</resource>
-    <resource>org.lilie.services.eliot.tice.textes.EtatChapitre</resource>
-    <resource>org.lilie.services.eliot.tice.textes.EtatDossier</resource>
     <resource>org.lilie.services.eliot.tice.textes.Fichier</resource>
     <resource>org.lilie.services.eliot.tice.textes.RelActiviteActeur</resource>
     <resource>org.lilie.services.eliot.tice.textes.RelCahierActeur</resource>
@@ -44,19 +41,19 @@
       <dependency group='postgresql' name='postgresql' version='8.4-702.jdbc4' />
     </runtime>
     <build>
-      <dependency group='net.sf.saxon' name='saxon-dom' version='8.7' />
       <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
+      <dependency group='net.sf.saxon' name='saxon-dom' version='8.7' />
     </build>
   </dependencies>
   <plugins>
     <compile>
-      <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
-      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
-      <plugin group='org.grails.plugins' name='hibernate' version='2.0.3' />
       <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
-      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
-      <plugin group='org.grails.plugins' name='resources' version='1.1.5' />
+      <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.0.3' />
       <plugin group='org.grails.plugins' name='mail' version='1.0' />
+      <plugin group='org.grails.plugins' name='resources' version='1.1.5' />
+      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
     </compile>
     <runtime>
       <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
