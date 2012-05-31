@@ -241,8 +241,7 @@ class EliotTicePluginGrailsPlugin {
     // ajoute la mise à disposition du code porteur
     if (!mc.respondsTo(null, 'getCodePorteur')) {
       mc.getCodePorteur = {->
-        //def headerName = ConfigurationHolder.config.eliot.requestHeaderPorteur ?: "ENT_PORTEUR"
-        def headerName = ConfigurationHolder.config.eliot.requestHeaderPorteur
+        def headerName = ConfigurationHolder.config.eliot.requestHeaderPorteur ?: "ENT_PORTEUR"
         HttpServletRequest request = RequestContextHolder.currentRequestAttributes().currentRequest
         request.getHeader(headerName)
       }
