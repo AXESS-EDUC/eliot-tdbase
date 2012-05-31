@@ -12,7 +12,7 @@
     z-index: 1;
     position: absolute;
     border: solid 1px #808080;
-    background: rgba(245, 245, 245, 0.9);
+    background: rgba(245, 245, 245, 1);
 }
 
 .textZoneSupressButton {
@@ -57,10 +57,10 @@
 }
 
 .highlighted {
-    background: rgba(181, 189, 255, 0.9);
+    background: rgba(181, 189, 255, 1);
 }
 
 .unHighlighted {
-    background: rgba(245, 245, 245, 0.9);
+    background: rgba(245, 245, 245, 1);
 }
 
