@@ -151,6 +151,25 @@ class Sujet implements Artefact {
     return questions?.count { it.estComposite() } > 0
   }
 
+  /**
+   *
+   * @return la note maximale calculée
+   */
+  Float calculNoteMax() {
+    def res = 0
+    questionsSequences.each {SujetSequenceQuestions sujetQuest ->
+      if (sujetQuest.question.estComposite()) {
+        res += sujetQuest.question.exercice.calculNoteMax()
+      } else {
+        if (sujetQuest.points) {
+          res += sujetQuest.points
+        }
+      }
+
+    }
+    res
+  }
+
   @Override
   boolean estDistribue() {
     if (estUnExercice()) {

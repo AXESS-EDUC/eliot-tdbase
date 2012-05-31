@@ -77,11 +77,10 @@ class NotesService {
                     Personne personne,
                     String codePorteur = null) {
     assert (personne == seance.enseignant)
-    // todofsil calculer de la note max d'un sujet
     def res = notesRestService.createDevoir(seance.sujet.titre,
                                             serviceInfo.id,
                                             seance.dateDebut,
-                                            seance.sujet.noteMax,
+                                            seance.sujet.calculNoteMax(),
                                             personne.id,
                                             codePorteur)
     def evaluationId = null
@@ -113,7 +112,6 @@ class NotesService {
     def copies = copieService.findCopiesForModaliteActivite(seance,
                                                             personne)
     if (copies) {
-      // todofsil gerer les notes au format attendu
       def notes = []
       def evalId = null
       copies.each { Copie copie ->
