@@ -49,11 +49,14 @@ class CahierTextesService {
    * @return la liste des cahiers de textes
    */
   List<CahierTextesInfo> findCahiersTextesInfoByModaliteActivite(ModaliteActivite seance,
-                                                                 Personne personne) {
+                                                                 Personne personne,
+                                                                 String codePorteur = null) {
     assert (seance.enseignant == personne)
     def structId = seance.structureEnseignementId
     def personneId = personne.id
-    def restRes = cahierTextesRestService.findCahiersByStructureMatiereAndEnseignant(structId, personneId)
+    def restRes = cahierTextesRestService.findCahiersByStructureMatiereAndEnseignant(structId,
+                                                                                     personneId,
+                                                                                     codePorteur)
     def res = []
     if (restRes) {
       restRes.items.each {
@@ -69,8 +72,12 @@ class CahierTextesService {
    * @param peronne la personne déclenchant l'opération
    * @return la liste des chapitres
    */
-  List<ChapitreInfo> getChapitreInfosForCahierId(Long cahierId, Personne peronne) {
-    def restRes = cahierTextesRestService.getStructureChapitresForCahierId(cahierId, peronne.id)
+  List<ChapitreInfo> getChapitreInfosForCahierId(Long cahierId,
+                                                 Personne peronne,
+                                                 String codePorteur = null) {
+    def restRes = cahierTextesRestService.getStructureChapitresForCahierId(cahierId,
+                                                                           peronne.id,
+                                                                           codePorteur)
     def res = []
     def rang = 0
     if (restRes) {
@@ -92,25 +99,27 @@ class CahierTextesService {
    */
   @Transactional
   Long createTextesActivite(Long cahierId,
-                                          Long chapitreId,
-                                          ContexteActivite activiteContext,
-                                          ModaliteActivite seance,
-                                          String description,
-                                          String urlSeance,
-                                          Personne personne) {
+                            Long chapitreId,
+                            ContexteActivite activiteContext,
+                            ModaliteActivite seance,
+                            String description,
+                            String urlSeance,
+                            Personne personne,
+                            String codePorteur = null) {
     assert (personne == seance.enseignant)
     def res = cahierTextesRestService.createTextesActivite(cahierId,
-                                                     chapitreId,
-                                                     activiteContext.name(),
-                                                     personne.id,
-                                                     seance.sujet.titre,
-                                                     description,
-                                                     seance.dateDebut,
-                                                     seance.dateFin,
-                                                     urlSeance)
+                                                           chapitreId,
+                                                           activiteContext.name(),
+                                                           personne.id,
+                                                           seance.sujet.titre,
+                                                           description,
+                                                           seance.dateDebut,
+                                                           seance.dateFin,
+                                                           urlSeance,
+                                                           codePorteur)
     def activiteId = null
     if (res) {
-      activiteId =  res.id as Long
+      activiteId = res.id as Long
       seance.activiteId = activiteId
       try {
         seance.save(failOnError: true)

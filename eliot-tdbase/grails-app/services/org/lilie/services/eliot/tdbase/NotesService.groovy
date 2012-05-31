@@ -28,8 +28,8 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tdbase.webservices.rest.client.NotesRestService
+import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
  * Service pour interaction avec le module Notes
@@ -48,17 +48,19 @@ class NotesService {
    * @return la liste des services évaluables
    */
   List<ServiceInfo> findServicesEvaluablesByModaliteActivite(ModaliteActivite seance,
-                                                             Personne enseignant) {
+                                                             Personne enseignant,
+                                                             String codePorteur = null) {
     assert (enseignant == seance.enseignant)
     def res = notesRestService.findServicesEvaluablesByStrunctureAndDateAndEnseignant(seance.structureEnseignementId,
                                                                                       seance.dateDebut,
-                                                                                      enseignant.id)
+                                                                                      enseignant.id,
+                                                                                      codePorteur)
     def services = []
     if (res?.items) {
-       res.items.each {
-         services << new ServiceInfo(id: it.id,
-                                     libelle:it.libelle)
-       }
+      res.items.each {
+        services << new ServiceInfo(id: it.id,
+                                    libelle: it.libelle)
+      }
     }
     services
   }
@@ -72,14 +74,16 @@ class NotesService {
    */
   Long createDevoir(ServiceInfo serviceInfo,
                     ModaliteActivite seance,
-                    Personne personne) {
+                    Personne personne,
+                    String codePorteur = null) {
     assert (personne == seance.enseignant)
     // todofsil calculer de la note max d'un sujet
     def res = notesRestService.createDevoir(seance.sujet.titre,
                                             serviceInfo.id,
                                             seance.dateDebut,
                                             seance.sujet.noteMax,
-                                            personne.id)
+                                            personne.id,
+                                            codePorteur)
     def evaluationId = null
     if (res?.id) {
       evaluationId = res.id as Long
@@ -103,7 +107,8 @@ class NotesService {
    * @return
    */
   Long updateNotes(ModaliteActivite seance,
-                   Personne personne) {
+                   Personne personne,
+                   String codePorteur = null) {
     assert (personne == seance.enseignant)
     def copies = copieService.findCopiesForModaliteActivite(seance,
                                                             personne)
@@ -116,8 +121,9 @@ class NotesService {
       }
       def res = notesRestService.updateNotes(seance.evaluationId,
                                              notes,
-                                             personne.id)
-      if(res?.id) {
+                                             personne.id,
+                                             codePorteur)
+      if (res?.id) {
         evalId = res.id as Long
       }
       return evalId
