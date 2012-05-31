@@ -38,4 +38,18 @@ function Common() {
             $(this).parents('.fillgraphicsEditor').css('height', height);
         });
     }
+
+    /**
+     * Rends les mots suggérés visibles, si show="true".
+     */
+    this.displaySuggestedWords = function () {
+        $('.suggestedWords').each(function () {
+
+            if($(this).attr("show")=="true")
+            {
+                //$(this).css("display", "inline");
+                $(this).show();
+            }
+        });
+    }
 }

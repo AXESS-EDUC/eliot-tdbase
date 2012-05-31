@@ -38,6 +38,7 @@
     <div class="gapText">
 
         <g:each in="${questionspecifobject.texteATrousStructure}" var="texteATrouElement" status="i">
+
             <g:if test="${texteATrouElement.isTextElement()}">
                 <span class="textElement">${texteATrouElement.valeur}</span>
             </g:if>
@@ -53,7 +54,7 @@
                     <span>
                 </g:if>
                 <g:else>
-                    <span class="gapElement" id="gapElement_${indexReponse}_${i}"">
+                    <span class="gapElement" id="gapElement_${indexReponse}_${i}">
 
                     <g:textField
                             class="gapField"
