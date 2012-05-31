@@ -338,7 +338,6 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 requestBodyTemplate: '''
                                             {
                                             "kind" : "eliot-textes#activite#insert",
-                                            "class" : "org.lilie.services.eliot.textes.Activite",
                                             "titre" : "$titre",
                                             "cahier-id" : $cahierId,
                                             "chapitre-parent-id" : $chapitreId,
@@ -367,11 +366,10 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 requestBodyTemplate: '''
                                   {
                                   "kind" : "eliot-notes#evaluation#insert",
-                                  "class" : "org.lilie.services.eliot.notes.Evaluation",
                                   "titre" : "$titre",
                                   "date" : $date,
-                                  "noteMax" : $noteMax,
-                                  "referentielEvaluationId" : $serviceId,
+                                  "note-max" : $noteMax,
+                                  "evaluation-contexte-id" : $serviceId,
                                    }
                                    ''',
                 responseContentStructure: "eliot-notes#evaluation#id>",
@@ -384,10 +382,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 requestBodyTemplate: '''
                                  {
                                  "kind" : "eliot-notes#evaluation#update#notes",
-                                 "class" : "org.lilie.services.eliot.notes.Evaluation",
-                                 "evaluation-id" : $evaluationId,
-                                 "notes": $notesJson,
-                                 "enseignant-id" : $enseignantId
+                                 "notes": $notesJson
                                  }
                                  ''',
                 responseContentStructure: "eliot-notes#evaluation#id>",

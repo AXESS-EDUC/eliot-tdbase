@@ -52,9 +52,8 @@ class CahierTextesService {
                                                                  Personne personne) {
     assert (seance.enseignant == personne)
     def structId = seance.structureEnseignementId
-    def matId = seance.matiereId
     def personneId = personne.id
-    def restRes = cahierTextesRestService.findCahiersByStructureMatiereAndEnseignant(structId, matId, personneId)
+    def restRes = cahierTextesRestService.findCahiersByStructureMatiereAndEnseignant(structId, personneId)
     def res = []
     if (restRes) {
       restRes.items.each {

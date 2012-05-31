@@ -123,9 +123,7 @@ class NotesRestService {
     restClientForNotes.invokeOperation('updateNotes',
                                        [evaluationId: devoirId],
                                        [utilisateurPersonneId: enseignantId],
-                                       [evaluationId: devoirId,
-                                               notesJson: notesJson,
-                                               enseignantId: enseignantId])
+                                       [notesJson: notesJson])
   }
 }
 
