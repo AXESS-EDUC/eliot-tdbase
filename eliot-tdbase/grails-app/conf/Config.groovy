@@ -296,10 +296,12 @@ environments {
     eliot.webservices.rest.client.textes.user = "eliot-tdbase"
     eliot.webservices.rest.client.textes.password = "eliot-tdbase"
     eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
     // rest client config for notes
     eliot.webservices.rest.client.notes.user = "eliot-tdbase"
     eliot.webservices.rest.client.notes.password = "eliot-tdbase"
     eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+    eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
   }
   test {
     eliot.interfacage.strongCheck = false
@@ -307,10 +309,12 @@ environments {
     eliot.webservices.rest.client.textes.user = "eliot-tdbase"
     eliot.webservices.rest.client.textes.password = "eliot-tdbase"
     eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
     // rest client config for notes
     eliot.webservices.rest.client.notes.user = "eliot-tdbase"
     eliot.webservices.rest.client.notes.password = "eliot-tdbase"
     eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+    eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
   }
 
 }
@@ -322,7 +326,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
         requestBodyTemplate: null,
         responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
         //urlServer: "http://localhost:8090",
-        uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres'],
+        uriTemplate: '/cahiers/$cahierId/chapitres'],
         [operationName: "findCahiersByStructureMatiereAndEnseignant",
                 description: "Retourne la liste des cahiers pour une structure, une matière et un enseignant donné",
                 contentType: ContentType.JSON,
@@ -330,7 +334,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 requestBodyTemplate: null,
                 responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers-service'],
+                uriTemplate: '/cahiers-service'],
         [operationName: "createTextesActivite",
                 description: "Insert une activité dans un cahier de textes",
                 contentType: ContentType.JSON,
@@ -350,7 +354,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                             ''',
                 responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/activites-interactives'],
+                uriTemplate: '/cahiers/$cahierId/activites-interactives'],
         [operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
                 description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
                 contentType: ContentType.JSON,
@@ -358,7 +362,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 requestBodyTemplate: null,
                 responseContentStructure: "List<eliot-notes#evaluation-contextes#standard>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/eliot-test-webservices/api-rest/v2/evaluation-contextes'],
+                uriTemplate: '/evaluation-contextes'],
         [operationName: "createDevoir",
                 description: "Insert un devoir dans le module Notes",
                 contentType: ContentType.JSON,
@@ -374,7 +378,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                    ''',
                 responseContentStructure: "eliot-notes#evaluation#id>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/eliot-test-webservices/api-rest/v2/evaluations'],
+                uriTemplate: '/evaluations'],
         [operationName: "updateNotes",
                 description: "Met à jour les notes d'un devoir dans le module Notes",
                 contentType: ContentType.JSON,
@@ -387,4 +391,4 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                  ''',
                 responseContentStructure: "eliot-notes#evaluation#id>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/eliot-test-webservices/api-rest/v2/evaluations/$evaluationId/notes']]
+                uriTemplate: '/evaluations/$evaluationId/notes']]

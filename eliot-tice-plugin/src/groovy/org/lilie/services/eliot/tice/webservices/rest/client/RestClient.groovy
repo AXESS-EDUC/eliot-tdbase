@@ -45,6 +45,7 @@ class RestClient {
   String authBasicUser
   String authBasicPassword
   String urlServer
+  String uriPrefix
   RestOperationDirectory restOperationDirectory
 
   /**
@@ -73,7 +74,8 @@ class RestClient {
 
     try {
       http.request(operation.method, operation.contentType) {
-        uri = url + getUrlPath(operation.uriTemplate, parameters, httpParameters)
+        def uriPref = uriPrefix ?: ""
+        uri = url + uriPref + getUrlPath(operation.uriTemplate, parameters, httpParameters)
         if (operation.requestBodyTemplate) {
           body = getBody(operation.requestBodyTemplate, requestContentParameters)
         }
