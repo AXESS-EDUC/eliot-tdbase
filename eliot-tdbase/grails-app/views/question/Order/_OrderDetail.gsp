@@ -36,7 +36,7 @@
         <g:each status="i" in="${specifobject.orderedItems}" var="orderedItem">
             &nbsp;
             <g:textField name="specifobject.orderedItems[${i}].text" size="30"
-                         style="margin-top: 5px; margin-bottom: 5px;"
+                         value="${orderedItem.text}" disabled="true"  style="margin-top: 5px; margin-bottom: 5px;"
            />
         </g:each>
         <strong>Correction :</strong> 
