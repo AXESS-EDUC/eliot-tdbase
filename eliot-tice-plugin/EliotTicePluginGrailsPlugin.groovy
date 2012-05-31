@@ -12,6 +12,9 @@ import org.lilie.services.eliot.tice.utils.EliotUrlProvider
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
 import org.lilie.services.eliot.tice.webservices.rest.client.RestOperationDirectory
+import org.springframework.web.context.request.RequestContextHolder
+
+import javax.servlet.http.HttpServletRequest
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -232,6 +235,16 @@ class EliotTicePluginGrailsPlugin {
       mc.getAuthenticatedAutorite = {->
         if (!ctx.springSecurityService.isLoggedIn()) return null
         DomainAutorite.get(ctx.springSecurityService.principal.autoriteId)
+      }
+    }
+
+    // ajoute la mise à disposition du code porteur
+    if (!mc.respondsTo(null, 'getCodePorteur')) {
+      mc.getCodePorteur = {->
+        //def headerName = ConfigurationHolder.config.eliot.requestHeaderPorteur ?: "ENT_PORTEUR"
+        def headerName = ConfigurationHolder.config.eliot.requestHeaderPorteur
+        HttpServletRequest request = RequestContextHolder.currentRequestAttributes().currentRequest
+        request.getHeader(headerName)
       }
     }
   }

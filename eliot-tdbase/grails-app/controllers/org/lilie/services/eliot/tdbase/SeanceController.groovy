@@ -85,7 +85,8 @@ class SeanceController {
                                                                                    strongCheck)
       } else {
         services = notesService.findServicesEvaluablesByModaliteActivite(modaliteActivite,
-                                                                         personne)
+                                                                         personne,
+                                                                         codePorteur)
       }
       if (!afficheLienCreationActivite) {
         afficheActiviteCreee = modaliteActiviteService.modaliteActiviteHasTextesActivite(modaliteActivite,
@@ -93,7 +94,8 @@ class SeanceController {
                                                                                          strongCheck)
       } else {
         cahiers = cahierTextesService.findCahiersTextesInfoByModaliteActivite(modaliteActivite,
-                                                                              personne)
+                                                                              personne,
+                                                                              codePorteur)
       }
     }
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"), [services: services])
@@ -119,7 +121,9 @@ class SeanceController {
     List<ChapitreInfo> chapitres = []
     if (params.cahierId != 'null') {
       def cahierId = params.cahierId as Long
-      chapitres = cahierTextesService.getChapitreInfosForCahierId(cahierId, personne)
+      chapitres = cahierTextesService.getChapitreInfosForCahierId(cahierId,
+                                                                  personne,
+                                                                  codePorteur)
     }
     render(view: "/seance/_selectChapitres", model: [chapitres: chapitres])
   }
@@ -235,7 +239,7 @@ class SeanceController {
     copies.each { Copie copie ->
         notes.put(copie.eleveId, copie.correctionNoteFinale)
     }
-    if (notesService.updateNotes(seance,personne)) {
+    if (notesService.updateNotes(seance,personne,codePorteur)) {
       flash.messageCode = "seance.updatenotes.succes"
     } else {
       flash.messageErreurNotesCode = "seance.updatenotes.echec"
@@ -341,8 +345,14 @@ class SeanceController {
       String urlSeance = createLink(controller: "accueil", action: "activite",
                                     id: modaliteActivite.id, absolute: true,
                                     params: [sujetId: modaliteActivite.sujetId])
-      Long actId = cahierTextesService.createTextesActivite(cahierId, chapitreId, activiteContext, modaliteActivite,
-                                                            "Séance TDBase", urlSeance, personne)
+      Long actId = cahierTextesService.createTextesActivite(cahierId,
+                                                            chapitreId,
+                                                            activiteContext,
+                                                            modaliteActivite,
+                                                            "Séance TDBase",
+                                                            urlSeance,
+                                                            personne,
+                                                            codePorteur)
       if (!actId) {
         flash.messageTextesCode = "seance.enregistre.liencahiertextes.erreur"
       }
@@ -364,7 +374,8 @@ class SeanceController {
       ServiceInfo service = services.find {it.id == serviceId}
       Long evalId = null
       if (service) {
-        evalId = notesService.createDevoir(service, modaliteActivite, personne)
+        evalId = notesService.createDevoir(service, modaliteActivite,
+                                           personne, codePorteur)
       }
       if (!evalId) {
         flash.messageNotesCode = "seance.enregistre.liennotes.erreur"
