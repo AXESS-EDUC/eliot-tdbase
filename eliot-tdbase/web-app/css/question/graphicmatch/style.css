@@ -42,11 +42,11 @@
 }
 
 .highlightedHotspot {
-    background: rgba(181, 189, 255, 0.9);
+    background: rgba(181, 189, 255, 1);
 }
 
 .unHighlightedHotspot {
-    background: rgba(245, 245, 245, 0.9);
+    background: rgba(245, 245, 245, 1);
 }
 
 .hotspotStyle {
