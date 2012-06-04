@@ -81,7 +81,7 @@ class CahierTextesService {
     def res = []
     def rang = 0
     if (restRes) {
-      setupChapitreInfos(restRes["cahier-racine"], rang, res)
+      setupChapitreInfos(restRes["racine"], rang, res)
     }
     res
   }

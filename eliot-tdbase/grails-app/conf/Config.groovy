@@ -38,7 +38,7 @@ import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 //
 eliot.eliotApplicationEnum = EliotApplicationEnum.TDBASE
 eliot.requestHeaderPorteur = "ENT_PORTEUR"
-eliot.defaultCodePorteur="CRIF"
+eliot.defaultCodePorteur = "CRIF"
 
 /**
  * Chargement des configurations externalisées
@@ -138,6 +138,8 @@ log4j = {
   warn 'org.mortbay.log'
 
   info 'grails.app'
+
+  debug 'org.lilie.services.eliot.tice.webservices.rest.client.RestClient'
 
 }
 
@@ -258,7 +260,7 @@ environments {
     // determine si eliot-tdbase doit s'executer en mode intégration Lilie
     eliot.portail.lilie = true
     // cas is not activated by default
-    grails.plugins.springsecurity.cas.active = true
+    grails.plugins.springsecurity.cas.active = false
     grails.plugins.springsecurity.cas.loginUri = '/login'
     grails.plugins.springsecurity.cas.serviceUrl = "http://localhost:8080/${appName}/j_spring_cas_security_check"
     grails.plugins.springsecurity.cas.serverUrlPrefix = 'http://localhost:8181/cas-server-webapp-3.4.11'
@@ -266,7 +268,7 @@ environments {
     grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
 
     // application de la migration  définie dans eliot-tice-dbmigration
-    eliot.bootstrap.migration = true
+    eliot.bootstrap.migration = false
 
     // configuration de la racine de l'espace de fichier
     eliot.fichiers.racine = '/Users/Shared/eliot-root'
@@ -278,7 +280,8 @@ environments {
             [url: "https://github.com/ticetime/eliot-tdbase/wiki",
                     libelle: "eliot-tdbase sur Github"]]
     eliot.portail.news = ["Environnement TESTLILIE",
-            "Login / mot de passe : voir base de test eliot/lilie"]
+            "Login / mot de passe : voir base de test eliot/lilie",
+            "Pierre Baudet : UT110000000000005027"]
   }
   production {
     // paramètres par defaut de CAS
@@ -317,6 +320,19 @@ environments {
     eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
     eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
   }
+  testlilie {
+    eliot.interfacage.strongCheck = false
+    // rest client config for textes
+    eliot.webservices.rest.client.textes.user = "api"
+    eliot.webservices.rest.client.textes.password = "api"
+    eliot.webservices.rest.client.textes.urlServer = "http://fylab02.dns-oid.com:8380"
+    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-textes-2.8.0-SNAPSHOT/echanges/v2"
+    // rest client config for notes
+    eliot.webservices.rest.client.notes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+    eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+  }
 
 }
 
@@ -342,15 +358,16 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 method: Method.POST,
                 requestBodyTemplate: '''
                                             {
-                                            "kind" : "eliot-textes#activite#insert",
+                                            "kind" : "eliot-textes#activite#insert-avec-dates-debut-fin",
                                             "titre" : "$titre",
                                             "cahier-id" : $cahierId,
                                             "chapitre-parent-id" : $chapitreId,
                                             "date-debut" : "$dateDebutActivite",
-                                            "date-fin" : "$dateFinActivite"
+                                            "date-fin" : "$dateFinActivite",
                                             "contexte-activite" : "$contexteActivite",
+                                            "estPubliee" : "false",
                                             "description" : "$description",
-                                            "ressource-interactive-url" : "$urlSeance"
+                                            "seance-url" : "$urlSeance"
                                             }
                                             ''',
                 responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",

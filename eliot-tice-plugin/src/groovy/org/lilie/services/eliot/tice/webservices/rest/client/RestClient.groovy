@@ -64,20 +64,25 @@ class RestClient {
     if (!operation) {
       throw new RestOperationDoesNotExistsInDirectoryException()
     }
-
+    def bodyContent = null
     def result = null
     def url = operation.urlServer ?: urlServer
     def http = new HTTPBuilder(url)
     if (authBasicUser && authBasicPassword) {
-      http.auth.basic authBasicUser, authBasicPassword
+      //http.auth.basic authBasicUser, authBasicPassword
+      http.headers[ 'Authorization' ] =
+      "$authBasicUser:$authBasicPassword".getBytes().encodeBase64()
     }
 
     try {
       http.request(operation.method, operation.contentType) {
         def uriPref = uriPrefix ?: ""
         uri = url + uriPref + getUrlPath(operation.uriTemplate, parameters, httpParameters)
+        log.debug("uri : ${uri}")
         if (operation.requestBodyTemplate) {
-          body = getBody(operation.requestBodyTemplate, requestContentParameters)
+          bodyContent = getBody(operation.requestBodyTemplate, requestContentParameters)
+          body = bodyContent
+          log.debug(("body : ${bodyContent}"))
         }
         response.success = { resp, contentResp ->
           operation.onSucess(resp, contentResp)
@@ -90,6 +95,7 @@ class RestClient {
         }
         response.failure = { resp ->
           log.error("Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase} : ${uri}")
+          log.error("Body : \n ${bodyContent}")
         }
       }
     } catch (Exception e) {
