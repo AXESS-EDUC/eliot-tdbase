@@ -38,6 +38,7 @@ import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 class QuestionController {
 
   static defaultAction = "recherche"
+  private static final String QUESTION_EST_DEJA_INSEREE = "questionEstDejaInseree"
 
 
   BreadcrumpsService breadcrumpsService
@@ -62,7 +63,7 @@ class QuestionController {
  * Action "edite"
  */
   def edite() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "question.edite.titre"))
+
     Question question
     boolean questionEnEdition = false
     Personne personne = authenticatedPersonne
@@ -79,6 +80,13 @@ class QuestionController {
       sujet = Sujet.get(params.sujetId)
       attachementsSujets = sujetService.findAttachementsDisponiblesForSujet(sujet, personne)
     }
+    def questionEstDejaInseree = false
+    if (questionEnEdition && sujet) {
+      questionEstDejaInseree = true
+    }
+    breadcrumpsService.manageBreadcrumps(params,
+                                         message(code: "question.edite.titre"),
+                                         [QUESTION_EST_DEJA_INSEREE:questionEstDejaInseree])
     render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
@@ -88,7 +96,9 @@ class QuestionController {
             utilisateur: personne,
             questionEnEdition: questionEnEdition,
             attachementsSujets: attachementsSujets,
-            annulationNonPossible: params.annulationNonPossible])
+            annulationNonPossible: params.annulationNonPossible,
+            questionEstDejaInseree: questionEstDejaInseree
+    ])
   }
 
   /**
@@ -203,7 +213,9 @@ class QuestionController {
               sujet: sujet,
               questionEnEdition: questionEnEdition,
               artefactHelper: artefactAutorisationService,
-              utilisateur: personne])
+              utilisateur: personne,
+              questionEstDejaInseree: breadcrumpsService.getValeurPropriete(QUESTION_EST_DEJA_INSEREE)
+      ])
     } else {
       flash.messageCode = "question.enregistre.succes"
       def params = [:]
