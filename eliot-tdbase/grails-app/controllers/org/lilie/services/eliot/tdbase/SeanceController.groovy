@@ -345,11 +345,12 @@ class SeanceController {
       String urlSeance = createLink(controller: "accueil", action: "activite",
                                     id: modaliteActivite.id, absolute: true,
                                     params: [sujetId: modaliteActivite.sujetId])
+      def description = ""
       Long actId = cahierTextesService.createTextesActivite(cahierId,
                                                             chapitreId,
                                                             activiteContext,
                                                             modaliteActivite,
-                                                            "Séance TDBase",
+                                                            description,
                                                             urlSeance,
                                                             personne,
                                                             codePorteur)
@@ -367,9 +368,9 @@ class SeanceController {
    */
   private tryInsertDevoirForModaliteActivite(ModaliteActivite modaliteActivite, def params, Personne personne) {
     // lien vers notes
-    Long serviceId = null
+    String serviceId = null
     if (params.serviceId && params.serviceId != 'null') {
-      serviceId = params.serviceId as Long
+      serviceId = params.serviceId
       List<ServiceInfo> services = breadcrumpsService.getValeurPropriete('services')
       ServiceInfo service = services.find {it.id == serviceId}
       Long evalId = null

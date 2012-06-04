@@ -328,10 +328,10 @@ environments {
     eliot.webservices.rest.client.textes.urlServer = "http://fylab02.dns-oid.com:8380"
     eliot.webservices.rest.client.textes.uriPrefix = "/eliot-textes-2.8.0-SNAPSHOT/echanges/v2"
     // rest client config for notes
-    eliot.webservices.rest.client.notes.user = "eliot-tdbase"
-    eliot.webservices.rest.client.notes.password = "eliot-tdbase"
-    eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
-    eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+    eliot.webservices.rest.client.notes.user = "api"
+    eliot.webservices.rest.client.notes.password = "api"
+    eliot.webservices.rest.client.notes.urlServer = "http://fylab02.dns-oid.com:8380"
+    eliot.webservices.rest.client.notes.uriPrefix = "/eliot-notes-2.8.0-SNAPSHOT/echanges/v2"
   }
 
 }
@@ -343,7 +343,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
         requestBodyTemplate: null,
         responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
         //urlServer: "http://localhost:8090",
-        uriTemplate: '/cahiers/$cahierId/chapitres.json'],
+        uriTemplate: '/cahiers/$cahierId/chapitres'],
         [operationName: "findCahiersByStructureAndEnseignant",
                 description: "Retourne la liste des cahiers pour une structure et un enseignant donné",
                 contentType: ContentType.JSON,
@@ -351,28 +351,26 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 requestBodyTemplate: null,
                 responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/cahiers-service.json'],
+                uriTemplate: '/cahiers-service'],
         [operationName: "createTextesActivite",
                 description: "Insert une activité dans un cahier de textes",
                 contentType: ContentType.JSON,
                 method: Method.POST,
                 requestBodyTemplate: '''
                                             {
-                                            "kind" : "eliot-textes#activite#insert-avec-dates-debut-fin",
+                                            "kind" : "eliot-textes#activite-interactive#insert",
                                             "titre" : "$titre",
-                                            "cahier-id" : $cahierId,
                                             "chapitre-parent-id" : $chapitreId,
                                             "date-debut" : "$dateDebutActivite",
                                             "date-fin" : "$dateFinActivite",
                                             "contexte-activite" : "$contexteActivite",
-                                            "estPubliee" : "false",
                                             "description" : "$description",
-                                            "seance-url" : "$urlSeance"
+                                            "ressource-interactive-url" : "$urlSeance"
                                             }
                                             ''',
                 responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/cahiers/$cahierId/activites.json'],
+                uriTemplate: '/cahiers/$cahierId/activites-interactives'],
         [operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
                 description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
                 contentType: ContentType.JSON,
@@ -389,9 +387,9 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                   {
                                   "kind" : "eliot-notes#evaluation#insert",
                                   "titre" : "$titre",
-                                  "date" : $date,
+                                  "date" : "$date",
                                   "note-max" : $noteMax,
-                                  "evaluation-contexte-id" : $serviceId,
+                                  "evaluation-contexte-id" : "$serviceId",
                                    }
                                    ''',
                 responseContentStructure: "eliot-notes#evaluation#id>",
@@ -409,4 +407,4 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                  ''',
                 responseContentStructure: "eliot-notes#evaluation#id>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/evaluations/$evaluationId/notes']]
+                uriTemplate: '/evaluations/$evaluationId/notes.json']]
