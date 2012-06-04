@@ -246,8 +246,16 @@ class EliotTicePluginGrailsPlugin {
     if (!mc.respondsTo(null, 'getCodePorteur')) {
       mc.getCodePorteur = {->
         def headerName = ConfigurationHolder.config.eliot.requestHeaderPorteur ?: "ENT_PORTEUR"
+        def defaultCodePorteur = ConfigurationHolder.config.eliot.defaultCodePorteur
         HttpServletRequest request = RequestContextHolder.currentRequestAttributes().currentRequest
-        request.getHeader(headerName)
+        def codePorteur = request.getHeader(headerName)
+        if (codePorteur) {
+          return codePorteur
+        } else if(defaultCodePorteur) {
+          return defaultCodePorteur
+        } else {
+          return null
+        }
       }
     }
   }

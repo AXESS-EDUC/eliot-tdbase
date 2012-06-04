@@ -89,7 +89,7 @@ class RestClient {
           }
         }
         response.failure = { resp ->
-          log.error("Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}")
+          log.error("Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase} : ${uri}")
         }
       }
     } catch (Exception e) {

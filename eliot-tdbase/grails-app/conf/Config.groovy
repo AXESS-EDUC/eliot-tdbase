@@ -38,6 +38,7 @@ import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 //
 eliot.eliotApplicationEnum = EliotApplicationEnum.TDBASE
 eliot.requestHeaderPorteur = "ENT_PORTEUR"
+eliot.defaultCodePorteur="CRIF"
 
 /**
  * Chargement des configurations externalisées
@@ -293,10 +294,10 @@ environments {
   development {
     eliot.interfacage.strongCheck = false
     // rest client config for textes
-    eliot.webservices.rest.client.textes.user = "eliot-tdbase"
-    eliot.webservices.rest.client.textes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.user = "api"
+    eliot.webservices.rest.client.textes.password = "api"
     eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
-    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/echanges/v2"
     // rest client config for notes
     eliot.webservices.rest.client.notes.user = "eliot-tdbase"
     eliot.webservices.rest.client.notes.password = "eliot-tdbase"
@@ -306,10 +307,10 @@ environments {
   test {
     eliot.interfacage.strongCheck = false
     // rest client config for textes
-    eliot.webservices.rest.client.textes.user = "eliot-tdbase"
-    eliot.webservices.rest.client.textes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.textes.user = "api"
+    eliot.webservices.rest.client.textes.password = "api"
     eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
-    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/echanges/v2"
     // rest client config for notes
     eliot.webservices.rest.client.notes.user = "eliot-tdbase"
     eliot.webservices.rest.client.notes.password = "eliot-tdbase"
@@ -326,15 +327,15 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
         requestBodyTemplate: null,
         responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
         //urlServer: "http://localhost:8090",
-        uriTemplate: '/cahiers/$cahierId/chapitres'],
-        [operationName: "findCahiersByStructureMatiereAndEnseignant",
-                description: "Retourne la liste des cahiers pour une structure, une matière et un enseignant donné",
+        uriTemplate: '/cahiers/$cahierId/chapitres.json'],
+        [operationName: "findCahiersByStructureAndEnseignant",
+                description: "Retourne la liste des cahiers pour une structure et un enseignant donné",
                 contentType: ContentType.JSON,
                 method: Method.GET,
                 requestBodyTemplate: null,
                 responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/cahiers-service'],
+                uriTemplate: '/cahiers-service.json'],
         [operationName: "createTextesActivite",
                 description: "Insert une activité dans un cahier de textes",
                 contentType: ContentType.JSON,
@@ -354,7 +355,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                             ''',
                 responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/cahiers/$cahierId/activites-interactives'],
+                uriTemplate: '/cahiers/$cahierId/activites.json'],
         [operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
                 description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
                 contentType: ContentType.JSON,
