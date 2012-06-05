@@ -109,7 +109,7 @@ class NotesService {
    * @param notes la map contenant les notes (key : id de l'élève, value: la note)
    * @param seance la seance concernée
    * @param personne la personne déclenchant l'opération
-   * @return
+   * @return le nombre de notes modifiées
    */
   Long updateNotes(ModaliteActivite seance,
                    Personne personne,
@@ -119,7 +119,6 @@ class NotesService {
                                                             personne)
     if (copies) {
       def notes = []
-      def evalId = null
       copies.each { Copie copie ->
         notes << new EleveNote(eleveId: copie.eleveId, valeurNote: copie.correctionNoteFinale)
       }
@@ -127,12 +126,15 @@ class NotesService {
                                              notes,
                                              personne.id,
                                              codePorteur)
-      if (res?.id) {
-        evalId = res.id as Long
+      Long nbNotesMod = null
+      if (res) {
+        try {
+          nbNotesMod = res.size()
+        } catch (Exception e) {}
       }
-      return evalId
+      return nbNotesMod
     }
-    seance.evaluationId
+    return 0
   }
 
 

@@ -239,10 +239,12 @@ class SeanceController {
     copies.each { Copie copie ->
         notes.put(copie.eleveId, copie.correctionNoteFinale)
     }
-    if (notesService.updateNotes(seance,personne,codePorteur)) {
-      flash.messageCode = "seance.updatenotes.succes"
-    } else {
+    Long res =  notesService.updateNotes(seance,personne,codePorteur)
+    if (res == null ) {
       flash.messageErreurNotesCode = "seance.updatenotes.echec"
+    } else {
+      flash.messageCode = "seance.updatenotes.succes"
+      flash.messageArgs = [res]
     }
     redirect(action: 'listeResultats',id: seance.id,controller: 'seance')
   }
@@ -338,9 +340,9 @@ class SeanceController {
       if (params.chapitreId && params.chapitreId != 'null') {
         chapitreId = params.chapitreId as Long
       }
-      if (params.activiteContextId) {
+      if (params.activiteContexteId) {
         activiteContext = ContexteActivite.valueOf(ContexteActivite.class,
-                                                  params.activiteContextId)
+                                                  params.activiteContexteId)
       }
       String urlSeance = createLink(controller: "accueil", action: "activite",
                                     id: modaliteActivite.id, absolute: true,
