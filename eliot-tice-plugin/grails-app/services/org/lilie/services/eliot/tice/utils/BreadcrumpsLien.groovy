@@ -141,4 +141,13 @@ class Breadcrumps {
     return proprietes."$nom"
   }
 
+  /**
+   * Modifie la valeur d'une propriete
+   * @param nom le nom de la propriete
+   * @param valeur de la propriete
+   */
+  synchronized def setValeurPropriete(String nom, def valeur) {
+    proprietes."$nom" = valeur
+  }
+
 }

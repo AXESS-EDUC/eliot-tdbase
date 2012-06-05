@@ -97,7 +97,6 @@ class QuestionController {
             questionEnEdition: questionEnEdition,
             attachementsSujets: attachementsSujets,
             annulationNonPossible: params.annulationNonPossible,
-            questionEstDejaInseree: questionEstDejaInseree
     ])
   }
 
@@ -213,8 +212,7 @@ class QuestionController {
               sujet: sujet,
               questionEnEdition: questionEnEdition,
               artefactHelper: artefactAutorisationService,
-              utilisateur: personne,
-              questionEstDejaInseree: breadcrumpsService.getValeurPropriete(QUESTION_EST_DEJA_INSEREE)
+              utilisateur: personne
       ])
     } else {
       flash.messageCode = "question.enregistre.succes"
@@ -245,6 +243,13 @@ class QuestionController {
     Sujet sujet = null
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId as Long)
+    }
+    if (sujet && question.id && !question.hasErrors()) {
+      if (!breadcrumpsService.getValeurPropriete(QUESTION_EST_DEJA_INSEREE)) {
+        Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
+        sujetService.insertQuestionInSujet(question,sujet, personne, rang)
+        breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE,true)
+      }
     }
     render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
             question: question,
@@ -285,6 +290,7 @@ class QuestionController {
               peutPartagerQuestion: false])
     } else {
       flash.messageCode = "question.enregistre.succes"
+      breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE,true)
       redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
     }
 

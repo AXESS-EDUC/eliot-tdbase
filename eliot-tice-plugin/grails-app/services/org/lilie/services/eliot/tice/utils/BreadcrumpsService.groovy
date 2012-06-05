@@ -85,6 +85,15 @@ class BreadcrumpsService {
   }
 
   /**
+   * Modifie la valeur d'une propriete
+   * @param nom  le nom de la propriete
+   * @param valeur  la valeur de la propriete
+   */
+  def setValeurPropriete(String nom, def valeur) {
+    breadcrumps.setValeurPropriete(nom, valeur)
+  }
+
+  /**
    * Met à jour les liens du breadcrumps quand un nouveau lien est cliqué
    * @param action le nom de l'action
    * @param controller le nom du controller

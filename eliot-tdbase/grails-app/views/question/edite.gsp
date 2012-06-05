@@ -255,7 +255,8 @@
 
   <div class="form_actions">
     <g:hiddenField name="sujetId" value="${sujet?.id}"/>
-    <g:if test="${sujet && !questionEstDejaInseree}">
+    <g:if test="${sujet && !question.id}">
+
       <g:actionSubmit value="Enregistrer et insérer dans le sujet"
                       action="enregistreInsertNouvelItem"
                       title="Enregistrer et insérer dans le sujet"
