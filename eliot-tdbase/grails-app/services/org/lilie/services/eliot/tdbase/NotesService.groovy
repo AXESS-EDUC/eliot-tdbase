@@ -56,12 +56,18 @@ class NotesService {
                                                                                       enseignant.id,
                                                                                       codePorteur)
     def services = []
-    if (res?.items) {
-      res.items.each {
+    if (res) {
+      res.each {
         services << new ServiceInfo(id: it.id,
                                     libelle: it.libelle)
       }
     }
+//    if (res?.items) {
+//      res.items.each {
+//        services << new ServiceInfo(id: it.id,
+//                                    libelle: it.libelle)
+//      }
+//    }
     services
   }
 
@@ -115,7 +121,7 @@ class NotesService {
       def notes = []
       def evalId = null
       copies.each { Copie copie ->
-        notes << new EleveNote(eleveId: copie.eleveId,valeurNote: copie.correctionNoteFinale)
+        notes << new EleveNote(eleveId: copie.eleveId, valeurNote: copie.correctionNoteFinale)
       }
       def res = notesRestService.updateNotes(seance.evaluationId,
                                              notes,
@@ -133,7 +139,7 @@ class NotesService {
 }
 
 class ServiceInfo {
-  Long id
+  String id
   String libelle
 }
 
