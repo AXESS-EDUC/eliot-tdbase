@@ -47,6 +47,7 @@ class RestClient {
   String urlServer
   String uriPrefix
   RestOperationDirectory restOperationDirectory
+  Integer connexionTimeout = 15000 // ms
 
   /**
    * Invoque une opération identifiée par son nom
@@ -70,12 +71,16 @@ class RestClient {
     def http = new HTTPBuilder(url)
     if (authBasicUser && authBasicPassword) {
       //http.auth.basic authBasicUser, authBasicPassword
-      http.headers[ 'Authorization' ] =
-      "$authBasicUser:$authBasicPassword".getBytes().encodeBase64()
+      http.headers['Authorization'] =
+        "$authBasicUser:$authBasicPassword".getBytes().encodeBase64()
     }
 
     try {
-      http.request(operation.method, operation.contentType) {
+      http.request(operation.method, operation.contentType) {  req ->
+        // Timeout de  connexion
+        req.getParams().setParameter("http.connection.timeout", connexionTimeout);
+        req.getParams().setParameter("http.socket.timeout", connexionTimeout);
+        log.debug("Connexion timeout : ${connexionTimeout} ms")
         def uriPref = uriPrefix ?: ""
         uri = url + uriPref + getUrlPath(operation.uriTemplate, parameters, httpParameters)
         log.debug("uri : ${uri}")

@@ -327,11 +327,13 @@ environments {
     eliot.webservices.rest.client.textes.password = "api"
     eliot.webservices.rest.client.textes.urlServer = "http://fylab02.dns-oid.com:8380"
     eliot.webservices.rest.client.textes.uriPrefix = "/eliot-textes-2.8.0-SNAPSHOT/echanges/v2"
+    eliot.webservices.rest.client.textes.connexionTimeout = 10000 // ms
     // rest client config for notes
     eliot.webservices.rest.client.notes.user = "api"
     eliot.webservices.rest.client.notes.password = "api"
     eliot.webservices.rest.client.notes.urlServer = "http://fylab02.dns-oid.com:8380"
     eliot.webservices.rest.client.notes.uriPrefix = "/eliot-notes-2.8.0-SNAPSHOT/echanges/v2"
+    eliot.webservices.rest.client.notes.connexionTimeout = 10000 // ms
   }
 
 }
@@ -378,7 +380,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 requestBodyTemplate: null,
                 responseContentStructure: "List<eliot-notes#evaluation-contextes#standard>",
                 //urlServer: "http://localhost:8090",
-                uriTemplate: '/evaluation-contextes'],
+                uriTemplate: '/evaluation-contextes.json'],
         [operationName: "createDevoir",
                 description: "Insert un devoir dans le module Notes",
                 contentType: ContentType.JSON,
