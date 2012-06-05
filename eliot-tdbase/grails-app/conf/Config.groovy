@@ -321,6 +321,9 @@ environments {
     eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
   }
   testlilie {
+    // Spécifie si les objets sensés être créés sont bien créés
+    // à n'activier que si les données tdbase, notes et textes sont stockées dans
+    // la même base
     eliot.interfacage.strongCheck = false
     // rest client config for textes
     eliot.webservices.rest.client.textes.user = "api"

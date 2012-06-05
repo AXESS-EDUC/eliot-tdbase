@@ -50,9 +50,14 @@ class RestClient {
   Integer connexionTimeout = 15000 // ms
 
   /**
-   * Invoque une opération identifiée par son nom
+   * Invoque une opération identifiée par son nom.
+   * L'invocation prend en compte l'authentification basique si elle a été
+   * configurée, le timeout de connexion et la gestion d'erreur
    * @param operationName le nom de l'opération à déclencher
-   * @param parameters les paramètres de la requête sous forme de map
+   * @param parameters les paramètres encodées dans l'URL
+   * @param httpParameters les paramètres http
+   * @param requestContentParameters les paramètres encodés dans le corps de la
+   * requête
    * @return le résultat de l'opération
    */
   def invokeOperation(String operationName,
