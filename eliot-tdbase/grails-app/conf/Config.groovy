@@ -365,7 +365,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                             {
                                             "kind" : "eliot-textes#activite-interactive#insert",
                                             "titre" : "$titre",
-                                            "chapitre-parent-id" : "$chapitreId",
+                                            "chapitre-parent-id" : $chapitreId,
                                             "date-debut" : "$dateDebutActivite",
                                             "date-fin" : "$dateFinActivite",
                                             "contexte-activite" : "$contexteActivite",

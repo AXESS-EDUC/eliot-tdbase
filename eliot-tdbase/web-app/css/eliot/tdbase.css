@@ -775,7 +775,7 @@ Style for the edition of a document or category (Content)
     margin-right: 10px;
     margin-bottom: -20px;
     text-align: right;
-    width: auto;
+    width: 70%;
 }
 	.portal-form_container.full{width: 100%;}
 
