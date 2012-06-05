@@ -347,6 +347,9 @@ class SeanceController {
       String urlSeance = createLink(controller: "accueil", action: "activite",
                                     id: modaliteActivite.id, absolute: true,
                                     params: [sujetId: modaliteActivite.sujetId])
+      // hack pour que l'url soit valide dans tous les cas
+      urlSeance = urlSeance.replaceFirst("localhost","127.0.0.1")
+
       def description = ""
       Long actId = cahierTextesService.createTextesActivite(cahierId,
                                                             chapitreId,
