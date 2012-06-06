@@ -28,10 +28,10 @@
 
 package org.lilie.services.eliot.tdbase.impl.order
 
+import org.lilie.services.eliot.tdbase.QuestionSpecification
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 import org.lilie.services.eliot.tdbase.ReponseSpecification
 import org.lilie.services.eliot.tdbase.ReponseSpecificationService
-import org.lilie.services.eliot.tdbase.QuestionTypeEnum
-import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
  * Service pour les specifications de reponses de type 'ordre à retablir'.
@@ -106,6 +106,14 @@ class ReponseOrderSpecification implements ReponseSpecification {
       points = 0.0f
     }
     points
+  }
+
+  /**
+   * Vérifie si l'objet a des valeurs de reponse.
+   * @return
+   */
+  def boolean hasValeursDeResponses() {
+    valeursDeReponse.findAll({!it.ordinal}).size == 0
   }
 
   def createItem(Item item) {

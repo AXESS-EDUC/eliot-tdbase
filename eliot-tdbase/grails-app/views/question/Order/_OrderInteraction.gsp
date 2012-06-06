@@ -64,7 +64,7 @@
 <div id="orderQuestionContainment_${indexReponse}">
     <table>
 
-        <g:if test="${reponsespecifobject.valeursDeReponse.findAll ({!it.ordinal}).size == 0}">
+        <g:if test="${reponsespecifobject.hasValeursDeResponses()}">
             <g:set var="items" value="${reponsespecifobject.valeursDeReponse}"/>
         </g:if>
 
