@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/eliot-tdbase" />
+<title>13-association</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">13-association</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/eliot-tdbase/login/auth</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Sujet démonstration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Association</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Couples de cinéma</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[0].participant1</td>
+	<td>Laurel</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[0].participant2</td>
+	<td>Hardy</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[1].participant1</td>
+	<td>Tom</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[1].participant2</td>
+	<td>Jerry</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[2].participant1</td>
+	<td>Titi</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[2].participant2</td>
+	<td>Sylvestre</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.montrerColonneAGauche</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Test du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Déconnexion</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
