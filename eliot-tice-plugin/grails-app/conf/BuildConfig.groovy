@@ -35,7 +35,7 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 versionSchemaEliot = "2.7.1-RC1"
-versionTDBase = "2.0.0-SNAPSHOT"
+versionTDBase = "2.0.1-B1"
 
 grails.project.dependency.resolution = {
 
