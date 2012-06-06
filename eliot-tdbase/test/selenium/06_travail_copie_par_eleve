@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/eliot-tdbase" />
+<title>06_travail_copie_par_eleve</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">06_travail_copie_par_eleve</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/eliot-tdbase/login/auth</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>elv1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>elv1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Sujet 2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Résultats</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Séances</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a.button.work</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Accueil TDBase</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Déconnexion</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
