@@ -131,7 +131,7 @@
 </div>
 
 <g:if test="${sujet && !flash.messageCode}">
-<div class="form_actions edite">
+<div class="form_actions edite" style="width: 69%">
 
     <g:link action="insert"
             title="Insérer dans le sujet" id="${question.id}"

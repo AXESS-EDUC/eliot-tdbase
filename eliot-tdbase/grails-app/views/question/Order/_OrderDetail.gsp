@@ -34,12 +34,12 @@
       <strong><g:message code="question.propriete.libelle"/></strong>
         <p>${specifobject.libelle}</p>
         <g:each status="i" in="${specifobject.orderedItems}" var="orderedItem">
-            &nbsp;
             <g:textField name="specifobject.orderedItems[${i}].text" size="30"
                          value="${orderedItem.text}" disabled="true"  style="margin-top: 5px; margin-bottom: 5px;"
            />
         </g:each>
-        <strong>Correction :</strong> 
-        <p>${specifobject.correction} </p>
+      <br/><br/>
+        <strong>Correction :</strong>
+      <p>${specifobject.correction} </p>
     </td>
 </tr>

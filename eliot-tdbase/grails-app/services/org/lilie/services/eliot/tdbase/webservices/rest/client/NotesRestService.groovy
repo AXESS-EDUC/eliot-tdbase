@@ -97,7 +97,7 @@ class NotesRestService {
    * @param enseignantId l'id de l'enseignant
    * @return la map correspondant au devoir crée
    */
-  def createDevoir(String titre, Long serviceId, Date date, Float noteMax,
+  def createDevoir(String titre, String serviceId, Date date, Float noteMax,
                    Long personneId,
                    String codePorteur = null) {
     restClientForNotes.invokeOperation('createDevoir',
@@ -128,9 +128,9 @@ class NotesRestService {
                   String codePorteur = null) {
     def notesTrans = []
     notes.each {
-      notesTrans << [kind:'eliot-notes#notes#standard',
+      notesTrans << [
               'eleve-personne-id': it.eleveId,
-              'valeur': it.valeurNote.toString()
+              'valeur': it.valeurNote
       ]
     }
     def notesJson = new JsonBuilder(notesTrans).toPrettyString()

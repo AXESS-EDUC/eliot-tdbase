@@ -54,7 +54,7 @@ class CahierTextesService {
     assert (seance.enseignant == personne)
     def structId = seance.structureEnseignementId
     def personneId = personne.id
-    def restRes = cahierTextesRestService.findCahiersByStructureMatiereAndEnseignant(structId,
+    def restRes = cahierTextesRestService.findCahiersByStructureAndEnseignant(structId,
                                                                                      personneId,
                                                                                      codePorteur)
     def res = []
@@ -81,7 +81,7 @@ class CahierTextesService {
     def res = []
     def rang = 0
     if (restRes) {
-      setupChapitreInfos(restRes["cahier-racine"], rang, res)
+      setupChapitreInfos(restRes["racine"], rang, res)
     }
     res
   }

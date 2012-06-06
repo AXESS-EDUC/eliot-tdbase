@@ -775,7 +775,7 @@ Style for the edition of a document or category (Content)
     margin-right: 10px;
     margin-bottom: -20px;
     text-align: right;
-    width: auto;
+    width: 70%;
 }
 	.portal-form_container.full{width: 100%;}
 
@@ -821,6 +821,28 @@ Style for the edition of a document or category (Content)
     border: 1px solid #ccc;
     padding: 5px 2px;
     margin-top: -2px;
+    width: 400px;
+}
+
+.portal-form_container input[type=text].short {
+    border: 1px solid #ccc;
+    padding: 5px 2px;
+    margin-top: -2px;
+    width: 270px;
+}
+
+.portal-form_container input[type=text].veryshort {
+    border: 1px solid #ccc;
+    padding: 5px 2px;
+    margin-top: -2px;
+    width: 120px;
+}
+
+.portal-form_container input[type=text].micro {
+    border: 1px solid #ccc;
+    padding: 5px 2px;
+    margin-top: -2px;
+    width: 60px;
 }
 
 .portal-form_container input[type=submit] {

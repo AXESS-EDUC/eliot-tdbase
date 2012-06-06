@@ -47,11 +47,17 @@ class RestClient {
   String urlServer
   String uriPrefix
   RestOperationDirectory restOperationDirectory
+  Integer connexionTimeout = 15000 // ms
 
   /**
-   * Invoque une opération identifiée par son nom
+   * Invoque une opération identifiée par son nom.
+   * L'invocation prend en compte l'authentification basique si elle a été
+   * configurée, le timeout de connexion et la gestion d'erreur
    * @param operationName le nom de l'opération à déclencher
-   * @param parameters les paramètres de la requête sous forme de map
+   * @param parameters les paramètres encodées dans l'URL
+   * @param httpParameters les paramètres http
+   * @param requestContentParameters les paramètres encodés dans le corps de la
+   * requête
    * @return le résultat de l'opération
    */
   def invokeOperation(String operationName,
@@ -64,20 +70,29 @@ class RestClient {
     if (!operation) {
       throw new RestOperationDoesNotExistsInDirectoryException()
     }
-
+    def bodyContent = null
     def result = null
     def url = operation.urlServer ?: urlServer
     def http = new HTTPBuilder(url)
     if (authBasicUser && authBasicPassword) {
-      http.auth.basic authBasicUser, authBasicPassword
+      //http.auth.basic authBasicUser, authBasicPassword
+      http.headers['Authorization'] =
+        "$authBasicUser:$authBasicPassword".getBytes().encodeBase64()
     }
 
     try {
-      http.request(operation.method, operation.contentType) {
+      http.request(operation.method, operation.contentType) {  req ->
+        // Timeout de  connexion
+        req.getParams().setParameter("http.connection.timeout", connexionTimeout);
+        req.getParams().setParameter("http.socket.timeout", connexionTimeout);
+        log.debug("Connexion timeout : ${connexionTimeout} ms")
         def uriPref = uriPrefix ?: ""
         uri = url + uriPref + getUrlPath(operation.uriTemplate, parameters, httpParameters)
+        log.debug("uri : ${uri}")
         if (operation.requestBodyTemplate) {
-          body = getBody(operation.requestBodyTemplate, requestContentParameters)
+          bodyContent = getBody(operation.requestBodyTemplate, requestContentParameters)
+          body = bodyContent
+          log.debug(("body : ${bodyContent}"))
         }
         response.success = { resp, contentResp ->
           operation.onSucess(resp, contentResp)
@@ -89,7 +104,8 @@ class RestClient {
           }
         }
         response.failure = { resp ->
-          log.error("Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}")
+          log.error("Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase} : ${uri}")
+          log.error("Body : \n ${bodyContent}")
         }
       }
     } catch (Exception e) {

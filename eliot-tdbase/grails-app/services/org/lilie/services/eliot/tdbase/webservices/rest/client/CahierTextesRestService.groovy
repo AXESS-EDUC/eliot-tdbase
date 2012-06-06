@@ -108,10 +108,10 @@ class CahierTextesRestService {
    * @param personneId l'identifiant de l'enseignant
    * @return la map représentant la liste des cahiers
    */
-  def findCahiersByStructureMatiereAndEnseignant(Long structEnsId,
+  def findCahiersByStructureAndEnseignant(Long structEnsId,
                                                  Long personneId,
                                                  codePorteur = null) {
-    restClientForTextes.invokeOperation('findCahiersByStructureMatiereAndEnseignant',
+    restClientForTextes.invokeOperation('findCahiersByStructureAndEnseignant',
                                         null,
                                         [structureEnseignementId: structEnsId,
                                                 utilisateurPersonneId: personneId,

@@ -60,7 +60,7 @@
       <tr>
         <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:</td>
         <td>
-          <input size="80" type="text" value="${sujet.titre}" name="titre" tabindex="1"/>
+          <input size="80" type="text" value="${sujet.titre}" name="titre" tabindex="1" style="width: 400px"/>
         </td>
       </tr>
       <tr>
@@ -99,7 +99,7 @@
       <tr>
         <td class="label">Dur&eacute;e&nbsp;:</td>
         <td>
-          <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}" tabindex="5"/>
+          <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}" class="micro" tabindex="5"/>
           (en minutes)
         </td>
       </tr>

@@ -106,12 +106,14 @@ class EliotTicePluginGrailsPlugin {
     def password = conf.eliot.webservices.rest.client.textes.password
     def url = conf.eliot.webservices.rest.client.textes.urlServer
     def prefixUri = conf.eliot.webservices.rest.client.textes.uriPrefix
+    def conTimeout = conf.eliot.webservices.rest.client.textes.connexionTimeout ?: 15000
 
     restClientForTextes(RestClient) {
       authBasicUser = user
       authBasicPassword = password
       urlServer = url
       uriPrefix = prefixUri
+      connexionTimeout = conTimeout
       restOperationDirectory = ref("restOperationDirectory")
       println "Auth Basic user for textes Web services client REST : ${user}"
     }
@@ -120,12 +122,14 @@ class EliotTicePluginGrailsPlugin {
     def passwordNotes = conf.eliot.webservices.rest.client.notes.password
     def urlNotes = conf.eliot.webservices.rest.client.notes.urlServer
     def prefixUriNotes = conf.eliot.webservices.rest.client.notes.uriPrefix
+    def conTimeoutNotes = conf.eliot.webservices.rest.client.notes.connexionTimeout ?: 15000
 
     restClientForNotes(RestClient) {
       authBasicUser = userNotes
       authBasicPassword = passwordNotes
       urlServer = urlNotes
       uriPrefix = prefixUriNotes
+      connexionTimeout = conTimeoutNotes
       restOperationDirectory = ref("restOperationDirectory")
       println "Auth Basic user for Notes Web services client REST : ${userNotes}"
     }
@@ -246,8 +250,16 @@ class EliotTicePluginGrailsPlugin {
     if (!mc.respondsTo(null, 'getCodePorteur')) {
       mc.getCodePorteur = {->
         def headerName = ConfigurationHolder.config.eliot.requestHeaderPorteur ?: "ENT_PORTEUR"
+        def defaultCodePorteur = ConfigurationHolder.config.eliot.defaultCodePorteur
         HttpServletRequest request = RequestContextHolder.currentRequestAttributes().currentRequest
-        request.getHeader(headerName)
+        def codePorteur = request.getHeader(headerName)
+        if (codePorteur) {
+          return codePorteur
+        } else if(defaultCodePorteur) {
+          return defaultCodePorteur
+        } else {
+          return null
+        }
       }
     }
   }

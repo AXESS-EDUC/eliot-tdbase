@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/eliot-tdbase" />
+<title>New Test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">New Test</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/eliot-tdbase/login/auth</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Nouveau</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=titre</td>
+	<td>Sujet 1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistrePropriete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a[title=&quot;Créer un nouvel item&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=questionTypeId</td>
+	<td>label=Choix multiple</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=question.titre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>QCM 1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>QCM 1</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=matiere.id</td>
+	<td>label=Histoire</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=niveau.id</td>
+	<td>label=Terminale</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[0].libelleReponse</td>
+	<td>reponse 1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[1].libelleReponse</td>
+	<td>reponse 2</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[2].libelleReponse</td>
+	<td>reponse 3</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[3].libelleReponse</td>
+	<td>reponse 4</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.reponses[2].estUneBonneReponse</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.reponses[0].estUneBonneReponse</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.shuffled</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.correction</td>
+	<td>Pas la 2 ni la 3</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Rechercher</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=100</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Choix multiple</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Une question</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=typeId</td>
+	<td>label=Choix multiple</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_recherche</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=100</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Aperçu</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Insérer dans le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_100</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Tester</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Accueil TDBase</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Déconnexion</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

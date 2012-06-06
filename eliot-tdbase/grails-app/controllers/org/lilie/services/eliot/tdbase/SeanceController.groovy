@@ -239,10 +239,12 @@ class SeanceController {
     copies.each { Copie copie ->
         notes.put(copie.eleveId, copie.correctionNoteFinale)
     }
-    if (notesService.updateNotes(seance,personne,codePorteur)) {
-      flash.messageCode = "seance.updatenotes.succes"
-    } else {
+    Long res =  notesService.updateNotes(seance,personne,codePorteur)
+    if (res == null ) {
       flash.messageErreurNotesCode = "seance.updatenotes.echec"
+    } else {
+      flash.messageCode = "seance.updatenotes.succes"
+      flash.messageArgs = [res]
     }
     redirect(action: 'listeResultats',id: seance.id,controller: 'seance')
   }
@@ -338,18 +340,22 @@ class SeanceController {
       if (params.chapitreId && params.chapitreId != 'null') {
         chapitreId = params.chapitreId as Long
       }
-      if (params.activiteContextId) {
+      if (params.activiteContexteId) {
         activiteContext = ContexteActivite.valueOf(ContexteActivite.class,
-                                                  params.activiteContextId)
+                                                  params.activiteContexteId)
       }
       String urlSeance = createLink(controller: "accueil", action: "activite",
                                     id: modaliteActivite.id, absolute: true,
                                     params: [sujetId: modaliteActivite.sujetId])
+      // hack pour que l'url soit valide dans tous les cas
+      urlSeance = urlSeance.replaceFirst("localhost","127.0.0.1")
+
+      def description = ""
       Long actId = cahierTextesService.createTextesActivite(cahierId,
                                                             chapitreId,
                                                             activiteContext,
                                                             modaliteActivite,
-                                                            "Séance TDBase",
+                                                            description,
                                                             urlSeance,
                                                             personne,
                                                             codePorteur)
@@ -367,9 +373,9 @@ class SeanceController {
    */
   private tryInsertDevoirForModaliteActivite(ModaliteActivite modaliteActivite, def params, Personne personne) {
     // lien vers notes
-    Long serviceId = null
+    String serviceId = null
     if (params.serviceId && params.serviceId != 'null') {
-      serviceId = params.serviceId as Long
+      serviceId = params.serviceId
       List<ServiceInfo> services = breadcrumpsService.getValeurPropriete('services')
       ServiceInfo service = services.find {it.id == serviceId}
       Long evalId = null

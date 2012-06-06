@@ -97,7 +97,7 @@
         <td class="label">Modulation :</td>
         <td>
           <g:textField name="copiePointsModulation"
-                       value="${NumberUtils.formatFloat(copie.pointsModulation)}"/>
+                       value="${NumberUtils.formatFloat(copie.pointsModulation)}" class="micro"/>
         </td>
       </tr>
       <tr>

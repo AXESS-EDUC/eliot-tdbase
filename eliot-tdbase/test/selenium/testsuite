@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="01_creation_item_sujet">01_creation_item_sujet</a></td></tr>
+<tr><td><a href="02_creation_exercice">02_creation_exercice</a></td></tr>
+<tr><td><a href="03_Suppression_Composite">03_Suppression_Composite</a></td></tr>
+<tr><td><a href="04_Suppression_exercice_avec_copie_jetable_associee">04_Suppression_exercice_avec_copie_jetable_associee</a></td></tr>
+<tr><td><a href="05_Creation_Seance">05_Creation_Seance</a></td></tr>
+<tr><td><a href="06_travail_copie_par_eleve">06_travail_copie_par_eleve</a></td></tr>
+<tr><td><a href="07_Correction_Copie_Par_Enseignant">07_Correction_Copie_Par_Enseignant</a></td></tr>
+<tr><td><a href="08_Consultation_Resultat_Par_Elv">08_Consultation_Resultat_Par_Elv</a></td></tr>
+<tr><td><a href="09_Consultation_resultat_Par_Resp">09_Consultation_resultat_Par_Resp</a></td></tr>
+<tr><td><a href="10_Suppression_seance_sujet_exo">10_Suppression_seance_sujet_exo</a></td></tr>
+</tbody></table>
+</body>
+</html>

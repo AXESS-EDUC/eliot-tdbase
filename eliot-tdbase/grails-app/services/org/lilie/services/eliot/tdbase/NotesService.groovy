@@ -56,12 +56,18 @@ class NotesService {
                                                                                       enseignant.id,
                                                                                       codePorteur)
     def services = []
-    if (res?.items) {
-      res.items.each {
+    if (res) {
+      res.each {
         services << new ServiceInfo(id: it.id,
                                     libelle: it.libelle)
       }
     }
+//    if (res?.items) {
+//      res.items.each {
+//        services << new ServiceInfo(id: it.id,
+//                                    libelle: it.libelle)
+//      }
+//    }
     services
   }
 
@@ -103,7 +109,7 @@ class NotesService {
    * @param notes la map contenant les notes (key : id de l'élève, value: la note)
    * @param seance la seance concernée
    * @param personne la personne déclenchant l'opération
-   * @return
+   * @return le nombre de notes modifiées
    */
   Long updateNotes(ModaliteActivite seance,
                    Personne personne,
@@ -113,27 +119,29 @@ class NotesService {
                                                             personne)
     if (copies) {
       def notes = []
-      def evalId = null
       copies.each { Copie copie ->
-        notes << new EleveNote(eleveId: copie.eleveId,valeurNote: copie.correctionNoteFinale)
+        notes << new EleveNote(eleveId: copie.eleveId, valeurNote: copie.correctionNoteFinale)
       }
       def res = notesRestService.updateNotes(seance.evaluationId,
                                              notes,
                                              personne.id,
                                              codePorteur)
-      if (res?.id) {
-        evalId = res.id as Long
+      Long nbNotesMod = null
+      if (res) {
+        try {
+          nbNotesMod = res.size()
+        } catch (Exception e) {}
       }
-      return evalId
+      return nbNotesMod
     }
-    seance.evaluationId
+    return 0
   }
 
 
 }
 
 class ServiceInfo {
-  Long id
+  String id
   String libelle
 }
 

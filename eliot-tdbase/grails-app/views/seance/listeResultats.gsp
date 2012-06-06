@@ -81,7 +81,7 @@
 <div class="portal-messages">
   <g:if test="${flash.messageCode}">
     <li class="success">
-      <g:message code="${flash.messageCode}"/>
+      <g:message code="${flash.messageCode}" args="${flash.messageArgs}"/>
     </li>
   </g:if>
   <g:if test="${flash.messageErreurNotesCode}">
