@@ -32,11 +32,11 @@
         <strong><g:message code="question.propriete.libelle"/></strong><p>${specifobject.libelle}</p>
         <g:each status="i" in="${specifobject.associations}" var="association">
             &nbsp;
-            <g:textField name="specifobject.associations[${i}].participant1" size="23"
-                         value="${association.participant1}"/>
+            <g:textField name="specifobject.associations[${i}].participant1" size="23" class="veryshort"
+                         value="${association.participant1}" disabled="true"/>
             &nbsp;
-            <g:textField name="specifobject.associations[${i}].participant2" size="23"
-                         value="${association.participant2}"/>
+            <g:textField name="specifobject.associations[${i}].participant2" size="23" class="veryshort"
+                         value="${association.participant2}" disabled="true"/>
             <br/>
         </g:each>
         <br/>
