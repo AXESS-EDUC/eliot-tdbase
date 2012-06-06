@@ -87,14 +87,12 @@
 }
 
 .icons {
-    list-style-type: none;
     width: 500px;
-    height: 100px;
     border: solid 1px #808080;
+    display: inline-block;
 }
 
 .icon {
-    list-style: none;
     border: solid 1px #FFD324;
     background: #FFF6BF;
     color: #817134;

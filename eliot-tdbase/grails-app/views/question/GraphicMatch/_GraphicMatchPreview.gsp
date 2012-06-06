@@ -47,19 +47,19 @@
         </g:each>
     </ul>
 
-    <ul class="icons">
+    <div class="icons">
         <g:each status="i" in="${specifobject.icons}" var="icon">
 
             <g:if test="${icon.attachment}">
-                <li class="icon">
+                <div class="icon">
                     <et:viewAttachement attachement="${icon.attachment}"
                                         width="40" height="40"/>
                     <br>
                     avec zone de dépôt ${specifobject.graphicMatches[icon.id]}
-                </li>
+                </div>
             </g:if>
         </g:each>
-    </ul>
+    </div>
 </div>
 
 <strong>Correction :</strong> <br/>${specifobject.correction}
