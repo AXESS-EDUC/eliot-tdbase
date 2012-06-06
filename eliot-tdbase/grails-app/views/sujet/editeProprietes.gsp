@@ -60,7 +60,7 @@
       <tr>
         <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:</td>
         <td>
-          <input size="80" type="text" value="${sujet.titre}" name="titre" tabindex="1"/>
+          <input size="80" type="text" value="${sujet.titre}" name="titre" tabindex="1" style="width: 400px"/>
         </td>
       </tr>
       <tr>
