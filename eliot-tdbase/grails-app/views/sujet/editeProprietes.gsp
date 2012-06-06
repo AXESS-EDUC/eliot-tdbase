@@ -99,7 +99,7 @@
       <tr>
         <td class="label">Dur&eacute;e&nbsp;:</td>
         <td>
-          <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}" tabindex="5"/>
+          <input type="text" name="dureeMinutes" value="${sujet.dureeMinutes}" class="micro" tabindex="5"/>
           (en minutes)
         </td>
       </tr>

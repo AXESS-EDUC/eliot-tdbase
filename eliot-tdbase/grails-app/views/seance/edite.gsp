@@ -156,7 +156,7 @@
         <td>
           <g:textField name="dateDebut"
                        value="${modaliteActivite.dateDebut.format('dd/MM/yyyy HH:mm')}"
-                       class="datepicker"/>
+                       class="datepicker short"/>
         </td>
       </tr>
       <tr>
@@ -164,7 +164,7 @@
         <td>
           <g:textField name="dateFin"
                        value="${modaliteActivite.dateFin.format('dd/MM/yyyy HH:mm')}"
-                       class="datepicker"/>
+                       class="datepicker short"/>
         </td>
       </tr>
       <tr>
