@@ -50,7 +50,7 @@
   <td>
     <g:textField name="specifobject.nombreLignesReponse"
                  value="${specifobject.nombreLignesReponse}"
-                 size="5"/> (Nombre de lignes du champ texte)
+                 size="5" class="micro"/> (Nombre de lignes du champ texte)
   </td>
 </tr>
 <tr>

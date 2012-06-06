@@ -43,9 +43,9 @@
     R&eacute;ponse<span class="obligatoire">*</span>&nbsp;:
   </td>
   <td>
-    <g:textField name="specifobject.valeur" value="${specifobject.valeur}" size="10"/> (Nombre entier)
+    <g:textField name="specifobject.valeur" value="${specifobject.valeur}" class="micro" size="10"/> (Nombre entier)
     &nbsp;&nbsp;Unité&nbsp;
-    <g:textField name="specifobject.unite" value="${specifobject.unite}" size="10"/>
+    <g:textField name="specifobject.unite" value="${specifobject.unite}" class="micro" size="10"/>
   </td>
 </tr>
 <tr>

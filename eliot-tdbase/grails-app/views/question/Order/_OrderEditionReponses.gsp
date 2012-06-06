@@ -27,7 +27,7 @@
   --}%
 <g:each status="i" in="${specifobject.orderedItems}" var="orderedItem">
     &nbsp;
-    <g:textField name="specifobject.orderedItems[${i}].text" size="45"
+    <g:textField name="specifobject.orderedItems[${i}].text" class="short"
                  value="${orderedItem.text}" maxlength="50" style="margin-top: 5px; margin-bottom: 5px;"/>
     &nbsp;
 

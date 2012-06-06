@@ -50,20 +50,20 @@
             <tr>
                 <td>Valeur&nbsp;attendue<span class="obligatoire">*</span>&nbsp;:</td>
                 <td>
-                    <g:textField name="specifobject.valeur" value="${specifobject.valeurAffichage}" size="10"/>
+                    <g:textField name="specifobject.valeur" value="${specifobject.valeurAffichage}" class="micro" size="10"/>
                 </td>
 
             </tr>
             <tr>
                 <td>Précision<span class="obligatoire">*</span>&nbsp;:</td>
                 <td>
-                    <g:textField name="specifobject.precision" value="${specifobject.precisionAffichage}" size="10"/>
+                    <g:textField name="specifobject.precision" value="${specifobject.precisionAffichage}" class="micro" size="10"/>
                 </td>
             </tr>
             <tr>
                 <td>Valeur&nbsp;minimale<span class="obligatoire">*</span>&nbsp;:</td>
                 <td>
-                    <g:textField name="specifobject.valeurMin" value="${specifobject.valeurMinAffichage}" size="10"/>
+                    <g:textField name="specifobject.valeurMin" value="${specifobject.valeurMinAffichage}" class="micro" size="10"/>
                 </td>
 
             </tr>
@@ -71,14 +71,14 @@
                 <td>Valeur&nbsp;maximale<span class="obligatoire">*</span>&nbsp;:</td>
                 <td>
                     <g:textField name="specifobject.valeurMax" value="${specifobject.valeurMaxAffichage}"
-                                 size="10"/><br/>
+                                 class="micro" size="10"/><br/>
                 </td>
 
             </tr>
             <tr>
                 <td>Pas<span class="obligatoire">*</span>&nbsp;:</td>
                 <td>
-                    <g:textField name="specifobject.pas" value="${specifobject.pasAffichage}" size="10"/>
+                    <g:textField name="specifobject.pas" value="${specifobject.pasAffichage}" class="micro" size="10"/>
                 </td>
             </tr>
         </table>

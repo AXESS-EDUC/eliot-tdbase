@@ -41,13 +41,13 @@ class RestClientTests extends GroovyTestCase{
 
   void testRestClientInvokeOperation() {
     RestOperation restOperation = new GenericRestOperation(contentType: ContentType.JSON,
-                                                           description: "test de http://localhost:8090/eliot-test-webservices/api-rest/v2/cahiers/1/chapitres",
+                                                           description: "test de http://localhost:8090/eliot-test-webservices/echanges/v2/cahiers/1/chapitres",
                                                            operationName: "op1",
                                                            method: Method.GET,
                                                            requestBodyTemplate: null,
                                                            responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
                                                            urlServer: "http://localhost:8090",
-                                                           uriTemplate: '/eliot-test-webservices/api-rest/v2/cahiers/$cahierId/chapitres')
+                                                           uriTemplate: '/eliot-test-webservices/echanges/v2/cahiers/$cahierId/chapitres')
     restOperationDirectory.addOperation(restOperation)
     def resp = restClient.invokeOperation(
             "op1",
