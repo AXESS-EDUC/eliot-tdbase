@@ -35,5 +35,5 @@ function initDragNDropPolyFill() {
     $("div.container").css("height", "");
     $("div.container").css("width", "");
 
-    new Common().positionHotspots();
+    new GraphicMatchCommon().positionHotspots();
 }

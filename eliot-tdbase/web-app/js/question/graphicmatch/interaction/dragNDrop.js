@@ -32,7 +32,7 @@ function initDragNDrop() {
      * Items that are currently dropped in a drop target.
      */
     var droppedItems = {};
-    var common = new Common();
+    var common = new GraphicMatchCommon();
 
     initWidgets();
     registerEventHandlers();

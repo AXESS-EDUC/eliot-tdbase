@@ -27,48 +27,59 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
+<div class="imageContainer">
+    <et:viewAttachement
+            attachement="${specifobject.attachement}"
+            width="500"
+            height="500"
+            id="theImage"/>
+</div>
+
 <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-    <div id="hotspot_${i}" class="hotspot" style="width: ${hotspot.width}; height: ${hotspot.height}">
 
-        <g:submitToRemote id="${i}"
-                          name="hotspotSupressButton"
-                          title="Supprimer une zone"
-                          value="X"
-                          action="supprimeHotspot"
-                          controller="questionGraphicMatch"
-                          update="hotspotsEtIcons"
-                          onComplete="afterHotspotDeleted()"/>
+    <div class="hotspot_draggable">
+        <div id="hotspot_${i}" class="hotspot_resizable" style="width: ${hotspot.width}; height: ${hotspot.height}">
 
-        <span class="hotspotLabel">Zone de dépôt : ${hotspot.id}</span>
-        <g:hiddenField class="idField" name="specifobject.hotspots[${i}].id" value="${hotspot.id}"/>
+            <g:submitToRemote id="${i}"
+                              class="hotspotSupressButton"
+                              name="hotspotSupressButton"
+                              title="Supprimer une zone"
+                              value="X"
+                              action="supprimeHotspot"
+                              controller="questionGraphicMatch"
+                              update="graphicMatchEditor"
+                              onComplete="afterHotspotDeleted()"/>
 
-        <span class="hotspotLabel">Top:</span>
-        <g:textField class="hotspotAttribute" id="offTop" name="specifobject.hotspots[${i}].topDistance"
-                     value="${hotspot.topDistance}" size="3"/>
+            <span class="hotspotLabel">Zone de dépôt : ${hotspot.id}</span>
+            <g:hiddenField class="idField" name="specifobject.hotspots[${i}].id" value="${hotspot.id}"/>
 
-        <span class="hotspotLabel">Left:</span>
-        <g:textField class="hotspotAttribute" id="offLeft" name="specifobject.hotspots[${i}].leftDistance"
-                     value="${hotspot.leftDistance}" size="3"/>
+            <span class="hotspotLabel">Top:</span>
+            <g:textField class="hotspotAttribute" id="offTop" name="specifobject.hotspots[${i}].topDistance"
+                         value="${hotspot.topDistance}" size="3"/>
 
-        <span class="hotspotLabel">Width:</span>
-        <g:textField class="hotspotAttribute" id="width" name="specifobject.hotspots[${i}].width"
-                     value="${hotspot.width}" size="3"/>
+            <span class="hotspotLabel">Left:</span>
+            <g:textField class="hotspotAttribute" id="offLeft" name="specifobject.hotspots[${i}].leftDistance"
+                         value="${hotspot.leftDistance}" size="3"/>
 
-        <span class="hotspotLabel">Height:</span>
-        <g:textField class="hotspotAttribute" id="height" name="specifobject.hotspots[${i}].height"
-                     value="${hotspot.height}" size="3"/>
+            <span class="hotspotLabel">Width:</span>
+            <g:textField class="hotspotAttribute" id="width" name="specifobject.hotspots[${i}].width"
+                         value="${hotspot.width}" size="3"/>
 
+            <span class="hotspotLabel">Height:</span>
+            <g:textField class="hotspotAttribute" id="height" name="specifobject.hotspots[${i}].height"
+                         value="${hotspot.height}" size="3"/>
+
+        </div>
     </div>
+
 </g:each>
 
 <g:hiddenField name="specifobject.hotspots.size"
                value="${specifobject.hotspots?.size()}"/>
 
-<ul>
+<div >
     <g:each status="i" in="${specifobject.icons}" var="icon">
-
-        <li class="editIcon">
-
+        <div class="editIcon">
             <strong>Zone de dépôt ${specifobject.graphicMatches.getAt(icon.id)}:</strong>
 
             <g:if test="${!icon.attachmentSizeOk}">
@@ -90,9 +101,8 @@
                            value="${specifobject.graphicMatches.getAt(icon.id)}"/>
             <g:hiddenField name="specifobject.icons[${i}].attachmentId" value="${icon.attachmentId}"/>
             <g:hiddenField name="specifobject.icons[${i}].id" value="${icon.id}"/>
-        </li>
+        </div>
     </g:each>
-</ul>
+</div>
 
-<g:hiddenField name="specifobject.icons.size"
-               value="${specifobject.icons?.size()}"/>
+<g:hiddenField name="specifobject.icons.size" value="${specifobject.icons?.size()}"/>

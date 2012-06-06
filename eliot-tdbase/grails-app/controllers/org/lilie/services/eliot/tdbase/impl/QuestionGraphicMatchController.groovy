@@ -76,7 +76,7 @@ class QuestionGraphicMatchController extends QuestionController {
     specifobject.graphicMatches[iconId] = hotspotId
 
     render(
-            template: "/question/GraphicMatch/GraphicMatchEditionReponses",
+            template: "/question/GraphicMatch/GraphicMatchEditionHotSpots",
             model: [specifobject: specifobject]
     )
   }
@@ -98,7 +98,7 @@ class QuestionGraphicMatchController extends QuestionController {
     })
 
     render(
-            template: "/question/GraphicMatch/GraphicMatchEditionReponses",
+            template: "/question/GraphicMatch/GraphicMatchEditionHotSpots",
             model: [specifobject: specifobject]
     )
   }

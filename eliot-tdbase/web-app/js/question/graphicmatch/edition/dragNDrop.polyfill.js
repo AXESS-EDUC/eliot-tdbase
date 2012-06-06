@@ -27,11 +27,36 @@
  */
 function initDragNDropPolyFill() {
 
+    initWidgets();
+    registerEventHandlers();
+    validateForm();
+
     /**
      * Remove Overflow properties. Because its badly supported on tactile devices.
      */
-    $("div.container").css("overflow", "");
-    $("div.container").css("height", "");
-    $("div.container").css("width", "");
+    function initWidgets() {
+        $("div.container").css("overflow", "");
+        $("div.container").css("height", "");
+        $("div.container").css("width", "");
+    }
 
+    function registerEventHandlers() {
+        $("#question\\.titre").blur(function () {
+            validateForm();
+        });
+
+        $("#specifobject\\.libelle").blur(function () {
+            validateForm();
+        });
+    }
+
+    function validateForm() {
+        if ($("#question\\.titre").val() != "" && $("#specifobject\\.libelle").val() != "") {
+            $('#reponseZone').show();
+            $('#reponseDisclaimer').hide();
+        } else {
+            $('#reponseZone').hide();
+            $('#reponseDisclaimer').show();
+        }
+    }
 }

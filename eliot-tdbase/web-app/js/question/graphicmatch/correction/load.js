@@ -25,7 +25,7 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-var common = new Common();
+var common = new GraphicMatchCommon();
 
 
 //hide text

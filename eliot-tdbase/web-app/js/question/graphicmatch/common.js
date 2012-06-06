@@ -25,7 +25,7 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-function Common() {
+function GraphicMatchCommon() {
 
     this.positionHotspots = function () {
         $(".hotspots>li").each(function () {

@@ -62,8 +62,24 @@
     font-weight: bold;
 }
 
+.graphicMatchEditor {
+    position: relative;
+}
+
 .imageContainer {
     position: relative;
+    width: 500px;
+}
+
+.hotspot_draggable {
+    position: relative;
+    z-index: 12;
+}
+
+.hotspot_resizable .hotspotAttribute[type="text"] {
+    margin: 0;
+    padding: 0;
+    width: auto;
 }
 
 .hotspot {
