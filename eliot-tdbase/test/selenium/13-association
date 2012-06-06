@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:8080/eliot-tdbase" />
-<title>06_travail_copie_par_eleve</title>
+<title>13-association</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">06_travail_copie_par_eleve</td></tr>
+<tr><td rowspan="1" colspan="3">13-association</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -19,12 +19,12 @@
 <tr>
 	<td>type</td>
 	<td>id=username</td>
-	<td>elv1</td>
+	<td>ens1</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>id=password</td>
-	<td>elv1</td>
+	<td>ens1</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -33,77 +33,92 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Sujet 2</td>
+	<td>link=Sujet démonstration</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[0]</td>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[1]</td>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[2]</td>
-	<td></td>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Association</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Couples de cinéma</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[3]</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[0].participant1</td>
+	<td>Laurel</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[0].participant2</td>
+	<td>Hardy</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[1].participant1</td>
+	<td>Tom</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[1].participant2</td>
+	<td>Jerry</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[2].participant1</td>
+	<td>Titi</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.associations[2].participant2</td>
+	<td>Sylvestre</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.montrerColonneAGauche</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Test du sujet</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>name=_action_rendLaCopie</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Résultats</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Séances</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>css=a.button.work</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[1]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[3]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[2]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=reponsesCopie.listeReponses[0].specificationObject.indexReponsesCoches[0]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>name=_action_rendLaCopie</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Accueil TDBase</td>
 	<td></td>
 </tr>
 <tr>
@@ -111,6 +126,7 @@
 	<td>link=Déconnexion</td>
 	<td></td>
 </tr>
+
 </tbody></table>
 </body>
 </html>

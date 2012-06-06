@@ -40,20 +40,15 @@ class NotesController {
     println("enseignantPersonneId : ${enseignantPersonneId}")
     def structureEnseignementId = params.structureEnseignementId as Long
     def date = params.date
-    String resp = new JsonBuilder([kind: "List",
-                                          total: 3,
-                                          items: [[kind: "eliot-notes#evaluation-contextes#standard",
-                                                  class: "org.lilie.services.eliot.textes.CahierDeTextes",
+    String resp = new JsonBuilder([[kind: "eliot-notes#evaluation-contextes#standard",
                                                   id: 1,
                                                   libelle: "1ES1(A)-AGL1-TP (T2)"],
                                                   [kind: "eliot-notes#evaluation-contextes#standard",
-                                                          class: "org.lilie.services.eliot.textes.CahierDeTextes",
                                                           id: 2,
                                                           libelle: "1ES1(A)-AGL1-Oral (T2)"],
                                                   [kind: "eliot-notes#evaluation-contextes#standard",
-                                                          class: "org.lilie.services.eliot.textes.CahierDeTextes",
                                                           id: 3,
-                                                          libelle: "1ES1(A)-AGL1 (T2)"]]]).toPrettyString()
+                                                          libelle: "1ES1(A)-AGL1 (T2)"]]).toPrettyString()
     render(text: resp, contentType: "application/json", encoding: "UTF-8")
   }
 
@@ -72,9 +67,8 @@ class NotesController {
     println(request.inputStream.text)
     def evalId = params.evaluationId as Long
     println("evaluation id : $evalId")
-    String resp = new JsonBuilder([kind: "eliot-notes#evaluation#id",
-                                          class: "org.lilie.services.eliot.notes.Evaluation",
-                                          id: evalId]).toPrettyString()
+    String resp = new JsonBuilder([[kind: "eliot-notes#note#standard",
+                                          id: evalId]]).toPrettyString()
     render(text: resp, contentType: "application/json", encoding: "UTF-8")
   }
 

@@ -35,7 +35,7 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 versionSchemaEliot = "2.7.1-RC1"
-versionTDBase = "2.0.0-SNAPSHOT"
+versionTDBase = "2.0.1-B1"
 
 grails.project.dependency.resolution = {
 
@@ -51,6 +51,9 @@ grails.project.dependency.resolution = {
     grailsCentral()
     mavenRepo "http://www.ticetime.com/nexus/content/repositories/snapshots/"
     mavenRepo "http://www.ticetime.com/nexus/content/repositories/releases/"
+    mavenRepo "http://www.ticetime.com/nexus/content/repositories/releases/"
+    mavenRepo "http://www.ticetime.com/nexus/content/repositories/Axess-Snapshots/"
+    mavenRepo "http://www.ticetime.com/nexus/content/repositories/Axess/"
   }
   dependencies {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.

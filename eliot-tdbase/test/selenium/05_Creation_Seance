@@ -82,6 +82,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>id=100</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[2]</td>
 	<td></td>
