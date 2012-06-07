@@ -64,15 +64,15 @@
 
     <div class="suggestedWords" id="${indexReponse}" show="${specifobject.montrerLesMots}">
         <span class="label">Mots suggérés :</span>
-        <ul class="suggestedWordsList">
+        <div class="suggestedWordsList">
             <g:each in="${specifobject.motsSugeres}" var="suggestedWord" status="i">
-                <li class="suggestedWord"
+                <div class="suggestedWord"
                     id="suggestedWord_${indexReponse}_${i}"
                     word="${suggestedWord}">
                     ${suggestedWord}
-                </li>
+                </div>
             </g:each>
-        </ul>
+        </div>
     </div>
 
 </div>
