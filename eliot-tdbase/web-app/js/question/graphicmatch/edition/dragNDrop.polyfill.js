@@ -29,7 +29,7 @@ function initDragNDropPolyFill() {
 
     initWidgets();
     registerEventHandlers();
-    validateForm();
+    new ValidationService().validate();
 
     /**
      * Remove Overflow properties. Because its badly supported on tactile devices.
@@ -38,25 +38,5 @@ function initDragNDropPolyFill() {
         $("div.container").css("overflow", "");
         $("div.container").css("height", "");
         $("div.container").css("width", "");
-    }
-
-    function registerEventHandlers() {
-        $("#question\\.titre").blur(function () {
-            validateForm();
-        });
-
-        $("#specifobject\\.libelle").blur(function () {
-            validateForm();
-        });
-    }
-
-    function validateForm() {
-        if ($("#question\\.titre").val() != "" && $("#specifobject\\.libelle").val() != "") {
-            $('#reponseZone').show();
-            $('#reponseDisclaimer').hide();
-        } else {
-            $('#reponseZone').hide();
-            $('#reponseDisclaimer').show();
-        }
     }
 }

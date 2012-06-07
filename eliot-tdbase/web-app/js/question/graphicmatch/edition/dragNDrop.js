@@ -28,9 +28,12 @@
 
 function initDragNDrop() {
 
+
+    var validationService = new ValidationService();
+
     initWidgets();
     registerEventHandlers();
-    validateForm();
+    new ValidationService().validate();
 
     function initWidgets() {
         //hide html tags
@@ -64,14 +67,6 @@ function initDragNDrop() {
         $(".hotspot_draggable").bind("dragstop", function () {
             onDragStop($(this));
         })
-
-        $("#question\\.titre").blur(function () {
-            validateForm();
-        });
-
-        $("#specifobject\\.libelle").blur(function () {
-            validateForm();
-        });
     }
 
     function positionHotspots() {
@@ -141,15 +136,5 @@ function initDragNDrop() {
         var maxWidth = $('.imageContainer').width() - hotSpot.parent().position().left;
         hotSpot.resizable("option", "maxHeight", maxHeight);
         hotSpot.resizable("option", "maxWidth", maxWidth);
-    }
-
-    function validateForm() {
-        if ($("#question\\.titre").val() != "" && $("#specifobject\\.libelle").val() != "") {
-            $('#reponseZone').show();
-            $('#reponseDisclaimer').hide();
-        } else {
-            $('#reponseZone').hide();
-            $('#reponseDisclaimer').show();
-        }
     }
 }

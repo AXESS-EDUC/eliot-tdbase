@@ -29,7 +29,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="eliot-tdbase-ui"/>
+  <r:require modules="question_editeJS"/>
   <g:external dir="js/eliot/tiny_mce/tiny_mce.js" plugin="eliot-tice-plugin"/>
   <script type="text/javascript">
     tinyMCE.init({
@@ -54,11 +54,6 @@
     $(document).ready(function () {
       $('#menu-item-contributions').addClass('actif');
       $('#question\\.titre').focus();
-      $("#question\\.titre").blur(function () {
-        if ($("#specifobject\\.libelle").val() == "") {
-          $("#specifobject\\.libelle").val($("#question\\.titre").val());
-        }
-      });
       $("form").attr('enctype', 'multipart/form-data');
       initButtons()
     });
