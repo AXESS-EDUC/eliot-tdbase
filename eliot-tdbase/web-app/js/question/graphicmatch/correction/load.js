@@ -34,4 +34,4 @@ $('.imageContainer>.hotspotStyle').html('');
 
 common.positionHotspots();
 common.positionIcons();
-
+$('.icons').css("border", "none");

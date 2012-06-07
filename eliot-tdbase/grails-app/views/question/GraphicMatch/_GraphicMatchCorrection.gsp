@@ -50,11 +50,11 @@
             </g:each>
         </ul>
 
-        <ul class="icons">
+        <div class="icons">
             <g:each status="i" in="${specifobject.icons}" var="icon">
 
                 <g:if test="${icon.attachment}">
-                    <li class="icon" id="icon_correction_${indexReponse}_${icon.id}">
+                    <div class="icon" id="icon_correction_${indexReponse}_${icon.id}">
                         <et:viewAttachement attachement="${icon.attachment}"
                                             width="${specifobject.getCorrespondingHotspot(icon.id).width-5}"
                                             height="${specifobject.getCorrespondingHotspot(icon.id).height-5}"/>
@@ -62,10 +62,10 @@
                         <span class="zoneLabel"><br>avec Zone</span>
                         <span
                                 class="hotspotSelector">${specifobject.graphicMatches[icon.id]}</span>
-                    </li>
+                    </div>
                 </g:if>
             </g:each>
-        </ul>
+        </div>
     </div>
     <strong>Remarque :</strong> ${specifobject.correction}
 </div>
