@@ -42,3 +42,16 @@ function initPolyFill() {
         initDragNDrop();
     }
 }
+
+function ValidationService() {
+
+    this.validate = function () {
+        if ($("#question\\.titre").val() != "" && $("#specifobject\\.libelle").val() != "") {
+            $('#reponseZone').show();
+            $('#reponseDisclaimer').hide();
+        } else {
+            $('#reponseZone').hide();
+            $('#reponseDisclaimer').show();
+        }
+    };
+}

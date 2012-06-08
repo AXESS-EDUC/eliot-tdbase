@@ -57,27 +57,18 @@
 
         <g:if test="${specifobject.attachmentId}">
 
-
             <g:submitToRemote title="Ajouter une zone" value="Ajouter une zone"
                               action="ajouteHotspot"
                               controller="questionGraphicMatch"
-                              update="hotspotsEtIcons"
+                              update="graphicMatchEditor"
                               onComplete="afterHotspotAdded()"
                               class="button"/>
 
-            <div id="imageContainer">
-                <et:viewAttachement
-                        attachement="${specifobject.attachement}"
-                        width="500"
-                        height="500"
-                        id="theImage"/>
+            <div  class="graphicMatchEditor" id="graphicMatchEditor">
 
-                <div id="hotspotsEtIcons">
-                    <g:render
-                            template="/question/GraphicMatch/GraphicMatchEditionReponses"
-                            model="[specifobject: specifobject]"/>
-                </div>
-            </div>
+            <g:render
+                    template="/question/GraphicMatch/GraphicMatchEditionHotSpots"
+                    model="[specifobject: specifobject]"/>
         </g:if>
     </td>
 </tr>

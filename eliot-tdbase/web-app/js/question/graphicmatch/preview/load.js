@@ -25,4 +25,4 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-new Common().positionHotspots();
+new GraphicMatchCommon().positionHotspots();

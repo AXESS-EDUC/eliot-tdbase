@@ -52,10 +52,10 @@
     </g:each>
   </ul>
 
-  <ul class="icons">
+  <div class="icons">
     <g:each status="i" in="${specifobject.icons}" var="icon">
       <g:if test="${icon.attachmentId}">
-        <li id="icon_interaction_${indexReponse}_${icon.id}" class="icon">
+        <div id="icon_interaction_${indexReponse}_${icon.id}" class="icon">
 
           <et:viewAttachement attachement="${icon.attachment}"
                               width="${specifobject.getCorrespondingHotspot(icon.id).width-5}"
@@ -68,10 +68,10 @@
                   value="${reponsespecifobject?.valeursDeReponse.get(icon.id)}"
                   from="${specifobject.hotspots*.id}"
                   noSelection="['-1': 'Hotspot']"/>
-        </li>
+        </div>
       </g:if>
     </g:each>
-  </ul>
+  </div>
 </div>
 
 <br>

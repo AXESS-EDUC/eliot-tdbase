@@ -51,6 +51,11 @@ modules = {
              disposition: 'head', nominify: true
   }
 
+  question_editeJS{
+    dependsOn "eliot-tdbase-ui"
+    resource url: [dir: 'js/question/', file: 'edite.js']
+  }
+
   associateJS {
     dependsOn "modernizr", "eliot-tice-ui", "seanceCopie_Common"
     resource url: [dir: 'js/question/associate', file: 'load.js']

@@ -28,9 +28,12 @@
 
 function initDragNDrop() {
 
+
+    var validationService = new ValidationService();
+
     initWidgets();
     registerEventHandlers();
-    validateForm();
+    new ValidationService().validate();
 
     function initWidgets() {
         //hide html tags
@@ -38,18 +41,20 @@ function initDragNDrop() {
         $(".hotspotAttribute").hide();
 
         // style html tags
-        $('[name="hotspotSupressButton"]').each(function () {
-            $(this).addClass('hotspotSupressButton');
-        });
-        $('.hotspot').addClass('hotspotStyle');
-        $('.hotspot').addClass('unHighlightedHotspot');
+        $('[name="hotspotSupressButton"]').addClass('hotspotSupressButton');
+
+        $('.hotspot_resizable').addClass('hotspotStyle');
+        $('.hotspot_draggable').addClass('unHighlightedHotspot');
+        $(".hotspot_draggable").css('position', 'absolute');
 
         // make hotspots draggable
-        $(".hotspot").draggable({containment:'#theImage', stack:'div'});
+        $(".hotspot_draggable").draggable({containment:'.imageContainer', stack:'div'});
 
         // make hotspots resizable
-        $(".hotspot").resizable({containment:'#theImage', stack:'div', handles:"se", stop:function (event, ui) {
-            onResize($(this), ui)
+        $(".hotspot_resizable").resizable({handles:"se", stop:function (event, ui) {
+            onResizeStopped($(this), ui)
+        }, start:function (event, ui) {
+            onBeginResize($(this), ui)
         }});
 
         resizeHotspots();
@@ -59,45 +64,40 @@ function initDragNDrop() {
 
     function registerEventHandlers() {
 
-        $(".hotspot").bind("dragstop", function () {
+        $(".hotspot_draggable").bind("dragstop", function () {
             onDragStop($(this));
         })
-
-        $("#question\\.titre").blur(function () {
-            validateForm();
-        });
-
-        $("#specifobject\\.libelle").blur(function () {
-            validateForm();
-        });
     }
 
     function positionHotspots() {
-        $(".hotspot").each(function () {
+        $(".hotspot_resizable").each(function () {
             var offLeft = $(this).children('#offLeft').val();
             var offTop = $(this).children('#offTop').val();
-            $(this).position({
-                                 of:$("#theImage"), my:"left top", at:"left top",
-                                 offset:offLeft + " " + offTop, collision:"none"
-                             });
+
+            $(this).parents('.hotspot_draggable').position({
+                of:$(".imageContainer"), my:"left top", at:"left top",
+                offset:offLeft + " " + offTop, collision:"none"
+            });
         });
     }
 
+    /**
+     * Memorize the position of the hotspot relative to the image.
+     * @param hotspot
+     */
     function onDragStop(hotspot) {
-        var hotspotId = hotspot.attr("id");
+        var imageLeft = $('.imageContainer').position().left;
+        var imageTop = $('.imageContainer').position().top;
 
-        var imageLeft = $('#theImage').position().left;
-        var imageTop = $('#theImage').position().top;
+        var hotspotLeft = hotspot.position().left - imageLeft;
+        var hotspotTop = hotspot.position().top - imageTop;
 
-        var hotspotLeft = $('#' + hotspotId).position().left - imageLeft;
-        var hotspotTop = $('#' + hotspotId).position().top - imageTop;
-
-        $("#" + hotspotId + ">input#offLeft").val(hotspotLeft);
-        $("#" + hotspotId + ">input#offTop").val(hotspotTop);
+        hotspot.children('.hotspot_resizable').children('input#offLeft').val(hotspotLeft);
+        hotspot.children('.hotspot_resizable').children('input#offTop').val(hotspotTop);
     }
 
     function addHotpotIds() {
-        $(".hotspot").each(function () {
+        $(".hotspot_resizable").each(function () {
 
             var id = $(this).children(".idField").val();
 
@@ -107,9 +107,9 @@ function initDragNDrop() {
     }
 
 
-    function resizeHotspots(){
+    function resizeHotspots() {
 
-        $(".hotspot").each(function () {
+        $(".hotspot_resizable").each(function () {
 
             var width = $(this).children('#width').val();
             var height = $(this).children('#height').val();
@@ -119,19 +119,22 @@ function initDragNDrop() {
 
     }
 
-    function onResize(hotSpot, ui) {
+    function onResizeStopped(hotSpot, ui) {
         var hotspotId = $(hotSpot).attr("id");
         $("#" + hotspotId + ">input#width").val(ui.size.width);
         $("#" + hotspotId + ">input#height").val(ui.size.height);
     }
 
-    function validateForm() {
-        if ($("#question\\.titre").val() != "" && $("#specifobject\\.libelle").val() != "") {
-            $('#reponseZone').show();
-            $('#reponseDisclaimer').hide();
-        } else {
-            $('#reponseZone').hide();
-            $('#reponseDisclaimer').show();
-        }
+    /**
+     * Sets the maximum size that a resizable can have based on its
+     * position within the image container.
+     * @param hotSpot
+     * @param ui
+     */
+    function onBeginResize(hotSpot, ui) {
+        var maxHeight = $('.imageContainer').height() - hotSpot.parent().position().top;
+        var maxWidth = $('.imageContainer').width() - hotSpot.parent().position().left;
+        hotSpot.resizable("option", "maxHeight", maxHeight);
+        hotSpot.resizable("option", "maxWidth", maxWidth);
     }
 }

@@ -36,7 +36,7 @@
         ${specifobject.libelle}
         <br/>
 
-        <div class="imageContainer">
+        <div class="imageContainer" style="width: 250px">
             <g:if test="${specifobject.attachement}">
                 <et:viewAttachement attachement="${specifobject.attachement}"
                                     width="250" height="250"/>
@@ -53,19 +53,19 @@
                 </g:each>
             </ul>
 
-            <ul class="icons" style="width: 250px;">
+            <div class="icons" style="width: 250px;">
                 <g:each status="i" in="${specifobject.icons}" var="icon">
 
                     <g:if test="${icon.attachment}">
-                        <li class="icon">
+                        <div class="icon">
                             <et:viewAttachement attachement="${icon.attachment}"
                                                 width="20" height="20"/>
                             <br>
                             avec Zone ${specifobject.graphicMatches[icon.id]}
-                        </li>
+                        </div>
                     </g:if>
                 </g:each>
-            </ul>
+            </div>
         </div>
         <strong>Correction :</strong> ${specifobject.correction}
     </td>

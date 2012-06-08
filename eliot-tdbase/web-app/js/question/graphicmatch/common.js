@@ -25,7 +25,7 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-function Common() {
+function GraphicMatchCommon() {
 
     this.positionHotspots = function () {
         $(".hotspots>li").each(function () {
@@ -71,8 +71,9 @@ function Common() {
             if (selectedHotspot && selectedHotspot != "-1") {
                 var hotspotId = $(this).parents(".imageContainer").children("[hotspotid=" + selectedHotspot + "]").attr('id');
                 var iconId = $(this).parents('.icon').attr('id');
-                new Common().putDraggableIntoDroppable(iconId, hotspotId);
-                new Common().highlight($('#' + hotspotId));
+
+                new GraphicMatchCommon().putDraggableIntoDroppable(iconId, hotspotId);
+                new GraphicMatchCommon().highlight($('#' + hotspotId));
             }
         });
     };

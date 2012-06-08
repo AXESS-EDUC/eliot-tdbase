@@ -63,11 +63,11 @@
                               onComplete="afterTextZoneAdded()"
                               class="button"/>
 
-          <div id="fillgraphicsEditor" class="fillgraphicsEditor">
-                      <g:render
-                              template="/question/FillGraphics/FillGraphicsReponses"
-                              model="[specifobject: specifobject]"/>
-                  </div>
+            <div id="fillgraphicsEditor" class="fillgraphicsEditor">
+                <g:render
+                        template="/question/FillGraphics/FillGraphicsReponses"
+                        model="[specifobject: specifobject]"/>
+            </div>
         </g:if>
     </td>
 </tr>
