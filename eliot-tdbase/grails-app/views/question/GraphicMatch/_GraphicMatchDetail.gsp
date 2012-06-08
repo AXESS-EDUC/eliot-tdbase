@@ -36,7 +36,7 @@
         ${specifobject.libelle}
         <br/>
 
-        <div class="imageContainer">
+        <div class="imageContainer" style="width: 250px">
             <g:if test="${specifobject.attachement}">
                 <et:viewAttachement attachement="${specifobject.attachement}"
                                     width="250" height="250"/>
