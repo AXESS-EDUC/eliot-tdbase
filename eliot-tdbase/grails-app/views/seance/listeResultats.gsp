@@ -107,7 +107,7 @@
     <table>
       <thead>
       <tr>
-        <th>Élève</th>
+        <th style="text-align: left">Élève</th>
         <th>Note finale</th>
         <th>Note auto.</th>
         <th>Note prof.</th>
@@ -119,7 +119,7 @@
       <tbody>
       <g:each in="${copies}" status="i" var="copie">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-          <td>
+          <td style="text-align: left">
             ${copie.eleve.nomAffichage}
           </td>
           <td>
