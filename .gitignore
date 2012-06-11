@@ -29,7 +29,7 @@ bin
 ehthumbs.db
 Icon?
 Thumbs.db
-
+.~lock.*
 
 # fichiers propres au projet #
 ##############################
