@@ -348,9 +348,9 @@ class CopieService {
    * @param seance la séance
    * @param chercheur la personne déclenchant la recherche
    * @param paginationSpec les specifications la pagination
-   * @return les copies correspondant à la séance
+   * @return les copies remises correspondant à la séance
    */
-  List<Copie> findCopiesForModaliteActivite(ModaliteActivite seance,
+  List<Copie> findCopiesRemisesForModaliteActivite(ModaliteActivite seance,
                                             Personne chercheur,
                                             Map paginationSpec = [:]) {
 
@@ -367,6 +367,26 @@ class CopieService {
     }
     return copies
   }
+
+  /**
+     *
+     * @param seance la séance
+     * @param chercheur la personne déclenchant la recherche
+     * @param paginationSpec les specifications la pagination
+     * @return les copies correspondant à la séance
+     */
+    List<Copie> findCopiesForModaliteActivite(ModaliteActivite seance,
+                                              Personne chercheur,
+                                              Map paginationSpec = [:]) {
+
+      assert (seance?.enseignant == chercheur)
+
+      def criteria = Copie.createCriteria()
+      List<Copie> copies = criteria.list(paginationSpec) {
+        eq 'modaliteActivite', seance
+      }
+      return copies
+    }
 
   /**
    *

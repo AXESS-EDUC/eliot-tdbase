@@ -115,7 +115,7 @@ class NotesService {
                    Personne personne,
                    String codePorteur = null) {
     assert (personne == seance.enseignant)
-    def copies = copieService.findCopiesForModaliteActivite(seance,
+    def copies = copieService.findCopiesRemisesForModaliteActivite(seance,
                                                             personne)
     if (copies) {
       def notes = []

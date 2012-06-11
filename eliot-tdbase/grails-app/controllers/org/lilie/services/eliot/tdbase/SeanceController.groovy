@@ -215,7 +215,7 @@ class SeanceController {
     def afficheLienMiseAjourNote = modaliteActiviteService.modaliteActiviteHasNotesDevoir(seance,
                                                                                           personne,
                                                                                           strongCheck)
-    def copies = copieService.findCopiesForModaliteActivite(seance,
+    def copies = copieService.findCopiesRemisesForModaliteActivite(seance,
                                                             personne)
     def elevesSansCopies = copieService.findElevesSansCopieForModaliteActivite(seance,
                                                                                copies,
@@ -233,7 +233,7 @@ class SeanceController {
   def updateNotesDevoir() {
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
-    def copies = copieService.findCopiesForModaliteActivite(seance,
+    def copies = copieService.findCopiesRemisesForModaliteActivite(seance,
                                                             personne)
     def notes = [:]
     copies.each { Copie copie ->
@@ -257,7 +257,7 @@ class SeanceController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
-    List<Copie> copies = copieService.findCopiesForModaliteActivite(seance,
+    List<Copie> copies = copieService.findCopiesRemisesForModaliteActivite(seance,
                                                                     personne,
                                                                     params)
     render(view: '/seance/copie/corrige', model: [liens: breadcrumpsService.liens,
@@ -287,7 +287,7 @@ class SeanceController {
         }
       }
     }
-    List<Copie> copies = copieService.findCopiesForModaliteActivite(seance,
+    List<Copie> copies = copieService.findCopiesRemisesForModaliteActivite(seance,
                                                                     personne,
                                                                     params)
     render(view: '/seance/copie/corrige', model: [liens: breadcrumpsService.liens,
