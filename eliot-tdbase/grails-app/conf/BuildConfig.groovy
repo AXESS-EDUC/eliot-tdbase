@@ -71,6 +71,9 @@ grails.project.dependency.resolution = {
     runtime "postgresql:postgresql:8.4-702.jdbc4"
     compile group: 'net.sourceforge.saxon', name: 'saxon', version: '9.1.0.8'
     build 'net.sf.saxon:saxon-dom:8.7'
+    compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') {
+      excludes "commons-logging", "xml-apis", "groovy"
+    }
   }
 
   plugins {
