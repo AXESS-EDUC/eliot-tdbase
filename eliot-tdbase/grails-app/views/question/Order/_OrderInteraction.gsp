@@ -85,12 +85,13 @@
 
                         <span>${orderedItem.text}</span>
 
-                        &nbsp;
+                        <g:set var="ordinalValue" value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.ordinal?:i+1}"/>
+
                         <g:select class="ordinalSelector"
                                   name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].ordinal"
                                   from="${questionspecifobject.selectableOrdinalList}"
-                                  value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.ordinal}"
-                                  noSelection="['0': 'Ordre']"/>
+                                  value="${ordinalValue}"
+                        />
                     </div>
                 </td>
             </tr>
