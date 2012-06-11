@@ -1,5 +1,3 @@
-import org.xml.sax.helpers.LocatorImpl
-
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
 * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -61,14 +59,16 @@ grails.project.dependency.resolution = {
     runtime "postgresql:postgresql:8.4-702.jdbc4"
     compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.2'
     runtime group: 'org.lilie.services.eliot', name: 'eliot-tice-dbmigration-all', version: "${versionTDBase}"
+    compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') {
+      excludes "commons-logging", "xml-apis", "groovy"
+    }
 
   }
 
   plugins {
 
     build(":tomcat:$grailsVersion",
-          ":release:2.0.2"
-    ) {
+          ":release:2.0.2") {
       export = false
     }
 
