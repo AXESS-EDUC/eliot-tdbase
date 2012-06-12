@@ -1,8 +1,8 @@
 project.group = "org.lilie.services.eliot"
 project.ext.artefactId = "eliot-tice-dbmigration-all"
-project.version = "2.0.1-SNAPSHOT"
+project.version = "2.0.1-RC1"
 
-project.ext.versionSchemaEliot = "2.8.0-A1"
+project.ext.versionSchemaEliot = "2.8.0-RC1"
 // classifierSchemaEliot =
 
 apply plugin: 'idea'
@@ -13,18 +13,13 @@ apply plugin: 'maven'
 
 repositories {
   mavenCentral()
+  mavenLocal()
   maven {
     url "http://www.ticetime.com/nexus/content/repositories/releases/"
   }
   maven {
     url "http://www.ticetime.com/nexus/content/repositories/snapshots/"
   }
-  maven {
-      url "http://www.ticetime.com/nexus/content/repositories/Axess/"
-    }
-    maven {
-      url "http://www.ticetime.com/nexus/content/repositories/Axess-Snapshots/"
-    }
 }
 
 configurations {
