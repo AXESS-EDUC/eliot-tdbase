@@ -90,6 +90,7 @@ grails.project.dependency.resolution = {
     compile ":mail:1.0"
 
     build(":tomcat:$grailsVersion",
+          ":rest-client-builder:1.0.2",
           ":release:2.0.2")
   }
 }
