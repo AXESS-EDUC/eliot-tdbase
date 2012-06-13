@@ -260,6 +260,7 @@ environments {
     // determine si eliot-tdbase doit s'executer en mode intégration Lilie
     eliot.portail.lilie = true
     eliot.portail.lilieCasActive = true
+    eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
     // cas is not activated by default
     grails.plugins.springsecurity.cas.active = false
     grails.plugins.springsecurity.cas.loginUri = '/login'

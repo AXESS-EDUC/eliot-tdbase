@@ -50,6 +50,7 @@ grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
 //
 eliot.portail.lilie = false
 eliot.portail.lilieCasActive = false
+eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
 
 // application de la migration définie dans eliot-tice-dbmigration)
 //

@@ -103,10 +103,13 @@ class EliotTicePluginGrailsPlugin {
       SpringSecurityUtils.registerProvider 'preauthAuthProvider'
       SpringSecurityUtils.registerFilter 'casContainerLilieAuthenticationFilter', SecurityFilterPosition.PRE_AUTH_FILTER
 
+      def continueOnUnsuccessfulAuthentication =  conf.eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication ?: false
+
       casContainerLilieAuthenticationFilter(CasContainerLilieAuthenticationFilter) {
         principalSessionKey = "ENT_USERID"
         typeUserSessionKey = "ENT_USERTYPE"
         authenticationManager = ref('authenticationManager')
+        continueFilterChainOnUnsuccessfulAuthentication = continueOnUnsuccessfulAuthentication
       }
 
       preauthAuthProvider(PreAuthenticatedAuthenticationProvider) {

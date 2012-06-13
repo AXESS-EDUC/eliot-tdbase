@@ -41,6 +41,7 @@ eliot.tdbase.urlServeur = "http://www.ticetime.com/"
 //
 eliot.portail.lilie = false
 eliot.portail.lilieCasActive = false
+eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
 
 // application de la migration définie dans eliot-tice-dbmigration)
 //

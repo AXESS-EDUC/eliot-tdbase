@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tice.securite.rbac
 
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter
 import javax.servlet.http.HttpServletRequest
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException
 
 /**
  *
@@ -38,6 +39,7 @@ import javax.servlet.http.HttpServletRequest
 class CasContainerLilieAuthenticationFilter extends AbstractPreAuthenticatedProcessingFilter {
   String principalSessionKey = "ENT_USERID"
   String typeUserSessionKey = "ENT_USERTYPE"
+  Boolean continueFilterChainOnUnsuccessfulAuthentication
 
   @Override
   protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpServletRequest) {
@@ -45,6 +47,10 @@ class CasContainerLilieAuthenticationFilter extends AbstractPreAuthenticatedProc
     def sufix =  httpServletRequest.session["$principalSessionKey"]
     // on reconstitue le net-id initial du CAS Lilie
     if (!(prefix && sufix)) {
+      if (!continueFilterChainOnUnsuccessfulAuthentication) {
+        throw new PreAuthenticatedCredentialsNotFoundException(principalSessionKey
+                                  + " header not found in session.");
+      }
       return null
     }
     return  prefix + sufix
@@ -52,6 +58,6 @@ class CasContainerLilieAuthenticationFilter extends AbstractPreAuthenticatedProc
 
   @Override
   protected Object getPreAuthenticatedCredentials(HttpServletRequest httpServletRequest) {
-    return null
+    return "N/A"
   }
 }
