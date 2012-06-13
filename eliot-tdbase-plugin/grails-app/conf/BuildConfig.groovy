@@ -39,6 +39,7 @@ grails.project.dependency.resolution = {
       export = false
     }
 
+
     compile(":gmetrics:0.3.1") {
       excludes "groovy-all"
       export = false

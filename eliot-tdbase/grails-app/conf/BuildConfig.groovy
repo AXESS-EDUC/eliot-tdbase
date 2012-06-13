@@ -58,8 +58,6 @@ grails.project.dependency.resolution = {
     grailsCentral()
     mavenRepo "http://www.ticetime.com/nexus/content/repositories/snapshots/"
     mavenRepo "http://www.ticetime.com/nexus/content/repositories/releases/"
-    mavenRepo "http://www.ticetime.com/nexus/content/repositories/Axess-Snapshots/"
-    mavenRepo "http://www.ticetime.com/nexus/content/repositories/Axess/"
   }
 
   /**
@@ -88,6 +86,8 @@ grails.project.dependency.resolution = {
     }
 
     compile ":mail:1.0"
+
+    compile ":spring-security-core:1.2.7.2"
 
     build(":tomcat:$grailsVersion",
           ":rest-client-builder:1.0.2",
