@@ -40,7 +40,7 @@ eliot.tdbase.urlServeur = "http://www.ticetime.com/"
 // determine si eliot-tdbase doit s'executer en mode intégration Lilie
 //
 eliot.portail.lilie = false
-eliot.portail.lilie.casActive = false
+eliot.portail.lilieCasActive = false
 
 // application de la migration définie dans eliot-tice-dbmigration)
 //

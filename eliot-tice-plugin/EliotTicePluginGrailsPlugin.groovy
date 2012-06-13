@@ -97,7 +97,7 @@ class EliotTicePluginGrailsPlugin {
 
     // configure le filtre pour la gestion du CAS Lilie
     //
-    if (conf.eliot.portail.lilie.casActive) {
+    if (conf.eliot.portail.lilieCasActive) {
       println 'Configuring Spring Security Filter for CAS Lilie...'
 
       SpringSecurityUtils.registerProvider 'preauthAuthProvider'

@@ -259,7 +259,7 @@ environments {
     eliot.tdbase.urlServeur = "http//localhost:8080"
     // determine si eliot-tdbase doit s'executer en mode intégration Lilie
     eliot.portail.lilie = true
-    eliot.portail.lilie.casActive = false
+    eliot.portail.lilieCasActive = false
     // cas is not activated by default
     grails.plugins.springsecurity.cas.active = false
     grails.plugins.springsecurity.cas.loginUri = '/login'
