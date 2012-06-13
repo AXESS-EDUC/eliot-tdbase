@@ -1,4 +1,6 @@
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import org.codehaus.groovy.grails.plugins.springsecurity.SecurityFilterPosition
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.lilie.services.eliot.tice.AttachementDataStore
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.impl.DefaultRoleUtilisateurService
@@ -7,6 +9,7 @@ import org.lilie.services.eliot.tice.annuaire.impl.LilieRoleUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.impl.LilieUtilisateurService
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
 import org.lilie.services.eliot.tice.securite.DomainAutorite
+import org.lilie.services.eliot.tice.securite.rbac.CasContainerLilieAuthenticationFilter
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.EliotUrlProvider
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
@@ -15,6 +18,8 @@ import org.lilie.services.eliot.tice.webservices.rest.client.RestOperationDirect
 import org.springframework.web.context.request.RequestContextHolder
 
 import javax.servlet.http.HttpServletRequest
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider
+import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -88,6 +93,30 @@ class EliotTicePluginGrailsPlugin {
       roleUtilisateurService(DefaultRoleUtilisateurService) {
         profilScolariteService = ref("profilScolariteService")
       }
+    }
+
+    // configure le filtre pour la gestion du CAS Lilie
+    //
+    if (conf.eliot.portail.lilie.casActive) {
+      println 'Configuring Spring Security Filter for CAS Lilie...'
+
+      SpringSecurityUtils.registerProvider 'preauthAuthProvider'
+      SpringSecurityUtils.registerFilter 'casContainerLilieAuthenticationFilter', SecurityFilterPosition.PRE_AUTH_FILTER
+
+      casContainerLilieAuthenticationFilter(CasContainerLilieAuthenticationFilter) {
+        principalSessionKey = "ENT_USERID"
+        typeUserSessionKey = "ENT_USERTYPE"
+        authenticationManager = ref('authenticationManager')
+      }
+
+      preauthAuthProvider(PreAuthenticatedAuthenticationProvider) {
+        preAuthenticatedUserDetailsService = ref('userDetailsServiceWrapper')
+      }
+
+      userDetailsServiceWrapper(UserDetailsByNameServiceWrapper) {
+        userDetailsService = ref('userDetailsService')
+      }
+
     }
 
     // Configure la gestion du datastore
@@ -255,7 +284,7 @@ class EliotTicePluginGrailsPlugin {
         def codePorteur = request.getHeader(headerName)
         if (codePorteur) {
           return codePorteur
-        } else if(defaultCodePorteur) {
+        } else if (defaultCodePorteur) {
           return defaultCodePorteur
         } else {
           return null
