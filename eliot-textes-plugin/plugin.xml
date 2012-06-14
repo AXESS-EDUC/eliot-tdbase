@@ -1,4 +1,4 @@
-<plugin name='eliot-textes-plugin' version='2.0.1-RC1' grailsVersion='2.0.3 &gt; *'>
+<plugin name='eliot-textes-plugin' version='2.0.1-SNAPSHOT' grailsVersion='2.0.3 &gt; *'>
   <author>Franck Silvestre - Fylab</author>
   <title>Eliot Textes  Plugin</title>
   <description>Plugin contenant les services métiers relatifs au cahier de textes"
@@ -28,10 +28,6 @@
     <repository name='grailsCore' url='http://svn.codehaus.org/grails/trunk/grails-plugins' />
     <repository name='http://www.ticetime.com/nexus/content/repositories/snapshots/' url='http://www.ticetime.com/nexus/content/repositories/snapshots/' />
     <repository name='http://www.ticetime.com/nexus/content/repositories/releases/' url='http://www.ticetime.com/nexus/content/repositories/releases/' />
-    <repository name='http://www.ticetime.com/nexus/content/repositories/Axess-Snapshots/' url='http://www.ticetime.com/nexus/content/repositories/Axess-Snapshots/' />
-    <repository name='http://www.ticetime.com/nexus/content/repositories/Axess/' url='http://www.ticetime.com/nexus/content/repositories/Axess/' />
-    <repository name='ebrRelease' url='http://repository.springsource.com/maven/bundles/release/' />
-    <repository name='ebrExternal' url='http://repository.springsource.com/maven/bundles/external/' />
     <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
     <repository name='http://download.java.net/maven/2/' url='http://download.java.net/maven/2/' />
   </repositories>
@@ -50,22 +46,23 @@
   </dependencies>
   <plugins>
     <compile>
-      <plugin group='org.grails.plugins' name='mail' version='1.0' />
+      <plugin group='org.grails.plugins' name='spring-security-core' version='1.2.7.2' />
       <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
+      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
       <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
       <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
-      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='mail' version='1.0' />
       <plugin group='org.grails.plugins' name='hibernate' version='2.0.3' />
       <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
     </compile>
     <runtime>
-      <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
       <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
-      <plugin group='org.grails.plugins' name='rest-client-builder' version='1.0.2' />
+      <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
     </runtime>
     <build>
       <plugin group='org.grails.plugins' name='tomcat' version='2.0.3' />
       <plugin group='org.grails.plugins' name='release' version='2.0.2' />
+      <plugin group='org.grails.plugins' name='rest-client-builder' version='1.0.2' />
     </build>
   </plugins>
   <runtimePluginRequirements />
