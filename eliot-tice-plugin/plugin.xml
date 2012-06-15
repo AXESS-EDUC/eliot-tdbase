@@ -112,14 +112,14 @@
   </dependencies>
   <plugins>
     <compile>
-      <plugin group='org.grails.plugins' name='spring-security-core' version='1.2.7.2' />
+      <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
+      <plugin group='org.grails.plugins' name='mail' version='1.0' />
       <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
+      <plugin group='org.grails.plugins' name='spring-security-core' version='1.2.7.2' />
       <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
       <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
       <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
-      <plugin group='org.grails.plugins' name='mail' version='1.0' />
       <plugin group='org.grails.plugins' name='hibernate' version='2.0.3' />
-      <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
     </compile>
     <runtime>
       <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
@@ -127,8 +127,8 @@
     </runtime>
     <build>
       <plugin group='org.grails.plugins' name='tomcat' version='2.0.3' />
-      <plugin group='org.grails.plugins' name='release' version='2.0.2' />
       <plugin group='org.grails.plugins' name='rest-client-builder' version='1.0.2' />
+      <plugin group='org.grails.plugins' name='release' version='2.0.2' />
     </build>
   </plugins>
   <runtimePluginRequirements />
