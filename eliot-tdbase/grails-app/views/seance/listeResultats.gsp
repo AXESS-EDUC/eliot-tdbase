@@ -157,7 +157,7 @@
       <g:if test="${elevesSansCopies}">
         <g:each in="${elevesSansCopies}" var="eleve">
           <tr class="sanscopies">
-            <td>${eleve.nomAffichage}</td>
+            <td style="text-align: left;font-style: normal;">${eleve.nomAffichage}</td>
             <td></td>
             <td></td>
             <td></td>
