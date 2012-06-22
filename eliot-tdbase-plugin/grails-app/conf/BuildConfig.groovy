@@ -24,7 +24,7 @@ grails.project.dependency.resolution = {
       excludes "commons-logging", "xml-apis", "groovy"
     }
 
-    runtime "postgresql:postgresql:8.4-702.jdbc4"
+    runtime "postgresql:postgresql:9.1-901.jdbc4"
   }
 
   plugins {

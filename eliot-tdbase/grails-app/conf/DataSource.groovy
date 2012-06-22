@@ -42,17 +42,17 @@ hibernate {
 environments {
   development {
     dataSource {
-      url = "jdbc:postgresql://localhost:5432/eliot-tdbase-dev"
+      url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
     }
   }
   test {
     dataSource {
-      url = "jdbc:postgresql://localhost:5432/eliot-tdbase-test"
+      url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
     }
   }
   testlilie {
     dataSource {
-      url = "jdbc:postgresql://localhost:5432/eliot-tdbase-int"
+      url = "jdbc:postgresql://localhost:5433/eliot-tdbase-int"
     }
   }
 

@@ -53,7 +53,7 @@
 </g:hasErrors>
 
 
-<form method="post" action="#" class="sujet">
+<form method="post" action="#" class="sujet" enctype="multipart/form-data">
   <div class="portal-form_container edite">
     <p style="font-style: italic; margin-bottom: 2em"><span class="obligatoire">*</span> indique une information obligatoire</p>
     <table>
