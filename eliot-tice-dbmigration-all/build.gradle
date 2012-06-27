@@ -15,10 +15,10 @@ repositories {
   mavenCentral()
   mavenLocal()
   maven {
-    url "http://www.ticetime.com/nexus/content/repositories/releases/"
+    url "http://dev.ticetime.com/nexus/content/repositories/releases/"
   }
   maven {
-    url "http://www.ticetime.com/nexus/content/repositories/snapshots/"
+    url "http://dev.ticetime.com/nexus/content/repositories/snapshots/"
   }
 }
 

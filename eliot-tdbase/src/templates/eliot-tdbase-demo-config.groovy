@@ -32,10 +32,10 @@ import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 // L'URL d'accès à l'application
 //
 
-grails.serverURL = "http://www.ticetime.com/eliot-tdbase"
+grails.serverURL = "http://demo.ticetime.com/eliot-tdbase"
 eliot.tdbase.nomApplication = "eliot-tdbase"
 eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
-eliot.tdbase.urlServeur = "http://www.ticetime.com/"
+eliot.tdbase.urlServeur = "http://demo.ticetime.com/"
 
 // determine si eliot-tdbase doit s'executer en mode intégration Lilie
 //

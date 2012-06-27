@@ -33,8 +33,8 @@
     <repository name='http://repo.grails.org/grails/plugins' url='http://repo.grails.org/grails/plugins/' />
     <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
     <repository name='grailsCore' url='http://svn.codehaus.org/grails/trunk/grails-plugins' />
-    <repository name='http://www.ticetime.com/nexus/content/repositories/snapshots/' url='http://www.ticetime.com/nexus/content/repositories/snapshots/' />
-    <repository name='http://www.ticetime.com/nexus/content/repositories/releases/' url='http://www.ticetime.com/nexus/content/repositories/releases/' />
+    <repository name='http://dev.ticetime.com/nexus/content/repositories/snapshots/' url='http://dev.ticetime.com/nexus/content/repositories/snapshots/' />
+    <repository name='http://dev.ticetime.com/nexus/content/repositories/releases/' url='http://dev.ticetime.com/nexus/content/repositories/releases/' />
     <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
     <repository name='http://download.java.net/maven/2/' url='http://download.java.net/maven/2/' />
   </repositories>

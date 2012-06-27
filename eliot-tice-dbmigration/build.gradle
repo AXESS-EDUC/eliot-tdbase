@@ -12,7 +12,7 @@ apply plugin: 'maven'
 repositories {
   mavenCentral()
   maven {
-    url "http://www.ticetime.com/nexus/content/repositories/releases/"
+    url "http://dev.ticetime.com/nexus/content/repositories/releases/"
   }
 }
 

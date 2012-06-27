@@ -242,7 +242,7 @@ environments {
     eliot.fichiers.maxsize.mega = 10
     // configuration des liens du menu portail et des annonces portail
     eliot.portail.menu.affichage = true
-    eliot.portail.menu.liens = [[url: "http://wwww.ticetime.com",
+    eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
             libelle: "ticetime"],
             [url: "https://github.com/ticetime/eliot-tdbase/wiki",
                     libelle: "eliot-tdbase sur Github"]]
@@ -277,7 +277,7 @@ environments {
     eliot.fichiers.maxsize.mega = 10
     // configuration des liens du menu portail et des annonces portail
     eliot.portail.menu.affichage = true
-    eliot.portail.menu.liens = [[url: "http://wwww.ticetime.com",
+    eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
             libelle: "ticetime"],
             [url: "https://github.com/ticetime/eliot-tdbase/wiki",
                     libelle: "eliot-tdbase sur Github"]]
