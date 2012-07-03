@@ -48,9 +48,9 @@
   <span class="portal-tabs-famille-liens">
     <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujet)}">
       <g:link action="edite" controller="sujet" class="modify"
-              id="${sujet.id}">Modifier le sujet</g:link> |
+              id="${sujet.id}" params="[bcInit: true]">Modifier le sujet</g:link> |
       <g:link action="editeProprietes" controller="sujet" class="modify"
-              id="${sujet.id}">Modifier les propriétés du sujet</g:link>
+              id="${sujet.id}" params="[bcInit: true]">Modifier les propriétés du sujet</g:link>
     </g:if>
     <g:else>
       <span class="add">Modifier le sujet</span> |
