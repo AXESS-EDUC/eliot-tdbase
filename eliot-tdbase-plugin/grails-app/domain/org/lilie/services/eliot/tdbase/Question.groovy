@@ -35,9 +35,9 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.springframework.web.multipart.MultipartFile
-import org.springframework.validation.ObjectError
 import org.springframework.validation.Errors
+import org.springframework.validation.ObjectError
+import org.springframework.web.multipart.MultipartFile
 
 /**
  * Classe représentant une question
@@ -78,9 +78,7 @@ class Question implements Artefact {
 
   private def specificationObject
 
-  static hasMany = [
-          questionAttachements: QuestionAttachement
-  ]
+  static hasMany = [questionAttachements: QuestionAttachement]
 
 
   static constraints = {
@@ -97,18 +95,18 @@ class Question implements Artefact {
     specification(validator: { val, obj, errors ->
       def objSpec = obj.getSpecificationObjectForJson(val)
       if (!objSpec.validate()) {
-        Errors objErrors =  objSpec.errors
-        objErrors.allErrors.each { ObjectError objErr  ->
-          def code =  objErr.code
-          if (objErr.arguments[0]=='libelle') {
-             code = 'question.libelle.blank'
+        Errors objErrors = objSpec.errors
+        objErrors.allErrors.each { ObjectError objErr ->
+          def code = objErr.code
+          if (objErr.arguments[0] == 'libelle') {
+            code = 'question.libelle.blank'
           }
-          if (objErr.arguments[0]=='reponses') {
+          if (objErr.arguments[0] == 'reponses') {
             if (objErr.code.startsWith("minSize")) {
               code = 'question.reponses.min'
             }
             if (objErr.code.startsWith("pasdebonnereponse")) {
-                          code = 'question.reponses.pasdebonnereponse'
+              code = 'question.reponses.pasdebonnereponse'
             }
           }
           errors.reject(code, objErr.arguments, objErr.defaultMessage)
@@ -127,22 +125,19 @@ class Question implements Artefact {
     questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
   }
 
-  static transients = [
-          'questionService',
+  static transients = ['questionService',
           'specificationObject',
           'estEnNotationManuelle',
           'estInvariant',
           'principalAttachementFichier',
           'doitSupprimerPrincipalAttachement',
-          'principalAttachementId'
-  ]
+          'principalAttachementId']
 
   // transients
   // chaque question peut avoir au moins un attachement
   MultipartFile principalAttachementFichier
   Boolean doitSupprimerPrincipalAttachement = false
   Long principalAttachementId = null
-
 
   /**
    * Modifie la variable d'nstance doitSupprimerAttachement
@@ -153,8 +148,6 @@ class Question implements Artefact {
     principalAttachementFichier = null
     principalAttachementId = null
   }
-
-
 
   /**
    *
@@ -266,8 +259,16 @@ class Question implements Artefact {
             "ExclusiveChoice",
             "Associate",
             "Statement",
-            "Composite"
-    ].contains(type.code)
+            "Composite"].contains(type.code)
+  }
+
+/**
+ * Vrai si l'artefact peut-être supprimeé l'artefact.
+ * Cette méthode est appeler après avoir vérifier que l'artefact est modifiable
+ * @return true si artefact  peut être supprimé
+ */
+  boolean estSupprimableQuandArtefactEstModifiable() {
+    return true
   }
 
 }

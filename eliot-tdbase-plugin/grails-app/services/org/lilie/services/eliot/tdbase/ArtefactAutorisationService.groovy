@@ -55,7 +55,8 @@ class ArtefactAutorisationService {
     if (artefact.estInvariant()) {
       return false
     }
-    return utilisateurPeutModifierArtefact(utilisateur, artefact)
+    return utilisateurPeutModifierArtefact(utilisateur, artefact) &&
+           artefact.estSupprimableQuandArtefactEstModifiable()
   }
 
   /**
@@ -138,6 +139,8 @@ class ArtefactAutorisationService {
   boolean utilisateurPeutExporterArtefact(Personne utilisateur, Artefact artefact) {
     utilisateurPeutReutiliserArtefact(utilisateur, artefact) && artefact.estPresentableEnMoodleXML()
   }
+
+
 }
 
 

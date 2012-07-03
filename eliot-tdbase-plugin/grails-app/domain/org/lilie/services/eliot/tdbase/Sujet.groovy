@@ -35,7 +35,6 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 
-
 /**
  * Classe représentant un sujet
  * @author franck Silvestre
@@ -80,12 +79,10 @@ class Sujet implements Artefact {
 
   Integer rangInsertion
 
-  static transients = [
-          'rangInsertion',
+  static transients = ['rangInsertion',
           'estUnExercice',
           'questionComposite',
-          'estInvariant'
-  ]
+          'estInvariant']
 
   static constraints = {
     titre(blank: false, nullable: false)
@@ -209,5 +206,19 @@ class Sujet implements Artefact {
   boolean estPresentableEnMoodleXML() {
     true
   }
+
+  /**
+   * Vrai si l'artefact peut-être supprimeé l'artefact.
+   * Cette méthode est appeler après avoir vérifier que l'artefact est modifiable
+   * @return true si artefact  peut être supprimé
+   */
+  boolean estSupprimableQuandArtefactEstModifiable() {
+    def crit = ModaliteActivite.createCriteria()
+    def nbSeances = crit.count {
+      eq 'sujet', this
+    }
+    return nbSeances == 0
+  }
+
 
 }

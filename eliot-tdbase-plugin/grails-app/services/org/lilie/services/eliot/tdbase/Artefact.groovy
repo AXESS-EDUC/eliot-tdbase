@@ -78,4 +78,11 @@ public interface Artefact {
    */
   boolean estPresentableEnMoodleXML()
 
+  /**
+   * Vrai si l'artefact peut-être supprimeé l'artefact.
+   * Cette méthode est appeler après avoir vérifier que l'artefact est modifiable
+   * @return  true si artefact  peut être supprimé
+   */
+  boolean estSupprimableQuandArtefactEstModifiable()
+
 }
