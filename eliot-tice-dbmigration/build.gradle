@@ -25,7 +25,7 @@ configurations {
 
 dependencies {
   liquibase group: 'org.liquibase', name: 'liquibase-core', version: '2.0.2'
-  liquibase group: 'postgresql', name: 'postgresql', version: '8.4-702.jdbc4'
+  liquibase group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'
 
   deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
 }

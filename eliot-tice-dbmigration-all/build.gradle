@@ -31,7 +31,7 @@ configurations {
 
 dependencies {
   compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.2'
-  compile group: 'postgresql', name: 'postgresql', version: '8.4-702.jdbc4'
+  compile group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'
 
   compile group: 'org.lilie.services.eliot', name:'eliot-securite-dbmigration', version:"${versionSchemaEliot}"
   compile group: 'org.lilie.services.eliot', name:'eliot-demon-commons', version:"${versionSchemaEliot}"
