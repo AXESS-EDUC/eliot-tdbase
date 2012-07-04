@@ -44,31 +44,35 @@
 
 <body>
 <et:container class="container">
-    <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
-      <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
-    </g:if>
-    <div class="portal-menu">
-      <ul id="portal-hz-menu">
-        <li id="menu-item-acceuil">
-                  <g:link action="index" controller="activite" params="[bcInit:true]"
-                          title="Accueil">Accueil TDBase</g:link>
-                </li>
-        <li id="menu-item-seances">
-          <g:link action="listeSeances" controller="activite" params="[bcInit:true]"
-                  title="Liste des séances">Séances</g:link>
-        </li>
-        <li id="menu-item-resultats">
-          <g:link action="listeResultats" controller="activite" params="[bcInit:true]"
-                  title="Liste des résultats">Résultats</g:link>
-        </li>
-      </ul>
-    </div>
-  <et:manuelLink fonctionEnum="${FonctionEnum.ELEVE}" class="portal-manuel"><g:message code="manuels.libellelien"/></et:manuelLink>
+  <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
+    <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
+  </g:if>
+  <div class="portal-menu">
+    <ul id="portal-hz-menu">
+      <li id="menu-item-acceuil">
+        <g:link action="index" controller="activite" params="[bcInit: true]"
+                title="Accueil">Accueil TDBase</g:link>
+      </li>
+      <li id="menu-item-seances">
+        <g:link action="listeSeances" controller="activite"
+                params="[bcInit: true]"
+                title="Liste des séances">Séances</g:link>
+      </li>
+      <li id="menu-item-resultats">
+        <g:link action="listeResultats" controller="activite"
+                params="[bcInit: true]"
+                title="Liste des résultats">Résultats</g:link>
+      </li>
+    </ul>
+  </div>
+  <et:manuelLink fonctionEnum="${FonctionEnum.ELEVE}"
+                 class="portal-manuel"><g:message
+          code="manuels.libellelien"/></et:manuelLink>
   <g:layoutBody/>
+  <r:script>
+    $('form[method="post"]').attr('enctype', 'multipart/form-data');
+  </r:script>
 </et:container>
 <r:layoutResources/>
-<r:script>
-    $('form[method="post"]').attr('enctype','multipart/form-data');
-  </r:script>
 </body>
 </html>

@@ -53,18 +53,21 @@
   <div class="portal-menu">
     <ul id="portal-hz-menu">
       <li id="menu-item-resultats">
-        <g:link action="liste" controller="resultats" params="[bcInit:true]"
+        <g:link action="liste" controller="resultats" params="[bcInit: true]"
                 title="Liste des résultats">Résultats</g:link>
       </li>
     </ul>
   </div>
-  <et:manuelLink fonctionEnum="${FonctionEnum.PERS_REL_ELEVE}" class="portal-manuel"><g:message code="manuels.libellelien"/></et:manuelLink>
+  <et:manuelLink fonctionEnum="${FonctionEnum.PERS_REL_ELEVE}"
+                 class="portal-manuel"><g:message
+          code="manuels.libellelien"/></et:manuelLink>
   <g:layoutBody/>
+  <r:script>
+    $('form[method="post"]').attr('enctype', 'multipart/form-data');
+  </r:script>
 </et:container>
 
 <r:layoutResources/>
-<r:script>
-    $('form[method="post"]').attr('enctype','multipart/form-data');
-  </r:script>
+
 </body>
 </html>
