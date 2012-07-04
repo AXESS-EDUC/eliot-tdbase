@@ -67,6 +67,8 @@
   <g:layoutBody/>
 </et:container>
 <r:layoutResources/>
-
+<r:script>
+    $('form[method="post"]').attr('enctype','multipart/form-data');
+  </r:script>
 </body>
 </html>
