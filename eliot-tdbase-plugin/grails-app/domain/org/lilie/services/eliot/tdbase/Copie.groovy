@@ -121,6 +121,23 @@ class Copie {
   }
 
   /**
+     *
+     * @return true si la copie peut-être rendu, false, sinon
+     */
+    boolean estRemisable() {
+      if (!modaliteActivite) {
+        return true
+      }
+
+      def copieAmeliorable = modaliteActivite.copieAmeliorable
+      if (dateRemise && !copieAmeliorable) {
+        return false
+      }
+      return true
+    }
+
+
+  /**
    *
    * @return la nouvelle valeur de la note finale
    */

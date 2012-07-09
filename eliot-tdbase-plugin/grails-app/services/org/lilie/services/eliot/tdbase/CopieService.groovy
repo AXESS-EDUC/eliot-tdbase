@@ -205,7 +205,7 @@ class CopieService {
                                                List<ReponseCopie> reponsesCopie,
                                                Personne eleve) {
 
-    assert (copie.eleve == eleve && copie.estModifiable())
+    assert (copie.eleve == eleve && copie.estRemisable())
     copie.dateRemise = new Date()
     copie.dateEnregistrement = copie.dateRemise
 
