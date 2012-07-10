@@ -66,9 +66,9 @@ class Copie {
     correctionDate(nullable: true)
     correctionNoteAutomatique(nullable: true)
     correctionNoteFinale(nullable: true, validator: { val, obj ->
-       if (val && val > obj.maxPoints) {
-         return ['notetropgrande']
-       }
+      if (val && val > obj.maxPoints) {
+        return ['notetropgrande']
+      }
     })
     correctionNoteCorrecteur(nullable: true)
     correctionNoteNonNumerique(nullable: true)
@@ -109,8 +109,7 @@ class Copie {
       return true
     }
     def now = new Date()
-    if (now.after(modaliteActivite.dateFin) ||
-        now.before(modaliteActivite.dateDebut)) {
+    if (now.after(modaliteActivite.dateFin) || now.before(modaliteActivite.dateDebut)) {
       return false
     }
     def copieAmeliorable = modaliteActivite.copieAmeliorable
@@ -121,21 +120,26 @@ class Copie {
   }
 
   /**
-     *
-     * @return true si la copie peut-être rendu, false, sinon
-     */
-    boolean estRemisable() {
-      if (!modaliteActivite) {
-        return true
-      }
-
-      def copieAmeliorable = modaliteActivite.copieAmeliorable
-      if (dateRemise && !copieAmeliorable) {
-        return false
-      }
+   *
+   * @return true si la copie peut-être rendu, false, sinon
+   */
+  boolean estRemisable() {
+    if (!modaliteActivite) {
       return true
     }
+    def now = new Date()
+    if (now.after(modaliteActivite.dateFin) || now.before(modaliteActivite.dateDebut)) {
+      if (dateRemise) {
+          return false
+      }
+    }
 
+    def copieAmeliorable = modaliteActivite.copieAmeliorable
+    if (dateRemise && !copieAmeliorable) {
+      return false
+    }
+    return true
+  }
 
   /**
    *
