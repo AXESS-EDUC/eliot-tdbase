@@ -142,7 +142,7 @@
 
   <div class="portal-default_results-list question  ${sujet ? 'partiel' : ''}">
     <g:each in="${questions}" status="i" var="questionInstance">
-      <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+      <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
         <h1>${fieldValue(bean: questionInstance, field: "titre")}</h1>
 
         <button id="${questionInstance.id}">Actions</button>

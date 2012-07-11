@@ -132,7 +132,7 @@
 
   <div class="portal-default_results-list sujet">
     <g:each in="${sujets}" status="i" var="sujetInstance">
-      <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
+      <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
 
         <h1>${fieldValue(bean: sujetInstance, field: "titre")}</h1>
 

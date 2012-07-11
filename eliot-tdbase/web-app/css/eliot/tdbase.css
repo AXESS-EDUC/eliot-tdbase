@@ -391,8 +391,9 @@ Style custom eliot-tdbase
     background-color: white;
     padding: 10px;
     border: 1px solid #3F61A0;
-    min-width: 120px;
+    width: 120px;
 }
+
 
 .tdbase-menu-actions li {
     list-style: none;
