@@ -41,27 +41,27 @@
         <g:each in="${questionspecifobject.texteATrousStructure}" var="texteATrouElement" status="i">
 
             <g:if test="${texteATrouElement.isTextElement()}">
-                <div class="textElement">${texteATrouElement.valeur}</div>
+                <span class="textElement">${texteATrouElement.valeur}</span>
             </g:if>
 
             <g:else>
                 <g:if test="${questionspecifobject.modeDeSaisie == 'MDR'}">
-                    <div class="textElement">
+                    <span class="textElement">
                     <g:select
                             name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"
                             from="${texteATrouElement.valeur*.text}"
                             value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
                             noSelection="${['': g.message(code: "default.select.null")]}"/>
-                    <div>
+                    </span>
                 </g:if>
                 <g:else>
-                    <div class="gapElement" id="gapElement_${indexReponse}_${i}">
+                    <span class="gapElement" id="gapElement_${indexReponse}_${i}">
 
                         <g:textField
                                 class="gapField"
                                 value="${reponsespecifobject.valeursDeReponse[index.toInteger()]}"
                                 name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${index}]"/>
-                    </div>
+                    </span>
                 </g:else>
                 <g:set var="index" value="${index.toInteger() + 1}"/>
             </g:else>

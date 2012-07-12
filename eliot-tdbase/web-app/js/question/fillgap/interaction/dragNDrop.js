@@ -54,17 +54,17 @@ function initDragNDrop() {
         var gapWords = fillGapTextContainer + '>.gapWords>.gapWordsList>.gapWord';
 
         //hide gap textField
-        $(fillGapTextContainer + '>.gapText>.gapElement>.gapField').hide();
+        $(fillGapTextContainer + ' .gapText .gapElement .gapField').hide();
 
         // set up drop zone
-        $(fillGapTextContainer + '>.gapText>.gapElement').addClass("dropZone");
+        $(fillGapTextContainer + ' .gapText .gapElement').addClass("dropZone");
         for (i = 0; i <= 20; i++) {
-            $(fillGapTextContainer + '>.gapText>.gapElement').append("&nbsp;");
+            $(fillGapTextContainer + ' .gapText .gapElement').append("&nbsp;");
         }
 
         // make elements draggable and droppable
         $(gapWords).draggable({containment:fillGapTextContainer, stack:".gapWord"});
-        $(fillGapTextContainer + '>.gapText>.gapElement').droppable();
+        $(fillGapTextContainer + ' .gapText .gapElement').droppable();
 
         positionSuggestedWords(fillGapTextContainer);
     }
@@ -72,7 +72,7 @@ function initDragNDrop() {
     function registerEventHandlers(containerID) {
 
         var fillGapTextContainer = '.fillGapTextContainer[id=' + containerID + ']';
-        var gapElements = $(fillGapTextContainer + '>.gapText>.gapElement');
+        var gapElements = $(fillGapTextContainer + ' .gapText .gapElement');
         var gapWords = $(fillGapTextContainer + '>.gapWords>.gapWordsList>.gapWord');
 
         gapElements.bind("dropover", function (event, ui) {
@@ -165,7 +165,7 @@ function initDragNDrop() {
     function positionSuggestedWords(fillGapTextContainer) {
 
 
-        var gapElements = $(fillGapTextContainer + '>.gapText>.gapElement');
+        var gapElements = $(fillGapTextContainer + ' .gapText .gapElement');
 
         $(gapElements).each(function () {
 
