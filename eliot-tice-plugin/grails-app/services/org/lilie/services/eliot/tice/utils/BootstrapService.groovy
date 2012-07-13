@@ -93,10 +93,11 @@ class BootstrapService {
    * Initialise l'application au lancement avec un jeu de test
    */
   def bootstrapJeuDeTestDevDemo() {
+    initialiseAnneeScolaireEnvDevelopmentTest()
     initialiseEtablissementsEnvDevelopmentTest()
     initialiseMatieresEnvDevelopmentTest()
     initialiseNiveauxEnvDevelopmentTest()
-    initialiseAnneeScolaireEnvDevelopmentTest()
+
     initialiseStructuresEnseignementsEnvDevelopmentTest()
     initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
     initialiseEnseignant1EnvDevelopment()
@@ -222,45 +223,53 @@ class BootstrapService {
 
   private def initialiseMatieresEnvDevelopmentTest() {
     if (!Matiere.findAllByCodeGestionLike("${CODE_GESTION_PREFIXE}%")) {
+      AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
       Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
       Etablissement college = Etablissement.findByUai(UAI_COLLEGE)
       def mat1 = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_1",
                              etablissement: lycee,
                              libelleEdition: "Mathématiques",
                              libelleCourt: "Mathématiques",
-                             libelleLong: "Mathématiques")
+                             libelleLong: "Mathématiques",
+                             anneeScolaire: anneeScolaire)
       mat1.save()
 
       new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_2",
                   etablissement: lycee,
                   libelleEdition: "SES",
                   libelleCourt: "SES",
-                  libelleLong: "SES").save()
+                  libelleLong: "SES",
+                  anneeScolaire: anneeScolaire).save()
       new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_3",
                   etablissement: lycee,
                   libelleEdition: "SES Spécialité",
                   libelleCourt: "SES Spécialité",
-                  libelleLong: "SES Spécialité").save()
+                  libelleLong: "SES Spécialité",
+                  anneeScolaire: anneeScolaire).save()
       new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_4",
                   etablissement: college,
                   libelleEdition: "Histoire",
                   libelleCourt: "Histoire",
-                  libelleLong: "Histoire").save()
+                  libelleLong: "Histoire",
+                  anneeScolaire: anneeScolaire).save()
       new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_5",
                   etablissement: college,
                   libelleEdition: "Géographie",
                   libelleCourt: "Géographie",
-                  libelleLong: "Géographie").save()
+                  libelleLong: "Géographie",
+                  anneeScolaire: anneeScolaire).save()
       new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_6",
                   etablissement: lycee,
                   libelleEdition: "Communication",
                   libelleCourt: "Communication",
-                  libelleLong: "Communication").save()
+                  libelleLong: "Communication",
+                  anneeScolaire: anneeScolaire).save()
       new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_7",
                   etablissement: lycee,
                   libelleEdition: "Anglais",
                   libelleCourt: "Anglais",
-                  libelleLong: "Anglais").save(flush: true)
+                  libelleLong: "Anglais",
+                  anneeScolaire: anneeScolaire).save(flush: true)
     }
   }
 

@@ -39,7 +39,8 @@ class PersonneProprietesScolarite {
   Personne personne
   ProprietesScolarite proprietesScolarite
   Boolean estActive
-  Long importId
+  Long aafImportId
+  Long udtImportId
   Date dateDesactivation
   Date dateDebut
   Date dateFin
@@ -47,7 +48,8 @@ class PersonneProprietesScolarite {
   static constraints = {
     personne(nullable: false)
     proprietesScolarite(nullable: false)
-    importId(nullable: true)
+    aafImportId(nullable: true)
+    udtImportId(nullable: true)
     dateDesactivation(nullable: true)
     dateDebut(nullable: true)
     dateFin(nullable: true)

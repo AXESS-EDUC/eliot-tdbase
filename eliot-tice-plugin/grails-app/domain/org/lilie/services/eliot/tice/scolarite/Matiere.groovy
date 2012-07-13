@@ -35,6 +35,7 @@ class Matiere {
   String codeGestion
   String libelleEdition
   String codeSts
+  AnneeScolaire anneeScolaire
   Etablissement etablissement
   OrigineEnum origine = OrigineEnum.AUTO
 
