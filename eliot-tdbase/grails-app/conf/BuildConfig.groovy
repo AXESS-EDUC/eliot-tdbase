@@ -53,9 +53,11 @@ grails.project.dependency.resolution = {
   }
   log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
   repositories {
+    inherits true
     grailsPlugins()
     grailsHome()
     grailsCentral()
+    mavenCentral()
     mavenRepo "http://dev.ticetime.com/nexus/content/repositories/snapshots/"
     mavenRepo "http://dev.ticetime.com/nexus/content/repositories/releases/"
   }
@@ -72,6 +74,7 @@ grails.project.dependency.resolution = {
     compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') {
       excludes "commons-logging", "xml-apis", "groovy"
     }
+
   }
 
   plugins {
@@ -88,6 +91,7 @@ grails.project.dependency.resolution = {
     compile ":mail:1.0"
 
     compile ":spring-security-core:1.2.7.2"
+    compile ':cloud-foundry:1.2.2'
 
     build(":tomcat:$grailsVersion",
           ":rest-client-builder:1.0.2",

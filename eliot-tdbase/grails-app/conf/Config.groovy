@@ -262,13 +262,6 @@ environments {
     eliot.portail.lilie = true
     eliot.portail.lilieCasActive = true
     eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
-    // cas is not activated by default
-    grails.plugins.springsecurity.cas.active = false
-    grails.plugins.springsecurity.cas.loginUri = '/login'
-    grails.plugins.springsecurity.cas.serviceUrl = "http://localhost:8080/${appName}/j_spring_cas_security_check"
-    grails.plugins.springsecurity.cas.serverUrlPrefix = 'http://localhost:8181/cas-server-webapp-3.4.11'
-    grails.plugins.springsecurity.cas.proxyCallbackUrl = "http://localhost:8080/${appName}/secure/receptor"
-    grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
 
     // application de la migration  définie dans eliot-tice-dbmigration
     eliot.bootstrap.migration = false
@@ -286,11 +279,7 @@ environments {
             "Login / mot de passe : voir base de test eliot/lilie",
             "Pierre Baudet : UT110000000000005027"]
   }
-  production {
-    // paramètres par defaut de CAS
-    grails.plugins.springsecurity.cas.active = true
-    grails.plugins.springsecurity.cas.useSingleSignout = true
-  }
+
 }
 
 // Configurations des opérations de webservices Rest
