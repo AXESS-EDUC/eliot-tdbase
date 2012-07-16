@@ -48,9 +48,10 @@ grails.project.dependency.resolution = {
   repositories {
     grailsCentral()
     mavenLocal()
-    mavenRepo "http://dev.ticetime.com/nexus/content/repositories/snapshots/"
-    mavenRepo "http://dev.ticetime.com/nexus/content/repositories/releases/"
+    mavenRepo "http://repository-ticetime.forge.cloudbees.com/release"
+    mavenRepo "http://repository-ticetime.forge.cloudbees.com/snapshot"
   }
+
   dependencies {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 

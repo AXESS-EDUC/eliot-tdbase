@@ -26,22 +26,23 @@
     <repository name='http://repo.grails.org/grails/plugins' url='http://repo.grails.org/grails/plugins/' />
     <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
     <repository name='grailsCore' url='http://svn.codehaus.org/grails/trunk/grails-plugins' />
-    <repository name='http://dev.ticetime.com/nexus/content/repositories/snapshots/' url='http://dev.ticetime.com/nexus/content/repositories/snapshots/' />
-    <repository name='http://dev.ticetime.com/nexus/content/repositories/releases/' url='http://dev.ticetime.com/nexus/content/repositories/releases/' />
+    <repository name='http://repository-ticetime.forge.cloudbees.com/release' url='http://repository-ticetime.forge.cloudbees.com/release/' />
+    <repository name='http://repository-ticetime.forge.cloudbees.com/snapshot' url='http://repository-ticetime.forge.cloudbees.com/snapshot/' />
     <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
     <repository name='http://download.java.net/maven/2/' url='http://download.java.net/maven/2/' />
   </repositories>
   <dependencies>
     <compile>
       <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
+      <dependency group='org.apache.maven.wagon' name='wagon-webdav' version='1.0-beta-2' />
       <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.2' />
     </compile>
     <runtime>
       <dependency group='postgresql' name='postgresql' version='9.1-901.jdbc4' />
     </runtime>
     <build>
-      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
       <dependency group='net.sf.saxon' name='saxon-dom' version='8.7' />
+      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
     </build>
   </dependencies>
   <plugins>
