@@ -57,9 +57,10 @@ grails.project.dependency.resolution = {
     grailsPlugins()
     grailsHome()
     grailsCentral()
-    mavenCentral()
-    mavenRepo "http://dev.ticetime.com/nexus/content/repositories/snapshots/"
-    mavenRepo "http://dev.ticetime.com/nexus/content/repositories/releases/"
+
+    mavenRepo "http://repository-ticetime.forge.cloudbees.com/release"
+    mavenRepo "http://repository-ticetime.forge.cloudbees.com/snapshot"
+
   }
 
   /**
@@ -74,6 +75,8 @@ grails.project.dependency.resolution = {
     compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') {
       excludes "commons-logging", "xml-apis", "groovy"
     }
+
+    compile 'org.apache.maven.wagon:wagon-webdav:1.0-beta-2'
 
   }
 

@@ -30,7 +30,7 @@ class EliotTdbasePluginGrailsPlugin {
   // the group id
   def groupId = "org.lilie.services.eliot"
   // the plugin version
-  def version = "2.0.2-SNAPSHOT"
+  def version = "2.0.3-SNAPSHOT"
   // the version or versions of Grails the plugin is designed for
   def grailsVersion = "2.0.1 > *"
   // the other plugins this plugin depends on

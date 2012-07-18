@@ -1,8 +1,8 @@
 project.group = "org.lilie.services.eliot"
 project.ext.artefactId = "eliot-tice-dbmigration-all"
-project.version = "2.0.2-SNAPSHOT"
+project.version = "2.0.3-SNAPSHOT"
 
-project.ext.versionSchemaEliot = "2.8.0-RC1"
+project.ext.versionSchemaEliot = "2.8.2-A1"
 // classifierSchemaEliot =
 
 apply plugin: 'idea'
@@ -12,14 +12,17 @@ apply plugin: 'maven'
 
 
 repositories {
+
+  //mavenLocal()
+  maven {
+    url "http://repository-ticetime.forge.cloudbees.com"
+    artifactUrls "http://repository-ticetime.forge.cloudbees.com/release"
+  }
+  maven {
+    url "http://repository-ticetime.forge.cloudbees.com/snapshot/"
+  }
+
   mavenCentral()
-  mavenLocal()
-  maven {
-    url "http://dev.ticetime.com/nexus/content/repositories/releases/"
-  }
-  maven {
-    url "http://dev.ticetime.com/nexus/content/repositories/snapshots/"
-  }
 }
 
 configurations {
@@ -39,7 +42,8 @@ dependencies {
 
   compile group:'org.lilie.services.eliot', name:'eliot-tice-dbmigration', version:"${version}"
 
-  deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
+  //deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
+  deploiementArtefact "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
 }
 
 /**

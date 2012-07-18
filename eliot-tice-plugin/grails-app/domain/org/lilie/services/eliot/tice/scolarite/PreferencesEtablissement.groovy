@@ -39,6 +39,7 @@ package org.lilie.services.eliot.tice.scolarite
 class PreferencesEtablissement {
 
   Etablissement etablissement
+  AnneeScolaire anneeScolaire
 
   int nbAnneesConservationArchivesBulletins = 3
   int nbAnneesConservationArchivesCdt = 2
