@@ -110,7 +110,7 @@ public interface DataStore {
      * Initialized the data store
      *
      * @param homeDir the home directory of the repository
-     * @throws RepositoryException
+     * @throws Exception
      */
     void init(String homeDir) throws Exception;
 

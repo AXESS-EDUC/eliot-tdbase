@@ -42,4 +42,6 @@
     <include file="migrations/schema.tice/changelog-20120504-144.xml"/>
     <include file="migrations/schema.tdbase/changelog-20120522-63.xml"/>
 
+    <include file="migrations/schema.tice/changelog-20120718-dbdatarecord.xml"/>
+
 </databaseChangeLog>

@@ -2,6 +2,7 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.codehaus.groovy.grails.plugins.springsecurity.SecurityFilterPosition
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.lilie.services.eliot.tice.AttachementDataStore
+import org.lilie.services.eliot.tice.DBAttachementDataStore
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.impl.DefaultRoleUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService
@@ -15,11 +16,11 @@ import org.lilie.services.eliot.tice.utils.EliotUrlProvider
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
 import org.lilie.services.eliot.tice.webservices.rest.client.RestOperationDirectory
+import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider
 import org.springframework.web.context.request.RequestContextHolder
 
 import javax.servlet.http.HttpServletRequest
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider
-import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -103,7 +104,7 @@ class EliotTicePluginGrailsPlugin {
       SpringSecurityUtils.registerProvider 'preauthAuthProvider'
       SpringSecurityUtils.registerFilter 'casContainerLilieAuthenticationFilter', SecurityFilterPosition.PRE_AUTH_FILTER
 
-      def continueOnUnsuccessfulAuthentication =  conf.eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication ?: false
+      def continueOnUnsuccessfulAuthentication = conf.eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication ?: false
 
       casContainerLilieAuthenticationFilter(CasContainerLilieAuthenticationFilter) {
         principalSessionKey = "ENT_USERID"
@@ -125,9 +126,14 @@ class EliotTicePluginGrailsPlugin {
 
     // Configure la gestion du datastore
     //
-    dataStore(AttachementDataStore) { bean ->
-      path = conf.eliot.fichiers.racine ?: null
-      bean.initMethod = 'initFileDataStore'
+    def storeFilesInDB = conf.eliot.fichiers.storedInDatabase ?: false
+    if (storeFilesInDB) {
+      dataStore(DBAttachementDataStore)
+    } else {
+      dataStore(AttachementDataStore) { bean ->
+        path = conf.eliot.fichiers.racine ?: null
+        bean.initMethod = 'initFileDataStore'
+      }
     }
 
     // Configure l'annuaire d'opération de webservices REST
