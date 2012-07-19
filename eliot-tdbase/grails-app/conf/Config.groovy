@@ -269,7 +269,6 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
 
 environments {
   test {
-    grails.plugins.springsecurity.cas.active = false
     eliot.fichiers.racine = '/tmp'
     eliot.tdbase.nomApplication = "eliot-tdbase"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
@@ -309,7 +308,6 @@ environments {
             '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
                     'IS_AUTHENTICATED_FULLY']]
 
-    grails.plugins.springsecurity.cas.active = false
     eliot.tdbase.nomApplication = "eliot-tdbase"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
     //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()

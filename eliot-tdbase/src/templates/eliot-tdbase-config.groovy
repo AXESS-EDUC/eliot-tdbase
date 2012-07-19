@@ -1,5 +1,4 @@
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
-import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
