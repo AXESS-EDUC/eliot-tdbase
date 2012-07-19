@@ -34,7 +34,7 @@
 
     <changeSet id="1" author="fsil">
         <comment>Initialisation complète de la base</comment>
-        <sqlFile path="../sql/eliot-tdbase-dev.sql"/>
+        <sqlFile path="../sql/eliot-tdbase-dev-complete-2.0.3-RC2-FC.sql"/>
     </changeSet>
 
 
