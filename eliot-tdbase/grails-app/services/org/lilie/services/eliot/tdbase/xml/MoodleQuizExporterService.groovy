@@ -32,23 +32,23 @@ import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.impl.associate.AssociateSpecification
 import org.lilie.services.eliot.tdbase.impl.associate.Association
+import org.lilie.services.eliot.tdbase.impl.booleanmatch.BooleanMatchSpecification
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
+import org.lilie.services.eliot.tdbase.impl.document.DocumentSpecification
 import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpecification
+import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpecificationReponsePossible
 import org.lilie.services.eliot.tdbase.impl.fileupload.FileUploadSpecification
 import org.lilie.services.eliot.tdbase.impl.fillgap.FillGapSpecification
 import org.lilie.services.eliot.tdbase.impl.fillgraphics.FillGraphicsSpecification
 import org.lilie.services.eliot.tdbase.impl.graphicmatch.GraphicMatchSpecification
 import org.lilie.services.eliot.tdbase.impl.integer.IntegerSpecification
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
+import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 import org.lilie.services.eliot.tdbase.impl.open.OpenSpecification
 import org.lilie.services.eliot.tdbase.impl.order.OrderSpecification
 import org.lilie.services.eliot.tdbase.impl.slider.SliderSpecification
 import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
-import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
-import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpecificationReponsePossible
-import org.lilie.services.eliot.tdbase.impl.booleanmatch.BooleanMatchSpecification
 import org.lilie.services.eliot.tice.Attachement
-
 import org.lilie.services.eliot.tice.AttachementService
 
 /**
@@ -300,10 +300,9 @@ class MoodleQuizExporterService {
     }
   }
 
-  private renderAttachment(MarkupBuilder xml, Attachement attachement){
+  private renderAttachment(MarkupBuilder xml, Attachement attachement) {
 
-    if(attachement && attachement.estUneImageAffichable())
-    {
+    if (attachement && attachement.estUneImageAffichable()) {
       xml.image "${attachement.chemin}/${attachement.nomFichierOriginal}"
       xml.image_base64 attachementService.encodeToBase64(attachement)
     }
@@ -361,6 +360,15 @@ class MoodleQuizExporterService {
    * @param theQuestion
    */
   private void renderQuestion(MarkupBuilder xml, FillGapSpecification specification, String title, Attachement attachement) {
+    // ne peut pas être renderisé
+  }
+
+  /**
+   * Render the <question> tag for document item.
+   * @param xml
+   * @param theQuestion
+   */
+  private void renderQuestion(MarkupBuilder xml, DocumentSpecification specification, String title, Attachement attachement) {
     // ne peut pas être renderisé
   }
 }
