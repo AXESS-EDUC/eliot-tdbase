@@ -41,7 +41,7 @@ class DBDataRecord implements DataRecord {
   byte[] fileContent
 
   static constraints = {
-    identifier(unique: true)
+    hashId(unique: true)
   }
 
   static mapping = {
@@ -62,7 +62,7 @@ class DBDataRecord implements DataRecord {
   }
 
   InputStream getStream() {
-    return new ByteArrayInputStream(fileContent)
+    new ByteArrayInputStream(fileContent)
   }
 
   DataIdentifier getIdentifier() {

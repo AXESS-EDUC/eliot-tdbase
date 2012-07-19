@@ -239,7 +239,7 @@ environments {
     // creation d'un jeu de test
     eliot.bootstrap.jeudetest = true
     // configuration de la racine de l'espace de fichier
-    conf.eliot.fichiers.storedInDatabase = true
+    eliot.fichiers.storedInDatabase = true
     eliot.fichiers.racine = '/Users/Shared/eliot-root'
     eliot.fichiers.maxsize.mega = 10
     // configuration des liens du menu portail et des annonces portail

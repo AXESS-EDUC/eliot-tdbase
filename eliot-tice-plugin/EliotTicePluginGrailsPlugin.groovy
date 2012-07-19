@@ -129,11 +129,13 @@ class EliotTicePluginGrailsPlugin {
     def storeFilesInDB = conf.eliot.fichiers.storedInDatabase ?: false
     if (storeFilesInDB) {
       dataStore(DBAttachementDataStore)
+      println 'Configuration with file storage in database.'
     } else {
       dataStore(AttachementDataStore) { bean ->
         path = conf.eliot.fichiers.racine ?: null
         bean.initMethod = 'initFileDataStore'
       }
+      println 'Configuration with file storage on file system.'
     }
 
     // Configure l'annuaire d'opération de webservices REST

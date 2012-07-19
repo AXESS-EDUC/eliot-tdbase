@@ -29,13 +29,14 @@
 package org.lilie.services.eliot.tice
 
 import org.apache.commons.io.IOUtils
+import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataIdentifier
+import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataRecord
+import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataStore
+import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataStoreException
 
-import java.lang.ref.WeakReference
 import java.security.DigestOutputStream
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-
-import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.*
 
 /**
  * Database implementation of DataStore
@@ -48,13 +49,11 @@ class DBAttachementDataStore implements DataStore {
    */
   private static final String DIGEST = "SHA-1";
 
-
   /**
    * Name of the directory used for temporary files.
    * Must be at least 3 characters.
    */
   private static final String TMP = "tmp";
-
 
   /**
    * Check if a record for the given identifier exists, and return it if yes.
@@ -64,7 +63,7 @@ class DBAttachementDataStore implements DataStore {
    * @return the record if found, and null if not
    */
   DataRecord getRecordIfStored(DataIdentifier identifier) throws DataStoreException {
-    return DBDataRecord.findByIdentifier(identifier.toString())
+    return DBDataRecord.findByHashId(identifier.toString())
   }
 
   /**
@@ -80,7 +79,7 @@ class DBAttachementDataStore implements DataStore {
    *                     or if the given identifier is invalid
    */
   DataRecord getRecord(DataIdentifier identifier) throws DataStoreException {
-    def res = DBDataRecord.findByIdentifier(identifier.toString())
+    def res = DBDataRecord.findByHashId(identifier.toString())
     if (!res) {
       throw new DataStoreException("No file with identifier ${identifier.toString()}")
     }
@@ -125,8 +124,11 @@ class DBAttachementDataStore implements DataStore {
 
       def record = getRecordIfStored(identifier)
       if (!record) {
-        record = new DBDataRecord(identifier: identifier.toString(),
-                                  fileContent: input.bytes)
+        DBDataRecord.withTransaction {
+          record = new DBDataRecord(hashId: identifier.toString(),
+                                    fileContent: input.bytes)
+          record.save()
+        }
       }
       record
     } catch (NoSuchAlgorithmException e) {

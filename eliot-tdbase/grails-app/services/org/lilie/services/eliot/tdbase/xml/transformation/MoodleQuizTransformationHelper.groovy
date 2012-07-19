@@ -38,6 +38,7 @@ import javax.xml.transform.stream.StreamSource
 import org.lilie.services.eliot.tice.AttachementDataStore
 import org.lilie.services.eliot.tice.ImageIds
 import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataRecord
+import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataStore
 
 /**
  *
@@ -45,7 +46,7 @@ import org.lilie.services.eliot.tice.jackrabbit.core.data.version_2_4_0.DataReco
  */
 class MoodleQuizTransformationHelper {
 
-  AttachementDataStore dataStore
+  DataStore dataStore
 
   /**
    * Transforme un fichier XML avec une feuille de style XSLT
@@ -77,7 +78,7 @@ class MoodleQuizTransformationHelper {
  */
 class MoodleQuizBase64DecoderHandler {
 
-  AttachementDataStore dataStore
+  DataStore dataStore
   private Map<String, ImageIds> images = [:]
   private ImageIds currentImage
 

@@ -127,7 +127,7 @@ class AttachementService {
    */
   InputStream getInputStreamForAttachement(Attachement attachement) {
     DataRecord dataRecord = dataStore.getRecord(new DataIdentifier(attachement.chemin))
-    dataRecord.stream
+    dataRecord.getStream()
   }
 
   /**
