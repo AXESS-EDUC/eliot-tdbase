@@ -1,6 +1,6 @@
 project.group = "org.lilie.services.eliot"
 project.ext.artefactId = "eliot-tice-dbmigration"
-project.version = "2.0.3-RC2"
+project.version = "2.0.3-SNAPSHOT"
 
 
 apply plugin: 'idea'

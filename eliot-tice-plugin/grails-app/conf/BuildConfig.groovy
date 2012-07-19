@@ -33,7 +33,7 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 
-versionTDBase = "2.0.3-RC2"
+versionTDBase = "2.0.3-SNAPSHOT"
 
 grails.project.dependency.resolution = {
 
