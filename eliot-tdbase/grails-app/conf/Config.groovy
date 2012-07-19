@@ -351,6 +351,67 @@ environments {
     eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
 
   }
+  cf {
+    grails.serverURL = "http://eliot-tdbase.cloudfoundry.com"
+    eliot.tdbase.urlServeur = "http://eliot-tdbase.cloudfoundry.com"
+    eliot.tdbase.nomApplication = "eliot-tdbase"
+    eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
+
+
+    grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
+            '/p/**': ['IS_AUTHENTICATED_FULLY'],
+            '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'],
+            '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'],
+            '/question/**': ["${FonctionEnum.ENS.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'],
+            '/seance/**': ["${FonctionEnum.ENS.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'],
+            '/activite/**': ["${FonctionEnum.ELEVE.toRole()}",
+                    'IS_AUTHENTICATED_FULLY'],
+            '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+                    'IS_AUTHENTICATED_FULLY']]
+
+    // autorise l'identification via url get
+    grails.plugins.springsecurity.apf.postOnly = false
+    // application de la migration  définie dans eliot-tice-dbmigration
+    eliot.bootstrap.migration = true
+    // creation d'un jeu de test
+    eliot.bootstrap.jeudetest = true
+    // configuration de la racine de l'espace de fichier
+    eliot.fichiers.storedInDatabase = true
+    eliot.fichiers.racine = '/Users/Shared/eliot-root'
+    eliot.fichiers.maxsize.mega = 10
+    // configuration des liens du menu portail et des annonces portail
+    eliot.portail.menu.affichage = true
+    eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
+            libelle: "ticetime"],
+            [url: "https://github.com/ticetime/eliot-tdbase/wiki",
+                    libelle: "eliot-tdbase sur Github"]]
+    eliot.portail.news = ["TDBase version ${appVersion} - environnement DEV.",
+            "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
+            "Login / mot de passe enseignant : ens1 / ens1",
+            "Login / mot de passe élève 1 : elv1 / elv1",
+            "Login / mot de passe élève 2 : elv2 / elv2",
+            "Login / mot de passe parent 1 : resp1 / resp1"]
+
+    // Spécifie si les objets sensés être créés sont bien créés
+    // à n'activier que si les données tdbase, notes et textes sont stockées dans
+    // la même base
+    eliot.interfacage.strongCheck = false
+    // rest client config for textes
+    eliot.webservices.rest.client.textes.user = "api"
+    eliot.webservices.rest.client.textes.password = "api"
+    eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/echanges/v2"
+    // rest client config for notes
+    eliot.webservices.rest.client.notes.user = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.password = "eliot-tdbase"
+    eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+    eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+
+  }
   testlilie {
     eliot.tdbase.nomApplication = "eliot-tdbase"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()

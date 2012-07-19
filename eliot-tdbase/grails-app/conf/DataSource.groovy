@@ -55,5 +55,10 @@ environments {
       url = "jdbc:postgresql://localhost:5433/eliot-tdbase-int"
     }
   }
+  cf {
+    dataSource {
+      url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
+    }
+  }
 
 }
