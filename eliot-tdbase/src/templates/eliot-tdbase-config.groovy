@@ -29,22 +29,8 @@ import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 *  <http://www.cecill.info/licences.fr.html>.
 */
 
-// L'URL d'accès à l'application
-//
 
-grails.serverURL = "http://localhost:8080/eliot-tdbase"
-eliot.tdbase.nomApplication = "eliot-tdbase"
-eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
-eliot.tdbase.urlServeur = "http//localhost:8080"
 
-// cas is not activated by default
-//
-grails.plugins.springsecurity.cas.active = false
-grails.plugins.springsecurity.cas.loginUri = '/login'
-grails.plugins.springsecurity.cas.serviceUrl = "http://localhost:8080/eliot-tdbase/j_spring_cas_security_check"
-grails.plugins.springsecurity.cas.serverUrlPrefix = 'http://localhost:8181/cas-server-webapp-3.4.11'
-grails.plugins.springsecurity.cas.proxyCallbackUrl = "http://localhost:8080/eliot-tdbase/secure/receptor"
-grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
 
 // determine si eliot-tdbase doit s'executer en mode intégration Lilie
 //
@@ -62,6 +48,7 @@ eliot.bootstrap.jeudetest = true
 
 // configuration de la racine de l'espace de fichier
 //
+eliot.fichiers.storedInDatabase = true
 eliot.fichiers.racine = '/tmp/eliot-root'
 eliot.fichiers.maxsize.mega = 10
 
