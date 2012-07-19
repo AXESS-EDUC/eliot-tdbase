@@ -126,7 +126,7 @@ class DBAttachementDataStore implements DataStore {
       if (!record) {
         DBDataRecord.withTransaction {
           record = new DBDataRecord(hashId: identifier.toString(),
-                                    fileContent: input.bytes)
+                                    fileContent: temporary.bytes)
           record.save()
         }
       }
