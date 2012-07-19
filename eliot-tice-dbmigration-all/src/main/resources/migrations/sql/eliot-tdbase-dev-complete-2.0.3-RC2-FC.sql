@@ -7,7 +7,7 @@
 -- Started on 2012-07-19 17:57:31 CEST
 
 SET statement_timeout = 0;
-SET client_encoding = 'UTF8';
+-- SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
@@ -167,66 +167,66 @@ SET search_path = enttemps, pg_catalog;
 
 CREATE FUNCTION agenda_before_insert() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
+    AS $BODY$
       DECLARE
-      code_type_agenda varchar(30); 
-      agenda_id bigint; 
+      code_type_agenda varchar(30);
+      agenda_id bigint;
 
       BEGIN
       select code into code_type_agenda
       from enttemps.type_agenda as ta
-      where ta.id = NEW.type_agenda_id; 
+      where ta.id = NEW.type_agenda_id;
 
       -- Agenda de type calendrier scolaire
-      IF code_type_agenda ='CSE' THEN
+      IF code_type_agenda =''CSE'' THEN
       select agenda_id into agenda_id
       from enttemps.agenda as a
       join enttemps.type_agenda as t on (a.type_agenda_id = t.id)
-      where t.code = 'CSE'
-      and NEW.etablissement_id = a.etablissement_id; 
+      where t.code = ''CSE''
+      and NEW.etablissement_id = a.etablissement_id;
 
       IF FOUND THEN
-      RAISE EXCEPTION 'Le calendrier scolaire existe déjà pour cet
-      établissement'; 
-      END IF; 
+      RAISE EXCEPTION ''Le calendrier scolaire existe déjà pour cet
+      établissement'';
+      END IF;
 
       ELSE
-      --Agenda de type Structure d'enseignement
-      IF code_type_agenda ='ETS' THEN
+      --Agenda de type Structure d''enseignement
+      IF code_type_agenda =''ETS'' THEN
       select agenda_id into agenda_id
       from enttemps.agenda as a
       join enttemps.type_agenda as t on (a.type_agenda_id = t.id)
       join ent.structure_enseignement as struct on (a.structure_enseignement_id
       = struct.id)
-      where t.code = 'ETS'
-      and NEW.structure_enseignement_id = a.structure_enseignement_id; 
+      where t.code = ''ETS''
+      and NEW.structure_enseignement_id = a.structure_enseignement_id;
 
       IF FOUND THEN
-      RAISE EXCEPTION 'Agenda de structure existe déjà'; 
-      END IF; 
+      RAISE EXCEPTION ''Agenda de structure existe déjà'';
+      END IF;
 
       ELSE
       -- Agenda de type enseignant
-      IF code_type_agenda ='ETE' THEN
+      IF code_type_agenda =''ETE'' THEN
       select agenda_id into agenda_id
       from enttemps.agenda as a
       join enttemps.type_agenda as t on (a.type_agenda_id = t.id)
       join securite.autorite as aut on (a.enseignant_id = aut.id)
-      where t.code = 'ETE'
+      where t.code = ''ETE''
       and NEW.etablissement_id = a.etablissement_id
-      and NEW.enseignant_id = a.enseignant_id; 
+      and NEW.enseignant_id = a.enseignant_id;
 
       IF FOUND THEN
-      RAISE EXCEPTION 'Agenda enseignant existe déjà'; 
-      END IF; 
+      RAISE EXCEPTION ''Agenda enseignant existe déjà'';
+      END IF;
 
-      END IF; 
-      END IF; 
-      END IF; 
+      END IF;
+      END IF;
+      END IF;
 
-      RETURN NEW; 
-      END; 
-      $$;
+      RETURN NEW;
+      END;
+      $BODY$;
 
 
 SET search_path = aaf, pg_catalog;
@@ -12912,24 +12912,6 @@ ALTER TABLE ONLY template_type_donnees
 
 SET search_path = public, pg_catalog;
 
---
--- TOC entry 3584 (class 2606 OID 131739)
--- Dependencies: 178 178 178 178
--- Name: pk_databasechangelog; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY databasechangelog
-    ADD CONSTRAINT pk_databasechangelog PRIMARY KEY (id, author, filename);
-
-
---
--- TOC entry 3582 (class 2606 OID 131731)
--- Dependencies: 177 177
--- Name: pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY databasechangeloglock
-    ADD CONSTRAINT pk_databasechangeloglock PRIMARY KEY (id);
 
 
 --
@@ -19689,4 +19671,7 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
+
+SET search_path = public ;
+
 

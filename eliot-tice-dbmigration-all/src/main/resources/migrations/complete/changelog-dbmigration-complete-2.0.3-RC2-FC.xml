@@ -32,9 +32,10 @@
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
+
     <changeSet id="1" author="fsil">
         <comment>Initialisation complète de la base</comment>
-        <sqlFile path="../sql/eliot-tdbase-dev-complete-2.0.3-RC2-FC.sql"/>
+        <sqlFile path="migrations/sql/eliot-tdbase-dev-complete-2.0.3-RC2-FC.sql" splitStatements="false" stripComments="true"/>
     </changeSet>
 
 
