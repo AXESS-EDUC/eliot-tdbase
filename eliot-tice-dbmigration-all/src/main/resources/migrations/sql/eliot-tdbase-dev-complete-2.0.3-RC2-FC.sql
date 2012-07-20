@@ -145,8 +145,8 @@ CREATE SCHEMA udt;
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
 --
 
--- CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-CREATE OR REPLACE LANGUAGE  plpgsql ;
+-- NE PASSE PAS SUR CLOUDFOUNDRY
+-- CREATE OR REPLACE LANGUAGE  plpgsql ;
 
 --
 -- TOC entry 5167 (class 0 OID 0)
@@ -19660,10 +19660,10 @@ ALTER TABLE ONLY import
 -- Name: public; Type: ACL; Schema: -; Owner: -
 --
 
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO PUBLIC;
+--REVOKE ALL ON SCHEMA public FROM PUBLIC;
+--REVOKE ALL ON SCHEMA public FROM postgres;
+--GRANT ALL ON SCHEMA public TO postgres;
+--GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 -- Completed on 2012-07-19 17:57:33 CEST
