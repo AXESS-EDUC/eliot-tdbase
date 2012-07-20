@@ -61,6 +61,7 @@ if (appConfigLocation) {
 }
 
 // config générale
+grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
 grails.project.groupId = "org.lilie.services.eliot" // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
@@ -355,7 +356,8 @@ environments {
     grails.serverURL = "http://eliot-tdbase.cloudfoundry.com"
     eliot.tdbase.urlServeur = "http://eliot-tdbase.cloudfoundry.com"
     eliot.tdbase.nomApplication = "eliot-tdbase"
-    eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
+    eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+    eliot.tdbase.urlServeur = "http//eliot-tdbase.cloudfoundry.com"
 
 
     grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
