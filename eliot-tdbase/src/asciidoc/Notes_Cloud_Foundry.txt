@@ -1,0 +1,28 @@
+Notes sur le déploiement sur Cloudfoundry
+=========================================
+
+== Déploiement de l'application sans démarrage
+
+--------------------------
+grails -Dgrails.env=cf cf-push --no-start
+--------------------------
+
+== Configuration de la mémoire
+
+--------------------------
+// pour le Xmx
+grails -Dgrails.env=cf cf-update-memory 1G
+
+// pour le permgen
+grails -Dgrails.env=cf cf-env-add JAVA_OPTS "-XX:MaxPermSize=512m"
+--------------------------
+
+== Lancement de l'application et autres commandes
+
+--------------------------
+grails -Dgrails.env=cf start
+
+// pour voir les instances
+grails -Dgrails.env=cf cf-show-instances
+
+--------------------------
