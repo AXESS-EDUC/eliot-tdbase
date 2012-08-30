@@ -31,7 +31,7 @@
 <html>
 <head>
   <meta name="layout" content="eliot-tdbase-attachement"/>
-  <title>TDBase - Jmol</title>
+  <title>TD Base - Jmol</title>
 </head>
 <body>
     <et:viewJmolAttachement attachement="${attachement}" width="600"/>

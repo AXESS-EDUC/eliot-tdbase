@@ -247,7 +247,7 @@ environments {
             libelle: "ticetime"],
             [url: "https://github.com/ticetime/eliot-tdbase/wiki",
                     libelle: "eliot-tdbase sur Github"]]
-    eliot.portail.news = ["TDBase version ${appVersion} - environnement DEV.",
+    eliot.portail.news = ["TD Base version ${appVersion} - environnement DEV.",
             "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
             "Login / mot de passe enseignant : ens1 / ens1",
             "Login / mot de passe élève 1 : elv1 / elv1",
@@ -282,7 +282,7 @@ environments {
             libelle: "ticetime"],
             [url: "https://github.com/ticetime/eliot-tdbase/wiki",
                     libelle: "eliot-tdbase sur Github"]]
-    eliot.portail.news = ["TDBase version ${appVersion} - environnement TESTLILIE ",
+    eliot.portail.news = ["TD Base version ${appVersion} - environnement TESTLILIE ",
             "Login / mot de passe : voir base de test eliot/lilie",
             "Pierre Baudet : UT110000000000005027"]
   }

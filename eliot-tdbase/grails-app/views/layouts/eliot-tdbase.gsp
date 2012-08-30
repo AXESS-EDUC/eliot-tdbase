@@ -52,7 +52,7 @@
       <li id="menu-item-accueil">
         <g:link controller="dashboard" action="index"
                 title="Accueil"
-                params="[bcInit: true]">Accueil TDBase</g:link>
+                params="[bcInit: true]">Accueil TD Base</g:link>
       </li>
       <li id="menu-item-seances">
         <g:link controller="seance" action="liste"

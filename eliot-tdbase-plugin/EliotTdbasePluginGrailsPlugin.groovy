@@ -40,7 +40,7 @@ class EliotTdbasePluginGrailsPlugin {
           "grails-app/views/error.gsp"
   ]
 
-  def title = "Eliot Tdbase  Plugin" // Headline display name of the plugin
+  def title = "Eliot TD Base  Plugin" // Headline display name of the plugin
   def author = "Franck Silvestre - Ticetime"
   def authorEmail = ""
   def description = '''\
