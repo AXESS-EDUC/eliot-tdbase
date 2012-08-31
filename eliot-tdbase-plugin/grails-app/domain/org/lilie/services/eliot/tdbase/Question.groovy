@@ -109,6 +109,10 @@ class Question implements Artefact {
               code = 'question.reponses.pasdebonnereponse'
             }
           }
+          if (objErr.arguments[0] == 'valeur') {
+            code = 'question.slider.valeur.invalid'
+
+          }
           errors.reject(code, objErr.arguments, objErr.defaultMessage)
         }
       }
