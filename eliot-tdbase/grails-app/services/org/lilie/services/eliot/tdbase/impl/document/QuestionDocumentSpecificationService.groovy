@@ -154,6 +154,7 @@ class DocumentSpecification implements QuestionSpecification {
   static constraints = {
     auteur blank: false
     source blank: false
+    urlExterne(url: true)
     fichierEstVide(validator: { val ->
       if (val) {
         return "question.document.fichier.vide"
