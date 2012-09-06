@@ -67,6 +67,8 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
     super.updateQuestionSpecificationForObject(question, spec)
 
     if (spec.fichier && !spec.fichier.empty) {
+      spec.urlExterne = null
+
       def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(
               spec.fichier, question, spec.estInsereDansLeSujet)
       if (oldQuestAttach) {
@@ -74,9 +76,10 @@ class QuestionDocumentSpecificationService extends QuestionSpecificationService<
                 oldQuestAttach)
       }
       spec.questionAttachementId = questionAttachement.id
-      spec.urlExterne = null
+
     } else if (spec.urlExterne) {
-      if (oldQuestAttach) {
+      spec.validate()
+      if (oldQuestAttach && !spec.hasErrors()) {
         questionAttachementService.deleteQuestionAttachement(
                 oldQuestAttach)
       }
@@ -154,7 +157,7 @@ class DocumentSpecification implements QuestionSpecification {
   static constraints = {
     auteur blank: false
     source blank: false
-    urlExterne(url: true)
+    urlExterne(nullable: true, url: true)
     fichierEstVide(validator: { val ->
       if (val) {
         return "question.document.fichier.vide"
