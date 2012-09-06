@@ -35,7 +35,7 @@
 
     <changeSet id="1" author="fsil">
         <comment>Initialisation complète de la base</comment>
-        <sqlFile path="migrations/sql/eliot-tdbase-dev-complete-2.0.3-RC2-FC.sql" splitStatements="false" stripComments="true"/>
+        <sqlFile path="migrations/sql/eliot-tdbase-dev-complete-2.0.4-RC1-FC.sql" splitStatements="false" stripComments="true"/>
     </changeSet>
 
 
