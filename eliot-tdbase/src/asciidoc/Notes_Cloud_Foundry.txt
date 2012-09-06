@@ -5,6 +5,8 @@ Notes sur le déploiement sur Cloudfoundry
 
 --------------------------
 grails -Dgrails.env=cf cf-push --no-start
+OU
+grails -Dgrails.env=cf cf-update --no-start
 --------------------------
 
 == Configuration de la mémoire

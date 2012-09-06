@@ -392,7 +392,7 @@ environments {
             [url: "https://github.com/ticetime/eliot-tdbase/wiki",
                     libelle: "eliot-tdbase sur Github"]]
 
-    eliot.portail.news = ["TDBase version ${appVersion} - environnement DEV.",
+    eliot.portail.news = ["TDBase v2.0.4-SNAPSHOT on Cloudfoundry.",
             "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
             "Login / mot de passe enseignant : ens1 / ens1",
             "Login / mot de passe élève 1 : elv1 / elv1",
