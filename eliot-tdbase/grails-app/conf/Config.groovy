@@ -329,7 +329,7 @@ environments {
             libelle: "ticetime"],
             [url: "https://github.com/ticetime/eliot-tdbase/wiki",
                     libelle: "eliot-tdbase sur Github"]]
-    eliot.portail.news = ["TDBase version ${appVersion} - environnement DEV.",
+    eliot.portail.news = ["TD Base version ${appVersion} - environnement DEV.",
             "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
             "Login / mot de passe enseignant : ens1 / ens1",
             "Login / mot de passe élève 1 : elv1 / elv1",
@@ -391,12 +391,14 @@ environments {
             libelle: "ticetime"],
             [url: "https://github.com/ticetime/eliot-tdbase/wiki",
                     libelle: "eliot-tdbase sur Github"]]
+
     eliot.portail.news = ["TDBase version ${appVersion} - environnement DEV.",
             "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
             "Login / mot de passe enseignant : ens1 / ens1",
             "Login / mot de passe élève 1 : elv1 / elv1",
             "Login / mot de passe élève 2 : elv2 / elv2",
             "Login / mot de passe parent 1 : resp1 / resp1"]
+
 
     // Spécifie si les objets sensés être créés sont bien créés
     // à n'activier que si les données tdbase, notes et textes sont stockées dans

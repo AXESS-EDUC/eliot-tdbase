@@ -52,7 +52,6 @@ public class Service {
 
   Double nbHeures
   Boolean coEns
-  String libelleMatiere
   OrigineEnum origine = OrigineEnum.AUTO
 
   Set<Enseignement> enseignements
@@ -98,7 +97,6 @@ public class Service {
     modaliteCours(nullable: true) // modalité cours n'est plus exigée
     nbHeures(nullable: true)
     coEns(nullable: true)
-    libelleMatiere(nullable: true)
     origine(nullable: true)
     servicePrincipal(nullable: false)
   }

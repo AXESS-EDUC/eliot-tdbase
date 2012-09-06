@@ -30,7 +30,8 @@ class EliotTdbasePluginGrailsPlugin {
   // the group id
   def groupId = "org.lilie.services.eliot"
   // the plugin version
-  def version = "2.0.3-CF-SNAPSHOT"
+  def version = "2.0.4-CF-SNAPSHOT"
+
   // the version or versions of Grails the plugin is designed for
   def grailsVersion = "2.0.1 > *"
   // the other plugins this plugin depends on
@@ -40,7 +41,7 @@ class EliotTdbasePluginGrailsPlugin {
           "grails-app/views/error.gsp"
   ]
 
-  def title = "Eliot Tdbase  Plugin" // Headline display name of the plugin
+  def title = "Eliot TD Base  Plugin" // Headline display name of the plugin
   def author = "Franck Silvestre - Ticetime"
   def authorEmail = ""
   def description = '''\

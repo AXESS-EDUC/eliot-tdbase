@@ -125,7 +125,9 @@ class SliderSpecification implements QuestionSpecification {
 
   static constraints = {
     libelle blank: false
-    valeur nullable: false
+    valeur nullable: false, validator: {  val, obj ->
+        return val <= obj.valeurMax && val >= obj.valeurMin
+    }
     valeurMin(nullable: false)
     valeurMax(nullable: false)
     precision(nullable: false)

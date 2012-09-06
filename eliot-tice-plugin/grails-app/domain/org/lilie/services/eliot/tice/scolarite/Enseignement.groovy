@@ -38,6 +38,7 @@ class Enseignement implements Serializable {
   DomainAutorite enseignant
   Service service
   Double nbHeures
+  String origine = "AUTO"
 
   /**
    * Numéro de version de l'import STS qui a engendré la création ou la

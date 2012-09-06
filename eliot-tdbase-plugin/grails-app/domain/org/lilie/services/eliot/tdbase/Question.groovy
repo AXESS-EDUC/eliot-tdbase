@@ -109,6 +109,12 @@ class Question implements Artefact {
               code = 'question.reponses.pasdebonnereponse'
             }
           }
+          if (objErr.arguments[0] == 'valeur') {
+            code = 'question.slider.valeur.invalid'
+          }
+          if (objErr.arguments[0] == 'urlExterne') {
+            code = 'question.document.urlExterne.invalid'
+          }
           errors.reject(code, objErr.arguments, objErr.defaultMessage)
         }
       }

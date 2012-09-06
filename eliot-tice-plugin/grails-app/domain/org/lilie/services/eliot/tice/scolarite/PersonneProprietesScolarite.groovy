@@ -44,6 +44,7 @@ class PersonneProprietesScolarite {
   Date dateDesactivation
   Date dateDebut
   Date dateFin
+  String origine = "AUTO"
 
   static constraints = {
     personne(nullable: false)

@@ -28,7 +28,7 @@
 
 dataSource {
   driverClassName = "org.postgresql.Driver"
-  username = "eliot"
+  username = "eliot_scolarite"
   password = "eliot"
 }
 

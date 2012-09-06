@@ -51,7 +51,7 @@
     <ul id="portal-hz-menu">
       <li id="menu-item-acceuil">
         <g:link action="index" controller="activite" params="[bcInit: true]"
-                title="Accueil">Accueil TDBase</g:link>
+                title="Accueil">Accueil TD Base</g:link>
       </li>
       <li id="menu-item-seances">
         <g:link action="listeSeances" controller="activite"
