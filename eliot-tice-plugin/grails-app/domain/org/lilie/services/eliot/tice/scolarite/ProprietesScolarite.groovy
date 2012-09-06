@@ -46,7 +46,6 @@ class ProprietesScolarite {
   Fonction fonction
   Boolean responsableStructureEnseignement
   PorteurEnt porteurEnt
-  SourceImport source
 
 
   static constraints = {

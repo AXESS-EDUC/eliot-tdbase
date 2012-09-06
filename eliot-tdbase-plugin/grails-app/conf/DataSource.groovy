@@ -29,7 +29,7 @@
 dataSource {
   pooled = true
   driverClassName = "org.postgresql.Driver"
-  username = "eliot"
+  username = "eliot_scolarite"
   password = "eliot"
   logSql = true
 }

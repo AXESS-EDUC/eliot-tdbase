@@ -31,12 +31,11 @@ package org.lilie.services.eliot.tice.utils
 import grails.util.Environment
 import org.hibernate.SessionFactory
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.annuaire.SourceImport
+import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 import org.lilie.services.eliot.tice.annuaire.UtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.scolarite.*
-import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 import org.lilie.services.eliot.tice.securite.Perimetre
+import org.lilie.services.eliot.tice.scolarite.*
 
 class BootstrapService {
 
@@ -305,34 +304,35 @@ class BootstrapService {
       StructureEnseignement struct1ere = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA")
       StructureEnseignement structGr1ere = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA_G1")
       StructureEnseignement structTerm = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_Terminale_D")
-      SourceImport sourceImport = SourceImport.findByCode("STS")
 
-      new ProprietesScolarite(source: sourceImport,
-                              anneeScolaire: anneeScolaire,
-                              fonction: fonctionService.fonctionEnseignant(),
-                              etablissement: college,
-                              matiere: matiereHistoire,
-                              niveau: niveau6,
-                              structureEnseignement: struct6eme).save()
+      def prop1 = new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                                          fonction: fonctionService.fonctionEnseignant(),
+                                          etablissement: college,
+                                          matiere: matiereHistoire,
+                                          niveau: niveau6,
+                                          structureEnseignement: struct6eme).save()
 
-      new ProprietesScolarite(source: sourceImport,
-                              anneeScolaire: anneeScolaire,
+      if (prop1.hasErrors()) {
+        prop1.errors.allErrors.each {
+          println ">>>>> PROP ERROR $it"
+        }
+      }
+
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEnseignant(),
                               etablissement: lycee,
                               matiere: matiereSES,
                               niveau: niveauPrem,
                               structureEnseignement: structGr1ere).save()
 
-      new ProprietesScolarite(source: sourceImport,
-                              anneeScolaire: anneeScolaire,
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEnseignant(),
                               etablissement: lycee,
                               matiere: matiereMaths,
                               niveau: niveauTerm,
                               structureEnseignement: structTerm).save()
 
-      new ProprietesScolarite(source: sourceImport,
-                              anneeScolaire: anneeScolaire,
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEnseignant(),
                               etablissement: lycee,
                               matiere: matiereMaths,
@@ -376,34 +376,35 @@ class BootstrapService {
       StructureEnseignement struct1ere = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA")
       StructureEnseignement structGr1ere = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA_G1")
       StructureEnseignement structTerm = StructureEnseignement.findByIdExterne("${lycee.uai}.${CODE_STRUCTURE_PREFIXE}_Terminale_D")
-      SourceImport sourceImport = SourceImport.findByCode("STS")
 
-      new ProprietesScolarite(source: sourceImport,
-                              anneeScolaire: anneeScolaire,
-                              fonction: fonctionService.fonctionEleve(),
-                              etablissement: college,
-                              matiere: matiereHistoire,
-                              niveau: niveau6,
-                              structureEnseignement: struct6eme).save()
+      def prop1 = new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                                          fonction: fonctionService.fonctionEleve(),
+                                          etablissement: college,
+                                          matiere: matiereHistoire,
+                                          niveau: niveau6,
+                                          structureEnseignement: struct6eme).save()
 
-      new ProprietesScolarite(source: sourceImport,
-                              anneeScolaire: anneeScolaire,
+      if (prop1.hasErrors()) {
+        prop1.errors.allErrors.each {
+          println ">>>>> PROP ERROR $it"
+        }
+      }
+
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEleve(),
                               etablissement: lycee,
                               matiere: matiereSES,
                               niveau: niveauPrem,
                               structureEnseignement: structGr1ere).save()
 
-      new ProprietesScolarite(source: sourceImport,
-                              anneeScolaire: anneeScolaire,
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEleve(),
                               etablissement: lycee,
                               matiere: matiereMaths,
                               niveau: niveauTerm,
                               structureEnseignement: structTerm).save()
 
-      new ProprietesScolarite(source: sourceImport,
-                              anneeScolaire: anneeScolaire,
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEleve(),
                               etablissement: lycee,
                               matiere: matiereMaths,
@@ -462,18 +463,14 @@ class BootstrapService {
   private def initialisePorteurEnt() {
     PorteurEnt porteurEnt = PorteurEnt.findByCode(DEFAULT_CODE_PORTEUR_ENT)
     if (!porteurEnt) {
-      Perimetre perimetre = new Perimetre(
-              estActive: true,
-              nomEntiteCible: PorteurEnt.class.name
-      ).save()
-      porteurEnt = new PorteurEnt(
-              code: DEFAULT_CODE_PORTEUR_ENT,
-              perimetre: perimetre,
-              urlAccesEnt: DEFAULT_URL_ACCES_ENT,
-              urlRetourLogout: DEFAULT_URL_RETOUR_LOGOUT,
-              nom: 'Porteur Default pour tests et dev',
-              nomCourt: 'Porteur Default'
-      ).save()
+      Perimetre perimetre = new Perimetre(estActive: true,
+                                          nomEntiteCible: PorteurEnt.class.name).save()
+      porteurEnt = new PorteurEnt(code: DEFAULT_CODE_PORTEUR_ENT,
+                                  perimetre: perimetre,
+                                  urlAccesEnt: DEFAULT_URL_ACCES_ENT,
+                                  urlRetourLogout: DEFAULT_URL_RETOUR_LOGOUT,
+                                  nom: 'Porteur Default pour tests et dev',
+                                  nomCourt: 'Porteur Default').save()
       perimetre.enregistrementCibleId = porteurEnt.id
       perimetre.save()
     }
@@ -492,8 +489,7 @@ class BootstrapService {
     def propsResp = []
     profilsEleve.each { ProprietesScolarite props ->
       if (props.fonction == fonctionService.fonctionEleve()) {
-        propsResp << new ProprietesScolarite(source: props.source,
-                                             anneeScolaire: props.anneeScolaire,
+        propsResp << new ProprietesScolarite(anneeScolaire: props.anneeScolaire,
                                              fonction: fonctionService.fonctionResponsableEleve(),
                                              etablissement: props.etablissement,
                                              matiere: props.matiere,
@@ -513,9 +509,15 @@ class BootstrapService {
   private def addProprietesScolariteToPersonne(List<ProprietesScolarite> proprietesScolariteList,
                                                Personne personne) {
     proprietesScolariteList.each { ProprietesScolarite proprietesScolarite ->
-      new PersonneProprietesScolarite(personne: personne,
-                                      proprietesScolarite: proprietesScolarite,
-                                      estActive: true).save()
+      def ppp = new PersonneProprietesScolarite(personne: personne,
+                                                proprietesScolarite: proprietesScolarite,
+                                                estActive: true)
+      ppp.save()
+      if (ppp.hasErrors()) {
+        ppp.errors.allErrors.each {
+          println ">>>>> PPP ERROR $it"
+        }
+      }
     }
     sessionFactory.currentSession.flush()
 
