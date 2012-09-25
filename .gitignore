@@ -44,6 +44,11 @@ build
 target
 specifications
 eliot-tdbase.esproj
+*.ipr
+*.iws
 
 .DS_Store
 
+# config externe locale #
+#########################
+config
