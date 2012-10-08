@@ -58,6 +58,9 @@ grails.project.dependency.resolution = {
     grailsHome()
     grailsCentral()
 
+    mavenRepo "http://maven.springframework.org/milestone/"
+
+
     mavenRepo "http://repository-ticetime.forge.cloudbees.com/release"
     mavenRepo "http://repository-ticetime.forge.cloudbees.com/snapshot"
 
@@ -94,7 +97,7 @@ grails.project.dependency.resolution = {
     compile ":mail:1.0"
 
     compile ":spring-security-core:1.2.7.2"
-    compile ':cloud-foundry:1.2.2'
+    compile ':cloud-foundry:1.2.3'
 
     build(":tomcat:$grailsVersion",
           ":rest-client-builder:1.0.2",
