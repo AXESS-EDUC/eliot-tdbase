@@ -3,6 +3,22 @@ import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 
 // configuration for plugin testing - will not be included in the plugin zip
 
+// Fichier charge si present dans le classpath : utile pour déploiement
+// d'une application de démonstration après téléchargement
+grails.config.locations = ["classpath:${appName}-config.groovy"]
+
+// Fichier de configuration externe commun à toutes les applications Eliot
+def eliotcommonsConfigLocation = System.properties["eliot-commons.config.location"]
+if (eliotcommonsConfigLocation) {
+  grails.config.locations << ("file:" + eliotcommonsConfigLocation)
+}
+
+// Fichier de configuration externe propre à l'application
+def appConfigLocation = System.properties["${appName}.config.location"]
+if (appConfigLocation) {
+  grails.config.locations << "file:" + appConfigLocation
+}
+
 log4j = {
   // Example of changing the log pattern for the default console
   // appender:
