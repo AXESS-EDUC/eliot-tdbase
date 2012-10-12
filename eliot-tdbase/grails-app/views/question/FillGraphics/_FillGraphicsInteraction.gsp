@@ -68,9 +68,7 @@
             <g:each in="${specifobject.motsSugeres}" var="suggestedWord" status="i">
                 <div class="suggestedWord"
                     id="suggestedWord_${indexReponse}_${i}"
-                    word="${suggestedWord}">
-                    ${suggestedWord}
-                </div>
+                    word="${suggestedWord.replaceAll(~"\r?\n", " ")}">${suggestedWord}</div>   %{--do not introduce white spaces between tag and ${suggestedWord}--}%
             </g:each>
         </div>
     </div>

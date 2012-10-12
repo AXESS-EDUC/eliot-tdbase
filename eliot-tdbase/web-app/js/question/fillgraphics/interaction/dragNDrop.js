@@ -107,7 +107,7 @@ function initDragNDrop() {
 
         if (!(dropTargetId in droppedItems)) {
             highlight(dropTarget);
-            setFieldValue(dropTargetId, draggable.attr("word"));
+            setFieldValue(dropTargetId, draggable.text());
             droppedItems[dropTargetId] = draggableId;
         }
     }
@@ -164,12 +164,17 @@ function initDragNDrop() {
 
         $(fillgraphicsEditorSelector + ">.textZone").each(function () {
 
-            var textZoneValue = $(this).children('textArea').val();
-            var suggestedWord = fillgraphicsEditorSelector + '>.suggestedWords>.suggestedWordsList>.suggestedWord[word=' + textZoneValue + ']';
+            var textZoneValue = $(this).children('textArea').val().replace(/\r?\n/g, " ");   // replace CR,NL,... by spaces
+            var suggestedWord = fillgraphicsEditorSelector + ">.suggestedWords>.suggestedWordsList>.suggestedWord[word='" + textZoneValue + "']";
 
             if (textZoneValue != "" && $(suggestedWord).length == 1) {
-                putDraggableIntoDroppable($(suggestedWord).attr('id'), $(this).attr('id'));
+
+                var draggableId = $(suggestedWord).attr('id');
+                var dropTargetId = $(this).attr('id');
+
+                putDraggableIntoDroppable(draggableId, dropTargetId);
                 highlight($(this));
+                droppedItems[dropTargetId] = draggableId;
             }
         });
 
