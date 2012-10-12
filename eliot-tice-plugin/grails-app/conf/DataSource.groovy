@@ -47,7 +47,7 @@ environments {
   }
   test {
     dataSource {
-      url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
+      url = "jdbc:postgresql://localhost:5433/eliot-tdbase-cf-test"
     }
   }
   testH2 {
@@ -58,7 +58,7 @@ environments {
       password = ""
 
       //dbCreate = "update"
-      url = "jdbc:h2:mem:eliot-tdbase-test-h2"
+      url = "jdbc:h2:mem:eliot-tdbase-cf-test-h2"
 
     }
   }

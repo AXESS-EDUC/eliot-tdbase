@@ -48,7 +48,7 @@ environments {
   }
   test {
     dataSource {
-      url = "jdbc:postgresql://localhost:5433/eliot-tdbase-test"
+      url = "jdbc:postgresql://localhost:5433/eliot-tdbase-cf-test"
     }
   }
 
