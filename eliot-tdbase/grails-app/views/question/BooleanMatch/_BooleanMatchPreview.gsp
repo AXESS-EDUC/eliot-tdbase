@@ -29,9 +29,9 @@
 <p class="title"><strong>${specifobject.libelle}</strong></p>
 <strong>Réponse:</strong> ${specifobject.reponses} <br/>
 <g:if test="${specifobject.toutOuRien}">
-  <strong>Mode d'évalutation :</strong> Tout ou rien.
+  <strong>Mode d'évaluation :</strong> Tout ou rien.
 </g:if>
 <g:else>
-  <strong>Mode d'évalutation :</strong> Par défaut.
+  <strong>Mode d'évaluation :</strong> Par défaut.
 </g:else><br/>
 <strong>Correction :</strong> <br/>${specifobject.correction}
