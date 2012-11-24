@@ -86,7 +86,7 @@ class QuestionController {
     }
     breadcrumpsService.manageBreadcrumps(params,
                                          message(code: "question.edite.titre"),
-                                         [QUESTION_EST_DEJA_INSEREE:questionEstDejaInseree])
+                                         [QUESTION_EST_DEJA_INSEREE: questionEstDejaInseree])
     render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
@@ -96,8 +96,7 @@ class QuestionController {
             utilisateur: personne,
             questionEnEdition: questionEnEdition,
             attachementsSujets: attachementsSujets,
-            annulationNonPossible: params.annulationNonPossible,
-    ])
+            annulationNonPossible: params.annulationNonPossible,])
   }
 
   /**
@@ -212,8 +211,7 @@ class QuestionController {
               sujet: sujet,
               questionEnEdition: questionEnEdition,
               artefactHelper: artefactAutorisationService,
-              utilisateur: personne
-      ])
+              utilisateur: personne])
     } else {
       flash.messageCode = "question.enregistre.succes"
       def params = [:]
@@ -247,8 +245,8 @@ class QuestionController {
     if (sujet && question.id && !question.hasErrors()) {
       if (!breadcrumpsService.getValeurPropriete(QUESTION_EST_DEJA_INSEREE)) {
         Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
-        sujetService.insertQuestionInSujet(question,sujet, personne, rang)
-        breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE,true)
+        sujetService.insertQuestionInSujet(question, sujet, personne, rang)
+        breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
       }
     }
     render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
@@ -290,7 +288,7 @@ class QuestionController {
               peutPartagerQuestion: false])
     } else {
       flash.messageCode = "question.enregistre.succes"
-      breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE,true)
+      breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
       redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
     }
 
@@ -340,6 +338,18 @@ class QuestionController {
       rechercheUniquementQuestionsChercheur = true
       patternAuteur = null
     }
+    Sujet sujet = Sujet.get(rechCmd.sujetId)
+    def afficheLiensModifier = true
+    def exclusComposite = false
+    def typesQuestions = questionService.typesQuestionsSupportes
+    if (sujet) {
+      afficheLiensModifier = false
+      if (sujet.estUnExercice()) {
+        typesQuestions = questionService.typesQuestionsSupportesHorsComposite
+        exclusComposite = true
+      }
+    }
+    boolean affichePager = false
     def questions = questionService.findQuestions(personne,
                                                   rechCmd.patternTitre,
                                                   patternAuteur,
@@ -347,20 +357,16 @@ class QuestionController {
                                                   Matiere.get(rechCmd.matiereId),
                                                   Niveau.get(rechCmd.niveauId),
                                                   QuestionType.get(rechCmd.typeId),
+                                                  exclusComposite,
                                                   rechercheUniquementQuestionsChercheur,
                                                   params)
-    Sujet sujet = Sujet.get(rechCmd.sujetId)
-    boolean afficheLiensModifier = true
-    if (sujet) {
-      afficheLiensModifier = false
-    }
-    boolean affichePager = false
+
     if (questions.totalCount > maxItems) {
       affichePager = true
     }
     [liens: breadcrumpsService.liens,
             afficheFormulaire: true,
-            typesQuestion: questionService.getTypesQuestionsSupportes(),
+            typesQuestion: typesQuestions,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             questions: questions,
@@ -427,15 +433,13 @@ class RechercheQuestionCommand {
   Long sujetId
 
   Map toParams() {
-    [
-            patternAuteur: patternAuteur,
+    [patternAuteur: patternAuteur,
             patternTitre: patternTitre,
             patternPresentation: patternSpecification,
             matiereId: matiereId,
             typeId: typeId,
             niveauId: niveauId,
-            sujetId: sujetId
-    ]
+            sujetId: sujetId]
   }
 
 }
