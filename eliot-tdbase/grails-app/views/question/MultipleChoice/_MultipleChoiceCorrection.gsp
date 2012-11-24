@@ -27,12 +27,13 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <div class="item">
-	<strong>Correction&nbsp;:</strong> <br/>
+	<strong>Réponses&nbsp;:</strong> <br/>
 	<g:each in="${specifobject.reponses}" var="reponse">
 	  <g:if test="${reponse.estUneBonneReponse}">
 	${reponse.libelleReponse}<br/>
 	  </g:if>
 	</g:each>
 	<br/>
-	<strong>Remarque :</strong> ${specifobject.correction}
+	<strong><g:message code="question.label.complement_reponses" />&nbsp;</strong> <br/>
+    ${specifobject.correction}
 </div>
