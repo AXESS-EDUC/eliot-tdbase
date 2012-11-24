@@ -43,7 +43,7 @@
 </tr>
 <tr>
     <td class="label">
-        R&eacute;ponse:
+      <g:message code="question.label.reponse" />&nbsp;:
     </td>
     <td>
         <table style="float: left; width:200px;">
@@ -86,7 +86,7 @@
 </tr>
 <tr>
     <td class="label">
-        Correction:
+      <g:message code="question.label.complement_reponse" />&nbsp;:
     </td>
     <td>
         <g:textArea

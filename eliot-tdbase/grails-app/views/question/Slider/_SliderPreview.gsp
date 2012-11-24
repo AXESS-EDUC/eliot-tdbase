@@ -30,6 +30,7 @@
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <p class="title"><strong>${specifobject.libelle}</strong></p>
+<p>
 <strong>Valeur attendue :</strong><g:textField
         name="listeQuestions[${indexQuestion}].specifobject.valeur"
         value="${specifobject.valeurAffichage}"
@@ -37,5 +38,8 @@
 <strong>Précision :</strong>${specifobject.precisionAffichage}<br/>
 <strong>Valeur minimale :</strong>${specifobject.valeurMinAffichage}<br/>
 <strong>Valeur maximale :</strong>${specifobject.valeurMaxAffichage}<br/>
-<strong>Pas :</strong>${specifobject.pasAffichage}<br/>
-<strong>Correction :</strong> <br/>${specifobject.correction}
+<strong>Pas :</strong>${specifobject.pasAffichage}
+</p>
+<p>
+<strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong> <br/>${specifobject.correction}
+</p>
