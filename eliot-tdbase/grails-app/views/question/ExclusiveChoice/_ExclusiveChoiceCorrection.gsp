@@ -29,11 +29,11 @@
 
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <div class="item">
-    <strong>Correction&nbsp;:</strong> <br/>
+    <strong><g:message code="question.label.reponse"/>&nbsp;:</strong> <br/>
     <g:each in="${specifobject.reponses}" var="reponse" status="i">
-        <g:if test="${specifobject.indexBonneReponse == i}">
+        <g:if test="${specifobject.indexBonneReponse == reponse.id}">
             ${reponse.libelleReponse}<br/>
         </g:if>
     </g:each>
-    <strong>Remarque :</strong> ${specifobject.correction}
+    <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong><br/> ${specifobject.correction}
 </div>

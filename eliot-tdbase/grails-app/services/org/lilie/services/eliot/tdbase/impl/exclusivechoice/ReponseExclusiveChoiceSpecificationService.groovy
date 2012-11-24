@@ -55,7 +55,7 @@ class ReponseExclusiveChoiceSpecificationService extends ReponseSpecificationSer
 }
 
 /**
- * Représente un objet spécification pour une question de type MultipleChoice
+ * Représente un objet spécification pour une reponse de type MultipleChoice
  */
 class ReponseExclusiveChoiceSpecification implements ReponseSpecification {
   String questionTypeCode = QuestionTypeEnum.ExclusiveChoice.name()

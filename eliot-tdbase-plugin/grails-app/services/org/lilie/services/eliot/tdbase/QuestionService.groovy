@@ -313,6 +313,7 @@ class QuestionService implements ApplicationContextAware {
                                Matiere matiere,
                                Niveau niveau,
                                QuestionType questionType,
+                               Boolean exclusComposites = false,
                                Boolean uniquementQuestionsChercheur = false,
                                Map paginationAndSortingSpec = null) {
     if (!chercheur) {
@@ -332,6 +333,8 @@ class QuestionService implements ApplicationContextAware {
       }
       if (questionType) {
         eq "type", questionType
+      } else if (exclusComposites) {
+        ne "type", QuestionTypeEnum.Composite.questionType
       }
       if (uniquementQuestionsChercheur) {
         eq 'proprietaire', chercheur
@@ -444,9 +447,19 @@ class QuestionService implements ApplicationContextAware {
   /**
    *
    * @return la liste des types de questions à interaction supportes par tdbase
+   * hors composite
    */
   List<QuestionType> getTypesQuestionsInteractionSupportesPourCreation() {
     typesQuestionsInteractionSupportes - Composite.questionType
+  }
+
+  /**
+   *
+   * @return la liste des types de questions  supportes par tdbase  hors
+   * composite
+   */
+  List<QuestionType> getTypesQuestionsSupportesHorsComposite() {
+    typesQuestionsSupportes - Composite.questionType
   }
 
 }

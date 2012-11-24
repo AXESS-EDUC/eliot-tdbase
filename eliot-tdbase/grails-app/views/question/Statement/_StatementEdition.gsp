@@ -27,21 +27,17 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <tr>
-    <td class="label">Énoncé<span class="obligatoire">*</span>&nbsp;:</td>
-    <td>
-    </td>
-</tr>
-<tr>
-    <td colspan="2">
-        <g:textArea
-                name="specifobject.enonce"
-                rows="20" cols="55"
-                value="${specifobject.enonce}"
-                id="specifobject.enonce"/>
-    </td>
+  <td class="label">Énoncé<span class="obligatoire">*</span>&nbsp;:</td>
+  <td>
+    <g:textArea
+            name="specifobject.enonce"
+            rows="20" cols="55"
+            value="${specifobject.enonce}"
+            id="specifobject.enonce"/>
+  </td>
 </tr>
 
 
 <r:script>
-    tinyMCE.execCommand("mceAddControl", true, "specifobject.enonce");
+  tinyMCE.execCommand("mceAddControl", true, "specifobject.enonce");
 </r:script>

@@ -34,10 +34,10 @@
         <strong>Réponse</strong> 
         <p>${specifobject.reponses}</p>
         <g:if test="${specifobject.toutOuRien}">
-            <strong>Mode d'évalutation</strong> <p>Tout ou rien.</p>
+            <strong>Mode d'évaluation</strong> <p>Tout ou rien.</p>
         </g:if>
         <g:else>
-            <strong>Mode d'évalutation</strong> <p>Par défaut.</p>
+            <strong>Mode d'évaluation</strong> <p>Par défaut.</p>
         </g:else>
         <strong>Correction</strong> 
         <p>${specifobject.correction}</p>

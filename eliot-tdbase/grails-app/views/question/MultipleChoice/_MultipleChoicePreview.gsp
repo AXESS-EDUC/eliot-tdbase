@@ -36,4 +36,4 @@
 	  <br/>
 	</g:each>
 	<br/>
-	<strong>Correction :</strong> <br/>${specifobject.correction}
+	<strong><g:message code="question.label.complement_reponses" />&nbsp;:</strong> <br/>${specifobject.correction}

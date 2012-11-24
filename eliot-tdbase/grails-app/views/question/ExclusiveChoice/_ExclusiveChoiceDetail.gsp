@@ -29,7 +29,8 @@
     <td class="label">Détail&nbsp;:</td>
     <td class="detail">
         <g:set var="specifobject" value="${question.specificationObject}"/>
-        ${specifobject.libelle} <br/>
+        <strong>${specifobject.libelle}</strong> <br/>
+        <div>
         <g:each in="${specifobject.reponses}" var="reponse" status="i">
             &nbsp;
             <g:radio name="specifobject.indexBonneReponse" checked="${reponse.id == specifobject.indexBonneReponse}"
@@ -37,7 +38,10 @@
             ${reponse.libelleReponse}
             <br/>
         </g:each>
+        </div>
+        <p>
         <strong>Présentation aléatoire :</strong> ${specifobject.shuffled ? 'oui' : 'non'}<br/>
-        <strong>Correction :</strong> ${specifobject.correction}
+        <strong><g:message code="question.label.complement_reponse"/>&nbsp;:</strong><br/> ${specifobject.correction}
+        </p>
     </td>
 </tr>

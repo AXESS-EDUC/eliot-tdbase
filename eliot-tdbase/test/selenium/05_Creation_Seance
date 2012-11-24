@@ -88,7 +88,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>xpath=(//a[contains(text(),'Insérer')])[2]</td>
+	<td>xpath=(//a[contains(text(),'Insérer')])[1]</td>
 	<td></td>
 </tr>
 <tr>

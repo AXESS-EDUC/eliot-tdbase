@@ -102,12 +102,14 @@
         Une question
       </g:link>
     </li>
+    <g:if test="${!sujet.estUnExercice()}">
     <li>
       <g:link action="recherche" controller="question"
               params="[typeId: QuestionTypeEnum.Composite.id, sujetId: sujet.id]">
         Un exercice
       </g:link>
     </li>
+    </g:if>
   </ul>
 
   <h1><g:link action="editeImportMoodleXML" controller="sujet"

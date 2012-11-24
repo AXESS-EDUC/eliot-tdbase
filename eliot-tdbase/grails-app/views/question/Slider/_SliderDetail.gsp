@@ -29,8 +29,7 @@
 <tr>
   <td class="label">Détail&nbsp;:</td>
   <td class="detail">
-    <strong><g:message code="question.propriete.libelle"/></strong>
-    <p>${specifobject.libelle}</p>
+    <strong>${specifobject.libelle}</strong> <br/>
     <p>
       <strong>Valeur cible :</strong> ${specifobject.valeurAffichage}<br/>
       <strong>Précision :</strong> ${specifobject.precisionAffichage}<br/>
@@ -39,7 +38,7 @@
       <strong>Pas :</strong>${specifobject.pasAffichage}
     </p>
 
-    <strong>Correction :</strong>
+    <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong>
     <p>${specifobject.correction}</p>
   </td>
 </tr>

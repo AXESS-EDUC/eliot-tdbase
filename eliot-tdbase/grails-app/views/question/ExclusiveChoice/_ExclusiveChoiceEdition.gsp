@@ -40,7 +40,7 @@
 </tr>
 <tr>
   <td class="label">
-    R&eacute;ponses<span class="obligatoire">*</span>&nbsp;:
+    <g:message code="question.label.reponses"/><span class="obligatoire">*</span>&nbsp;:
   </td>
   <td>
     <table>
@@ -66,7 +66,7 @@
 </tr>
 <tr>
   <td class="label">
-    Correction&nbsp;:
+    <g:message code="question.label.complement_reponse"/>&nbsp;:
   </td>
   <td>
      <g:textArea

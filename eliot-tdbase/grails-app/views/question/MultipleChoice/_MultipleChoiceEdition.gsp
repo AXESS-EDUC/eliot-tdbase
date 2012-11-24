@@ -39,7 +39,7 @@
 </tr>
 <tr>
     <td class="label">
-        R&eacute;ponses<span class="obligatoire">*</span>&nbsp;:
+      <g:message code="question.label.reponses"/><span class="obligatoire">*</span>&nbsp;:
     </td>
     <td>
 
@@ -66,7 +66,7 @@
                     checked="${specifobject.shuffled}"/></td>
 </tr>
 <tr>
-    <td class="label">Correction&nbsp;:</td>
+    <td class="label"><g:message code="question.label.complement_reponses" />&nbsp;:</td>
     <td>
         <g:textArea
                 name="specifobject.correction"
