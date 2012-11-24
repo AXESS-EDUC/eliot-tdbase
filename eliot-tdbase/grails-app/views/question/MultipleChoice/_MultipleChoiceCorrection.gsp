@@ -27,7 +27,7 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <div class="item">
-	<strong>Réponses&nbsp;:</strong> <br/>
+	<strong><g:message code="question.label.reponses"/>&nbsp;:</strong> <br/>
 	<g:each in="${specifobject.reponses}" var="reponse">
 	  <g:if test="${reponse.estUneBonneReponse}">
 	${reponse.libelleReponse}<br/>
