@@ -29,9 +29,7 @@
 <tr>
     <td class="label">Détail&nbsp;:</td>
     <td class="detail">
-      <strong><g:message code="question.propriete.libelle"/></strong>
-      <p>${specifobject.libelle}</p>
-      <strong>Correction :</strong>
-      <p>${specifobject.correction}</p>
+      <p><strong>${specifobject.libelle}</strong></p>
+      <p><strong><g:message code="question.label.reponse" />&nbsp;:</strong> <br/>${specifobject.correction}</p>
     </td>
 </tr>

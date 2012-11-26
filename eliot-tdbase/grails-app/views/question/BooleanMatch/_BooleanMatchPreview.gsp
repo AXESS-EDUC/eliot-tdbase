@@ -27,11 +27,11 @@
   --}%
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <p class="title"><strong>${specifobject.libelle}</strong></p>
-<strong>Réponse:</strong> ${specifobject.reponses} <br/>
+${specifobject.reponses} <br/>
 <g:if test="${specifobject.toutOuRien}">
   <strong>Mode d'évaluation :</strong> Tout ou rien.
 </g:if>
 <g:else>
   <strong>Mode d'évaluation :</strong> Par défaut.
 </g:else><br/>
-<strong>Correction :</strong> <br/>${specifobject.correction}
+<strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong> <br/>${specifobject.correction}

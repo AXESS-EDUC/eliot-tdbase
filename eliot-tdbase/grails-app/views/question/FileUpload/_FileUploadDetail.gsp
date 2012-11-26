@@ -29,14 +29,18 @@
   <td class="label">Détail&nbsp;:</td>
   <td class="detail">
     <g:set var="specifobject" value="${question.specificationObject}"/>
-    <strong><g:message code="question.propriete.libelle"/></strong><p>${specifobject.libelle} </p>
-      <strong>Correction</strong>
-        <g:if test="${specifobject.attachement}">
-        <p><g:link action="viewAttachement" controller="attachement"
-                    id="${specifobject.attachement.id}" target="_blank">
-              <g:message code="attachement.correction.acces"/>
-         </g:link> </p>
-        </g:if>
-      <p>${specifobject.correction}</p>
+    <p><strong>${specifobject.libelle}</strong> </p>
+  <p>
+    <strong><g:message code="question.label.reponse"/>&nbsp;:</strong> <br/>
+    <g:if test="${specifobject.attachement}">
+      <g:link action="viewAttachement" controller="attachement"
+                 id="${specifobject.attachement.id}" target="_blank">
+        <g:message code="attachement.correction.acces"/>
+      </g:link>
+    </g:if>
+    </p>
+    <p>
+    <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong><br/> ${specifobject.correction}
+  </p>
   </td>
 </tr>

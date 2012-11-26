@@ -33,7 +33,7 @@
     <td class="label">Détail&nbsp;:</td>
     <td class="detail">
 
-        ${specifobject.libelle}
+        <strong>${specifobject.libelle}</strong>
         <br/>
 
         <div class="imageContainer" style="width: 250px">
@@ -67,6 +67,6 @@
                 </g:each>
             </div>
         </div>
-        <strong>Correction :</strong> ${specifobject.correction}
+        <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong><br/> ${specifobject.correction}
     </td>
 </tr>

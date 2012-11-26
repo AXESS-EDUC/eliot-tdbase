@@ -33,8 +33,7 @@
     <td class="label">Détail&nbsp;:</td>
 
     <td class="detail">
-        <strong><g:message code="question.propriete.libelle"/></strong>
-        <p>${specifobject.libelle} </p>
+        <strong>${specifobject.libelle}</strong> <br/>
 
         <div class="fillgraphicsEditor" style="width: 250px; height: 250px;">
             <g:if test="${specifobject.attachmentId}">
@@ -56,7 +55,7 @@
             </g:each>
         </div>
 
-        <strong>Correction :</strong> 
+        <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong>
         <p>${specifobject.correction}</p>
     </td>
 </tr>

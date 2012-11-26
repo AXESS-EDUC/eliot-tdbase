@@ -43,6 +43,7 @@ class LilieUtilisateurService implements UtilisateurService {
 
   static transactional = false
   static final int LONGUEUR_PREFIXE_LOGIN = 2
+  private static final String UNKNOWN = "Unknown"
 
   SpringSecurityService springSecurityService
 
@@ -84,7 +85,7 @@ class LilieUtilisateurService implements UtilisateurService {
     def idExterne = login.substring(LONGUEUR_PREFIXE_LOGIN)
     def autorite = DomainAutorite.findByIdentifiantAndType(idExterne, TypeAutorite.PERSONNE.libelle)
     if (!autorite) {
-      return null
+      return utilisateurForLoginOnly(login)
     }
 
     Personne personne = Personne.findByAutorite(autorite)
@@ -157,8 +158,9 @@ class LilieUtilisateurService implements UtilisateurService {
   }
 
   /**
-   * Retourne l'utilisateur correspondant à un compte utilisateur
-   * @param compteUtilisateur le compte utilisateur
+   * Retourne l'utilisateur correspondant à un login et une personne
+   * @param login le login de l'utilisateur
+   * @param personne la personne correspondanà l'utilsateur
    * @return l'utilisateur
    */
   private Utilisateur utilisateurForLoginAndPersonne(String login, Personne personne) {
@@ -188,6 +190,38 @@ class LilieUtilisateurService implements UtilisateurService {
             personneId: personne.id,
             autoriteId: autorite.id
     )
+    return utilisateur
+  }
+
+  /**
+   * Retourne l'utilisateur correspondant à un login qui n'a pas de personne
+   * et d'autorité dans le référentiel éliot
+   * @param login le login de l'utilisateur
+   * @return l'utilisateur
+   */
+  private Utilisateur utilisateurForLoginOnly(String login) {
+    // creer l'utilisateur à retourner
+
+    // le login est le password : utilisee uniquement quand CAS n'est pas actif
+    // en mode Lilie quand on est en mode non CAS
+    String encodedPassword = springSecurityService.encodePassword(login, login)
+
+    Utilisateur utilisateur = new Utilisateur(login: login,
+                                              loginAlias: null,
+                                              password: encodedPassword,
+                                              dateDerniereConnexion: null,
+                                              compteActive: true,
+                                              compteExpire: false,
+                                              compteVerrouille: false,
+                                              passwordExpire: false,
+                                              compteUtilisateurId: null,
+                                              nom: UNKNOWN,
+                                              prenom: UNKNOWN,
+                                              dateNaissance: null,
+                                              email: null,
+                                              sexe: null,
+                                              personneId: null,
+                                              autoriteId: null)
     return utilisateur
   }
 

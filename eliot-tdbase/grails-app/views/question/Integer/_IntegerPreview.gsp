@@ -34,4 +34,4 @@
   <strong>Unité :</strong>${specifobject.unite}<br/>
 </g:if>
 
-<strong>Correction :</strong> <br/>${specifobject.correction}
+<strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong> <br/>${specifobject.correction}

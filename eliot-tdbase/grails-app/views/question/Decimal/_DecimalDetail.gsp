@@ -29,12 +29,14 @@
 <tr>
     <td class="label">Détail&nbsp;:</td>
     <td class="detail">
-        ${specifobject.libelle} <br/>
-        ${specifobject.valeurAffichage}<br/>
+      <strong>${specifobject.libelle}</strong> <br/>
+      <p>
+        <strong><g:message code="question.label.reponse" />&nbsp;:</strong> ${specifobject.valeurAffichage}<br/>
         <g:if test="${specifobject.unite}">
-            <strong>Unité :</strong>&nbsp;${specifobject.unite}</br>
+            <strong>Unité :</strong>&nbsp;${specifobject.unite}<br/>
         </g:if>
         <strong>Précision :</strong> ${specifobject.precisionAffichage}<br/>
-        <strong>Correction :</strong> ${specifobject.correction}
+        <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong><br/> ${specifobject.correction}
+      </p>
     </td>
 </tr>

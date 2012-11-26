@@ -30,11 +30,9 @@
 <tr>
     <td class="label">Détail&nbsp:</td>
     <td class="detail">
-        <strong><g:message code="question.propriete.libelle"/></strong>
+      <strong>${specifobject.libelle}</strong> <br/>
 
-        <p>${specifobject.libelle}</p>
-
-        <strong>Texte à trous :</strong>
+      <strong><g:message code="question.label.reponse" />&nbsp;:</strong>
 
         <p>${specifobject.texteATrous}</p>
 
@@ -49,7 +47,7 @@
             </g:radioGroup>
         </p>
 
-        <strong>Correction :</strong> ${specifobject.correction}
+        <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong><br/> ${specifobject.correction}
 
     </td>
 </tr>
