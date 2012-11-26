@@ -32,6 +32,6 @@
                 name="listeQuestions[${indexQuestion}].specifobject.correction"
                 value="Champ saisie de la réponse" disabled="true"/>
     <br/>
-    <strong>Correction :</strong> <br/>${specifobject.correction}
+    <strong><g:message code="question.label.reponse" />&nbsp;:</strong> <br/>${specifobject.correction}
 </div>
 

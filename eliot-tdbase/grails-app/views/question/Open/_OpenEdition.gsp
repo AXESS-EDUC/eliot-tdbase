@@ -45,7 +45,7 @@
 </tr>
 <tr>
   <td class="label">
-    R&eacute;ponse<span class="obligatoire">*</span>&nbsp;:
+    <g:message code="question.label.nblignesreponse" /><span class="obligatoire">*</span>&nbsp;:
   </td>
   <td>
     <g:textField name="specifobject.nombreLignesReponse"
@@ -55,7 +55,7 @@
 </tr>
 <tr>
   <td class="label">
-    Correction:
+    <g:message code="question.label.reponse" />&nbsp;:
   </td>
   <td>
     <g:textArea
