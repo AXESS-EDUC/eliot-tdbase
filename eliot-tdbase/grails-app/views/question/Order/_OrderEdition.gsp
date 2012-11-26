@@ -70,7 +70,7 @@
 </tr>
 <tr>
     <td class="label">
-        Correction:
+      <g:message code="question.label.complement_reponse" />&nbsp;:
     </td>
     <td>
         <g:textArea
