@@ -29,11 +29,13 @@
     <td class="label">Détail&nbsp;:</td>
     <td class="detail">
         <g:set var="specifobject" value="${question.specificationObject}"/>
-        ${specifobject.libelle} <br/>
-        <strong>Valeur :</strong>${specifobject.valeur}<br/>
+        <strong>${specifobject.libelle}</strong> <br/>
+        <p>
+        <strong><g:message code="question.label.reponse" />&nbsp;:</strong>${specifobject.valeur}<br/>
         <g:if test="${specifobject.unite}">
             <strong>Unité :</strong>${specifobject.unite}<br/>
         </g:if>
-        <strong>Correction :</strong> ${specifobject.correction}
+        <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong><br/> ${specifobject.correction}
+        </p>
     </td>
 </tr>

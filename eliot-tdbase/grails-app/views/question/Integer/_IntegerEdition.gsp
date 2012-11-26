@@ -40,7 +40,7 @@
 </tr>
 <tr>
   <td class="label">
-    R&eacute;ponse<span class="obligatoire">*</span>&nbsp;:
+    <g:message code="question.label.reponse" /><span class="obligatoire">*</span>&nbsp;:
   </td>
   <td>
     <g:textField name="specifobject.valeur" value="${specifobject.valeur}" class="micro" size="10"/> (Nombre entier)
@@ -50,7 +50,7 @@
 </tr>
 <tr>
   <td class="label">
-    Correction:
+    <g:message code="question.label.complement_reponse" />&nbsp;:
   </td>
   <td>
      <g:textArea

@@ -34,6 +34,6 @@
 	  </g:if>
 	</g:each>
 	<br/>
-	<strong><g:message code="question.label.complement_reponses" />&nbsp;</strong> <br/>
+	<strong><g:message code="question.label.complement_reponses" />&nbsp;:</strong> <br/>
     ${specifobject.correction}
 </div>
