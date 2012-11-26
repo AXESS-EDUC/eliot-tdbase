@@ -40,12 +40,8 @@
 </tr>
 
 <tr>
-    <td class="label">R&eacute;ponse<span class="obligatoire">*</span>&nbsp;:</td>
+    <td class="label"><g:message code="question.label.reponse" /><span class="obligatoire">*</span>&nbsp;:</td>
     <td>
-    </td>
-</tr>
-<tr>
-    <td colspan="2">
         <g:textArea
                 name="specifobject.texteATrous"
                 rows="10" cols="55"
@@ -67,21 +63,17 @@
     </td>
 </tr>
 <tr>
-    <td class="label">Correction:</td>
+    <td class="label"><g:message code="question.label.complement_reponse" />&nbsp;:</td>
     <td>
-    </td>
-</tr>
-<tr>
-    <td colspan="2">
         <g:textArea
                 name="specifobject.correction"
                 rows="10" cols="55"
-                value="${specifobject.correction}"><g:message code="question.fillgap.correction"/>
+                value="${specifobject.correction}">
         </g:textArea>
     </td>
 </tr>
 
 <r:script>
     tinyMCE.execCommand("mceAddControl", true, "specifobject.texteATrous");
-    tinyMCE.execCommand("mceAddControl", true, "specifobject.correction");
+    //tinyMCE.execCommand("mceAddControl", true, "specifobject.correction");
 </r:script>
