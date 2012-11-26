@@ -50,6 +50,10 @@ class LilieRoleUtilisateurService implements RoleUtilisateurService {
    * @see org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
    */
   List<GrantedAuthority> findRolesForUtilisateur(Utilisateur utilisateur) {
+    // si il ny' a pas de personne attachée, aucun rôle fournit
+    if (utilisateur.personneId == null) {
+      return []
+    }
     String login = utilisateur.login
     def roles = []
     def iterator = RoleFromLoginPrefix.values().iterator()
