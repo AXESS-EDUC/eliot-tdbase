@@ -38,7 +38,7 @@
     </td>
 </tr>
 <tr>
-    <td class="label">R&eacute;ponse&nbsp;:</td>
+    <td class="label"><g:message code="question.label.reponse" />&nbsp;:</td>
 
     <td id="reponseDisclaimer">
         <span>${message(code: 'question.reponses.disclaimer')}</span>
@@ -73,7 +73,7 @@
     </td>
 </tr>
 <tr>
-    <td class="label">Correction:</td>
+    <td class="label"><g:message code="question.label.complement_reponse" />&nbsp;:</td>
     <td>
         <g:textArea
                 name="specifobject.correction"
