@@ -53,11 +53,11 @@
 </div>
 <br>
 <g:if test="${specifobject.montrerLesMots}">
-  Montrer les mots : oui
+  <strong>Montrer les mots :</strong> oui
 </g:if>
 <g:else>
-  Montrer les mots : non
+  <strong>Montrer les mots :</strong> non
 </g:else>
 
 <br/>
-<strong>Correction :</strong> <br/>${specifobject.correction}
+<strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong> <br/>${specifobject.correction}

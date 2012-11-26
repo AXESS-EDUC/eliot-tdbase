@@ -28,7 +28,7 @@
 <r:require module="fillGraphics_Common"/>
 <g:set var="specifobject" value="${question.specificationObject}"/>
 <div class="item">
-    <strong>Correction&nbsp;:</strong> <br/>
+    <strong><g:message code="question.label.reponse" />&nbsp;:</strong> <br/>
 
     <div class="fillgraphicsEditor">
         <g:if test="${specifobject.attachmentId}">
@@ -51,5 +51,5 @@
     </div>
 
     <br/>
-    <strong>Remarque :</strong> ${specifobject.correction}
+    <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong><br/> ${specifobject.correction}
 </div>
