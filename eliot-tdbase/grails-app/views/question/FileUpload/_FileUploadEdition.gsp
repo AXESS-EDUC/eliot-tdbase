@@ -39,7 +39,7 @@
   </td>
 </tr>
 <tr>
-  <td class="label">Fichier&nbsp;correction&nbsp;:</td>
+  <td class="label"><g:message code="question.label.reponse" />&nbsp;:</td>
   <td id="specifobject_fichier">
     <g:render template="/question/FileUpload/FileUploadEditionFichier"
               model="[specifobject:specifobject]"/>
@@ -47,13 +47,9 @@
 </tr>
 <tr>
   <td class="label">
-    Correction:
+    <g:message code="question.label.complement_reponse" />&nbsp;:
   </td>
   <td>
-  </td>
-</tr>
-<tr>
-  <td colspan="2">
     <g:textArea
             name="specifobject.correction"
             rows="5" cols="55"
