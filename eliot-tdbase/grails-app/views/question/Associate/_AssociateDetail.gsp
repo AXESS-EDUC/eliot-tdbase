@@ -29,7 +29,8 @@
     <td class="label">Détail&nbsp;:</td>
     <td class="detail">
         <g:set var="specifobject" value="${question.specificationObject}"/>
-        <strong><g:message code="question.propriete.libelle"/></strong><p>${specifobject.libelle}</p>
+      <strong>${specifobject.libelle}</strong> <br/>
+        <br/>
         <g:each status="i" in="${specifobject.associations}" var="association">
             &nbsp;
             <g:textField name="specifobject.associations[${i}].participant1" size="23" class="veryshort"
@@ -40,7 +41,6 @@
             <br/>
         </g:each>
         <br/>
-        <strong>Correction :</strong> 
-        <p>${specifobject.correction}</p>
+      <strong><g:message code="question.label.complement_reponses" />&nbsp;:</strong><br/> ${specifobject.correction}
     </td>
 </tr>

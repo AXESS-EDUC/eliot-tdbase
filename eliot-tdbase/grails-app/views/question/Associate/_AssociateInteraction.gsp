@@ -75,7 +75,7 @@
                                      name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant1"
                                      value="${reponsespecifobject?.valeursDeReponse?.getAt(i)?.participant1}"/>
                     </td>
-                    <td>------</td>
+                    <td>---</td>
                     <td id="association${indexReponse}_${i}right" class="associationCell">
                         <g:textField id="association${indexReponse}_${i}right_field"
                                      name="reponsesCopie.listeReponses[${indexReponse}].specificationObject.valeursDeReponse[${i}].participant2"
