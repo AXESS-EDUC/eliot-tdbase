@@ -29,17 +29,18 @@
 <tr>
     <td class="label">Détail&nbsp;:</td>
     <td class="detail">
-        <strong><g:message code="question.propriete.libelle"/></strong>
-        <p>${specifobject.libelle}</p>
-        <strong>Réponse</strong> 
-        <p>${specifobject.reponses}</p>
+      <strong>${specifobject.libelle}</strong> <br/>
+      <p>
+        <strong><g:message code="question.label.reponse" />&nbsp;:</strong> <br/>
+        ${specifobject.reponses} <br/>
         <g:if test="${specifobject.toutOuRien}">
-            <strong>Mode d'évaluation</strong> <p>Tout ou rien.</p>
+            <strong>Mode d'évaluation : </strong> <br/> Tout ou rien.
         </g:if>
         <g:else>
-            <strong>Mode d'évaluation</strong> <p>Par défaut.</p>
+            <strong>Mode d'évaluation : </strong> <br/> Par défaut.
         </g:else>
-        <strong>Correction</strong> 
-        <p>${specifobject.correction}</p>
+        <br/>
+        <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong><br/> ${specifobject.correction}
+      </p>
     </td>
 </tr>
