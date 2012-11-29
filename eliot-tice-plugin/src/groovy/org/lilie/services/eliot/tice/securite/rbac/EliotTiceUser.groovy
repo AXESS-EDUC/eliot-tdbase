@@ -65,6 +65,11 @@ class EliotTiceUser extends GrailsUser {
     personneId = utilisateur.personneId
     autoriteId = utilisateur.autoriteId
     compteUtilisateurId = utilisateur.compteUtilisateurId
-    nomAffichage = "${utilisateur.personne.nomAffichage} (${utilisateur.login})"
+    if (utilisateur.personneId) {
+      nomAffichage = "${utilisateur.personne.nomAffichage} (${utilisateur.login})"
+    } else {
+      nomAffichage = utilisateur.login
+    }
+
   }
 }
