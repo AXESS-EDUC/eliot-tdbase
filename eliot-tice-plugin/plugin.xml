@@ -1,4 +1,4 @@
-<plugin name='eliot-tice-plugin' version='2.0.4-SNAPSHOT' grailsVersion='2.1.1 &gt; *'>
+<plugin name='eliot-tice-plugin' version='2.0.4-RC3' grailsVersion='2.1.1 &gt; *'>
   <author>Franck Silvestre</author>
   <title>Eliot Tice Plugin</title>
   <description>      Plugin pour la création d'applications Eliot
@@ -105,19 +105,19 @@
       <dependency group='postgresql' name='postgresql' version='9.1-901.jdbc4' />
     </runtime>
     <build>
-      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
       <dependency group='net.sf.saxon' name='saxon-dom' version='8.7' />
+      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
     </build>
   </dependencies>
   <plugins>
     <compile>
-      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
-      <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
-      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
-      <plugin group='org.grails.plugins' name='mail' version='1.0' />
       <plugin group='org.grails.plugins' name='spring-security-core' version='1.2.7.2' />
       <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
       <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
+      <plugin group='org.grails.plugins' name='mail' version='1.0' />
+      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
+      <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
+      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
       <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
     </compile>
     <runtime>
