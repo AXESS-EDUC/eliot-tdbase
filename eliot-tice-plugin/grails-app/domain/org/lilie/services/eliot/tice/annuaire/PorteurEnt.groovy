@@ -28,7 +28,6 @@
 
 package org.lilie.services.eliot.tice.annuaire
 
-import org.lilie.services.eliot.tice.securite.Perimetre
 
 /**
  * table ent.porteur_ent
@@ -36,7 +35,6 @@ import org.lilie.services.eliot.tice.securite.Perimetre
  */
 class PorteurEnt {
   String code
-  Perimetre perimetre
   String nom
   String nomCourt
   String emailProjet
@@ -45,7 +43,6 @@ class PorteurEnt {
 
   static constraints = {
     code(nullable: false)
-    perimetre(nullable: false)
     nom(nullable: true)
     nomCourt(nullable: true)
     emailProjet(nullable: true)
