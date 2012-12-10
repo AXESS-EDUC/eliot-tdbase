@@ -49,7 +49,7 @@
   </g:if>
   <g:else>
 	  	<p class="nb_result">${sujets.totalCount} sujet(s)</p>
-	  	<p class="none">Aucun sujets.</p>
+	  	<p class="none">Aucun sujet.</p>
 	</g:else>
 	  <g:link controller="sujet" class="add" action="nouveau">Créer un sujet</g:link></div>
 	  

@@ -111,6 +111,9 @@ class ReponseGraphicMatchSpecification implements ReponseSpecification {
   float evaluate(float maximumPoints) {
     def differenceCount = (reponsesPossibles - valeursDeReponse).size()
     def totalFieldCount = reponsesPossibles.size()
+    if (totalFieldCount == 0) {
+      return maximumPoints
+    }
     def validFieldCount = totalFieldCount - differenceCount
     maximumPoints * validFieldCount / totalFieldCount
   }

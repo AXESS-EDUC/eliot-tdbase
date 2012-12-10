@@ -34,7 +34,6 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 import org.lilie.services.eliot.tice.annuaire.UtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.securite.Perimetre
 import org.lilie.services.eliot.tice.scolarite.*
 
 class BootstrapService {
@@ -463,16 +462,11 @@ class BootstrapService {
   private def initialisePorteurEnt() {
     PorteurEnt porteurEnt = PorteurEnt.findByCode(DEFAULT_CODE_PORTEUR_ENT)
     if (!porteurEnt) {
-      Perimetre perimetre = new Perimetre(estActive: true,
-                                          nomEntiteCible: PorteurEnt.class.name).save()
       porteurEnt = new PorteurEnt(code: DEFAULT_CODE_PORTEUR_ENT,
-                                  perimetre: perimetre,
                                   urlAccesEnt: DEFAULT_URL_ACCES_ENT,
                                   urlRetourLogout: DEFAULT_URL_RETOUR_LOGOUT,
                                   nom: 'Porteur Default pour tests et dev',
                                   nomCourt: 'Porteur Default').save()
-      perimetre.enregistrementCibleId = porteurEnt.id
-      perimetre.save()
     }
 
 

@@ -50,7 +50,7 @@
 	  </g:if>
 	  <g:else>
 	  	<p class="nb_result">${items.totalCount} item(s)</p>
-	  	<p class="none">Aucun items.</p>
+	  	<p class="none">Aucun item.</p>
 	  </g:else>
 	  
 	  <g:link controller="question" class="add" action="nouvelle">Créer un item</g:link></div>

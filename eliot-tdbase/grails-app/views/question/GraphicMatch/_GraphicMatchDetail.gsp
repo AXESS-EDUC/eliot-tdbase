@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.Dimension" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -40,18 +41,26 @@
             <g:if test="${specifobject.attachement}">
                 <et:viewAttachement attachement="${specifobject.attachement}"
                                     width="250" height="250"/>
+
+              <g:set var="dimDisplayedAttachement"
+                                value="${specifobject.attachement.calculeDimensionRendu(new Dimension(largeur: 250, hauteur: 250))}"/>
+                         <g:set var="ratio"
+                                value="${dimDisplayedAttachement.hauteur / specifobject.attachement.dimension.hauteur }"/>
+
+              <ul class="hotspots">
+                              <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
+                                  <li topDistance="${hotspot.topDistance* (Math.max(0.5, ratio))}"
+                                      leftDistance="${hotspot.leftDistance* (Math.max(0.5, ratio))}"
+                                      hotspotId="${hotspot.id}"
+                                      width="${hotspot.width*(Math.max(0.5, ratio))}"
+                                      height="${hotspot.height*(Math.max(0.5, ratio))}">
+                                  </li>
+                              </g:each>
+                          </ul>
+
             </g:if>
 
-            <ul class="hotspots">
-                <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-                    <li topDistance="${hotspot.topDistance/2}"
-                        leftDistance="${hotspot.leftDistance/2}"
-                        hotspotId="${hotspot.id}"
-                        width="${hotspot.width/2}"
-                        height="${hotspot.height/2}">
-                    </li>
-                </g:each>
-            </ul>
+
 
             <div class="icons" style="width: 250px;">
                 <g:each status="i" in="${specifobject.icons}" var="icon">

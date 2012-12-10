@@ -28,7 +28,6 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
-import org.lilie.services.eliot.tice.securite.Perimetre
 import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 
 /**
@@ -44,7 +43,6 @@ class Etablissement {
   String uai
   String codePorteurENT
 
-  Perimetre perimetre
   PorteurEnt porteurEnt
 
   /**
@@ -70,8 +68,6 @@ class Etablissement {
     uai(nullable: true)
     nomAffichage(maxSize: 1024)
     dateImportSts(nullable: true)
-
-    perimetre(nullable: true)
     porteurEnt(nullable: true)
 
   }

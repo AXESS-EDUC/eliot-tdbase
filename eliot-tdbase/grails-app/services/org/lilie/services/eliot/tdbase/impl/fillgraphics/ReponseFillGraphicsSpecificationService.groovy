@@ -84,6 +84,9 @@ class ReponseFillGraphicsSpecification implements ReponseSpecification {
    */
   float evaluate(float maximumPoints) {
     def nombreReponses = reponsesPossibles.size()
+    if (nombreReponses == 0) {
+      return maximumPoints
+    }
     def nombreDifferences = (reponsesPossibles - valeursDeReponse).size()
     def reponsesCorrects = nombreReponses - nombreDifferences
     reponsesCorrects / nombreReponses * maximumPoints

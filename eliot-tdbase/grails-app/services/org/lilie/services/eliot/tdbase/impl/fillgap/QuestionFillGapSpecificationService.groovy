@@ -32,6 +32,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+
 import static java.util.Collections.shuffle
 
 /**
@@ -49,217 +50,218 @@ class QuestionFillGapSpecificationService extends QuestionSpecificationService<F
 /**
  * Specification de question de type text à trou
  */
-  @Validateable
-  class FillGapSpecification implements QuestionSpecification {
-    String questionTypeCode = QuestionTypeEnum.FillGap.name()
-    /**
-     * Le libellé.
-     */
-    String libelle
+@Validateable
+class FillGapSpecification implements QuestionSpecification {
+  String questionTypeCode = QuestionTypeEnum.FillGap.name()
+  /**
+   * Le libellé.
+   */
+  String libelle
 
-    /**
-     * Indique le mode de saisie.
-     */
-    String modeDeSaisie = 'SL'
+  /**
+   * Indique le mode de saisie.
+   */
+  String modeDeSaisie = 'SL'
 
-    final static String SAISIE_LIBRE = 'SL'
-    final static String SAISIE_MONTRER_LES_MOTS = 'MLM'
-    final static String SAISIE_MENU_DEROULANT = 'MDR'
+  final static String SAISIE_LIBRE = 'SL'
+  final static String SAISIE_MONTRER_LES_MOTS = 'MLM'
+  final static String SAISIE_MENU_DEROULANT = 'MDR'
 
-    /**
-     * La correction de la question.
-     */
-    String correction
+  /**
+   * La correction de la question.
+   */
+  String correction
 
-    /**
-     * Structure de donnée qui contient le text à trous.
-     */
-    List<TextATrouElement> texteATrousStructure = []
+  String texteATrous
 
-    @Override
-    Map toMap() {
-      [
-              questionTypeCode: questionTypeCode,
-              libelle: libelle,
-              modeDeSaisie: modeDeSaisie,
-              texteATrous: texteATrous,
-              correction: correction
-      ]
-    }
+  /**
+   * Structure de donnée qui contient le text à trous.
+   */
+  List<TextATrouElement> texteATrousStructure = []
 
-    static constraints = {
-      libelle blank: false
-      texteATrousStructure minSize: 2
-    }
+  @Override
+  Map toMap() {
+    [questionTypeCode: questionTypeCode,
+            libelle: libelle,
+            modeDeSaisie: modeDeSaisie,
+            texteATrous: texteATrous,
+            correction: correction]
+  }
 
-    /**
-     * Implementation du getter pour l'attribut virtuel 'texteATrous'. Se repose sur la structure de données
-     * texteATrousStructure pour sa génération.
-     * @return String du text à trou.
-     */
-    def String getTexteATrous() {
-      def texte = ""
-      texteATrousStructure.each { texte += it.valeurAsText()}
-      texte
-    }
+  static constraints = {
+    libelle blank: false
+    texteATrousStructure minSize: 2
+  }
 
-    /**
-     *
-     * On imagine le text à trou comme un stack qui est une mélange des TextElements et TrouElements.
-     * Cette méthode prends élément par element et les range dans une liste.
-     *
-     * @param texteATrous le String qui est parsé.
-     */
-    def setTexteATrous(String texteATrous) {
-      def text = texteATrous ?: ""
-      while (!text.isEmpty()) {
-        if (peekedElementIsText(text)) {
-          texteATrousStructure << extractTextElement(text)
-          text = eatText(text)
-        } else {
-          texteATrousStructure << extractGap(text)
-          text = eatGap(text)
-        }
-      }
-    }
+  /**
+   * Implementation du getter pour l'attribut virtuel 'texteATrous'. Se repose sur la structure de données
+   * texteATrousStructure pour sa génération.
+   * @return String du text à trou.
+   */
+  def String getTexteATrousCorrection() {
+    def texte = ""
+    texteATrousStructure.each { texte += it.valeurAsTextCorrection()}
+    texte
+  }
 
-    /**
-     * Genère une liste des mots suggerés comme reponses.
-     * @return une liste des reponses suggerés.
-     */
-    def List getMotsSugeres() {
-      def mots = []
-      texteATrousStructure.each {
-        if (!it.isTextElement()) {
-          TrouElement trouElement = (TrouElement) it
-          trouElement.valeur.each {
-            mots << it.text
-          }
-        }
-      }
-      shuffle(mots, new Random())
-      mots
-    }
-
-    private boolean peekedElementIsText(String text) {
-      text.indexOf("{") != 0
-    }
-
-    /**
-     * Extraction d'un token de type "text" du debut du text à trou jusqu'à la première occurrence d'un token de
-     * type "trou".
-     * @param text le text à trou
-     * @return l'extrait du token ou la chaine entière, si aucun token de type "trou" existe.
-     */
-    private TextElement extractTextElement(String text) {
-      assert (peekedElementIsText(text))
-      def index = getIndexOfToken('{', text)
-
-      // s'il y a un token alors ...
-      if (index) {
-        //...retourne un TextElement du text avant le token.
-        return new TextElement(valeur: text.substring(0, index).replaceAll("\\\\\\{", "{"))
-      }
-
-      else {
-        //sinon ...on retourne tous le text.
-        return new TextElement(valeur: text.replaceAll("\\\\\\{", "{"))
-      }
-    }
-
-    /**
-     * Enlèvement d'un token de type "text" du debut du text à trou.
-     * @param texte le text à trou
-     * @return le text moins le token de type "text" au debut. Si aucun token de type "trou" existe, une chaine vide
-     * est retournée.
-     */
-    private String eatText(String text) {
-      assert (peekedElementIsText(text))
-      def index = getIndexOfToken('{', text)
-      index ? text.substring(index, text.length()) : ""
-    }
-
-    /**
-     * Trouve la première occurrence d'un token. Tollerant aux charactères d'escape.
-     * @param token
-     * @param text
-     * @return
-     */
-    private Integer getIndexOfToken(String token, String text) {
-      Integer index = null
-      for (i in 0..text.length() - 1) {
-        if (text[i].equals(token) && !text[i - 1].equals('\\')) {
-          index = i
-          break
-        }
-      }
-      index
-    }
-
-    /**
-     * Enlèvement d'un token de type "trou" du debut du text à trou.
-     * @param text le text à trou.
-     * @return le text moins le token de type "trou" au debut.
-     */
-    private String eatGap(String text) {
-      assert (!peekedElementIsText(text))
-      text.substring(getIndexOfToken('}', text) + 1, text.length())
-    }
-
-    /**
-     * Extraction d'un token de type "trou" du debut du text à trou jusqu'à la première occurrence d'un token de
-     * type "text".
-     * @param texte le text à trou.
-     * @return Liste des reponses valides pour le trou.
-     */
-    private TrouElement extractGap(String texte) {
-      def List<TrouText> reponseList = []
-      def endTokenIndex = getIndexOfToken('}', texte)
-      assert texte.indexOf("{") == 0 && endTokenIndex
-
-      def gapText = texte.substring(1, endTokenIndex).trim()
-
-      while (!gapText.isEmpty()) {
-
-        assert (gapText[0] == '=' || gapText[0] == '~')
-
-        def isCorrect = gapText[0] == '='
-
-        gapText = gapText.substring(1)
-        Integer indexOfNextToken = getNextTrouTextBeginningToken(gapText)
-        def trouText = indexOfNextToken ? gapText.substring(0, indexOfNextToken) : gapText
-
-        reponseList << new TrouText(correct: isCorrect, text: trouText)
-
-        gapText = indexOfNextToken ? gapText.substring(indexOfNextToken, gapText.length()) : ""
-      }
-
-      new TrouElement(valeur: reponseList)
-    }
-
-    /**
-     * Trouve l'index du prochain token qui indique le debut d'une variante de reponse pour un trou.
-     *
-     * Pour un texte de 'titi=toto~tata' la reponse est 4.
-     *
-     * @param text MQ
-     * @return
-     */
-    private Integer getNextTrouTextBeginningToken(String text) {
-      Integer correctTokenIndex = getIndexOfToken('=', text)
-      Integer inCorrectTokenIndex = getIndexOfToken('~', text)
-
-      if (correctTokenIndex && inCorrectTokenIndex) {
-        Math.min(correctTokenIndex, inCorrectTokenIndex)
-      } else if (correctTokenIndex) {
-        correctTokenIndex
-      } else if (inCorrectTokenIndex) {
-        inCorrectTokenIndex
+  /**
+   *
+   * On imagine le text à trou comme un stack qui est une mélange des TextElements et TrouElements.
+   * Cette méthode prends élément par element et les range dans une liste.
+   *
+   * @param texteATrous le String qui est parsé.
+   */
+  def setTexteATrous(String texteATrous) {
+    this.texteATrous = texteATrous ?: ""
+    def text = this.texteATrous
+    while (!text.isEmpty()) {
+      if (peekedElementIsText(text)) {
+        texteATrousStructure << extractTextElement(text)
+        text = eatText(text)
       } else {
-        null
+        texteATrousStructure << extractGap(text)
+        text = eatGap(text)
       }
     }
   }
+
+  /**
+   * Genère une liste des mots suggerés comme reponses.
+   * @return une liste des reponses suggerés.
+   */
+  def List getMotsSugeres() {
+    def mots = []
+    texteATrousStructure.each {
+      if (!it.isTextElement()) {
+        TrouElement trouElement = (TrouElement) it
+        trouElement.valeur.each {
+          mots << it.text
+        }
+      }
+    }
+    shuffle(mots, new Random())
+    mots
+  }
+
+  private boolean peekedElementIsText(String text) {
+    text.indexOf("{") != 0
+  }
+
+  /**
+   * Extraction d'un token de type "text" du debut du text à trou jusqu'à la première occurrence d'un token de
+   * type "trou".
+   * @param text le text à trou
+   * @return l'extrait du token ou la chaine entière, si aucun token de type "trou" existe.
+   */
+  private TextElement extractTextElement(String text) {
+    assert (peekedElementIsText(text))
+    def index = getIndexOfToken('{', text)
+
+    // s'il y a un token alors ...
+    if (index) {
+      //...retourne un TextElement du text avant le token.
+      return new TextElement(valeur: text.substring(0, index).replaceAll("\\\\\\{", "{"))
+    }
+
+    else {
+      //sinon ...on retourne tous le text.
+      return new TextElement(valeur: text.replaceAll("\\\\\\{", "{"))
+    }
+  }
+
+  /**
+   * Enlèvement d'un token de type "text" du debut du text à trou.
+   * @param texte le text à trou
+   * @return le text moins le token de type "text" au debut. Si aucun token de type "trou" existe, une chaine vide
+   * est retournée.
+   */
+  private String eatText(String text) {
+    assert (peekedElementIsText(text))
+    def index = getIndexOfToken('{', text)
+    index ? text.substring(index, text.length()) : ""
+  }
+
+  /**
+   * Trouve la première occurrence d'un token. Tollerant aux charactères d'escape.
+   * @param token
+   * @param text
+   * @return
+   */
+  private Integer getIndexOfToken(String token, String text) {
+    Integer index = null
+    for (i in 0..text.length() - 1) {
+      if (text[i].equals(token) && !text[i - 1].equals('\\')) {
+        index = i
+        break
+      }
+    }
+    index
+  }
+
+  /**
+   * Enlèvement d'un token de type "trou" du debut du text à trou.
+   * @param text le text à trou.
+   * @return le text moins le token de type "trou" au debut.
+   */
+  private String eatGap(String text) {
+    assert (!peekedElementIsText(text))
+    text.substring(getIndexOfToken('}', text) + 1, text.length())
+  }
+
+  /**
+   * Extraction d'un token de type "trou" du debut du text à trou jusqu'à la première occurrence d'un token de
+   * type "text".
+   * @param texte le text à trou.
+   * @return Liste des reponses valides pour le trou.
+   */
+  private TrouElement extractGap(String texte) {
+    def List<TrouText> reponseList = []
+    def endTokenIndex = getIndexOfToken('}', texte)
+    assert texte.indexOf("{") == 0 && endTokenIndex
+
+    def gapText = texte.substring(1, endTokenIndex).trim()
+
+    while (!gapText.isEmpty()) {
+
+      assert (gapText[0] == '=' || gapText[0] == '~')
+
+      def isCorrect = gapText[0] == '='
+
+      gapText = gapText.substring(1)
+      Integer indexOfNextToken = getNextTrouTextBeginningToken(gapText)
+      def trouText = indexOfNextToken ? gapText.substring(0, indexOfNextToken) : gapText
+
+      reponseList << new TrouText(correct: isCorrect, text: trouText)
+
+      gapText = indexOfNextToken ? gapText.substring(indexOfNextToken, gapText.length()) : ""
+    }
+
+    new TrouElement(valeur: reponseList)
+  }
+
+  /**
+   * Trouve l'index du prochain token qui indique le debut d'une variante de reponse pour un trou.
+   *
+   * Pour un texte de 'titi=toto~tata' la reponse est 4.
+   *
+   * @param text MQ
+   * @return
+   */
+  private Integer getNextTrouTextBeginningToken(String text) {
+    Integer correctTokenIndex = getIndexOfToken('=', text)
+    Integer inCorrectTokenIndex = getIndexOfToken('~', text)
+
+    if (correctTokenIndex && inCorrectTokenIndex) {
+      Math.min(correctTokenIndex, inCorrectTokenIndex)
+    } else if (correctTokenIndex) {
+      correctTokenIndex
+    } else if (inCorrectTokenIndex) {
+      inCorrectTokenIndex
+    } else {
+      null
+    }
+  }
+}
 
 /**
  * Interface d'un constituant d'un text à trou.
@@ -271,6 +273,12 @@ interface TextATrouElement {
    * @return la valeur sous forme de text.
    */
   String valeurAsText()
+
+  /**
+   * Retourne le presentation textuelle de la valeur du constituant de text à trou.
+   * @return la valeur sous forme de text à afficher en correction.
+   */
+  String valeurAsTextCorrection()
 
   /**
    * Indique si le constituant du text à trou est de type "Texte".
@@ -288,6 +296,10 @@ class TextElement implements TextATrouElement {
 
 
   String valeurAsText() {
+    valeur
+  }
+
+  String valeurAsTextCorrection() {
     valeur
   }
 
@@ -319,6 +331,19 @@ class TrouElement implements TextATrouElement {
       }
     }
     texte + "}"
+  }
+
+  @Override
+  String valeurAsTextCorrection() {
+
+    def texte = ""
+    for (def i in 0..valeur.size() - 1) {
+      if (valeur[i].correct) {
+        texte += valeur[i].text
+        break
+      }
+    }
+    texte + " "
   }
 
   boolean isTextElement() {

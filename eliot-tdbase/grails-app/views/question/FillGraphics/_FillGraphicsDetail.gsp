@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.Dimension" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -36,23 +37,30 @@
         <strong>${specifobject.libelle}</strong> <br/>
 
         <div class="fillgraphicsEditor" style="width: 250px; height: 250px;">
-            <g:if test="${specifobject.attachmentId}">
-                <div class="imageContainer">
-                    <et:viewAttachement
-                            attachement="${specifobject.attachement}"
-                            width="250"
-                            height="250"/>
-                </div>
-            </g:if>
-
+          <g:if test="${specifobject.attachmentId}">
+            <div class="imageContainer">
+              <et:viewAttachement
+                      attachement="${specifobject.attachement}"
+                      width="250"
+                      height="250"/>
+            </div>
+            <g:set var="dimDisplayedAttachement"
+                   value="${specifobject.attachement.calculeDimensionRendu(new Dimension(largeur: 250, hauteur: 250))}"/>
+            <g:set var="ratio"
+                   value="${dimDisplayedAttachement.hauteur / specifobject.attachement.dimension.hauteur}"/>
             <g:each status="i" in="${specifobject.textZones}" var="textZone">
-                <div id="textZone_${i}" class="textZone"
-                     style=" top: ${textZone.topDistance/2}px; left: ${textZone.leftDistance/2}px;">
-                    <g:textArea name="specifobject.textZones[${i}].text" rows="3" cols="3"
-                                style="font-size: 0.5em; width: ${textZone.width/2}px; height: ${textZone.height/2}px;"
-                                value="${textZone.text}" readonly="true" class="nonResizableTextArea"/>
-                </div>
+              <div id="textZone_${i}" class="textZone"
+                   style=" top: ${textZone.topDistance * (Math.max(0.5, ratio))}px; left: ${textZone.leftDistance * Math.max(0.5, ratio)}px;">
+                <g:textArea name="specifobject.textZones[${i}].text" rows="3"
+                            cols="3"
+                            style="font-size: 0.5em; width: ${textZone.width * (Math.max(0.5, ratio))}px; height: ${textZone.height * (Math.max(0.5, ratio))}px;"
+                            value="${textZone.text}" readonly="true"
+                            class="nonResizableTextArea"/>
+              </div>
             </g:each>
+
+          </g:if>
+
         </div>
 
         <strong><g:message code="question.label.complement_reponse" />&nbsp;:</strong>
