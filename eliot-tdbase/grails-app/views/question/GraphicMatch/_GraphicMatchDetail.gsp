@@ -44,17 +44,16 @@
 
               <g:set var="dimDisplayedAttachement"
                                 value="${specifobject.attachement.calculeDimensionRendu(new Dimension(largeur: 250, hauteur: 250))}"/>
-                         <g:set var="ratioHauteur"
-                                value="${specifobject.attachement.dimension.hauteur / dimDisplayedAttachement.hauteur}"/>
-                         <g:set var="ratioLargeur"
-                                value="${specifobject.attachement.dimension.largeur / dimDisplayedAttachement.largeur}"/>
+                         <g:set var="ratio"
+                                value="${dimDisplayedAttachement.hauteur / specifobject.attachement.dimension.hauteur }"/>
+
               <ul class="hotspots">
                               <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-                                  <li topDistance="${hotspot.topDistance/ratioHauteur}"
-                                      leftDistance="${hotspot.leftDistance/ratioLargeur}"
+                                  <li topDistance="${hotspot.topDistance* (Math.max(0.5, ratio))}"
+                                      leftDistance="${hotspot.leftDistance* (Math.max(0.5, ratio))}"
                                       hotspotId="${hotspot.id}"
-                                      width="${hotspot.width/ratioLargeur}"
-                                      height="${hotspot.height/ratioHauteur}">
+                                      width="${hotspot.width*(Math.max(0.5, ratio))}"
+                                      height="${hotspot.height*(Math.max(0.5, ratio))}">
                                   </li>
                               </g:each>
                           </ul>

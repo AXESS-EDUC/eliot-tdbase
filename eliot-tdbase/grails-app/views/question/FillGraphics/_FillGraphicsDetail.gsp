@@ -46,20 +46,19 @@
             </div>
             <g:set var="dimDisplayedAttachement"
                    value="${specifobject.attachement.calculeDimensionRendu(new Dimension(largeur: 250, hauteur: 250))}"/>
-            <g:set var="ratioHauteur"
-                   value="${specifobject.attachement.dimension.hauteur / dimDisplayedAttachement.hauteur}"/>
-            <g:set var="ratioLargeur"
-                   value="${specifobject.attachement.dimension.largeur / dimDisplayedAttachement.largeur}"/>
+            <g:set var="ratio"
+                   value="${dimDisplayedAttachement.hauteur / specifobject.attachement.dimension.hauteur}"/>
             <g:each status="i" in="${specifobject.textZones}" var="textZone">
               <div id="textZone_${i}" class="textZone"
-                   style=" top: ${textZone.topDistance / ratioHauteur}px; left: ${textZone.leftDistance / ratioLargeur}px;">
+                   style=" top: ${textZone.topDistance * (Math.max(0.5, ratio))}px; left: ${textZone.leftDistance * Math.max(0.5, ratio)}px;">
                 <g:textArea name="specifobject.textZones[${i}].text" rows="3"
                             cols="3"
-                            style="font-size: 0.5em; width: ${textZone.width / ratioLargeur}px; height: ${textZone.height / ratioHauteur}px;"
+                            style="font-size: 0.5em; width: ${textZone.width * (Math.max(0.5, ratio))}px; height: ${textZone.height * (Math.max(0.5, ratio))}px;"
                             value="${textZone.text}" readonly="true"
                             class="nonResizableTextArea"/>
               </div>
             </g:each>
+
           </g:if>
 
         </div>
