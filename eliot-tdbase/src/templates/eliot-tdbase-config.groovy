@@ -46,7 +46,7 @@ eliot.bootstrap.jeudetest = true
 // configuration de la racine de l'espace de fichier
 //
 eliot.fichiers.storedInDatabase = true
-eliot.fichiers.racine = '/tmp/eliot-root'
+eliot.fichiers.racine = '/tmp'
 eliot.fichiers.maxsize.mega = 10
 
 // les dimensions de div continer à prendre en compte si nécessaire
@@ -59,24 +59,6 @@ eliot.pages.container.width = 931
 // configuration des liens du menu portail et des annonces portail
 //
 eliot.portail.menu.affichage = true
-eliot.portail.menu.liens = [
-        [
-                url: "http://wwww.ticetime.com",
-                libelle: "ticetime"
-        ],
-        [
-                url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                libelle: "eliot-tdbase sur Github"
-        ]
-]
-eliot.portail.news = [
-        "TDBase version 2.05-FC-SNAPSHOT - environnement DEMO",
-        "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
-        "Login / mot de passe enseignant : ens1 / ens1",
-        "Login / mot de passe eleve 1 : elv1 / elv1",
-        "Login / mot de passe eleve 2 : elv2 / elv2",
-        "Login / mot de passe parent 1 : resp1 / resp1"
-]
 
 // set url documentation
 eliot.manuels.documents.urlMap = [
@@ -92,8 +74,8 @@ eliot.manuels.documents.urlMap = [
 dataSource {
   pooled = false
   driverClassName = "org.postgresql.Driver"
-  url = "jdbc:postgresql://localhost:5432/eliot-tdbase"
-  username = "eliot"
+  url = "jdbc:postgresql://localhost:5433/eliot-tdbase-cf-dev"
+  username = "eliot_scolarite"
   password = "eliot"
   logSql = false
 }

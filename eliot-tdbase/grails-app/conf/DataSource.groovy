@@ -58,7 +58,7 @@ environments {
   cf {
     dataSource {
       pooled = false
-      url = "jdbc:postgresql://localhost:5433/eliot-tdbase-dev"
+      url = "jdbc:postgresql://localhost:5433/eliot-tdbase-cf-dev"
     }
     hibernate {
       cache.use_second_level_cache = false

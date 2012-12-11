@@ -4,6 +4,7 @@ import groovyx.net.http.Method
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
+import grails.util.Environment
 
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -39,6 +40,7 @@ import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 eliot.eliotApplicationEnum = EliotApplicationEnum.TDBASE
 eliot.requestHeaderPorteur = "ENT_PORTEUR"
 eliot.defaultCodePorteur = "CRIF"
+
 
 /**
  * Chargement des configurations externalisées
@@ -268,6 +270,18 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                 //urlServer: "http://localhost:8090",
                 uriTemplate: '/evaluations/$evaluationId/notes.json']]
 
+eliot.portail.news = ["TD Base version ${appVersion} - environnement ${Environment.current}.",
+            "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
+            "Login / mot de passe enseignant : ens1 / ens1",
+            "Login / mot de passe élève 1 : elv1 / elv1",
+            "Login / mot de passe élève 2 : elv2 / elv2",
+            "Login / mot de passe parent 1 : resp1 / resp1"]
+
+eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
+        libelle: "ticetime"],
+        [url: "https://github.com/ticetime/eliot-tdbase/wiki",
+                libelle: "eliot-tdbase sur Github"]]
+
 environments {
   test {
     eliot.fichiers.racine = '/tmp'
@@ -325,16 +339,7 @@ environments {
     eliot.fichiers.maxsize.mega = 10
     // configuration des liens du menu portail et des annonces portail
     eliot.portail.menu.affichage = true
-    eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
-            libelle: "ticetime"],
-            [url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                    libelle: "eliot-tdbase sur Github"]]
-    eliot.portail.news = ["TD Base version ${appVersion} - environnement DEV.",
-            "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
-            "Login / mot de passe enseignant : ens1 / ens1",
-            "Login / mot de passe élève 1 : elv1 / elv1",
-            "Login / mot de passe élève 2 : elv2 / elv2",
-            "Login / mot de passe parent 1 : resp1 / resp1"]
+
 
     // Spécifie si les objets sensés être créés sont bien créés
     // à n'activier que si les données tdbase, notes et textes sont stockées dans
@@ -387,17 +392,8 @@ environments {
     eliot.fichiers.maxsize.mega = 10
     // configuration des liens du menu portail et des annonces portail
     eliot.portail.menu.affichage = true
-    eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
-            libelle: "ticetime"],
-            [url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                    libelle: "eliot-tdbase sur Github"]]
 
-    eliot.portail.news = ["TDBase v2.0.4-SNAPSHOT on Cloudfoundry.",
-            "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
-            "Login / mot de passe enseignant : ens1 / ens1",
-            "Login / mot de passe élève 1 : elv1 / elv1",
-            "Login / mot de passe élève 2 : elv2 / elv2",
-            "Login / mot de passe parent 1 : resp1 / resp1"]
+
 
 
     // Spécifie si les objets sensés être créés sont bien créés
@@ -433,10 +429,6 @@ environments {
     eliot.fichiers.maxsize.mega = 10
     // configuration des liens du menu portail et des annonces portail
     eliot.portail.menu.affichage = true
-    eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
-            libelle: "ticetime"],
-            [url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                    libelle: "eliot-tdbase sur Github"]]
     eliot.portail.news = ["TDBase version ${appVersion} - environnement TESTLILIE ",
             "Login / mot de passe : voir base de test eliot/lilie",
             "Pierre Baudet : UT110000000000005027"]
