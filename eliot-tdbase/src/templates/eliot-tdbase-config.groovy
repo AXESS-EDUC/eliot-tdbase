@@ -70,7 +70,7 @@ eliot.portail.menu.liens = [
         ]
 ]
 eliot.portail.news = [
-        "TDBase version 2.0.5-SNAPSHOT - environnement DEMO",
+        "TDBase version 2.05-FC-SNAPSHOT - environnement DEMO",
         "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
         "Login / mot de passe enseignant : ens1 / ens1",
         "Login / mot de passe eleve 1 : elv1 / elv1",
