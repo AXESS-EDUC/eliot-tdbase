@@ -20,6 +20,7 @@ import org.springframework.web.context.request.RequestContextHolder
 import javax.servlet.http.HttpServletRequest
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
+import org.lilie.services.eliot.tice.DBAttachementDataStore
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -125,9 +126,15 @@ class EliotTicePluginGrailsPlugin {
 
     // Configure la gestion du datastore
     //
-    dataStore(AttachementDataStore) { bean ->
-      path = conf.eliot.fichiers.racine ?: null
-      bean.initMethod = 'initFileDataStore'
+    if (conf.eliot.fichiers.storedInDatabase) {
+      println 'Files are stored in the database'
+      dataStore(DBAttachementDataStore)
+    } else {
+      println 'Files are stored on the file system'
+      dataStore(AttachementDataStore) { bean ->
+        path = conf.eliot.fichiers.racine ?: null
+        bean.initMethod = 'initFileDataStore'
+      }
     }
 
     // Configure l'annuaire d'opération de webservices REST
