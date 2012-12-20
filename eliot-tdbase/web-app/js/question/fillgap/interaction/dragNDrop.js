@@ -170,8 +170,12 @@ function initDragNDrop() {
         $(gapElements).each(function () {
 
             var textFieldValue = $(this).children('input').val();
-            var matchingGapWords = fillGapTextContainer + ">.gapWords>.gapWordsList>.gapWord[word='" + textFieldValue + "']";
-
+            //var matchingGapWords = fillGapTextContainer + ">.gapWords>.gapWordsList>.gapWord[word='" + textFieldValue + "']";
+            var gapWords = fillGapTextContainer + ">.gapWords>.gapWordsList>.gapWord" ;
+            var matchingGapWords = [];
+            $(gapWords).each(function(){
+                if($(this).attr('word') == textFieldValue) matchingGapWords.push(this);
+            });
 
             if (textFieldValue != "" && $(matchingGapWords).length > 0) {
 
@@ -215,5 +219,8 @@ function initDragNDrop() {
 
     }
 
+    function addslashes( str ) {
+        return (str+'').replace(/([\\"'])/g, "\\$1").replace(/\0/g, "\\0");
+    }
 
 }
