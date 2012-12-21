@@ -1,5 +1,5 @@
-Notes sur le déploiement sur Cloudfoundry
-=========================================
+Notes sur le déploiement sur Cloudfoundry  avec le plugin Grails
+================================================================
 
 == Déploiement de l'application sans démarrage
 
@@ -28,3 +28,13 @@ grails -Dgrails.env=cf cf-start
 grails -Dgrails.env=cf cf-show-instances
 
 --------------------------
+
+Notes sur le déploiement sur Cloudfoundry  avec vmc
+================================================================
+
+== Construction du war
+grails -Dgrails.env=cf war
+
+== déploiement de l'application
+cd target
+vmc push eliot-tdbase
