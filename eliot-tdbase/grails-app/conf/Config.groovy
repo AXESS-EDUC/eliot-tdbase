@@ -212,6 +212,7 @@ environments {
     //eliot.tdbase.urlServeur = "http//localhost:8080"
   }
   development {
+    eliot.pages.container.forceDimensions = true
     grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
             '/p/**': ['IS_AUTHENTICATED_FULLY'],
             '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
