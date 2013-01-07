@@ -85,7 +85,7 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
                     type: QuestionTypeEnum.Decimal.questionType,
                     estAutonome: true
             ],
-            new DecimalSpecification(libelle: "question", valeur: 15),
+            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
             personne1,
             )
     assertFalse(quest1.hasErrors())
@@ -121,7 +121,7 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
                     type: QuestionTypeEnum.Decimal.questionType,
                     estAutonome: true
             ],
-            new DecimalSpecification(libelle: "question", valeur: 15),
+            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
             personne1,
             )
     assertFalse(quest1.hasErrors())
@@ -146,7 +146,7 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
                     type: QuestionTypeEnum.Decimal.questionType,
                     estAutonome: true
             ],
-            new DecimalSpecification(libelle: "question", valeur: 15),
+            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
             personne1,
             )
     assertFalse(quest1.hasErrors())
@@ -168,7 +168,7 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
                     type: QuestionTypeEnum.Decimal.questionType,
                     estAutonome: true
             ],
-            new DecimalSpecification(libelle: "question", valeur: 15),
+            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
             personne1,
             )
     assertFalse(quest1.hasErrors())
