@@ -26,54 +26,34 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.scolarite
-
-import org.lilie.services.eliot.tice.securite.Perimetre
-import org.lilie.services.eliot.tice.annuaire.PorteurEnt
+package org.lilie.services.eliot.tice.securite
 
 /**
- * Représente un établissement
- * @author msan
- * @author jtra
+ * table securite.perimetre
+ * @author othe
  */
-class Etablissement {
+class Perimetre {
 
-  Long id
-  String nomAffichage
-  String idExterne
-  String uai
-  String codePorteurENT
-
-  Perimetre perimetre
-  PorteurEnt porteurEnt
-
-  /**
-   * Numéro de version du dernier import STS pour cet établissement
-   * 0 lorsqu'aucun import n'a été effectué pour cet établissement
-   */
-  int versionImportSts = 0
-
-  /**
-   * Date du dernier import Sts effectué pour cet établissement
-   */
-  Date dateImportSts = null
-
-  static mapping = {
-    table 'ent.etablissement'
-    id column: 'id', generator: 'sequence', params: [sequence: 'ent.etablissement_id_seq']
-    codePorteurENT column: 'code_porteur_ent'
-    cache usage: 'read-write'
-  }
+  String nomEntiteCible
+  Long enregistrementCibleId
+  Boolean estActive = false
+  Long importId
+  Date dateDesactivation
+  Perimetre perimetreParent
 
   static constraints = {
-    idExterne(nullable: false, maxSize: 128, unique: true)
-    uai(nullable: true)
-    nomAffichage(maxSize: 1024)
-    dateImportSts(nullable: true)
+    nomEntiteCible(nullable: true)
+    estActive(nullable: true)
+    importId(nullable: true)
+    dateDesactivation(nullable: true)
+    enregistrementCibleId(nullable: true)
+    perimetreParent(nullable: true)
+  }
 
-    perimetre(nullable: true)
-    porteurEnt(nullable: true)
-
+  static mapping = {
+    table('securite.perimetre')
+    id column: 'id', generator: 'sequence', params: [sequence: 'securite.perimetre_id_seq']
+    version false
   }
 
 }
