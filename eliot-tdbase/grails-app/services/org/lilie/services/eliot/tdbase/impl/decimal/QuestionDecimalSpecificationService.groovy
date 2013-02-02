@@ -100,12 +100,13 @@ class DecimalSpecification implements QuestionSpecification {
     if (precision != null) {
       return NumberUtils.formatFloat(precision)
     }
-    return null
+    return 0
   }
 
   static constraints = {
     libelle blank: false
     valeur nullable: false
+    precision nullable: false
   }
 
 }
