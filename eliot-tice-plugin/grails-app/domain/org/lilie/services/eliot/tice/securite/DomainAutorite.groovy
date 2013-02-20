@@ -36,11 +36,18 @@ class DomainAutorite implements Autorite {
 
   public static final String ID_EXTERNE_DEFAULT_AUTORITE = "AUTORITE_PAR_DEFAUT"
 
+  public static final String COMPTE_UTILISATEUR_ETAT_ACTIF = "ACTIF"
+  public static final String COMPTE_UTILISATEUR_ETAT_INACTIF = "INACTIF"
+  public static final String COMPTE_UTILISATEUR_ETAT_ACCES_RESTREINT = "ACCES_RESTREINT"
+
+
   String type
   String identifiant
   String idSts
 
-  Boolean estActive = false
+  Boolean estActive = true
+  String etat = COMPTE_UTILISATEUR_ETAT_ACTIF
+
   Long importId
   Date dateDesactivation
   String nomEntiteCible
