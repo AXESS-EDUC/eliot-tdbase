@@ -36,7 +36,13 @@ grails.plugin.location.'eliot-textes-plugin' = "../eliot-textes-plugin"
 grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
 //grails.plugin.location.'spring-security-cas' = '../grails-spring-security-cas'
 
-grails.project.war.file = "target/${appName}.war"
+if(System.properties['war.version']) {
+  grails.project.war.file = "target/${appName}-${appVersion}.war"
+}
+else {
+  grails.project.war.file = "target/${appName}.war"
+}
+
 
 // This closure is passed the location of the staging directory that
 // is zipped up to make the WAR file, and the command line arguments.
