@@ -55,13 +55,6 @@ public class StructureEnseignement {
   Niveau niveau
 
   /**
-   * Numéro de version de l'import STS qui a engendré la création ou la
-   * modification de cette structure d'enseignement
-   * -1 si cette structure n'a pas été créée durant un import STS
-   */
-  int versionImportSts = -1
-
-  /**
    * Indique si cette structure d'enseignement existe dans les données du
    * dernier import STS
    * Lorsqu'un structure d'enseignement existe en base, mais pas dans les données

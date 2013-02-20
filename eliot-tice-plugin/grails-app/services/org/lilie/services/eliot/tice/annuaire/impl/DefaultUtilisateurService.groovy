@@ -75,7 +75,8 @@ class DefaultUtilisateurService implements UtilisateurService {
     DomainAutorite domainAutorite = new DomainAutorite(
             identifiant: "${nomEntiteCible}.${login}",
             estActive: true,
-            type: TypeAutorite.PERSONNE.libelle
+            type: TypeAutorite.PERSONNE.libelle,
+            etat: DomainAutorite.COMPTE_UTILISATEUR_ETAT_ACTIF
     ).save(failOnError: true)
 
     // cree la personne

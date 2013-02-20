@@ -45,17 +45,6 @@ class Etablissement {
 
   PorteurEnt porteurEnt
 
-  /**
-   * Numéro de version du dernier import STS pour cet établissement
-   * 0 lorsqu'aucun import n'a été effectué pour cet établissement
-   */
-  int versionImportSts = 0
-
-  /**
-   * Date du dernier import Sts effectué pour cet établissement
-   */
-  Date dateImportSts = null
-
   static mapping = {
     table 'ent.etablissement'
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.etablissement_id_seq']
@@ -67,7 +56,6 @@ class Etablissement {
     idExterne(nullable: false, maxSize: 128, unique: true)
     uai(nullable: true)
     nomAffichage(maxSize: 1024)
-    dateImportSts(nullable: true)
     porteurEnt(nullable: true)
 
   }
