@@ -156,12 +156,16 @@ grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
         '/p/**': ['IS_AUTHENTICATED_FULLY'],
         '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/question/**': ["${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/seance/**': ["${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/activite/**': ["${FonctionEnum.ELEVE.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
@@ -216,17 +220,22 @@ environments {
     grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
             '/p/**': ['IS_AUTHENTICATED_FULLY'],
             '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/question/**': ["${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/seance/**': ["${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/activite/**': ["${FonctionEnum.ELEVE.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_FULLY']]
+                    'IS_AUTHENTICATED_FULLY']
+            ]
 
     grails.plugins.springsecurity.cas.active = false
     eliot.tdbase.nomApplication = "eliot-tdbase"
