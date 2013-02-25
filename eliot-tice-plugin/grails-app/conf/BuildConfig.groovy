@@ -36,6 +36,7 @@ grails.project.test.reports.dir = "target/test-reports"
 versionTDBase = "2.0.5-SNAPSHOT"
 
 grails.project.dependency.resolution = {
+  checksums(false)
 
   // inherit Grails' default dependencies
   inherits("global") {
