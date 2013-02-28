@@ -62,6 +62,7 @@ class PaterniteItem {
   String auteur
   String copyrightDescription
   String copyrighLien
+  String logoLien
   Date datePublication
   Boolean oeuvreEnCours
 }

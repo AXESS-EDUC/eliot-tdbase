@@ -200,7 +200,8 @@ class SujetController {
 
     if (!sujet.hasErrors()) {
       flash.messageCode = "sujet.partage.succes"
-      flash.messageArgs = [sujet.copyrightsType.presentation]
+      def ct = sujet.copyrightsType
+      flash.messageArgs = [ct.logo,ct.presentation, ct.code ]
       redirect(action: 'edite', id: sujet.id)
       return
     }

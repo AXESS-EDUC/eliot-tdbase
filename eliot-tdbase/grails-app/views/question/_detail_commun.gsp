@@ -92,7 +92,7 @@
         <td>
           <g:if test="${question.estPartage()}">
             <a href="${question.copyrightsType.lien}"
-               target="_blank">${question.copyrightsType.presentation}</a>
+               target="_blank"><img src="${question.copyrightsType.logo}" title="${question.copyrightsType.presentation}"/></a>
           </g:if>
           <g:else>
             cette question n'est pas partagée
