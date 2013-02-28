@@ -53,7 +53,7 @@
 </g:else>
 <br/>
 <g:checkBox name="principalAttachementEstInsereDansLaQuestion"
-                title="Le document attaché est inséré dans le sujet"
+                title="Le document attaché est affiché dans le sujet"
                 checked="${question.principalAttachementEstInsereDansLaQuestion}"/>
-    Le document est inséré dans le sujet
+    Le document est affiché dans le sujet
 
