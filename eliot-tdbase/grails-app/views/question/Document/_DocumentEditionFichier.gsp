@@ -43,11 +43,11 @@
     <br/>
   </g:if>
   <g:else>
-    <input type="file" name="specifobject.fichier">
+    <input type="file" name="specifobject.fichier"> (max. ${grailsApplication.config.eliot.fichiers.maxsize.mega}Mo)
   </g:else>
 </g:if>
 <g:else>
-  <input type="file" name="specifobject.fichier">
+  <input type="file" name="specifobject.fichier"> (max. ${grailsApplication.config.eliot.fichiers.maxsize.mega}Mo)
 </g:else>
 
 
