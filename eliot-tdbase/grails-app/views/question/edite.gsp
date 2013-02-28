@@ -59,8 +59,10 @@
       $('#question\\.titre').focus();
       $("form").attr('enctype', 'multipart/form-data');
       initButtons()
-      <g:render template="/question/DialoguePartage" model="[question:question]"/>
     });
+  </r:script>
+  <r:script disposition="head">
+    <g:render template="/question/DialoguePartage"/>
   </r:script>
   <title><g:message code="question.edite.head.title"/></title>
 </head>
@@ -74,8 +76,9 @@
 
     <span class="portal-tabs-famille-liens">
   <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
-    <g:link action="partage" class="share partage-actif"
-            id="${question.id}">Partager l'item</g:link>&nbsp; |
+    <% def docLoc = g.createLink(action: 'partage', controller: "question${question.type.code}", id: question.id) %>
+    <g:link action="partage" class="share"
+            id="${question.id}" onclick="afficheDialoguePartage('${docLoc}');return false;">Partager l'item</g:link>&nbsp; |
   </g:if>
   <g:else>
     <span class="share">Partager l'item</span>&nbsp;| &nbsp;

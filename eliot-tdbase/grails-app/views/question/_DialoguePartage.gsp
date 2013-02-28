@@ -27,7 +27,8 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-var $confirmDialog = $("<div></div>")
+function afficheDialoguePartage(docLoc) {
+  var $confirmDialog = $("<div></div>")
       							.html('<g:message code="question.partage.dialogue" args="[CopyrightsType.getDefaultForPartage().logo,CopyrightsType.getDefaultForPartage().code,CopyrightsType.getDefaultForPartage().lien]" />')
       							.dialog({
       								autoOpen: false,
@@ -37,11 +38,11 @@ var $confirmDialog = $("<div></div>")
       									"Annuler": function() {$(this).dialog("close");return false},
       									'OK': function() {
                                             $(this).dialog("close");
-                                            document.location = "${createLink(action: 'partage', controller: "question${question.type.code}", id: question.id)}";
+                                            document.location = docLoc;
                                             }
       								}
       							});
-      $('.partage-actif').click(function () {
-        $confirmDialog.dialog('open');
-        return false;
-      });
+  $confirmDialog.dialog('open');
+  return false;
+
+}

@@ -32,11 +32,13 @@
 <head>
   <meta name="layout" content="eliot-tdbase"/>
   <r:require modules="eliot-tdbase-ui"/>
+  <r:script disposition="head">
+    <g:render template="/question/DialoguePartage"/>
+  </r:script>
   <r:script>
     $(document).ready(function () {
       $('#menu-item-contributions').addClass('actif');
       initButtons();
-      <g:render template="/question/DialoguePartage" model="[question:question]"/>
     });
   </r:script>
   <title><g:message code="question.detail.head.title" /></title>
@@ -83,9 +85,10 @@
       </g:else>
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
+        <% def docLoc = g.createLink(action: 'partage', controller: "question${question.type.code}", id: question.id) %>
         <li><g:link action="partage"
                     controller="question${question.type.code}"
-                    id="${question.id}" class="partage-actif">Partager</g:link></li>
+                    id="${question.id}" onclick="afficheDialoguePartage('${docLoc}');return false;">Partager</g:link></li>
       </g:if>
       <g:else>
         <li>Partager</li>
