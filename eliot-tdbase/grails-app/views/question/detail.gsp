@@ -36,6 +36,7 @@
     $(document).ready(function () {
       $('#menu-item-contributions').addClass('actif');
       initButtons();
+      <g:render template="/question/DialoguePartage" model="[question:question]"/>
     });
   </r:script>
   <title><g:message code="question.detail.head.title" /></title>
@@ -84,7 +85,7 @@
       <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
         <li><g:link action="partage"
                     controller="question${question.type.code}"
-                    id="${question.id}">Partager</g:link></li>
+                    id="${question.id}" class="partage-actif">Partager</g:link></li>
       </g:if>
       <g:else>
         <li>Partager</li>

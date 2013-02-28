@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.CopyrightsTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -58,6 +59,7 @@
       $('#question\\.titre').focus();
       $("form").attr('enctype', 'multipart/form-data');
       initButtons()
+      <g:render template="/question/DialoguePartage" model="[question:question]"/>
     });
   </r:script>
   <title><g:message code="question.edite.head.title"/></title>
@@ -72,7 +74,7 @@
 
     <span class="portal-tabs-famille-liens">
   <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
-    <g:link action="partage" class="share"
+    <g:link action="partage" class="share partage-actif"
             id="${question.id}">Partager l'item</g:link>&nbsp; |
   </g:if>
   <g:else>

@@ -35,6 +35,7 @@ package org.lilie.services.eliot.tice
 class CopyrightsType {
 
   private static DEFAULT_COPYRIGHTS_TYPE_ID = 1
+  private static DEFAULT_COPYRIGHTS_TYPE_ID_FOR_PARTAGE = 3
 
   String code
   String presentation
@@ -70,6 +71,14 @@ class CopyrightsType {
    */
   static CopyrightsType getDefault() {
     return get(DEFAULT_COPYRIGHTS_TYPE_ID)
+  }
+
+  /**
+   * Retourne le type de copyright par défaut : "tous droits réservés"
+   * @return le type de copyright par défaut
+   */
+  static CopyrightsType getDefaultForPartage() {
+    return get(DEFAULT_COPYRIGHTS_TYPE_ID_FOR_PARTAGE)
   }
 }
 
