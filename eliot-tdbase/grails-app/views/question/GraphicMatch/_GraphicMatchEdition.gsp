@@ -69,6 +69,7 @@
             <g:render
                     template="/question/GraphicMatch/GraphicMatchEditionHotSpots"
                     model="[specifobject: specifobject]"/>
+            </div>
         </g:if>
     </td>
 </tr>

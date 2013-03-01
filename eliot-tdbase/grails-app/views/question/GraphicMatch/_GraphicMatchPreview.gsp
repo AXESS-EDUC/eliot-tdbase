@@ -33,7 +33,8 @@
 <div class="imageContainer">
     <g:if test="${specifobject.attachement}">
         <et:viewAttachement attachement="${specifobject.attachement}"
-                            width="500" height="500"/>
+                            width="${grailsApplication.config.eliot.graphicitems.dimension}"
+                            height="${grailsApplication.config.eliot.graphicitems.dimension}"/>
     </g:if>
 
     <ul class="hotspots">

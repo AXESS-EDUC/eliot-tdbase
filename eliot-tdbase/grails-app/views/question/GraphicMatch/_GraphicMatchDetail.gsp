@@ -43,17 +43,18 @@
                                     width="250" height="250"/>
 
               <g:set var="dimDisplayedAttachement"
-                                value="${specifobject.attachement.calculeDimensionRendu(new Dimension(largeur: 250, hauteur: 250))}"/>
-                         <g:set var="ratio"
-                                value="${dimDisplayedAttachement.hauteur / specifobject.attachement.dimension.hauteur }"/>
-
+                     value="${specifobject.attachement.calculeDimensionRendu(new Dimension(largeur: 250, hauteur: 250))}"/>
+              <g:set var="ratio"
+                     value="${dimDisplayedAttachement.hauteur / specifobject.attachement.dimension.hauteur}"/>
+              <g:set var="ratioMax"
+                     value="${250 / grailsApplication.config.eliot.graphicitems.dimension}"/>
               <ul class="hotspots">
                               <g:each status="i" in="${specifobject.hotspots}" var="hotspot">
-                                  <li topDistance="${hotspot.topDistance* (Math.max(0.5, ratio))}"
-                                      leftDistance="${hotspot.leftDistance* (Math.max(0.5, ratio))}"
+                                  <li topDistance="${hotspot.topDistance* (Math.max(ratioMax, ratio))}"
+                                      leftDistance="${hotspot.leftDistance* (Math.max(ratioMax, ratio))}"
                                       hotspotId="${hotspot.id}"
-                                      width="${hotspot.width*(Math.max(0.5, ratio))}"
-                                      height="${hotspot.height*(Math.max(0.5, ratio))}">
+                                      width="${hotspot.width*(Math.max(ratioMax, ratio))}"
+                                      height="${hotspot.height*(Math.max(ratioMax, ratio))}">
                                   </li>
                               </g:each>
                           </ul>
