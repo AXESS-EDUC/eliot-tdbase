@@ -206,6 +206,8 @@ eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime
 // relative au serveur Grails (l'URI doit commencer par '/'):
 eliot.jmol.resourcesURI = "/js/lib/jmol/"
 
+eliot.graphicitems.dimension=750
+
 environments {
   test {
     grails.plugins.springsecurity.cas.active = false
