@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
+<%@ page import="org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.utils.NumberUtils" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -52,59 +52,63 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 
-  <div class="portal-tabs">
-    <span class="portal-tabs-famille-liens">
-      <g:link action="ajouteElement" controller="sujet" class="add"
-              id="${sujet.id}">Ajouter un item</g:link> |
-      <g:link action="editeProprietes" controller="sujet" class="modify"
-              id="${sujet.id}">Modifier les propriétés du sujet</g:link>
-    </span>
-    <span class="portal-tabs-famille-liens">
-      <button id="toolbar_${sujet.id}">Actions</button>
-      <ul id="menu_actions_toolbar_${sujet.id}"
-          class="tdbase-menu-actions">
-        <li><g:link action="teste" id="${sujet.id}">
-          Tester
-        </g:link>
-        </li>
-        <li><g:link action="ajouteSeance" id="${sujet.id}">
-          Nouvelle&nbsp;séance
-        </g:link>
-        </li>
-        <li><hr/></li>
-        <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
-          <li><g:link action="duplique"
-                      id="${sujet.id}">Dupliquer</g:link></li>
-        </g:if>
-        <g:else>
-          <li>Dupliquer</li>
-        </g:else>
-        <li><hr/></li>
-        <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
-          <li><g:link action="partage"
-                      id="${sujet.id}">Partager</g:link></li>
-        </g:if>
-        <g:else>
-          <li>Partager</li>
-        </g:else>
-        <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
-          <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
-        </g:if>
-        <g:else>
-          <li>Exporter</li>
-        </g:else>
+<div class="portal-tabs">
+  <span class="portal-tabs-famille-liens">
+    <g:link action="ajouteElement" controller="sujet" class="add"
+            id="${sujet.id}">Ajouter un item</g:link> |
+    <g:link action="editeProprietes" controller="sujet" class="modify"
+            id="${sujet.id}">Modifier les propriétés du sujet</g:link>
+  </span>
+  <span class="portal-tabs-famille-liens">
+    <button id="toolbar_${sujet.id}">Actions</button>
+    <ul id="menu_actions_toolbar_${sujet.id}"
+        class="tdbase-menu-actions">
+      <li><g:link action="teste" id="${sujet.id}">
+        Tester
+      </g:link>
+      </li>
+      <li><g:link action="ajouteSeance" id="${sujet.id}">
+        Nouvelle&nbsp;séance
+      </g:link>
+      </li>
+      <li><hr/></li>
+      <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
+        <li><g:link action="duplique"
+                    id="${sujet.id}">Dupliquer</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Dupliquer</li>
+      </g:else>
+      <li><hr/></li>
+      <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
+        <%
+          def docLoc = g.createLink(action: 'partage',  id: sujet.id)
+          def message = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
+        %>
+        <li><g:link action="partage"
+                    id="${sujet.id}" onclick="afficheDialogue('${message}', '${docLoc}');return false;">Partager</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Partager</li>
+      </g:else>
+      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
+        <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Exporter</li>
+      </g:else>
 
-        <li><hr/></li>
-        <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
-          <li><g:link action="supprime"
-                      id="${sujet.id}">Supprimer</g:link></li>
-        </g:if>
-        <g:else>
-          <li>Supprimer</li>
-        </g:else>
-      </ul>
-    </span>
-  </div>
+      <li><hr/></li>
+      <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
+        <li><g:link action="supprime"
+                    id="${sujet.id}">Supprimer</g:link></li>
+      </g:if>
+      <g:else>
+        <li>Supprimer</li>
+      </g:else>
+    </ul>
+  </span>
+</div>
 
 
 <g:hasErrors bean="${sujet}">
@@ -122,9 +126,9 @@
   </div>
 </g:if>
 
-  <div class="portal-form_container edite full">
-    <span class="title">${sujet.titre}</span>
-  </div>
+<div class="portal-form_container edite full">
+  <span class="title">${sujet.titre}</span>
+</div>
 
 <g:if test="${sujet}">
   <div class="tdbase-sujet-edition">

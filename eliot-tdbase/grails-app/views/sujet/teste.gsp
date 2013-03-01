@@ -26,7 +26,7 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<%@ page import="org.lilie.services.eliot.tice.utils.NumberUtils" %>
+<%@ page import="org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.utils.NumberUtils" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -80,8 +80,13 @@
       </g:else>
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
+        <%
+          def docLoc = g.createLink(action: 'partage', id: sujet.id)
+          def message = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
+        %>
         <li><g:link action="partage"
-                    id="${sujet.id}">Partager</g:link></li>
+                    id="${sujet.id}"
+                    onclick="afficheDialogue('${message}', '${docLoc}');return false;">Partager</g:link></li>
       </g:if>
       <g:else>
         <li>Partager</li>
