@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.CopyrightsType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -141,6 +142,9 @@
   </div>
 
   <div class="portal-default_results-list question  ${sujet ? 'partiel' : ''}">
+    <%
+       def messageDialogue = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo,CopyrightsType.getDefaultForPartage().code,CopyrightsType.getDefaultForPartage().lien])
+    %>
     <g:each in="${questions}" status="i" var="questionInstance">
       <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
         <h1>${fieldValue(bean: questionInstance, field: "titre")}</h1>
@@ -182,9 +186,12 @@
           </g:else>
           <li><hr/></li>
           <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+            <%
+              def docLoc = g.createLink(action: 'partage', controller: "question${questionInstance.type.code}", id: questionInstance.id)
+            %>
             <li><g:link action="partage"
                         controller="question${questionInstance.type.code}"
-                        id="${questionInstance.id}">Partager</g:link></li>
+                        id="${questionInstance.id}" onclick="afficheDialogue('${messageDialogue}','${docLoc}');return false;">Partager</g:link></li>
           </g:if>
           <g:else>
             <li>Partager</li>

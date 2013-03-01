@@ -46,6 +46,7 @@ specifications
 eliot-tdbase.esproj
 *.ipr
 *.iws
+*.ser
 
 .DS_Store
 

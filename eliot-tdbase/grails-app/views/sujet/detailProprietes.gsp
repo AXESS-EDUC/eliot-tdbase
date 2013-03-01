@@ -1,4 +1,4 @@
-%<%@ page import="org.lilie.services.eliot.tdbase.SujetType" %>
+%<%@ page import="org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tdbase.SujetType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -48,9 +48,11 @@
   <span class="portal-tabs-famille-liens">
     <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujet)}">
       <g:link action="edite" controller="sujet" class="modify"
-              id="${sujet.id}" params="[bcInit: true]">Modifier le sujet</g:link> |
+              id="${sujet.id}"
+              params="[bcInit: true]">Modifier le sujet</g:link> |
       <g:link action="editeProprietes" controller="sujet" class="modify"
-              id="${sujet.id}" params="[bcInit: true]">Modifier les propriétés du sujet</g:link>
+              id="${sujet.id}"
+              params="[bcInit: true]">Modifier les propriétés du sujet</g:link>
     </g:if>
     <g:else>
       <span class="add">Modifier le sujet</span> |
@@ -75,8 +77,13 @@
       </g:else>
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
+        <%
+          def docLoc = g.createLink(action: 'partage', id: sujet.id)
+          def message = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
+        %>
         <li><g:link action="partage"
-                    id="${sujet.id}">Partager</g:link></li>
+                    id="${sujet.id}"
+                    onclick="afficheDialogue('${message}', '${docLoc}');retur false;">Partager</g:link></li>
       </g:if>
       <g:else>
         <li>Partager</li>
@@ -162,7 +169,9 @@
       <td>
         <g:if test="${sujet.estPartage()}">
           <a href="${sujet.copyrightsType.lien}"
-             target="_blank">${sujet.copyrightsType.presentation}</a>
+             target="_blank"><img src="${sujet.copyrightsType.logo}"
+                                  title="${sujet.copyrightsType.presentation}"/>
+          </a>
         </g:if>
         <g:else>
           ce sujet n'est pas partagé

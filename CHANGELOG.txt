@@ -1,0 +1,22 @@
+=== Eliot tdbase 2.0.5-RC3 ===
+Liste des dépendances :
+ * Compatible avec les bases de données Eliot 2.9.0-RC8
+
+Liste des anomalies corrigées :
+ * #204 [VABF] Permettre aux enseignants de créer une séance avec tous les groupes élèves de l'etablissement ; initialisation du service de récupération des structures d'enseignement
+ * #205 Les documentalistes doivent avoir accès à TD Base
+
+
+=== Eliot tdbase 2.0.5-RC2 ===
+
+Liste des anomalies corrigées :
+ * #202 Configuration permettant d'inclure la version dans le war généré
+ * #201 Evaluation réponse type "décimal" échoue si précision est nulle 
+ * #200 Divers problèmes affichage Modification config dev pour utilisation iframe
+ * #199 Texte à trou : l'utilisation du caractère apaostrophe  génère une erreur d'affichage
+
+=== Eliot tdbase 2.0.5-RC1 ===
+
+Liste des anomalies corrigées :
+ * #196 Rendu du détail d'une question graphique
+ * #197 Texte à trous : correction erreur si introduction d'un caractère d'échappement

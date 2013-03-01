@@ -34,8 +34,8 @@
   <g:if test="${specifobject.attachmentId}">
     <et:viewAttachement
             attachement="${specifobject.attachement}"
-            width="500"
-            height="500"/>
+            width="${grailsApplication.config.eliot.graphicitems.dimension}"
+            height="${grailsApplication.config.eliot.graphicitems.dimension}"/>
     <br>
   </g:if>
 

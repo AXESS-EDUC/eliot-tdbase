@@ -74,9 +74,9 @@
   <td class="label">Affichage&nbsp;:</td>
   <td>
     <g:checkBox name="specifobject.estInsereDansLeSujet"
-                title="Le document est inséré dans le sujet"
+                title="Le document est affiché dans le sujet"
                 checked="${specifobject.estInsereDansLeSujet}"/>
-    Le document est inséré dans le sujet
+    <g:message code="question.edition.fichier.affichage" />
   </td>
 </tr>
 <tr>

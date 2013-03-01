@@ -238,6 +238,7 @@ class SujetService {
     PaterniteItem paterniteItem = new PaterniteItem(auteur: "${partageur.nomAffichage}",
                                                     copyrightDescription: "${ct.presentation}",
                                                     copyrighLien: "${ct.lien}",
+                                                    logoLien: ct.logo ,
                                                     datePublication: publication.dateDebut,
                                                     oeuvreEnCours: true)
     Paternite paternite = new Paternite(leSujet.paternite)

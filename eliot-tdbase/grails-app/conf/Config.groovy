@@ -149,12 +149,16 @@ grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
         '/p/**': ['IS_AUTHENTICATED_FULLY'],
         '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/question/**': ["${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/seance/**': ["${FonctionEnum.ENS.toRole()}",
+                "${FonctionEnum.DOC.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
         '/activite/**': ["${FonctionEnum.ELEVE.toRole()}",
                 'IS_AUTHENTICATED_FULLY'],
@@ -194,6 +198,7 @@ eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime
 // les ressources JS et Applet Java Jmol sont recherchées dans l'URI
 // relative au serveur Grails (l'URI doit commencer par '/'):
 eliot.jmol.resourcesURI = "/js/lib/jmol/"
+
 
 // les operations de webservices
 //
@@ -282,6 +287,8 @@ eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
         [url: "https://github.com/ticetime/eliot-tdbase/wiki",
                 libelle: "eliot-tdbase sur Github"]]
 
+eliot.graphicitems.dimension=750
+
 environments {
   test {
     eliot.fichiers.racine = '/tmp'
@@ -312,17 +319,22 @@ environments {
     grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
             '/p/**': ['IS_AUTHENTICATED_FULLY'],
             '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/question/**': ["${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/seance/**': ["${FonctionEnum.ENS.toRole()}",
+                    "${FonctionEnum.DOC.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/activite/**': ["${FonctionEnum.ELEVE.toRole()}",
                     'IS_AUTHENTICATED_FULLY'],
             '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_FULLY']]
+                    'IS_AUTHENTICATED_FULLY']
+            ]
 
     eliot.tdbase.nomApplication = "eliot-tdbase"
     eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()

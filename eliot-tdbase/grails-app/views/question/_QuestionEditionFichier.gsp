@@ -49,11 +49,11 @@
                         optionKey="id"
                         optionValue="nom"/>  OU
   </g:if>
-  <input type="file" name="principalAttachementFichier">
+  <input type="file" name="principalAttachementFichier"> (max. ${grailsApplication.config.eliot.fichiers.maxsize.mega}Mo)
 </g:else>
 <br/>
 <g:checkBox name="principalAttachementEstInsereDansLaQuestion"
-                title="Le document attaché est inséré dans le sujet"
+                title="Le document attaché est affiché dans le sujet"
                 checked="${question.principalAttachementEstInsereDansLaQuestion}"/>
-    Le document est inséré dans le sujet
+    <g:message code="question.edition.fichier.affichage" />
 

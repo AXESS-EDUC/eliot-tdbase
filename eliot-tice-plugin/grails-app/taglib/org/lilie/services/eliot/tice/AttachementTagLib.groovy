@@ -63,7 +63,7 @@ class AttachementTagLib {
         out << '/>'
       } else if (attachement.estUnTexteAffichable()) {
         def is = attachementService.getInputStreamForAttachement(attachement)
-        out << is.text.encodeAsHTML()
+        out << '<span style="white-space: pre;">' << is.text.encodeAsHTML() << '</span>'
       } else {
         out << '<a target="_blank" href="' << link << '">' <<
         g.message(code: "attachement.acces") <<

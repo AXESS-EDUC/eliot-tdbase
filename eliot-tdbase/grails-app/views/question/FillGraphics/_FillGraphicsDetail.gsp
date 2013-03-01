@@ -48,12 +48,14 @@
                    value="${specifobject.attachement.calculeDimensionRendu(new Dimension(largeur: 250, hauteur: 250))}"/>
             <g:set var="ratio"
                    value="${dimDisplayedAttachement.hauteur / specifobject.attachement.dimension.hauteur}"/>
+            <g:set var="ratioMax"
+                               value="${250 / grailsApplication.config.eliot.graphicitems.dimension}"/>
             <g:each status="i" in="${specifobject.textZones}" var="textZone">
               <div id="textZone_${i}" class="textZone"
-                   style=" top: ${textZone.topDistance * (Math.max(0.5, ratio))}px; left: ${textZone.leftDistance * Math.max(0.5, ratio)}px;">
+                   style=" top: ${textZone.topDistance * (Math.max(ratioMax, ratio))}px; left: ${textZone.leftDistance * Math.max(ratioMax, ratio)}px;">
                 <g:textArea name="specifobject.textZones[${i}].text" rows="3"
                             cols="3"
-                            style="font-size: 0.5em; width: ${textZone.width * (Math.max(0.5, ratio))}px; height: ${textZone.height * (Math.max(0.5, ratio))}px;"
+                            style="font-size: 0.5em; width: ${textZone.width * (Math.max(ratioMax, ratio))}px; height: ${textZone.height * (Math.max(ratioMax, ratio))}px;"
                             value="${textZone.text}" readonly="true"
                             class="nonResizableTextArea"/>
               </div>

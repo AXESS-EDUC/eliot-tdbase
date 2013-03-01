@@ -33,7 +33,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Sujet 2</td>
+	<td>css=div.widget.sceances &gt; div.innertube &gt; ul &gt; li.even &gt; a[title=&quot;Sujet 2&quot;]</td>
 	<td></td>
 </tr>
 <tr>

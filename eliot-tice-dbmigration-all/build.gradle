@@ -2,7 +2,7 @@ project.group = "org.lilie.services.eliot"
 project.ext.artefactId = "eliot-tice-dbmigration-all"
 project.version = "2.05-FC-SNAPSHOT"
 
-project.ext.versionSchemaEliot = "2.9.0-A1"
+project.ext.versionSchemaEliot = "2.9.0-RC8"
 // classifierSchemaEliot =
 
 apply plugin: 'idea'

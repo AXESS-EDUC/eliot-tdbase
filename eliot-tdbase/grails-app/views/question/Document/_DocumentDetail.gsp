@@ -82,10 +82,10 @@
         <td><strong>Affichage&nbsp;:</strong></td>
         <td>
           <g:checkBox name="specifobject.estInsereDansLeSujet"
-                      title="Le document est inséré dans le sujet"
+                      title="Le document est affiché dans le sujet"
                       checked="${specifobject.estInsereDansLeSujet}"
                       disabled="true"/>
-          Le document est inséré dans le sujet
+          Le document est affiché dans le sujet
         </td>
       </tr>
       <tr>

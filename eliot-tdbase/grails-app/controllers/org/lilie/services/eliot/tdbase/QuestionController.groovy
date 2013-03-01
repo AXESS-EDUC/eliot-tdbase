@@ -167,7 +167,8 @@ class QuestionController {
     }
     if (!question.hasErrors()) {
       flash.messageCode = "question.partage.succes"
-      flash.messageArgs = [question.copyrightsType.presentation]
+      def ct = question.copyrightsType
+      flash.messageArgs = [ct.logo,ct.presentation, ct.code ]
     }
     redirect(action: 'detail', id: question.id)
 

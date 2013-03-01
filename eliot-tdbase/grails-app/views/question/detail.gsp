@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.CopyrightsType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -82,9 +83,13 @@
       </g:else>
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
+        <%
+          def docLoc = g.createLink(action: 'partage', controller: "question${question.type.code}", id: question.id)
+          def message = g.message(code:"question.partage.dialogue",args:[CopyrightsType.getDefaultForPartage().logo,CopyrightsType.getDefaultForPartage().code,CopyrightsType.getDefaultForPartage().lien])
+        %>
         <li><g:link action="partage"
                     controller="question${question.type.code}"
-                    id="${question.id}">Partager</g:link></li>
+                    id="${question.id}" onclick="afficheDialogue('${message}','${docLoc}');return false;">Partager</g:link></li>
       </g:if>
       <g:else>
         <li>Partager</li>

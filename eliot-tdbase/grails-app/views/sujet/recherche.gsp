@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.CopyrightsType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -36,12 +37,12 @@
     });
   </r:script>
   <title>
-  <g:if test="${afficheFormulaire}">
-  <g:message code="sujet.recherche.head.title" />
-  </g:if>
-  <g:else>
-    <g:message code="sujet.recherche.mesSujets.head.title" />
-  </g:else>
+    <g:if test="${afficheFormulaire}">
+      <g:message code="sujet.recherche.head.title"/>
+    </g:if>
+    <g:else>
+      <g:message code="sujet.recherche.mesSujets.head.title"/>
+    </g:else>
   </title>
 </head>
 
@@ -131,6 +132,9 @@
   </div>
 
   <div class="portal-default_results-list sujet">
+    <%
+      def messageDialogue = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
+    %>
     <g:each in="${sujets}" status="i" var="sujetInstance">
       <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
 
@@ -163,8 +167,12 @@
           </g:else>
           <li><hr/></li>
           <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujetInstance)}">
+            <%
+              def docLoc = g.createLink(action: 'partage', id: sujetInstance.id)
+            %>
             <li><g:link action="partage"
-                        id="${sujetInstance.id}">Partager</g:link></li>
+                        id="${sujetInstance.id}"
+                        onclick="afficheDialogue('${messageDialogue}', '${docLoc}');return false;">Partager</g:link></li>
           </g:if>
           <g:else>
             <li>Partager</li>

@@ -54,11 +54,6 @@
                 title="Accueil"
                 params="[bcInit: true]">Accueil TD Base</g:link>
       </li>
-      <li id="menu-item-seances">
-        <g:link controller="seance" action="liste"
-                title="Liste des séances"
-                params="[bcInit: true]">Séances</g:link>
-      </li>
       <li id="menu-item-sujets">
         <a title="Sujets">Sujets</a>
         <ul>
@@ -70,12 +65,12 @@
           <li title="Rechercher">
             <g:link controller="sujet" action="recherche"
                     title="Rechercher des sujets"
-                    params="[bcInit: true, patternAuteur: message(code:'eliot.label.me')]">Rechercher</g:link>
+                    params="[bcInit: true, patternAuteur: message(code: 'eliot.label.me')]">Rechercher</g:link>
           </li>
         </ul>
       </li>
       <li id="menu-item-contributions">
-        <a title="Mes contributions">Items</a>
+        <a title="Mes items">Items</a>
         <ul>
           <li title="Nouvelle">
             <g:link controller="question"
@@ -88,11 +83,15 @@
           <li title="Rechercher">
             <g:link controller="question" action="recherche"
                     title="Rechercher des items"
-                    params="[bcInit: true, patternAuteur: message(code:'eliot.label.me')]">Rechercher</g:link>
+                    params="[bcInit: true, patternAuteur: message(code: 'eliot.label.me')]">Rechercher</g:link>
 
           </li>
-
         </ul>
+      </li>
+      <li id="menu-item-seances">
+        <g:link controller="seance" action="liste"
+                title="Liste des séances"
+                params="[bcInit: true]">Séances</g:link>
       </li>
     </ul>
 
@@ -107,7 +106,7 @@
 
   <g:layoutBody/>
   <r:script>
-    $('form[method="post"]').attr('enctype','multipart/form-data');
+    $('form[method="post"]').attr('enctype', 'multipart/form-data');
   </r:script>
 </et:container>
 <r:layoutResources/>
