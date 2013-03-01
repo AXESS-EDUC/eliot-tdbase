@@ -35,22 +35,22 @@
   <script type="text/javascript">
     tinyMCE.init({
                    // General options
-                   language:'fr',
-                   mode:"none",
-                   theme:"advanced",
-                   plugins:"pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+                   language: 'fr',
+                   mode: "none",
+                   theme: "advanced",
+                   plugins: "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
                    // Theme options
-                   theme_advanced_buttons1:"bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect",
-                   theme_advanced_buttons2:"forecolor,backcolor,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,cleanup,code",
-                   theme_advanced_buttons3:"tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap",
+                   theme_advanced_buttons1: "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect",
+                   theme_advanced_buttons2: "forecolor,backcolor,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,cleanup,code",
+                   theme_advanced_buttons3: "tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap",
 
-                   theme_advanced_toolbar_location:"top",
-                   theme_advanced_toolbar_align:"left",
-                   theme_advanced_statusbar_location:"bottom",
-                   theme_advanced_resizing:false,
+                   theme_advanced_toolbar_location: "top",
+                   theme_advanced_toolbar_align: "left",
+                   theme_advanced_statusbar_location: "bottom",
+                   theme_advanced_resizing: false,
 
-                   entity_encoding : "raw"
+                   entity_encoding: "raw"
                  });
   </script>
   <r:script>
@@ -60,9 +60,6 @@
       $("form").attr('enctype', 'multipart/form-data');
       initButtons()
     });
-  </r:script>
-  <r:script disposition="head">
-    <g:render template="/question/DialoguePartage"/>
   </r:script>
   <title><g:message code="question.edite.head.title"/></title>
 </head>
@@ -76,9 +73,13 @@
 
     <span class="portal-tabs-famille-liens">
   <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
-    <% def docLoc = g.createLink(action: 'partage', controller: "question${question.type.code}", id: question.id) %>
+    <%
+      def docLoc = g.createLink(action: 'partage', controller: "question${question.type.code}", id: question.id)
+      def message = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo,CopyrightsType.getDefaultForPartage().code,CopyrightsType.getDefaultForPartage().lien])
+    %>
     <g:link action="partage" class="share"
-            id="${question.id}" onclick="afficheDialoguePartage('${docLoc}');return false;">Partager l'item</g:link>&nbsp; |
+            id="${question.id}"
+            onclick="afficheDialogue('${message}','${docLoc}');return false;">Partager l'item</g:link>&nbsp; |
   </g:if>
   <g:else>
     <span class="share">Partager l'item</span>&nbsp;| &nbsp;
@@ -164,10 +165,12 @@
 <g:form method="post" controller="question${question.type.code}"
         class="question">
   <div class="portal-form_container edite" style="width: 69%;">
-    <p style="font-style: italic; margin-bottom: 2em"><span class="obligatoire">*</span> indique une information obligatoire</p>
+    <p style="font-style: italic; margin-bottom: 2em"><span
+            class="obligatoire">*</span> indique une information obligatoire</p>
     <table>
       <tr>
-        <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:</td>
+        <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:
+        </td>
         <td>
           <input size="75" type="text" value="${question.titre}"
                  name="titre" id="question.titre"/><br/><br/>
@@ -184,7 +187,7 @@
           <td class="label">Mati&egrave;re :</td>
           <td>
             <g:select name="matiere.id" value="${sujet.matiereId}"
-                      noSelection="${['null': g.message(code:"default.select.null")]}"
+                      noSelection="${['null': g.message(code: "default.select.null")]}"
                       from="${matieres}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -194,7 +197,7 @@
           <td class="label">Niveau :</td>
           <td>
             <g:select name="niveau.id" value="${sujet.niveauId}"
-                      noSelection="${['null': g.message(code:"default.select.null")]}"
+                      noSelection="${['null': g.message(code: "default.select.null")]}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -206,7 +209,7 @@
           <td class="label">Mati&egrave;re :</td>
           <td>
             <g:select name="matiere.id" value="${question.matiereId}"
-                      noSelection="${['null': g.message(code:"default.select.null")]}"
+                      noSelection="${['null': g.message(code: "default.select.null")]}"
                       from="${matieres}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -216,7 +219,7 @@
           <td class="label">Niveau :</td>
           <td>
             <g:select name="niveau.id" value="${question.niveauId}"
-                      noSelection="${['null': g.message(code:"default.select.null")]}"
+                      noSelection="${['null': g.message(code: "default.select.null")]}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -224,7 +227,8 @@
         </tr>
       </g:else>
       <tr>
-        <td class="label"><g:message code="question.propriete.principalAttachement"/>&nbsp;:</td>
+        <td class="label"><g:message
+                code="question.propriete.principalAttachement"/>&nbsp;:</td>
         <td id="question_fichier">
           <g:render template="/question/QuestionEditionFichier"
                     model="[question: question, attachementsSujet: attachementsSujets]"/>
@@ -239,7 +243,9 @@
         <td>
           <g:if test="${question.estPartage()}">
             <a href="${question.copyrightsType.lien}"
-               target="_blank"><img src="${question.copyrightsType.logo}" title="${question.copyrightsType.presentation}"/></a>
+               target="_blank"><img src="${question.copyrightsType.logo}"
+                                    title="${question.copyrightsType.presentation}"/>
+            </a>
           </g:if>
           <g:else>
             cet item n'est pas partagé

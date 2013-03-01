@@ -76,3 +76,23 @@ function initButtons() {
     });
 
 }
+
+function afficheDialogue(message,docLoc) {
+  var $confirmDialog = $("<div></div>")
+      							.html(message)
+      							.dialog({
+      								autoOpen: false,
+      								title: "Partage d'item",
+      								modal: true,
+      								buttons : {
+      									"Annuler": function() {$(this).dialog("close");return false},
+      									'OK': function() {
+                                            $(this).dialog("close");
+                                            document.location = docLoc;
+                                            }
+      								}
+      							});
+  $confirmDialog.dialog('open');
+  return false;
+
+}
