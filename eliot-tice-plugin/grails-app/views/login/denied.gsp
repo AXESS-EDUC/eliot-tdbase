@@ -1,6 +1,6 @@
 <head>
   <meta name='layout' content='main'/>
-  <title>Denied</title>
+  <title>TD Base</title>
 </head>
 
 <body>

@@ -28,7 +28,7 @@
 
 <head>
   <meta name='layout' content='eliot-tdbase-pub'/>
-  <title>Accès refusé</title>
+  <title>TD Base - Accès refusé</title>
 </head>
 
 <body>

@@ -27,7 +27,7 @@
   --}%
 <head>
   <meta name='layout' content='eliot-tdbase-pub'/>
-  <title>Login</title>
+  <title>TD Base</title>
   <style type='text/css' media='screen'>
   #login {
     margin: 15px 0px;
