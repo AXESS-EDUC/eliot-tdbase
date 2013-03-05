@@ -103,7 +103,6 @@ grails.project.dependency.resolution = {
     compile ":mail:1.0"
 
     compile ":spring-security-core:1.2.7.2"
-    compile ':cloud-foundry:1.2.3'
 
     build(":tomcat:$grailsVersion",
           ":rest-client-builder:1.0.2",
