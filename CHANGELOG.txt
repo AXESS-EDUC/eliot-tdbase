@@ -1,3 +1,16 @@
+=== Eliot tdbase 2.0.5-RC4 ===
+Liste des dépendances :
+ * Compatible avec les bases de données Eliot 2.9.0-RC8
+
+Liste des anomalies corrigées :
+ * #212 [VABF] Affichage du sujet : prendre en compte toute la largeur iframe (graphic items).
+ * #210 [VABF] Ajout d'un message de confirmation avant partage item/sujet
+ * #211 [VABF] Items: pour ajout des documents ajouter des précisions sur la taille et le type
+ * #209 [VABF] logo « Créative commons » à ajouter sur les pages après partage
+ * #208 [VABF] Items : modifier le texte "inséré" en "affiché"
+ * #207 [VABF] Déplacer le menu « Séances » en dernier dans le menu principal
+
+
 === Eliot tdbase 2.0.5-RC3 ===
 Liste des dépendances :
  * Compatible avec les bases de données Eliot 2.9.0-RC8
