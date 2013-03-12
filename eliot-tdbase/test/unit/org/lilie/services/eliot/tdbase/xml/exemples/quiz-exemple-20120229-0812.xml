@@ -119,7 +119,7 @@
             <text>Consigne dispositif électronique</text>
         </name>
         <questiontext format="moodle_auto_format">
-            <text>Pas de calculatrice !</text>
+            <text>&lt;p&gt;Pas de calculaghjfgtrice !&lt;/p&gt;</text>
         </questiontext>
         <image></image>
         <generalfeedback>
