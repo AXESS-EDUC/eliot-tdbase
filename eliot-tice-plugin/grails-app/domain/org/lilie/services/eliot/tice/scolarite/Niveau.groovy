@@ -28,10 +28,13 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
+import groovy.transform.EqualsAndHashCode
+
 /**
  * table ent.niveau
  * @author othe
  */
+@EqualsAndHashCode
 class Niveau {
   String libelleCourt
   String libelleLong

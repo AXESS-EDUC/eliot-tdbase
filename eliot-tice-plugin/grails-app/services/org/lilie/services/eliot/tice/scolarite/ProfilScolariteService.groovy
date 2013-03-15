@@ -66,7 +66,7 @@ public class ProfilScolariteService {
     List<PersonneProprietesScolarite> profils =
       PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<Fonction> fonctions = []
-    profils.collect {
+    profils.each {
       Fonction fonction = it.proprietesScolarite.fonction
       if (fonction && !fonctions.contains(fonction)) {
         fonctions << fonction
@@ -85,7 +85,7 @@ public class ProfilScolariteService {
     List<PersonneProprietesScolarite> profils =
       PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<Matiere> matieres = []
-    profils.collect {
+    profils.each {
       Matiere matiere = it.proprietesScolarite.matiere
       if (matiere && !matieres.contains(matiere)) {
         matieres << matiere
@@ -124,7 +124,7 @@ public class ProfilScolariteService {
     List<PersonneProprietesScolarite> profils =
       PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<StructureEnseignement> structures = []
-    profils.collect {
+    profils.each {
       StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
       if (structureEnseignement && !structures.contains(structureEnseignement)) {
         structures << structureEnseignement
@@ -143,7 +143,7 @@ public class ProfilScolariteService {
     def props = []
     List<PersonneProprietesScolarite> profils =
       PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
-    profils.collect {
+    profils.each {
       StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
       if (structureEnseignement && !props.contains(it.proprietesScolarite)) {
         props << it.proprietesScolarite
