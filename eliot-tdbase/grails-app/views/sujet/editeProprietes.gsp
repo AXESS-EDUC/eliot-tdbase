@@ -124,7 +124,7 @@
         <td>
           <g:if test="${sujet.estPartage()}">
             <a href="${sujet.copyrightsType.lien}"
-               target="_blank"><img src="${sujet.copyrightsType.logo}" title="${sujet.copyrightsType.presentation}"/></a>
+               target="_blank"><img src="${sujet.copyrightsType.logo}" title="${sujet.copyrightsType.code}" style="float: left;margin-right: 10px;"/> ${sujet.copyrightsType.presentation}</a>
           </g:if>
           <g:else>
             ce sujet n'est pas partagé

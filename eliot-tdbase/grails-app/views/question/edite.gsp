@@ -243,8 +243,8 @@
         <td>
           <g:if test="${question.estPartage()}">
             <a href="${question.copyrightsType.lien}"
-               target="_blank"><img src="${question.copyrightsType.logo}"
-                                    title="${question.copyrightsType.presentation}"/>
+               target="_blank"><img src="${question.copyrightsType.logo}" style="float: left;margin-right: 10px;"
+                                    title="${question.copyrightsType.code}"/> ${question.copyrightsType.presentation}
             </a>
           </g:if>
           <g:else>
