@@ -43,14 +43,28 @@ public class ScolariteService {
 
   /**
    * Récupère les structures d'enseignement (classes / divisions)
+   * @param etablissement l'établissement d'appartenance des structures
    * @return la liste des structures d'enseignements
    */
-  List<StructureEnseignement> findStructuresEnseignement() {
-    def structures = StructureEnseignement.findAllByActif(true)
+  List<StructureEnseignement> findStructuresEnseignement(Etablissement etablissement) {
+    def structures = StructureEnseignement.findAllByEtablissementAndActif(etablissement,true)
     return structures
   }
 
-
+  /**
+   * Récupère les niveaux pour une structure d'enseignement
+   * @param struct la structure d'enseignement
+   * @return  la liste des niveaux
+   */
+  List <Niveau> findNiveauxForStructureEnseignement(StructureEnseignement struct) {
+    def niveaux = []
+    if (struct.isClasse()) {
+      niveaux.add(struct.niveau)
+    } else if (struct.isGroupe()) {
+      niveaux = struct.classes*.niveau
+    }
+    niveaux
+  }
 
 
 }

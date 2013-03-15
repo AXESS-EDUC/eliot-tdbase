@@ -39,6 +39,8 @@ import org.springframework.transaction.annotation.Transactional
  */
 public class ProfilScolariteService {
 
+  ScolariteService scolariteService
+
   static transactional = false
 
   /**
@@ -99,13 +101,14 @@ public class ProfilScolariteService {
    * @return la liste des niveaux
    */
   List<Niveau> findNiveauxForPersonne(Personne personne) {
-    List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+    List<StructureEnseignement> structs = findStructuresEnseignementForPersonne(personne)
     List<Niveau> niveaux = []
-    profils.collect {
-      Niveau niveau = it.proprietesScolarite.niveau
-      if (niveau && !niveaux.contains(niveau)) {
-        niveaux << niveau
+    structs.each { struct ->
+      def niveauxByStruct = scolariteService.findNiveauxForStructureEnseignement(struct)
+      niveauxByStruct.each { niveau ->
+        if (niveau && !niveaux.contains(niveau)) {
+          niveaux.add(niveau)
+        }
       }
     }
     return niveaux
