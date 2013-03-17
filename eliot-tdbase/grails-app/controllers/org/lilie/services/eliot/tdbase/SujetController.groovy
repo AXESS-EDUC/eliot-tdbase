@@ -406,7 +406,11 @@ class SujetController {
     def modaliteActivite = new ModaliteActivite(enseignant: personne,
                                                 sujet: sujet)
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
+    def etablissements = profilScolariteService.findEtablissementsForPersonne(personne)
+    def niveaux = profilScolariteService.findNiveauxForPersonne(personne)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
+            etablissements: etablissements,
+            niveaux: niveaux,
             afficheLienCreationDevoir:false,
             afficheLienCreationActivite:false,
             afficheActiviteCreee: false,

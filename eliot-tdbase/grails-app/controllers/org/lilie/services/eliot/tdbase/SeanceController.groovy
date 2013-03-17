@@ -32,8 +32,11 @@ package org.lilie.services.eliot.tdbase
 
 import groovy.json.JsonBuilder
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.Etablissement
+import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
+import org.lilie.services.eliot.tice.scolarite.ScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 
@@ -45,6 +48,7 @@ class SeanceController {
   ModaliteActiviteService modaliteActiviteService
   CopieService copieService
   ProfilScolariteService profilScolariteService
+  ScolariteService scolariteService
   CahierTextesService cahierTextesService
   NotesService notesService
 
@@ -100,7 +104,11 @@ class SeanceController {
     }
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"), [services: services])
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
+    def etablissements = profilScolariteService.findEtablissementsForPersonne(personne)
+    def niveaux = profilScolariteService.findNiveauxForPersonne(personne)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
+            etablissements: etablissements,
+            niveaux: niveaux,
             lienBookmarkable: lienBookmarkable,
             afficheLienCreationDevoir: afficheLienCreationDevoir,
             afficheLienCreationActivite: afficheLienCreationActivite,
@@ -111,6 +119,35 @@ class SeanceController {
             cahiers: cahiers,
             chapitres: chapitres,
             services: services])
+  }
+
+  /**
+   *
+   * Action recherche structure
+   */
+  def rechercheStructures(RechercheStructuresCommand command) {
+    Personne personne = authenticatedPersonne
+    def allEtabs = profilScolariteService.findEtablissementsForPersonne(personne)
+    def etabs = allEtabs
+    if (command.etablissementId) {
+      etabs = [Etablissement.get(command.etablissementId)]
+    }
+    def codePattern = null
+    if (command.patternCode) {
+      codePattern = command.patternCode
+    }
+    def niveau = null
+    if (command.niveauId) {
+      niveau = Niveau.get(command.niveauId)
+    }
+
+    def structures = scolariteService.findStructuresEnseignement(etabs,codePattern,niveau)
+    render(view: "/seance/_selectStructureEnseignement", model: [
+            rechercheStructuresCommand:command,
+            etablissements: allEtabs,
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            structures: structures
+    ])
   }
 
   /**
@@ -403,3 +440,8 @@ class UpdateReponseNoteCommand {
   Float update_value
 }
 
+class RechercheStructuresCommand {
+  String patternCode
+  Long etablissementId
+  Long niveauId
+}
