@@ -29,10 +29,6 @@
 
 
 package org.lilie.services.eliot.tice.scolarite
-
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.springframework.transaction.annotation.Transactional
-
 /**
  *
  * @author franck Silvestre
@@ -42,21 +38,11 @@ public class ScolariteService {
   static transactional = false
 
   /**
-   * Récupère les structures d'enseignement (classes / divisions)
-   * @param etablissement l'établissement d'appartenance des structures
-   * @return la liste des structures d'enseignements
-   */
-  List<StructureEnseignement> findStructuresEnseignement(Etablissement etablissement) {
-    def structures = StructureEnseignement.findAllByEtablissementAndActif(etablissement,true)
-    return structures
-  }
-
-  /**
    * Récupère les niveaux pour une structure d'enseignement
    * @param struct la structure d'enseignement
-   * @return  la liste des niveaux
+   * @return la liste des niveaux
    */
-  List <Niveau> findNiveauxForStructureEnseignement(StructureEnseignement struct) {
+  List<Niveau> findNiveauxForStructureEnseignement(StructureEnseignement struct) {
     def niveaux = []
     if (struct.isClasse()) {
       niveaux.add(struct.niveau)
@@ -66,5 +52,60 @@ public class ScolariteService {
     niveaux
   }
 
+  /**
+   * Recherche de structures d'enseignements de l'année en cours
+   * @param etablissement l'établissement
+   * @param patternCode le pattern de code
+   * @param niveau le niveau
+   * @param paginationAndSortingSpec les specifications pour l'ordre et
+   * la pagination
+   * @param uniquementQuestionsChercheur flag indiquant si on recherche que
+   * les items du chercheur
+   * @return la liste des questions
+   */
+  List<StructureEnseignement> findStructuresEnseignement(List<Etablissement> etablissements,
+                                                         String patternCode = null,
+                                                         Niveau niveau = null,
+                                                         Map paginationAndSortingSpec = [:]) {
+
+    AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
+    if (!anneeScolaire) {
+      throw new IllegalArgumentException("structures.recherche.anneescolaire.null")
+    }
+    if (!etablissements) {
+      throw new IllegalArgumentException("structures.recherche.etablissements.vide")
+    }
+
+    def criteria = StructureEnseignement.createCriteria()
+    List<StructureEnseignement> structures = criteria.list(paginationAndSortingSpec) {
+      eq "anneeScolaire", anneeScolaire
+      eq "actif", true
+      or {
+        etablissements.each {
+          eq "etablissement", it
+        }
+      }
+      if (patternCode) {
+        def patternCodeX = "%${patternCode}%"
+        ilike "code", patternCodeX
+      }
+      if (niveau) {
+        or {
+          eq "niveau", niveau
+          classes {
+            eq "niveau", niveau
+          }
+        }
+      }
+
+      def sortArg = paginationAndSortingSpec['sort'] ?: 'code'
+      def orderArg = paginationAndSortingSpec['order'] ?: 'asc'
+      if (sortArg) {
+        order "${sortArg}", orderArg
+      }
+
+    }
+    return structures
+  }
 
 }
