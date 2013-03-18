@@ -179,7 +179,8 @@
       <tr>
         <td class="label">Type :</td>
         <td>
-          ${question.type.nom}
+          <strong>${question.type.nom}</strong> <et:helpLink selector="eliot.tdbase.item.${question.type.code}" class="portal-help"><g:message
+                      code="manuels.libellelien"/></et:helpLink>
         </td>
       </tr>
       <g:if test="${!question.id && sujet}">
