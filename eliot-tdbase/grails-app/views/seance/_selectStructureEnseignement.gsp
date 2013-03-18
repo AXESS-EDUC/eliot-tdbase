@@ -71,7 +71,7 @@
 </g:form>
 
 
-<g:if test="${structures}">
+<g:if test="${structures && structures.totalCount <= grailsApplication.config.eliot.listes.structures.maxrecherche}">
 
   <div class="portal_pagination">
     <p style="float: right">Cliquez sur la classe ou le groupe à sélectionner</p>
@@ -90,10 +90,15 @@
   </div>
 
 </g:if>
+<g:elseif test="${structures && structures.totalCount > grailsApplication.config.eliot.listes.structures.maxrecherche}">
+  <div class="portal_pagination">
+    <p class="nb_result">Plus de ${grailsApplication.config.eliot.listes.structures.maxrecherche} résultats ont été trouvés. Vous pouvez préciser votre recherche en renseignant des critères de recherche supplémentaires.</p>
+  </div>
+</g:elseif>
 <g:else>
   <div class="portal_pagination">
     <p class="nb_result">Aucun résultat</p>
-  </div>
+</div>
 </g:else>
 
 <script type="text/javascript">

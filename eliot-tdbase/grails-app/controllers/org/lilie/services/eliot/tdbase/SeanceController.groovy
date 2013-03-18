@@ -140,8 +140,8 @@ class SeanceController {
     if (command.niveauId) {
       niveau = Niveau.get(command.niveauId)
     }
-
-    def structures = scolariteService.findStructuresEnseignement(etabs,codePattern,niveau)
+    def limit = grailsApplication.config.eliot.listes.structures.maxrecherche
+    def structures = scolariteService.findStructuresEnseignement(etabs,codePattern,niveau,limit)
     render(view: "/seance/_selectStructureEnseignement", model: [
             rechercheStructuresCommand:command,
             etablissements: allEtabs,

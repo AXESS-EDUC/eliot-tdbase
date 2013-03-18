@@ -190,6 +190,9 @@ eliot.interfacage.textes = true
 eliot.listes.maxrecherche = 5
 eliot.listes.max = 7
 
+// le nombre d'éléments max à affichier dans une liste de structure
+eliot.listes.structures.maxrecherche=200
+
 // les dimensions de div continer à prendre en compte si nécessaire
 eliot.pages.container.forceDimensions = false
 // hauteur en pixel : ne s'applique que si forceDimensions est à true
@@ -218,6 +221,7 @@ environments {
     //eliot.tdbase.urlServeur = "http//localhost:8080"
   }
   development {
+    eliot.listes.structures.maxrecherche=3
     eliot.pages.container.forceDimensions = true
     grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
             '/p/**': ['IS_AUTHENTICATED_FULLY'],

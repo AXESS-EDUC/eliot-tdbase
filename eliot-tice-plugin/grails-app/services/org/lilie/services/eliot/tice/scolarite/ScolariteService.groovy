@@ -66,6 +66,7 @@ public class ScolariteService {
   List<StructureEnseignement> findStructuresEnseignement(List<Etablissement> etablissements,
                                                          String patternCode = null,
                                                          Niveau niveau = null,
+                                                         Integer limiteResults = 200,
                                                          Map paginationAndSortingSpec = [:]) {
 
     AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true, [cache: true])
@@ -97,7 +98,7 @@ public class ScolariteService {
           }
         }
       }
-
+      maxResults(limiteResults)
       def sortArg = paginationAndSortingSpec['sort'] ?: 'code'
       def orderArg = paginationAndSortingSpec['order'] ?: 'asc'
       if (sortArg) {
