@@ -105,7 +105,7 @@ class SeanceController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"), [services: services])
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     def etablissements = profilScolariteService.findEtablissementsForPersonne(personne)
-    def niveaux = profilScolariteService.findNiveauxForPersonne(personne)
+    def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
             etablissements: etablissements,
             niveaux: niveaux,
@@ -145,7 +145,7 @@ class SeanceController {
     render(view: "/seance/_selectStructureEnseignement", model: [
             rechercheStructuresCommand:command,
             etablissements: allEtabs,
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            niveaux: scolariteService.findNiveauxForEtablissement(allEtabs),
             structures: structures
     ])
   }

@@ -123,10 +123,10 @@ public class StructureEnseignement {
     if (type == TYPE_CLASSE) {
       nomAffichage = code
     } else {
-      // Si groupe avec une seul classe - Classe (Groupe)
+      // Si groupe avec une seul classe - Groupe (Classe)
       // Sinon Groupe
       if (classes?.size() == 1) {
-        nomAffichage = classes.iterator().next().code + "(" + code + ")"
+        nomAffichage = "$code (${classes.iterator().next().code})"
       } else {
         nomAffichage = code
       }

@@ -96,5 +96,25 @@ class ScolariteServiceIntegrationTests extends GroovyTestCase {
     assertTrue("grpe pas trouvé", structs.contains(bootstrapService.grpe1ere))
   }
 
+  void testFindNiveauxForEtablissement() {
+    def lycee = bootstrapService.leLycee
+    def niveaux = scolariteService.findNiveauxForEtablissement([lycee])
+    assertEquals(2, niveaux.size())
+    assertTrue("pas de premiere", niveaux.contains(bootstrapService.nivPremiere))
+    assertTrue("pas de terminal", niveaux.contains(bootstrapService.nivTerminale))
+
+    def college = bootstrapService.leCollege
+    niveaux = scolariteService.findNiveauxForEtablissement([college])
+    assertEquals(1, niveaux.size())
+    assertTrue("pas de sixieme", niveaux.contains(bootstrapService.nivSixieme))
+
+    niveaux = scolariteService.findNiveauxForEtablissement([lycee, college])
+    assertEquals(3, niveaux.size())
+    assertTrue("pas de premiere", niveaux.contains(bootstrapService.nivPremiere))
+    assertTrue("pas de terminal", niveaux.contains(bootstrapService.nivTerminale))
+    assertTrue("pas de sixieme", niveaux.contains(bootstrapService.nivSixieme))
+
+  }
+
 
 }

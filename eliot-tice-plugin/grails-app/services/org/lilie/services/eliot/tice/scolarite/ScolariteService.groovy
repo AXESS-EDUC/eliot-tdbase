@@ -68,7 +68,7 @@ public class ScolariteService {
                                                          Niveau niveau = null,
                                                          Map paginationAndSortingSpec = [:]) {
 
-    AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
+    AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true, [cache: true])
     if (!anneeScolaire) {
       throw new IllegalArgumentException("structures.recherche.anneescolaire.null")
     }
@@ -106,6 +106,48 @@ public class ScolariteService {
 
     }
     return structures
+  }
+
+  /**
+   * Récupère les niveaux de différents établissements
+   * @param etablissements
+   * @return la liste des niveaux des différents établissements
+   */
+  List<Niveau> findNiveauxForEtablissement(List<Etablissement> etablissements) {
+    AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true, [cache: true])
+    if (!anneeScolaire) {
+      throw new IllegalArgumentException("structures.recherche.anneescolaire.null")
+    }
+    if (!etablissements) {
+      throw new IllegalArgumentException("structures.recherche.etablissements.vide")
+    }
+    def criteria = StructureEnseignement.createCriteria()
+    def niveaux = criteria.list() {
+      eq "anneeScolaire", anneeScolaire
+      eq "actif", true
+      eq "type", StructureEnseignement.TYPE_CLASSE
+      or {
+        etablissements.each {
+          eq "etablissement", it
+        }
+      }
+      niveau {
+        order 'libelleLong', 'asc'
+      }
+      projections {
+        niveau {
+          groupProperty( "libelleLong")
+        }
+        groupProperty "niveau"
+
+      }
+
+
+    }
+    def niveauxRes = niveaux.collect {
+      ((List)it)[1]
+    }
+    niveauxRes
   }
 
 }

@@ -43,7 +43,7 @@
           </td>
           <td>
             <g:select name="etablissementId" value="${rechercheStructuresCommand.etablissementId}"
-                      noSelection="${['null': 'Tous']}"
+                      noSelection="${['null': 'Tous les établissements']}"
                       from="${etablissements}"
                       optionKey="id"
                       optionValue="nomAffichage"/>
@@ -54,7 +54,7 @@
           </td>
           <td>
             <g:select name="niveauId" value="${rechercheStructuresCommand.niveauId}"
-                      noSelection="${['null': 'Tous']}"
+                      noSelection="${['null': 'Indéterminé']}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>
