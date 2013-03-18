@@ -151,11 +151,14 @@
             <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong>
           </g:if>
           <g:else>
+            <div id="structure-selection" style="float: left; margin-right: 10px;">
             <g:select name="proprietesScolariteSelectionId"
                       noSelection="${['null': g.message(code: "default.select.null")]}"
                       from="${proprietesScolarite}"
                       optionKey="id"
-                      optionValue="structureEnseignementNomAffichage"/>  <a id="select-other-structure">Choisir une autre classe ou un autre groupe ...</a>
+                      optionValue="structureEnseignementNomAffichage"/>
+            </div>
+            <a id="select-other-structure">Choisir une autre classe ou un autre groupe ...</a>
           </g:else>
         </td>
       </tr>

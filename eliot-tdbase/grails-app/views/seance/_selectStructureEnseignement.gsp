@@ -84,7 +84,7 @@
 
     <g:each in="${structures}" status="i" var="structureInstance">
       <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0;text-align: left">
-          <g:link onclick="selectStructure(${structureInstance.id})">${structureInstance.nomAffichage}</g:link>
+          <a onclick="selectStructure(${structureInstance.id},'${structureInstance.nomAffichage}')">${structureInstance.nomAffichage}</a>
       </div>
     </g:each>
   </div>
@@ -107,4 +107,15 @@
            event.preventDefault();
          }
       })
+
+  function selectStructure(structId,structAffichage) {
+   $("#structure-selection").html(
+           '<div id="structure-selection" style="float: left; margin-right: 10px;">' +
+           '<strong>'+ structAffichage + '</strong>'+
+           '<input type="hidden" name="structureEnseignement.id" value="'+ structId +'"/>' +
+           '</div>'
+   )
+   $( "#search-structure-form" ).dialog( "close" );
+  }
+
 </script>
