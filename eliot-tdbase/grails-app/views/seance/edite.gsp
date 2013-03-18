@@ -149,6 +149,7 @@
         <td>
           <g:if test="${modaliteActivite.structureEnseignement}">
             <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong>
+            <input type="hidden" name="structureEnseignement.id" value="${modaliteActivite.structureEnseignement.id}"/>
           </g:if>
           <g:else>
             <div id="structure-selection" style="float: left; margin-right: 10px;">
