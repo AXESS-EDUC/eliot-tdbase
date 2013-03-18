@@ -95,3 +95,11 @@
     <p class="nb_result">Aucun résultat</p>
   </div>
 </g:else>
+
+<script type="text/javascript">
+  $("#patternCode").keypress(function(event) {
+        if ( event.which == 13 ) {
+           event.preventDefault();
+         }
+      })
+</script>
