@@ -1,6 +1,7 @@
 import grails.plugins.springsecurity.SecurityConfigType
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
@@ -182,6 +183,9 @@ eliot.interfacage.textes = true
 eliot.listes.maxrecherche = 5
 eliot.listes.max = 7
 
+// le nombre d'éléments max à affichier dans une liste de structure
+eliot.listes.structures.maxrecherche=200
+
 // les dimensions de div continer à prendre en compte si nécessaire
 eliot.pages.container.forceDimensions = false
 // hauteur en pixel : ne s'applique que si forceDimensions est à true
@@ -193,6 +197,27 @@ eliot.pages.container.width = 931
 eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
         "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
         "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"]
+
+// l'url des fichiers de documentation par identifiant (item de question,...)
+eliot.help.documents.urlMap = [
+        "eliot.tdbase.item.${QuestionTypeEnum.Associate.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.BooleanMatch.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Composite.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Decimal.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Document.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.ExclusiveChoice.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.FileUpload.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.FillGap.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.FillGraphics.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.GraphicMatch.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Integer.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.MultipleChoice.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Open.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Order.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Slider.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Statement.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.introduction": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html"]
+
 
 // les ressources JS et Applet Java Jmol sont recherchées dans l'URI
 // relative au serveur Grails (l'URI doit commencer par '/'):
@@ -314,6 +339,7 @@ environments {
 
   }
   development {
+    eliot.listes.structures.maxrecherche=3
     eliot.pages.container.forceDimensions = true
     grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
             '/p/**': ['IS_AUTHENTICATED_FULLY'],

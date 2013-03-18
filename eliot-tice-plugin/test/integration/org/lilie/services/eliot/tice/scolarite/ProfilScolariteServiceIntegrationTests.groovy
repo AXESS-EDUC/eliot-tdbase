@@ -30,6 +30,7 @@
 package org.lilie.services.eliot.tice.scolarite
 
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.lilie.services.eliot.tice.utils.InitialisationTestService
 
 /**
@@ -62,5 +63,27 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
   void testFindProprietesScolaritesWithStructureForPersonne() {
     List<ProprietesScolarite> props = profilScolariteService.findProprietesScolariteWithStructureForPersonne(enseignant1.personne)
     assertEquals("pas le bon de nombre de props", 4, props.size())
+  }
+
+  void testFindNiveauxForPersonne() {
+    def niveaux = profilScolariteService.findNiveauxForPersonne(enseignant1.personne)
+    assertEquals(3, niveaux.size())
+    assertTrue("Niveau 6ème pas trouvé",niveaux.contains(bootstrapservice.nivSixieme))
+    assertTrue("Niveau terminale pas trouvé",niveaux.contains(bootstrapservice.nivTerminale))
+    assertTrue("Niveau 1ère pas trouvé",niveaux.contains(bootstrapservice.nivPremiere) )
+
+  }
+
+  void testFindEtablissementsForPersonne() {
+      def etabs = profilScolariteService.findEtablissementsForPersonne(enseignant1.personne)
+      assertEquals(2, etabs.size())
+      assertTrue("college pas trouvé",etabs.contains(bootstrapservice.leCollege))
+      assertTrue("lycee pas trouvé",etabs.contains(bootstrapservice.leLycee))
+
+    }
+
+
+  private BootstrapService getBootstrapservice() {
+    initialisationTestService.bootstrapService
   }
 }

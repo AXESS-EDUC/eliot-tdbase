@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.ContexteActivite" %>
+<%@ page import="org.lilie.services.eliot.tdbase.RechercheStructuresCommand; org.lilie.services.eliot.tdbase.ContexteActivite" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -56,6 +56,20 @@
         $confirmDialog.dialog('open');
         return false;
       });
+
+     $("#search-structure-form").dialog({
+           autoOpen: false,
+           title: "Rechercher une classe ou un groupe d'élèves",
+           height: 600,
+           width: 420,
+           modal: true
+      });
+
+     $( "#select-other-structure" )
+           .click(function() {
+             $( "#search-structure-form" ).dialog( "open" );
+           });
+
     $('#gestionEvaluation').click(function() {
                $('#edition_devoir').toggle();
                })
@@ -135,13 +149,17 @@
         <td>
           <g:if test="${modaliteActivite.structureEnseignement}">
             <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong>
+            <input type="hidden" name="structureEnseignement.id" value="${modaliteActivite.structureEnseignement.id}"/>
           </g:if>
           <g:else>
+            <div id="structure-selection" style="float: left; margin-right: 10px;">
             <g:select name="proprietesScolariteSelectionId"
                       noSelection="${['null': g.message(code: "default.select.null")]}"
                       from="${proprietesScolarite}"
                       optionKey="id"
                       optionValue="structureEnseignementNomAffichage"/>
+            </div>
+            <a id="select-other-structure">Choisir une autre classe ou un autre groupe ...</a>
           </g:else>
         </td>
       </tr>
@@ -269,6 +287,12 @@
   </div>
   <br/><br/><br/><br/><br/>
 </g:form>
+
+<div id="search-structure-form" style="background-color: #ffffff">
+  <g:render template="/seance/selectStructureEnseignement" model="[etablissements: etablissements,
+          niveaux:niveaux,
+          rechercheStructuresCommand: new RechercheStructuresCommand() ]"/>
+</div>
 
 </body>
 </html>

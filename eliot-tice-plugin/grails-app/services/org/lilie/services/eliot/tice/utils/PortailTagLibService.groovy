@@ -29,11 +29,11 @@
 package org.lilie.services.eliot.tice.utils
 
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
-import org.codenarc.rule.basic.IntegerGetIntegerAstVisitor
 
 class PortailTagLibService {
 
   private manuelDocumentsUrl = [:]
+  private helpDocumentUrl = [:]
 
   Boolean applicationInFrame
   Integer divHeight
@@ -47,7 +47,7 @@ class PortailTagLibService {
    * @param fonctionEnum la fonction de l'utilisateur
    */
   def addManuelDocumentUrlForFonction(String url, FonctionEnum fonctionEnum) {
-    manuelDocumentsUrl.put(fonctionEnum,url)
+    manuelDocumentsUrl.put(fonctionEnum, url)
   }
 
   /**
@@ -70,6 +70,35 @@ class PortailTagLibService {
       addManuelDocumentUrlForFonction(urlMap.get(it), fonctionEnum)
     }
   }
-  
+
+  /**
+   * Ajoute une URL d'aide pour une selecteur donné
+   * @param url l'url du document
+   * @param selector le selecteur
+   */
+  def addHelpDocumentUrlForSelector(String url, String selector) {
+    helpDocumentUrl.put(selector, url)
+  }
+
+  /**
+   * Récupère, si il existe, l'aide correspondant à un sélecteur
+   * @param selector le selecteur
+   * @return l'Url de l'aide correspondant ou null
+   */
+  String findHelpDocumentUrlForSelector(String selector) {
+    return helpDocumentUrl[selector]
+  }
+
+  /**
+   * Ajoute un lots d'urls de  manuels
+   * @param urlMap la map d'Url où les clés sont les noms de fonctions et les
+   * valeurs les urls des manuels correspondant
+   */
+  def addHelpDocumentUrls(Map urlMap) {
+    urlMap.keySet().each {
+      addHelpDocumentUrlForSelector(urlMap.get(it), it.toString())
+    }
+  }
+
 
 }
