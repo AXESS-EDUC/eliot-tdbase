@@ -972,3 +972,17 @@ a.portal-manuel {
 a.portal-manuel:hover {
    text-decoration: none;
 }
+
+a.portal-help {
+    background-image: url('../../images/eliot/aide/aideContextuelle.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    text-align: center;
+    padding-top: 3px;
+    padding-right: 5px;
+    padding-left: 15px;
+}
+
+a.portal-help:hover {
+   text-decoration: none;
+}

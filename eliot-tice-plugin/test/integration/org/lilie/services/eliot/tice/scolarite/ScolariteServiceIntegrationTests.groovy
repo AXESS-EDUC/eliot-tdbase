@@ -29,9 +29,7 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.utils.BootstrapService
-import org.lilie.services.eliot.tice.utils.InitialisationTestService
 
 /**
  *  Test la classe ProfilScolariteService
@@ -45,28 +43,78 @@ class ScolariteServiceIntegrationTests extends GroovyTestCase {
 
 
   void setUp() {
-     bootstrapService.bootstrapForIntegrationTest()
+    bootstrapService.bootstrapForIntegrationTest()
   }
 
   void testFindNiveauxForStructureEnseignement() {
     def struct = bootstrapService.classe1ere
     def niveaux = scolariteService.findNiveauxForStructureEnseignement(struct)
     assertEquals(1, niveaux.size())
-    assertEquals(struct.niveau,niveaux.first())
+    assertEquals(struct.niveau, niveaux.first())
 
     struct = bootstrapService.grpe1ere
     niveaux = scolariteService.findNiveauxForStructureEnseignement(struct)
     assertEquals(2, niveaux.size())
-    assertTrue("niveau premiere non trouve",niveaux.contains(bootstrapService.nivPremiere))
-    assertTrue("niveau terminale non trouve",niveaux.contains(bootstrapService.nivTerminale))
+    assertTrue("niveau premiere non trouve", niveaux.contains(bootstrapService.nivPremiere))
+    assertTrue("niveau terminale non trouve", niveaux.contains(bootstrapService.nivTerminale))
   }
 
   void testFindStructuresEnseignement() {
-    def etab = bootstrapService.leLycee
-    def structs = scolariteService.findStructuresEnseignement(etab)
+    def lycee = bootstrapService.leLycee
+    def structs = scolariteService.findStructuresEnseignement([lycee])
     assertEquals(3, structs.size())
     assertTrue("Terminale pas trouvée", structs.contains(bootstrapService.classeTerminale))
     assertTrue("premiere pas trouvée", structs.contains(bootstrapService.classe1ere))
     assertTrue("groupe pas trouvé", structs.contains(bootstrapService.grpe1ere))
+
+    def college = bootstrapService.leCollege
+    structs = scolariteService.findStructuresEnseignement([lycee, college])
+    assertEquals(4, structs.size())
+
+    structs = scolariteService.findStructuresEnseignement([lycee, college])
+    assertEquals(4, structs.size())
+
+    structs = scolariteService.findStructuresEnseignement([lycee, college], null,
+                                                          bootstrapService.nivSixieme)
+    assertEquals(1, structs.size())
+    assertTrue("sixieme pas trouvée", structs.contains(bootstrapService.classe6eme))
+
+    structs = scolariteService.findStructuresEnseignement([lycee, college], null,
+                                                          bootstrapService.nivTerminale)
+    assertEquals(2, structs.size())
+    assertTrue("terminale pas trouvée", structs.contains(bootstrapService.classeTerminale))
+    assertTrue("grpe pas trouvé", structs.contains(bootstrapService.grpe1ere))
+
+    structs = scolariteService.findStructuresEnseignement([lycee, college], "1ere")
+    assertEquals(2, structs.size())
+    assertTrue("classe pas trouvée", structs.contains(bootstrapService.classe1ere))
+    assertTrue("grpe pas trouvé", structs.contains(bootstrapService.grpe1ere))
+
+    structs = scolariteService.findStructuresEnseignement([lycee, college], "1ERE")
+    assertEquals(2, structs.size())
+    assertTrue("classe pas trouvée", structs.contains(bootstrapService.classe1ere))
+    assertTrue("grpe pas trouvé", structs.contains(bootstrapService.grpe1ere))
   }
+
+  void testFindNiveauxForEtablissement() {
+    def lycee = bootstrapService.leLycee
+    def niveaux = scolariteService.findNiveauxForEtablissement([lycee])
+    assertEquals(2, niveaux.size())
+    assertTrue("pas de premiere", niveaux.contains(bootstrapService.nivPremiere))
+    assertTrue("pas de terminal", niveaux.contains(bootstrapService.nivTerminale))
+
+    def college = bootstrapService.leCollege
+    niveaux = scolariteService.findNiveauxForEtablissement([college])
+    assertEquals(1, niveaux.size())
+    assertTrue("pas de sixieme", niveaux.contains(bootstrapService.nivSixieme))
+
+    niveaux = scolariteService.findNiveauxForEtablissement([lycee, college])
+    assertEquals(3, niveaux.size())
+    assertTrue("pas de premiere", niveaux.contains(bootstrapService.nivPremiere))
+    assertTrue("pas de terminal", niveaux.contains(bootstrapService.nivTerminale))
+    assertTrue("pas de sixieme", niveaux.contains(bootstrapService.nivSixieme))
+
+  }
+
+
 }

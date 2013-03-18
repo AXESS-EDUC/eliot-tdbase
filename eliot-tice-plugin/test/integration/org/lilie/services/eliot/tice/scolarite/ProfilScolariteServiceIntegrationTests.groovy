@@ -74,6 +74,14 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
   }
 
+  void testFindEtablissementsForPersonne() {
+      def etabs = profilScolariteService.findEtablissementsForPersonne(enseignant1.personne)
+      assertEquals(2, etabs.size())
+      assertTrue("college pas trouvé",etabs.contains(bootstrapservice.leCollege))
+      assertTrue("lycee pas trouvé",etabs.contains(bootstrapservice.leLycee))
+
+    }
+
 
   private BootstrapService getBootstrapservice() {
     initialisationTestService.bootstrapService

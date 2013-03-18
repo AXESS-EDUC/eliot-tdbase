@@ -115,6 +115,24 @@ public class ProfilScolariteService {
   }
 
   /**
+   * Récupère les établissements caractérisant la personne passée en paramètre
+   * @param Personne la personne
+   * @return la liste des établissements
+   */
+  List<Etablissement> findEtablissementsForPersonne(Personne personne) {
+    List<PersonneProprietesScolarite> profils =
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+    List<Etablissement> etablissements = []
+    profils.each {
+      Etablissement etablissement = it.proprietesScolarite.etablissement
+      if (etablissement && !etablissements.contains(etablissement)) {
+        etablissements << etablissement
+      }
+    }
+    return etablissements
+  }
+
+  /**
    * Récupère les structures d'enseignement (classes / divisions) caractérisant la
    * personne passée en paramètre, tout établissement confondu
    * @param Personne la personne

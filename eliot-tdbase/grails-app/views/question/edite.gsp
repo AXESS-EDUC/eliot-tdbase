@@ -179,7 +179,8 @@
       <tr>
         <td class="label">Type :</td>
         <td>
-          ${question.type.nom}
+          <strong>${question.type.nom}</strong> <et:helpLink selector="eliot.tdbase.item.${question.type.code}" class="portal-help"><g:message
+                      code="manuels.libellelien"/></et:helpLink>
         </td>
       </tr>
       <g:if test="${!question.id && sujet}">
@@ -243,8 +244,8 @@
         <td>
           <g:if test="${question.estPartage()}">
             <a href="${question.copyrightsType.lien}"
-               target="_blank"><img src="${question.copyrightsType.logo}"
-                                    title="${question.copyrightsType.presentation}"/>
+               target="_blank"><img src="${question.copyrightsType.logo}" style="float: left;margin-right: 10px;"
+                                    title="${question.copyrightsType.code}"/> ${question.copyrightsType.presentation}
             </a>
           </g:if>
           <g:else>
