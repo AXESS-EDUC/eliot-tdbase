@@ -52,12 +52,8 @@
         <tr>
           <td class="label">Niveau&nbsp;
           </td>
-          <td>
-            <g:select name="niveauId" value="${rechercheStructuresCommand.niveauId}"
-                      noSelection="${['null': 'Indéterminé']}"
-                      from="${niveaux}"
-                      optionKey="id"
-                      optionValue="libelleLong"/>
+          <td id="selectNiveaux">
+            <g:render template="/seance/selectNiveaux" model="[niveauId: rechercheStructuresCommand.niveauId,niveaux:niveaux]"/>
           </td>
         </tr>
 
@@ -117,5 +113,13 @@
    )
    $( "#search-structure-form" ).dialog( "close" );
   }
+
+  $("#etablissementId").change(function() {
+    $.get("${createLink(action: 'updateNiveaux', controller: 'seance')}",
+                    { etablissementId: $(this).val()},
+                    function(data) {
+                        $('#selectNiveaux').html(data)
+                    })
+  })
 
 </script>
