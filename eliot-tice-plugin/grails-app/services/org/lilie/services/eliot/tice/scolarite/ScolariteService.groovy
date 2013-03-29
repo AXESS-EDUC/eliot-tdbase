@@ -53,6 +53,21 @@ public class ScolariteService {
   }
 
   /**
+   * Récupère les niveaux pour une structure d'enseignement
+   * @param struct la structure d'enseignement
+   * @return la liste des niveaux
+   */
+  List<NiveauGeneral> findNiveauxGenerauxForStructureEnseignement(StructureEnseignement struct) {
+    def niveaux = []
+    if (struct.isClasse()) {
+      niveaux.add(struct.preferences.niveauGeneral)
+    } else if (struct.isGroupe()) {
+      niveaux = struct.classes*.preferences.niveauGeneral
+    }
+    niveaux
+  }
+
+  /**
    * Recherche de structures d'enseignements de l'année en cours
    * @param etablissement l'établissement
    * @param patternCode le pattern de code
@@ -137,7 +152,7 @@ public class ScolariteService {
       }
       projections {
         niveau {
-          groupProperty( "libelleLong")
+          groupProperty("libelleLong")
         }
         groupProperty "niveau"
 
@@ -146,22 +161,22 @@ public class ScolariteService {
 
     }
     def niveauxRes = niveaux.collect {
-      ((List)it)[1]
+      ((List) it)[1]
     }
     niveauxRes
   }
 
   /**
-     * Récupère les niveaux gééraux de différents établissements
-     * @param etablissements
-     * @return la liste des niveaux généraux des différents établissements
-     */
-    List<NiveauGeneral> findNiveauxGenerauxForEtablissements(List<Etablissement> etablissements) {
-      def niveaux = []
-      etablissements.each {
-        niveaux.addAll(it.niveauxGeneraux)
-      }
-      niveaux
+   * Récupère les niveaux gééraux de différents établissements
+   * @param etablissements
+   * @return la liste des niveaux généraux des différents établissements
+   */
+  List<NiveauGeneral> findNiveauxGenerauxForEtablissements(List<Etablissement> etablissements) {
+    def niveaux = []
+    etablissements.each {
+      niveaux.addAll(it.niveauxGeneraux)
     }
+    niveaux
+  }
 
 }

@@ -59,6 +59,20 @@ class ScolariteServiceIntegrationTests extends GroovyTestCase {
     assertTrue("niveau terminale non trouve", niveaux.contains(bootstrapService.nivTerminale))
   }
 
+  void testFindNiveauxGenerauxForStructureEnseignement() {
+      def struct = bootstrapService.classe1ere
+      def niveaux = scolariteService.findNiveauxGenerauxForStructureEnseignement(struct)
+      assertEquals(1, niveaux.size())
+      assertEquals(struct.preferences.niveauGeneral, niveaux.first())
+
+      struct = bootstrapService.grpe1ere
+      niveaux = scolariteService.findNiveauxGenerauxForStructureEnseignement(struct)
+      assertEquals(2, niveaux.size())
+      assertTrue("niveau premiere non trouve", niveaux.contains(bootstrapService.niveauGeneralPremiere))
+      assertTrue("niveau terminale non trouve", niveaux.contains(bootstrapService.niveauGeneralTerminale))
+    }
+
+
   void testFindStructuresEnseignement() {
     def lycee = bootstrapService.leLycee
     def structs = scolariteService.findStructuresEnseignement([lycee])

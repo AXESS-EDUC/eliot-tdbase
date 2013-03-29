@@ -64,6 +64,8 @@ public class StructureEnseignement {
    */
   boolean actif = true
 
+  static hasOne = [preferences:StructureEnseignementPreferences]
+
   static hasMany = [
           groupes: StructureEnseignement,
           classes: StructureEnseignement,
@@ -76,6 +78,7 @@ public class StructureEnseignement {
     etablissement(nullable: false)
     code(nullable: true)
     niveau(nullable: true)
+    preferences(nullable: true)
   }
 
   static mapping = {
