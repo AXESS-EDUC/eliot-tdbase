@@ -89,12 +89,12 @@ class ScolariteServiceIntegrationTests extends GroovyTestCase {
     assertEquals(4, structs.size())
 
     structs = scolariteService.findStructuresEnseignement([lycee, college], null,
-                                                          bootstrapService.nivSixieme)
+                                                          bootstrapService.niveauGeneralSixieme)
     assertEquals(1, structs.size())
     assertTrue("sixieme pas trouvée", structs.contains(bootstrapService.classe6eme))
 
     structs = scolariteService.findStructuresEnseignement([lycee, college], null,
-                                                          bootstrapService.nivTerminale)
+                                                          bootstrapService.niveauGeneralTerminale)
     assertEquals(2, structs.size())
     assertTrue("terminale pas trouvée", structs.contains(bootstrapService.classeTerminale))
     assertTrue("grpe pas trouvé", structs.contains(bootstrapService.grpe1ere))

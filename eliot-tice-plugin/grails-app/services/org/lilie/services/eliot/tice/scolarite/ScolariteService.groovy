@@ -29,6 +29,9 @@
 
 
 package org.lilie.services.eliot.tice.scolarite
+
+import org.hibernate.criterion.CriteriaSpecification
+
 /**
  *
  * @author franck Silvestre
@@ -71,7 +74,7 @@ public class ScolariteService {
    * Recherche de structures d'enseignements de l'année en cours
    * @param etablissement l'établissement
    * @param patternCode le pattern de code
-   * @param niveau le niveau
+   * @param niveau le niveau general
    * @param paginationAndSortingSpec les specifications pour l'ordre et
    * la pagination
    * @param uniquementQuestionsChercheur flag indiquant si on recherche que
@@ -80,7 +83,7 @@ public class ScolariteService {
    */
   List<StructureEnseignement> findStructuresEnseignement(List<Etablissement> etablissements,
                                                          String patternCode = null,
-                                                         Niveau niveau = null,
+                                                         NiveauGeneral niveau = null,
                                                          Integer limiteResults = 200,
                                                          Map paginationAndSortingSpec = [:]) {
 
@@ -106,11 +109,13 @@ public class ScolariteService {
         ilike "code", patternCodeX
       }
       if (niveau) {
+        createAlias('classes','cl', CriteriaSpecification.FULL_JOIN)
+        createAlias ('cl.preferences', 'pref', CriteriaSpecification.FULL_JOIN)
         or {
-          eq "niveau", niveau
-          classes {
-            eq "niveau", niveau
+          preferences {
+            eq "niveauGeneral", niveau
           }
+          eq 'pref.niveauGeneral', niveau
         }
       }
       maxResults(limiteResults)
