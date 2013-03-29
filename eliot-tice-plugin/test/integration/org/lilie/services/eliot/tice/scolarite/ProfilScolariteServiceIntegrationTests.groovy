@@ -74,6 +74,15 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
   }
 
+  void testFindNiveauxGeNerauxForPersonne() {
+      def niveaux = profilScolariteService.findNiveauxGenerauxForPersonne(enseignant1.personne)
+      assertEquals(3, niveaux.size())
+      assertTrue("Niveau 6ème pas trouvé",niveaux.contains(bootstrapservice.niveauGeneralSixieme))
+      assertTrue("Niveau terminale pas trouvé",niveaux.contains(bootstrapservice.niveauGeneralTerminale))
+      assertTrue("Niveau 1ère pas trouvé",niveaux.contains(bootstrapservice.niveauGeneralPremiere) )
+
+    }
+
   void testFindEtablissementsForPersonne() {
       def etabs = profilScolariteService.findEtablissementsForPersonne(enseignant1.personne)
       assertEquals(2, etabs.size())

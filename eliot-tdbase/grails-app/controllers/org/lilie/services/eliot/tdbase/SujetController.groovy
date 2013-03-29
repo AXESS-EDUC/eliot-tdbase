@@ -64,7 +64,7 @@ class SujetController {
             affichePager: affichePager,
             typesSujet: sujetService.getAllSujetTypes(),
             matieres: profilScolariteService.findMatieresForPersonne(personne),
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxGenerauxForPersonne(personne),
             sujets: sujets,
             rechercheCommand: rechCmd,
             artefactHelper: artefactAutorisationService,
@@ -105,7 +105,7 @@ class SujetController {
             sujet: new Sujet(),
             typesSujet: sujetService.getAllSujetTypes(),
             matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
+            niveaux: profilScolariteService.findNiveauxGenerauxForPersonne(proprietaire)])
   }
 
   /**
@@ -120,7 +120,7 @@ class SujetController {
             sujet: sujet,
             typesSujet: sujetService.getAllSujetTypes(),
             matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
+            niveaux: profilScolariteService.findNiveauxGenerauxForPersonne(proprietaire)])
   }
 
   /**
@@ -161,7 +161,7 @@ class SujetController {
             sujet: sujet,
             typesSujet: sujetService.getAllSujetTypes(),
             matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
+            niveaux: profilScolariteService.findNiveauxGenerauxForPersonne(proprietaire)])
   }
 
   /**
@@ -409,7 +409,7 @@ class SujetController {
                                                 sujet: sujet)
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     def etablissements = profilScolariteService.findEtablissementsForPersonne(personne)
-    def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
+    def niveaux = scolariteService.findNiveauxGenerauxForEtablissements(etablissements)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
             etablissements: etablissements,
             niveaux: niveaux,
@@ -466,7 +466,7 @@ class SujetController {
     [liens: breadcrumpsService.liens,
             sujet: sujet,
             matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)]
+            niveaux: profilScolariteService.findNiveauxGenerauxForPersonne(proprietaire)]
 
   }
 

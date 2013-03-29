@@ -41,6 +41,12 @@ class NiveauGeneral {
 
   static belongsTo = [etablissement:Etablissement]
 
+  static transients = ['libelleLong']
+
+  String getLibelleLong() {
+    libelle
+  }
+
   static constraints = {
     libelle(blank: false)
   }
