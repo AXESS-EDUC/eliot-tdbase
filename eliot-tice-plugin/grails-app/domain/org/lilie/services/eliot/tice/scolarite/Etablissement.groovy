@@ -34,6 +34,7 @@ import org.lilie.services.eliot.tice.annuaire.PorteurEnt
  * Représente un établissement
  * @author msan
  * @author jtra
+ * @author Franck Silvestre
  */
 class Etablissement {
 
@@ -45,11 +46,14 @@ class Etablissement {
 
   PorteurEnt porteurEnt
 
+  static hasMany = [niveauxGeneraux: NiveauGeneral]
+
   static mapping = {
     table 'ent.etablissement'
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.etablissement_id_seq']
     codePorteurENT column: 'code_porteur_ent'
     cache usage: 'read-write'
+    niveauxGeneraux(order: 'libelle')
   }
 
   static constraints = {
@@ -57,6 +61,7 @@ class Etablissement {
     uai(nullable: true)
     nomAffichage(maxSize: 1024)
     porteurEnt(nullable: true)
+    niveauxGeneraux(nullable: true)
 
   }
 

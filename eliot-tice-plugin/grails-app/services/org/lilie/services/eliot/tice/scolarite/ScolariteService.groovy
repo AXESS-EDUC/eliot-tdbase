@@ -151,4 +151,17 @@ public class ScolariteService {
     niveauxRes
   }
 
+  /**
+     * Récupère les niveaux gééraux de différents établissements
+     * @param etablissements
+     * @return la liste des niveaux généraux des différents établissements
+     */
+    List<NiveauGeneral> findNiveauxGenerauxForEtablissements(List<Etablissement> etablissements) {
+      def niveaux = []
+      etablissements.each {
+        niveaux.addAll(it.niveauxGeneraux)
+      }
+      niveaux
+    }
+
 }

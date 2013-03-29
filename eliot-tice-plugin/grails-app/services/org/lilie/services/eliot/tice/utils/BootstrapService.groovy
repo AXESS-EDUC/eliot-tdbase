@@ -93,10 +93,12 @@ class BootstrapService {
   def bootstrapJeuDeTestDevDemo() {
     initialiseAnneeScolaireEnvDevelopmentTest()
     initialiseEtablissementsEnvDevelopmentTest()
+    initialiseNiveauxGenerauxEnvDevelopmentTest()
     initialiseMatieresEnvDevelopmentTest()
     initialiseNiveauxEnvDevelopmentTest()
 
     initialiseStructuresEnseignementsEnvDevelopmentTest()
+    initialiseStructureEnseignementPreferences()
     initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
     initialiseEnseignant1EnvDevelopment()
     initialiseProfilsScolaritesEnseignant1EnvDevelopment()
@@ -116,9 +118,11 @@ class BootstrapService {
     if (Environment.current == Environment.TEST) {
       initialiseAnneeScolaireEnvDevelopmentTest()
       initialiseEtablissementsEnvDevelopmentTest()
+      initialiseNiveauxGenerauxEnvDevelopmentTest()
       initialiseMatieresEnvDevelopmentTest()
       initialiseNiveauxEnvDevelopmentTest()
       initialiseStructuresEnseignementsEnvDevelopmentTest()
+      initialiseStructureEnseignementPreferences()
       initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
       initialiseProprietesScolaritesEleveEnvDevelopmentTest()
       initialisePorteurEnt()
@@ -159,34 +163,38 @@ class BootstrapService {
   private def initialiseStructuresEnseignementsEnvDevelopmentTest() {
     if (!StructureEnseignement.findAllByCodeLike("${CODE_STRUCTURE_PREFIXE}%")) {
       classe6eme = new StructureEnseignement(etablissement: leCollege,
-                                anneeScolaire: anneeScolaire,
-                                code: "${CODE_STRUCTURE_PREFIXE}_6ème1",
-                                idExterne: "${leCollege.uai}.${CODE_STRUCTURE_PREFIXE}_6ème1",
-                                type: StructureEnseignement.TYPE_CLASSE,
-                                niveau: nivSixieme,
-                                actif: true).save()
+                                             anneeScolaire: anneeScolaire,
+                                             code: "${CODE_STRUCTURE_PREFIXE}_6ème1",
+                                             idExterne: "${leCollege.uai}.${CODE_STRUCTURE_PREFIXE}_6ème1",
+                                             type: StructureEnseignement.TYPE_CLASSE,
+                                             niveau: nivSixieme,
+                                             groupeEnt: false,
+                                             actif: true).save()
       classe1ere = new StructureEnseignement(etablissement: leLycee,
-                                anneeScolaire: anneeScolaire,
-                                code: "${CODE_STRUCTURE_PREFIXE}_1ereA",
-                                idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA",
-                                type: StructureEnseignement.TYPE_CLASSE,
-                                niveau: nivPremiere,
-                                actif: true).save()
+                                             anneeScolaire: anneeScolaire,
+                                             code: "${CODE_STRUCTURE_PREFIXE}_1ereA",
+                                             idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA",
+                                             type: StructureEnseignement.TYPE_CLASSE,
+                                             niveau: nivPremiere,
+                                             groupeEnt: false,
+                                             actif: true).save()
       grpe1ere = new StructureEnseignement(etablissement: leLycee,
-                                anneeScolaire: anneeScolaire,
-                                code: "${CODE_STRUCTURE_PREFIXE}_1ereA_G1",
-                                idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA_G1",
-                                type: StructureEnseignement.TYPE_GROUPE,
-                                actif: true).save()
+                                           anneeScolaire: anneeScolaire,
+                                           code: "${CODE_STRUCTURE_PREFIXE}_1ereA_G1",
+                                           idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA_G1",
+                                           type: StructureEnseignement.TYPE_GROUPE,
+                                           groupeEnt: true,
+                                           actif: true).save()
 
 
       classeTerminale = new StructureEnseignement(etablissement: leLycee,
-                                anneeScolaire: anneeScolaire,
-                                code: "${CODE_STRUCTURE_PREFIXE}_Terminale_D",
-                                idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_Terminale_D",
-                                type: StructureEnseignement.TYPE_CLASSE,
-                                niveau: nivTerminale,
-                                actif: true).save()
+                                                  anneeScolaire: anneeScolaire,
+                                                  code: "${CODE_STRUCTURE_PREFIXE}_Terminale_D",
+                                                  idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_Terminale_D",
+                                                  type: StructureEnseignement.TYPE_CLASSE,
+                                                  niveau: nivTerminale,
+                                                  groupeEnt: false,
+                                                  actif: true).save()
 
       grpe1ere.addToClasses(classe1ere)
       grpe1ere.addToClasses(classeTerminale)
@@ -201,22 +209,23 @@ class BootstrapService {
   private def initialiseEtablissementsEnvDevelopmentTest() {
     if (!Etablissement.findAllByUaiLike("${UAI_PREFIXE}%")) {
       leLycee = new Etablissement(codePorteurENT: DEFAULT_CODE_PORTEUR_ENT,
-                        uai: UAI_LYCEE,
-                        nomAffichage: "Lycée Montaigne",
-                        idExterne: UAI_LYCEE).save()
+                                  uai: UAI_LYCEE,
+                                  nomAffichage: "Lycée Montaigne",
+                                  idExterne: UAI_LYCEE).save()
       leCollege = new Etablissement(codePorteurENT: DEFAULT_CODE_PORTEUR_ENT,
-                        uai: UAI_COLLEGE,
-                        nomAffichage: "Collège Pascal",
-                        idExterne: UAI_COLLEGE).save(flush: true)
+                                    uai: UAI_COLLEGE,
+                                    nomAffichage: "Collège Pascal",
+                                    idExterne: UAI_COLLEGE).save(flush: true)
     }
   }
 
   AnneeScolaire anneeScolaire
+
   private def initialiseAnneeScolaireEnvDevelopmentTest() {
-    anneeScolaire =  AnneeScolaire.findByAnneeEnCours(true)
+    anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
     if (!anneeScolaire) {
       anneeScolaire = new AnneeScolaire(code: "${CODE_ANNEE_SCOLAIRE_PREFIXE}_2011-2012",
-                        anneeEnCours: true).save(flush: true,failOnError: true)
+                                        anneeEnCours: true).save(flush: true, failOnError: true)
     }
     assert anneeScolaire != null
 
@@ -230,54 +239,55 @@ class BootstrapService {
   Matiere matiereCommunication
   Matiere matiereAnglais
   Matiere matiereMaths
+
   private def initialiseMatieresEnvDevelopmentTest() {
     if (!Matiere.findAllByCodeGestionLike("${CODE_GESTION_PREFIXE}%")) {
 
       matiereMaths = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_1",
-                             etablissement: leLycee,
-                             libelleEdition: "Mathématiques",
-                             libelleCourt: "Mathématiques",
-                             libelleLong: "Mathématiques",
-                             anneeScolaire: anneeScolaire).save()
+                                 etablissement: leLycee,
+                                 libelleEdition: "Mathématiques",
+                                 libelleCourt: "Mathématiques",
+                                 libelleLong: "Mathématiques",
+                                 anneeScolaire: anneeScolaire).save()
 
       assert matiereMaths != null
 
       matiereSES = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_2",
-                  etablissement: leLycee,
-                  libelleEdition: "SES",
-                  libelleCourt: "SES",
-                  libelleLong: "SES",
-                  anneeScolaire: anneeScolaire).save()
+                               etablissement: leLycee,
+                               libelleEdition: "SES",
+                               libelleCourt: "SES",
+                               libelleLong: "SES",
+                               anneeScolaire: anneeScolaire).save()
       matiereSESSpe = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_3",
-                  etablissement: leLycee,
-                  libelleEdition: "SES Spécialité",
-                  libelleCourt: "SES Spécialité",
-                  libelleLong: "SES Spécialité",
-                  anneeScolaire: anneeScolaire).save()
+                                  etablissement: leLycee,
+                                  libelleEdition: "SES Spécialité",
+                                  libelleCourt: "SES Spécialité",
+                                  libelleLong: "SES Spécialité",
+                                  anneeScolaire: anneeScolaire).save()
       matiereHistoire = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_4",
-                  etablissement: leCollege,
-                  libelleEdition: "Histoire",
-                  libelleCourt: "Histoire",
-                  libelleLong: "Histoire",
-                  anneeScolaire: anneeScolaire).save()
+                                    etablissement: leCollege,
+                                    libelleEdition: "Histoire",
+                                    libelleCourt: "Histoire",
+                                    libelleLong: "Histoire",
+                                    anneeScolaire: anneeScolaire).save()
       matiereGeographie = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_5",
-                  etablissement: leCollege,
-                  libelleEdition: "Géographie",
-                  libelleCourt: "Géographie",
-                  libelleLong: "Géographie",
-                  anneeScolaire: anneeScolaire).save()
+                                      etablissement: leCollege,
+                                      libelleEdition: "Géographie",
+                                      libelleCourt: "Géographie",
+                                      libelleLong: "Géographie",
+                                      anneeScolaire: anneeScolaire).save()
       matiereCommunication = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_6",
-                  etablissement: leLycee,
-                  libelleEdition: "Communication",
-                  libelleCourt: "Communication",
-                  libelleLong: "Communication",
-                  anneeScolaire: anneeScolaire).save()
+                                         etablissement: leLycee,
+                                         libelleEdition: "Communication",
+                                         libelleCourt: "Communication",
+                                         libelleLong: "Communication",
+                                         anneeScolaire: anneeScolaire).save()
       matiereAnglais = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_7",
-                  etablissement: leLycee,
-                  libelleEdition: "Anglais",
-                  libelleCourt: "Anglais",
-                  libelleLong: "Anglais",
-                  anneeScolaire: anneeScolaire).save(flush: true)
+                                   etablissement: leLycee,
+                                   libelleEdition: "Anglais",
+                                   libelleCourt: "Anglais",
+                                   libelleLong: "Anglais",
+                                   anneeScolaire: anneeScolaire).save(flush: true)
     }
   }
 
@@ -286,22 +296,68 @@ class BootstrapService {
   Niveau nivSixieme
   Niveau nivBTS1
   Niveau nivBTS2
+
   private def initialiseNiveauxEnvDevelopmentTest() {
     if (!Niveau.findAllByLibelleCourtLike("${CODE_MEFSTAT4_PREFIXE}%")) {
       nivPremiere = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_1",
-                 libelleLong: "Première").save()
+                               libelleLong: "Première").save()
       nivTerminale = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_2",
-                 libelleLong: "Terminale").save()
+                                libelleLong: "Terminale").save()
       nivBTS1 = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_3",
-                 libelleLong: "BTS 1").save()
+                           libelleLong: "BTS 1").save()
       nivBTS2 = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_4",
-                 libelleLong: "BTS 2").save()
+                           libelleLong: "BTS 2").save()
       nivSixieme = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_5",
-                 libelleLong: "6ème").save(flush: true)
+                              libelleLong: "6ème").save(flush: true)
 
     }
   }
 
+
+  NiveauGeneral niveauGeneralPremiere
+  NiveauGeneral niveauGeneralTerminale
+  NiveauGeneral niveauGeneralSixieme
+  NiveauGeneral niveauGeneralBTS1
+  NiveauGeneral niveauGeneralBTS2
+
+  private def initialiseNiveauxGenerauxEnvDevelopmentTest() {
+    if (!NiveauGeneral.findAllByLibelleLike("NG%")) {
+
+      niveauGeneralPremiere = new NiveauGeneral(libelle: "NG_Première")
+      niveauGeneralTerminale = new NiveauGeneral(libelle: "NG_Terminale")
+      niveauGeneralSixieme = new NiveauGeneral(libelle: "NG_Sixième")
+      niveauGeneralBTS1 = new NiveauGeneral(libelle: "NG_BTS 1")
+      niveauGeneralBTS2 = new NiveauGeneral(libelle: "NG_BTS 2")
+
+      leLycee.addToNiveauxGeneraux(niveauGeneralPremiere)
+      leLycee.addToNiveauxGeneraux(niveauGeneralTerminale)
+      leLycee.addToNiveauxGeneraux(niveauGeneralBTS1)
+      leLycee.addToNiveauxGeneraux(niveauGeneralBTS2)
+      leCollege.addToNiveauxGeneraux(niveauGeneralSixieme)
+      leLycee.save()
+      leCollege.save(flush: true)
+      if (niveauGeneralPremiere.hasErrors()) {
+        niveauGeneralPremiere.errors.allErrors.each {
+          println ">>>>>>>>>>>> $it"
+        }
+      }
+
+    }
+  }
+
+  private def initialiseStructureEnseignementPreferences() {
+      if (!StructureEnseignementPreferences.findAllByStructureEnseignement(classe1ere)) {
+        new StructureEnseignementPreferences(structureEnseignement: classe1ere,
+                                             niveauGeneral: niveauGeneralPremiere).save()
+        new StructureEnseignementPreferences(structureEnseignement: classeTerminale,
+                                             niveauGeneral: niveauGeneralTerminale).save()
+        new StructureEnseignementPreferences(structureEnseignement: grpe1ere,
+                                             niveauGeneral: niveauGeneralPremiere).save()
+        new StructureEnseignementPreferences(structureEnseignement: classe6eme,
+                                                             niveauGeneral: niveauGeneralSixieme).save(flush: true)
+
+      }
+    }
 
   private def initialiseProprietesScolaritesEnseignantEnvDevelopmentTest() {
     Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)

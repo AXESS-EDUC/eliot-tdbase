@@ -45,6 +45,7 @@ public class StructureEnseignement {
 
   static final String TYPE_CLASSE = "CLASSE"
   static final String TYPE_GROUPE = "GROUPE"
+  static final String LIBELLE_GROUPE_ENT = "groupe ENT"
 
   Long id
   AnneeScolaire anneeScolaire
@@ -53,6 +54,7 @@ public class StructureEnseignement {
   Etablissement etablissement
   String code
   Niveau niveau
+  Boolean groupeEnt
 
   /**
    * Indique si cette structure d'enseignement existe dans les données du
@@ -130,6 +132,9 @@ public class StructureEnseignement {
       } else {
         nomAffichage = code
       }
+    }
+    if (groupeEnt) {
+       nomAffichage += " - $LIBELLE_GROUPE_ENT"
     }
     return nomAffichage
   }
