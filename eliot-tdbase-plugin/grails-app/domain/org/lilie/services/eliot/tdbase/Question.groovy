@@ -35,6 +35,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.lilie.services.eliot.tice.scolarite.NiveauGeneral
 import org.springframework.validation.Errors
 import org.springframework.validation.ObjectError
 import org.springframework.web.multipart.MultipartFile
@@ -68,6 +69,7 @@ class Question implements Artefact {
   Etablissement etablissement
   Matiere matiere
   Niveau niveau
+  NiveauGeneral niveauGeneral
   CopyrightsType copyrightsType
   Publication publication
   SortedSet<QuestionAttachement> questionAttachements
@@ -87,6 +89,7 @@ class Question implements Artefact {
     etablissement(nullable: true)
     matiere(nullable: true)
     niveau(nullable: true)
+    niveauGeneral(nullable: true)
     publication(nullable: true)
     paternite(nullable: true)
     exercice(nullable: true)

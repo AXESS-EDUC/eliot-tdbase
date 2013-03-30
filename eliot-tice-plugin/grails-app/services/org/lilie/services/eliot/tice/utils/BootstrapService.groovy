@@ -216,6 +216,9 @@ class BootstrapService {
                                     uai: UAI_COLLEGE,
                                     nomAffichage: "Collège Pascal",
                                     idExterne: UAI_COLLEGE).save(flush: true)
+    } else {
+      leLycee = Etablissement.findByUai(UAI_LYCEE)
+      leCollege = Etablissement.findByUai(UAI_COLLEGE)
     }
   }
 

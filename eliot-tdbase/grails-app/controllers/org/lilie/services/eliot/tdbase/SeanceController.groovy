@@ -34,6 +34,7 @@ import groovy.json.JsonBuilder
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.lilie.services.eliot.tice.scolarite.NiveauGeneral
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.ScolariteService
@@ -138,7 +139,7 @@ class SeanceController {
     }
     def niveau = null
     if (command.niveauId) {
-      niveau = Niveau.get(command.niveauId)
+      niveau = NiveauGeneral.get(command.niveauId)
     }
     def limit = grailsApplication.config.eliot.listes.structures.maxrecherche
     def structures = scolariteService.findStructuresEnseignement(etabs,codePattern,niveau,limit)
