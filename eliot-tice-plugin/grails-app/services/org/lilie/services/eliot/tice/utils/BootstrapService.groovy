@@ -200,6 +200,11 @@ class BootstrapService {
       grpe1ere.addToClasses(classeTerminale)
       grpe1ere.save(flush: true)
 
+    } else {
+      classe6eme = StructureEnseignement.findByCode("${CODE_STRUCTURE_PREFIXE}_6ème1")
+      classe1ere = StructureEnseignement.findByCode("${CODE_STRUCTURE_PREFIXE}_1ereA")
+      grpe1ere = StructureEnseignement.findByCode("${CODE_STRUCTURE_PREFIXE}_1ereA_G1")
+      classeTerminale = StructureEnseignement.findByCode("${CODE_STRUCTURE_PREFIXE}_Terminale_D")
     }
   }
 
@@ -345,6 +350,12 @@ class BootstrapService {
         }
       }
 
+    } else {
+      niveauGeneralPremiere = NiveauGeneral.findByLibelle("NG_Première")
+      niveauGeneralTerminale = NiveauGeneral.findByLibelle("NG_Terminale")
+      niveauGeneralSixieme = NiveauGeneral.findByLibelle("NG_Sixième")
+      niveauGeneralBTS1 = NiveauGeneral.findByLibelle("NG_BTS 1")
+      niveauGeneralBTS2 = NiveauGeneral.findByLibelle("NG_BTS 2")
     }
   }
 
