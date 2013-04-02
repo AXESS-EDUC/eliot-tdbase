@@ -35,6 +35,7 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 
+
 /**
  * Classe représentant un sujet
  * @author franck Silvestre

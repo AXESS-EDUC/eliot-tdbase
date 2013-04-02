@@ -52,11 +52,13 @@ public class ScolariteService {
     niveaux
   }
 
+
+
   /**
    * Recherche de structures d'enseignements de l'année en cours
    * @param etablissement l'établissement
    * @param patternCode le pattern de code
-   * @param niveau le niveau
+   * @param niveau le niveau general
    * @param paginationAndSortingSpec les specifications pour l'ordre et
    * la pagination
    * @param uniquementQuestionsChercheur flag indiquant si on recherche que
@@ -137,7 +139,7 @@ public class ScolariteService {
       }
       projections {
         niveau {
-          groupProperty( "libelleLong")
+          groupProperty("libelleLong")
         }
         groupProperty "niveau"
 
@@ -146,7 +148,7 @@ public class ScolariteService {
 
     }
     def niveauxRes = niveaux.collect {
-      ((List)it)[1]
+      ((List) it)[1]
     }
     niveauxRes
   }

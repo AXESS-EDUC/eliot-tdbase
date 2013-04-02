@@ -145,10 +145,27 @@ class SeanceController {
     render(view: "/seance/_selectStructureEnseignement", model: [
             rechercheStructuresCommand:command,
             etablissements: allEtabs,
-            niveaux: scolariteService.findNiveauxForEtablissement(allEtabs),
+            niveaux: scolariteService.findNiveauxForEtablissement(etabs),
             structures: structures
     ])
   }
+
+  /**
+     * Action updateChapitres
+     */
+    def updateNiveaux() {
+      Personne personne = authenticatedPersonne
+      def etabId = params.etablissementId
+      def etabs = null
+      if (etabId == 'null') {
+        etabs = profilScolariteService.findEtablissementsForPersonne(personne)
+      }  else {
+        etabs = [Etablissement.get(etabId as Long)]
+      }
+      def niveaux = scolariteService.findNiveauxForEtablissement(etabs)
+      render(view: "/seance/_selectNiveaux", model: [niveaux: niveaux])
+    }
+
 
   /**
    * Action updateChapitres

@@ -34,6 +34,7 @@ import org.lilie.services.eliot.tice.annuaire.PorteurEnt
  * Représente un établissement
  * @author msan
  * @author jtra
+ * @author Franck Silvestre
  */
 class Etablissement {
 
@@ -44,6 +45,7 @@ class Etablissement {
   String codePorteurENT
 
   PorteurEnt porteurEnt
+
 
   static mapping = {
     table 'ent.etablissement'

@@ -74,6 +74,7 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
   }
 
+
   void testFindEtablissementsForPersonne() {
       def etabs = profilScolariteService.findEtablissementsForPersonne(enseignant1.personne)
       assertEquals(2, etabs.size())

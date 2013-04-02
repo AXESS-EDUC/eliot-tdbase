@@ -41,9 +41,8 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 
-<div class="portal-messages">
-<li class="notice">Pour faire connaissance avec les concepts clés de TD Base, accédez au document d'introduction à TD Base. <et:helpLink selector="eliot.tdbase.introduction" class="portal-help">&nbsp;</et:helpLink></li>
-</div>
+<p style="font-style: italic; margin-left: 2em">Pour faire connaissance avec les concepts clés de TD Base, accédez au document d'introduction à TD Base. <et:helpLink selector="eliot.tdbase.introduction" class="portal-help">&nbsp;</et:helpLink></p>
+
 <div id="widgets">
 	<g:render template="/sujet/w_sujets" model="[sujets:sujets, titre:'Mes sujets récents']"/>
 	<g:render template="/question/w_questions" model="[items:items, titre:'Mes items récents']"/>

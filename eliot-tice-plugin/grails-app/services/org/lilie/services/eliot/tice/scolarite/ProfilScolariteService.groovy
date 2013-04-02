@@ -114,6 +114,7 @@ public class ProfilScolariteService {
     return niveaux
   }
 
+
   /**
    * Récupère les établissements caractérisant la personne passée en paramètre
    * @param Personne la personne
