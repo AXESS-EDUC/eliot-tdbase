@@ -145,7 +145,7 @@ class SeanceController {
     render(view: "/seance/_selectStructureEnseignement", model: [
             rechercheStructuresCommand:command,
             etablissements: allEtabs,
-            niveaux: scolariteService.findNiveauxForEtablissement(allEtabs),
+            niveaux: scolariteService.findNiveauxForEtablissement(etabs),
             structures: structures
     ])
   }

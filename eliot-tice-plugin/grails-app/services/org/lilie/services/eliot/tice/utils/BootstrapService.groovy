@@ -205,6 +205,8 @@ class BootstrapService {
       classe1ere = StructureEnseignement.findByCode("${CODE_STRUCTURE_PREFIXE}_1ereA")
       grpe1ere = StructureEnseignement.findByCode("${CODE_STRUCTURE_PREFIXE}_1ereA_G1")
       classeTerminale = StructureEnseignement.findByCode("${CODE_STRUCTURE_PREFIXE}_Terminale_D")
+      grpe1ere.groupeEnt = true
+      grpe1ere.save(flush: true)
     }
   }
 

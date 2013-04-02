@@ -121,20 +121,10 @@ public class StructureEnseignement {
    * @return nom utilisable pour l'affichage
    */
   String getNomAffichage() {
-    String nomAffichage = null
-    if (type == TYPE_CLASSE) {
-      nomAffichage = code
-    } else {
-      // Si groupe avec une seul classe - Groupe (Classe)
-      // Sinon Groupe
-      if (classes?.size() == 1) {
-        nomAffichage = "$code (${classes.iterator().next().code})"
-      } else {
-        nomAffichage = code
-      }
-    }
+    String nomAffichage = code
+
     if (groupeEnt) {
-       nomAffichage += " - $LIBELLE_GROUPE_ENT"
+       nomAffichage += " ($LIBELLE_GROUPE_ENT)"
     }
     return nomAffichage
   }
