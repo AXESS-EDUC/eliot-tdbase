@@ -35,6 +35,11 @@
 
     <include file="migrations/complete/changelog-dbmigration-complete-2.0.5-RC1-FC.xml" />
     <include file="migrations/schema.tdbase/referentiel/changelog-20130228-209.xml"/>
-    <include file="migrations/schema.tdbase/changelog-20130330-204.xml"/>
+
+    <changeSet id="1" author="fsil">
+        <addColumn tableName="structure_enseignement" schemaName="ent">
+            <column name="groupe_ent" type="boolean" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>
