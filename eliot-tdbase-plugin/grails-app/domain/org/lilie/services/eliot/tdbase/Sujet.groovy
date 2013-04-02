@@ -34,7 +34,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.scolarite.NiveauGeneral
+
 
 /**
  * Classe représentant un sujet
@@ -72,7 +72,6 @@ class Sujet implements Artefact {
   Etablissement etablissement
   Matiere matiere
   Niveau niveau
-  NiveauGeneral niveauGeneral
   Publication publication
   CopyrightsType copyrightsType
 
@@ -96,7 +95,6 @@ class Sujet implements Artefact {
     etablissement(nullable: true)
     matiere(nullable: true)
     niveau(nullable: true)
-    niveauGeneral(nullable: true)
     publication(nullable: true)
     presentation(nullable: true)
     presentationNormalise(nullable: true)

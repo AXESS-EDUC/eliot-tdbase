@@ -59,19 +59,6 @@ class ScolariteServiceIntegrationTests extends GroovyTestCase {
     assertTrue("niveau terminale non trouve", niveaux.contains(bootstrapService.nivTerminale))
   }
 
-  void testFindNiveauxGenerauxForStructureEnseignement() {
-      def struct = bootstrapService.classe1ere
-      def niveaux = scolariteService.findNiveauxGenerauxForStructureEnseignement(struct)
-      assertEquals(1, niveaux.size())
-      assertEquals(struct.preferences.niveauGeneral, niveaux.first())
-
-      struct = bootstrapService.grpe1ere
-      niveaux = scolariteService.findNiveauxGenerauxForStructureEnseignement(struct)
-      assertEquals(2, niveaux.size())
-      assertTrue("niveau premiere non trouve", niveaux.contains(bootstrapService.niveauGeneralPremiere))
-      assertTrue("niveau terminale non trouve", niveaux.contains(bootstrapService.niveauGeneralTerminale))
-    }
-
 
   void testFindStructuresEnseignement() {
     def lycee = bootstrapService.leLycee
@@ -89,12 +76,12 @@ class ScolariteServiceIntegrationTests extends GroovyTestCase {
     assertEquals(4, structs.size())
 
     structs = scolariteService.findStructuresEnseignement([lycee, college], null,
-                                                          bootstrapService.niveauGeneralSixieme)
+                                                          bootstrapService.nivSixieme)
     assertEquals(1, structs.size())
     assertTrue("sixieme pas trouvée", structs.contains(bootstrapService.classe6eme))
 
     structs = scolariteService.findStructuresEnseignement([lycee, college], null,
-                                                          bootstrapService.niveauGeneralTerminale)
+                                                          bootstrapService.nivTerminale)
     assertEquals(2, structs.size())
     assertTrue("terminale pas trouvée", structs.contains(bootstrapService.classeTerminale))
     assertTrue("grpe pas trouvé", structs.contains(bootstrapService.grpe1ere))
@@ -130,27 +117,7 @@ class ScolariteServiceIntegrationTests extends GroovyTestCase {
 
   }
 
-  void testFindNiveauxGenerauxForEtablissement() {
-    def lycee = bootstrapService.leLycee
-    def niveaux = scolariteService.findNiveauxGenerauxForEtablissements([lycee])
-    assertEquals(4, niveaux.size())
-    assertTrue("pas de premiere", niveaux.contains(bootstrapService.niveauGeneralPremiere))
-    assertTrue("pas de terminal", niveaux.contains(bootstrapService.niveauGeneralTerminale))
-    assertTrue("pas de BTS 1", niveaux.contains(bootstrapService.niveauGeneralBTS1))
-    assertTrue("pas de BTS 2", niveaux.contains(bootstrapService.niveauGeneralBTS2))
 
-    def college = bootstrapService.leCollege
-    niveaux = scolariteService.findNiveauxGenerauxForEtablissements([college])
-    assertEquals(1, niveaux.size())
-    assertTrue("pas de sixieme", niveaux.contains(bootstrapService.niveauGeneralSixieme))
-
-    niveaux = scolariteService.findNiveauxGenerauxForEtablissements([lycee, college])
-    assertEquals(5, niveaux.size())
-    assertTrue("pas de premiere", niveaux.contains(bootstrapService.niveauGeneralPremiere))
-    assertTrue("pas de terminal", niveaux.contains(bootstrapService.niveauGeneralTerminale))
-    assertTrue("pas de sixieme", niveaux.contains(bootstrapService.niveauGeneralSixieme))
-
-  }
 
 
 }

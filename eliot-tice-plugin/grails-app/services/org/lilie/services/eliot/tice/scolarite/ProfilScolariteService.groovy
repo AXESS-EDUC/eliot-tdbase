@@ -114,25 +114,6 @@ public class ProfilScolariteService {
     return niveaux
   }
 
-  /**
-     * Récupère les niveaux caractérisant la personne passée en paramètre, tout
-     * établissement confondu
-     * @param Personne la personne
-     * @return la liste des niveaux
-     */
-    List<NiveauGeneral> findNiveauxGenerauxForPersonne(Personne personne) {
-      List<StructureEnseignement> structs = findStructuresEnseignementForPersonne(personne)
-      List<NiveauGeneral> niveaux = []
-      structs.each { struct ->
-        def niveauxByStruct = scolariteService.findNiveauxGenerauxForStructureEnseignement(struct)
-        niveauxByStruct.each { niveau ->
-          if (niveau && !niveaux.contains(niveau)) {
-            niveaux.add(niveau)
-          }
-        }
-      }
-      return niveaux
-    }
 
   /**
    * Récupère les établissements caractérisant la personne passée en paramètre

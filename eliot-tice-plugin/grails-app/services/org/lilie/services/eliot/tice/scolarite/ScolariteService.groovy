@@ -29,9 +29,6 @@
 
 
 package org.lilie.services.eliot.tice.scolarite
-
-import org.hibernate.criterion.CriteriaSpecification
-
 /**
  *
  * @author franck Silvestre
@@ -55,20 +52,7 @@ public class ScolariteService {
     niveaux
   }
 
-  /**
-   * Récupère les niveaux pour une structure d'enseignement
-   * @param struct la structure d'enseignement
-   * @return la liste des niveaux
-   */
-  List<NiveauGeneral> findNiveauxGenerauxForStructureEnseignement(StructureEnseignement struct) {
-    def niveaux = []
-    if (struct.isClasse()) {
-      niveaux.add(struct.preferences.niveauGeneral)
-    } else if (struct.isGroupe()) {
-      niveaux = struct.classes*.preferences.niveauGeneral
-    }
-    niveaux
-  }
+
 
   /**
    * Recherche de structures d'enseignements de l'année en cours
@@ -83,7 +67,7 @@ public class ScolariteService {
    */
   List<StructureEnseignement> findStructuresEnseignement(List<Etablissement> etablissements,
                                                          String patternCode = null,
-                                                         NiveauGeneral niveau = null,
+                                                         Niveau niveau = null,
                                                          Integer limiteResults = 200,
                                                          Map paginationAndSortingSpec = [:]) {
 
@@ -109,13 +93,11 @@ public class ScolariteService {
         ilike "code", patternCodeX
       }
       if (niveau) {
-        createAlias('classes','cl', CriteriaSpecification.FULL_JOIN)
-        createAlias ('cl.preferences', 'pref', CriteriaSpecification.FULL_JOIN)
         or {
-          preferences {
-            eq "niveauGeneral", niveau
+          eq "niveau", niveau
+          classes {
+            eq "niveau", niveau
           }
-          eq 'pref.niveauGeneral', niveau
         }
       }
       maxResults(limiteResults)
@@ -169,19 +151,6 @@ public class ScolariteService {
       ((List) it)[1]
     }
     niveauxRes
-  }
-
-  /**
-   * Récupère les niveaux gééraux de différents établissements
-   * @param etablissements
-   * @return la liste des niveaux généraux des différents établissements
-   */
-  List<NiveauGeneral> findNiveauxGenerauxForEtablissements(List<Etablissement> etablissements) {
-    def niveaux = []
-    etablissements.each {
-      niveaux.addAll(it.niveauxGeneraux)
-    }
-    niveaux
   }
 
 }

@@ -34,7 +34,6 @@ import groovy.json.JsonBuilder
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Niveau
-import org.lilie.services.eliot.tice.scolarite.NiveauGeneral
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.ScolariteService
@@ -106,7 +105,7 @@ class SeanceController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"), [services: services])
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     def etablissements = profilScolariteService.findEtablissementsForPersonne(personne)
-    def niveaux = scolariteService.findNiveauxGenerauxForEtablissements(etablissements)
+    def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
             etablissements: etablissements,
             niveaux: niveaux,
@@ -139,14 +138,14 @@ class SeanceController {
     }
     def niveau = null
     if (command.niveauId) {
-      niveau = NiveauGeneral.get(command.niveauId)
+      niveau = Niveau.get(command.niveauId)
     }
     def limit = grailsApplication.config.eliot.listes.structures.maxrecherche
     def structures = scolariteService.findStructuresEnseignement(etabs,codePattern,niveau,limit)
     render(view: "/seance/_selectStructureEnseignement", model: [
             rechercheStructuresCommand:command,
             etablissements: allEtabs,
-            niveaux: scolariteService.findNiveauxGenerauxForEtablissements(allEtabs),
+            niveaux: scolariteService.findNiveauxForEtablissement(allEtabs),
             structures: structures
     ])
   }
@@ -163,7 +162,7 @@ class SeanceController {
       }  else {
         etabs = [Etablissement.get(etabId as Long)]
       }
-      def niveaux = scolariteService.findNiveauxGenerauxForEtablissements(etabs)
+      def niveaux = scolariteService.findNiveauxForEtablissement(etabs)
       render(view: "/seance/_selectNiveaux", model: [niveaux: niveaux])
     }
 

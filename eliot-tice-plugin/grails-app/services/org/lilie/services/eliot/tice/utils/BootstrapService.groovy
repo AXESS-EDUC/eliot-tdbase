@@ -93,12 +93,12 @@ class BootstrapService {
   def bootstrapJeuDeTestDevDemo() {
     initialiseAnneeScolaireEnvDevelopmentTest()
     initialiseEtablissementsEnvDevelopmentTest()
-    initialiseNiveauxGenerauxEnvDevelopmentTest()
+
     initialiseMatieresEnvDevelopmentTest()
     initialiseNiveauxEnvDevelopmentTest()
 
     initialiseStructuresEnseignementsEnvDevelopmentTest()
-    initialiseStructureEnseignementPreferences()
+
     initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
     initialiseEnseignant1EnvDevelopment()
     initialiseProfilsScolaritesEnseignant1EnvDevelopment()
@@ -118,11 +118,11 @@ class BootstrapService {
     if (Environment.current == Environment.TEST) {
       initialiseAnneeScolaireEnvDevelopmentTest()
       initialiseEtablissementsEnvDevelopmentTest()
-      initialiseNiveauxGenerauxEnvDevelopmentTest()
+
       initialiseMatieresEnvDevelopmentTest()
       initialiseNiveauxEnvDevelopmentTest()
       initialiseStructuresEnseignementsEnvDevelopmentTest()
-      initialiseStructureEnseignementPreferences()
+
       initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
       initialiseProprietesScolaritesEleveEnvDevelopmentTest()
       initialisePorteurEnt()
@@ -322,56 +322,8 @@ class BootstrapService {
   }
 
 
-  NiveauGeneral niveauGeneralPremiere
-  NiveauGeneral niveauGeneralTerminale
-  NiveauGeneral niveauGeneralSixieme
-  NiveauGeneral niveauGeneralBTS1
-  NiveauGeneral niveauGeneralBTS2
 
-  private def initialiseNiveauxGenerauxEnvDevelopmentTest() {
-    if (!NiveauGeneral.findAllByLibelleLike("NG%")) {
 
-      niveauGeneralPremiere = new NiveauGeneral(libelle: "NG_Première")
-      niveauGeneralTerminale = new NiveauGeneral(libelle: "NG_Terminale")
-      niveauGeneralSixieme = new NiveauGeneral(libelle: "NG_Sixième")
-      niveauGeneralBTS1 = new NiveauGeneral(libelle: "NG_BTS 1")
-      niveauGeneralBTS2 = new NiveauGeneral(libelle: "NG_BTS 2")
-
-      leLycee.addToNiveauxGeneraux(niveauGeneralPremiere)
-      leLycee.addToNiveauxGeneraux(niveauGeneralTerminale)
-      leLycee.addToNiveauxGeneraux(niveauGeneralBTS1)
-      leLycee.addToNiveauxGeneraux(niveauGeneralBTS2)
-      leCollege.addToNiveauxGeneraux(niveauGeneralSixieme)
-      leLycee.save()
-      leCollege.save(flush: true)
-      if (niveauGeneralPremiere.hasErrors()) {
-        niveauGeneralPremiere.errors.allErrors.each {
-          println ">>>>>>>>>>>> $it"
-        }
-      }
-
-    } else {
-      niveauGeneralPremiere = NiveauGeneral.findByLibelle("NG_Première")
-      niveauGeneralTerminale = NiveauGeneral.findByLibelle("NG_Terminale")
-      niveauGeneralSixieme = NiveauGeneral.findByLibelle("NG_Sixième")
-      niveauGeneralBTS1 = NiveauGeneral.findByLibelle("NG_BTS 1")
-      niveauGeneralBTS2 = NiveauGeneral.findByLibelle("NG_BTS 2")
-    }
-  }
-
-  private def initialiseStructureEnseignementPreferences() {
-      if (!StructureEnseignementPreferences.findAllByStructureEnseignement(classe1ere)) {
-        new StructureEnseignementPreferences(structureEnseignement: classe1ere,
-                                             niveauGeneral: niveauGeneralPremiere).save()
-        new StructureEnseignementPreferences(structureEnseignement: classeTerminale,
-                                             niveauGeneral: niveauGeneralTerminale).save()
-        new StructureEnseignementPreferences(structureEnseignement: grpe1ere,
-                                             niveauGeneral: niveauGeneralPremiere).save()
-        new StructureEnseignementPreferences(structureEnseignement: classe6eme,
-                                                             niveauGeneral: niveauGeneralSixieme).save(flush: true)
-
-      }
-    }
 
   private def initialiseProprietesScolaritesEnseignantEnvDevelopmentTest() {
     Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
