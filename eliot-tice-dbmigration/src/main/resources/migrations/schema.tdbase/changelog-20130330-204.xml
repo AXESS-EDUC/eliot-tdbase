@@ -59,4 +59,11 @@
                                          referencedTableSchemaName="ent"/>
     </changeSet>
 
+    <changeSet id="2" author="fsil">
+        <dropForeignKeyConstraint baseTableName="sujet" baseTableSchemaName="td" constraintName="fk_sujet_niveau_general"/>
+        <dropForeignKeyConstraint baseTableName="question" baseTableSchemaName="td" constraintName="fk_sujet_niveau_general"/>
+        <dropColumn tableName="sujet" columnName="niveau_general_id" schemaName="td"/>
+        <dropColumn tableName="question" columnName="niveau_general_id" schemaName="td"/>
+    </changeSet>
+
 </databaseChangeLog>
