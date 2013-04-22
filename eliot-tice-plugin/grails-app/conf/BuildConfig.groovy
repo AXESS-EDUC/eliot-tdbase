@@ -33,7 +33,7 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 
-versionTDBase = "2.1.0-SNAPSHOT"
+versionTDBase = "2.1.0-S14-eliot-2.9.1-B2"
 
 grails.project.dependency.resolution = {
   checksums(false)
