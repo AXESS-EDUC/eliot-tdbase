@@ -1,12 +1,22 @@
+=== Eliot tdbase 2.1.0-RC1 ===
+
+Release 21.0-RC1 - Aucun changement apportée
+
+
 === Eliot tdbase 2.1.0-S14-eliot-2.9.2-S16 ===
+
 Liste des dépendances :
+
  * Compatible avec les bases de données Eliot 2.9.2-S16
 
 
 
 === Eliot tdbase 2.1.0-S14-eliot-2.9.1-B2 ===
+
 Liste des dépendances :
+
  * Compatible avec les bases de données Eliot 2.9.1-B2
+
 
 Liste des évolutions :
 
