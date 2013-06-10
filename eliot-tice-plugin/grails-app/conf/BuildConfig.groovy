@@ -33,7 +33,7 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 
-versionTDBase = "2.0.5-eliot-2.9.1-RC2"
+versionTDBase = "2.1.0-S14-eliot-2.9.1-B2"
 
 grails.project.dependency.resolution = {
   checksums(false)
@@ -55,13 +55,16 @@ grails.project.dependency.resolution = {
 
   dependencies {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
+    test('org.vert-x:vertx-lang-groovy:1.3.1.final') {
+              excludes "junit"
+    }
     runtime "postgresql:postgresql:9.1-901.jdbc4"
     compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.2'
     runtime group: 'org.lilie.services.eliot', name: 'eliot-tice-dbmigration-all', version: "${versionTDBase}"
     compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') {
       excludes "commons-logging", "xml-apis", "groovy"
     }
+
 
   }
 

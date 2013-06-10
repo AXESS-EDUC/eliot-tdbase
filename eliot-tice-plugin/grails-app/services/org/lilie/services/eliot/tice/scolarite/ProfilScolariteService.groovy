@@ -39,6 +39,8 @@ import org.springframework.transaction.annotation.Transactional
  */
 public class ProfilScolariteService {
 
+  ScolariteService scolariteService
+
   static transactional = false
 
   /**
@@ -64,7 +66,7 @@ public class ProfilScolariteService {
     List<PersonneProprietesScolarite> profils =
       PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<Fonction> fonctions = []
-    profils.collect {
+    profils.each {
       Fonction fonction = it.proprietesScolarite.fonction
       if (fonction && !fonctions.contains(fonction)) {
         fonctions << fonction
@@ -83,7 +85,7 @@ public class ProfilScolariteService {
     List<PersonneProprietesScolarite> profils =
       PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<Matiere> matieres = []
-    profils.collect {
+    profils.each {
       Matiere matiere = it.proprietesScolarite.matiere
       if (matiere && !matieres.contains(matiere)) {
         matieres << matiere
@@ -99,16 +101,36 @@ public class ProfilScolariteService {
    * @return la liste des niveaux
    */
   List<Niveau> findNiveauxForPersonne(Personne personne) {
-    List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+    List<StructureEnseignement> structs = findStructuresEnseignementForPersonne(personne)
     List<Niveau> niveaux = []
-    profils.collect {
-      Niveau niveau = it.proprietesScolarite.niveau
-      if (niveau && !niveaux.contains(niveau)) {
-        niveaux << niveau
+    structs.each { struct ->
+      def niveauxByStruct = scolariteService.findNiveauxForStructureEnseignement(struct)
+      niveauxByStruct.each { niveau ->
+        if (niveau && !niveaux.contains(niveau)) {
+          niveaux.add(niveau)
+        }
       }
     }
     return niveaux
+  }
+
+
+  /**
+   * Récupère les établissements caractérisant la personne passée en paramètre
+   * @param Personne la personne
+   * @return la liste des établissements
+   */
+  List<Etablissement> findEtablissementsForPersonne(Personne personne) {
+    List<PersonneProprietesScolarite> profils =
+      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+    List<Etablissement> etablissements = []
+    profils.each {
+      Etablissement etablissement = it.proprietesScolarite.etablissement
+      if (etablissement && !etablissements.contains(etablissement)) {
+        etablissements << etablissement
+      }
+    }
+    return etablissements
   }
 
   /**
@@ -121,7 +143,7 @@ public class ProfilScolariteService {
     List<PersonneProprietesScolarite> profils =
       PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
     List<StructureEnseignement> structures = []
-    profils.collect {
+    profils.each {
       StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
       if (structureEnseignement && !structures.contains(structureEnseignement)) {
         structures << structureEnseignement
@@ -140,7 +162,7 @@ public class ProfilScolariteService {
     def props = []
     List<PersonneProprietesScolarite> profils =
       PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
-    profils.collect {
+    profils.each {
       StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
       if (structureEnseignement && !props.contains(it.proprietesScolarite)) {
         props << it.proprietesScolarite

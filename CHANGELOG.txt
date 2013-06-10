@@ -1,6 +1,42 @@
-=== Eliot tdbase 2.0.5-eliot-2.9.1-RC2 ===
+=== Eliot tdbase 2.1.0-RC1-eliot-2.9.2-RC2 ===
+
 Liste des dépendances :
- * Compatible avec les bases de données Eliot 2.9.1-RC2
+
+ * Compatible avec les bases de données Eliot 2.9.2-RC1
+
+
+
+=== Eliot tdbase 2.1.0-RC1 ===
+
+Release 2.1.0-RC1 - Aucun changement apportée
+
+
+=== Eliot tdbase 2.1.0-S14-eliot-2.9.2-S16 ===
+
+Liste des dépendances :
+
+ * Compatible avec les bases de données Eliot 2.9.2-S16
+
+
+
+=== Eliot tdbase 2.1.0-S14-eliot-2.9.1-B2 ===
+
+Liste des dépendances :
+
+ * Compatible avec les bases de données Eliot 2.9.1-B2
+
+
+Liste des évolutions :
+
+ * #204 [VABF] Permettre aux enseignants de créer une séance avec tous les groupes élèves de l'etablissement
+ * #216 [VABF] Ajouter une aide en ligne plus contextuelle
+ * #209 [VABF] logo « Créative commons » à ajouter sur les pages après partage
+
+
+Liste des anomalies corrigées :
+
+ * #215 Création d'items: pas de récupération du niveau
+ * #214 Erreur Import moodle XML si le fichier contient un caractère "/"
 
 
 

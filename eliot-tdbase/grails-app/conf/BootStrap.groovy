@@ -56,6 +56,13 @@ class BootStrap {
       log.error(e.message)
     }
 
+    try {
+      portailTagLibService.addHelpDocumentUrls(config.eliot.help.documents.urlMap)
+    } catch (Exception e) {
+      log.error("help.urls.update.echec")
+      log.error(e.message)
+    }
+
     portailTagLibService.applicationInFrame = config.eliot.pages.container.forceDimensions
     portailTagLibService.divHeight = config.eliot.pages.container.height
     portailTagLibService.divWidth = config.eliot.pages.container.width
@@ -64,8 +71,7 @@ class BootStrap {
   }
 
 
-  def destroy = {
-  }
+  def destroy = {}
 
 
 }

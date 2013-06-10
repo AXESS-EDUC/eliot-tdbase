@@ -7,6 +7,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.scolarite.ScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.springframework.web.multipart.MultipartFile
@@ -26,6 +27,7 @@ class SujetController {
   MoodleQuizImporterService moodleQuizImporterService
   ArtefactAutorisationService artefactAutorisationService
   MoodleQuizExporterService moodleQuizExporterService
+  ScolariteService scolariteService
 
   /**
    *
@@ -406,7 +408,11 @@ class SujetController {
     def modaliteActivite = new ModaliteActivite(enseignant: personne,
                                                 sujet: sujet)
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
+    def etablissements = profilScolariteService.findEtablissementsForPersonne(personne)
+    def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
+            etablissements: etablissements,
+            niveaux: niveaux,
             afficheLienCreationDevoir:false,
             afficheLienCreationActivite:false,
             afficheActiviteCreee: false,

@@ -30,13 +30,29 @@ package org.lilie.services.eliot.tice.webservices.rest.client
 
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
+import org.vertx.groovy.core.Vertx
 
 
 
-class RestClientTests extends GroovyTestCase{
+class RestClientTests extends GroovyTestCase {
 
   RestOperationDirectory restOperationDirectory = new RestOperationDirectory()
   RestClient restClient = new RestClient(restOperationDirectory: restOperationDirectory)
+  def httpserver
+  def port = 8796
+
+  void setUp() {
+    def vertx = Vertx.newVertx()
+    httpserver = vertx.createHttpServer()
+    httpserver.requestHandler { req ->
+      def rep = req.response
+      rep.putHeader("Content-Type","application/json").end('{"cahierId":1}')
+    }.listen(port)
+  }
+
+  void tearDown() {
+    httpserver.close()
+  }
 
 
   void testRestClientInvokeOperation() {
@@ -46,14 +62,12 @@ class RestClientTests extends GroovyTestCase{
                                                            method: Method.GET,
                                                            requestBodyTemplate: null,
                                                            responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
-                                                           urlServer: "http://localhost:8090",
+                                                           urlServer: "http://localhost:$port",
                                                            uriTemplate: '/eliot-test-webservices/echanges/v2/cahiers/$cahierId/chapitres')
     restOperationDirectory.addOperation(restOperation)
-    def resp = restClient.invokeOperation(
-            "op1",
-            [cahierId: 1],
-            null
-    )
+    def resp = restClient.invokeOperation("op1",
+                                          [cahierId: 1],
+                                          null)
     assert restOperation.invocationCount == 1
     assert restOperation.successCount == 1
     assertNotNull(resp)

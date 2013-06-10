@@ -45,6 +45,7 @@ public class StructureEnseignement {
 
   static final String TYPE_CLASSE = "CLASSE"
   static final String TYPE_GROUPE = "GROUPE"
+  static final String LIBELLE_GROUPE_ENT = "groupe ENT"
 
   Long id
   AnneeScolaire anneeScolaire
@@ -53,6 +54,7 @@ public class StructureEnseignement {
   Etablissement etablissement
   String code
   Niveau niveau
+  Boolean groupeEnt
 
   /**
    * Indique si cette structure d'enseignement existe dans les données du
@@ -119,17 +121,10 @@ public class StructureEnseignement {
    * @return nom utilisable pour l'affichage
    */
   String getNomAffichage() {
-    String nomAffichage = null
-    if (type == TYPE_CLASSE) {
-      nomAffichage = code
-    } else {
-      // Si groupe avec une seul classe - Classe (Groupe)
-      // Sinon Groupe
-      if (classes?.size() == 1) {
-        nomAffichage = classes.iterator().next().code + "(" + code + ")"
-      } else {
-        nomAffichage = code
-      }
+    String nomAffichage = code
+
+    if (groupeEnt) {
+       nomAffichage += " ($LIBELLE_GROUPE_ENT)"
     }
     return nomAffichage
   }

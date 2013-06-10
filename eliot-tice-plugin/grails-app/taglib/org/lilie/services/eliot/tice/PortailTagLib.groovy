@@ -85,6 +85,47 @@ class PortailTagLib {
     }
   }
 
+  /**
+     * Affiche le lien vers le manuel.
+     *
+     * @attr selector REQUIRED le selecteur  pour lequel on souhaite l'aide
+     * @attr libelleLien le libelle à afficher
+     * @attr noManuelAlert le contenu de l'alerte si pas de manuel
+     */
+    def helpLink = { attrs, body ->
+      def lnkUrl = "#"
+      def noHelpAlert = attrs.noHelpAlert ?: g.message(code: "help.introuvable")
+      def attrClass = attrs.class
+      if (attrs.selector) {
+        String selector = attrs.selector
+        def url = portailTagLibService.findHelpDocumentUrlForSelector(selector)
+        if (url?.startsWith("http://")) {
+          lnkUrl =  url
+        } else if (url) {
+          def code = request.getHeader("${eliotUrlProvider.requestHeaderPorteur}")
+          def porteurEnt = PorteurEnt.findByCode(code, [cached: true])
+          lnkUrl = eliotUrlProvider.getUrlServeur(porteurEnt)+ url
+        }
+      }
+      if (lnkUrl == "#") {
+        def functJS = "alert('${noHelpAlert}')"
+
+        out << '<a href="#" onclick="' << functJS << '"'
+        if (attrClass) {
+          out << ' class="' << attrClass << '"'
+        }
+        out << ' id="' << attrs.selector << '"'
+        out << '>' << body() << '</a>'
+      } else {
+        out << '<a href="' << lnkUrl << '" target="_blank"'
+        if (attrClass) {
+          out << ' class="' << attrClass << '"'
+        }
+        out << ' id="' << attrs.selector << '"'
+        out << '>' << body() << '</a>'
+      }
+    }
+
 /**
  * Div container de toutes les pages de l'application.
  * Si les pages de de l'application sont encapsulées dans un iframe

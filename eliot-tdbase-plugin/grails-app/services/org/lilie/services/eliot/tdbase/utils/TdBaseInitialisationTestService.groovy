@@ -39,7 +39,7 @@ class TdBaseInitialisationTestService extends InitialisationTestService {
 
   StructureEnseignement findStructure1ere() {
     bootstrapService.bootstrapForIntegrationTest()
-    return bootstrapService.findStruct1ere()
+    return bootstrapService.classe1ere
   }
 
 
