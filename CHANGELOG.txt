@@ -2,6 +2,13 @@
 
 Liste des dépendances :
 
+ * Compatible avec les bases de données Eliot 2.9.2-RC2
+
+
+=== Eliot tdbase 2.1.0-RC1-eliot-2.9.2-RC1 ===
+
+Liste des dépendances :
+
  * Compatible avec les bases de données Eliot 2.9.2-RC1
 
 
