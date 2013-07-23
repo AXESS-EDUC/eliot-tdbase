@@ -456,7 +456,6 @@ class SujetController {
   }
 
   /**
-   *
    * Action donnant accès au formulaire d'import d'un fichier moodle XML
    */
   def editeImportMoodleXML() {
@@ -517,6 +516,64 @@ class SujetController {
    */
   def rapportImportMoodleXML() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.rapportmoodlexml.titre"))
+  }
+
+  /**
+   * Action donnant accès au formulaire d'import natif eliot-tdbase d'une question
+   */
+  def editeImportNatifTdBase() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.importnatiftdbase.titre"))
+    Sujet sujet = Sujet.get(params.id)
+    Personne proprietaire = authenticatedPersonne
+    [
+        liens: breadcrumpsService.liens,
+        sujet: sujet,
+        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+    ]
+  }
+
+  /**
+   * Action déclenchant l'import du fichier JSON au format natif eliot-tdbase
+   */
+  def importNatifTdBase(Long sujetId) {
+    Sujet sujet = Sujet.get(sujetId)
+    Personne proprietaire = authenticatedPersonne
+    MultipartFile fichier = request.getFile("fichierImport")
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    boolean importSuccess = true
+    if (!fichier || fichier.isEmpty()) {
+      flash.errorMessageCode = "question.document.fichier.vide"
+      importSuccess = false
+    } else if (!fichier.name) {
+      flash.errorMessageCode = "question.document.fichier.nom.null"
+      importSuccess = false
+    } else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+      flash.errorMessageCode = "question.document.fichier.tropgros"
+      importSuccess = false
+    }
+    if (importSuccess) {
+      try {
+        // TODO Appeler le service d'import
+//        MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(fichier.bytes,
+//            sujet,
+//            matiere,
+//            niveau,
+//            proprietaire)
+//        flash.report = report
+      } catch (Exception e) {
+        flash.errorMessageCode = e.message
+        importSuccess = false
+      }
+    }
+    flash.liens = breadcrumpsService.liens
+    if (importSuccess) {
+      // TODO Rediriger sur la page de rapport
+      render('*** OK')
+//      redirect(action: 'rapportImportMoodleXML')
+    } else {
+      redirect(action: 'editeNatifTdBase', id: sujet.id)
+    }
   }
 
 }
