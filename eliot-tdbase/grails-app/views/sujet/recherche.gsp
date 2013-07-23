@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tice.CopyrightsType" %>
+<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.lilie.services.eliot.tice.CopyrightsType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -177,7 +177,7 @@
           <g:else>
             <li>Partager</li>
           </g:else>
-          <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance)}">
+          <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, Format.MOODLE_XML)}">
             <li><g:link action="exporter"
                         id="${sujetInstance.id}">Exporter</g:link></li>
           </g:if>

@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tice.CopyrightsType" %>
+<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.lilie.services.eliot.tice.CopyrightsType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -39,14 +39,14 @@
     });
   </r:script>
   <title>
-  <g:if test="${afficheFormulaire}">
-   <g:message code="question.recherche.head.title" />
-   </g:if>
-   <g:else>
-     <g:message code="question.recherche.mesItems.head.title" />
-   </g:else>
-   </title>
+    <g:if test="${afficheFormulaire}">
+      <g:message code="question.recherche.head.title"/>
+    </g:if>
+    <g:else>
+      <g:message code="question.recherche.mesItems.head.title"/>
+    </g:else>
   </title>
+</title>
 </head>
 
 <body>
@@ -103,7 +103,7 @@
           </td>
           <td>
             <g:textField name="patternAuteur" title="auteur"
-                                    value="${rechercheCommand.patternAuteur}"/>
+                         value="${rechercheCommand.patternAuteur}"/>
           </td>
 
           <td class="label">Niveau :
@@ -135,15 +135,15 @@
     <g:if test="${afficherPager}">
       <div class="pager">
         Page(s) : <g:paginate
-                total="${questions.totalCount}"
-                params="${rechercheCommand?.toParams()}"></g:paginate>
+            total="${questions.totalCount}"
+            params="${rechercheCommand?.toParams()}"></g:paginate>
       </div>
     </g:if>
   </div>
 
   <div class="portal-default_results-list question  ${sujet ? 'partiel' : ''}">
     <%
-       def messageDialogue = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo,CopyrightsType.getDefaultForPartage().code,CopyrightsType.getDefaultForPartage().lien])
+      def messageDialogue = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
     %>
     <g:each in="${questions}" status="i" var="questionInstance">
       <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
@@ -168,7 +168,8 @@
             </g:link>
             </li>
           </g:if>
-          <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+          <g:if
+              test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
             <li><g:link action="edite"
                         controller="question${questionInstance.type.code}"
                         id="${questionInstance.id}">Modifier</g:link></li>
@@ -176,7 +177,8 @@
           <g:else>
             <li>Modifier</li>
           </g:else>
-          <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+          <g:if
+              test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
             <li><g:link action="duplique"
                         controller="question${questionInstance.type.code}"
                         id="${questionInstance.id}">Dupliquer</g:link></li>
@@ -185,26 +187,37 @@
             <li>Dupliquer</li>
           </g:else>
           <li><hr/></li>
-          <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+          <g:if
+              test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
             <%
               def docLoc = g.createLink(action: 'partage', controller: "question${questionInstance.type.code}", id: questionInstance.id)
             %>
             <li><g:link action="partage"
                         controller="question${questionInstance.type.code}"
-                        id="${questionInstance.id}" onclick="afficheDialogue('${messageDialogue}','${docLoc}');return false;">Partager</g:link></li>
+                        id="${questionInstance.id}"
+                        onclick="afficheDialogue('${messageDialogue}','${docLoc}');return false;">Partager</g:link></li>
           </g:if>
           <g:else>
             <li>Partager</li>
           </g:else>
-          <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, questionInstance)}">
-            <li><g:link action="exporter" controller="question"
-                        id="${questionInstance.id}">Exporter</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Exporter</li>
-          </g:else>
+          <g:each in="${Format.values()}" var="format">
+            <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, questionInstance, format)}">
+              <li>
+                <g:link
+                    action="exporter"
+                    controller="question"
+                    id="${questionInstance.id}" params="${[format: format]}">
+                  <g:message code="importexport.${format}.action.title"/>
+                </g:link>
+              </li>
+            </g:if>
+            <g:else>
+              <g:message code="importexport.${format}.action.title"/>
+            </g:else>
+          </g:each>
           <li><hr/></li>
-          <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+          <g:if
+              test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
             <li><g:link action="supprime"
                         controller="question${questionInstance.type.code}"
                         id="${questionInstance.id}">Supprimer</g:link></li>
@@ -217,8 +230,10 @@
         <p class="date">Mise à jour le ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
 
         <p>
-          <g:if test="${questionInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${questionInstance.niveau?.libelleLong}</g:if>
-          <g:if test="${questionInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${questionInstance.matiere?.libelleLong}</g:if>
+          <g:if
+              test="${questionInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${questionInstance.niveau?.libelleLong}</g:if>
+          <g:if
+              test="${questionInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${questionInstance.matiere?.libelleLong}</g:if>
           <strong>» Type :</strong>  ${questionInstance.type.nom}
           <strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
         </p>

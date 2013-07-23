@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tice.CopyrightsType" %>
+<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.lilie.services.eliot.tice.CopyrightsType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -39,7 +39,7 @@
       initButtons();
     });
   </r:script>
-  <title><g:message code="question.detail.head.title" /></title>
+  <title><g:message code="question.detail.head.title"/></title>
 </head>
 
 <body>
@@ -85,22 +85,31 @@
       <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
         <%
           def docLoc = g.createLink(action: 'partage', controller: "question${question.type.code}", id: question.id)
-          def message = g.message(code:"question.partage.dialogue",args:[CopyrightsType.getDefaultForPartage().logo,CopyrightsType.getDefaultForPartage().code,CopyrightsType.getDefaultForPartage().lien])
+          def message = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
         %>
         <li><g:link action="partage"
                     controller="question${question.type.code}"
-                    id="${question.id}" onclick="afficheDialogue('${message}','${docLoc}');return false;">Partager</g:link></li>
+                    id="${question.id}"
+                    onclick="afficheDialogue('${message}','${docLoc}');return false;">Partager</g:link></li>
       </g:if>
       <g:else>
         <li>Partager</li>
       </g:else>
-      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question)}">
-        <li><g:link action="exporter" controller="question"
-                    id="${question.id}">Exporter</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Exporter</li>
-      </g:else>
+      <g:each in="${Format.values()}" var="format">
+        <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question, format)}">
+          <li>
+            <g:link
+                action="exporter"
+                controller="question"
+                id="${question.id}" params="${[format: format]}">
+              <g:message code="importexport.${format}.action.title"/>
+            </g:link>
+          </li>
+        </g:if>
+        <g:else>
+          <g:message code="importexport.${format}.action.title"/>
+        </g:else>
+      </g:each>
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, question)}">
         <li><g:link action="supprime"
@@ -136,15 +145,15 @@
 </div>
 
 <g:if test="${sujet && !flash.messageCode}">
-<div class="form_actions edite" style="width: 69%">
+  <div class="form_actions edite" style="width: 69%">
 
     <g:link action="insert"
             title="Insérer dans le sujet" id="${question.id}"
             params="[sujetId: sujet?.id]" class="button">
       Insérer dans le sujet
     </g:link>
-  <br/><br/><br/><br/><br/><br/>
-</div>
+    <br/><br/><br/><br/><br/><br/>
+  </div>
 </g:if>
 
 </body>

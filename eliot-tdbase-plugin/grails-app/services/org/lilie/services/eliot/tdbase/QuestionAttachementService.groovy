@@ -106,12 +106,12 @@ class QuestionAttachementService {
             estInsereDansLaQuestion: estInsereDansLaQuestion,
             rang: rang
     )
-    questionAttachement.save()
+    questionAttachement.save(failOnError: true)
     // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
     attachement.aSupprimer = false
     question.addToQuestionAttachements(questionAttachement)
     question.lastUpdated = new Date()
-    question.save()
+    question.save(failOnError: true)
     return questionAttachement
   }
 
@@ -176,12 +176,16 @@ class QuestionAttachementService {
    */
   @Transactional(propagation = Propagation.REQUIRED)
   Question createPrincipalAttachementForQuestion(Attachement attachement,
-                                                 Question question) {
+                                                 Question question,
+                                                 Boolean principalAttachementEstInsereDansLaQuestion = null) {
     question.principalAttachement = attachement
     // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
     attachement.aSupprimer = false
     question.lastUpdated = new Date()
-    if (question.principalAttachementEstInsereDansLaQuestion == null) {
+    if(principalAttachementEstInsereDansLaQuestion != null) {
+      question.principalAttachementEstInsereDansLaQuestion = principalAttachementEstInsereDansLaQuestion
+    }
+    else if (question.principalAttachementEstInsereDansLaQuestion == null) {
       question.principalAttachementEstInsereDansLaQuestion = true
     }
     question.save()

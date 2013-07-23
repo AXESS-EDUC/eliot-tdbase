@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.CopyrightsTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.CopyrightsTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -34,24 +34,24 @@
   <g:external dir="js/eliot/tiny_mce/tiny_mce.js" plugin="eliot-tice-plugin"/>
   <script type="text/javascript">
     tinyMCE.init({
-                   // General options
-                   language: 'fr',
-                   mode: "none",
-                   theme: "advanced",
-                   plugins: "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+      // General options
+      language: 'fr',
+      mode: "none",
+      theme: "advanced",
+      plugins: "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
-                   // Theme options
-                   theme_advanced_buttons1: "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect",
-                   theme_advanced_buttons2: "forecolor,backcolor,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,cleanup,code",
-                   theme_advanced_buttons3: "tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap",
+      // Theme options
+      theme_advanced_buttons1: "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect",
+      theme_advanced_buttons2: "forecolor,backcolor,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,cleanup,code",
+      theme_advanced_buttons3: "tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap",
 
-                   theme_advanced_toolbar_location: "top",
-                   theme_advanced_toolbar_align: "left",
-                   theme_advanced_statusbar_location: "bottom",
-                   theme_advanced_resizing: false,
+      theme_advanced_toolbar_location: "top",
+      theme_advanced_toolbar_align: "left",
+      theme_advanced_statusbar_location: "bottom",
+      theme_advanced_resizing: false,
 
-                   entity_encoding: "raw"
-                 });
+      entity_encoding: "raw"
+    });
   </script>
   <r:script>
     $(document).ready(function () {
@@ -75,7 +75,7 @@
   <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
     <%
       def docLoc = g.createLink(action: 'partage', controller: "question${question.type.code}", id: question.id)
-      def message = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo,CopyrightsType.getDefaultForPartage().code,CopyrightsType.getDefaultForPartage().lien])
+      def message = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
     %>
     <g:link action="partage" class="share"
             id="${question.id}"
@@ -102,13 +102,21 @@
         <li>Dupliquer</li>
       </g:else>
       <li><hr/></li>
-      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question)}">
-        <li><g:link action="exporter" controller="question"
-                    id="${question.id}">Exporter</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Exporter</li>
-      </g:else>
+      <g:each in="${Format.values()}" var="format">
+        <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question, format)}">
+          <li>
+            <g:link
+                action="exporter"
+                controller="question"
+                id="${question.id}" params="${[format: format]}">
+              <g:message code="importexport.${format}.action.title"/>
+            </g:link>
+          </li>
+        </g:if>
+        <g:else>
+          <g:message code="importexport.${format}.action.title"/>
+        </g:else>
+      </g:each>
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, question)}">
         <li><g:link action="supprime"
@@ -166,7 +174,7 @@
         class="question">
   <div class="portal-form_container edite" style="width: 69%;">
     <p style="font-style: italic; margin-bottom: 2em"><span
-            class="obligatoire">*</span> indique une information obligatoire</p>
+        class="obligatoire">*</span> indique une information obligatoire</p>
     <table>
       <tr>
         <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:
@@ -179,8 +187,9 @@
       <tr>
         <td class="label">Type :</td>
         <td>
-          <strong>${question.type.nom}</strong> <et:helpLink selector="eliot.tdbase.item.${question.type.code}" class="portal-help"><g:message
-                      code="manuels.libellelien"/></et:helpLink>
+          <strong>${question.type.nom}</strong> <et:helpLink selector="eliot.tdbase.item.${question.type.code}"
+                                                             class="portal-help"><g:message
+              code="manuels.libellelien"/></et:helpLink>
         </td>
       </tr>
       <g:if test="${!question.id && sujet}">
@@ -229,7 +238,7 @@
       </g:else>
       <tr>
         <td class="label"><g:message
-                code="question.propriete.principalAttachement"/>&nbsp;:</td>
+            code="question.propriete.principalAttachement"/>&nbsp;:</td>
         <td id="question_fichier">
           <g:render template="/question/QuestionEditionFichier"
                     model="[question: question, attachementsSujet: attachementsSujets]"/>
@@ -237,8 +246,8 @@
         </td>
       </tr>
       <g:render
-              template="/question/${question.type.code}/${question.type.code}Edition"
-              model="[question: question]"/>
+          template="/question/${question.type.code}/${question.type.code}Edition"
+          model="[question: question]"/>
       <tr>
         <td class="label">Partage :</td>
         <td>

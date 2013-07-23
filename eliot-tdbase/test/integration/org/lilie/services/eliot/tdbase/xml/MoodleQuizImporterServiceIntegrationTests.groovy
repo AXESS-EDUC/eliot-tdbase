@@ -28,11 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.xml
 
-import org.hibernate.SessionFactory
-import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
-import org.lilie.services.eliot.tice.CopyrightsTypeEnum
-import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement

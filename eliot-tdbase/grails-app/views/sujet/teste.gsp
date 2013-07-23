@@ -26,7 +26,7 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<%@ page import="org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.utils.NumberUtils" %>
+<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.utils.NumberUtils" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -91,7 +91,7 @@
       <g:else>
         <li>Partager</li>
       </g:else>
-      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
+      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.MOODLE_XML)}">
         <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
       </g:if>
       <g:else>

@@ -75,7 +75,6 @@ class Question implements Artefact {
   Attachement principalAttachement
   Boolean principalAttachementEstInsereDansLaQuestion
 
-
   private def specificationObject
 
   static hasMany = [questionAttachements: QuestionAttachement]

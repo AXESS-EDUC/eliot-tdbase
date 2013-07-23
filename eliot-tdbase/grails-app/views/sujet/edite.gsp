@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.utils.NumberUtils" %>
+<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.utils.NumberUtils" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -91,7 +91,7 @@
       <g:else>
         <li>Partager</li>
       </g:else>
-      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
+      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.MOODLE_XML)}">
         <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
       </g:if>
       <g:else>
@@ -212,13 +212,21 @@
 
           <li><hr/></li>
 
-          <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetQuestion.question)}">
-            <li><g:link action="exporter" controller="question"
-                        id="${sujetQuestion.question.id}">Exporter</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Exporter</li>
-          </g:else>
+          <g:each in="${Format.values()}" var="format">
+            <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question, format)}">
+              <li>
+                <g:link
+                    action="exporter"
+                    controller="question"
+                    id="${question.id}" params="${[format: format]}">
+                  <g:message code="importexport.${format}.action.title"/>
+                </g:link>
+              </li>
+            </g:if>
+            <g:else>
+              <g:message code="importexport.${format}.action.title"/>
+            </g:else>
+          </g:each>
 
         </ul>
 

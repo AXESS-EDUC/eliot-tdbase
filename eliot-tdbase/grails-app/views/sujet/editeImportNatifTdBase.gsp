@@ -38,7 +38,7 @@
       $("form").attr('enctype', 'multipart/form-data');
     });
   </r:script>
-  <title><g:message code="sujet.editeImportMoodleXML.head.title" /></title>
+  <title><g:message code="sujet.editeImportMoodleXML.head.title"/></title>
 </head>
 
 <body>
@@ -48,13 +48,33 @@
 <g:if test="${flash.errorMessageCode}">
   <div class="portal-messages">
     <li class="error"><g:message code="${flash.errorMessageCode}"
-                                   class="portal-messages error"/></li>
+                                 class="portal-messages error"/></li>
   </div>
 </g:if>
 
 <form method="post" action="#" class="sujet">
   <div class="portal-form_container edite">
     <table>
+      <tr>
+        <td class="label">Mati&egrave;re&nbsp;:</td>
+        <td>
+          <g:select name="matiereId" value="${sujet.matiere?.id}"
+                    noSelection="${['null': g.message(code: "default.select.null")]}"
+                    from="${matieres}"
+                    optionKey="id"
+                    optionValue="libelleLong"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Niveau&nbsp;:</td>
+        <td>
+          <g:select name="niveauId" value="${sujet.niveau?.id}"
+                    noSelection="${['null': g.message(code: "default.select.null")]}"
+                    from="${niveaux}"
+                    optionKey="id"
+                    optionValue="libelleLong"/>
+        </td>
+      </tr>
       <tr>
         <td class="label">Fichier&nbsp;:</td>
         <td id="fichier_import_td">

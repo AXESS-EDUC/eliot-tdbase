@@ -72,7 +72,7 @@ class MoodleQuizImporterService {
       def bais = new ByteArrayInputStream(xmlMoodle)
       map = moodleQuizTransformer.moodleQuizTransform(bais)
     } catch (Exception e) {
-      log.error(e.message)
+      log.error("Erreur durant la transformation d'un Quizz Moodle", e)
       throw new Exception("xml.import.moodle.echec")
     }
     MoodleQuizImportReport report = new MoodleQuizImportReport()
@@ -114,7 +114,7 @@ class MoodleQuizImporterService {
       try {
         objSpec = specService.getObjectFromSpecification(item.specification)
       } catch (Exception e1) {
-        log.error(e1.message)
+        log.error("Erreur durant le parsing de la spécification", e1)
         importItem.erreurImport = "xml.import.moodle.item.specificationincorrecte"
         report.itemsNonImportes << importItem
         continue

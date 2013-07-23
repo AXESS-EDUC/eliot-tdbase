@@ -104,7 +104,9 @@ enum QuestionTypeEnum {
   }
 
   QuestionType getQuestionType() {
-    QuestionType.get(id)
-  }
+    QuestionType questionType = QuestionType.get(id)
+    assert  questionType
 
+    return questionType
+  }
 }

@@ -29,8 +29,9 @@
 package org.lilie.services.eliot.tdbase
 
 import grails.converters.JSON
-import org.lilie.services.eliot.tdbase.marshaller.natif.QuestionMarshaller
-import org.lilie.services.eliot.tdbase.marshaller.natif.QuestionMarshallerFactory
+import org.lilie.services.eliot.tdbase.importexport.Format
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
@@ -410,24 +411,24 @@ class QuestionController {
  * Action pour exporter un sujet en XML.
  * @return
  */
-  def exporter(String format) { // TODO Utiliser une énumération
-
-    format = format ?: "moodle"
+  def exporter(String format) {
 
     Question question = Question.get(params.id)
 
     switch (format) {
-      case "natif":
+      case Format.NATIF_JSON.name():
 
+        questionService.marquePaternite(question, authenticatedPersonne)
         QuestionMarshallerFactory questionMarshallerFactory = new QuestionMarshallerFactory()
         QuestionMarshaller marshaller = questionMarshallerFactory.newInstance(attachementService)
 
         def converter = marshaller.marshall(question) as JSON
-        response.setHeader("Content-disposition", "attachment; filename=export.json")
+        response.setHeader("Content-disposition", "attachment; filename=${getExportNatifFileName(question)}")
         render(text: converter.toString(false), contentType: "application/json", encoding: "UTF-8")
         break
 
-      case "moodle":
+      case Format.MOODLE_XML.name():
+        // TODO gestion d'erreur à mettre en commun
         def xml = question ? moodleQuizExporterService.toMoodleQuiz(question) :
           message(code: 'xml.export.sujet.inexistant', args: [params.id])
         response.setHeader("Content-disposition", "attachment; filename=export.xml")
@@ -439,7 +440,14 @@ class QuestionController {
             "Le format '$format' est inconnu."
         )
     }
+  }
 
+  private String getExportNatifFileName(Question question) {
+    String intitule = question.titreNormalise.substring(
+        0,
+        Math.min(20, question.titreNormalise.size())
+    )
+    return "question-${intitule}.tdbase.json"
   }
 
 /**
