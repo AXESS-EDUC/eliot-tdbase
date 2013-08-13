@@ -241,6 +241,9 @@ environments {
     eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
     //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
     //eliot.tdbase.urlServeur = "http//localhost:8080"
+
+    // application de la migration  définie dans eliot-tice-dbmigration
+    eliot.bootstrap.migration = true
   }
   development {
     eliot.listes.structures.maxrecherche=3
