@@ -13,15 +13,6 @@ import org.lilie.services.eliot.tdbase.importexport.dto.NiveauDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PersonneDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementMarchaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.CopyrightsTypeMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.EtablissementMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerException
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerHelper
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import spock.lang.Specification
 
 /**
@@ -29,16 +20,27 @@ import spock.lang.Specification
  */
 class QuestionMarshallerSpec extends Specification {
 
-  def "testMashall - cas général"(String paternite,
-                                  Question question,
-                                  Map personneRepresentation,
-                                  Map etablissementRepresentation,
-                                  Map matiereRepresentation,
-                                  Map niveauRepresentation,
-                                  Map copyrightsTypeRepresentation,
-                                  Map principalAttachementRepresentation,
-                                  List questionAttachementsRepresentation) {
+  def "testMashall - cas général"(String paternite) {
     given:
+    Question question = new Question(
+        type: new QuestionType(code: "code"),
+        titre: "titre",
+        dateCreated: new Date() - 1,
+        lastUpdated: new Date(),
+        versionQuestion: 10,
+        estAutonome: true,
+        paternite: paternite,
+        specification: "{json: 'specification'}"
+    )
+
+    Map personneRepresentation = [map: 'personne']
+    Map etablissementRepresentation = [map: 'etablissement']
+    Map matiereRepresentation = [map: 'matiere']
+    Map niveauRepresentation = [map: 'niveau']
+    Map copyrightsTypeRepresentation = [map: 'copyrightsType']
+    Map principalAttachementRepresentation = [map: 'principalAttachement']
+    List questionAttachementsRepresentation = [[map: 'attachement']]
+
     PersonneMarshaller personneMarshaller = Mock(PersonneMarshaller)
     personneMarshaller.marshall(_) >> personneRepresentation
 
@@ -97,25 +99,6 @@ class QuestionMarshallerSpec extends Specification {
 
     where:
     paternite << [null, "", "{json: 'paternite'}"]
-
-    question = new Question(
-        type: new QuestionType(code: "code"),
-        titre: "titre",
-        dateCreated: new Date() - 1,
-        lastUpdated: new Date(),
-        versionQuestion: 10,
-        estAutonome: true,
-        paternite: paternite,
-        specification: "{json: 'specification'}"
-    )
-
-    personneRepresentation = [map: 'personne']
-    etablissementRepresentation = [map: 'etablissement']
-    matiereRepresentation = [map: 'matiere']
-    niveauRepresentation = [map: 'niveau']
-    copyrightsTypeRepresentation = [map: 'copyrightsType']
-    principalAttachementRepresentation = [map: 'principalAttachement']
-    questionAttachementsRepresentation = [[map: 'attachement']]
   }
 
   def "testMarshall - argument null"() {

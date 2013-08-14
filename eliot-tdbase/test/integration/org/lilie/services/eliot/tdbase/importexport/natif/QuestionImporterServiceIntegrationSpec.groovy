@@ -11,7 +11,7 @@ import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.impl.open.OpenSpecification
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshallerFactory
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.QuestionMarshallerFactory
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.AttachementDto

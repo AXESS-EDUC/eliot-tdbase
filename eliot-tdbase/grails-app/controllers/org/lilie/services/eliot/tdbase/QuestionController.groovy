@@ -31,7 +31,7 @@ package org.lilie.services.eliot.tdbase
 import grails.converters.JSON
 import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshallerFactory
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.QuestionMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne

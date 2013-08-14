@@ -1,4 +1,4 @@
-package org.lilie.services.eliot.tdbase.importexport.natif.marshaller
+package org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory
 
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementMarchaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.CopyrightsTypeMarshaller
@@ -7,7 +7,7 @@ import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMars
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshallerFactory
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.QuestionMarshallerFactory
 import org.lilie.services.eliot.tice.AttachementService
 import spock.lang.Specification
 
