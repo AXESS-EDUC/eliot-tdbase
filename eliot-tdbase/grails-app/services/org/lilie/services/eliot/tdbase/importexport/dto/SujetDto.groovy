@@ -6,7 +6,7 @@ package org.lilie.services.eliot.tdbase.importexport.dto
 class SujetDto {
   String titre
   PersonneDto proprietaire
-  String type
+  long type // TODO est-ce qu'on ne peut pas passer par un code ?
 
   int versionSujet
   String presentation
@@ -15,11 +15,11 @@ class SujetDto {
   Float noteMax
   Float noteAutoMax
   Float noteEnseignantMax
-  Boolean accesSequentiel // TODO à quoi ça sert ?
+  Boolean accesSequentiel
   Boolean ordreQuestionsAleatoire
   String paternite
 
   CopyrightsTypeDto copyrightsType
 
-  // TODO List<SujetSequenceQuestions> questionsSequences
+  List<SujetSequenceQuestionsDto> questionsSequences
 }

@@ -31,7 +31,7 @@ class MatiereMarshaller {
 
   static MatiereDto parse(JSONElement jsonElement) {
     return new MatiereDto(
-        identifiant: MarshallerHelper.jsonObjectToLong(jsonElement.identifiant),
+        identifiant: MarshallerHelper.jsonObjectToObject(jsonElement.identifiant),
         codeSts: MarshallerHelper.jsonObjectToString(jsonElement.codeSts),
         codeGestion: MarshallerHelper.jsonObjectToString(jsonElement.codeGestion),
         libelleLong: MarshallerHelper.jsonObjectToString(jsonElement.libelleLong),

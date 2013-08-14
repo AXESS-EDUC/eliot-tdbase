@@ -1,9 +1,14 @@
 package org.lilie.services.eliot.tdbase.importexport.natif.marshaller
 
 import grails.converters.JSON
+import org.codehaus.groovy.grails.web.json.JSONElement
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetSequenceQuestions
 import org.lilie.services.eliot.tdbase.SujetType
+import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
+import org.lilie.services.eliot.tdbase.importexport.dto.PersonneDto
+import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
+import org.lilie.services.eliot.tdbase.importexport.dto.SujetSequenceQuestionsDto
 import spock.lang.Specification
 
 /**
@@ -124,5 +129,98 @@ class SujetMarshallerSpec extends Specification {
 
     then:
     thrown(IllegalArgumentException)
+  }
+
+  def "testParse - cas général"(Integer dureeMinutes,
+                                Float noteMax,
+                                Float noteAutoMax,
+                                Float noteEnseignantMax,
+                                String jsonQuestionsSequences,
+                                int nbQuestionsSequences) {
+    given:
+    String titre = 'titre'
+    PersonneDto proprietaire = new PersonneDto()
+    long type = 3
+    int versionSujet = 2
+    String paternite = "{json: paternite}"
+    CopyrightsTypeDto copyrightsTypeDto = new CopyrightsTypeDto()
+    String presentation = "presentation"
+    String annotationPrivee = "annotationPrivee"
+    Boolean accessSequentiel = true
+    Boolean ordreQuestionsAleatoire = false
+
+    String json = """
+    {
+      titre: '$titre',
+      type: $type,
+      metadonnees: {
+        proprietaire: {},
+        versionSujet: $versionSujet,
+        paternite: ${MarshallerHelper.asJsonString(paternite)},
+        copyrightsType: {}
+      },
+      specification: {
+        presentation: '$presentation',
+        annotationPrivee: '$annotationPrivee',
+        dureeMinutes: $dureeMinutes,
+        noteMax: $noteMax,
+        noteAutoMax: $noteAutoMax,
+        noteEnseignantMax: $noteEnseignantMax,
+        accesSequentiel: $accessSequentiel,
+        ordreQuestionsAleatoire: $ordreQuestionsAleatoire,
+        questionsSequences: $jsonQuestionsSequences
+      }
+
+    }
+    """
+
+    PersonneMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+      return proprietaire
+    }
+
+    CopyrightsTypeMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+      return copyrightsTypeDto
+    }
+
+    SujetSequenceQuestionsMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+      return new SujetSequenceQuestionsDto()
+    }
+
+    SujetDto sujetDto = SujetMarshaller.parse(
+        JSON.parse(json)
+    )
+
+    expect:
+    sujetDto.titre == titre
+    sujetDto.proprietaire == proprietaire
+    sujetDto.type == type
+    sujetDto.versionSujet == versionSujet
+    sujetDto.paternite == paternite
+    sujetDto.copyrightsType == copyrightsTypeDto
+    sujetDto.presentation == presentation
+    sujetDto.annotationPrivee == annotationPrivee
+    sujetDto.dureeMinutes == dureeMinutes
+    sujetDto.noteMax == noteMax
+    sujetDto.noteAutoMax == noteAutoMax
+    sujetDto.noteEnseignantMax == noteEnseignantMax
+    sujetDto.accesSequentiel == accessSequentiel
+    sujetDto.ordreQuestionsAleatoire == ordreQuestionsAleatoire
+    sujetDto.questionsSequences.size() == nbQuestionsSequences
+
+    cleanup:
+    PersonneMarshaller.metaClass = null
+    CopyrightsTypeMarshaller.metaClass = null
+    SujetSequenceQuestionsMarshaller.metaClass = null
+
+    where:
+    dureeMinutes << [null, 30]
+    noteMax << [null, 20.0]
+    noteAutoMax << [null, 12.0]
+    noteEnseignantMax << [null, 8.0]
+    jsonQuestionsSequences << [
+        '[]',
+        "[{json: 'questionSequence'}, {json: 'questionSequence'}]"
+    ]
+    nbQuestionsSequences << [0, 2]
   }
 }

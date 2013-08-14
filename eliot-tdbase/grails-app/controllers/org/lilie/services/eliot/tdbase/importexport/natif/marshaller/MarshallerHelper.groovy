@@ -22,7 +22,7 @@ class MarshallerHelper {
   )
 
   static void checkIsNotNull(String elementNom, def element) {
-    if (!element) {
+    if (!element || (element instanceof JSONObject.Null)) {
       throw new MarshallerException("$elementNom est obligatoire", elementNom)
     }
   }
@@ -54,11 +54,12 @@ class MarshallerHelper {
       jsonObject.toString()
   }
 
-  static Long jsonObjectToLong(def jsonObject) {
+  static def jsonObjectToObject(def jsonObject) {
     return jsonObject instanceof JSONObject.Null ?
       null :
       jsonObject
   }
+
 
   static Date parseDate(String strDate) {
     return strDate ?

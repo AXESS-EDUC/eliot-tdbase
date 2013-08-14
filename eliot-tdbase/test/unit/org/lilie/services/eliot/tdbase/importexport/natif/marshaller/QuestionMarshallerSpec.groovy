@@ -215,7 +215,7 @@ class QuestionMarshallerSpec extends Specification {
     lastUpdated << [normaliseDate(new Date()), null]
     versionQuestion = 1
     estAutonome << [true, null]
-    paternite << [null, "paternite"]
+    paternite << [null, "{json: paternite}"]
     copyrightsType = new CopyrightsTypeDto()
     etablissement << [null, new EtablissementDto()]
     matiere << [null, new MatiereDto()]

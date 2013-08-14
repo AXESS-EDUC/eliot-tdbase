@@ -60,6 +60,32 @@ class SujetMarshaller {
   }
 
   static SujetDto parse(JSONElement jsonElement) {
-    // TODO Implémenter
+    MarshallerHelper.checkIsNotNull('type', jsonElement.type)
+    MarshallerHelper.checkIsNotNull('titre', jsonElement.titre)
+    MarshallerHelper.checkIsJsonElement('metadonnees', jsonElement.metadonnees)
+    MarshallerHelper.checkIsJsonElement('metadonnees.proprietaire', jsonElement.metadonnees.proprietaire)
+    MarshallerHelper.checkIsJsonElement('metadonnees.copyrightsType', jsonElement.metadonnees.copyrightsType)
+    MarshallerHelper.checkIsJsonElement('specification', jsonElement.specification)
+    MarshallerHelper.checkIsJsonArray('specification.questionsSequences', jsonElement.specification.questionsSequences)
+
+    return new SujetDto(
+        titre: jsonElement.titre,
+        proprietaire: PersonneMarshaller.parse(jsonElement.metadonnees.proprietaire),
+        type: jsonElement.type,
+        versionSujet: jsonElement.metadonnees.versionSujet,
+        paternite: MarshallerHelper.jsonObjectToString(jsonElement.metadonnees.paternite),
+        copyrightsType: CopyrightsTypeMarshaller.parse(jsonElement.metadonnees.copyrightsType),
+        presentation: MarshallerHelper.jsonObjectToString(jsonElement.specification.presentation),
+        annotationPrivee: MarshallerHelper.jsonObjectToString(jsonElement.specification.annotationPrivee),
+        dureeMinutes: MarshallerHelper.jsonObjectToObject(jsonElement.specification.dureeMinutes),
+        noteMax: MarshallerHelper.jsonObjectToObject(jsonElement.specification.noteMax),
+        noteAutoMax: MarshallerHelper.jsonObjectToObject(jsonElement.specification.noteAutoMax),
+        noteEnseignantMax: MarshallerHelper.jsonObjectToObject(jsonElement.specification.noteEnseignantMax),
+        accesSequentiel: MarshallerHelper.jsonObjectToObject(jsonElement.specification.accesSequentiel),
+        ordreQuestionsAleatoire: MarshallerHelper.jsonObjectToObject(jsonElement.specification.ordreQuestionsAleatoire),
+        questionsSequences: jsonElement.specification.questionsSequences.each {
+          SujetSequenceQuestionsMarshaller.parse(it)
+        }
+    )
   }
 }
