@@ -418,11 +418,14 @@ class QuestionController {
     switch (format) {
       case Format.NATIF_JSON.name():
 
+        // TODO Gestion sécurité + service pour la paternité ?
+
         questionService.marquePaternite(question, authenticatedPersonne)
         QuestionMarshallerFactory questionMarshallerFactory = new QuestionMarshallerFactory()
         QuestionMarshaller marshaller = questionMarshallerFactory.newInstance(attachementService)
 
         def converter = marshaller.marshall(question) as JSON
+        // TODO Filename => Class utilitaire ?
         response.setHeader("Content-disposition", "attachment; filename=${getExportNatifFileName(question)}")
         render(text: converter.toString(false), contentType: "application/json", encoding: "UTF-8")
         break

@@ -82,21 +82,29 @@
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
         <%
-          def docLoc = g.createLink(action: 'partage',  id: sujet.id)
+          def docLoc = g.createLink(action: 'partage', id: sujet.id)
           def message = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
         %>
         <li><g:link action="partage"
-                    id="${sujet.id}" onclick="afficheDialogue('${message}', '${docLoc}');return false;">Partager</g:link></li>
+                    id="${sujet.id}"
+                    onclick="afficheDialogue('${message}', '${docLoc}');return false;">Partager</g:link></li>
       </g:if>
       <g:else>
         <li>Partager</li>
       </g:else>
-      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.MOODLE_XML)}">
-        <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Exporter</li>
-      </g:else>
+
+      <g:each in="${Format.values()}" var="format">
+        <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, format)}">
+          <li>
+            <g:link action="exporter" id="${sujet.id}"  params="${[format: format]}">
+              <g:message code="importexport.${format}.action.title"/>
+            </g:link>
+          </li>
+        </g:if>
+        <g:else>
+          <li><g:message code="importexport.${format}.action.title"/></li>
+        </g:else>
+      </g:each>
 
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
@@ -195,7 +203,7 @@
           <li>
             <g:link action="ajouteElement" controller="sujet"
                     id="${sujet.id}" params="[direction: 'avant',
-                    rang: rang]">
+                rang: rang]">
               Insérer&nbsp;un&nbsp;item&nbsp;avant
             </g:link>
           </li>
@@ -233,8 +241,8 @@
         <g:if test="${question.estComposite()}">
           <div class="tdbase-sujet-edition-question-preview">
             <g:render
-                    template="/question/Preview"
-                    model="[question: question, indexExercice: indexExercice]"/>
+                template="/question/Preview"
+                model="[question: question, indexExercice: indexExercice]"/>
           </div>
           <g:set var="indexExercice" value="${indexExercice.toInteger() + 1}"/>
         </g:if>
@@ -251,8 +259,8 @@
           </g:if>
           <div class="tdbase-sujet-edition-question-preview">
             <g:render
-                    template="/question/Preview"
-                    model="[question: question, indexQuestion: indexQuestion]"/>
+                template="/question/Preview"
+                model="[question: question, indexQuestion: indexQuestion]"/>
           </div>
         </g:else>
       </div>

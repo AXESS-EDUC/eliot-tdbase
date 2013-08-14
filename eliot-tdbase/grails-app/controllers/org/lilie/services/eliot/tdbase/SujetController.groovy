@@ -1,9 +1,14 @@
 package org.lilie.services.eliot.tdbase
 
+import grails.converters.JSON
+import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.natif.QuestionImporterService
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.SujetMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImporterService
+import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
@@ -30,6 +35,7 @@ class SujetController {
   MoodleQuizExporterService moodleQuizExporterService
   ScolariteService scolariteService
   QuestionImporterService questionImporterService
+  AttachementService attachementService
 
   /**
    *
@@ -449,12 +455,44 @@ class SujetController {
    * Action pour exporter un sujet en XML.
    * @return
    */
-  def exporter() {
-    def sujet = Sujet.get(params.id)
-    def xml = sujet ? moodleQuizExporterService.toMoodleQuiz(sujet) :
-      message(code: 'xml.export.sujet.inexistant', args: [params.id])
-    response.setHeader("Content-disposition", "attachment; filename=export.xml")
-    render(text: xml, contentType: "text/xml", encoding: "UTF-8")
+  def exporter(String format) {
+    Sujet sujet = Sujet.get(params.id)
+
+    switch (format) {
+      case Format.NATIF_JSON.name():
+        // TODO Gestion sécurité + service pour la paternité ?
+
+        SujetMarshallerFactory sujetMarshallerFactory = new SujetMarshallerFactory()
+        SujetMarshaller sujetMarshaller = sujetMarshallerFactory.newInstance(attachementService)
+
+        def converter = sujetMarshaller.marshall(sujet) as JSON
+        // TODO Filename => Class utilitaire ?
+        response.setHeader("Content-disposition", "attachment; filename=${getExportNatifFileName(sujet)}")
+        render(text: converter.toString(false), contentType: "application/json", encoding: "UTF-8")
+
+        break
+
+      case Format.MOODLE_XML.name():
+        // TODO gestion d'erreur à mettre en commun
+        def xml = sujet ? moodleQuizExporterService.toMoodleQuiz(sujet) :
+          message(code: 'xml.export.sujet.inexistant', args: [params.id])
+        response.setHeader("Content-disposition", "attachment; filename=export.xml")
+        render(text: xml, contentType: "text/xml", encoding: "UTF-8")
+        break
+
+      default:
+        throw new IllegalArgumentException(
+            "Le format '$format' est inconnu."
+        )
+    }
+  }
+
+  private String getExportNatifFileName(Sujet sujet) {
+    String intitule = sujet.titreNormalise.substring(
+        0,
+        Math.min(20, sujet.titreNormalise.size())
+    )
+    return "sujet-${intitule}.tdbase.json"
   }
 
   /**

@@ -177,17 +177,23 @@
           <g:else>
             <li>Partager</li>
           </g:else>
-          <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, Format.MOODLE_XML)}">
-            <li><g:link action="exporter"
-                        id="${sujetInstance.id}">Exporter</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Exporter</li>
-          </g:else>
+
+          <g:each in="${Format.values()}" var="format">
+            <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, format)}">
+              <li>
+                <g:link action="exporter" id="${sujetInstance.id}"  params="${[format: format]}">
+                  <g:message code="importexport.${format}.action.title"/>
+                </g:link>
+              </li>
+            </g:if>
+            <g:else>
+              <li><g:message code="importexport.${format}.action.title"/></li>
+            </g:else>
+          </g:each>
+
           <li><hr/></li>
           <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujetInstance)}">
-            <li><g:link action="supprime"
-                        id="${sujetInstance.id}">Supprimer</g:link></li>
+            <li><g:link action="supprime" id="${sujetInstance.id}">Supprimer</g:link></li>
           </g:if>
           <g:else>
             <li>Supprimer</li>
@@ -197,9 +203,12 @@
         <p class="date">Mise à jour le ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
 
         <p>
-          <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${sujetInstance.niveau?.libelleLong}</g:if>
-          <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${sujetInstance.matiere?.libelleLong}</g:if>
-          <g:if test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</g:if>
+          <g:if
+              test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${sujetInstance.niveau?.libelleLong}</g:if>
+          <g:if
+              test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${sujetInstance.matiere?.libelleLong}</g:if>
+          <g:if
+              test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</g:if>
           <g:if test="${afficheFormulaire}">
             <strong>» Auteur :</strong> ${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}
           </g:if>

@@ -91,12 +91,21 @@
       <g:else>
         <li>Partager</li>
       </g:else>
-      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.MOODLE_XML)}">
-        <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Exporter</li>
-      </g:else>
+
+      <g:each in="${Format.values()}" var="format">
+        <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, format)}">
+          <li>
+            <g:link action="exporter" id="${sujet.id}"  params="${[format: format]}">
+              <g:message code="importexport.${format}.action.title"/>
+            </g:link>
+          </li>
+        </g:if>
+        <g:else>
+          <li><g:message code="importexport.${format}.action.title"/></li>
+        </g:else>
+      </g:each>
+
+
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
         <li><g:link action="supprime"
@@ -131,7 +140,7 @@
 <div class="portal-messages">
   <li class="notice">
     Date dernier enregistrement : <span
-          id="date_enregistrement">${copie.dateEnregistrement?.format(message(code: 'default.date.format'))}</span>
+      id="date_enregistrement">${copie.dateEnregistrement?.format(message(code: 'default.date.format'))}</span>
     <g:if test="${copie.dateRemise}">
       &nbsp;&nbsp;   &nbsp;&nbsp;
    Note (correction automatique) :
