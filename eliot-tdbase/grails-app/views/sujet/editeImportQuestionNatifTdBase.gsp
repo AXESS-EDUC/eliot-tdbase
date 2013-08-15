@@ -38,7 +38,7 @@
       $("form").attr('enctype', 'multipart/form-data');
     });
   </r:script>
-  <title><g:message code="sujet.editeImportMoodleXML.head.title"/></title>
+  <title><g:message code="sujet.editeImportQuestionNatifTdBase.head.title"/></title>
 </head>
 
 <body>
@@ -85,7 +85,7 @@
   </div>
   <g:hiddenField name="sujetId" value="${sujet.id}"/>
   <div class="form_actions">
-    <g:actionSubmit value="Importer" action="importNatifTdBase"
+    <g:actionSubmit value="Importer" action="importQuestionNatifTdBase"
                     class="button"
                     title="Importer"/>
   </div>

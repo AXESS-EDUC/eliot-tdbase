@@ -3,6 +3,7 @@ package org.lilie.services.eliot.tdbase
 import grails.converters.JSON
 import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.natif.QuestionImporterService
+import org.lilie.services.eliot.tdbase.importexport.natif.SujetImporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.SujetMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
@@ -35,6 +36,7 @@ class SujetController {
   MoodleQuizExporterService moodleQuizExporterService
   ScolariteService scolariteService
   QuestionImporterService questionImporterService
+  SujetImporterService sujetImporterService
   AttachementService attachementService
 
   /**
@@ -514,7 +516,7 @@ class SujetController {
   /**
    * Action déclenchant l'import du fichier XML
    */
-  def importMoodleXML(ImportCommand importCommand) {
+  def importMoodleXML(ImportDansSujetCommand importCommand) {
     Sujet sujet = Sujet.get(importCommand.sujetId)
     Matiere matiere = Matiere.get(importCommand.matiereId)
     Niveau niveau = Niveau.get(importCommand.niveauId)
@@ -564,8 +566,8 @@ class SujetController {
   /**
    * Action donnant accès au formulaire d'import natif eliot-tdbase d'une question
    */
-  def editeImportNatifTdBase() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.importnatiftdbase.titre"))
+  def editeImportQuestionNatifTdBase() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.question.libelle"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
     [
@@ -577,9 +579,9 @@ class SujetController {
   }
 
   /**
-   * Action déclenchant l'import du fichier JSON au format natif eliot-tdbase
+   * Action déclenchant l'import du fichier question JSON au format natif eliot-tdbase
    */
-  def importNatifTdBase(ImportCommand importCommand) {
+  def importQuestionNatifTdBase(ImportDansSujetCommand importCommand) {
     Sujet sujet = Sujet.load(importCommand.sujetId)
     Personne proprietaire = authenticatedPersonne
     MultipartFile fichier = request.getFile("fichierImport")
@@ -616,13 +618,71 @@ class SujetController {
       flash.messageCode = "La question a été correctement importée."
       redirect(action: 'edite', id: sujet.id)
     } else {
-      redirect(action: 'editeImportNatifTdBase', id: sujet.id)
+      redirect(action: 'editeImportQuestionNatifTdBase', id: sujet.id)
     }
   }
 
+  /**
+   * Action donnant accès au formulaire d'import natif eliot-tdbase d'un sujet
+   */
+  def editeImportSujetNatifTdBase() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.sujet.libelle"))
+    Personne proprietaire = authenticatedPersonne
+    [
+        liens: breadcrumpsService.liens,
+        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+    ]
+  }
+
+  /**
+   * Action déclenchant l'import du fichier sujet JSON au format natif eliot-tdbase
+   */
+  def importSujetNatifTdBase(Long matiereId, Long niveauId) {
+    Personne proprietaire = authenticatedPersonne
+    MultipartFile fichier = request.getFile("fichierImport")
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    boolean importSuccess = true
+    if (!fichier || fichier.isEmpty()) {
+      flash.errorMessageCode = "question.document.fichier.vide"
+      importSuccess = false
+    } else if (!fichier.name) {
+      flash.errorMessageCode = "question.document.fichier.nom.null"
+      importSuccess = false
+    }
+    // TODO: que faire de la limite de taille pour un sujet ?
+//    else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+//      flash.errorMessageCode = "question.document.fichier.tropgros"
+//      importSuccess = false
+//    }
+
+    Sujet sujet = null
+    if (importSuccess) {
+      try {
+        sujet = sujetImporterService.importeSujet(
+            fichier.bytes,
+            proprietaire,
+            Matiere.load(matiereId),
+            Niveau.load(niveauId)
+        )
+      } catch (Exception e) {
+        log.error("Une erreur s'est produite durant l'import du sujet", e)
+        flash.errorMessageCode = e.message
+        importSuccess = false
+        // TODO tester le comportement en cas d'erreur
+      }
+    }
+    flash.liens = breadcrumpsService.liens
+    if (importSuccess) {
+      flash.messageCode = "Le sujet a été correctement importé."
+      redirect(action: 'edite', id: sujet.id)
+    } else {
+      redirect(action: 'editeImportSujetNatifTdBase')
+    }
+  }
 }
 
-class ImportCommand {
+class ImportDansSujetCommand {
   Long sujetId
   Long matiereId
   Long niveauId

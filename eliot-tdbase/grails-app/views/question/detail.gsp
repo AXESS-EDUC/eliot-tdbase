@@ -102,12 +102,12 @@
                 action="exporter"
                 controller="question"
                 id="${question.id}" params="${[format: format]}">
-              <g:message code="importexport.${format}.action.title"/>
+              <g:message code="importexport.${format}.action.export.title"/>
             </g:link>
           </li>
         </g:if>
         <g:else>
-          <g:message code="importexport.${format}.action.title"/>
+          <g:message code="importexport.${format}.action.export.title"/>
         </g:else>
       </g:each>
       <li><hr/></li>

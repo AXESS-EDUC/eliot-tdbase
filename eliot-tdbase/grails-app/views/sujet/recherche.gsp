@@ -182,12 +182,12 @@
             <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, format)}">
               <li>
                 <g:link action="exporter" id="${sujetInstance.id}"  params="${[format: format]}">
-                  <g:message code="importexport.${format}.action.title"/>
+                  <g:message code="importexport.${format}.action.export.title"/>
                 </g:link>
               </li>
             </g:if>
             <g:else>
-              <li><g:message code="importexport.${format}.action.title"/></li>
+              <li><g:message code="importexport.${format}.action.export.title"/></li>
             </g:else>
           </g:each>
 
