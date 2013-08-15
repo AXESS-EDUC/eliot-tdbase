@@ -63,9 +63,9 @@ class QuestionImporterServiceSpec extends Specification {
 
   def "testImporteQuestion - Importeur n'a pas l'autorisation de modifier le sujet"() {
     given:
-    def jsonBlob = null
-    def sujet = null
-    def importeur = null
+    byte[] jsonBlob = "jsonBlob".bytes
+    Sujet sujet = null
+    Personne importeur = null
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> false
 
@@ -87,9 +87,11 @@ class QuestionImporterServiceSpec extends Specification {
     def sujet = null
     def importeur = null
 
+    String erreurMessage = "erreur"
+
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
     QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      throw new IllegalStateException("Specification")
+      throw new IllegalStateException(erreurMessage)
     }
 
 
@@ -102,7 +104,7 @@ class QuestionImporterServiceSpec extends Specification {
 
     then:
     def e = thrown(IllegalStateException)
-    e.message == "Specification"
+    e.message == erreurMessage
 
     cleanup:
     QuestionMarshaller.metaClass = null
@@ -247,7 +249,7 @@ class QuestionImporterServiceSpec extends Specification {
       return questionSpecificationService
     }
 
-    questionService.createQuestionAndInsertInSujet(_, _, _, _) >> {
+    questionService.createQuestionAndInsertInSujet(_, _, _, _, _, _, _) >> {
       throw new IllegalStateException(
           "Echec de création de la question"
       )
@@ -336,7 +338,10 @@ class QuestionImporterServiceSpec extends Specification {
         },
         multipleChoiceSpecification,
         sujet,
-        importeur
+        importeur,
+        null,
+        null,
+        null
     ) >> question
 
     when:

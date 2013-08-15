@@ -100,13 +100,12 @@ class SujetMarshallerSpec extends Specification {
     sujetRepresentation.specification.noteEnseignantMax == sujet.noteEnseignantMax
     sujetRepresentation.specification.accesSequentiel == sujet.accesSequentiel
     sujetRepresentation.specification.ordreQuestionsAleatoire == sujet.ordreQuestionsAleatoire
-    if(questionsSequences) {
+    if (questionsSequences) {
       sujetRepresentation.specification.questionsSequences.size() == questionsSequences.size()
       sujetRepresentation.specification.questionsSequences.eachWithIndex { def questionSequence, int i ->
         assert questionSequence.rang == i
       }
-    }
-    else {
+    } else {
       sujetRepresentation.specification.questionsSequences == []
     }
 
@@ -168,7 +167,7 @@ class SujetMarshallerSpec extends Specification {
         noteEnseignantMax: $noteEnseignantMax,
         accesSequentiel: $accessSequentiel,
         ordreQuestionsAleatoire: $ordreQuestionsAleatoire,
-        questionsSequences: $jsonQuestionsSequences
+        questionsSequences: ${jsonQuestionsSequences ?: '[]'}
       }
 
     }
@@ -205,7 +204,16 @@ class SujetMarshallerSpec extends Specification {
     sujetDto.noteEnseignantMax == noteEnseignantMax
     sujetDto.accesSequentiel == accessSequentiel
     sujetDto.ordreQuestionsAleatoire == ordreQuestionsAleatoire
-    sujetDto.questionsSequences.size() == nbQuestionsSequences
+    if (jsonQuestionsSequences) {
+      sujetDto.questionsSequences.size() == nbQuestionsSequences
+      sujetDto.questionsSequences.every {
+        assert it instanceof SujetSequenceQuestionsDto
+        return true
+      }
+    }
+    else {
+      sujetDto.questionsSequences == []
+    }
 
     cleanup:
     PersonneMarshaller.metaClass = null
@@ -213,14 +221,15 @@ class SujetMarshallerSpec extends Specification {
     SujetSequenceQuestionsMarshaller.metaClass = null
 
     where:
-    dureeMinutes << [null, 30]
-    noteMax << [null, 20.0]
-    noteAutoMax << [null, 12.0]
-    noteEnseignantMax << [null, 8.0]
+    dureeMinutes << [null, null, 30]
+    noteMax << [null, null, 20.0]
+    noteAutoMax << [null, null, 12.0]
+    noteEnseignantMax << [null, null, 8.0]
     jsonQuestionsSequences << [
+        null,
         '[]',
         "[{json: 'questionSequence'}, {json: 'questionSequence'}]"
     ]
-    nbQuestionsSequences << [0, 2]
+    nbQuestionsSequences << [0, 0, 2]
   }
 }

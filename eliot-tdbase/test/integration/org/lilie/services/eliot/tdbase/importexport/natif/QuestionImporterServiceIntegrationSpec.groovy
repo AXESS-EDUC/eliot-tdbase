@@ -16,6 +16,7 @@ import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.AttachementDto
 import org.lilie.services.eliot.tice.AttachementService
+import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
@@ -124,7 +125,8 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
         [
             titre: titre,
             type: QuestionTypeEnum.Open.questionType,
-            versionQuestion: 5
+            versionQuestion: 5,
+            copyrightsType: CopyrightsTypeEnum.CC_BY_NC.copyrightsType
         ],
         new OpenSpecification(
             libelle: titre,

@@ -220,16 +220,25 @@ class QuestionService implements ApplicationContextAware {
  */
   @Transactional
   Question createQuestionAndInsertInSujet(Map proprietesQuestion,
-                                          def specificatinObject,
+                                          def specificationObject,
                                           Sujet sujet,
                                           Personne proprietaire,
-                                          Integer rang = null) {
+                                          Integer rang = null,
+                                          Float noteSeuilPoursuite = null,
+                                          Float points = null) {
 
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
-    Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
+    Question question = createQuestion(proprietesQuestion, specificationObject, proprietaire)
     if (!question.hasErrors()) {
-      sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
+      sujetService.insertQuestionInSujet(
+          question,
+          sujet,
+          proprietaire,
+          rang,
+          noteSeuilPoursuite,
+          points
+      )
     }
     return question
   }

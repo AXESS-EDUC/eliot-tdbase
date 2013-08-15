@@ -36,12 +36,41 @@ class QuestionImporterService {
                            Sujet sujet,
                            Personne importeur,
                            Matiere matiere = null,
-                           Niveau niveau = null) {
+                           Niveau niveau = null,
+                           Integer rang = null,
+                           Float noteSeuilPoursuite = null,
+                           Float points = null) {
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet))
 
     QuestionDto questionDto = QuestionMarshaller.parse(
         JSON.parse(new ByteArrayInputStream(jsonBlob), 'UTF-8')
     )
+
+    importeQuestion(
+        questionDto,
+        sujet,
+        importeur,
+        matiere,
+        niveau,
+        rang,
+        noteSeuilPoursuite,
+        points
+    )
+  }
+
+  /**
+   * Importe une question à partir de sa description au format QuestionDto
+   * dans un sujet
+   */
+  Question importeQuestion(QuestionDto questionDto, // TODO réduire le nb de param
+                           Sujet sujet,
+                           Personne importeur,
+                           Matiere matiere = null,
+                           Niveau niveau = null,
+                           Integer rang = null,
+                           Float noteSeuilPoursuite = null,
+                           Float points = null) {
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet))
 
     // Récupération du QuestionType & du QuestionSpecificationService
     QuestionType questionType = QuestionTypeEnum.valueOf(questionDto.type).questionType
@@ -72,7 +101,10 @@ class QuestionImporterService {
         ],
         objSpec,
         sujet,
-        importeur
+        importeur,
+        rang,
+        noteSeuilPoursuite,
+        points
     )
 
     if (questionDto.principalAttachement) {

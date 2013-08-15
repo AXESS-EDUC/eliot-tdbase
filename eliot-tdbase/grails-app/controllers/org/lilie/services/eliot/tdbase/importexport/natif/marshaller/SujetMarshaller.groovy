@@ -52,7 +52,7 @@ class SujetMarshaller {
             ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
             questionsSequences: sujet.questionsSequences?.collect {
               sujetSequenceQuestionsMarshaller.marshall(it)
-            }
+            } ?: []
         ]
     ]
 
@@ -83,7 +83,7 @@ class SujetMarshaller {
         noteEnseignantMax: MarshallerHelper.jsonObjectToObject(jsonElement.specification.noteEnseignantMax),
         accesSequentiel: MarshallerHelper.jsonObjectToObject(jsonElement.specification.accesSequentiel),
         ordreQuestionsAleatoire: MarshallerHelper.jsonObjectToObject(jsonElement.specification.ordreQuestionsAleatoire),
-        questionsSequences: jsonElement.specification.questionsSequences.each {
+        questionsSequences: jsonElement.specification.questionsSequences.collect {
           SujetSequenceQuestionsMarshaller.parse(it)
         }
     )

@@ -22,7 +22,8 @@ class MarshallerHelper {
   )
 
   static void checkIsNotNull(String elementNom, def element) {
-    if (element == null || (element instanceof JSONObject.Null)) {
+    // Note jtra : La valeur 0 ne doit pas être considérée comme null
+    if (element == null || (element instanceof JSONObject.Null) || element == '') {
       throw new MarshallerException("$elementNom est obligatoire", elementNom)
     }
   }

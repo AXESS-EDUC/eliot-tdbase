@@ -384,8 +384,12 @@ class SujetService {
  * @return le sujet modifié
  */
   @Transactional
-  Sujet insertQuestionInSujet(Question question, Sujet leSujet,
-                              Personne proprietaire, Integer rang = null) {
+  Sujet insertQuestionInSujet(Question question,
+                              Sujet leSujet,
+                              Personne proprietaire,
+                              Integer rang = null,
+                              Float noteSeuilPoursuite = null,
+                              Float points = null) {
 
     // verif securite
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
@@ -399,6 +403,12 @@ class SujetService {
     def sequence = new SujetSequenceQuestions(question: question,
                                               sujet: leSujet,
                                               rang: leSujet.questionsSequences?.size())
+    if(noteSeuilPoursuite != null) {
+      sequence.noteSeuilPoursuite = noteSeuilPoursuite
+    }
+    if(points != null) {
+      sequence.points = points
+    }
     leSujet.addToQuestionsSequences(sequence)
     sequence.save()
     if (sequence.hasErrors()) {
