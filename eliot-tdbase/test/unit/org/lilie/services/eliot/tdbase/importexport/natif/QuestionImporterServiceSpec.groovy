@@ -10,12 +10,15 @@ import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionType
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 import org.lilie.services.eliot.tdbase.Sujet
+import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 import org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
-import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto
+import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
@@ -34,18 +37,24 @@ class QuestionImporterServiceSpec extends Specification {
   QuestionImporterService questionImporterService
   ArtefactAutorisationService artefactAutorisationService
   QuestionService questionService
+  SujetService sujetService
   AttachementImporterService attachementImporterService
+  SujetImporterService sujetImporterService
 
 
   def setup() {
     artefactAutorisationService = Mock(ArtefactAutorisationService)
     questionService = Mock(QuestionService)
     attachementImporterService = Mock(AttachementImporterService)
+    sujetImporterService = Mock(SujetImporterService)
+    sujetService = Mock(SujetService)
 
     questionImporterService = new QuestionImporterService(
         artefactAutorisationService: artefactAutorisationService,
         questionService: questionService,
-        attachementImporterService: attachementImporterService
+        sujetService: sujetService,
+        attachementImporterService: attachementImporterService,
+        sujetImporterServiceBean: sujetImporterService
     )
 
     // Crée le type de question d'id 1
@@ -118,7 +127,7 @@ class QuestionImporterServiceSpec extends Specification {
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
     QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      new QuestionDto(
+      new QuestionAtomiqueDto(
           type: "Question type incorrect"
       )
     }
@@ -148,7 +157,7 @@ class QuestionImporterServiceSpec extends Specification {
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
     String codeCopyrightsTypeIncorrect = "codeCopyrightsTypeIncorrect"
     QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      new QuestionDto(
+      new QuestionAtomiqueDto(
           type: QuestionTypeEnum.MultipleChoice.name(),
           copyrightsType: new CopyrightsTypeDto(
               code: codeCopyrightsTypeIncorrect
@@ -182,7 +191,7 @@ class QuestionImporterServiceSpec extends Specification {
     QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.MultipleChoice
 
     QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      new QuestionDto(
+      new QuestionAtomiqueDto(
           type: questionTypeEnum.name(),
           copyrightsType: new CopyrightsTypeDto(
               code: CopyrightsTypeEnum.TousDroitsReserves.code
@@ -224,7 +233,7 @@ class QuestionImporterServiceSpec extends Specification {
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
 
     QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      new QuestionDto(
+      new QuestionAtomiqueDto(
           type: QuestionTypeEnum.MultipleChoice.name(),
           copyrightsType: new CopyrightsTypeDto(
               code: CopyrightsTypeEnum.TousDroitsReserves.code
@@ -270,10 +279,10 @@ class QuestionImporterServiceSpec extends Specification {
     QuestionMarshaller.metaClass = null
   }
 
-  def "testImporteQuestion - question OK"(Matiere matiere,
-                                          Niveau niveau,
-                                          PrincipalAttachementDto principalAttachementDto,
-                                          List<AttachementDto> questionAttachementsDto) {
+  def "testImporteQuestion - question atomique OK"(Matiere matiere,
+                                                   Niveau niveau,
+                                                   PrincipalAttachementDto principalAttachementDto,
+                                                   List<AttachementDto> questionAttachementsDto) {
     given:
     def jsonBlob = "jsonBlob".getBytes()
     def sujet = new Sujet()
@@ -295,7 +304,7 @@ class QuestionImporterServiceSpec extends Specification {
 
     QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.MultipleChoice
 
-    QuestionDto questionDto = new QuestionDto(
+    QuestionAtomiqueDto questionAtomiqueDto = new QuestionAtomiqueDto(
         titre: "titre",
         type: questionTypeEnum.name(),
         copyrightsType: new CopyrightsTypeDto(
@@ -308,7 +317,7 @@ class QuestionImporterServiceSpec extends Specification {
     )
 
     QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      return questionDto
+      return questionAtomiqueDto
     }
 
     questionService.questionSpecificationServiceForQuestionType({
@@ -326,13 +335,13 @@ class QuestionImporterServiceSpec extends Specification {
 
     1 * questionService.createQuestionAndInsertInSujet(
         {
-          assert it.titre == questionDto.titre
+          assert it.titre == questionAtomiqueDto.titre
           assert it.type.code == QuestionTypeEnum.MultipleChoice.name()
           assert it.matiere == matiere
           assert it.niveau == niveau
-          assert it.estAutonome == questionDto.estAutonome
-          assert it.paternite == questionDto.paternite
-          assert it.versionQuestion == questionDto.versionQuestion
+          assert it.estAutonome == questionAtomiqueDto.estAutonome
+          assert it.paternite == questionAtomiqueDto.paternite
+          assert it.versionQuestion == questionAtomiqueDto.versionQuestion
           assert it.copyrightsType.code == copyrightsTypeEnum.code
           return true
         },
@@ -355,12 +364,12 @@ class QuestionImporterServiceSpec extends Specification {
 
     then:
     if (principalAttachementDto) {
-      1 * attachementImporterService.importePrincipalAttachement(questionDto.principalAttachement, question)
+      1 * attachementImporterService.importePrincipalAttachement(questionAtomiqueDto.principalAttachement, question)
     } else {
       0 * attachementImporterService.importePrincipalAttachement(_)
     }
 
-    1 * attachementImporterService.importeQuestionAttachements(questionDto.questionAttachements, question)
+    1 * attachementImporterService.importeQuestionAttachements(questionAtomiqueDto.questionAttachements, question)
     questionImportee == question
 
     cleanup:
@@ -380,4 +389,63 @@ class QuestionImporterServiceSpec extends Specification {
         [new AttachementDto(), new AttachementDto(), new AttachementDto()]
     ]
   }
+
+  def "testImporteQuestion - question composite OK"(Matiere matiere,
+                                                    Niveau niveau,
+                                                    Integer rang,
+                                                    Float noteSeuilPoursuite,
+                                                    Float points) {
+    given:
+    SujetDto exerciceDto = new SujetDto()
+    Question questionComposite = new Question()
+    Sujet exercice = Mock(Sujet)
+    exercice.getQuestionComposite() >> questionComposite
+    QuestionCompositeDto questionCompositeDto = new QuestionCompositeDto(
+        exercice: exerciceDto
+    )
+    Sujet sujet = new Sujet()
+    Personne importeur = new Personne()
+
+    when:
+    Question questionImportee = questionImporterService.importeQuestion(
+        questionCompositeDto,
+        sujet,
+        importeur,
+        matiere,
+        niveau,
+        rang,
+        noteSeuilPoursuite,
+        points
+    )
+
+    then:
+    1 * sujetImporterService.importeSujet(
+        exerciceDto,
+        importeur,
+        matiere,
+        niveau
+    ) >> exercice
+
+    then:
+    1 * sujetService.insertQuestionInSujet(
+        questionComposite,
+        sujet,
+        importeur,
+        rang,
+        noteSeuilPoursuite,
+        points
+    )
+
+    then:
+    questionImportee == questionComposite
+
+
+    where:
+    matiere << [null, new Matiere()]
+    niveau << [null, new Niveau()]
+    rang << [null, 4]
+    noteSeuilPoursuite << [null, 8.0]
+    points << [null, 3.0]
+  }
+
 }

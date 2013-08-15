@@ -5,6 +5,8 @@ import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONElement
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionType
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.EtablissementDto
@@ -12,6 +14,8 @@ import org.lilie.services.eliot.tdbase.importexport.dto.MatiereDto
 import org.lilie.services.eliot.tdbase.importexport.dto.NiveauDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PersonneDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
 import spock.lang.Specification
 
@@ -20,7 +24,37 @@ import spock.lang.Specification
  */
 class QuestionMarshallerSpec extends Specification {
 
-  def "testMashall - cas général"(String paternite) {
+  PersonneMarshaller personneMarshaller
+  EtablissementMarshaller etablissementMarshaller
+  MatiereMarshaller matiereMarshaller
+  NiveauMarshaller niveauMarshaller
+  CopyrightsTypeMarshaller copyrightsTypeMarshaller
+  AttachementMarchaller attachementMarchaller
+  QuestionCompositeMarshaller questionCompositeMarshaller
+
+  QuestionMarshaller questionMarshaller
+
+  def setup() {
+    personneMarshaller = Mock(PersonneMarshaller)
+    etablissementMarshaller = Mock(EtablissementMarshaller)
+    matiereMarshaller = Mock(MatiereMarshaller)
+    niveauMarshaller = Mock(NiveauMarshaller)
+    copyrightsTypeMarshaller = Mock(CopyrightsTypeMarshaller)
+    attachementMarchaller = Mock(AttachementMarchaller)
+    questionCompositeMarshaller = Mock(QuestionCompositeMarshaller)
+
+    questionMarshaller = new QuestionMarshaller(
+        personneMarshaller: personneMarshaller,
+        etablissementMarshaller: etablissementMarshaller,
+        matiereMarshaller: matiereMarshaller,
+        niveauMarshaller: niveauMarshaller,
+        copyrightsTypeMarshaller: copyrightsTypeMarshaller,
+        attachementMarchaller: attachementMarchaller,
+        questionCompositeMarshaller: questionCompositeMarshaller
+    )
+  }
+
+  def "testMarshall - question atomique OK"(String paternite) {
     given:
     Question question = new Question(
         type: new QuestionType(code: "code"),
@@ -41,33 +75,13 @@ class QuestionMarshallerSpec extends Specification {
     Map principalAttachementRepresentation = [map: 'principalAttachement']
     List questionAttachementsRepresentation = [[map: 'attachement']]
 
-    PersonneMarshaller personneMarshaller = Mock(PersonneMarshaller)
     personneMarshaller.marshall(_) >> personneRepresentation
-
-    EtablissementMarshaller etablissementMarshaller = Mock(EtablissementMarshaller)
     etablissementMarshaller.marshall(_) >> etablissementRepresentation
-
-    MatiereMarshaller matiereMarshaller = Mock(MatiereMarshaller)
     matiereMarshaller.marshall(_) >> matiereRepresentation
-
-    NiveauMarshaller niveauMarshaller = Mock(NiveauMarshaller)
     niveauMarshaller.marshall(_) >> niveauRepresentation
-
-    CopyrightsTypeMarshaller copyrightsTypeMarshaller = Mock(CopyrightsTypeMarshaller)
     copyrightsTypeMarshaller.marshall(_) >> copyrightsTypeRepresentation
-
-    AttachementMarchaller attachementMarchaller = Mock(AttachementMarchaller)
     attachementMarchaller.marshallPrincipalAttachement(_, _) >> principalAttachementRepresentation
     attachementMarchaller.marshallQuestionAttachements(_) >> questionAttachementsRepresentation
-
-    QuestionMarshaller questionMarshaller = new QuestionMarshaller(
-        personneMarshaller: personneMarshaller,
-        etablissementMarshaller: etablissementMarshaller,
-        matiereMarshaller: matiereMarshaller,
-        niveauMarshaller: niveauMarshaller,
-        copyrightsTypeMarshaller: copyrightsTypeMarshaller,
-        attachementMarchaller: attachementMarchaller
-    )
 
     Map questionRepresentation = questionMarshaller.marshall(question)
 
@@ -101,6 +115,24 @@ class QuestionMarshallerSpec extends Specification {
     paternite << [null, "", "{json: 'paternite'}"]
   }
 
+  def "testMarshall – question composite OK"() {
+    given:
+    Question questionComposite = new Question(
+        exercice: new Sujet()
+    )
+    Map questionCompositeRepresentation = [map: 'questionComposite']
+
+    when:
+    Map resultat = questionMarshaller.marshall(questionComposite)
+
+    then:
+    1 * questionCompositeMarshaller.marshall(questionComposite) >> questionCompositeRepresentation
+
+    then:
+    resultat == questionCompositeRepresentation
+
+  }
+
   def "testMarshall - argument null"() {
     setup:
     QuestionMarshaller questionMarshaller = new QuestionMarshaller()
@@ -112,22 +144,23 @@ class QuestionMarshallerSpec extends Specification {
     thrown(IllegalArgumentException)
   }
 
-  def "testParse - cas général"(String type,
-                                String titre,
-                                PersonneDto proprietaire,
-                                Date dateCreated,
-                                Date lastUpdated,
-                                int versionQuestion,
-                                Boolean estAutonome,
-                                String paternite,
-                                CopyrightsTypeDto copyrightsType,
-                                EtablissementDto etablissement,
-                                MatiereDto matiere,
-                                NiveauDto niveau,
-                                String specification,
-                                PrincipalAttachementDto principalAttachement,
-                                List<AttachementDto> questionAttachements) {
+  def "testParse - question atomique OK"(Date dateCreated,
+                                         Date lastUpdated,
+                                         Boolean estAutonome,
+                                         String paternite,
+                                         CopyrightsTypeDto copyrightsType,
+                                         EtablissementDto etablissement,
+                                         MatiereDto matiere,
+                                         NiveauDto niveau,
+                                         PrincipalAttachementDto principalAttachement,
+                                         List<AttachementDto> questionAttachements) {
     given:
+    String type = 'type'
+    String titre = 'titre'
+    PersonneDto proprietaire = new PersonneDto()
+    int versionQuestion = 1
+    String specification = 'specification'
+
     PersonneMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
       return proprietaire
     }
@@ -184,6 +217,7 @@ class QuestionMarshallerSpec extends Specification {
     )
 
     expect:
+    questionDto instanceof QuestionAtomiqueDto
     questionDto.type == type
     questionDto.titre == titre
     questionDto.proprietaire == proprietaire
@@ -208,19 +242,14 @@ class QuestionMarshallerSpec extends Specification {
     AttachementMarchaller.metaClass = null
 
     where:
-    type = 'type'
-    titre = 'titre'
-    proprietaire = new PersonneDto()
     dateCreated << [normaliseDate(new Date()) - 1, null]
     lastUpdated << [normaliseDate(new Date()), null]
-    versionQuestion = 1
     estAutonome << [true, null]
     paternite << [null, "{json: paternite}"]
     copyrightsType = new CopyrightsTypeDto()
     etablissement << [null, new EtablissementDto()]
     matiere << [null, new MatiereDto()]
     niveau << [null, new NiveauDto()]
-    specification = 'specification'
     principalAttachement << [null, new PrincipalAttachementDto()]
     questionAttachements << [
         [],
@@ -228,10 +257,22 @@ class QuestionMarshallerSpec extends Specification {
     ]
   }
 
-  private static Date normaliseDate(Date date) {
-    return MarshallerHelper.ISO_DATE_FORMAT.parse(
-        MarshallerHelper.ISO_DATE_FORMAT.format(date)
-    )
+  def "testParse - question composite OK"() {
+    given:
+    QuestionCompositeDto questionCompositeDto = new QuestionCompositeDto()
+
+    QuestionCompositeMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+      return questionCompositeDto
+    }
+
+    String json = """
+    {
+      type: '${QuestionTypeEnum.Composite.name()}'
+    }
+    """
+
+    expect:
+    QuestionMarshaller.parse(JSON.parse(json)) == QuestionCompositeMarshaller.parse(JSON.parse(json))
   }
 
   def "testParse - erreur type null"(String json) {
@@ -382,5 +423,11 @@ class QuestionMarshallerSpec extends Specification {
         "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification', principalAttachement: {}, questionAttachements: null}",
         "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification', principalAttachement: {}, questionAttachements: {}}"
     ]
+  }
+
+  private static Date normaliseDate(Date date) {
+    return MarshallerHelper.ISO_DATE_FORMAT.parse(
+        MarshallerHelper.ISO_DATE_FORMAT.format(date)
+    )
   }
 }

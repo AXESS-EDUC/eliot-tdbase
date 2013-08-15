@@ -1,22 +1,9 @@
 package org.lilie.services.eliot.tdbase.importexport.dto
 
 /**
+ * Représente une question qui peut être soit une QuestionAtomiqueDto, soit une QuestionCompositeDto
  * @author John Tranier
  */
-public class QuestionDto {
-  String type
-  String titre
-  PersonneDto proprietaire
-  Date dateCreated
-  Date lastUpdated
-  int versionQuestion
-  Boolean estAutonome
-  String paternite
-  CopyrightsTypeDto copyrightsType
-  EtablissementDto etablissement
-  MatiereDto matiere
-  NiveauDto niveau
-  String specification
-  PrincipalAttachementDto principalAttachement
-  List<AttachementDto> questionAttachements
+public interface QuestionDto {
+
 }

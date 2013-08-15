@@ -4,7 +4,7 @@ import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONElement
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.SujetSequenceQuestions
-import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetSequenceQuestionsDto
 import spock.lang.Specification
 
@@ -65,7 +65,7 @@ class SujetSequenceQuestionsMarshallerSpec extends Specification {
     given:
     int rang = 2
     Float points = 2.0
-    QuestionDto questionDto = new QuestionDto()
+    QuestionAtomiqueDto questionDto = new QuestionAtomiqueDto()
 
     QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
       return questionDto

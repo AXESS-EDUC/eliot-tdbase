@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase
 
 import grails.converters.JSON
 import org.lilie.services.eliot.tdbase.importexport.Format
+import org.lilie.services.eliot.tdbase.importexport.QuestionExporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.QuestionMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
@@ -53,6 +54,7 @@ class QuestionController {
   ArtefactAutorisationService artefactAutorisationService
   MoodleQuizExporterService moodleQuizExporterService
   AttachementService attachementService
+  QuestionExporterService questionExporterService
 
   /**
    *
@@ -418,9 +420,7 @@ class QuestionController {
     switch (format) {
       case Format.NATIF_JSON.name():
 
-        // TODO Gestion sécurité + service pour la paternité ?
-
-        questionService.marquePaternite(question, authenticatedPersonne)
+        question = questionExporterService.getQuestionPourExport(question, authenticatedPersonne)
         QuestionMarshallerFactory questionMarshallerFactory = new QuestionMarshallerFactory()
         QuestionMarshaller marshaller = questionMarshallerFactory.newInstance(attachementService)
 

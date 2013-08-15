@@ -5,6 +5,7 @@ import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.Etablisseme
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetSequenceQuestionsMarshaller
 import org.lilie.services.eliot.tice.AttachementService
@@ -16,9 +17,16 @@ import org.lilie.services.eliot.tice.AttachementService
  */
 class SujetMarshallerFactory {
 
-  QuestionMarshallerFactory questionMarshallerFactory = new QuestionMarshallerFactory()
 
   SujetMarshaller newInstance(AttachementService attachementService) {
+    QuestionMarshallerFactory questionMarshallerFactory = new QuestionMarshallerFactory()
+
+    return newInstance(
+        questionMarshallerFactory.newInstance(attachementService)
+    )
+  }
+
+  SujetMarshaller newInstance(QuestionMarshaller questionMarshaller) {
     return new SujetMarshaller(
         personneMarshaller: new PersonneMarshaller(),
         copyrightsTypeMarshaller: new CopyrightsTypeMarshaller(),
@@ -26,7 +34,7 @@ class SujetMarshallerFactory {
         matiereMarshaller: new MatiereMarshaller(),
         niveauMarshaller: new NiveauMarshaller(),
         sujetSequenceQuestionsMarshaller: new SujetSequenceQuestionsMarshaller(
-            questionMarshaller: questionMarshallerFactory.newInstance(attachementService)
+            questionMarshaller: questionMarshaller
         )
     )
   }

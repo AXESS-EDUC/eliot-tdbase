@@ -3,6 +3,8 @@ package org.lilie.services.eliot.tdbase.importexport.natif
 import grails.converters.JSON
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetService
+import org.lilie.services.eliot.tdbase.SujetType
+import org.lilie.services.eliot.tdbase.SujetTypeEnum
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetSequenceQuestionsDto
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
@@ -28,25 +30,36 @@ class SujetImporterService {
                      Personne importeur,
                      Matiere matiere = null,
                      Niveau niveau = null) {
-
-    // TODO Faut-il vérifier qqchose ?
-
     SujetDto sujetDto = SujetMarshaller.parse(
         JSON.parse(new ByteArrayInputStream(jsonBlob), 'UTF-8')
     )
 
-    // TODO que faire avec le type de sujet ?
+    importeSujet(
+        sujetDto,
+        importeur,
+        matiere,
+        niveau
+    )
+  }
+
+  Sujet importeSujet(SujetDto sujetDto,
+                     Personne importeur,
+                     Matiere matiere = null,
+                     Niveau niveau = null) {
+
+    // Récupération du type
+    SujetType sujetType = SujetTypeEnum.valueOf(sujetDto.type).sujetType
 
     // Récupération du copyrightsType
     CopyrightsType copyrightsType = CopyrightsTypeEnum.parseFromCode(
         sujetDto.copyrightsType.code
     ).copyrightsType
 
-    Sujet sujet = sujetService.createSujet(importeur, sujetDto.titre)
-
-    sujetService.updateProprietes(
-        sujet,
+    Sujet sujet = sujetService.updateProprietes(
+        new Sujet(),
         [
+            titre: sujetDto.titre,
+            sujetType: sujetType,
             versionSujet: sujetDto.versionSujet,
             presentation: sujetDto.presentation,
             dureeMinutes: sujetDto.dureeMinutes,

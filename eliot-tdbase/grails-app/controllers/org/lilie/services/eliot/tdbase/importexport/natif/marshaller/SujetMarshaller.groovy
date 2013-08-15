@@ -26,7 +26,7 @@ class SujetMarshaller {
     }
 
     Map representation = [
-        type: sujet.sujetType.id,
+        type: sujet.sujetType.nom,
         titre: sujet.titre,
         metadonnees: [
             proprietaire: personneMarshaller.marshall(sujet.proprietaire),

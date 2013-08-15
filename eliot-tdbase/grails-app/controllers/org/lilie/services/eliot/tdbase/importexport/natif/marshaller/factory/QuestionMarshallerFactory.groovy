@@ -6,6 +6,7 @@ import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.Etablisseme
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionCompositeMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import org.lilie.services.eliot.tice.AttachementService
 
@@ -17,7 +18,9 @@ import org.lilie.services.eliot.tice.AttachementService
 class QuestionMarshallerFactory {
 
   QuestionMarshaller newInstance(AttachementService attachementService) {
-    return new QuestionMarshaller(
+    SujetMarshallerFactory sujetMarshallerFactory = new SujetMarshallerFactory()
+
+    QuestionMarshaller questionMarshaller = new QuestionMarshaller(
         personneMarshaller: new PersonneMarshaller(),
         etablissementMarshaller: new EtablissementMarshaller(),
         matiereMarshaller:  new MatiereMarshaller(),
@@ -28,6 +31,12 @@ class QuestionMarshallerFactory {
         )
     )
 
+    questionMarshaller.questionCompositeMarshaller =
+      new QuestionCompositeMarshaller(
+          sujetMarshaller: sujetMarshallerFactory.newInstance(questionMarshaller)
+      )
+
+    return questionMarshaller
   }
 
 }

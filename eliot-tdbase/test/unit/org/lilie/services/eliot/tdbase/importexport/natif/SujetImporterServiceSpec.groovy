@@ -4,8 +4,10 @@ import grails.test.mixin.Mock
 import org.codehaus.groovy.grails.web.json.JSONElement
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetService
+import org.lilie.services.eliot.tdbase.SujetType
+import org.lilie.services.eliot.tdbase.SujetTypeEnum
 import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
-import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetSequenceQuestionsDto
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
@@ -19,7 +21,7 @@ import spock.lang.Specification
 /**
  * @author John Tranier
  */
-@Mock([CopyrightsType])
+@Mock([CopyrightsType, SujetType])
 class SujetImporterServiceSpec extends Specification {
 
   SujetService sujetService
@@ -37,6 +39,10 @@ class SujetImporterServiceSpec extends Specification {
 
     new CopyrightsType(
         code: CopyrightsTypeEnum.TousDroitsReserves.code
+    ).save(failOnError: true)
+
+    new SujetType(
+        nom: SujetTypeEnum.Sujet.name()
     ).save(failOnError: true)
   }
 
@@ -73,6 +79,7 @@ class SujetImporterServiceSpec extends Specification {
 
     SujetMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
       new SujetDto(
+          type: SujetTypeEnum.Sujet.name(),
           copyrightsType: new CopyrightsTypeDto(
               code: codeCopyrightsTypeIncorrect
           )
@@ -114,6 +121,7 @@ class SujetImporterServiceSpec extends Specification {
 
     SujetDto sujetDto = new SujetDto(
         titre: titre,
+        type: SujetTypeEnum.Sujet.name(),
         versionSujet: versionSujet,
         presentation: presentation,
         dureeMinutes: dureeMinutes,
@@ -134,8 +142,6 @@ class SujetImporterServiceSpec extends Specification {
       return sujetDto
     }
 
-    Sujet sujet = new Sujet()
-
     when:
     Sujet sujetImporte = sujetImporterService.importeSujet(
         jsonBlob,
@@ -144,12 +150,11 @@ class SujetImporterServiceSpec extends Specification {
         niveau
     )
 
-    then:
-    1 * sujetService.createSujet(importeur, titre) >> sujet
+    Sujet sujet = new Sujet()
 
     then:
-    1 * sujetService.updateProprietes(
-        sujet,
+    1 * sujetService.updateProprietes( // TODO reprendre les propriétés
+        { it instanceof Sujet },
         {
           assert it.versionSujet == versionSujet
           assert it.presentation == presentation
@@ -164,7 +169,7 @@ class SujetImporterServiceSpec extends Specification {
           return true
         },
         importeur
-    )
+    ) >> sujet
 
     then:
     (questionsSequences.size()) * questionImporterService.importeQuestion(
@@ -184,8 +189,8 @@ class SujetImporterServiceSpec extends Specification {
     where:
     questionsSequences << [
         [],
-        [new SujetSequenceQuestionsDto(question: new QuestionDto())],
-        [new SujetSequenceQuestionsDto(question: new QuestionDto()), new SujetSequenceQuestionsDto(question: new QuestionDto())]
+        [new SujetSequenceQuestionsDto(question: new QuestionAtomiqueDto())],
+        [new SujetSequenceQuestionsDto(question: new QuestionAtomiqueDto()), new SujetSequenceQuestionsDto(question: new QuestionAtomiqueDto())]
     ]
   }
 }

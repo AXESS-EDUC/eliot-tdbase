@@ -5,6 +5,7 @@ import org.codehaus.groovy.grails.web.json.JSONElement
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetSequenceQuestions
 import org.lilie.services.eliot.tdbase.SujetType
+import org.lilie.services.eliot.tdbase.SujetTypeEnum
 import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PersonneDto
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
@@ -139,7 +140,7 @@ class SujetMarshallerSpec extends Specification {
     given:
     String titre = 'titre'
     PersonneDto proprietaire = new PersonneDto()
-    long type = 3
+    String type = SujetTypeEnum.Sujet.name()
     int versionSujet = 2
     String paternite = "{json: paternite}"
     CopyrightsTypeDto copyrightsTypeDto = new CopyrightsTypeDto()

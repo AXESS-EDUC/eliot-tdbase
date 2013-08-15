@@ -6,7 +6,7 @@ package org.lilie.services.eliot.tdbase.importexport.dto
 class SujetDto {
   String titre
   PersonneDto proprietaire
-  long type // TODO est-ce qu'on ne peut pas passer par un code ?
+  String type // Type.nom
 
   int versionSujet
   String presentation

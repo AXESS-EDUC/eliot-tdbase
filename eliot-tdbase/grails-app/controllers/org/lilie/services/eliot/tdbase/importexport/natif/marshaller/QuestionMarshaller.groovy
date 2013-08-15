@@ -3,6 +3,8 @@ package org.lilie.services.eliot.tdbase.importexport.natif.marshaller
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONElement
 import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
 
 /**
@@ -18,11 +20,16 @@ public class QuestionMarshaller {
   MatiereMarshaller matiereMarshaller
   NiveauMarshaller niveauMarshaller
   CopyrightsTypeMarshaller copyrightsTypeMarshaller
-  AttachementMarchaller attachementMarchaller = new AttachementMarchaller()
+  AttachementMarchaller attachementMarchaller
+  QuestionCompositeMarshaller questionCompositeMarshaller
 
   Map marshall(Question question) {
     if (!question) {
       throw new IllegalArgumentException("La question ne peut pas être null")
+    }
+
+    if(question.exercice) { // Question composite
+      return questionCompositeMarshaller.marshall(question)
     }
 
     Map representation = [
@@ -56,6 +63,11 @@ public class QuestionMarshaller {
   static QuestionDto parse(JSONElement jsonElement) {
 
     MarshallerHelper.checkIsNotNull('type', jsonElement.type)
+
+    if(jsonElement.type == QuestionTypeEnum.Composite.name()) {
+      return QuestionCompositeMarshaller.parse(jsonElement)
+    }
+
     MarshallerHelper.checkIsNotNull('titre', jsonElement.titre)
     MarshallerHelper.checkIsJsonElement('metadonnees', jsonElement.metadonnees)
     MarshallerHelper.checkIsJsonElement('metadonnees.proprietaire', jsonElement.metadonnees.proprietaire)
@@ -64,7 +76,7 @@ public class QuestionMarshaller {
     MarshallerHelper.checkIsJsonElementOrNull('principalAttachement', jsonElement.principalAttachement)
     MarshallerHelper.checkIsJsonArray('questionAttachements', jsonElement.questionAttachements)
 
-    return new QuestionDto(
+    return new QuestionAtomiqueDto(
         type: jsonElement.type,
         titre: jsonElement.titre,
         proprietaire: PersonneMarshaller.parse(jsonElement.metadonnees.proprietaire),
