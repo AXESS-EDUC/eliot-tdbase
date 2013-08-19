@@ -26,6 +26,7 @@ class SujetMarshaller {
     }
 
     Map representation = [
+        class: ExportClass.SUJET.name(),
         type: sujet.sujetType.nom,
         titre: sujet.titre,
         metadonnees: [
@@ -60,6 +61,7 @@ class SujetMarshaller {
   }
 
   static SujetDto parse(JSONElement jsonElement) {
+    MarshallerHelper.checkClass(ExportClass.SUJET, jsonElement)
     MarshallerHelper.checkIsNotNull('type', jsonElement.type)
     MarshallerHelper.checkIsNotNull('titre', jsonElement.titre)
     MarshallerHelper.checkIsJsonElement('metadonnees', jsonElement.metadonnees)

@@ -26,6 +26,7 @@ class AttachementMarchaller {
     }
 
     return [
+        class: ExportClass.PRINCIPAL_ATTACHEMENT.name(),
         attachement: marshallAttachement(principalAttachement, estInsereDansLaQuestion)
     ]
   }
@@ -42,6 +43,7 @@ class AttachementMarchaller {
 
   private Map marshallAttachement(Attachement attachement, Boolean estInsereDansLaQuestion) {
     return [
+        class: ExportClass.ATTACHEMENT.name(),
         nom: attachement.nom,
         nomFichierOriginal: attachement.nomFichierOriginal,
         typeMime: attachement.typeMime,
@@ -51,13 +53,14 @@ class AttachementMarchaller {
   }
 
   static PrincipalAttachementDto parsePrincipalAttachement(JSONElement jsonElement) {
-    MarshallerHelper.checkIsJsonElement('principalAttachement.attachement', jsonElement.attachement)
+    MarshallerHelper.checkClass(ExportClass.PRINCIPAL_ATTACHEMENT, jsonElement)
+    MarshallerHelper.checkIsJsonElement('attachement', jsonElement.attachement)
     return new PrincipalAttachementDto(
         attachement: parseAttachement(jsonElement.attachement)
     )
   }
 
-  static parsePrincipalAttachement(JSONObject.Null jsonElement) {
+  static parsePrincipalAttachement(JSONObject.Null ignore) {
     return null
   }
 
@@ -69,10 +72,11 @@ class AttachementMarchaller {
   }
 
   static AttachementDto parseAttachement(JSONElement jsonElement) {
-    MarshallerHelper.checkIsNotNull('principalAttachement.attachement.nom', jsonElement.nom)
-    MarshallerHelper.checkIsNotNull('principalAttachement.attachement.nomFichierOriginal', jsonElement.nomFichierOriginal)
-    MarshallerHelper.checkIsNotNull('principalAttachement.attachement.typeMime', jsonElement.typeMime)
-    MarshallerHelper.checkIsNotNull('principalAttachement.attachement.blob', jsonElement.blob)
+    MarshallerHelper.checkClass(ExportClass.ATTACHEMENT, jsonElement)
+    MarshallerHelper.checkIsNotNull('attachement.nom', jsonElement.nom)
+    MarshallerHelper.checkIsNotNull('attachement.nomFichierOriginal', jsonElement.nomFichierOriginal)
+    MarshallerHelper.checkIsNotNull('attachement.typeMime', jsonElement.typeMime)
+    MarshallerHelper.checkIsNotNull('attachement.blob', jsonElement.blob)
 
     return new AttachementDto(
         nom: jsonElement.nom,

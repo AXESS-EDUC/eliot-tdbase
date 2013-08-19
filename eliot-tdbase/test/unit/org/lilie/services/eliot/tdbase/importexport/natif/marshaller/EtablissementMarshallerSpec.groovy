@@ -17,24 +17,23 @@ class EtablissementMarshallerSpec extends Specification {
     etablissementMarshaller = new EtablissementMarshaller()
   }
 
-  def "testMarshall - cas général"(Etablissement etablissement) {
+  def "testMarshall - cas général"() {
     given:
-    Map representation = etablissementMarshaller.marshall(etablissement)
-
-    expect:
-    representation.size() == 4
-    representation.nom == etablissement.nomAffichage
-    representation.idExterne == etablissement.idExterne
-    representation.uai == etablissement.uai
-    representation.codePorteurENT == etablissement.codePorteurENT
-
-    where:
-    etablissement = new Etablissement(
+    Etablissement etablissement = new Etablissement(
         nomAffichage: "nomAffichage",
         idExterne: "idExterne",
         uai: "uai",
         codePorteurENT: "codePorteurENT"
     )
+    Map representation = etablissementMarshaller.marshall(etablissement)
+
+    expect:
+    representation.size() == 5
+    representation.class == ExportClass.ETABLISSEMENT.name()
+    representation.nom == etablissement.nomAffichage
+    representation.idExterne == etablissement.idExterne
+    representation.uai == etablissement.uai
+    representation.codePorteurENT == etablissement.codePorteurENT
   }
 
   def "testMarshall - argument null"() {
@@ -49,6 +48,7 @@ class EtablissementMarshallerSpec extends Specification {
     given:
     String json = """
       {
+        class: '${ExportClass.ETABLISSEMENT}',
         nom: ${MarshallerHelper.asJsonString(nom)},
         idExterne: ${MarshallerHelper.asJsonString(idExterne)},
         uai: ${MarshallerHelper.asJsonString(uai)},

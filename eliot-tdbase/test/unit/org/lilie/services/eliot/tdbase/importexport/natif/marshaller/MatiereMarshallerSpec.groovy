@@ -22,7 +22,8 @@ class MatiereMarshallerSpec extends Specification {
     Map representation = matiereMarshaller.marshall(matiere)
 
     expect:
-    representation.size() == 6
+    representation.size() == 7
+    representation.class == ExportClass.MATIERE.name()
     representation.identifiant == matiere.id
     representation.codeSts == matiere.codeSts
     representation.codeGestion == matiere.codeGestion
@@ -55,6 +56,7 @@ class MatiereMarshallerSpec extends Specification {
     given:
     String json = """
       {
+        class: '${ExportClass.MATIERE}',
         identifiant: $identifiant,
         codeSts: ${MarshallerHelper.asJsonString(codeSts)},
         codeGestion: ${MarshallerHelper.asJsonString(codeGestion)},

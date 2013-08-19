@@ -3,7 +3,7 @@ package org.lilie.services.eliot.tdbase.importexport.dto
 /**
  * @author John Tranier
  */
-class SujetDto {
+class SujetDto implements ArtefactDto {
   String titre
   PersonneDto proprietaire
   String type // Type.nom

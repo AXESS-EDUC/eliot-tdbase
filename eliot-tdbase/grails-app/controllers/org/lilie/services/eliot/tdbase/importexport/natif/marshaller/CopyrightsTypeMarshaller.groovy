@@ -18,6 +18,7 @@ class CopyrightsTypeMarshaller {
     }
 
     return [
+        class: ExportClass.COPYRIGHTS_TYPE.name(),
         code: copyrightsType.code,
         presentation: copyrightsType.presentation,
         lien:  copyrightsType.lien,
@@ -31,6 +32,7 @@ class CopyrightsTypeMarshaller {
   }
 
   static CopyrightsTypeDto parse(JSONElement jsonElement) {
+    MarshallerHelper.checkClass(ExportClass.COPYRIGHTS_TYPE, jsonElement)
     MarshallerHelper.checkIsNotNull('metadonnees.copyrightsType.code', jsonElement.code)
 
     return new CopyrightsTypeDto(

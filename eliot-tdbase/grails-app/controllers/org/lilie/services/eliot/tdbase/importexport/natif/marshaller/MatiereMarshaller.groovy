@@ -20,6 +20,7 @@ class MatiereMarshaller {
     }
 
     return [
+        class: ExportClass.MATIERE.name(),
         identifiant: matiere.id,
         codeSts: matiere.codeSts,
         codeGestion: matiere.codeGestion,
@@ -30,6 +31,7 @@ class MatiereMarshaller {
   }
 
   static MatiereDto parse(JSONElement jsonElement) {
+    MarshallerHelper.checkClass(ExportClass.MATIERE, jsonElement)
     return new MatiereDto(
         identifiant: MarshallerHelper.jsonObjectToObject(jsonElement.identifiant),
         codeSts: MarshallerHelper.jsonObjectToString(jsonElement.codeSts),

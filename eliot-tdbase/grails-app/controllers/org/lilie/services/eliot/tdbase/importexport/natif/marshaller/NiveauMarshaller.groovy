@@ -20,6 +20,7 @@ class NiveauMarshaller {
     }
 
     return [
+        class: ExportClass.NIVEAU.name(),
         libelleCourt: niveau.libelleCourt,
         libelleLong: niveau.libelleLong,
         libelleEdition: niveau.libelleEdition
@@ -27,6 +28,7 @@ class NiveauMarshaller {
   }
 
   static NiveauDto parse(JSONElement jsonElement) {
+    MarshallerHelper.checkClass(ExportClass.NIVEAU, jsonElement)
     return new NiveauDto(
         libelleCourt: MarshallerHelper.jsonObjectToString(jsonElement.libelleCourt),
         libelleLong: MarshallerHelper.jsonObjectToString(jsonElement.libelleLong),

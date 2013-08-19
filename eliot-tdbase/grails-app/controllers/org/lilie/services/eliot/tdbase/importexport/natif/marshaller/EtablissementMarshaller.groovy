@@ -20,6 +20,7 @@ class EtablissementMarshaller {
     }
 
     return [
+        class: ExportClass.ETABLISSEMENT.name(),
         nom: etablissement.nomAffichage,
         idExterne: etablissement.idExterne,
         uai: etablissement.uai,
@@ -28,6 +29,7 @@ class EtablissementMarshaller {
   }
 
   static EtablissementDto parse(JSONElement jsonElement) {
+    MarshallerHelper.checkClass(ExportClass.ETABLISSEMENT, jsonElement)
     return new EtablissementDto(
         nom: MarshallerHelper.jsonObjectToString(jsonElement.nom),
         idExterne: MarshallerHelper.jsonObjectToString(jsonElement.idExterne),

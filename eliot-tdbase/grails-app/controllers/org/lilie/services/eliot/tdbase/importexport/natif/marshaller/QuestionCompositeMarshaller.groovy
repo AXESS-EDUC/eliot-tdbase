@@ -21,6 +21,7 @@ class QuestionCompositeMarshaller {
     }
 
     Map representation = [
+        class: ExportClass.QUESTION_COMPOSITE.name(),
         type: question.type.code,
         exercice: sujetMarshaller.marshall(question.exercice)
     ]
@@ -29,6 +30,7 @@ class QuestionCompositeMarshaller {
   }
 
   static QuestionCompositeDto parse(JSONElement jsonElement) {
+    MarshallerHelper.checkClass(ExportClass.QUESTION_COMPOSITE, jsonElement)
     if(jsonElement.type != QuestionTypeEnum.Composite.name()) {
       throw new MarshallerException(
           "Le type de la question n'est pas Composite",

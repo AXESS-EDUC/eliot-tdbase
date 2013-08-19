@@ -22,7 +22,8 @@ class PersonneMarshallerSpec extends Specification {
     Map representation = personneMarshaller.marshall(personne)
 
     expect:
-    representation.size() == 3
+    representation.size() == 4
+    representation.class == ExportClass.PERSONNE.name()
     representation.nom == personne.nom
     representation.prenom == personne.prenom
     representation.identifiant == personne.autorite.identifiant
@@ -46,6 +47,7 @@ class PersonneMarshallerSpec extends Specification {
     given:
     String json = """
       {
+        class: '${ExportClass.PERSONNE}',
         nom: $nom,
         prenom: $prenom,
         identifiant: $identifiant
@@ -71,6 +73,7 @@ class PersonneMarshallerSpec extends Specification {
     given:
     String json = """
       {
+        class: '${ExportClass.PERSONNE}',
         nom: '$nom',
         prenom: '$prenom',
         identifiant: ${MarshallerHelper.asJsonString(identifiant)}

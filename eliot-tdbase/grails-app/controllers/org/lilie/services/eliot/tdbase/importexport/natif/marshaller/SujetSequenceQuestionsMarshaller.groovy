@@ -25,6 +25,7 @@ class SujetSequenceQuestionsMarshaller {
     MarshallerHelper.checkIsNotNull('points', sujetSequenceQuestions.points)
 
     Map representation = [
+        class: ExportClass.SUJET_SEQUENCE_QUESTIONS.name(),
         rang: sujetSequenceQuestions.rang,
         noteSeuilPoursuite: sujetSequenceQuestions.noteSeuilPoursuite,
         points: sujetSequenceQuestions.points,
@@ -35,6 +36,7 @@ class SujetSequenceQuestionsMarshaller {
   }
 
   static SujetSequenceQuestionsDto parse(JSONElement jsonElement) {
+    MarshallerHelper.checkClass(ExportClass.SUJET_SEQUENCE_QUESTIONS, jsonElement)
     MarshallerHelper.checkIsNotNull('rang', jsonElement.rang)
     MarshallerHelper.checkIsNotNull('points', jsonElement.points)
     MarshallerHelper.checkIsJsonElement('question', jsonElement.question)

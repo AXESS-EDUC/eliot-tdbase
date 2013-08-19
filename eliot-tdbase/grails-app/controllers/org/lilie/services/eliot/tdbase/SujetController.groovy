@@ -1,10 +1,11 @@
 package org.lilie.services.eliot.tdbase
 
 import grails.converters.JSON
+import org.lilie.services.eliot.tdbase.importexport.ExportHelper
 import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.QuestionImporterService
 import org.lilie.services.eliot.tdbase.importexport.SujetImporterService
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.SujetMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
@@ -467,10 +468,14 @@ class SujetController {
 
         SujetMarshallerFactory sujetMarshallerFactory = new SujetMarshallerFactory()
         SujetMarshaller sujetMarshaller = sujetMarshallerFactory.newInstance(attachementService)
+        ExportMarshaller exportMarshaller = new ExportMarshaller(sujetMarshaller: sujetMarshaller)
 
-        def converter = sujetMarshaller.marshall(sujet) as JSON
-        // TODO Filename => Class utilitaire ?
-        response.setHeader("Content-disposition", "attachment; filename=${getExportNatifFileName(sujet)}")
+        def converter = exportMarshaller.marshall(
+            sujet,
+            new Date(),
+            authenticatedPersonne
+        ) as JSON
+        response.setHeader("Content-disposition", "attachment; filename=${ExportHelper.getFileName(sujet, Format.NATIF_JSON)}")
         render(text: converter.toString(false), contentType: "application/json", encoding: "UTF-8")
 
         break
@@ -488,14 +493,6 @@ class SujetController {
             "Le format '$format' est inconnu."
         )
     }
-  }
-
-  private String getExportNatifFileName(Sujet sujet) {
-    String intitule = sujet.titreNormalise.substring(
-        0,
-        Math.min(20, sujet.titreNormalise.size())
-    )
-    return "sujet-${intitule}.tdbase.json"
   }
 
   /**
@@ -601,13 +598,15 @@ class SujetController {
     if (importSuccess) {
       try {
         questionImporterService.importeQuestion(
-            QuestionMarshaller.parse(
+            ExportMarshaller.parse(
                 JSON.parse(new ByteArrayInputStream(fichier.bytes), 'UTF-8')
-            ),
+            ).question,
             sujet,
             proprietaire,
-            Matiere.load(importCommand.matiereId),
-            Niveau.load(importCommand.niveauId)
+            new ReferentielEliot(
+                matiere: Matiere.load(importCommand.matiereId),
+                niveau: Niveau.load(importCommand.niveauId)
+            )
         )
       } catch (Exception e) {
         log.error("Une erreur s'est produite durant l'import de la question", e)
@@ -663,12 +662,14 @@ class SujetController {
     if (importSuccess) {
       try {
         sujet = sujetImporterService.importeSujet(
-            SujetMarshaller.parse(
+            ExportMarshaller.parse(
                 JSON.parse(new ByteArrayInputStream(fichier.bytes), 'UTF-8')
-            ),
+            ).sujet,
             proprietaire,
-            Matiere.load(matiereId),
-            Niveau.load(niveauId)
+            new ReferentielEliot(
+                matiere: Matiere.load(matiereId),
+                niveau: Niveau.load(niveauId)
+            )
         )
       } catch (Exception e) {
         log.error("Une erreur s'est produite durant l'import du sujet", e)

@@ -39,7 +39,8 @@ class SujetSequenceQuestionsMarshallerSpec extends Specification {
     Map representation = sujetSequenceQuestionsMarshaller.marshall(sujetSequenceQuestions)
 
     then:
-    representation.size() == 4
+    representation.size() == 5
+    representation.class == ExportClass.SUJET_SEQUENCE_QUESTIONS.name()
     representation.rang == rang
     representation.noteSeuilPoursuite == noteSeuilPoursuite
     representation.points == points
@@ -73,6 +74,7 @@ class SujetSequenceQuestionsMarshallerSpec extends Specification {
 
     String json = """
     {
+      class: '${ExportClass.SUJET_SEQUENCE_QUESTIONS}',
       rang: $rang,
       noteSeuilPoursuite: $noteSeuilPoursuite,
       points: $points,

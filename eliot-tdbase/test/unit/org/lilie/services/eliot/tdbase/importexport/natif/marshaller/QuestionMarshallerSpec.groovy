@@ -86,7 +86,8 @@ class QuestionMarshallerSpec extends Specification {
     Map questionRepresentation = questionMarshaller.marshall(question)
 
     expect:
-    questionRepresentation.size() == 6
+    questionRepresentation.size() == 7
+    questionRepresentation.class == ExportClass.QUESTION_ATOMIQUE.name()
     questionRepresentation.type == question.type.code
     questionRepresentation.titre == question.titre
 
@@ -190,6 +191,7 @@ class QuestionMarshallerSpec extends Specification {
 
     String json = """
       {
+        class: '${ExportClass.QUESTION_ATOMIQUE}',
         type: '$type',
         titre: '$titre',
         metadonnees: {
@@ -242,8 +244,8 @@ class QuestionMarshallerSpec extends Specification {
     AttachementMarchaller.metaClass = null
 
     where:
-    dateCreated << [normaliseDate(new Date()) - 1, null]
-    lastUpdated << [normaliseDate(new Date()), null]
+    dateCreated << [MarshallerHelper.normaliseDate(new Date()) - 1, null]
+    lastUpdated << [MarshallerHelper.normaliseDate(new Date()), null]
     estAutonome << [true, null]
     paternite << [null, "{json: paternite}"]
     copyrightsType = new CopyrightsTypeDto()
@@ -267,12 +269,16 @@ class QuestionMarshallerSpec extends Specification {
 
     String json = """
     {
+      class: '${ExportClass.QUESTION_COMPOSITE}',
       type: '${QuestionTypeEnum.Composite.name()}'
     }
     """
 
     expect:
     QuestionMarshaller.parse(JSON.parse(json)) == QuestionCompositeMarshaller.parse(JSON.parse(json))
+
+    cleanup:
+    QuestionCompositeMarshaller.metaClass = null
   }
 
   def "testParse - erreur type null"(String json) {
@@ -288,9 +294,9 @@ class QuestionMarshallerSpec extends Specification {
 
     where:
     json << [
-        "{}",
-        "{type: null}",
-        "{type: ''}"
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}'}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: null}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}',type: ''}"
     ]
   }
 
@@ -307,9 +313,9 @@ class QuestionMarshallerSpec extends Specification {
 
     where:
     json << [
-        "{type: 'type'}",
-        "{type: 'type', titre: null}",
-        "{type: 'type', titre: ''}"
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type'}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: null}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: ''}"
     ]
   }
 
@@ -326,8 +332,8 @@ class QuestionMarshallerSpec extends Specification {
 
     where:
     json << [
-        "{type: 'type', titre: 'titre'}",
-        "{type: 'type', titre: 'titre', metadonnees: 'simple chaine'}"
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre'}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: 'simple chaine'}"
     ]
   }
 
@@ -344,9 +350,9 @@ class QuestionMarshallerSpec extends Specification {
 
     where:
     json << [
-        "{type: 'type', titre: 'titre', metadonnees: {}}",
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: null}}",
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: 'simple chaine'}}"
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {}}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: null}}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: 'simple chaine'}}"
     ]
   }
 
@@ -363,9 +369,9 @@ class QuestionMarshallerSpec extends Specification {
 
     where:
     json << [
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}}}",
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: null}}",
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: ''}}"
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}}}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: null}}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: ''}}"
     ]
   }
 
@@ -382,9 +388,9 @@ class QuestionMarshallerSpec extends Specification {
 
     where:
     json << [
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}}",
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: null}",
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: ''}"
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: null}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: ''}"
     ]
   }
 
@@ -401,8 +407,8 @@ class QuestionMarshallerSpec extends Specification {
 
     where:
     json << [
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification'}",
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification', principalAttachement: ''}"
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification'}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification', principalAttachement: ''}"
     ]
   }
 
@@ -419,15 +425,10 @@ class QuestionMarshallerSpec extends Specification {
 
     where:
     json << [
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification', principalAttachement: {}}",
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification', principalAttachement: {}, questionAttachements: null}",
-        "{type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification', principalAttachement: {}, questionAttachements: {}}"
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification', principalAttachement: {}}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification', principalAttachement: {}, questionAttachements: null}",
+        "{class: '${ExportClass.QUESTION_ATOMIQUE}', type: 'type', titre: 'titre', metadonnees: {proprietaire: {}, copyrightsType: {}}, specification: 'specification', principalAttachement: {}, questionAttachements: {}}"
     ]
   }
 
-  private static Date normaliseDate(Date date) {
-    return MarshallerHelper.ISO_DATE_FORMAT.parse(
-        MarshallerHelper.ISO_DATE_FORMAT.format(date)
-    )
-  }
 }

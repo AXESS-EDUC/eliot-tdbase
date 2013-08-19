@@ -29,8 +29,10 @@
 package org.lilie.services.eliot.tdbase
 
 import grails.converters.JSON
+import org.lilie.services.eliot.tdbase.importexport.ExportHelper
 import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.QuestionExporterService
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.QuestionMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
@@ -422,11 +424,15 @@ class QuestionController {
 
         question = questionExporterService.getQuestionPourExport(question, authenticatedPersonne)
         QuestionMarshallerFactory questionMarshallerFactory = new QuestionMarshallerFactory()
-        QuestionMarshaller marshaller = questionMarshallerFactory.newInstance(attachementService)
+        QuestionMarshaller questionMarshaller = questionMarshallerFactory.newInstance(attachementService)
+        ExportMarshaller exportMarshaller = new ExportMarshaller(questionMarshaller: questionMarshaller)
 
-        def converter = marshaller.marshall(question) as JSON
-        // TODO Filename => Class utilitaire ?
-        response.setHeader("Content-disposition", "attachment; filename=${getExportNatifFileName(question)}")
+        def converter = exportMarshaller.marshall(
+            question,
+            new Date(),
+            authenticatedPersonne
+        ) as JSON
+        response.setHeader("Content-disposition", "attachment; filename=${ExportHelper.getFileName(question, Format.NATIF_JSON)}")
         render(text: converter.toString(false), contentType: "application/json", encoding: "UTF-8")
         break
 
@@ -443,14 +449,6 @@ class QuestionController {
             "Le format '$format' est inconnu."
         )
     }
-  }
-
-  private String getExportNatifFileName(Question question) {
-    String intitule = question.titreNormalise.substring(
-        0,
-        Math.min(20, question.titreNormalise.size())
-    )
-    return "question-${intitule}.tdbase.json"
   }
 
 /**

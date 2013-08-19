@@ -3,7 +3,6 @@ package org.lilie.services.eliot.tdbase.importexport.natif.marshaller
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONElement
 import org.lilie.services.eliot.tdbase.Question
-import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
 
@@ -33,6 +32,7 @@ public class QuestionMarshaller {
     }
 
     Map representation = [
+        class: ExportClass.QUESTION_ATOMIQUE.name(),
         type: question.type.code,
         titre: question.titre,
         metadonnees: [
@@ -61,10 +61,16 @@ public class QuestionMarshaller {
   }
 
   static QuestionDto parse(JSONElement jsonElement) {
-
+    MarshallerHelper.checkClassIn(
+        [
+            ExportClass.QUESTION_ATOMIQUE,
+            ExportClass.QUESTION_COMPOSITE
+        ],
+        jsonElement
+    )
     MarshallerHelper.checkIsNotNull('type', jsonElement.type)
 
-    if(jsonElement.type == QuestionTypeEnum.Composite.name()) {
+    if(jsonElement.class == ExportClass.QUESTION_COMPOSITE.name()) {
       return QuestionCompositeMarshaller.parse(jsonElement)
     }
 
@@ -73,7 +79,7 @@ public class QuestionMarshaller {
     MarshallerHelper.checkIsJsonElement('metadonnees.proprietaire', jsonElement.metadonnees.proprietaire)
     MarshallerHelper.checkIsJsonElement('metadonnees.copyrightsType', jsonElement.metadonnees.copyrightsType)
     MarshallerHelper.checkIsNotNull('specification', jsonElement.specification)
-    MarshallerHelper.checkIsJsonElementOrNull('principalAttachement', jsonElement.principalAttachement)
+    MarshallerHelper.checkIsNullableJsonElement('principalAttachement', jsonElement.principalAttachement)
     MarshallerHelper.checkIsJsonArray('questionAttachements', jsonElement.questionAttachements)
 
     return new QuestionAtomiqueDto(

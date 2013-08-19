@@ -23,7 +23,8 @@ class NiveauMarshallerSpec extends Specification {
     Map representation = niveauMarshaller.marshall(niveau)
 
     expect:
-    representation.size() == 3
+    representation.size() == 4
+    representation.class == ExportClass.NIVEAU.name()
     representation.libelleCourt == niveau.libelleCourt
     representation.libelleEdition == niveau.libelleEdition
     representation.libelleLong == niveau.libelleLong
@@ -38,6 +39,7 @@ class NiveauMarshallerSpec extends Specification {
     given:
     String json = """
       {
+        class: '${ExportClass.NIVEAU}',
         libelleCourt: ${MarshallerHelper.asJsonString(libelleCourt)},
         libelleLong: ${MarshallerHelper.asJsonString(libelleLong)},
         libelleEdition: ${MarshallerHelper.asJsonString(libelleEdition)}

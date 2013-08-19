@@ -37,7 +37,8 @@ class CopyrightsTypeMarshallerSpec extends Specification {
     Map representation = copyrightsTypeMarshaller.marshall(copyrightsType)
 
     expect:
-    representation.size() == 9
+    representation.size() == 10
+    representation.class == ExportClass.COPYRIGHTS_TYPE.name()
     representation.code == copyrightsType.code
     representation.presentation == copyrightsType.presentation
     representation.lien == copyrightsType.lien
@@ -63,7 +64,12 @@ class CopyrightsTypeMarshallerSpec extends Specification {
 
   def "testParse - cas général"(String code) {
     given:
-    String json = "{code: '$code'}"
+    String json = """
+    {
+      class: '${ExportClass.COPYRIGHTS_TYPE}',
+      code: '$code'
+    }
+    """
 
     CopyrightsTypeDto copyrightsTypeDto =
       CopyrightsTypeMarshaller.parse(
@@ -79,7 +85,11 @@ class CopyrightsTypeMarshallerSpec extends Specification {
 
   def "testParse - erreur code manquant"() {
     given:
-    String json = '{}'
+    String json = """
+    {
+      class: '${ExportClass.COPYRIGHTS_TYPE}',
+    }
+    """
 
     when:
     CopyrightsTypeMarshaller.parse(

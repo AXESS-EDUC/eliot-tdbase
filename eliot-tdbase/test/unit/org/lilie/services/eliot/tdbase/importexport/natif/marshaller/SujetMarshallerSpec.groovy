@@ -77,7 +77,8 @@ class SujetMarshallerSpec extends Specification {
     Map sujetRepresentation = sujetMarshaller.marshall(sujet)
 
     expect:
-    sujetRepresentation.size() == 4
+    sujetRepresentation.size() == 5
+    sujetRepresentation.class == ExportClass.SUJET.name()
     sujetRepresentation.titre == sujet.titre
     sujetRepresentation.metadonnees.size() == 7
     sujetRepresentation.metadonnees.versionSujet == sujet.versionSujet
@@ -151,6 +152,7 @@ class SujetMarshallerSpec extends Specification {
 
     String json = """
     {
+      class: '${ExportClass.SUJET}',
       titre: '$titre',
       type: $type,
       metadonnees: {

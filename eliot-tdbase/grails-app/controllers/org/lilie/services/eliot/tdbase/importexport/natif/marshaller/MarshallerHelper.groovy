@@ -34,11 +34,38 @@ class MarshallerHelper {
     }
   }
 
-  static void checkIsJsonElementOrNull(String elementNom, def element) {
+  static void checkIsNullableJsonElement(String elementNom, def element) {
     if (!(element instanceof JSONElement) && !(element instanceof JSONObject.Null)) {
       throw new MarshallerException(
           "$elementNom doit être un JSONElement ou JSONObject.Null (reçu $element de classe ${element?.class})",
           elementNom
+      )
+    }
+  }
+
+  static void checkClass(ExportClass exportClass, JSONElement jsonElement) {
+    if (jsonElement.class != exportClass.name()) {
+      throw new MarshallerException(
+          "La classe de l'objet est incorrecte. Attendu: $exportClass. Reçu: ${jsonElement.class}",
+          'class'
+      )
+    }
+  }
+
+  static void checkClassIn(List<ExportClass> allExportClass, JSONElement jsonElement) {
+    if(!(jsonElement.class.toString() in allExportClass*.name())) {
+      throw new MarshallerException(
+          "La classe de l'objet est incorrecte. Attendu: une classe parmi $allExportClass. Reçu: ${jsonElement.class}",
+          'class'
+      )
+    }
+  }
+
+  static void checkFormatVersion(String version, JSONElement jsonElement) {
+    if (jsonElement.formatVersion != version) {
+      throw new MarshallerException(
+          "Version de format incorrecte. Attendu: $version. Reçu: ${jsonElement.formatVersion}",
+          'formatVersion'
       )
     }
   }
@@ -101,5 +128,11 @@ class MarshallerHelper {
       bos?.close()
       b64os?.close()
     }
+  }
+
+  static Date normaliseDate(Date date) {
+    return ISO_DATE_FORMAT.parse(
+        ISO_DATE_FORMAT.format(date)
+    )
   }
 }

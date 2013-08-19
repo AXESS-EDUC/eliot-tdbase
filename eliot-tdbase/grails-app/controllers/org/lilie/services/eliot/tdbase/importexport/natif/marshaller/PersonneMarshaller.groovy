@@ -21,6 +21,7 @@ class PersonneMarshaller {
     MarshallerHelper.checkIsNotNull('personne.identifiant', personne.autorite.identifiant)
 
     return [
+        class: ExportClass.PERSONNE.name(),
         nom: personne.nom,
         prenom: personne.prenom,
         identifiant: personne.autorite.identifiant
@@ -28,6 +29,7 @@ class PersonneMarshaller {
   }
 
   static PersonneDto parse(JSONElement jsonElement) {
+    MarshallerHelper.checkClass(ExportClass.PERSONNE, jsonElement)
     MarshallerHelper.checkIsNotNull('personne.identifiant', jsonElement.identifiant)
 
     return new PersonneDto(
