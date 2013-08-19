@@ -1,16 +1,16 @@
-package org.lilie.services.eliot.tdbase.importexport.natif
+package org.lilie.services.eliot.tdbase.importexport
 
 import grails.test.mixin.Mock
-import org.codehaus.groovy.grails.web.json.JSONElement
+import org.lilie.services.eliot.tdbase.ReferentielEliot
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.SujetType
 import org.lilie.services.eliot.tdbase.SujetTypeEnum
 import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetSequenceQuestionsDto
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
@@ -46,66 +46,36 @@ class SujetImporterServiceSpec extends Specification {
     ).save(failOnError: true)
   }
 
-  def "testImporteSujet - erreur de parsing"() {
-    given:
-    def jsonBlob = "jsonBlob".getBytes()
-    def importeur = null
-
-    String erreurMessage = "erreur"
-
-    SujetMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      throw new IllegalStateException(erreurMessage)
-    }
-
-    when:
-    sujetImporterService.importeSujet(
-        jsonBlob,
-        importeur
-    )
-
-    then:
-    def e = thrown(IllegalStateException)
-    e.message == erreurMessage
-
-    cleanup:
-    SujetMarshaller.metaClass = null
-  }
-
   def "testImporteSujet - erreur copyrightsType incorrect"() {
     given:
-    def jsonBlob = "jsonBlob".getBytes()
-    def importeur = null
     String codeCopyrightsTypeIncorrect = "codeCopyrightsTypeIncorrect"
+    SujetDto sujetDto = new SujetDto(
+        type: SujetTypeEnum.Sujet.name(),
+        copyrightsType: new CopyrightsTypeDto(
+            code: codeCopyrightsTypeIncorrect
+        )
+    )
 
-    SujetMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      new SujetDto(
-          type: SujetTypeEnum.Sujet.name(),
-          copyrightsType: new CopyrightsTypeDto(
-              code: codeCopyrightsTypeIncorrect
-          )
-      )
-    }
+    def importeur = null
 
     when:
     sujetImporterService.importeSujet(
-        jsonBlob,
+        sujetDto,
         importeur
     )
 
     then:
     def e = thrown(IllegalArgumentException)
     e.message == "Le code '$codeCopyrightsTypeIncorrect' ne correspond pas à un type de copyrights connu"
-
-    cleanup:
-    SujetMarshaller.metaClass = null
   }
 
   def "testImporteSujet - OK"(List<SujetSequenceQuestionsDto> questionsSequences) {
     given:
-    byte[] jsonBlob = "jsonBlob".bytes
     Personne importeur = new Personne()
-    Matiere matiere = new Matiere()
-    Niveau niveau = new Niveau()
+    ReferentielEliot referentielEliot = new ReferentielEliot(
+        matiere: new Matiere(),
+        niveau: new Niveau()
+    )
 
     String titre = "titre"
     int versionSujet = 3
@@ -137,25 +107,21 @@ class SujetImporterServiceSpec extends Specification {
         questionsSequences: questionsSequences
     )
 
-
-    SujetMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      return sujetDto
-    }
+    Sujet sujet = new Sujet()
 
     when:
     Sujet sujetImporte = sujetImporterService.importeSujet(
-        jsonBlob,
+        sujetDto,
         importeur,
-        matiere,
-        niveau
+        referentielEliot
     )
 
-    Sujet sujet = new Sujet()
-
     then:
-    1 * sujetService.updateProprietes( // TODO reprendre les propriétés
+    1 * sujetService.updateProprietes(
         { it instanceof Sujet },
         {
+          assert it.titre == titre
+          assert it.sujetType.nom == SujetTypeEnum.Sujet.name()
           assert it.versionSujet == versionSujet
           assert it.presentation == presentation
           assert it.dureeMinutes == dureeMinutes
@@ -173,18 +139,15 @@ class SujetImporterServiceSpec extends Specification {
 
     then:
     (questionsSequences.size()) * questionImporterService.importeQuestion(
-        _,
+        { it instanceof QuestionDto },
         sujet,
         importeur,
-        matiere,
-        niveau,
-        _,
-        _,
+        referentielEliot,
         _
     )
 
-    cleanup:
-    SujetMarshaller.metaClass = null
+    then:
+    sujetImporte == sujet
 
     where:
     questionsSequences << [

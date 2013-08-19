@@ -2,8 +2,6 @@ package org.lilie.services.eliot.tdbase.importexport.natif.marshaller
 
 import grails.converters.JSON
 import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.CopyrightsTypeMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerException
 import org.lilie.services.eliot.tice.CopyrightsType
 import spock.lang.Specification
 

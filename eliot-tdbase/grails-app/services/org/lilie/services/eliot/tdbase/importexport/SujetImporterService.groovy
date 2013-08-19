@@ -1,21 +1,19 @@
-package org.lilie.services.eliot.tdbase.importexport.natif
+package org.lilie.services.eliot.tdbase.importexport
 
-import grails.converters.JSON
+import org.lilie.services.eliot.tdbase.ReferentielEliot
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.SujetType
 import org.lilie.services.eliot.tdbase.SujetTypeEnum
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetSequenceQuestionsDto
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
 
 /**
  * Service d'import de sujet au format JSON natif eliot-tdbase
+ * TODO reprendre cette javadoc
  *
  * @author John Tranier
  */
@@ -26,26 +24,9 @@ class SujetImporterService {
   SujetService sujetService
   QuestionImporterService questionImporterService
 
-  Sujet importeSujet(byte[] jsonBlob,
-                     Personne importeur,
-                     Matiere matiere = null,
-                     Niveau niveau = null) {
-    SujetDto sujetDto = SujetMarshaller.parse(
-        JSON.parse(new ByteArrayInputStream(jsonBlob), 'UTF-8')
-    )
-
-    importeSujet(
-        sujetDto,
-        importeur,
-        matiere,
-        niveau
-    )
-  }
-
   Sujet importeSujet(SujetDto sujetDto,
                      Personne importeur,
-                     Matiere matiere = null,
-                     Niveau niveau = null) {
+                     ReferentielEliot referentielEliot = null) {
 
     // Récupération du type
     SujetType sujetType = SujetTypeEnum.valueOf(sujetDto.type).sujetType
@@ -79,11 +60,8 @@ class SujetImporterService {
           sujetSequenceQuestionsDto.question,
           sujet,
           importeur,
-          matiere,
-          niveau,
-          sujetSequenceQuestionsDto.rang,
-          sujetSequenceQuestionsDto.noteSeuilPoursuite,
-          sujetSequenceQuestionsDto.points
+          referentielEliot,
+          sujetSequenceQuestionsDto.referentielSujetSequenceQuestions
       )
     }
 

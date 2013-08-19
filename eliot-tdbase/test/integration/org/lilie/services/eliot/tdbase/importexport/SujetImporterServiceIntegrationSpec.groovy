@@ -1,13 +1,16 @@
-package org.lilie.services.eliot.tdbase.importexport.natif
+package org.lilie.services.eliot.tdbase.importexport
 
 import grails.converters.JSON
 import grails.plugin.spock.IntegrationSpec
 import org.lilie.services.eliot.tdbase.QuestionService
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.ReferentielEliot
+import org.lilie.services.eliot.tdbase.ReferentielSujetSequenceQuestions
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetSequenceQuestions
 import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.impl.open.OpenSpecification
+import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.SujetMarshallerFactory
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
@@ -40,20 +43,23 @@ class SujetImporterServiceIntegrationSpec extends IntegrationSpec {
     assert Niveau.first()
   }
 
-  void testImporteSujet(Matiere matiere, Niveau niveau, int nbQuestion) {
+  void "testImporteSujet - Sujet OK"(ReferentielEliot referentielEliot, int nbQuestion) {
     given:
-    Sujet sujet = creeSujet(matiere, niveau, nbQuestion)
+    Sujet sujet = creeSujet(referentielEliot, nbQuestion)
     assert sujet.id
 
     String sujetExporte = exporteSujet(sujet)
     assert sujetExporte
 
+    SujetDto sujetDto = SujetMarshaller.parse(
+        JSON.parse(sujetExporte)
+    )
+
     when:
     Sujet sujetImporte = sujetImporterService.importeSujet(
-        sujetExporte.bytes,
+        sujetDto,
         personne,
-        matiere,
-        niveau
+        referentielEliot
     )
 
     then:
@@ -90,12 +96,18 @@ class SujetImporterServiceIntegrationSpec extends IntegrationSpec {
     }
 
     where:
-    matiere << [null, null, Matiere.first()]
-    niveau << [null, null, Niveau.first()]
+    referentielEliot << [
+        null,
+        null,
+        new ReferentielEliot(
+            matiere: Matiere.first(),
+            niveau: Niveau.first()
+        )
+    ]
     nbQuestion << [0, 1, 3]
   }
 
-  private Sujet creeSujet(Matiere matiere, Niveau niveau, int nbQuestion) {
+  private Sujet creeSujet(ReferentielEliot referentielEliot, int nbQuestion) {
     Sujet sujet = sujetService.createSujet(personne, "Un Sujet")
     sujetService.updateProprietes(
         sujet,
@@ -112,8 +124,8 @@ class SujetImporterServiceIntegrationSpec extends IntegrationSpec {
             ordreQuestionAleatoire: false,
             paternite: '{json: paternite}',
             copyrightsType: CopyrightsTypeEnum.CC_BY_NC.copyrightsType,
-            matiere: matiere,
-            niveau: niveau
+            matiere: referentielEliot?.matiere,
+            niveau: referentielEliot?.niveau
         ],
         personne
     )
@@ -130,9 +142,11 @@ class SujetImporterServiceIntegrationSpec extends IntegrationSpec {
           ),
           sujet,
           personne,
-          it,
-          10.0 * it as Float,
-          20 * it
+          new ReferentielSujetSequenceQuestions(
+              rang: it,
+              noteSeuilPoursuite: 10.0 * it as Float,
+              points: 20 * it
+          )
       )
     }
 

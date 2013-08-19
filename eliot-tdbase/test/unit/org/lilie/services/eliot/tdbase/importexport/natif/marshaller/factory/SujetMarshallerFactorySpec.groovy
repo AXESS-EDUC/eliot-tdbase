@@ -5,7 +5,6 @@ import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.Etablisseme
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetSequenceQuestionsMarshaller
 import org.lilie.services.eliot.tice.AttachementService

@@ -1,4 +1,4 @@
-package org.lilie.services.eliot.tdbase.importexport.natif
+package org.lilie.services.eliot.tdbase.importexport
 
 import grails.test.mixin.TestFor
 import org.lilie.services.eliot.tdbase.Question
@@ -51,15 +51,13 @@ class AttachementImporterServiceSpec extends Specification {
     attachementImporterService.importePrincipalAttachement(principalAttachementDto, question)
 
     then:
-    1 * attachementService.createAttachement(
-        {
+    1 * attachementService.createAttachement {
           it.taille == blob.size() &&
               it.typeMime == attachementDto.typeMime &&
               it.nom == attachementDto.nom &&
               it.nomFichierOriginal == attachementDto.nomFichierOriginal &&
               it.inputStream
-        }
-    ) >> attachement
+        } >> attachement
 
     then:
     1 * questionAttachementService.createPrincipalAttachementForQuestion(

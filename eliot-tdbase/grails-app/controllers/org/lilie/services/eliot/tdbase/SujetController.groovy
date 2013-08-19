@@ -2,8 +2,9 @@ package org.lilie.services.eliot.tdbase
 
 import grails.converters.JSON
 import org.lilie.services.eliot.tdbase.importexport.Format
-import org.lilie.services.eliot.tdbase.importexport.natif.QuestionImporterService
-import org.lilie.services.eliot.tdbase.importexport.natif.SujetImporterService
+import org.lilie.services.eliot.tdbase.importexport.QuestionImporterService
+import org.lilie.services.eliot.tdbase.importexport.SujetImporterService
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.SujetMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
@@ -600,7 +601,9 @@ class SujetController {
     if (importSuccess) {
       try {
         questionImporterService.importeQuestion(
-            fichier.bytes,
+            QuestionMarshaller.parse(
+                JSON.parse(new ByteArrayInputStream(fichier.bytes), 'UTF-8')
+            ),
             sujet,
             proprietaire,
             Matiere.load(importCommand.matiereId),
@@ -660,7 +663,9 @@ class SujetController {
     if (importSuccess) {
       try {
         sujet = sujetImporterService.importeSujet(
-            fichier.bytes,
+            SujetMarshaller.parse(
+                JSON.parse(new ByteArrayInputStream(fichier.bytes), 'UTF-8')
+            ),
             proprietaire,
             Matiere.load(matiereId),
             Niveau.load(niveauId)

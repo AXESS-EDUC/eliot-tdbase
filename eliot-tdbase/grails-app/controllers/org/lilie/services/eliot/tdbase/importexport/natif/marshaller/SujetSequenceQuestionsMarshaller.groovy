@@ -1,6 +1,7 @@
 package org.lilie.services.eliot.tdbase.importexport.natif.marshaller
 
 import org.codehaus.groovy.grails.web.json.JSONElement
+import org.lilie.services.eliot.tdbase.ReferentielSujetSequenceQuestions
 import org.lilie.services.eliot.tdbase.SujetSequenceQuestions
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetSequenceQuestionsDto
 
@@ -39,9 +40,11 @@ class SujetSequenceQuestionsMarshaller {
     MarshallerHelper.checkIsJsonElement('question', jsonElement.question)
 
     return new SujetSequenceQuestionsDto(
-        rang: jsonElement.rang,
-        noteSeuilPoursuite: MarshallerHelper.jsonObjectToObject(jsonElement.noteSeuilPoursuite),
-        points: MarshallerHelper.jsonObjectToObject(jsonElement.points),
+        referentielSujetSequenceQuestions: new ReferentielSujetSequenceQuestions(
+            rang: jsonElement.rang,
+            noteSeuilPoursuite: MarshallerHelper.jsonObjectToObject(jsonElement.noteSeuilPoursuite),
+            points: MarshallerHelper.jsonObjectToObject(jsonElement.points)
+        ),
         question: QuestionMarshaller.parse(jsonElement.question)
     )
   }

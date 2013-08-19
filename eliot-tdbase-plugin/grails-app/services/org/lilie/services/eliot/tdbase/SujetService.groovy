@@ -35,8 +35,6 @@ import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
 
@@ -275,8 +273,7 @@ class SujetService {
                          String patternTitre,
                          String patternAuteur,
                          String patternPresentation,
-                         Matiere matiere,
-                         Niveau niveau,
+                         ReferentielEliot referentielEliot,
                          SujetType sujetType,
                          Boolean uniquementSujetsChercheur = false,
                          Map paginationAndSortingSpec = null) {
@@ -289,11 +286,11 @@ class SujetService {
 
     def criteria = Sujet.createCriteria()
     List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
-      if (matiere) {
-        eq "matiere", matiere
+      if (referentielEliot?.matiere) {
+        eq "matiere", referentielEliot?.matiere
       }
-      if (niveau) {
-        eq "niveau", niveau
+      if (referentielEliot?.niveau) {
+        eq "niveau", referentielEliot?.niveau
       }
       if (sujetType) {
         eq "sujetType", sujetType
@@ -387,9 +384,7 @@ class SujetService {
   Sujet insertQuestionInSujet(Question question,
                               Sujet leSujet,
                               Personne proprietaire,
-                              Integer rang = null,
-                              Float noteSeuilPoursuite = null,
-                              Float points = null) {
+                              ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions = null) {
 
     // verif securite
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
@@ -403,11 +398,11 @@ class SujetService {
     def sequence = new SujetSequenceQuestions(question: question,
                                               sujet: leSujet,
                                               rang: leSujet.questionsSequences?.size())
-    if(noteSeuilPoursuite != null) {
-      sequence.noteSeuilPoursuite = noteSeuilPoursuite
+    if(referentielSujetSequenceQuestions?.noteSeuilPoursuite != null) {
+      sequence.noteSeuilPoursuite = referentielSujetSequenceQuestions?.noteSeuilPoursuite
     }
-    if(points != null) {
-      sequence.points = points
+    if(referentielSujetSequenceQuestions?.points != null) {
+      sequence.points = referentielSujetSequenceQuestions?.points
     }
     leSujet.addToQuestionsSequences(sequence)
     sequence.save()
@@ -422,6 +417,7 @@ class SujetService {
     leSujet.lastUpdated = new Date()
 
     leSujet.save(flush: true)
+    Integer rang = referentielSujetSequenceQuestions?.rang
     if (rang != null && rang < leSujet.questionsSequences.size() - 1) {
       // il faut insérer au rang correct
       def idxSujQuest = leSujet.questionsSequences.size() - 1

@@ -33,8 +33,6 @@ import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -62,7 +60,7 @@ class QuestionService implements ApplicationContextAware {
    * @return le service ad-hoc pour le type de question
    */
   QuestionSpecificationService questionSpecificationServiceForQuestionType(QuestionType questionType) {
-    return applicationContext.getBean("question${questionType.code}SpecificationService")
+    return (QuestionSpecificationService)applicationContext.getBean("question${questionType.code}SpecificationService")
   }
 
   /**
@@ -223,9 +221,7 @@ class QuestionService implements ApplicationContextAware {
                                           def specificationObject,
                                           Sujet sujet,
                                           Personne proprietaire,
-                                          Integer rang = null,
-                                          Float noteSeuilPoursuite = null,
-                                          Float points = null) {
+                                          ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions = null) {
 
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
@@ -235,9 +231,7 @@ class QuestionService implements ApplicationContextAware {
           question,
           sujet,
           proprietaire,
-          rang,
-          noteSeuilPoursuite,
-          points
+          referentielSujetSequenceQuestions
       )
     }
     return question
@@ -343,8 +337,7 @@ class QuestionService implements ApplicationContextAware {
                                String patternTitre,
                                String patternAuteur,
                                String patternSpecification,
-                               Matiere matiere,
-                               Niveau niveau,
+                               ReferentielEliot referentielEliot,
                                QuestionType questionType,
                                Boolean exclusComposites = false,
                                Boolean uniquementQuestionsChercheur = false,
@@ -358,11 +351,11 @@ class QuestionService implements ApplicationContextAware {
 
     def criteria = Question.createCriteria()
     List<Question> questions = criteria.list(paginationAndSortingSpec) {
-      if (matiere) {
-        eq "matiere", matiere
+      if (referentielEliot?.matiere) {
+        eq "matiere", referentielEliot?.matiere
       }
-      if (niveau) {
-        eq "niveau", niveau
+      if (referentielEliot?.niveau) {
+        eq "niveau", referentielEliot?.niveau
       }
       if (questionType) {
         eq "type", questionType

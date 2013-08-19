@@ -1,14 +1,15 @@
-package org.lilie.services.eliot.tdbase.importexport.natif
+package org.lilie.services.eliot.tdbase.importexport
 
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
-import org.codehaus.groovy.grails.web.json.JSONElement
 import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionService
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionType
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.ReferentielEliot
+import org.lilie.services.eliot.tdbase.ReferentielSujetSequenceQuestions
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
@@ -18,13 +19,14 @@ import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.springframework.context.ApplicationContext
 import spock.lang.Specification
 
 /**
@@ -72,7 +74,7 @@ class QuestionImporterServiceSpec extends Specification {
 
   def "testImporteQuestion - Importeur n'a pas l'autorisation de modifier le sujet"() {
     given:
-    byte[] jsonBlob = "jsonBlob".bytes
+    QuestionDto questionDto = new QuestionAtomiqueDto()
     Sujet sujet = null
     Personne importeur = null
 
@@ -80,7 +82,7 @@ class QuestionImporterServiceSpec extends Specification {
 
     when:
     questionImporterService.importeQuestion(
-        jsonBlob,
+        questionDto,
         sujet,
         importeur
     )
@@ -90,52 +92,20 @@ class QuestionImporterServiceSpec extends Specification {
 
   }
 
-  def "testImporteQuestion - Erreur de parsing"() {
-    given:
-    def jsonBlob = "jsonBlob".getBytes()
-    def sujet = null
-    def importeur = null
-
-    String erreurMessage = "erreur"
-
-    artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
-    QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      throw new IllegalStateException(erreurMessage)
-    }
-
-
-    when:
-    questionImporterService.importeQuestion(
-        jsonBlob,
-        sujet,
-        importeur
-    )
-
-    then:
-    def e = thrown(IllegalStateException)
-    e.message == erreurMessage
-
-    cleanup:
-    QuestionMarshaller.metaClass = null
-  }
-
   def "testImporteQuestion - questionType incorrect"() {
     given:
-    def jsonBlob = "jsonBlob".getBytes()
+    QuestionDto questionDto = new QuestionAtomiqueDto(
+        type: "Question type incorrect"
+    )
+
     def sujet = null
     def importeur = null
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
-    QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      new QuestionAtomiqueDto(
-          type: "Question type incorrect"
-      )
-    }
-
 
     when:
     questionImporterService.importeQuestion(
-        jsonBlob,
+        questionDto,
         sujet,
         importeur
     )
@@ -143,31 +113,26 @@ class QuestionImporterServiceSpec extends Specification {
     then:
     def e = thrown(IllegalArgumentException)
     e.message.startsWith("No enum constant org.lilie.services.eliot.tdbase.QuestionTypeEnum.Question")
-
-    cleanup:
-    QuestionMarshaller.metaClass = null
   }
 
   def "testImporteQuestion - copyrightsType incorrect"() {
     given:
-    def jsonBlob = "jsonBlob".getBytes()
+    String codeCopyrightsTypeIncorrect = "codeCopyrightsTypeIncorrect"
+    QuestionDto questionDto = new QuestionAtomiqueDto(
+        type: QuestionTypeEnum.MultipleChoice.name(),
+        copyrightsType: new CopyrightsTypeDto(
+            code: codeCopyrightsTypeIncorrect
+        )
+    )
     def sujet = null
     def importeur = null
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
-    String codeCopyrightsTypeIncorrect = "codeCopyrightsTypeIncorrect"
-    QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      new QuestionAtomiqueDto(
-          type: QuestionTypeEnum.MultipleChoice.name(),
-          copyrightsType: new CopyrightsTypeDto(
-              code: codeCopyrightsTypeIncorrect
-          )
-      )
-    }
+
 
     when:
     questionImporterService.importeQuestion(
-        jsonBlob,
+        questionDto,
         sujet,
         importeur
     )
@@ -175,29 +140,21 @@ class QuestionImporterServiceSpec extends Specification {
     then:
     def e = thrown(IllegalArgumentException)
     e.message == "Le code '$codeCopyrightsTypeIncorrect' ne correspond pas à un type de copyrights connu"
-
-    cleanup:
-    QuestionMarshaller.metaClass = null
   }
 
   def "testImporteQuestion - specification incorrecte"() {
     given:
-    def jsonBlob = "jsonBlob".getBytes()
+    QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.MultipleChoice
+    QuestionDto questionDto = new QuestionAtomiqueDto(
+        type: questionTypeEnum.name(),
+        copyrightsType: new CopyrightsTypeDto(
+            code: CopyrightsTypeEnum.TousDroitsReserves.code
+        )
+    )
     def sujet = null
     def importeur = null
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
-
-    QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.MultipleChoice
-
-    QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      new QuestionAtomiqueDto(
-          type: questionTypeEnum.name(),
-          copyrightsType: new CopyrightsTypeDto(
-              code: CopyrightsTypeEnum.TousDroitsReserves.code
-          )
-      )
-    }
 
     questionService.questionSpecificationServiceForQuestionType(_) >> { QuestionType questionType ->
       QuestionSpecificationService questionSpecificationService = Mock(QuestionSpecificationService)
@@ -211,7 +168,7 @@ class QuestionImporterServiceSpec extends Specification {
 
     when:
     questionImporterService.importeQuestion(
-        jsonBlob,
+        questionDto,
         sujet,
         importeur
     )
@@ -219,27 +176,20 @@ class QuestionImporterServiceSpec extends Specification {
     then:
     def e = thrown(IllegalStateException)
     e.message == "Erreur simulée"
-
-    cleanup:
-    QuestionMarshaller.metaClass = null
   }
 
   def "testImporteQuestion - Echec de création de la question"() {
     given:
-    def jsonBlob = "jsonBlob".getBytes()
+    QuestionDto questionDto = new QuestionAtomiqueDto(
+        type: QuestionTypeEnum.MultipleChoice.name(),
+        copyrightsType: new CopyrightsTypeDto(
+            code: CopyrightsTypeEnum.TousDroitsReserves.code
+        )
+    )
     def sujet = null
     def importeur = null
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
-
-    QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      new QuestionAtomiqueDto(
-          type: QuestionTypeEnum.MultipleChoice.name(),
-          copyrightsType: new CopyrightsTypeDto(
-              code: CopyrightsTypeEnum.TousDroitsReserves.code
-          )
-      )
-    }
 
     questionService.questionSpecificationServiceForQuestionType(_) >> { QuestionType questionType ->
       QuestionSpecificationService questionSpecificationService = Mock(QuestionSpecificationService)
@@ -258,7 +208,7 @@ class QuestionImporterServiceSpec extends Specification {
       return questionSpecificationService
     }
 
-    questionService.createQuestionAndInsertInSujet(_, _, _, _, _, _, _) >> {
+    questionService.createQuestionAndInsertInSujet(_, _, _, _, _) >> {
       throw new IllegalStateException(
           "Echec de création de la question"
       )
@@ -266,7 +216,7 @@ class QuestionImporterServiceSpec extends Specification {
 
     when:
     questionImporterService.importeQuestion(
-        jsonBlob,
+        questionDto,
         sujet,
         importeur
     )
@@ -274,34 +224,13 @@ class QuestionImporterServiceSpec extends Specification {
     then:
     def e = thrown(IllegalStateException)
     e.message == "Echec de création de la question"
-
-    cleanup:
-    QuestionMarshaller.metaClass = null
   }
 
-  def "testImporteQuestion - question atomique OK"(Matiere matiere,
-                                                   Niveau niveau,
+  def "testImporteQuestion - question atomique OK"(ReferentielEliot referentielEliot,
                                                    PrincipalAttachementDto principalAttachementDto,
                                                    List<AttachementDto> questionAttachementsDto) {
     given:
-    def jsonBlob = "jsonBlob".getBytes()
-    def sujet = new Sujet()
-    def importeur = new Personne()
     CopyrightsTypeEnum copyrightsTypeEnum = CopyrightsTypeEnum.TousDroitsReserves
-
-    Question question = new Question()
-
-    MultipleChoiceSpecification multipleChoiceSpecification = new MultipleChoiceSpecification(
-        libelle: "libelle",
-        correction: "correction",
-        reponses: [
-            new MultipleChoiceSpecificationReponsePossible(),
-            new MultipleChoiceSpecificationReponsePossible()
-        ]
-    )
-
-    artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
-
     QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.MultipleChoice
 
     QuestionAtomiqueDto questionAtomiqueDto = new QuestionAtomiqueDto(
@@ -316,14 +245,27 @@ class QuestionImporterServiceSpec extends Specification {
         questionAttachements: questionAttachementsDto
     )
 
-    QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      return questionAtomiqueDto
-    }
+    def sujet = new Sujet()
+    def importeur = new Personne()
 
-    questionService.questionSpecificationServiceForQuestionType({
+
+    Question question = new Question()
+
+    MultipleChoiceSpecification multipleChoiceSpecification = new MultipleChoiceSpecification(
+        libelle: "libelle",
+        correction: "correction",
+        reponses: [
+            new MultipleChoiceSpecificationReponsePossible(),
+            new MultipleChoiceSpecificationReponsePossible()
+        ]
+    )
+
+    artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
+
+    questionService.questionSpecificationServiceForQuestionType {
       assert it.id == questionTypeEnum.id
       return true
-    }) >> { QuestionType questionType ->
+    } >> { QuestionType questionType ->
       QuestionSpecificationService questionSpecificationService = Mock(QuestionSpecificationService)
 
       questionSpecificationService.getObjectFromSpecification(_) >> { String specification ->
@@ -337,8 +279,8 @@ class QuestionImporterServiceSpec extends Specification {
         {
           assert it.titre == questionAtomiqueDto.titre
           assert it.type.code == QuestionTypeEnum.MultipleChoice.name()
-          assert it.matiere == matiere
-          assert it.niveau == niveau
+          assert it.matiere == referentielEliot?.matiere
+          assert it.niveau == referentielEliot?.niveau
           assert it.estAutonome == questionAtomiqueDto.estAutonome
           assert it.paternite == questionAtomiqueDto.paternite
           assert it.versionQuestion == questionAtomiqueDto.versionQuestion
@@ -348,18 +290,15 @@ class QuestionImporterServiceSpec extends Specification {
         multipleChoiceSpecification,
         sujet,
         importeur,
-        null,
-        null,
         null
     ) >> question
 
     when:
     Question questionImportee = questionImporterService.importeQuestion(
-        jsonBlob,
+        (QuestionAtomiqueDto)questionAtomiqueDto,
         sujet,
         importeur,
-        matiere,
-        niveau
+        referentielEliot
     )
 
     then:
@@ -372,12 +311,15 @@ class QuestionImporterServiceSpec extends Specification {
     1 * attachementImporterService.importeQuestionAttachements(questionAtomiqueDto.questionAttachements, question)
     questionImportee == question
 
-    cleanup:
-    QuestionMarshaller.metaClass = null
-
     where:
-    matiere << [null, null, new Matiere()]
-    niveau << [null, null, new Niveau()]
+    referentielEliot << [
+        null,
+        null,
+        new ReferentielEliot(
+            matiere: new Matiere(),
+            niveau: new Niveau()
+        )
+    ]
 
     principalAttachementDto << [
         null, null, new PrincipalAttachementDto()
@@ -390,11 +332,8 @@ class QuestionImporterServiceSpec extends Specification {
     ]
   }
 
-  def "testImporteQuestion - question composite OK"(Matiere matiere,
-                                                    Niveau niveau,
-                                                    Integer rang,
-                                                    Float noteSeuilPoursuite,
-                                                    Float points) {
+  def "testImporteQuestion - question composite OK"(ReferentielEliot referentielEliot,
+                                                    ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions) {
     given:
     SujetDto exerciceDto = new SujetDto()
     Question questionComposite = new Question()
@@ -411,19 +350,15 @@ class QuestionImporterServiceSpec extends Specification {
         questionCompositeDto,
         sujet,
         importeur,
-        matiere,
-        niveau,
-        rang,
-        noteSeuilPoursuite,
-        points
+        referentielEliot,
+        referentielSujetSequenceQuestions
     )
 
     then:
     1 * sujetImporterService.importeSujet(
         exerciceDto,
         importeur,
-        matiere,
-        niveau
+        referentielEliot
     ) >> exercice
 
     then:
@@ -431,9 +366,7 @@ class QuestionImporterServiceSpec extends Specification {
         questionComposite,
         sujet,
         importeur,
-        rang,
-        noteSeuilPoursuite,
-        points
+        referentielSujetSequenceQuestions
     )
 
     then:
@@ -441,11 +374,35 @@ class QuestionImporterServiceSpec extends Specification {
 
 
     where:
-    matiere << [null, new Matiere()]
-    niveau << [null, new Niveau()]
-    rang << [null, 4]
-    noteSeuilPoursuite << [null, 8.0]
-    points << [null, 3.0]
+    referentielEliot << [
+        null,
+        new ReferentielEliot(
+            matiere: new Matiere(),
+            niveau: new Niveau()
+        )
+    ]
+    referentielSujetSequenceQuestions << [
+        null,
+        new ReferentielSujetSequenceQuestions(
+            rang: 4,
+            noteSeuilPoursuite: 8.0,
+            points: 3.0
+        )
+    ]
   }
 
+
+  def "testGetSujetImporterService"() {
+    given:
+    ApplicationContext applicationContext = Mock(ApplicationContext)
+    questionImporterService.sujetImporterServiceBean = null
+    questionImporterService.applicationContext = applicationContext
+
+    applicationContext.getBean('sujetImporterService') >> sujetImporterService
+
+
+
+    expect:
+    questionImporterService.sujetImporterService == sujetImporterService
+  }
 }

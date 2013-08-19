@@ -83,9 +83,9 @@ class SujetSequenceQuestionsMarshallerSpec extends Specification {
     SujetSequenceQuestionsDto sequenceQuestionsDto = SujetSequenceQuestionsMarshaller.parse(JSON.parse(json))
 
     expect:
-    sequenceQuestionsDto.rang == rang
-    sequenceQuestionsDto.noteSeuilPoursuite == noteSeuilPoursuite
-    sequenceQuestionsDto.points == points
+    sequenceQuestionsDto.referentielSujetSequenceQuestions.rang == rang
+    sequenceQuestionsDto.referentielSujetSequenceQuestions.noteSeuilPoursuite == noteSeuilPoursuite
+    sequenceQuestionsDto.referentielSujetSequenceQuestions.points == points
     sequenceQuestionsDto.question == questionDto
 
     cleanup:

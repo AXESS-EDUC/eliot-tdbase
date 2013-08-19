@@ -3,8 +3,6 @@ package org.lilie.services.eliot.tdbase.importexport.natif.marshaller
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.lilie.services.eliot.tdbase.importexport.dto.MatiereDto
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerHelper
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMarshaller
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import spock.lang.Specification
 

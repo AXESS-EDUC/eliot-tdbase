@@ -3,8 +3,6 @@ package org.lilie.services.eliot.tdbase.importexport.natif.marshaller
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.lilie.services.eliot.tdbase.importexport.dto.NiveauDto
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerHelper
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import spock.lang.Specification
 
@@ -15,8 +13,13 @@ class NiveauMarshallerSpec extends Specification {
 
   NiveauMarshaller niveauMarshaller = new NiveauMarshaller()
 
-  def "testMarshall - cas général"(Niveau niveau) {
+  def "testMarshall - cas général"() {
     given:
+    Niveau niveau = new Niveau(
+        libelleEdition: 'libelleEdition',
+        libelleCourt: 'libelleCourt',
+        libelleLong: 'libelleLong'
+    )
     Map representation = niveauMarshaller.marshall(niveau)
 
     expect:
@@ -24,13 +27,6 @@ class NiveauMarshallerSpec extends Specification {
     representation.libelleCourt == niveau.libelleCourt
     representation.libelleEdition == niveau.libelleEdition
     representation.libelleLong == niveau.libelleLong
-
-    where:
-    niveau = new Niveau(
-        libelleEdition: 'libelleEdition',
-        libelleCourt: 'libelleCourt',
-        libelleLong: 'libelleLong'
-    )
   }
 
   def "testMarshall - argument null"() {

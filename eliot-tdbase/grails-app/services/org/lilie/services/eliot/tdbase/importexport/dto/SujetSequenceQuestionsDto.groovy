@@ -1,11 +1,11 @@
 package org.lilie.services.eliot.tdbase.importexport.dto
 
+import org.lilie.services.eliot.tdbase.ReferentielSujetSequenceQuestions
+
 /**
  * @author John Tranier
  */
 class SujetSequenceQuestionsDto {
-  Integer rang
-  Float noteSeuilPoursuite
-  Float points
+  ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions
   QuestionDto question
 }
