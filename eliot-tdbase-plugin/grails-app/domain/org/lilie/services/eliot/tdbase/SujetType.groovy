@@ -38,7 +38,6 @@ class SujetType {
 
   String nom
   String nomAnglais
-  // TODO il faut ajouter un code !
 
   static constraints = {
     nomAnglais(nullable: true)

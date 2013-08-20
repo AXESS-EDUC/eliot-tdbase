@@ -618,9 +618,8 @@ class SujetController {
         )
       } catch (Exception e) {
         log.error("Une erreur s'est produite durant l'import de la question", e)
-        flash.errorMessageCode = e.message
+        flash.errorMessageCode = "Format de fichier incorrect (cause: ${e.message})"
         importSuccess = false
-        // TODO tester le comportement en cas d'erreur
       }
     }
     flash.liens = breadcrumpsService.liens

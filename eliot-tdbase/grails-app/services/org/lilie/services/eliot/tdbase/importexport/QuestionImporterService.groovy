@@ -19,8 +19,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 
 /**
- * Service d'import de questions au format JSON natif eliot-tdbase
- * TODO reprendre cette javadoc
+ * Service d'import de questions
  * @author John Tranier
  */
 @SuppressWarnings('GrailsStatelessService')
@@ -68,7 +67,7 @@ class QuestionImporterService implements ApplicationContextAware {
    * Importe une question à partir de sa description au format QuestionDto
    * dans un sujet
    */
-  Question importeQuestion(QuestionAtomiqueDto questionDto, // TODO réduire le nb de param
+  Question importeQuestion(QuestionAtomiqueDto questionDto,
                            Sujet sujet,
                            Personne importeur,
                            ReferentielEliot referentielEliot = null,

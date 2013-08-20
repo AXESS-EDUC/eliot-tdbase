@@ -12,8 +12,7 @@ import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
- * Service d'import de sujet au format JSON natif eliot-tdbase
- * TODO reprendre cette javadoc
+ * Service d'import de sujet
  *
  * @author John Tranier
  */

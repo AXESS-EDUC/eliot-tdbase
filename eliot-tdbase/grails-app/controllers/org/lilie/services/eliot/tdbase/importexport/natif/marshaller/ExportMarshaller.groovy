@@ -9,7 +9,8 @@ import org.lilie.services.eliot.tdbase.importexport.dto.ExportDto
 import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
- * TODO
+ * Marshaller qui permet de convertir les informations concernant un export en une représentation à base de Map
+ * qui pourra ensuite être convertie en XML ou en JSON
  * @author John Tranier
  */
 class ExportMarshaller {

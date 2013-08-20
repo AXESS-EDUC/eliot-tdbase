@@ -2,7 +2,6 @@ package org.lilie.services.eliot.tdbase.importexport.natif.marshaller
 
 import org.codehaus.groovy.grails.web.json.JSONElement
 import org.lilie.services.eliot.tdbase.Question
-import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto
 
 /**
@@ -22,7 +21,6 @@ class QuestionCompositeMarshaller {
 
     Map representation = [
         class: ExportClass.QUESTION_COMPOSITE.name(),
-        type: question.type.code,
         exercice: sujetMarshaller.marshall(question.exercice)
     ]
 
@@ -31,12 +29,6 @@ class QuestionCompositeMarshaller {
 
   static QuestionCompositeDto parse(JSONElement jsonElement) {
     MarshallerHelper.checkClass(ExportClass.QUESTION_COMPOSITE, jsonElement)
-    if(jsonElement.type != QuestionTypeEnum.Composite.name()) {
-      throw new MarshallerException(
-          "Le type de la question n'est pas Composite",
-          'type'
-      )
-    }
     MarshallerHelper.checkIsJsonElement('exercice', jsonElement.exercice)
 
     return new QuestionCompositeDto(

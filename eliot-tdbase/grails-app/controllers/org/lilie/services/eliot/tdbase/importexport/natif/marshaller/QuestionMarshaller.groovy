@@ -68,12 +68,12 @@ public class QuestionMarshaller {
         ],
         jsonElement
     )
-    MarshallerHelper.checkIsNotNull('type', jsonElement.type)
 
     if(jsonElement.class == ExportClass.QUESTION_COMPOSITE.name()) {
       return QuestionCompositeMarshaller.parse(jsonElement)
     }
 
+    MarshallerHelper.checkIsNotNull('type', jsonElement.type)
     MarshallerHelper.checkIsNotNull('titre', jsonElement.titre)
     MarshallerHelper.checkIsJsonElement('metadonnees', jsonElement.metadonnees)
     MarshallerHelper.checkIsJsonElement('metadonnees.proprietaire', jsonElement.metadonnees.proprietaire)

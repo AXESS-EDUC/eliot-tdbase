@@ -55,36 +55,16 @@ class QuestionCompositeMarshallerSpec extends Specification {
     Map questionCompositeRepresentation = questionCompositeMarshaller.marshall(question)
 
     expect:
-    questionCompositeRepresentation.size() == 3
+    questionCompositeRepresentation.size() == 2
     questionCompositeRepresentation.class == ExportClass.QUESTION_COMPOSITE.name()
-    questionCompositeRepresentation.type == QuestionTypeEnum.Composite.name()
     questionCompositeRepresentation.exercice == exerciceRepresentation
-  }
-
-  def "testParse - Erreur : ne correspond pas à une question composite"() {
-    given:
-    String json = """
-    {
-      class: '${ExportClass.QUESTION_COMPOSITE}',
-      type: 'incorrect'
-    }
-    """
-
-    when:
-    QuestionCompositeMarshaller.parse(JSON.parse(json))
-
-    then:
-    def e = thrown(MarshallerException)
-    e.attribut == 'type'
-    e.message == "Le type de la question n'est pas Composite"
   }
 
   def "testParse - Erreur : exercice manquant"() {
     given:
     String json = """
     {
-      class: '${ExportClass.QUESTION_COMPOSITE}',
-      type: '${QuestionTypeEnum.Composite.name()}'
+      class: '${ExportClass.QUESTION_COMPOSITE}'
     }
     """
 
@@ -101,11 +81,9 @@ class QuestionCompositeMarshallerSpec extends Specification {
     String json = """
     {
       class: '${ExportClass.QUESTION_COMPOSITE}',
-      type: '${QuestionTypeEnum.Composite.name()}',
       exercice: {}
     }
     """
-    // TODO Supprimer l'attribut type qui est inutile
 
     SujetDto exerciceDto = new SujetDto()
     SujetMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
