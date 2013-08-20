@@ -2,6 +2,7 @@ package org.lilie.services.eliot.tdbase.importexport
 
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionService
+import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
@@ -20,10 +21,11 @@ class QuestionExporterService {
   static transactional = true
 
   QuestionService questionService
+  SujetService sujetService
 
   Question getQuestionPourExport(Question question, Personne exporteur) {
     if(question.exercice) { // Question composite
-      // TODO
+      sujetService.marquePaternite(question.exercice, exporteur)
     }
     else {
       questionService.marquePaternite(question, exporteur) // Permet aussi de vérifier le droit d'export

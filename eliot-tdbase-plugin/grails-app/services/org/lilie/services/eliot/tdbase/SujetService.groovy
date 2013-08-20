@@ -232,20 +232,14 @@ class SujetService {
         }
       }
     }
-    // mise à jour de la paternite
-    PaterniteItem paterniteItem = new PaterniteItem(auteur: "${partageur.nomAffichage}",
-                                                    copyrightDescription: "${ct.presentation}",
-                                                    copyrighLien: "${ct.lien}",
-                                                    logoLien: ct.logo ,
-                                                    datePublication: publication.dateDebut,
-                                                    oeuvreEnCours: true)
-    Paternite paternite = new Paternite(leSujet.paternite)
-    paternite.paterniteItems.each {
-      it.oeuvreEnCours = false
-    }
-    paternite.addPaterniteItem(paterniteItem)
-    leSujet.paternite = paternite.toString()
-    leSujet.save()
+
+    addPaterniteItem(
+        partageur,
+        ct,
+        publication.dateDebut,
+        leSujet
+    )
+
     // si le sujet est un exercice, partage de la question associee
     def question = leSujet.questionComposite
     if (question) {
@@ -253,6 +247,40 @@ class SujetService {
     }
 
     return leSujet
+  }
+
+  /**
+   * Marque la paternité de la question (ajoute un PaterniteItem)
+   * Méthode invoquée avant d'effectuer un export
+   * @param sujet
+   * @param partageur
+   */
+  @Transactional
+  void marquePaternite(Sujet sujet, Personne partageur) {
+    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(partageur, sujet))
+
+    CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
+    addPaterniteItem(partageur, ct, new Date(), sujet)
+  }
+
+  private void addPaterniteItem(Personne partageur,
+                                CopyrightsType ct,
+                                Date datePublication,
+                                Sujet leSujet) {
+    // mise à jour de la paternite
+    PaterniteItem paterniteItem = new PaterniteItem(auteur: "${partageur.nomAffichage}",
+        copyrightDescription: "${ct.presentation}",
+        copyrighLien: "${ct.lien}",
+        logoLien: ct.logo ,
+        datePublication: datePublication,
+        oeuvreEnCours: true)
+    Paternite paternite = new Paternite(leSujet.paternite)
+    paternite.paterniteItems.each {
+      it.oeuvreEnCours = false
+    }
+    paternite.addPaterniteItem(paterniteItem)
+    leSujet.paternite = paternite.toString()
+    leSujet.save()
   }
 
 /**
