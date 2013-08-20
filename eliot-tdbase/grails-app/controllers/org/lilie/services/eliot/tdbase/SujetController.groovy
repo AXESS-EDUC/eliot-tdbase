@@ -586,6 +586,7 @@ class SujetController {
 
   /**
    * Action déclenchant l'import du fichier question JSON au format natif eliot-tdbase
+   * dans un sujet
    */
   def importQuestionNatifTdBase(ImportDansSujetCommand importCommand) {
     Sujet sujet = Sujet.load(importCommand.sujetId)

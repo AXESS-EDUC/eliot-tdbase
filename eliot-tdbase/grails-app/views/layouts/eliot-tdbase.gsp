@@ -94,6 +94,14 @@
                     params="[bcInit: true, patternAuteur: message(code: 'eliot.label.me')]">Rechercher</g:link>
 
           </li>
+          <li title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}">
+            <g:link controller="question"
+                    action="editeImportQuestionNatifTdBase"
+                    title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}"
+                    params="[bcInit: true, format: Format.NATIF_JSON]">
+              <g:message code="importexport.NATIF_JSON.action.import.title"/>
+            </g:link>
+          </li>
         </ul>
       </li>
       <li id="menu-item-seances">

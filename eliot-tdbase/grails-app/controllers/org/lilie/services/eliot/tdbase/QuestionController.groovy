@@ -32,6 +32,7 @@ import grails.converters.JSON
 import org.lilie.services.eliot.tdbase.importexport.ExportHelper
 import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.QuestionExporterService
+import org.lilie.services.eliot.tdbase.importexport.QuestionImporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
@@ -41,6 +42,7 @@ import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+import org.springframework.web.multipart.MultipartFile
 
 class QuestionController {
 
@@ -56,6 +58,7 @@ class QuestionController {
   MoodleQuizExporterService moodleQuizExporterService
   AttachementService attachementService
   QuestionExporterService questionExporterService
+  QuestionImporterService questionImporterService
 
   /**
    *
@@ -461,6 +464,67 @@ class QuestionController {
         throw new IllegalArgumentException(
             "Le format '$format' est inconnu."
         )
+    }
+  }
+
+  /**
+   * Action donnant accès au formulaire d'import natif eliot-tdbase d'une question
+   */
+  def editeImportQuestionNatifTdBase() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.sujet.libelle"))
+    Personne proprietaire = authenticatedPersonne
+    [
+        liens: breadcrumpsService.liens,
+        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+    ]
+  }
+
+  /**
+   * Action déclenchant l'import du fichier question JSON au format natif eliot-tdbase
+   */
+  def importQuestionNatifTdBase(Long matiereId, Long niveauId) {
+    Personne proprietaire = authenticatedPersonne
+    MultipartFile fichier = request.getFile("fichierImport")
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    boolean importSuccess = true
+    if (!fichier || fichier.isEmpty()) {
+      flash.errorMessageCode = "question.document.fichier.vide"
+      importSuccess = false
+    } else if (!fichier.name) {
+      flash.errorMessageCode = "question.document.fichier.nom.null"
+      importSuccess = false
+    } else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+      flash.errorMessageCode = "question.document.fichier.tropgros"
+      importSuccess = false
+    }
+
+    Question question = null
+    if (importSuccess) {
+      try {
+        question = questionImporterService.importeQuestion(
+            ExportMarshaller.parse(
+                JSON.parse(new ByteArrayInputStream(fichier.bytes), 'UTF-8')
+            ).question,
+            null,
+            proprietaire,
+            new ReferentielEliot(
+                matiere: Matiere.load(matiereId),
+                niveau: Niveau.load(niveauId)
+            )
+        )
+      } catch (Exception e) {
+        log.error("Une erreur s'est produite durant l'import de la question", e)
+        flash.errorMessageCode = "Format de fichier incorrect (cause: ${e.message})"
+        importSuccess = false
+      }
+    }
+    flash.liens = breadcrumpsService.liens
+    if (importSuccess) {
+      flash.messageCode = "La question a été correctement importée."
+      redirect(action: 'detail', id: question.id)
+    } else {
+      redirect(action: 'editeImportQuestionNatifTdBase')
     }
   }
 

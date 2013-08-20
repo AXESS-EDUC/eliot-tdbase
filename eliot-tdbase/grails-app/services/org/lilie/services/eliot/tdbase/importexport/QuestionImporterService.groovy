@@ -53,12 +53,14 @@ class QuestionImporterService implements ApplicationContextAware {
         referentielEliot
     )
 
-    sujetService.insertQuestionInSujet(
-        exercice.questionComposite,
-        sujet,
-        importeur,
-        referentielSujetSequenceQuestions
-    )
+    if (sujet) {
+      sujetService.insertQuestionInSujet(
+          exercice.questionComposite,
+          sujet,
+          importeur,
+          referentielSujetSequenceQuestions
+      )
+    }
 
     return exercice.questionComposite
   }
@@ -72,7 +74,10 @@ class QuestionImporterService implements ApplicationContextAware {
                            Personne importeur,
                            ReferentielEliot referentielEliot = null,
                            ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions = null) {
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet))
+
+    if (sujet) {
+      assert (artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet))
+    }
 
     // Récupération du QuestionType & du QuestionSpecificationService
     QuestionType questionType = QuestionTypeEnum.valueOf(questionDto.type).questionType
@@ -90,7 +95,7 @@ class QuestionImporterService implements ApplicationContextAware {
     // on reutilise le Question service
     def objSpec = specService.getObjectFromSpecification(questionDto.specification)
 
-    Question question = questionService.createQuestionAndInsertInSujet(
+    Question question = questionService.createQuestion(
         [
             titre: questionDto.titre,
             type: questionType,
@@ -102,10 +107,17 @@ class QuestionImporterService implements ApplicationContextAware {
             copyrightsType: copyrightsType
         ],
         objSpec,
-        sujet,
-        importeur,
-        referentielSujetSequenceQuestions
+        importeur
     )
+
+    if (sujet) {
+      sujetService.insertQuestionInSujet(
+          question,
+          sujet,
+          importeur,
+          referentielSujetSequenceQuestions
+      )
+    }
 
     if (questionDto.principalAttachement) {
       attachementImporterService.importePrincipalAttachement(questionDto.principalAttachement, question)

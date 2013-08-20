@@ -75,8 +75,8 @@ class QuestionImporterServiceSpec extends Specification {
   def "testImporteQuestion - Importeur n'a pas l'autorisation de modifier le sujet"() {
     given:
     QuestionDto questionDto = new QuestionAtomiqueDto()
-    Sujet sujet = null
-    Personne importeur = null
+    Sujet sujet = new Sujet()
+    Personne importeur = new Personne()
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> false
 
@@ -98,8 +98,8 @@ class QuestionImporterServiceSpec extends Specification {
         type: "Question type incorrect"
     )
 
-    def sujet = null
-    def importeur = null
+    def sujet = new Sujet()
+    def importeur = new Personne()
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
 
@@ -124,8 +124,8 @@ class QuestionImporterServiceSpec extends Specification {
             code: codeCopyrightsTypeIncorrect
         )
     )
-    def sujet = null
-    def importeur = null
+    def sujet = new Sujet()
+    def importeur = new Personne()
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
 
@@ -151,8 +151,8 @@ class QuestionImporterServiceSpec extends Specification {
             code: CopyrightsTypeEnum.TousDroitsReserves.code
         )
     )
-    def sujet = null
-    def importeur = null
+    def sujet = new Sujet()
+    def importeur = new Personne()
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
 
@@ -186,8 +186,8 @@ class QuestionImporterServiceSpec extends Specification {
             code: CopyrightsTypeEnum.TousDroitsReserves.code
         )
     )
-    def sujet = null
-    def importeur = null
+    def sujet = new Sujet()
+    def importeur = new Personne()
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
 
@@ -208,7 +208,7 @@ class QuestionImporterServiceSpec extends Specification {
       return questionSpecificationService
     }
 
-    questionService.createQuestionAndInsertInSujet(_, _, _, _, _) >> {
+    questionService.createQuestion(_, _, _) >> {
       throw new IllegalStateException(
           "Echec de création de la question"
       )
@@ -275,7 +275,16 @@ class QuestionImporterServiceSpec extends Specification {
       return questionSpecificationService
     }
 
-    1 * questionService.createQuestionAndInsertInSujet(
+    when:
+    Question questionImportee = questionImporterService.importeQuestion(
+        (QuestionAtomiqueDto)questionAtomiqueDto,
+        sujet,
+        importeur,
+        referentielEliot
+    )
+
+    then:
+    1 * questionService.createQuestion(
         {
           assert it.titre == questionAtomiqueDto.titre
           assert it.type.code == QuestionTypeEnum.MultipleChoice.name()
@@ -288,20 +297,16 @@ class QuestionImporterServiceSpec extends Specification {
           return true
         },
         multipleChoiceSpecification,
+        importeur
+    ) >> question
+
+    1 * sujetService.insertQuestionInSujet(
+        question,
         sujet,
         importeur,
         null
-    ) >> question
-
-    when:
-    Question questionImportee = questionImporterService.importeQuestion(
-        (QuestionAtomiqueDto)questionAtomiqueDto,
-        sujet,
-        importeur,
-        referentielEliot
     )
 
-    then:
     if (principalAttachementDto) {
       1 * attachementImporterService.importePrincipalAttachement(questionAtomiqueDto.principalAttachement, question)
     } else {
