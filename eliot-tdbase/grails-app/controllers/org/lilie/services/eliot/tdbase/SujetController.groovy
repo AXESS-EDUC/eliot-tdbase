@@ -6,8 +6,7 @@ import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.QuestionImporterService
 import org.lilie.services.eliot.tdbase.importexport.SujetImporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.SujetMarshallerFactory
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImporterService
@@ -61,8 +60,10 @@ class SujetController {
         rechCmd.patternTitre,
         patternAuteur,
         rechCmd.patternPresentation,
-        Matiere.get(rechCmd.matiereId),
-        Niveau.get(rechCmd.niveauId),
+        new ReferentielEliot(
+            matiere: Matiere.get(rechCmd.matiereId),
+            niveau: Niveau.get(rechCmd.niveauId)
+        ),
         SujetType.get(rechCmd.typeId),
         rechercheUniquementSujetsChercheur,
         params)
@@ -462,28 +463,22 @@ class SujetController {
   def exporter(String format) {
     Sujet sujet = Sujet.get(params.id)
 
+    if(!sujet) {
+      throw new IllegalStateException(
+          "Il n'existe pas de sujet d'id '${params.id}'"
+      )
+    }
+
     switch (format) {
       case Format.NATIF_JSON.name():
-        // TODO Gestion sécurité + service pour la paternité ?
-
-        SujetMarshallerFactory sujetMarshallerFactory = new SujetMarshallerFactory()
-        SujetMarshaller sujetMarshaller = sujetMarshallerFactory.newInstance(attachementService)
-        ExportMarshaller exportMarshaller = new ExportMarshaller(sujetMarshaller: sujetMarshaller)
-
-        def converter = exportMarshaller.marshall(
-            sujet,
-            new Date(),
-            authenticatedPersonne
-        ) as JSON
+        JSON json = getSujetAsJson(sujet)
         response.setHeader("Content-disposition", "attachment; filename=${ExportHelper.getFileName(sujet, Format.NATIF_JSON)}")
-        render(text: converter.toString(false), contentType: "application/json", encoding: "UTF-8")
+        render(text: json.toString(false), contentType: "application/json", encoding: "UTF-8")
 
         break
 
       case Format.MOODLE_XML.name():
-        // TODO gestion d'erreur à mettre en commun
-        def xml = sujet ? moodleQuizExporterService.toMoodleQuiz(sujet) :
-          message(code: 'xml.export.sujet.inexistant', args: [params.id])
+        def xml = moodleQuizExporterService.toMoodleQuiz(sujet)
         response.setHeader("Content-disposition", "attachment; filename=export.xml")
         render(text: xml, contentType: "text/xml", encoding: "UTF-8")
         break
@@ -493,6 +488,19 @@ class SujetController {
             "Le format '$format' est inconnu."
         )
     }
+  }
+
+  private JSON getSujetAsJson(Sujet sujet) {
+// TODO Gestion sécurité + service pour la paternité ?
+
+    ExportMarshallerFactory exportMarshallerFactory = new ExportMarshallerFactory()
+    ExportMarshaller exportMarshaller = exportMarshallerFactory.newInstance(attachementService)
+
+    return exportMarshaller.marshall(
+        sujet,
+        new Date(),
+        authenticatedPersonne
+    ) as JSON
   }
 
   /**
@@ -652,11 +660,10 @@ class SujetController {
       flash.errorMessageCode = "question.document.fichier.nom.null"
       importSuccess = false
     }
-    // TODO: que faire de la limite de taille pour un sujet ?
-//    else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
-//      flash.errorMessageCode = "question.document.fichier.tropgros"
-//      importSuccess = false
-//    }
+    else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+      flash.errorMessageCode = "question.document.fichier.tropgros"
+      importSuccess = false
+    }
 
     Sujet sujet = null
     if (importSuccess) {
@@ -673,9 +680,8 @@ class SujetController {
         )
       } catch (Exception e) {
         log.error("Une erreur s'est produite durant l'import du sujet", e)
-        flash.errorMessageCode = e.message
+        flash.errorMessageCode = "Format de fichier incorrect (cause: ${e.message})"
         importSuccess = false
-        // TODO tester le comportement en cas d'erreur
       }
     }
     flash.liens = breadcrumpsService.liens

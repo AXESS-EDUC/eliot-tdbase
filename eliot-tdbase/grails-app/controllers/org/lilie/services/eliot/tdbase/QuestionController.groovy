@@ -33,8 +33,7 @@ import org.lilie.services.eliot.tdbase.importexport.ExportHelper
 import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.QuestionExporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.QuestionMarshallerFactory
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
@@ -256,7 +255,14 @@ class QuestionController {
     if (sujet && question.id && !question.hasErrors()) {
       if (!breadcrumpsService.getValeurPropriete(QUESTION_EST_DEJA_INSEREE)) {
         Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
-        sujetService.insertQuestionInSujet(question, sujet, personne, rang)
+        sujetService.insertQuestionInSujet(
+            question,
+            sujet,
+            personne,
+            new ReferentielSujetSequenceQuestions(
+                rang: rang
+            )
+        )
         breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
       }
     }
@@ -281,11 +287,15 @@ class QuestionController {
     Sujet sujet = Sujet.get(sujetId)
     Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
     boolean questionEnEdition = false
-    Question question = questionService.createQuestionAndInsertInSujet(params,
+    Question question = questionService.createQuestionAndInsertInSujet(
+        params,
         specifObject,
         sujet,
         personne,
-        rang)
+        new ReferentielSujetSequenceQuestions(
+            rang: rang
+        )
+    )
 
     if (question.hasErrors()) {
       render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
@@ -316,7 +326,14 @@ class QuestionController {
     Sujet sujet = Sujet.get(sujetId)
     Question question = Question.get(params.id)
     Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
-    sujetService.insertQuestionInSujet(question, sujet, personne, rang)
+    sujetService.insertQuestionInSujet(
+        question,
+        sujet,
+        personne,
+        new ReferentielSujetSequenceQuestions(
+            rang: rang
+        )
+    )
     if (sujet.hasErrors()) {
       render(view: '/sujet/edite', model: [liens: breadcrumpsService.liens,
           titreSujet: sujet.titre,
@@ -365,8 +382,10 @@ class QuestionController {
         rechCmd.patternTitre,
         patternAuteur,
         rechCmd.patternSpecification,
-        Matiere.get(rechCmd.matiereId),
-        Niveau.get(rechCmd.niveauId),
+        new ReferentielEliot(
+            matiere: Matiere.get(rechCmd.matiereId),
+            niveau: Niveau.get(rechCmd.niveauId)
+        ),
         QuestionType.get(rechCmd.typeId),
         exclusComposite,
         rechercheUniquementQuestionsChercheur,
@@ -412,34 +431,28 @@ class QuestionController {
   }
 
 /**
- * Action pour exporter un sujet en XML.
+ * Action pour exporter une question.
  * @return
  */
   def exporter(String format) {
 
     Question question = Question.get(params.id)
+    if(!question) {
+      throw new IllegalStateException(
+          "Il n'existe pas de question d'id '${params.id}'"
+      )
+    }
 
     switch (format) {
       case Format.NATIF_JSON.name():
 
-        question = questionExporterService.getQuestionPourExport(question, authenticatedPersonne)
-        QuestionMarshallerFactory questionMarshallerFactory = new QuestionMarshallerFactory()
-        QuestionMarshaller questionMarshaller = questionMarshallerFactory.newInstance(attachementService)
-        ExportMarshaller exportMarshaller = new ExportMarshaller(questionMarshaller: questionMarshaller)
-
-        def converter = exportMarshaller.marshall(
-            question,
-            new Date(),
-            authenticatedPersonne
-        ) as JSON
+        JSON json = getQuestionAsJson(question)
         response.setHeader("Content-disposition", "attachment; filename=${ExportHelper.getFileName(question, Format.NATIF_JSON)}")
-        render(text: converter.toString(false), contentType: "application/json", encoding: "UTF-8")
+        render(text: json.toString(false), contentType: "application/json", encoding: "UTF-8")
         break
 
       case Format.MOODLE_XML.name():
-        // TODO gestion d'erreur à mettre en commun
-        def xml = question ? moodleQuizExporterService.toMoodleQuiz(question) :
-          message(code: 'xml.export.sujet.inexistant', args: [params.id])
+        def xml = moodleQuizExporterService.toMoodleQuiz(question)
         response.setHeader("Content-disposition", "attachment; filename=export.xml")
         render(text: xml, contentType: "text/xml", encoding: "UTF-8")
         break
@@ -449,6 +462,18 @@ class QuestionController {
             "Le format '$format' est inconnu."
         )
     }
+  }
+
+  private JSON getQuestionAsJson(Question question) {
+    question = questionExporterService.getQuestionPourExport(question, authenticatedPersonne)
+    ExportMarshallerFactory exportMarshallerFactory = new ExportMarshallerFactory()
+    ExportMarshaller exportMarshaller = exportMarshallerFactory.newInstance(attachementService)
+
+    return exportMarshaller.marshall(
+        question,
+        new Date(),
+        authenticatedPersonne
+    ) as JSON
   }
 
 /**
