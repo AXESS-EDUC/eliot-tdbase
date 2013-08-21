@@ -22,13 +22,13 @@ public class QuestionMarshaller {
   AttachementMarchaller attachementMarchaller
   QuestionCompositeMarshaller questionCompositeMarshaller
 
-  Map marshall(Question question) {
+  Map marshall(Question question, AttachementDataStore attachementDataStore) {
     if (!question) {
       throw new IllegalArgumentException("La question ne peut pas être null")
     }
 
     if(question.exercice) { // Question composite
-      return questionCompositeMarshaller.marshall(question)
+      return questionCompositeMarshaller.marshall(question, attachementDataStore)
     }
 
     Map representation = [
@@ -52,15 +52,20 @@ public class QuestionMarshaller {
         specification: JSON.parse(question.specification),
         principalAttachement: attachementMarchaller.marshallPrincipalAttachement(
             question.principalAttachement,
-            question.principalAttachementEstInsereDansLaQuestion
+            question.principalAttachementEstInsereDansLaQuestion,
+            attachementDataStore
         ),
-        questionAttachements: attachementMarchaller.marshallQuestionAttachements(question.questionAttachements)
+        questionAttachements: attachementMarchaller.marshallQuestionAttachements(
+            question.questionAttachements,
+            attachementDataStore
+        )
     ]
 
     return representation
   }
 
-  static QuestionDto parse(JSONElement jsonElement) {
+  static QuestionDto parse(JSONElement jsonElement,
+                           AttachementDataStore attachementDataStore) {
     MarshallerHelper.checkClassIn(
         [
             ExportClass.QUESTION_ATOMIQUE,
@@ -70,7 +75,7 @@ public class QuestionMarshaller {
     )
 
     if(jsonElement.class == ExportClass.QUESTION_COMPOSITE.name()) {
-      return QuestionCompositeMarshaller.parse(jsonElement)
+      return QuestionCompositeMarshaller.parse(jsonElement, attachementDataStore)
     }
 
     MarshallerHelper.checkIsNotNull('type', jsonElement.type)
@@ -102,8 +107,14 @@ public class QuestionMarshaller {
           NiveauMarshaller.parse(jsonElement.metadonnees.referentielEliot.niveau) :
           null,
         specification: jsonElement.specification,
-        principalAttachement: AttachementMarchaller.parsePrincipalAttachement(jsonElement.principalAttachement),
-        questionAttachements: AttachementMarchaller.parseQuestionAttachements(jsonElement.questionAttachements)
+        principalAttachement: AttachementMarchaller.parsePrincipalAttachement(
+            jsonElement.principalAttachement,
+            attachementDataStore
+        ),
+        questionAttachements: AttachementMarchaller.parseQuestionAttachements(
+            jsonElement.questionAttachements,
+            attachementDataStore
+        )
     )
   }
 }

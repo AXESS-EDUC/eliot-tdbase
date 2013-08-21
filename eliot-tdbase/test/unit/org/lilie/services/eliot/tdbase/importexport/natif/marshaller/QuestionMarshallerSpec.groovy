@@ -56,6 +56,7 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testMarshall - question atomique OK"(String paternite) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     Question question = new Question(
         type: new QuestionType(code: "code"),
         titre: "titre",
@@ -80,10 +81,10 @@ class QuestionMarshallerSpec extends Specification {
     matiereMarshaller.marshall(_) >> matiereRepresentation
     niveauMarshaller.marshall(_) >> niveauRepresentation
     copyrightsTypeMarshaller.marshall(_) >> copyrightsTypeRepresentation
-    attachementMarchaller.marshallPrincipalAttachement(_, _) >> principalAttachementRepresentation
-    attachementMarchaller.marshallQuestionAttachements(_) >> questionAttachementsRepresentation
+    attachementMarchaller.marshallPrincipalAttachement(_, _, attachementDataStore) >> principalAttachementRepresentation
+    attachementMarchaller.marshallQuestionAttachements(_, attachementDataStore) >> questionAttachementsRepresentation
 
-    Map questionRepresentation = questionMarshaller.marshall(question)
+    Map questionRepresentation = questionMarshaller.marshall(question, attachementDataStore)
 
     expect:
     questionRepresentation.size() == 7
@@ -118,16 +119,20 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testMarshall – question composite OK"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     Question questionComposite = new Question(
         exercice: new Sujet()
     )
     Map questionCompositeRepresentation = [map: 'questionComposite']
 
     when:
-    Map resultat = questionMarshaller.marshall(questionComposite)
+    Map resultat = questionMarshaller.marshall(questionComposite, attachementDataStore)
 
     then:
-    1 * questionCompositeMarshaller.marshall(questionComposite) >> questionCompositeRepresentation
+    1 * questionCompositeMarshaller.marshall(
+        questionComposite,
+        attachementDataStore
+    ) >> questionCompositeRepresentation
 
     then:
     resultat == questionCompositeRepresentation
@@ -135,11 +140,12 @@ class QuestionMarshallerSpec extends Specification {
   }
 
   def "testMarshall - argument null"() {
-    setup:
+    given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     QuestionMarshaller questionMarshaller = new QuestionMarshaller()
 
     when:
-    questionMarshaller.marshall(null)
+    questionMarshaller.marshall(null, attachementDataStore)
 
     then:
     thrown(IllegalArgumentException)
@@ -156,6 +162,7 @@ class QuestionMarshallerSpec extends Specification {
                                          PrincipalAttachementDto principalAttachement,
                                          List<AttachementDto> questionAttachements) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String type = 'type'
     String titre = 'titre'
     PersonneDto proprietaire = new PersonneDto()
@@ -182,10 +189,12 @@ class QuestionMarshallerSpec extends Specification {
       return niveau
     }
 
-    AttachementMarchaller.metaClass.static.parsePrincipalAttachement = { JSONElement jsonElement ->
+    AttachementMarchaller.metaClass.static.parsePrincipalAttachement = {
+      JSONElement jsonElement, AttachementDataStore attachementDataStore2 ->
       return principalAttachement
     }
-    AttachementMarchaller.metaClass.static.parseQuestionAttachements = { JSONArray jsonArray ->
+    AttachementMarchaller.metaClass.static.parseQuestionAttachements = {
+      JSONArray jsonArray, AttachementDataStore attachementDataStore2 ->
       return questionAttachements
     }
 
@@ -215,7 +224,8 @@ class QuestionMarshallerSpec extends Specification {
     """
 
     QuestionDto questionDto = QuestionMarshaller.parse(
-        JSON.parse(json)
+        JSON.parse(json),
+        attachementDataStore
     )
 
     expect:
@@ -261,9 +271,11 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testParse - question composite OK"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     QuestionCompositeDto questionCompositeDto = new QuestionCompositeDto()
 
-    QuestionCompositeMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+    QuestionCompositeMarshaller.metaClass.static.parse = {
+      JSONElement jsonElement, AttachementDataStore attachementDataStore2 ->
       return questionCompositeDto
     }
 
@@ -275,7 +287,8 @@ class QuestionMarshallerSpec extends Specification {
     """
 
     expect:
-    QuestionMarshaller.parse(JSON.parse(json)) == QuestionCompositeMarshaller.parse(JSON.parse(json))
+    QuestionMarshaller.parse(JSON.parse(json), attachementDataStore) ==
+        QuestionCompositeMarshaller.parse(JSON.parse(json), attachementDataStore)
 
     cleanup:
     QuestionCompositeMarshaller.metaClass = null
@@ -283,10 +296,11 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testParse - erreur type null"(String json) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     JSONElement jsonElement = JSON.parse(json)
 
     when:
-    QuestionMarshaller.parse(jsonElement)
+    QuestionMarshaller.parse(jsonElement, attachementDataStore)
 
     then:
     MarshallerException e = thrown(MarshallerException)
@@ -302,10 +316,11 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testParse - erreur titre null"(String json) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     JSONElement jsonElement = JSON.parse(json)
 
     when:
-    QuestionMarshaller.parse(jsonElement)
+    QuestionMarshaller.parse(jsonElement, attachementDataStore)
 
     then:
     MarshallerException e = thrown(MarshallerException)
@@ -321,10 +336,11 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testParse - erreur metadonnees absentes"(String json) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     JSONElement jsonElement = JSON.parse(json)
 
     when:
-    QuestionMarshaller.parse(jsonElement)
+    QuestionMarshaller.parse(jsonElement, attachementDataStore)
 
     then:
     MarshallerException e = thrown(MarshallerException)
@@ -339,10 +355,11 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testParse - erreur proprietaire incorrect"(String json) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     JSONElement jsonElement = JSON.parse(json)
 
     when:
-    QuestionMarshaller.parse(jsonElement)
+    QuestionMarshaller.parse(jsonElement, attachementDataStore)
 
     then:
     MarshallerException e = thrown(MarshallerException)
@@ -358,10 +375,11 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testParse - erreur copyrightsType incorrect"(String json) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     JSONElement jsonElement = JSON.parse(json)
 
     when:
-    QuestionMarshaller.parse(jsonElement)
+    QuestionMarshaller.parse(jsonElement, attachementDataStore)
 
     then:
     MarshallerException e = thrown(MarshallerException)
@@ -377,10 +395,11 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testParse - erreur specification absente"(String json) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     JSONElement jsonElement = JSON.parse(json)
 
     when:
-    QuestionMarshaller.parse(jsonElement)
+    QuestionMarshaller.parse(jsonElement, attachementDataStore)
 
     then:
     MarshallerException e = thrown(MarshallerException)
@@ -396,10 +415,11 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testParse - erreur principalAttachement incorrect"(String json) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     JSONElement jsonElement = JSON.parse(json)
 
     when:
-    QuestionMarshaller.parse(jsonElement)
+    QuestionMarshaller.parse(jsonElement, attachementDataStore)
 
     then:
     MarshallerException e = thrown(MarshallerException)
@@ -414,10 +434,11 @@ class QuestionMarshallerSpec extends Specification {
 
   def "testParse - erreur questionAttachements incorrect"(String json) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     JSONElement jsonElement = JSON.parse(json)
 
     when:
-    QuestionMarshaller.parse(jsonElement)
+    QuestionMarshaller.parse(jsonElement, attachementDataStore)
 
     then:
     MarshallerException e = thrown(MarshallerException)

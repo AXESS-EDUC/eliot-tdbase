@@ -15,8 +15,10 @@ import org.lilie.services.eliot.tdbase.impl.open.OpenSpecification
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementDataStore
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.QuestionMarshallerFactory
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.AttachementDto
@@ -55,6 +57,7 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
                                                     Boolean estInsereDansLaQuestion,
                                                     int nbQuestionAttachements) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String titre = "titre"
     Question question = creeQuestion(
         titre,
@@ -67,9 +70,9 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
     String questionExportee = exporteQuestion(question)
     assert questionExportee
 
-    QuestionDto questionDto = QuestionMarshaller.parse(
+    QuestionDto questionDto = ExportMarshaller.parse(
         JSON.parse(questionExportee)
-    )
+    ).question
 
     Sujet sujet = sujetService.createSujet(personne, 'sujet')
 
@@ -130,9 +133,9 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
     String questionExportee = exporteQuestion(questionComposite)
     assert questionExportee
 
-    QuestionDto questionDto = QuestionMarshaller.parse(
+    QuestionDto questionDto = ExportMarshaller.parse(
         JSON.parse(questionExportee)
-    )
+    ).question
 
     Sujet sujet = sujetService.createSujet(personne, 'sujet')
 
@@ -158,9 +161,13 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
   }
 
   private String exporteQuestion(Question question) {
-    QuestionMarshallerFactory questionMarshallerFactory = new QuestionMarshallerFactory()
-    QuestionMarshaller questionMarshaller = questionMarshallerFactory.newInstance(attachementService)
-    def converter = questionMarshaller.marshall(question) as JSON
+    ExportMarshallerFactory exportMarshallerFactory = new ExportMarshallerFactory()
+    ExportMarshaller exportMarshaller = exportMarshallerFactory.newInstance(attachementService)
+    def converter = exportMarshaller.marshall(
+        question,
+        new Date(),
+        personne
+    ) as JSON
     return converter.toString(false)
   }
 

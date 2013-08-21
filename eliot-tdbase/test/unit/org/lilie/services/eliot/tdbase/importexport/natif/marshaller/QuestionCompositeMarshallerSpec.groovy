@@ -26,12 +26,13 @@ class QuestionCompositeMarshallerSpec extends Specification {
 
   def "testMarshall - erreur : la question n'est pas composite"(){
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     Question question = new Question(
         exercice: null
     )
 
     when:
-    questionCompositeMarshaller.marshall(question)
+    questionCompositeMarshaller.marshall(question, attachementDataStore)
 
     then:
     def e = thrown(IllegalArgumentException)
@@ -40,6 +41,7 @@ class QuestionCompositeMarshallerSpec extends Specification {
 
   def "testMarshall - OK"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     Sujet exercice = new Sujet()
     Question question = new Question(
         type: new QuestionType(
@@ -50,9 +52,12 @@ class QuestionCompositeMarshallerSpec extends Specification {
 
     Map exerciceRepresentation = [map: 'exercice']
 
-    sujetMarshaller.marshall(exercice) >> exerciceRepresentation
+    sujetMarshaller.marshall(exercice, attachementDataStore) >> exerciceRepresentation
 
-    Map questionCompositeRepresentation = questionCompositeMarshaller.marshall(question)
+    Map questionCompositeRepresentation = questionCompositeMarshaller.marshall(
+        question,
+        attachementDataStore
+    )
 
     expect:
     questionCompositeRepresentation.size() == 2
@@ -62,6 +67,7 @@ class QuestionCompositeMarshallerSpec extends Specification {
 
   def "testParse - Erreur : exercice manquant"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String json = """
     {
       class: '${ExportClass.QUESTION_COMPOSITE}'
@@ -69,7 +75,7 @@ class QuestionCompositeMarshallerSpec extends Specification {
     """
 
     when:
-    QuestionCompositeMarshaller.parse(JSON.parse(json))
+    QuestionCompositeMarshaller.parse(JSON.parse(json), attachementDataStore)
 
     then:
     def e = thrown(MarshallerException)
@@ -78,6 +84,7 @@ class QuestionCompositeMarshallerSpec extends Specification {
 
   def "testParse - OK"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String json = """
     {
       class: '${ExportClass.QUESTION_COMPOSITE}',
@@ -86,12 +93,13 @@ class QuestionCompositeMarshallerSpec extends Specification {
     """
 
     SujetDto exerciceDto = new SujetDto()
-    SujetMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+    SujetMarshaller.metaClass.static.parse = { JSONElement jsonElement, AttachementDataStore attachementDataStore2 ->
       return exerciceDto
     }
 
     QuestionCompositeDto questionCompositeDto = QuestionCompositeMarshaller.parse(
-        JSON.parse(json)
+        JSON.parse(json),
+        attachementDataStore
     )
 
     expect:

@@ -8,7 +8,6 @@ import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarsh
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionCompositeMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
-import org.lilie.services.eliot.tice.AttachementService
 
 /**
  * Factory permettant de créer un QuestionMarshaller
@@ -17,7 +16,7 @@ import org.lilie.services.eliot.tice.AttachementService
  */
 class QuestionMarshallerFactory {
 
-  QuestionMarshaller newInstance(AttachementService attachementService) {
+  QuestionMarshaller newInstance() {
     SujetMarshallerFactory sujetMarshallerFactory = new SujetMarshallerFactory()
 
     QuestionMarshaller questionMarshaller = new QuestionMarshaller(
@@ -26,9 +25,7 @@ class QuestionMarshallerFactory {
         matiereMarshaller:  new MatiereMarshaller(),
         niveauMarshaller: new NiveauMarshaller(),
         copyrightsTypeMarshaller: new CopyrightsTypeMarshaller(),
-        attachementMarchaller: new AttachementMarchaller(
-            attachementService: attachementService
-        )
+        attachementMarchaller: new AttachementMarchaller()
     )
 
     questionMarshaller.questionCompositeMarshaller =

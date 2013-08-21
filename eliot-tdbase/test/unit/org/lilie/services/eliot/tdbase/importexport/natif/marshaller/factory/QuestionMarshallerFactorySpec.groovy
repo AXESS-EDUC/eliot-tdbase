@@ -7,7 +7,6 @@ import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMars
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
-import org.lilie.services.eliot.tice.AttachementService
 import spock.lang.Specification
 
 /**
@@ -18,9 +17,8 @@ class QuestionMarshallerFactorySpec extends Specification {
   def "testNewinstance"() {
     given:
     QuestionMarshallerFactory questionMarshallerFactory = new QuestionMarshallerFactory()
-    AttachementService attachementService = Mock(AttachementService)
 
-    QuestionMarshaller questionMarshaller = questionMarshallerFactory.newInstance(attachementService)
+    QuestionMarshaller questionMarshaller = questionMarshallerFactory.newInstance()
 
     expect:
     questionMarshaller.personneMarshaller instanceof PersonneMarshaller
@@ -29,7 +27,6 @@ class QuestionMarshallerFactorySpec extends Specification {
     questionMarshaller.niveauMarshaller instanceof  NiveauMarshaller
     questionMarshaller.copyrightsTypeMarshaller instanceof CopyrightsTypeMarshaller
     questionMarshaller.attachementMarchaller instanceof AttachementMarchaller
-    questionMarshaller.attachementMarchaller.attachementService == attachementService
 
   }
 }

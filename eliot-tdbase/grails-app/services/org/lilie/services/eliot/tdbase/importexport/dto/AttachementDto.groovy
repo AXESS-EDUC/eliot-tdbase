@@ -7,6 +7,7 @@ class AttachementDto {
   String nom
   String nomFichierOriginal
   String typeMime
+  String chemin
   String blob // Encodé en base64
   Boolean estInsereDansLaQuestion
 }

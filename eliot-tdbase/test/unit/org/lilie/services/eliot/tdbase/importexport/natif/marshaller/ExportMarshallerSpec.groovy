@@ -20,15 +20,18 @@ class ExportMarshallerSpec extends Specification {
   QuestionMarshaller questionMarshaller
   PersonneMarshaller personneMarshaller
   ExportMarshaller exportMarshaller
+  AttachementDatastoreMarshaller attachementDatastoreMarshaller
 
   def setup() {
     sujetMarshaller = Mock(SujetMarshaller)
     questionMarshaller = Mock(QuestionMarshaller)
     personneMarshaller = Mock(PersonneMarshaller)
+    attachementDatastoreMarshaller = Mock(AttachementDatastoreMarshaller)
     exportMarshaller = new ExportMarshaller(
         sujetMarshaller: sujetMarshaller,
         questionMarshaller: questionMarshaller,
-        personneMarshaller: personneMarshaller
+        personneMarshaller: personneMarshaller,
+        attachementDatastoreMarshaller: attachementDatastoreMarshaller
     )
   }
 
@@ -40,10 +43,13 @@ class ExportMarshallerSpec extends Specification {
     String formatVersion = "1.0"
 
     Map sujetRepresentation = [map: 'sujet']
-    sujetMarshaller.marshall(sujet) >> sujetRepresentation
+    sujetMarshaller.marshall(sujet, _) >> sujetRepresentation
 
     Map exporteurRepresentation = [map: 'personne']
     personneMarshaller.marshall(exporteur) >> exporteurRepresentation
+
+    List attachementsRepresentation = [[map: 'attachement']]
+    attachementDatastoreMarshaller.marshall(_) >> attachementsRepresentation
 
     Map exportRepresentation = exportMarshaller.marshall(
         sujet,
@@ -54,12 +60,13 @@ class ExportMarshallerSpec extends Specification {
 
     expect:
     exportRepresentation.class == ExportClass.EXPORT.name()
-    exportRepresentation.size() == 3
+    exportRepresentation.size() == 4
     exportRepresentation.metadonnees.size() == 3
     exportRepresentation.metadonnees.date == date
     exportRepresentation.metadonnees.exporteur == exporteurRepresentation
     exportRepresentation.metadonnees.formatVersion == formatVersion
     exportRepresentation.artefact == sujetRepresentation
+    exportRepresentation.attachements == attachementsRepresentation
   }
 
   def "testMarshall - question OK"() {
@@ -70,10 +77,13 @@ class ExportMarshallerSpec extends Specification {
     String formatVersion = "1.0"
 
     Map questionRepresentation = [map: 'question']
-    questionMarshaller.marshall(question) >> questionRepresentation
+    questionMarshaller.marshall(question, _) >> questionRepresentation
 
     Map exporteurRepresentation = [map: 'personne']
     personneMarshaller.marshall(exporteur) >> exporteurRepresentation
+
+    List attachementsRepresentation = [[map: 'attachement']]
+    attachementDatastoreMarshaller.marshall(_) >> attachementsRepresentation
 
     Map exportRepresentation = exportMarshaller.marshall(
         question,
@@ -84,12 +94,13 @@ class ExportMarshallerSpec extends Specification {
 
     expect:
     exportRepresentation.class == ExportClass.EXPORT.name()
-    exportRepresentation.size() == 3
+    exportRepresentation.size() == 4
     exportRepresentation.metadonnees.size() == 3
     exportRepresentation.metadonnees.date == date
     exportRepresentation.metadonnees.exporteur == exporteurRepresentation
     exportRepresentation.metadonnees.formatVersion == formatVersion
     exportRepresentation.artefact == questionRepresentation
+    exportRepresentation.attachements == attachementsRepresentation
   }
 
   def "testParse - sujet OK"() {
@@ -106,7 +117,8 @@ class ExportMarshallerSpec extends Specification {
       },
       artefact: {
         class: '${ExportClass.SUJET.name()}'
-      }
+      },
+      attachements: []
     }
     """
 
@@ -116,7 +128,7 @@ class ExportMarshallerSpec extends Specification {
     }
 
     SujetDto sujetDto = new SujetDto()
-    SujetMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+    SujetMarshaller.metaClass.static.parse = { JSONElement jsonElement, AttachementDataStore attachementDataStore ->
       sujetDto
     }
 
@@ -148,7 +160,8 @@ class ExportMarshallerSpec extends Specification {
       },
       artefact: {
         class: '${exportClass.name()}'
-      }
+      },
+      attachements: []
     }
     """
 
@@ -158,7 +171,7 @@ class ExportMarshallerSpec extends Specification {
     }
 
     QuestionDto questionDto = Mock(QuestionDto)
-    QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+    QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement, AttachementDataStore attachementDataStore ->
       questionDto
     }
 

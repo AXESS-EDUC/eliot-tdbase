@@ -14,25 +14,26 @@ class QuestionCompositeMarshaller {
 
   SujetMarshaller sujetMarshaller
 
-  Map marshall(Question question) {
+  Map marshall(Question question, AttachementDataStore attachementDataStore) {
     if(!question.exercice) {
       throw new IllegalArgumentException("$question n'est pas une question de type Composite")
     }
 
     Map representation = [
         class: ExportClass.QUESTION_COMPOSITE.name(),
-        exercice: sujetMarshaller.marshall(question.exercice)
+        exercice: sujetMarshaller.marshall(question.exercice, attachementDataStore)
     ]
 
     return representation
   }
 
-  static QuestionCompositeDto parse(JSONElement jsonElement) {
+  static QuestionCompositeDto parse(JSONElement jsonElement,
+                                    AttachementDataStore attachementDataStore) {
     MarshallerHelper.checkClass(ExportClass.QUESTION_COMPOSITE, jsonElement)
     MarshallerHelper.checkIsJsonElement('exercice', jsonElement.exercice)
 
     return new QuestionCompositeDto(
-        exercice: SujetMarshaller.parse(jsonElement.exercice)
+        exercice: SujetMarshaller.parse(jsonElement.exercice, attachementDataStore)
     )
   }
 }

@@ -6,6 +6,7 @@ import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.importexport.dto.ArtefactDto
 import org.lilie.services.eliot.tdbase.importexport.dto.ExportDto
+import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
@@ -17,19 +18,26 @@ class ExportMarshaller {
   QuestionMarshaller questionMarshaller
   SujetMarshaller sujetMarshaller
   PersonneMarshaller personneMarshaller
+  AttachementDatastoreMarshaller attachementDatastoreMarshaller
+  AttachementService attachementService
 
   Map marshall(Artefact artefact,
                Date date,
                Personne exporteur,
                String formatVersion = "1.0") {
-    def representationArtefact = null
+    Map representationArtefact = null
+
+    AttachementDataStore attachementDataStore = new AttachementDataStore(
+        attachementService: attachementService
+    )
 
     if(artefact instanceof Question) {
-      representationArtefact = questionMarshaller.marshall(artefact)
+      representationArtefact = questionMarshaller.marshall(artefact, attachementDataStore)
     }
     else if(artefact instanceof Sujet) {
-      representationArtefact = sujetMarshaller.marshall(artefact)
+      representationArtefact = sujetMarshaller.marshall(artefact, attachementDataStore)
     }
+
 
     return [
         class: ExportClass.EXPORT.name(),
@@ -38,7 +46,8 @@ class ExportMarshaller {
             exporteur: personneMarshaller.marshall(exporteur),
             formatVersion: formatVersion
         ],
-        artefact: representationArtefact
+        artefact: representationArtefact,
+        attachements: attachementDatastoreMarshaller.marshall(attachementDataStore)
     ]
   }
 
@@ -53,16 +62,19 @@ class ExportMarshaller {
     ],
         jsonElement.artefact
     )
+    MarshallerHelper.checkIsJsonArray('attachements', jsonElement.attachements)
+
+    AttachementDataStore attachementDataStore = AttachementDatastoreMarshaller.parse(jsonElement.attachements)
 
     ArtefactDto artefactDto = null
     switch (jsonElement.artefact.class.toString()) {
       case ExportClass.SUJET.name():
-        artefactDto = SujetMarshaller.parse(jsonElement.artefact)
+        artefactDto = SujetMarshaller.parse(jsonElement.artefact, attachementDataStore)
         break;
 
       case ExportClass.QUESTION_ATOMIQUE.name():
       case ExportClass.QUESTION_COMPOSITE.name():
-        artefactDto = QuestionMarshaller.parse(jsonElement.artefact)
+        artefactDto = QuestionMarshaller.parse(jsonElement.artefact, attachementDataStore)
         break
     }
 

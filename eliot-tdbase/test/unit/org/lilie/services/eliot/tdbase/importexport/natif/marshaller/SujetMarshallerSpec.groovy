@@ -19,6 +19,7 @@ class SujetMarshallerSpec extends Specification {
 
   def "testMarshall - cas général"(String paternite, List<SujetSequenceQuestions> questionsSequences) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     Sujet sujet = new Sujet(
         sujetType: new SujetType(id: 2),
         titre: 'titre',
@@ -58,7 +59,8 @@ class SujetMarshallerSpec extends Specification {
     copyrightsTypeMarshaller.marshall(_) >> copyrightsTypeRepresentation
 
     SujetSequenceQuestionsMarshaller sujetSequenceQuestionsMarshaller = Mock(SujetSequenceQuestionsMarshaller)
-    sujetSequenceQuestionsMarshaller.marshall(_) >> { SujetSequenceQuestions sujetSequenceQuestions ->
+    sujetSequenceQuestionsMarshaller.marshall(_, attachementDataStore) >> {
+      SujetSequenceQuestions sujetSequenceQuestions, AttachementDataStore attachementDataStore1 ->
       return [
           map: 'sujetSequenceQuestions',
           rang: sujetSequenceQuestions.rang
@@ -74,7 +76,7 @@ class SujetMarshallerSpec extends Specification {
         sujetSequenceQuestionsMarshaller: sujetSequenceQuestionsMarshaller
     )
 
-    Map sujetRepresentation = sujetMarshaller.marshall(sujet)
+    Map sujetRepresentation = sujetMarshaller.marshall(sujet, attachementDataStore)
 
     expect:
     sujetRepresentation.size() == 5
@@ -123,10 +125,11 @@ class SujetMarshallerSpec extends Specification {
 
   def "testMarshall - argument null"() {
     setup:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     SujetMarshaller sujetMarshaller = new SujetMarshaller()
 
     when:
-    sujetMarshaller.marshall(null)
+    sujetMarshaller.marshall(null, attachementDataStore)
 
     then:
     thrown(IllegalArgumentException)
@@ -139,6 +142,7 @@ class SujetMarshallerSpec extends Specification {
                                 String jsonQuestionsSequences,
                                 int nbQuestionsSequences) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String titre = 'titre'
     PersonneDto proprietaire = new PersonneDto()
     String type = SujetTypeEnum.Sujet.name()
@@ -184,12 +188,14 @@ class SujetMarshallerSpec extends Specification {
       return copyrightsTypeDto
     }
 
-    SujetSequenceQuestionsMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+    SujetSequenceQuestionsMarshaller.metaClass.static.parse = {
+      JSONElement jsonElement, AttachementDataStore attachementDataStore2 ->
       return new SujetSequenceQuestionsDto()
     }
 
     SujetDto sujetDto = SujetMarshaller.parse(
-        JSON.parse(json)
+        JSON.parse(json),
+        attachementDataStore
     )
 
     expect:

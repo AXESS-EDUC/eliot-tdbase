@@ -11,8 +11,8 @@ import org.lilie.services.eliot.tdbase.SujetSequenceQuestions
 import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.impl.open.OpenSpecification
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.SujetMarshallerFactory
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
@@ -51,9 +51,9 @@ class SujetImporterServiceIntegrationSpec extends IntegrationSpec {
     String sujetExporte = exporteSujet(sujet)
     assert sujetExporte
 
-    SujetDto sujetDto = SujetMarshaller.parse(
+    SujetDto sujetDto = ExportMarshaller.parse(
         JSON.parse(sujetExporte)
-    )
+    ).sujet
 
     when:
     Sujet sujetImporte = sujetImporterService.importeSujet(
@@ -154,9 +154,13 @@ class SujetImporterServiceIntegrationSpec extends IntegrationSpec {
   }
 
   private String exporteSujet(Sujet sujet) {
-    SujetMarshallerFactory sujetMarshallerFactory = new SujetMarshallerFactory()
-    SujetMarshaller sujetMarshaller = sujetMarshallerFactory.newInstance(attachementService)
-    def convert = sujetMarshaller.marshall(sujet) as JSON
+    ExportMarshallerFactory exportMarshallerFactory = new ExportMarshallerFactory()
+    ExportMarshaller exportMarshaller = exportMarshallerFactory.newInstance(attachementService)
+    def convert = exportMarshaller.marshall(
+        sujet,
+        new Date(),
+        personne
+    ) as JSON
     return convert.toString(false)
   }
 }

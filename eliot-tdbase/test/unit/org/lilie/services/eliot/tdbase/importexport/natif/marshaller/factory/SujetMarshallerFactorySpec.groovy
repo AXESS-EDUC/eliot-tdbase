@@ -18,9 +18,8 @@ class SujetMarshallerFactorySpec extends Specification {
   def "testNewInstance"() {
     given:
     SujetMarshallerFactory sujetMarshallerFactory = new SujetMarshallerFactory()
-    AttachementService attachementService = Mock(AttachementService)
 
-    SujetMarshaller sujetMarshaller = sujetMarshallerFactory.newInstance(attachementService)
+    SujetMarshaller sujetMarshaller = sujetMarshallerFactory.newInstance()
 
     expect:
     sujetMarshaller.personneMarshaller instanceof PersonneMarshaller
@@ -29,6 +28,5 @@ class SujetMarshallerFactorySpec extends Specification {
     sujetMarshaller.matiereMarshaller instanceof MatiereMarshaller
     sujetMarshaller.niveauMarshaller instanceof NiveauMarshaller
     sujetMarshaller.sujetSequenceQuestionsMarshaller instanceof SujetSequenceQuestionsMarshaller
-    sujetMarshaller.sujetSequenceQuestionsMarshaller.questionMarshaller.attachementMarchaller.attachementService == attachementService
   }
 }

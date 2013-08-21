@@ -7,7 +7,6 @@ import org.lilie.services.eliot.tdbase.QuestionAttachement
 import org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
 import org.lilie.services.eliot.tice.Attachement
-import org.lilie.services.eliot.tice.AttachementService
 
 /**
  * Marshaller qui permet de convertir des Attachement et des QuestionsAttachements dans une représentation
@@ -17,73 +16,91 @@ import org.lilie.services.eliot.tice.AttachementService
  */
 class AttachementMarchaller {
 
-  AttachementService attachementService
-
   @SuppressWarnings('ReturnsNullInsteadOfEmptyCollection')
-  Map marshallPrincipalAttachement(Attachement principalAttachement, estInsereDansLaQuestion) {
+  Map marshallPrincipalAttachement(Attachement principalAttachement,
+                                   estInsereDansLaQuestion,
+                                   AttachementDataStore attachementDataStore) {
     if(!principalAttachement) {
       return null
     }
 
     return [
         class: ExportClass.PRINCIPAL_ATTACHEMENT.name(),
-        attachement: marshallAttachement(principalAttachement, estInsereDansLaQuestion)
+        attachement: marshallAttachement(
+            principalAttachement,
+            estInsereDansLaQuestion,
+            attachementDataStore
+        )
     ]
   }
 
-  List marshallQuestionAttachements(SortedSet<QuestionAttachement> questionAttachements) {
+  List marshallQuestionAttachements(SortedSet<QuestionAttachement> questionAttachements,
+                                    AttachementDataStore attachementDataStore) {
     if(!questionAttachements) {
       return []
     }
 
     return questionAttachements.collect {
-      marshallAttachement(it.attachement, it.estInsereDansLaQuestion)
+      marshallAttachement(
+          it.attachement,
+          it.estInsereDansLaQuestion,
+          attachementDataStore
+      )
     }
   }
 
-  private Map marshallAttachement(Attachement attachement, Boolean estInsereDansLaQuestion) {
+  private Map marshallAttachement(Attachement attachement,
+                                  Boolean estInsereDansLaQuestion,
+                                  AttachementDataStore attachementDataStore) {
+
+    attachementDataStore.addAttachement(attachement)
+
     return [
         class: ExportClass.ATTACHEMENT.name(),
         nom: attachement.nom,
         nomFichierOriginal: attachement.nomFichierOriginal,
         typeMime: attachement.typeMime,
-        blob: attachementService.encodeToBase64(attachement),
+        chemin: attachement.chemin,
         estInsereDansLaQuestion: estInsereDansLaQuestion
     ]
   }
 
-  static PrincipalAttachementDto parsePrincipalAttachement(JSONElement jsonElement) {
+  static PrincipalAttachementDto parsePrincipalAttachement(JSONElement jsonElement,
+                                                           AttachementDataStore attachementDataStore) {
     MarshallerHelper.checkClass(ExportClass.PRINCIPAL_ATTACHEMENT, jsonElement)
     MarshallerHelper.checkIsJsonElement('attachement', jsonElement.attachement)
     return new PrincipalAttachementDto(
-        attachement: parseAttachement(jsonElement.attachement)
+        attachement: parseAttachement(jsonElement.attachement, attachementDataStore)
     )
   }
 
-  static parsePrincipalAttachement(JSONObject.Null ignore) {
+  static parsePrincipalAttachement(JSONObject.Null ignore, AttachementDataStore attachementDataStore) {
     return null
   }
 
-  static List<AttachementDto> parseQuestionAttachements(JSONArray jsonArray) {
+  static List<AttachementDto> parseQuestionAttachements(JSONArray jsonArray,
+                                                        AttachementDataStore attachementDataStore) {
     jsonArray.collect {
-      parseAttachement((JSONElement)it)
+      parseAttachement((JSONElement)it, attachementDataStore)
     }
 
   }
 
-  static AttachementDto parseAttachement(JSONElement jsonElement) {
+  static AttachementDto parseAttachement(JSONElement jsonElement,
+                                         AttachementDataStore attachementDataStore) {
     MarshallerHelper.checkClass(ExportClass.ATTACHEMENT, jsonElement)
     MarshallerHelper.checkIsNotNull('attachement.nom', jsonElement.nom)
     MarshallerHelper.checkIsNotNull('attachement.nomFichierOriginal', jsonElement.nomFichierOriginal)
     MarshallerHelper.checkIsNotNull('attachement.typeMime', jsonElement.typeMime)
-    MarshallerHelper.checkIsNotNull('attachement.blob', jsonElement.blob)
+    MarshallerHelper.checkIsNotNull('attachement.chemin', jsonElement.chemin)
 
     return new AttachementDto(
         nom: jsonElement.nom,
         nomFichierOriginal: jsonElement.nomFichierOriginal,
         typeMime: jsonElement.typeMime,
-        blob: jsonElement.blob,
-        estInsereDansLaQuestion: jsonElement.estInsereDansLaQuestion
+        chemin: jsonElement.chemin,
+        estInsereDansLaQuestion: jsonElement.estInsereDansLaQuestion,
+        blob: attachementDataStore.getBlobBase64(jsonElement.chemin)
     )
   }
 }

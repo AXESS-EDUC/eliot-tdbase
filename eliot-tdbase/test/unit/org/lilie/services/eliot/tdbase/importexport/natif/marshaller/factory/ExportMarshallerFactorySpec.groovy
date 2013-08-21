@@ -22,6 +22,6 @@ class ExportMarshallerFactorySpec extends Specification {
     exportMarshaller.personneMarshaller instanceof PersonneMarshaller
     exportMarshaller.sujetMarshaller instanceof SujetMarshaller
     exportMarshaller.questionMarshaller instanceof QuestionMarshaller
-    exportMarshaller.questionMarshaller.attachementMarchaller.attachementService == attachementService
+    exportMarshaller.attachementService == attachementService
   }
 }

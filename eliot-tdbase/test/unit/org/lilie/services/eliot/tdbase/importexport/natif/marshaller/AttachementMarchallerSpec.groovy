@@ -20,29 +20,33 @@ class AttachementMarchallerSpec extends Specification {
 
   void setup() {
     attachementService = Mock(AttachementService)
-    attachementMarchaller = new AttachementMarchaller(
-        attachementService: attachementService
-    )
+    attachementMarchaller = new AttachementMarchaller()
   }
 
   def "testMarshallPrincipalAttachement - argument null"() {
+    given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     expect:
-    attachementMarchaller.marshallPrincipalAttachement(null, null) == null
+    attachementMarchaller.marshallPrincipalAttachement(null, null, attachementDataStore) == null
   }
 
   def "testMarshallPrincipalAttachement - cas général"(Boolean estInsereDansLaQuestion) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore(attachementService: attachementService)
+    String chemin = 'chemin'
     String blobBase64 = "blob"
     Attachement attachement = new Attachement(
         nom: 'nom',
         nomFichierOriginal: 'nomFichier',
-        typeMime: 'typeMime'
+        typeMime: 'typeMime',
+        chemin: chemin
     )
 
     attachementService.encodeToBase64(attachement) >> blobBase64
     Map attachementRepresentation = attachementMarchaller.marshallPrincipalAttachement(
         attachement,
-        estInsereDansLaQuestion
+        estInsereDansLaQuestion,
+        attachementDataStore
     )
 
     expect:
@@ -53,18 +57,20 @@ class AttachementMarchallerSpec extends Specification {
     attachementRepresentation.attachement.nom == attachement.nom
     attachementRepresentation.attachement.nomFichierOriginal == attachement.nomFichierOriginal
     attachementRepresentation.attachement.typeMime == attachement.typeMime
-    attachementRepresentation.attachement.blob == blobBase64
+    attachementRepresentation.attachement.chemin == chemin
     attachementRepresentation.attachement.estInsereDansLaQuestion == estInsereDansLaQuestion
-
+    attachementDataStore.getBlobBase64(chemin) == blobBase64
     where:
 
     estInsereDansLaQuestion << [null, true, false]
   }
 
   def "testMarshallQuestionAttachements - argument vide"(SortedSet<QuestionAttachement> questionAttachements) {
+    given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
 
     expect:
-    attachementMarchaller.marshallQuestionAttachements(questionAttachements) == []
+    attachementMarchaller.marshallQuestionAttachements(questionAttachements, attachementDataStore) == []
 
     where:
     questionAttachements << [null, [] as SortedSet]
@@ -72,12 +78,14 @@ class AttachementMarchallerSpec extends Specification {
 
   def "testMarshallQuestionAttachements - cas général"(SortedSet<QuestionAttachement> questionAttachements) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore(attachementService: attachementService)
     attachementService.encodeToBase64(_) >> { arg ->
       arg.nom
     }
 
     List questionAttachementsRepresentation = attachementMarchaller.marshallQuestionAttachements(
-        questionAttachements
+        questionAttachements,
+        attachementDataStore
     )
 
     expect:
@@ -88,8 +96,11 @@ class AttachementMarchallerSpec extends Specification {
       assert questionAttachementsRepresentation[i].nom == questionAttachement.attachement.nom
       assert questionAttachementsRepresentation[i].nomFichierOriginal == questionAttachement.attachement.nomFichierOriginal
       assert questionAttachementsRepresentation[i].typeMime == questionAttachement.attachement.typeMime
-      assert questionAttachementsRepresentation[i].blob == attachementService.encodeToBase64(questionAttachement.attachement)
+      assert questionAttachementsRepresentation[i].chemin == questionAttachement.attachement.chemin
       assert questionAttachementsRepresentation[i].estInsereDansLaQuestion == questionAttachement.estInsereDansLaQuestion
+
+      attachementDataStore.getBlobBase64(questionAttachement.attachement.chemin) ==
+          attachementService.encodeToBase64(questionAttachement.attachement)
     }
 
     where:
@@ -118,16 +129,22 @@ class AttachementMarchallerSpec extends Specification {
     return new Attachement(
         nom: "nom$num",
         nomFichierOriginal: "nomFichier$num",
-        typeMime: "typeMime$num"
+        typeMime: "typeMime$num",
+        chemin: "chemin$num"
     )
   }
 
-  def "testParsePrincipalAttachement - cas général"(String nom,
-                                                    String nomFichierOriginal,
-                                                    String typeMime,
-                                                    String blob,
-                                                    Boolean estInsereDansLaQuestion) {
+  def "testParsePrincipalAttachement - cas général"(Boolean estInsereDansLaQuestion) {
     given:
+    String nom = 'nom'
+    String nomFichierOriginal = 'nomFichierOriginal'
+    String typeMime = 'typeMime'
+    String chemin = 'chemin'
+    String blob = 'blob'
+
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
+     attachementDataStore.addAttachementFromJson(chemin, blob)
+
     String json = """
       {
         class: '${ExportClass.PRINCIPAL_ATTACHEMENT}',
@@ -136,7 +153,7 @@ class AttachementMarchallerSpec extends Specification {
           nom: ${MarshallerHelper.asJsonString(nom)},
           nomFichierOriginal: ${MarshallerHelper.asJsonString(nomFichierOriginal)},
           typeMime: ${MarshallerHelper.asJsonString(typeMime)},
-          blob: ${MarshallerHelper.asJsonString(blob)},
+          chemin: ${MarshallerHelper.asJsonString(chemin)},
           estInsereDansLaQuestion: $estInsereDansLaQuestion
         }
       }
@@ -144,7 +161,8 @@ class AttachementMarchallerSpec extends Specification {
 
     PrincipalAttachementDto principalAttachementDto =
       AttachementMarchaller.parsePrincipalAttachement(
-          JSON.parse(json)
+          JSON.parse(json),
+          attachementDataStore
       )
 
     expect:
@@ -155,15 +173,12 @@ class AttachementMarchallerSpec extends Specification {
     principalAttachementDto.attachement.estInsereDansLaQuestion == estInsereDansLaQuestion
 
     where:
-    nom = 'nom'
-    nomFichierOriginal = 'nomFichierOriginal'
-    typeMime = 'typeMime'
-    blob = 'blob'
     estInsereDansLaQuestion << [true, false]
   }
 
   def "testParsePrincipalAttachement - erreur attachement absent"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String json = """
     {
       class: '${ExportClass.PRINCIPAL_ATTACHEMENT}'
@@ -172,7 +187,8 @@ class AttachementMarchallerSpec extends Specification {
 
     when:
     AttachementMarchaller.parsePrincipalAttachement(
-        JSON.parse(json)
+        JSON.parse(json),
+        attachementDataStore
     )
 
     then:
@@ -182,6 +198,7 @@ class AttachementMarchallerSpec extends Specification {
 
   def "testParsePrincipalAttachement - erreur attachement.nom manquant"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String json = """
       {
         class: '${ExportClass.PRINCIPAL_ATTACHEMENT}',
@@ -193,7 +210,8 @@ class AttachementMarchallerSpec extends Specification {
 
     when:
     AttachementMarchaller.parsePrincipalAttachement(
-        JSON.parse(json)
+        JSON.parse(json),
+        attachementDataStore
     )
 
     then:
@@ -203,6 +221,7 @@ class AttachementMarchallerSpec extends Specification {
 
   def "testParsePrincipalAttachement - erreur attachement.nomFichierOriginal manquant"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String json = """
       {
         class: '${ExportClass.PRINCIPAL_ATTACHEMENT}',
@@ -215,7 +234,8 @@ class AttachementMarchallerSpec extends Specification {
 
     when:
     AttachementMarchaller.parsePrincipalAttachement(
-        JSON.parse(json)
+        JSON.parse(json),
+        attachementDataStore
     )
 
     then:
@@ -225,6 +245,7 @@ class AttachementMarchallerSpec extends Specification {
 
   def "testParsePrincipalAttachement - erreur attachement.typeMime manquant"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String json = """
       {
         class: '${ExportClass.PRINCIPAL_ATTACHEMENT}',
@@ -238,7 +259,8 @@ class AttachementMarchallerSpec extends Specification {
 
     when:
     AttachementMarchaller.parsePrincipalAttachement(
-        JSON.parse(json)
+        JSON.parse(json),
+        attachementDataStore
     )
 
     then:
@@ -246,8 +268,9 @@ class AttachementMarchallerSpec extends Specification {
     e.attribut == 'attachement.typeMime'
   }
 
-  def "testParsePrincipalAttachement - erreur attachement.blob manquant"() {
+  def "testParsePrincipalAttachement - erreur attachement.chemin manquant"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String json = """
       {
         class: '${ExportClass.PRINCIPAL_ATTACHEMENT}',
@@ -262,21 +285,31 @@ class AttachementMarchallerSpec extends Specification {
 
     when:
     AttachementMarchaller.parsePrincipalAttachement(
-        JSON.parse(json)
+        JSON.parse(json),
+        attachementDataStore
     )
 
     then:
     MarshallerException e = thrown(MarshallerException)
-    e.attribut == 'attachement.blob'
+    e.attribut == 'attachement.chemin'
   }
 
   def "testParsePrincipalAttachement - JSONObject.Null"() {
+    given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     expect:
-    AttachementMarchaller.parsePrincipalAttachement(new JSONObject.Null()) == null
+    AttachementMarchaller.parsePrincipalAttachement(
+        new JSONObject.Null(),
+        attachementDataStore
+    ) == null
   }
 
   def "testParseQuestionAttachements - cas général"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
+    attachementDataStore.addAttachementFromJson('chemin1', 'blob1')
+    attachementDataStore.addAttachementFromJson('chemin2', 'blob2')
+
     String json = """
       [
         {
@@ -284,7 +317,7 @@ class AttachementMarchallerSpec extends Specification {
           nom: 'nom1',
           nomFichierOriginal: 'nomFichierOriginal1',
           typeMime: 'typeMime1',
-          blob: 'blob1',
+          chemin: 'chemin1',
           estInsereDansLaQuestion:  true
         },
         {
@@ -292,7 +325,7 @@ class AttachementMarchallerSpec extends Specification {
           nom: 'nom2',
           nomFichierOriginal: 'nomFichierOriginal2',
           typeMime: 'typeMime2',
-          blob: 'blob2',
+          chemin: 'chemin2',
           estInsereDansLaQuestion:  false
         }
       ]
@@ -300,7 +333,8 @@ class AttachementMarchallerSpec extends Specification {
 
     List<AttachementDto> questionAttachementsDto =
       AttachementMarchaller.parseQuestionAttachements(
-          (JSONArray)JSON.parse(json)
+          (JSONArray)JSON.parse(json),
+          attachementDataStore
       )
 
     expect:

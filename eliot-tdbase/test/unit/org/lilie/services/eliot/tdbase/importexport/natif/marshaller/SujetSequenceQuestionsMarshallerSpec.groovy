@@ -15,6 +15,7 @@ class SujetSequenceQuestionsMarshallerSpec extends Specification {
 
   def "testMarshall - cas général"(Float noteSeuilPoursuite) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     int rang = 3
     Float points = 5.0
     Question question = new Question()
@@ -29,14 +30,17 @@ class SujetSequenceQuestionsMarshallerSpec extends Specification {
     Map questionRepresentation = [map: 'question']
 
     QuestionMarshaller questionMarshaller = Mock(QuestionMarshaller)
-    1 * questionMarshaller.marshall(question) >> questionRepresentation
+    1 * questionMarshaller.marshall(question, attachementDataStore) >> questionRepresentation
 
     SujetSequenceQuestionsMarshaller sujetSequenceQuestionsMarshaller = new SujetSequenceQuestionsMarshaller(
         questionMarshaller: questionMarshaller
     )
 
     when:
-    Map representation = sujetSequenceQuestionsMarshaller.marshall(sujetSequenceQuestions)
+    Map representation = sujetSequenceQuestionsMarshaller.marshall(
+        sujetSequenceQuestions,
+        attachementDataStore
+    )
 
     then:
     representation.size() == 5
@@ -52,10 +56,11 @@ class SujetSequenceQuestionsMarshallerSpec extends Specification {
 
   def "testMarshall - argument null"() {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     SujetSequenceQuestionsMarshaller sujetSequenceQuestionsMarshaller = new SujetSequenceQuestionsMarshaller()
 
     when:
-    sujetSequenceQuestionsMarshaller.marshall(null)
+    sujetSequenceQuestionsMarshaller.marshall(null, attachementDataStore)
 
     then:
     def e = thrown(IllegalArgumentException)
@@ -64,11 +69,12 @@ class SujetSequenceQuestionsMarshallerSpec extends Specification {
 
   def "testParse - cas général"(Float noteSeuilPoursuite) {
     given:
+    AttachementDataStore attachementDataStore = new AttachementDataStore()
     int rang = 2
     Float points = 2.0
     QuestionAtomiqueDto questionDto = new QuestionAtomiqueDto()
 
-    QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+    QuestionMarshaller.metaClass.static.parse = { JSONElement jsonElement, AttachementDataStore attachementDataStore2 ->
       return questionDto
     }
 
@@ -82,7 +88,10 @@ class SujetSequenceQuestionsMarshallerSpec extends Specification {
     }
     """
 
-    SujetSequenceQuestionsDto sequenceQuestionsDto = SujetSequenceQuestionsMarshaller.parse(JSON.parse(json))
+    SujetSequenceQuestionsDto sequenceQuestionsDto = SujetSequenceQuestionsMarshaller.parse(
+        JSON.parse(json),
+        attachementDataStore
+    )
 
     expect:
     sequenceQuestionsDto.referentielSujetSequenceQuestions.rang == rang

@@ -20,7 +20,7 @@ class SujetMarshaller {
   NiveauMarshaller niveauMarshaller
   SujetSequenceQuestionsMarshaller sujetSequenceQuestionsMarshaller
 
-  Map marshall(Sujet sujet) {
+  Map marshall(Sujet sujet, AttachementDataStore attachementDataStore) {
     if (!sujet) {
       throw new IllegalArgumentException("Le sujet ne peut pas être null")
     }
@@ -52,7 +52,7 @@ class SujetMarshaller {
             accesSequentiel: sujet.accesSequentiel,
             ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
             questionsSequences: sujet.questionsSequences?.collect {
-              sujetSequenceQuestionsMarshaller.marshall(it)
+              sujetSequenceQuestionsMarshaller.marshall(it, attachementDataStore)
             } ?: []
         ]
     ]
@@ -60,7 +60,7 @@ class SujetMarshaller {
     return representation
   }
 
-  static SujetDto parse(JSONElement jsonElement) {
+  static SujetDto parse(JSONElement jsonElement, AttachementDataStore attachementDataStore) {
     MarshallerHelper.checkClass(ExportClass.SUJET, jsonElement)
     MarshallerHelper.checkIsNotNull('type', jsonElement.type)
     MarshallerHelper.checkIsNotNull('titre', jsonElement.titre)
@@ -86,7 +86,7 @@ class SujetMarshaller {
         accesSequentiel: MarshallerHelper.jsonObjectToObject(jsonElement.specification.accesSequentiel),
         ordreQuestionsAleatoire: MarshallerHelper.jsonObjectToObject(jsonElement.specification.ordreQuestionsAleatoire),
         questionsSequences: jsonElement.specification.questionsSequences.collect {
-          SujetSequenceQuestionsMarshaller.parse(it)
+          SujetSequenceQuestionsMarshaller.parse(it, attachementDataStore)
         }
     )
   }

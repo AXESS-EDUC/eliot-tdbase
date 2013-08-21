@@ -8,7 +8,6 @@ import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMar
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetSequenceQuestionsMarshaller
-import org.lilie.services.eliot.tice.AttachementService
 
 /**
  * Factory permettant de créer un SujetMarshaller
@@ -18,11 +17,11 @@ import org.lilie.services.eliot.tice.AttachementService
 class SujetMarshallerFactory {
 
 
-  SujetMarshaller newInstance(AttachementService attachementService) {
+  SujetMarshaller newInstance() {
     QuestionMarshallerFactory questionMarshallerFactory = new QuestionMarshallerFactory()
 
     return newInstance(
-        questionMarshallerFactory.newInstance(attachementService)
+        questionMarshallerFactory.newInstance()
     )
   }
 

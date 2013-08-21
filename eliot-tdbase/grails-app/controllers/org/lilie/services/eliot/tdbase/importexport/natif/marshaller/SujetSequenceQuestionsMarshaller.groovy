@@ -15,7 +15,7 @@ class SujetSequenceQuestionsMarshaller {
 
   QuestionMarshaller questionMarshaller
 
-  Map marshall(SujetSequenceQuestions sujetSequenceQuestions) {
+  Map marshall(SujetSequenceQuestions sujetSequenceQuestions, AttachementDataStore attachementDataStore) {
     if (!sujetSequenceQuestions) {
       throw new IllegalArgumentException("sujetSequenceQuestions ne peut pas être null")
     }
@@ -29,13 +29,14 @@ class SujetSequenceQuestionsMarshaller {
         rang: sujetSequenceQuestions.rang,
         noteSeuilPoursuite: sujetSequenceQuestions.noteSeuilPoursuite,
         points: sujetSequenceQuestions.points,
-        question: questionMarshaller.marshall(sujetSequenceQuestions.question)
+        question: questionMarshaller.marshall(sujetSequenceQuestions.question, attachementDataStore)
     ]
 
     return representation
   }
 
-  static SujetSequenceQuestionsDto parse(JSONElement jsonElement) {
+  static SujetSequenceQuestionsDto parse(JSONElement jsonElement,
+                                         AttachementDataStore attachementDataStore) {
     MarshallerHelper.checkClass(ExportClass.SUJET_SEQUENCE_QUESTIONS, jsonElement)
     MarshallerHelper.checkIsNotNull('rang', jsonElement.rang)
     MarshallerHelper.checkIsNotNull('points', jsonElement.points)
@@ -47,7 +48,7 @@ class SujetSequenceQuestionsMarshaller {
             noteSeuilPoursuite: MarshallerHelper.jsonObjectToObject(jsonElement.noteSeuilPoursuite),
             points: MarshallerHelper.jsonObjectToObject(jsonElement.points)
         ),
-        question: QuestionMarshaller.parse(jsonElement.question)
+        question: QuestionMarshaller.parse(jsonElement.question, attachementDataStore)
     )
   }
 }
