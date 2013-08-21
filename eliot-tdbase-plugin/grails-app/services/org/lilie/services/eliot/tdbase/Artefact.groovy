@@ -85,4 +85,6 @@ public interface Artefact {
    */
   boolean estSupprimableQuandArtefactEstModifiable()
 
+  String getTitreNormalise()
+
 }

@@ -28,11 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.xml
 
-import org.hibernate.SessionFactory
-import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
-import org.lilie.services.eliot.tice.CopyrightsTypeEnum
-import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
@@ -83,7 +79,13 @@ class MoodleQuizImporterServiceIntegrationTests extends GroovyTestCase implement
     def sujet1 = Sujet.get(sujet2.id)
     def input = applicationContext.getResource("classpath:$INPUT").getInputStream().bytes
     MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(
-            input, sujet1, sujet1.matiere, sujet1.niveau, personne1
+        input,
+        sujet1,
+        new ReferentielEliot(
+            matiere: sujet1.matiere,
+            niveau: sujet1.niveau
+        ),
+        personne1
     )
     assert report.nombreItemsTraites == 11
     assert report.itemsImportes.size() == 9

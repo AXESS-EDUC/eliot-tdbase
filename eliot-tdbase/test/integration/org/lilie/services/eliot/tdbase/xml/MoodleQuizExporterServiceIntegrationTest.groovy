@@ -1,5 +1,6 @@
 package org.lilie.services.eliot.tdbase.xml
 
+import org.lilie.services.eliot.tdbase.ReferentielEliot
 import org.lilie.services.eliot.tdbase.Sujet
 
 import org.springframework.context.ApplicationContext
@@ -52,7 +53,13 @@ class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase implements
     def xmlInput = applicationContext.getResource("classpath:$INPUT").getInputStream().bytes
 
     MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(
-            xmlInput, sujet, sujet.matiere, sujet.niveau, personne1
+        xmlInput,
+        sujet,
+        new ReferentielEliot(
+            matiere: sujet.matiere,
+            niveau: sujet.niveau
+        ),
+        personne1
     )
     assert report.nombreItemsTraites == 11
     assert report.itemsImportes.size() == 9
@@ -61,13 +68,19 @@ class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase implements
     def xmlOutput = moodleQuizExporterService.toMoodleQuiz(sujet)
 
     // check that base64 encoding and decoding works.
-    
+
     println xmlOutput
     assertTrue(xmlOutput.contains("4AAQSkZJRgABAQEAqwCrAAD"))
 
     Sujet sujet2 = sujetService.createSujet(personne1, SUJET_TITRE + "Re-import")
     MoodleQuizImportReport report2 = moodleQuizImporterService.importMoodleQuiz(
-            xmlOutput.bytes, sujet2, sujet2.matiere, sujet2.niveau, personne1
+        xmlOutput.bytes,
+        sujet2,
+        new ReferentielEliot(
+            matiere: sujet2.matiere,
+            niveau: sujet2.niveau
+        ),
+        personne1
     )
 
     assert report2.nombreItemsTraites == 7

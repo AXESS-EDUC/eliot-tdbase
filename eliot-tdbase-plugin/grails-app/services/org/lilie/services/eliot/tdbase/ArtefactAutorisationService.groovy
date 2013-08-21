@@ -26,13 +26,9 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-
-
-
-
 package org.lilie.services.eliot.tdbase
 
-
+import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
@@ -56,7 +52,7 @@ class ArtefactAutorisationService {
       return false
     }
     return utilisateurPeutModifierArtefact(utilisateur, artefact) &&
-           artefact.estSupprimableQuandArtefactEstModifiable()
+        artefact.estSupprimableQuandArtefactEstModifiable()
   }
 
   /**
@@ -123,7 +119,8 @@ class ArtefactAutorisationService {
    * @param artefact l'artefact sur lequel on vérifie l'autorisation
    * @return true si l'autorisation est vérifiée
    */
-  boolean utilisateurPeutReutiliserArtefact(Personne utilisateur, Artefact artefact) {
+  boolean utilisateurPeutReutiliserArtefact(Personne utilisateur,
+                                            Artefact artefact) {
     if (utilisateur == artefact.proprietaire) {
       return true
     }
@@ -136,8 +133,14 @@ class ArtefactAutorisationService {
    * @param artefact l'artefact sur lequel on vérifie l'autorisation
    * @return true si l'autorisation est vérifiée
    */
-  boolean utilisateurPeutExporterArtefact(Personne utilisateur, Artefact artefact) {
-    utilisateurPeutReutiliserArtefact(utilisateur, artefact) && artefact.estPresentableEnMoodleXML()
+  boolean utilisateurPeutExporterArtefact(Personne utilisateur,
+                                          Artefact artefact,
+                                          Format format) {
+    if(format == Format.MOODLE_XML && !artefact.estPresentableEnMoodleXML()) {
+      return false
+    }
+
+    return utilisateurPeutReutiliserArtefact(utilisateur, artefact)
   }
 
 

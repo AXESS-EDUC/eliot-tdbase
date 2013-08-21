@@ -28,12 +28,24 @@
 
 package org.lilie.services.eliot.tdbase
 
+import grails.converters.JSON
+import org.lilie.services.eliot.tdbase.importexport.ExportHelper
+import org.lilie.services.eliot.tdbase.importexport.Format
+import org.lilie.services.eliot.tdbase.importexport.QuestionExporterService
+import org.lilie.services.eliot.tdbase.importexport.QuestionImporterService
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
+import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
+import org.springframework.web.multipart.MultipartFile
+
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 
 class QuestionController {
 
@@ -47,6 +59,9 @@ class QuestionController {
   SujetService sujetService
   ArtefactAutorisationService artefactAutorisationService
   MoodleQuizExporterService moodleQuizExporterService
+  AttachementService attachementService
+  QuestionExporterService questionExporterService
+  QuestionImporterService questionImporterService
 
   /**
    *
@@ -55,7 +70,7 @@ class QuestionController {
   def nouvelle() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
     [liens: breadcrumpsService.liens,
-            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation]
+        typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation]
   }
 
 /**
@@ -85,18 +100,18 @@ class QuestionController {
       questionEstDejaInseree = true
     }
     breadcrumpsService.manageBreadcrumps(params,
-                                         message(code: "question.edite.titre"),
-                                         [QUESTION_EST_DEJA_INSEREE: questionEstDejaInseree])
+        message(code: "question.edite.titre"),
+        [QUESTION_EST_DEJA_INSEREE: questionEstDejaInseree])
     render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
-            question: question,
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            sujet: sujet,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne,
-            questionEnEdition: questionEnEdition,
-            attachementsSujets: attachementsSujets,
-            annulationNonPossible: params.annulationNonPossible,])
+        question: question,
+        matieres: profilScolariteService.findMatieresForPersonne(personne),
+        niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+        sujet: sujet,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne,
+        questionEnEdition: questionEnEdition,
+        attachementsSujets: attachementsSujets,
+        annulationNonPossible: params.annulationNonPossible,])
   }
 
   /**
@@ -113,10 +128,10 @@ class QuestionController {
       sujet = Sujet.get(params.sujetId)
     }
     render(view: '/question/detail', model: [liens: breadcrumpsService.liens,
-            question: question,
-            sujet: sujet,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne])
+        question: question,
+        sujet: sujet,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne])
   }
 
   /**
@@ -127,7 +142,7 @@ class QuestionController {
     Question question = Question.get(params.id)
     questionService.supprimeQuestion(question, personne)
     redirect(action: "mesItems", controller: "question",
-             params: [bcInit: true])
+        params: [bcInit: true])
 
   }
 
@@ -153,7 +168,7 @@ class QuestionController {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
     Question nvelleQuestion = questionService.recopieQuestionDansSujet(sujetQuestion, personne)
     redirect(action: 'edite', id: nvelleQuestion.id,
-             params: [sujetId: sujetQuestion.sujet.id, annulationNonPossible: true])
+        params: [sujetId: sujetQuestion.sujet.id, annulationNonPossible: true])
   }
 
   /**
@@ -168,7 +183,7 @@ class QuestionController {
     if (!question.hasErrors()) {
       flash.messageCode = "question.partage.succes"
       def ct = question.copyrightsType
-      flash.messageArgs = [ct.logo,ct.presentation, ct.code ]
+      flash.messageArgs = [ct.logo, ct.presentation, ct.code]
     }
     redirect(action: 'detail', id: question.id)
 
@@ -206,13 +221,13 @@ class QuestionController {
     }
     if (question.hasErrors()) {
       render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
-              question: question,
-              matieres: profilScolariteService.findMatieresForPersonne(personne),
-              niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-              sujet: sujet,
-              questionEnEdition: questionEnEdition,
-              artefactHelper: artefactAutorisationService,
-              utilisateur: personne])
+          question: question,
+          matieres: profilScolariteService.findMatieresForPersonne(personne),
+          niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+          sujet: sujet,
+          questionEnEdition: questionEnEdition,
+          artefactHelper: artefactAutorisationService,
+          utilisateur: personne])
     } else {
       flash.messageCode = "question.enregistre.succes"
       def params = [:]
@@ -246,18 +261,25 @@ class QuestionController {
     if (sujet && question.id && !question.hasErrors()) {
       if (!breadcrumpsService.getValeurPropriete(QUESTION_EST_DEJA_INSEREE)) {
         Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
-        sujetService.insertQuestionInSujet(question, sujet, personne, rang)
+        sujetService.insertQuestionInSujet(
+            question,
+            sujet,
+            personne,
+            new ReferentielSujetSequenceQuestions(
+                rang: rang
+            )
+        )
         breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
       }
     }
     render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
-            question: question,
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            sujet: sujet,
-            questionEnEdition: questionEnEdition,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne])
+        question: question,
+        matieres: profilScolariteService.findMatieresForPersonne(personne),
+        niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+        sujet: sujet,
+        questionEnEdition: questionEnEdition,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne])
   }
 
 /**
@@ -271,22 +293,26 @@ class QuestionController {
     Sujet sujet = Sujet.get(sujetId)
     Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
     boolean questionEnEdition = false
-    Question question = questionService.createQuestionAndInsertInSujet(params,
-                                                                       specifObject,
-                                                                       sujet,
-                                                                       personne,
-                                                                       rang)
+    Question question = questionService.createQuestionAndInsertInSujet(
+        params,
+        specifObject,
+        sujet,
+        personne,
+        new ReferentielSujetSequenceQuestions(
+            rang: rang
+        )
+    )
 
     if (question.hasErrors()) {
       render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
-              question: question,
-              sujet: sujet,
-              matieres: profilScolariteService.findMatieresForPersonne(personne),
-              niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-              sujet: sujet,
-              peutSupprimer: false,
-              questionEnEdition: questionEnEdition,
-              peutPartagerQuestion: false])
+          question: question,
+          sujet: sujet,
+          matieres: profilScolariteService.findMatieresForPersonne(personne),
+          niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+          sujet: sujet,
+          peutSupprimer: false,
+          questionEnEdition: questionEnEdition,
+          peutPartagerQuestion: false])
     } else {
       flash.messageCode = "question.enregistre.succes"
       breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
@@ -306,16 +332,23 @@ class QuestionController {
     Sujet sujet = Sujet.get(sujetId)
     Question question = Question.get(params.id)
     Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
-    sujetService.insertQuestionInSujet(question, sujet, personne, rang)
+    sujetService.insertQuestionInSujet(
+        question,
+        sujet,
+        personne,
+        new ReferentielSujetSequenceQuestions(
+            rang: rang
+        )
+    )
     if (sujet.hasErrors()) {
       render(view: '/sujet/edite', model: [liens: breadcrumpsService.liens,
-              titreSujet: sujet.titre,
-              sujet: sujet,
-              sujetEnEdition: true,
-              peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-              peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
-              artefactHelper: artefactAutorisationService,
-              utilisateur: personne])
+          titreSujet: sujet.titre,
+          sujet: sujet,
+          sujetEnEdition: true,
+          peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
+          peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+          artefactHelper: artefactAutorisationService,
+          utilisateur: personne])
     } else {
       flash.messageCode = "question.enregistreinsert.succes"
       redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
@@ -352,31 +385,33 @@ class QuestionController {
     }
     boolean affichePager = false
     def questions = questionService.findQuestions(personne,
-                                                  rechCmd.patternTitre,
-                                                  patternAuteur,
-                                                  rechCmd.patternSpecification,
-                                                  Matiere.get(rechCmd.matiereId),
-                                                  Niveau.get(rechCmd.niveauId),
-                                                  QuestionType.get(rechCmd.typeId),
-                                                  exclusComposite,
-                                                  rechercheUniquementQuestionsChercheur,
-                                                  params)
+        rechCmd.patternTitre,
+        patternAuteur,
+        rechCmd.patternSpecification,
+        new ReferentielEliot(
+            matiere: Matiere.get(rechCmd.matiereId),
+            niveau: Niveau.get(rechCmd.niveauId)
+        ),
+        QuestionType.get(rechCmd.typeId),
+        exclusComposite,
+        rechercheUniquementQuestionsChercheur,
+        params)
 
     if (questions.totalCount > maxItems) {
       affichePager = true
     }
     [liens: breadcrumpsService.liens,
-            afficheFormulaire: true,
-            typesQuestion: typesQuestions,
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            questions: questions,
-            rechercheCommand: rechCmd,
-            sujet: sujet,
-            afficheLiensModifier: afficheLiensModifier,
-            afficherPager: affichePager,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne]
+        afficheFormulaire: true,
+        typesQuestion: typesQuestions,
+        matieres: profilScolariteService.findMatieresForPersonne(personne),
+        niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+        questions: questions,
+        rechercheCommand: rechCmd,
+        sujet: sujet,
+        afficheLiensModifier: afficheLiensModifier,
+        afficherPager: affichePager,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne]
   }
 
   def mesItems() {
@@ -385,32 +420,136 @@ class QuestionController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.mesitems.titre"))
     Personne personne = authenticatedPersonne
     def questions = questionService.findQuestionsForProprietaire(personne,
-                                                                 params)
+        params)
     boolean afficheLiensModifier = true
     boolean affichePager = false
     if (questions.totalCount > maxItems) {
       affichePager = true
     }
     def model = [liens: breadcrumpsService.liens,
-            afficheFormulaire: false,
-            questions: questions,
-            afficheLiensModifier: afficheLiensModifier,
-            afficherPager: affichePager,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne]
+        afficheFormulaire: false,
+        questions: questions,
+        afficheLiensModifier: afficheLiensModifier,
+        afficherPager: affichePager,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne]
     render(view: "recherche", model: model)
   }
 
 /**
- * Action pour exporter un sujet en XML.
+ * Action pour exporter une question.
  * @return
  */
-  def exporter() {
+  def exporter(String format) {
+
     Question question = Question.get(params.id)
-    def xml = question ? moodleQuizExporterService.toMoodleQuiz(question) :
-              message(code: 'xml.export.sujet.inexistant', args: [params.id])
-    response.setHeader("Content-disposition", "attachment; filename=export.xml")
-    render(text: xml, contentType: "text/xml", encoding: "UTF-8")
+    if (!question) {
+      throw new IllegalStateException(
+          "Il n'existe pas de question d'id '${params.id}'"
+      )
+    }
+
+    switch (format) {
+      case Format.NATIF_JSON.name():
+
+        JSON json = getQuestionAsJson(question)
+        response.setHeader("Content-disposition", "attachment; filename=${ExportHelper.getFileName(question, Format.NATIF_JSON)}")
+
+        response.setCharacterEncoding('UTF-8')
+        response.contentType = 'application/tdbase'
+        GZIPOutputStream zipOutputStream = new GZIPOutputStream(response.outputStream)
+        json.render(new OutputStreamWriter(zipOutputStream))
+        break
+
+      case Format.MOODLE_XML.name():
+        def xml = moodleQuizExporterService.toMoodleQuiz(question)
+        response.setHeader("Content-disposition", "attachment; filename=export.xml")
+        render(text: xml, contentType: "text/xml", encoding: "UTF-8")
+        break
+
+      default:
+        throw new IllegalArgumentException(
+            "Le format '$format' est inconnu."
+        )
+    }
+  }
+
+  /**
+   * Action donnant accès au formulaire d'import natif eliot-tdbase d'une question
+   */
+  def editeImportQuestionNatifTdBase() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.sujet.libelle"))
+    Personne proprietaire = authenticatedPersonne
+    [
+        liens: breadcrumpsService.liens,
+        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+    ]
+  }
+
+  /**
+   * Action déclenchant l'import du fichier question JSON au format natif eliot-tdbase
+   */
+  def importQuestionNatifTdBase(Long matiereId, Long niveauId) {
+    Personne proprietaire = authenticatedPersonne
+    MultipartFile fichier = request.getFile("fichierImport")
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    boolean importSuccess = true
+    if (!fichier || fichier.isEmpty()) {
+      flash.errorMessageCode = "question.document.fichier.vide"
+      importSuccess = false
+    } else if (!fichier.name) {
+      flash.errorMessageCode = "question.document.fichier.nom.null"
+      importSuccess = false
+    } else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+      flash.errorMessageCode = "question.document.fichier.tropgros"
+      importSuccess = false
+    }
+
+    Question question = null
+    if (importSuccess) {
+      try {
+        question = questionImporterService.importeQuestion(
+            ExportMarshaller.parse(
+                JSON.parse(
+                    new GZIPInputStream(
+                        new ByteArrayInputStream(fichier.bytes)
+                    ),
+                    'UTF-8'
+                )
+            ).question,
+            null,
+            proprietaire,
+            new ReferentielEliot(
+                matiere: Matiere.load(matiereId),
+                niveau: Niveau.load(niveauId)
+            )
+        )
+      } catch (Exception e) {
+        log.error("Une erreur s'est produite durant l'import de la question", e)
+        flash.errorMessageCode = "Format de fichier incorrect (cause: ${e.message})"
+        importSuccess = false
+      }
+    }
+    flash.liens = breadcrumpsService.liens
+    if (importSuccess) {
+      flash.messageCode = "La question a été correctement importée."
+      redirect(action: 'detail', id: question.id)
+    } else {
+      redirect(action: 'editeImportQuestionNatifTdBase')
+    }
+  }
+
+  private JSON getQuestionAsJson(Question question) {
+    question = questionExporterService.getQuestionPourExport(question, authenticatedPersonne)
+    ExportMarshallerFactory exportMarshallerFactory = new ExportMarshallerFactory()
+    ExportMarshaller exportMarshaller = exportMarshallerFactory.newInstance(attachementService)
+
+    return exportMarshaller.marshall(
+        question,
+        new Date(),
+        authenticatedPersonne
+    ) as JSON
   }
 
 /**
@@ -435,12 +574,12 @@ class RechercheQuestionCommand {
 
   Map toParams() {
     [patternAuteur: patternAuteur,
-            patternTitre: patternTitre,
-            patternPresentation: patternSpecification,
-            matiereId: matiereId,
-            typeId: typeId,
-            niveauId: niveauId,
-            sujetId: sujetId]
+        patternTitre: patternTitre,
+        patternPresentation: patternSpecification,
+        matiereId: matiereId,
+        typeId: typeId,
+        niveauId: niveauId,
+        sujetId: sujetId]
   }
 
 }

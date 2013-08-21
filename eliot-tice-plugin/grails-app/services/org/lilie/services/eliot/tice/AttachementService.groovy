@@ -43,7 +43,6 @@ import org.springframework.web.multipart.MultipartFile
 import javax.mail.internet.MimeUtility
 
 /**
- * Classe fournissant le service de gestion de breadcrumps
  * @author franck silvestre
  */
 class AttachementService {
@@ -61,32 +60,48 @@ class AttachementService {
    */
   @Transactional
   Attachement createAttachementForMultipartFile(
-          MultipartFile fichier,
-          def config = ConfigurationHolder.config) {
+      MultipartFile fichier,
+      def config = ConfigurationHolder.config) {
     if (!fichier || fichier.isEmpty()) {
       throw new IllegalArgumentException("question.document.fichier.vide")
     }
     if (!fichier.name) {
       throw new IllegalArgumentException("question.document.fichier.nom.null")
     }
-    def maxSizeEnMega = config.eliot.fichiers.maxsize.mega
-    if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+
+    return createAttachement(
+        new AttachementDto(
+            taille: fichier.size,
+            typeMime: fichier.contentType,
+            nom: fichier.originalFilename,
+            nomFichierOriginal: fichier.originalFilename,
+            inputStream: fichier.inputStream
+        ),
+        config
+    )
+  }
+
+  @Transactional
+  Attachement createAttachement(AttachementDto attachementDto,
+                                def config = ConfigurationHolder.config) {
+    def maxSizeEnMega = config.eliot.fichiers.maxsize.mega ?: 10
+    if (attachementDto.taille > 1024 * 1024 * maxSizeEnMega) {
       throw new IllegalArgumentException("question.document.fichier.tropgros")
     }
     // par defaut un nouvel attachement est marque a supprimer
     // c'est à la création d'un lien vers un item qu'il faut le
     // considérer comme attaché et donc comme non à supprimer
     Attachement attachement = new Attachement(
-            taille: fichier.size,
-            typeMime: fichier.contentType,
-            nom: fichier.originalFilename,
-            nomFichierOriginal: fichier.originalFilename,
-            aSupprimer: true
+        taille: attachementDto.taille,
+        typeMime: attachementDto.typeMime,
+        nom: attachementDto.nom,
+        nomFichierOriginal: attachementDto.nomFichierOriginal,
+        aSupprimer: true
     )
-    DataRecord dataRecord = dataStore.addRecord(fichier.inputStream)
+    DataRecord dataRecord = dataStore.addRecord(attachementDto.inputStream)
     attachement.chemin = dataRecord.identifier.toString()
     if (attachement.estUneImageAffichable()) {
-      attachement.dimension = determinerDimension(fichier.inputStream)
+      attachement.dimension = determinerDimension(attachementDto.inputStream)
     }
     attachement.save()
     return attachement
@@ -101,17 +116,17 @@ class AttachementService {
    */
   @Transactional
   Attachement createAttachementForImageIds(
-          ImageIds fichier) {
+      ImageIds fichier) {
 
     // par defaut un nouvel attachement est marque a supprimer
     // c'est à la création d'un lien vers un item qu'il faut le
     // considérer comme attaché et donc comme non à supprimer
     Attachement attachement = new Attachement(
-            taille: fichier.size,
-            typeMime: fichier.contentType,
-            nom: fichier.fileName,
-            nomFichierOriginal: fichier.fileName,
-            aSupprimer: true
+        taille: fichier.size,
+        typeMime: fichier.contentType,
+        nom: fichier.fileName,
+        nomFichierOriginal: fichier.fileName,
+        aSupprimer: true
     )
     attachement.chemin = fichier.dataSoreId
     attachement.save()
@@ -133,7 +148,7 @@ class AttachementService {
   /**
    * Encode en base 64 un attachement
    * @param attachement l'attachement à econder
-   * @return  l'attachement encodé
+   * @return l'attachement encodé
    */
   String encodeToBase64(Attachement attachement) {
     ByteArrayOutputStream bos
@@ -168,8 +183,8 @@ class AttachementService {
         reader = imageReaders.next()
         reader.input = memInputStream
         return new Dimension(
-                largeur: reader.getWidth(reader.minIndex),
-                hauteur: reader.getHeight(reader.minIndex)
+            largeur: reader.getWidth(reader.minIndex),
+            hauteur: reader.getHeight(reader.minIndex)
         )
       }
 

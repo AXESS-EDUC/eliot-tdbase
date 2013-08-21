@@ -1,4 +1,4 @@
-<%@ page import="org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -67,6 +67,14 @@
                     title="Rechercher des sujets"
                     params="[bcInit: true, patternAuteur: message(code: 'eliot.label.me')]">Rechercher</g:link>
           </li>
+          <li title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}">
+            <g:link controller="sujet"
+                    action="editeImportSujetNatifTdBase"
+                    title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}"
+                    params="[bcInit: true, format: Format.NATIF_JSON]">
+              <g:message code="importexport.NATIF_JSON.action.import.title"/>
+            </g:link>
+          </li>
         </ul>
       </li>
       <li id="menu-item-contributions">
@@ -85,6 +93,14 @@
                     title="Rechercher des items"
                     params="[bcInit: true, patternAuteur: message(code: 'eliot.label.me')]">Rechercher</g:link>
 
+          </li>
+          <li title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}">
+            <g:link controller="question"
+                    action="editeImportQuestionNatifTdBase"
+                    title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}"
+                    params="[bcInit: true, format: Format.NATIF_JSON]">
+              <g:message code="importexport.NATIF_JSON.action.import.title"/>
+            </g:link>
           </li>
         </ul>
       </li>

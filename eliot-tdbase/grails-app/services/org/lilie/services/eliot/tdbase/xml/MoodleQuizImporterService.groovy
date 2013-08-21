@@ -31,8 +31,6 @@ package org.lilie.services.eliot.tdbase.xml
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer
 import org.lilie.services.eliot.tice.ImageIds
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tdbase.*
 
 /**
@@ -58,8 +56,7 @@ class MoodleQuizImporterService {
   MoodleQuizImportReport importMoodleQuiz(
           byte[] xmlMoodle,
           Sujet sujet,
-          Matiere matiere,
-          Niveau niveau,
+          ReferentielEliot referentielEliot,
           Personne importeur) {
 
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet))
@@ -72,7 +69,7 @@ class MoodleQuizImporterService {
       def bais = new ByteArrayInputStream(xmlMoodle)
       map = moodleQuizTransformer.moodleQuizTransform(bais)
     } catch (Exception e) {
-      log.error(e.message)
+      log.error("Erreur durant la transformation d'un Quizz Moodle", e)
       throw new Exception("xml.import.moodle.echec")
     }
     MoodleQuizImportReport report = new MoodleQuizImportReport()
@@ -114,7 +111,7 @@ class MoodleQuizImporterService {
       try {
         objSpec = specService.getObjectFromSpecification(item.specification)
       } catch (Exception e1) {
-        log.error(e1.message)
+        log.error("Erreur durant le parsing de la spécification", e1)
         importItem.erreurImport = "xml.import.moodle.item.specificationincorrecte"
         report.itemsNonImportes << importItem
         continue
@@ -125,8 +122,8 @@ class MoodleQuizImporterService {
               [
                       titre: item.titre,
                       type: questionTypeEnum.questionType,
-                      matiere: matiere,
-                      niveau: niveau
+                      matiere: referentielEliot?.matiere,
+                      niveau: referentielEliot?.niveau
               ],
               objSpec,
               sujet,

@@ -35,8 +35,6 @@ import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.transaction.annotation.Transactional
 
@@ -234,20 +232,14 @@ class SujetService {
         }
       }
     }
-    // mise à jour de la paternite
-    PaterniteItem paterniteItem = new PaterniteItem(auteur: "${partageur.nomAffichage}",
-                                                    copyrightDescription: "${ct.presentation}",
-                                                    copyrighLien: "${ct.lien}",
-                                                    logoLien: ct.logo ,
-                                                    datePublication: publication.dateDebut,
-                                                    oeuvreEnCours: true)
-    Paternite paternite = new Paternite(leSujet.paternite)
-    paternite.paterniteItems.each {
-      it.oeuvreEnCours = false
-    }
-    paternite.addPaterniteItem(paterniteItem)
-    leSujet.paternite = paternite.toString()
-    leSujet.save()
+
+    addPaterniteItem(
+        partageur,
+        ct,
+        publication.dateDebut,
+        leSujet
+    )
+
     // si le sujet est un exercice, partage de la question associee
     def question = leSujet.questionComposite
     if (question) {
@@ -255,6 +247,40 @@ class SujetService {
     }
 
     return leSujet
+  }
+
+  /**
+   * Marque la paternité de la question (ajoute un PaterniteItem)
+   * Méthode invoquée avant d'effectuer un export
+   * @param sujet
+   * @param partageur
+   */
+  @Transactional
+  void marquePaternite(Sujet sujet, Personne partageur) {
+    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(partageur, sujet))
+
+    CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
+    addPaterniteItem(partageur, ct, new Date(), sujet)
+  }
+
+  private void addPaterniteItem(Personne partageur,
+                                CopyrightsType ct,
+                                Date datePublication,
+                                Sujet leSujet) {
+    // mise à jour de la paternite
+    PaterniteItem paterniteItem = new PaterniteItem(auteur: "${partageur.nomAffichage}",
+        copyrightDescription: "${ct.presentation}",
+        copyrighLien: "${ct.lien}",
+        logoLien: ct.logo ,
+        datePublication: datePublication,
+        oeuvreEnCours: true)
+    Paternite paternite = new Paternite(leSujet.paternite)
+    paternite.paterniteItems.each {
+      it.oeuvreEnCours = false
+    }
+    paternite.addPaterniteItem(paterniteItem)
+    leSujet.paternite = paternite.toString()
+    leSujet.save()
   }
 
 /**
@@ -275,8 +301,7 @@ class SujetService {
                          String patternTitre,
                          String patternAuteur,
                          String patternPresentation,
-                         Matiere matiere,
-                         Niveau niveau,
+                         ReferentielEliot referentielEliot,
                          SujetType sujetType,
                          Boolean uniquementSujetsChercheur = false,
                          Map paginationAndSortingSpec = null) {
@@ -289,11 +314,11 @@ class SujetService {
 
     def criteria = Sujet.createCriteria()
     List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
-      if (matiere) {
-        eq "matiere", matiere
+      if (referentielEliot?.matiere) {
+        eq "matiere", referentielEliot?.matiere
       }
-      if (niveau) {
-        eq "niveau", niveau
+      if (referentielEliot?.niveau) {
+        eq "niveau", referentielEliot?.niveau
       }
       if (sujetType) {
         eq "sujetType", sujetType
@@ -384,8 +409,10 @@ class SujetService {
  * @return le sujet modifié
  */
   @Transactional
-  Sujet insertQuestionInSujet(Question question, Sujet leSujet,
-                              Personne proprietaire, Integer rang = null) {
+  Sujet insertQuestionInSujet(Question question,
+                              Sujet leSujet,
+                              Personne proprietaire,
+                              ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions = null) {
 
     // verif securite
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, leSujet))
@@ -399,6 +426,12 @@ class SujetService {
     def sequence = new SujetSequenceQuestions(question: question,
                                               sujet: leSujet,
                                               rang: leSujet.questionsSequences?.size())
+    if(referentielSujetSequenceQuestions?.noteSeuilPoursuite != null) {
+      sequence.noteSeuilPoursuite = referentielSujetSequenceQuestions?.noteSeuilPoursuite
+    }
+    if(referentielSujetSequenceQuestions?.points != null) {
+      sequence.points = referentielSujetSequenceQuestions?.points
+    }
     leSujet.addToQuestionsSequences(sequence)
     sequence.save()
     if (sequence.hasErrors()) {
@@ -412,6 +445,7 @@ class SujetService {
     leSujet.lastUpdated = new Date()
 
     leSujet.save(flush: true)
+    Integer rang = referentielSujetSequenceQuestions?.rang
     if (rang != null && rang < leSujet.questionsSequences.size() - 1) {
       // il faut insérer au rang correct
       def idxSujQuest = leSujet.questionsSequences.size() - 1

@@ -33,8 +33,6 @@ import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
-import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -62,7 +60,7 @@ class QuestionService implements ApplicationContextAware {
    * @return le service ad-hoc pour le type de question
    */
   QuestionSpecificationService questionSpecificationServiceForQuestionType(QuestionType questionType) {
-    return applicationContext.getBean("question${questionType.code}SpecificationService")
+    return (QuestionSpecificationService)applicationContext.getBean("question${questionType.code}SpecificationService")
   }
 
   /**
@@ -75,15 +73,14 @@ class QuestionService implements ApplicationContextAware {
   @Transactional
   Question createQuestion(Map proprietes, def specificationObject, Personne proprietaire) {
     Question question = new Question(proprietaire: proprietaire,
-                                     titreNormalise: StringUtils.normalise(proprietes.titre),
-                                     publie: false,
-                                     versionQuestion: 1,
-                                     copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
-                                     specification: "{}")
+        titreNormalise: StringUtils.normalise(proprietes.titre),
+        publie: false,
+        versionQuestion: 1,
+        copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
+        specification: "{}")
 
     question.properties = proprietes
     question.principalAttachementFichier = proprietes.principalAttachementFichier
-    question.save(flush: true)
 
     // mise à jour attachement
     if (question.principalAttachementId) {
@@ -95,7 +92,7 @@ class QuestionService implements ApplicationContextAware {
     // mise à jour spécification
     def specService = questionSpecificationServiceForQuestionType(question.type)
     specService.updateQuestionSpecificationForObject(question, specificationObject)
-    question.save(flush: true)
+    question.save(flush: true, failOnError: true)
     return question
   }
 
@@ -134,24 +131,24 @@ class QuestionService implements ApplicationContextAware {
     assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, question))
 
     Question questionCopie = new Question(proprietaire: proprietaire,
-                                          titre: question.titre + " (Copie)",
-                                          titreNormalise: question.titreNormalise,
-                                          specification: question.specification,
-                                          specificationNormalise: question.specificationNormalise,
-                                          publie: false,
-                                          copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
-                                          estAutonome: question.estAutonome,
-                                          type: question.type,
-                                          matiere: question.matiere,
-                                          niveau: question.niveau,
-                                          principalAttachement: question.principalAttachement)
+        titre: question.titre + " (Copie)",
+        titreNormalise: question.titreNormalise,
+        specification: question.specification,
+        specificationNormalise: question.specificationNormalise,
+        publie: false,
+        copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
+        estAutonome: question.estAutonome,
+        type: question.type,
+        matiere: question.matiere,
+        niveau: question.niveau,
+        principalAttachement: question.principalAttachement)
     questionCopie.save()
 
     // recopie les attachements (on ne duplique pas les attachements)
     question.questionAttachements.each { QuestionAttachement questionAttachement ->
       QuestionAttachement copieQuestionAttachement = new QuestionAttachement(question: questionCopie,
-                                                                             attachement: questionAttachement.attachement,
-                                                                             rang: questionAttachement.rang)
+          attachement: questionAttachement.attachement,
+          rang: questionAttachement.rang)
       questionCopie.addToQuestionAttachements(copieQuestionAttachement)
       questionCopie.save()
     }
@@ -171,7 +168,9 @@ class QuestionService implements ApplicationContextAware {
    * @return la question
    */
   @Transactional
-  Question updateProprietes(Question laQuestion, Map proprietes, def specificationObject,
+  Question updateProprietes(Question laQuestion,
+                            Map proprietes,
+                            def specificationObject,
                             Personne proprietaire) {
 
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, laQuestion))
@@ -197,7 +196,7 @@ class QuestionService implements ApplicationContextAware {
       }
       if (!laQuestion.principalAttachementFichier.isEmpty()) {
         questionAttachementService.createPrincipalAttachementForQuestionFromMultipartFile(laQuestion.principalAttachementFichier,
-                                                                                          laQuestion)
+            laQuestion)
       }
     }
 
@@ -219,16 +218,21 @@ class QuestionService implements ApplicationContextAware {
  */
   @Transactional
   Question createQuestionAndInsertInSujet(Map proprietesQuestion,
-                                          def specificatinObject,
+                                          def specificationObject,
                                           Sujet sujet,
                                           Personne proprietaire,
-                                          Integer rang = null) {
+                                          ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions = null) {
 
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
-    Question question = createQuestion(proprietesQuestion, specificatinObject, proprietaire)
+    Question question = createQuestion(proprietesQuestion, specificationObject, proprietaire)
     if (!question.hasErrors()) {
-      sujetService.insertQuestionInSujet(question, sujet, proprietaire, rang)
+      sujetService.insertQuestionInSujet(
+          question,
+          sujet,
+          proprietaire,
+          referentielSujetSequenceQuestions
+      )
     }
     return question
   }
@@ -264,26 +268,48 @@ class QuestionService implements ApplicationContextAware {
 
   /**
    *  Partage une question
-   * @param laQuestion la question à partager
+   * @param question la question à partager
    * @param partageur la personne souhaitant partager
    */
   @Transactional
-  def partageQuestion(Question laQuestion, Personne partageur) {
-    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(partageur, laQuestion))
+  def partageQuestion(Question question, Personne partageur) {
+    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(partageur, question))
     CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
     Publication publication = new Publication(dateDebut: new Date(),
-                                              copyrightsType: ct)
+        copyrightsType: ct)
     publication.save()
-    laQuestion.copyrightsType = ct
-    laQuestion.publication = publication
-    laQuestion.publie = true
+    question.copyrightsType = ct
+    question.publication = publication
+    question.publie = true
+
     // mise à jour de la paternite
+    addPaterniteItem(partageur, ct, publication.dateDebut, question)
+  }
+
+  /**
+   * Marque la paternité de la question (ajoute un PaterniteItem)
+   * Méthode invoquée avant d'effectuer un export
+   * @param question
+   * @param partageur
+   */
+  @Transactional
+  void marquePaternite(Question question, Personne partageur) {
+    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(partageur, question))
+
+    CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
+    addPaterniteItem(partageur, ct, new Date(), question)
+  }
+
+  private void addPaterniteItem(Personne partageur,
+                                CopyrightsType ct,
+                                Date datePublication,
+                                Question laQuestion) {
     PaterniteItem paterniteItem = new PaterniteItem(auteur: "${partageur.nomAffichage}",
-                                                    copyrightDescription: "${ct.presentation}",
-                                                    copyrighLien: "${ct.lien}",
-                                                    logoLien: ct.logo,
-                                                    datePublication: publication.dateDebut,
-                                                    oeuvreEnCours: true)
+        copyrightDescription: "${ct.presentation}",
+        copyrighLien: "${ct.lien}",
+        logoLien: ct.logo,
+        datePublication: datePublication,
+        oeuvreEnCours: true)
     Paternite paternite = new Paternite(laQuestion.paternite)
     paternite.paterniteItems.each {
       it.oeuvreEnCours = false
@@ -311,8 +337,7 @@ class QuestionService implements ApplicationContextAware {
                                String patternTitre,
                                String patternAuteur,
                                String patternSpecification,
-                               Matiere matiere,
-                               Niveau niveau,
+                               ReferentielEliot referentielEliot,
                                QuestionType questionType,
                                Boolean exclusComposites = false,
                                Boolean uniquementQuestionsChercheur = false,
@@ -326,11 +351,11 @@ class QuestionService implements ApplicationContextAware {
 
     def criteria = Question.createCriteria()
     List<Question> questions = criteria.list(paginationAndSortingSpec) {
-      if (matiere) {
-        eq "matiere", matiere
+      if (referentielEliot?.matiere) {
+        eq "matiere", referentielEliot?.matiere
       }
-      if (niveau) {
-        eq "niveau", niveau
+      if (referentielEliot?.niveau) {
+        eq "niveau", referentielEliot?.niveau
       }
       if (questionType) {
         eq "type", questionType
@@ -420,19 +445,19 @@ class QuestionService implements ApplicationContextAware {
    */
   List<QuestionType> getTypesQuestionsInteractionSupportes() {
     [MultipleChoice.questionType,
-            ExclusiveChoice.questionType,
-            QuestionTypeEnum.Integer.questionType,
-            Decimal.questionType,
-            Slider.questionType,
-            FillGap.questionType,
-            Associate.questionType,
-            Order.questionType,
-            FillGraphics.questionType,
-            GraphicMatch.questionType,
-            Open.questionType,
-            FileUpload.questionType,
-            BooleanMatch.questionType,
-            Composite.questionType]
+        ExclusiveChoice.questionType,
+        QuestionTypeEnum.Integer.questionType,
+        Decimal.questionType,
+        Slider.questionType,
+        FillGap.questionType,
+        Associate.questionType,
+        Order.questionType,
+        FillGraphics.questionType,
+        GraphicMatch.questionType,
+        Open.questionType,
+        FileUpload.questionType,
+        BooleanMatch.questionType,
+        Composite.questionType]
   }
 
   /**
@@ -441,7 +466,7 @@ class QuestionService implements ApplicationContextAware {
    */
   List<QuestionType> getTypesQuestionsSupportes() {
     typesQuestionsInteractionSupportes +
-    [Document.questionType,
+        [Document.questionType,
             Statement.questionType,]
   }
 

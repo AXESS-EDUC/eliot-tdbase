@@ -36,19 +36,17 @@ grails.plugin.location.'eliot-textes-plugin' = "../eliot-textes-plugin"
 grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
 //grails.plugin.location.'spring-security-cas' = '../grails-spring-security-cas'
 
-if(System.properties['war.version']) {
+if (System.properties['war.version']) {
   grails.project.war.file = "target/${appName}-${appVersion}.war"
-}
-else {
+} else {
   grails.project.war.file = "target/${appName}.war"
 }
-
 
 // This closure is passed the location of the staging directory that
 // is zipped up to make the WAR file, and the command line arguments.
 grails.war.resources = { stagingDir, args ->
   copy(file: "src/templates/eliot-tdbase-config.groovy",
-       tofile: "${stagingDir}/WEB-INF/classes/eliot-tdbase-config.groovy")
+      tofile: "${stagingDir}/WEB-INF/classes/eliot-tdbase-config.groovy")
 }
 
 grails.project.dependency.resolution = {
@@ -105,9 +103,11 @@ grails.project.dependency.resolution = {
     compile ":spring-security-core:1.2.7.2"
 
     build(":tomcat:$grailsVersion",
-          ":rest-client-builder:1.0.2",
-          ":release:2.0.2")
+        ":rest-client-builder:1.0.2",
+        ":release:2.0.2")
 
     test ":code-coverage:1.2.5"
+
+    test ":spock:0.7"
   }
 }

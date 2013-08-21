@@ -20,7 +20,6 @@ import org.springframework.web.context.request.RequestContextHolder
 import javax.servlet.http.HttpServletRequest
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
-import org.lilie.services.eliot.tice.DBAttachementDataStore
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -54,7 +53,7 @@ class EliotTicePluginGrailsPlugin {
   // the group id
   def groupId = "org.lilie.services.eliot"
   // the plugin version
-  def version = "2.05-FC-SNAPSHOT"
+  def version = "2.1.0-FC-SNAPSHOT"
   // the version or versions of Grails the plugin is designed for
   def grailsVersion = "2.0.1 > *"
   // the other plugins this plugin depends on
