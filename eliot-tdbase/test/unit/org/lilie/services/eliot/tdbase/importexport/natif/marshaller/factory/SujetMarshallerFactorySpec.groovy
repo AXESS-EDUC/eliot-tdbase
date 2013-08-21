@@ -7,7 +7,6 @@ import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarsh
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetSequenceQuestionsMarshaller
-import org.lilie.services.eliot.tice.AttachementService
 import spock.lang.Specification
 
 /**
