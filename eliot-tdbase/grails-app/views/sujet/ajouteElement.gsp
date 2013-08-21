@@ -115,6 +115,13 @@
   <h1><g:link action="editeImportMoodleXML" controller="sujet"
               id="${sujet.id}">Importer et ajouter un quiz Moodle...</g:link></h1>
 
+  <h1>
+    <g:link action="editeImportQuestionNatifTdBase" controller="sujet" id="${sujet.id}">
+      %{-- TODO i18n --}%
+      Importer et ajouter une question eliot-tdbase
+    </g:link>
+  </h1>
+
 </div>
 
 </body>

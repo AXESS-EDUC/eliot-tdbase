@@ -26,7 +26,7 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<%@ page import="org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.utils.NumberUtils" %>
+<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.utils.NumberUtils" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -91,12 +91,21 @@
       <g:else>
         <li>Partager</li>
       </g:else>
-      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
-        <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Exporter</li>
-      </g:else>
+
+      <g:each in="${Format.values()}" var="format">
+        <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, format)}">
+          <li>
+            <g:link action="exporter" id="${sujet.id}"  params="${[format: format]}">
+              <g:message code="importexport.${format}.action.export.title"/>
+            </g:link>
+          </li>
+        </g:if>
+        <g:else>
+          <li><g:message code="importexport.${format}.action.export.title"/></li>
+        </g:else>
+      </g:each>
+
+
       <li><hr/></li>
       <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
         <li><g:link action="supprime"
@@ -131,7 +140,7 @@
 <div class="portal-messages">
   <li class="notice">
     Date dernier enregistrement : <span
-          id="date_enregistrement">${copie.dateEnregistrement?.format(message(code: 'default.date.format'))}</span>
+      id="date_enregistrement">${copie.dateEnregistrement?.format(message(code: 'default.date.format'))}</span>
     <g:if test="${copie.dateRemise}">
       &nbsp;&nbsp;   &nbsp;&nbsp;
    Note (correction automatique) :

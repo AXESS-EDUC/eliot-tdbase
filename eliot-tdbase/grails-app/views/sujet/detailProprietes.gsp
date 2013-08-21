@@ -1,4 +1,4 @@
-%<%@ page import="org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tdbase.SujetType" %>
+%<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tdbase.SujetType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -88,13 +88,22 @@
       <g:else>
         <li>Partager</li>
       </g:else>
-      <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet)}">
-        <li><g:link action="exporter" id="${sujet.id}">Exporter</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Exporter</li>
-      </g:else>
+
+      <g:each in="${Format.values()}" var="format">
+        <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, format)}">
+          <li>
+            <g:link action="exporter" id="${sujet.id}"  params="${[format: format]}">
+              <g:message code="importexport.${format}.action.export.title"/>
+            </g:link>
+          </li>
+        </g:if>
+        <g:else>
+          <li><g:message code="importexport.${format}.action.export.title"/></li>
+        </g:else>
+      </g:each>
+
       <li><hr/></li>
+
       <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
         <li><g:link action="supprime"
                     id="${sujet.id}">Supprimer</g:link></li>

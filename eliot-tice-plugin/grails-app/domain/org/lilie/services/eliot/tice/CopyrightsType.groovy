@@ -91,18 +91,40 @@ class CopyrightsType {
  * </ul>
  */
 enum CopyrightsTypeEnum {
-  TousDroitsReserves(1),
-  CC_BY_NC_SA(2),
-  CC_BY_NC(3)
+  TousDroitsReserves(1, "Tous droits réservés"),
+  CC_BY_NC_SA(2, "(CC) BY-NC-SA"),
+  CC_BY_NC(3, "(CC) BY-NC")
 
   private Long id;
+  private String code;
 
-  private CopyrightsTypeEnum(Long id) {
+  private CopyrightsTypeEnum(Long id, String code) {
     this.id = id
+    this.code = code
+  }
+
+  String getCode() {
+    return this.code
   }
 
   CopyrightsType getCopyrightsType() {
-    CopyrightsType.get(id)
+    CopyrightsType copyrightsType = CopyrightsType.get(id)
+    assert copyrightsType
+
+    return copyrightsType
   }
 
+  static CopyrightsTypeEnum parseFromCode(String code) {
+    CopyrightsTypeEnum copyrightsTypeEnum = values().find {
+        it.code == code
+    }
+
+    if(!copyrightsTypeEnum) {
+      throw new IllegalArgumentException(
+          "Le code '$code' ne correspond pas à un type de copyrights connu"
+      )
+    }
+
+    return copyrightsTypeEnum
+  }
 }

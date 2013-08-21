@@ -1,8 +1,18 @@
 package org.lilie.services.eliot.tdbase
 
+import grails.converters.JSON
+import org.apache.commons.io.output.WriterOutputStream
+import org.lilie.services.eliot.tdbase.importexport.ExportHelper
+import org.lilie.services.eliot.tdbase.importexport.Format
+import org.lilie.services.eliot.tdbase.importexport.QuestionImporterService
+import org.lilie.services.eliot.tdbase.importexport.SujetExporterService
+import org.lilie.services.eliot.tdbase.importexport.SujetImporterService
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImporterService
+import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
@@ -11,6 +21,10 @@ import org.lilie.services.eliot.tice.scolarite.ScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.springframework.web.multipart.MultipartFile
+
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
+import java.util.zip.ZipOutputStream
 
 class SujetController {
 
@@ -28,6 +42,10 @@ class SujetController {
   ArtefactAutorisationService artefactAutorisationService
   MoodleQuizExporterService moodleQuizExporterService
   ScolariteService scolariteService
+  QuestionImporterService questionImporterService
+  SujetImporterService sujetImporterService
+  SujetExporterService sujetExporterService
+  AttachementService attachementService
 
   /**
    *
@@ -46,29 +64,31 @@ class SujetController {
       patternAuteur = null
     }
     def sujets = sujetService.findSujets(personne,
-                                         rechCmd.patternTitre,
-                                         patternAuteur,
-                                         rechCmd.patternPresentation,
-                                         Matiere.get(rechCmd.matiereId),
-                                         Niveau.get(rechCmd.niveauId),
-                                         SujetType.get(rechCmd.typeId),
-                                         rechercheUniquementSujetsChercheur,
-                                         params)
+        rechCmd.patternTitre,
+        patternAuteur,
+        rechCmd.patternPresentation,
+        new ReferentielEliot(
+            matiere: Matiere.get(rechCmd.matiereId),
+            niveau: Niveau.get(rechCmd.niveauId)
+        ),
+        SujetType.get(rechCmd.typeId),
+        rechercheUniquementSujetsChercheur,
+        params)
     boolean affichePager = false
     if (sujets.totalCount > maxItems) {
       affichePager = true
     }
 
     [liens: breadcrumpsService.liens,
-            afficheFormulaire: true,
-            affichePager: affichePager,
-            typesSujet: sujetService.getAllSujetTypes(),
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            sujets: sujets,
-            rechercheCommand: rechCmd,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne]
+        afficheFormulaire: true,
+        affichePager: affichePager,
+        typesSujet: sujetService.getAllSujetTypes(),
+        matieres: profilScolariteService.findMatieresForPersonne(personne),
+        niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+        sujets: sujets,
+        rechercheCommand: rechCmd,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne]
   }
 
   /**
@@ -86,11 +106,11 @@ class SujetController {
       affichePager = true
     }
     def model = [liens: breadcrumpsService.liens,
-            afficheFormulaire: false,
-            affichePager: affichePager,
-            sujets: sujets,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne]
+        afficheFormulaire: false,
+        affichePager: affichePager,
+        sujets: sujets,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne]
     render(view: "recherche", model: model)
   }
 
@@ -102,10 +122,10 @@ class SujetController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
     Personne proprietaire = authenticatedPersonne
     render(view: "editeProprietes", model: [liens: breadcrumpsService.liens,
-            sujet: new Sujet(),
-            typesSujet: sujetService.getAllSujetTypes(),
-            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
+        sujet: new Sujet(),
+        typesSujet: sujetService.getAllSujetTypes(),
+        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
   }
 
   /**
@@ -117,10 +137,10 @@ class SujetController {
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
     render(view: "editeProprietes", model: [liens: breadcrumpsService.liens,
-            sujet: sujet,
-            typesSujet: sujetService.getAllSujetTypes(),
-            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
+        sujet: sujet,
+        typesSujet: sujetService.getAllSujetTypes(),
+        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
   }
 
   /**
@@ -132,13 +152,13 @@ class SujetController {
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
     [liens: breadcrumpsService.liens,
-            titreSujet: sujet.titre,
-            sujet: sujet,
-            sujetEnEdition: true,
-            peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne]
+        titreSujet: sujet.titre,
+        sujet: sujet,
+        sujetEnEdition: true,
+        peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
+        peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne]
   }
 
   /**
@@ -158,10 +178,10 @@ class SujetController {
       return
     }
     render(view: "editeProprietes", model: [liens: breadcrumpsService.liens,
-            sujet: sujet,
-            typesSujet: sujetService.getAllSujetTypes(),
-            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
+        sujet: sujet,
+        typesSujet: sujetService.getAllSujetTypes(),
+        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
   }
 
   /**
@@ -172,11 +192,11 @@ class SujetController {
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
     [liens: breadcrumpsService.liens,
-            sujet: sujet,
-            peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne]
+        sujet: sujet,
+        peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
+        peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne]
   }
 
   /**
@@ -203,18 +223,18 @@ class SujetController {
     if (!sujet.hasErrors()) {
       flash.messageCode = "sujet.partage.succes"
       def ct = sujet.copyrightsType
-      flash.messageArgs = [ct.logo,ct.presentation, ct.code ]
+      flash.messageArgs = [ct.logo, ct.presentation, ct.code]
       redirect(action: 'edite', id: sujet.id)
       return
     }
     render(view: '/sujet/edite', model: [liens: breadcrumpsService.liens,
-            titreSujet: sujet.titre,
-            sujet: sujet,
-            sujetEnEdition: true,
-            peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-            peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne])
+        titreSujet: sujet.titre,
+        sujet: sujet,
+        sujetEnEdition: true,
+        peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
+        peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne])
 
   }
 
@@ -226,7 +246,7 @@ class SujetController {
     Sujet sujet = Sujet.get(params.id)
     sujetService.supprimeSujet(sujet, personne)
     redirect(action: "mesSujets",
-             params: [bcInit: true])
+        params: [bcInit: true])
 
   }
 
@@ -239,11 +259,11 @@ class SujetController {
     Sujet sujet = Sujet.get(params.id)
     Copie copie = copieService.getCopieTestForSujetAndPersonne(sujet, personne)
     [liens: breadcrumpsService.liens,
-            copie: copie,
-            afficheCorrection: false,
-            sujet: sujet,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne]
+        copie: copie,
+        afficheCorrection: false,
+        sujet: sujet,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: personne]
   }
 
   /**
@@ -277,16 +297,16 @@ class SujetController {
     bindData(reponsesCopie, params, "reponsesCopie")
     Personne eleve = authenticatedPersonne
     copieService.updateCopieRemiseForListeReponsesCopie(copie,
-                                                        reponsesCopie.listeReponses,
-                                                        eleve)
+        reponsesCopie.listeReponses,
+        eleve)
     request.messageCode = "copie.remise.succes"
 
     render(view: '/sujet/teste', model: [liens: breadcrumpsService.liens,
-            copie: copie,
-            afficheCorrection: true,
-            sujet: copie.sujet,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: eleve])
+        copie: copie,
+        afficheCorrection: true,
+        sujet: copie.sujet,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: eleve])
   }
 
   /**
@@ -310,19 +330,19 @@ class SujetController {
     bindData(reponsesCopie, params, "reponsesCopie")
     Personne eleve = authenticatedPersonne
     copieService.updateCopieForListeReponsesCopie(copie,
-                                                  reponsesCopie.listeReponses,
-                                                  eleve)
+        reponsesCopie.listeReponses,
+        eleve)
 
     if (request.xhr) {
-      render copie.dateEnregistrement?.format(message(code:'default.date.format'))
+      render copie.dateEnregistrement?.format(message(code: 'default.date.format'))
     } else {
       request.messageCode = "copie.enregistre.succes"
       render(view: '/sujet/teste', model: [liens: breadcrumpsService.liens,
-              copie: copie,
-              afficheCorrection: copie.dateRemise,
-              sujet: copie.sujet,
-              artefactHelper: artefactAutorisationService,
-              utilisateur: eleve])
+          copie: copie,
+          afficheCorrection: copie.dateRemise,
+          sujet: copie.sujet,
+          artefactHelper: artefactAutorisationService,
+          utilisateur: eleve])
     }
   }
 
@@ -335,11 +355,11 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     Sujet sujet = sujetService.supprimeQuestionFromSujet(sujetQuestion, proprietaire)
     render(view: '/sujet/edite', model: [sujet: sujet,
-            titreSujet: sujet.titre,
-            sujetEnEdition: true,
-            liens: breadcrumpsService.liens,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: proprietaire])
+        titreSujet: sujet.titre,
+        sujetEnEdition: true,
+        liens: breadcrumpsService.liens,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: proprietaire])
   }
 
 /**
@@ -351,11 +371,11 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     Sujet sujet = sujetService.inverseQuestionAvecLaPrecedente(sujetQuestion, proprietaire)
     render(view: '/sujet/edite', model: [sujet: sujet,
-            titreSujet: sujet.titre,
-            sujetEnEdition: true,
-            liens: breadcrumpsService.liens,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: proprietaire])
+        titreSujet: sujet.titre,
+        sujetEnEdition: true,
+        liens: breadcrumpsService.liens,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: proprietaire])
   }
 
   /**
@@ -367,11 +387,11 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     Sujet sujet = sujetService.inverseQuestionAvecLaSuivante(sujetQuestion, proprietaire)
     render(view: '/sujet/edite', model: [sujet: sujet,
-            titreSujet: sujet.titre,
-            sujetEnEdition: true,
-            liens: breadcrumpsService.liens,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: proprietaire])
+        titreSujet: sujet.titre,
+        sujetEnEdition: true,
+        liens: breadcrumpsService.liens,
+        artefactHelper: artefactAutorisationService,
+        utilisateur: proprietaire])
   }
 
   /**
@@ -393,9 +413,9 @@ class SujetController {
     Sujet sujet = Sujet.get(params.id)
 
     [sujet: sujet,
-            liens: breadcrumpsService.liens,
-            typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes,
-            typesQuestionSupportesPourCreation: questionService.typesQuestionsInteractionSupportesPourCreation]
+        liens: breadcrumpsService.liens,
+        typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes,
+        typesQuestionSupportesPourCreation: questionService.typesQuestionsInteractionSupportesPourCreation]
   }
 
   /**
@@ -406,19 +426,19 @@ class SujetController {
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
     def modaliteActivite = new ModaliteActivite(enseignant: personne,
-                                                sujet: sujet)
+        sujet: sujet)
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     def etablissements = profilScolariteService.findEtablissementsForPersonne(personne)
     def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
     render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
-            etablissements: etablissements,
-            niveaux: niveaux,
-            afficheLienCreationDevoir:false,
-            afficheLienCreationActivite:false,
-            afficheActiviteCreee: false,
-            afficheDevoirCree: false,
-            modaliteActivite: modaliteActivite,
-            proprietesScolarite: proprietesScolarite])
+        etablissements: etablissements,
+        niveaux: niveaux,
+        afficheLienCreationDevoir: false,
+        afficheLienCreationActivite: false,
+        afficheActiviteCreee: false,
+        afficheDevoirCree: false,
+        modaliteActivite: modaliteActivite,
+        proprietesScolarite: proprietesScolarite])
   }
 
   /**
@@ -434,8 +454,8 @@ class SujetController {
       def points = pointsCommand.update_value
       // met à jour
       sujetService.updatePointsForQuestion(points,
-                                           sujetQuestion,
-                                           authenticatedPersonne)
+          sujetQuestion,
+          authenticatedPersonne)
       render NumberUtils.formatFloat(points)
     } catch (Exception e) {
       log.info(e.message)
@@ -447,36 +467,75 @@ class SujetController {
    * Action pour exporter un sujet en XML.
    * @return
    */
-  def exporter() {
-    def sujet = Sujet.get(params.id)
-    def xml = sujet ? moodleQuizExporterService.toMoodleQuiz(sujet) :
-              message(code: 'xml.export.sujet.inexistant', args: [params.id])
-    response.setHeader("Content-disposition", "attachment; filename=export.xml")
-    render(text: xml, contentType: "text/xml", encoding: "UTF-8")
+  def exporter(String format) {
+    Sujet sujet = Sujet.get(params.id)
+
+    if (!sujet) {
+      throw new IllegalStateException(
+          "Il n'existe pas de sujet d'id '${params.id}'"
+      )
+    }
+
+    switch (format) {
+      case Format.NATIF_JSON.name():
+        JSON json = getSujetAsJson(sujet)
+        response.setHeader("Content-disposition", "attachment; filename=${ExportHelper.getFileName(sujet, Format.NATIF_JSON)}")
+
+        response.setCharacterEncoding('UTF-8')
+        response.contentType = 'application/tdbase'
+        GZIPOutputStream zipOutputStream = new GZIPOutputStream(response.outputStream)
+        json.render(new OutputStreamWriter(zipOutputStream))
+        break
+
+      case Format.MOODLE_XML.name():
+        def xml = moodleQuizExporterService.toMoodleQuiz(sujet)
+        response.setHeader("Content-disposition", "attachment; filename=export.xml")
+        render(text: xml, contentType: "text/xml", encoding: "UTF-8")
+        break
+
+      default:
+        throw new IllegalArgumentException(
+            "Le format '$format' est inconnu."
+        )
+    }
+  }
+
+  private JSON getSujetAsJson(Sujet sujet) {
+    sujet = sujetExporterService.getSujetPourExport(sujet, authenticatedPersonne)
+
+    ExportMarshallerFactory exportMarshallerFactory = new ExportMarshallerFactory()
+    ExportMarshaller exportMarshaller = exportMarshallerFactory.newInstance(attachementService)
+
+    return exportMarshaller.marshall(
+        sujet,
+        new Date(),
+        authenticatedPersonne
+    ) as JSON
   }
 
   /**
-   *
    * Action donnant accès au formulaire d'import d'un fichier moodle XML
    */
   def editeImportMoodleXML() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.importmoodlexml.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
-    [liens: breadcrumpsService.liens,
-            sujet: sujet,
-            matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-            niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)]
+    [
+        liens: breadcrumpsService.liens,
+        sujet: sujet,
+        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+    ]
 
   }
 
   /**
    * Action déclenchant l'import du fichier XML
    */
-  def importMoodleXML(ImportMoodleXmlCommand importMoodleXmlCommand) {
-    Sujet sujet = Sujet.get(importMoodleXmlCommand.sujetId)
-    Matiere matiere = Matiere.get(importMoodleXmlCommand.matiereId)
-    Niveau niveau = Niveau.get(importMoodleXmlCommand.niveauId)
+  def importMoodleXML(ImportDansSujetCommand importCommand) {
+    Sujet sujet = Sujet.get(importCommand.sujetId)
+    Matiere matiere = Matiere.get(importCommand.matiereId)
+    Niveau niveau = Niveau.get(importCommand.niveauId)
     Personne proprietaire = authenticatedPersonne
     MultipartFile fichier = request.getFile("fichierImport")
     def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
@@ -494,12 +553,13 @@ class SujetController {
     if (importSuccess) {
       try {
         MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(fichier.bytes,
-                                                                                   sujet,
-                                                                                   matiere,
-                                                                                   niveau,
-                                                                                   proprietaire)
+            sujet,
+            matiere,
+            niveau,
+            proprietaire)
         flash.report = report
       } catch (Exception e) {
+        log.error("Une erreur s'est produite durant l'import du quizz Moodle", e)
         flash.errorMessageCode = e.message
         importSuccess = false
       }
@@ -519,9 +579,141 @@ class SujetController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.rapportmoodlexml.titre"))
   }
 
+  /**
+   * Action donnant accès au formulaire d'import natif eliot-tdbase d'une question
+   */
+  def editeImportQuestionNatifTdBase() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.question.libelle"))
+    Sujet sujet = Sujet.get(params.id)
+    Personne proprietaire = authenticatedPersonne
+    [
+        liens: breadcrumpsService.liens,
+        sujet: sujet,
+        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+    ]
+  }
+
+  /**
+   * Action déclenchant l'import du fichier question JSON au format natif eliot-tdbase
+   * dans un sujet
+   */
+  def importQuestionNatifTdBase(ImportDansSujetCommand importCommand) {
+    Sujet sujet = Sujet.load(importCommand.sujetId)
+    Personne proprietaire = authenticatedPersonne
+    MultipartFile fichier = request.getFile("fichierImport")
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    boolean importSuccess = true
+    if (!fichier || fichier.isEmpty()) {
+      flash.errorMessageCode = "question.document.fichier.vide"
+      importSuccess = false
+    } else if (!fichier.name) {
+      flash.errorMessageCode = "question.document.fichier.nom.null"
+      importSuccess = false
+    } else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+      flash.errorMessageCode = "question.document.fichier.tropgros"
+      importSuccess = false
+    }
+    if (importSuccess) {
+      try {
+        questionImporterService.importeQuestion(
+            ExportMarshaller.parse(
+                JSON.parse(
+                    new GZIPInputStream(
+                        new ByteArrayInputStream(fichier.bytes)
+                    ),
+                    'UTF-8'
+                )
+            ).question,
+            sujet,
+            proprietaire,
+            new ReferentielEliot(
+                matiere: Matiere.load(importCommand.matiereId),
+                niveau: Niveau.load(importCommand.niveauId)
+            )
+        )
+      } catch (Exception e) {
+        log.error("Une erreur s'est produite durant l'import de la question", e)
+        flash.errorMessageCode = "Format de fichier incorrect (cause: ${e.message})"
+        importSuccess = false
+      }
+    }
+    flash.liens = breadcrumpsService.liens
+    if (importSuccess) {
+      flash.messageCode = "La question a été correctement importée."
+      redirect(action: 'edite', id: sujet.id)
+    } else {
+      redirect(action: 'editeImportQuestionNatifTdBase', id: sujet.id)
+    }
+  }
+
+  /**
+   * Action donnant accès au formulaire d'import natif eliot-tdbase d'un sujet
+   */
+  def editeImportSujetNatifTdBase() {
+    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.sujet.libelle"))
+    Personne proprietaire = authenticatedPersonne
+    [
+        liens: breadcrumpsService.liens,
+        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+    ]
+  }
+
+  /**
+   * Action déclenchant l'import du fichier sujet JSON au format natif eliot-tdbase
+   */
+  def importSujetNatifTdBase(Long matiereId, Long niveauId) {
+    Personne proprietaire = authenticatedPersonne
+    MultipartFile fichier = request.getFile("fichierImport")
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    boolean importSuccess = true
+    if (!fichier || fichier.isEmpty()) {
+      flash.errorMessageCode = "question.document.fichier.vide"
+      importSuccess = false
+    } else if (!fichier.name) {
+      flash.errorMessageCode = "question.document.fichier.nom.null"
+      importSuccess = false
+    } else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+      flash.errorMessageCode = "question.document.fichier.tropgros"
+      importSuccess = false
+    }
+
+    Sujet sujet = null
+    if (importSuccess) {
+      try {
+        sujet = sujetImporterService.importeSujet(
+            ExportMarshaller.parse(
+                JSON.parse(
+                    new GZIPInputStream(
+                        new ByteArrayInputStream(fichier.bytes)
+                    ),
+                    'UTF-8'
+                )
+            ).sujet,
+            proprietaire,
+            new ReferentielEliot(
+                matiere: Matiere.load(matiereId),
+                niveau: Niveau.load(niveauId)
+            )
+        )
+      } catch (Exception e) {
+        log.error("Une erreur s'est produite durant l'import du sujet", e)
+        flash.errorMessageCode = "Format de fichier incorrect (cause: ${e.message})"
+        importSuccess = false
+      }
+    }
+    flash.liens = breadcrumpsService.liens
+    if (importSuccess) {
+      flash.messageCode = "Le sujet a été correctement importé."
+      redirect(action: 'edite', id: sujet.id)
+    } else {
+      redirect(action: 'editeImportSujetNatifTdBase')
+    }
+  }
 }
 
-class ImportMoodleXmlCommand {
+class ImportDansSujetCommand {
   Long sujetId
   Long matiereId
   Long niveauId
@@ -544,11 +736,11 @@ class RechercheSujetCommand {
 
   Map toParams() {
     [patternTitre: patternTitre,
-            patternAuteur: patternAuteur,
-            patternPresentation: patternPresentation,
-            matiereId: matiereId,
-            typeId: typeId,
-            niveauId: niveauId]
+        patternAuteur: patternAuteur,
+        patternPresentation: patternPresentation,
+        matiereId: matiereId,
+        typeId: typeId,
+        niveauId: niveauId]
   }
 
 }

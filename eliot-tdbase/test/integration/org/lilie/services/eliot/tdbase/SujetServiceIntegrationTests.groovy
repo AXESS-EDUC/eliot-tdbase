@@ -1,6 +1,5 @@
 package org.lilie.services.eliot.tdbase
 
-import org.hibernate.SessionFactory
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
@@ -50,7 +49,6 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
   Utilisateur utilisateur2
   Personne personne2
   StructureEnseignement struct1ere
-  SessionFactory sessionFactory
 
   TdBaseInitialisationTestService tdBaseInitialisationTestService
   SujetService sujetService
@@ -89,19 +87,19 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
 
   void testCreateSujetWithCreateOrUpdateSujet() {
 
-      Sujet sujet = sujetService.updateProprietes(new Sujet(),[titre: SUJET_2_TITRE],personne1)
-      assertNotNull(sujet)
-      if (sujet.hasErrors()) {
-        log.error(sujet.errors.allErrors.toListString())
-      }
-      assertFalse(sujet.hasErrors())
-
-      assertEquals(personne1, sujet.proprietaire)
-      assertFalse(sujet.accesPublic)
-      assertFalse(sujet.accesSequentiel)
-      assertFalse(sujet.ordreQuestionsAleatoire)
-      assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
+    Sujet sujet = sujetService.updateProprietes(new Sujet(), [titre: SUJET_2_TITRE], personne1)
+    assertNotNull(sujet)
+    if (sujet.hasErrors()) {
+      log.error(sujet.errors.allErrors.toListString())
     }
+    assertFalse(sujet.hasErrors())
+
+    assertEquals(personne1, sujet.proprietaire)
+    assertFalse(sujet.accesPublic)
+    assertFalse(sujet.accesSequentiel)
+    assertFalse(sujet.ordreQuestionsAleatoire)
+    assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
+  }
 
   void testFindSujetsForProprietaire() {
     Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
@@ -126,29 +124,36 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
 
 
     def res = sujetService.findSujets(personne2, null, null,
-                                      null, null, null, null)
+        null, null, null, null)
 
     assertEquals(0, res.size())
 
     res = sujetService.findSujets(personne1, null, null,
-                                  null, null, null, null)
+        null, null, null, null)
 
     assertEquals(1, res.size())
 
     sujetService.updateProprietes(sujet1, [publie: true], personne1)
     res = sujetService.findSujets(personne2, null, null,
-                                  null, null, null, null)
+        null, null, null, null)
 
     assertEquals(1, res.size())
 
     // verification du fonctionnement du flag "uniquementSujetChercheurs")
-    res = sujetService.findSujets(personne2, null, null,
-                                      null, null, null, null, true)
+    res = sujetService.findSujets(
+        personne2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        true
+    )
 
     assertEquals(0, res.size())
 
     res = sujetService.findSujets(personne1, null, null,
-                                  null, null, null, null)
+        null, null, null, null)
 
     assertEquals(1, res.size())
 
@@ -156,25 +161,25 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     //
 
     def propsSujet1 = [
-            titre: "titre : Un sujet avé des accents àgravê",
-            'sujetType.id': 1
+        titre: "titre : Un sujet avé des accents àgravê",
+        'sujetType.id': 1
     ]
     sujetService.updateProprietes(sujet1, propsSujet1, personne1)
 
     res = sujetService.findSujets(personne1, "avê", null,
-                                  null, null, null, null)
+        null, null, null, null)
 
     assertEquals(1, res.size())
 
     propsSujet1 = [
-            titre: SUJET_1_TITRE,
-            presentation: "pres : Un sujet avé des accents àgravê",
-            'sujetType.id': 1
+        titre: SUJET_1_TITRE,
+        presentation: "pres : Un sujet avé des accents àgravê",
+        'sujetType.id': 1
     ]
     sujetService.updateProprietes(sujet1, propsSujet1, personne1)
 
     res = sujetService.findSujets(personne1, null, null,
-                                  "avê", null, null, null)
+        "avê", null, null, null)
 
     assertEquals(1, res.size())
 
@@ -187,14 +192,14 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     def dateDebut = now - 10
     def dateFin = now + 10
     def props = [
-            dateDebut: dateDebut,
-            dateFin: dateFin,
-            sujet: sujet1,
-            structureEnseignement: struct1ere
+        dateDebut: dateDebut,
+        dateFin: dateFin,
+        sujet: sujet1,
+        structureEnseignement: struct1ere
     ]
     ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
-            props,
-            personne1
+        props,
+        personne1
     )
     assertTrue(sujet1.estDistribue())
     modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
@@ -204,14 +209,14 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
   void testSupprimeSujet() {
     Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
     Question quest1 = questionService.createQuestion(
-            [
-                    titre: "Question 1",
-                    type: QuestionTypeEnum.Decimal.questionType,
-                    estAutonome: true
-            ],
-            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
-            personne1,
-            )
+        [
+            titre: "Question 1",
+            type: QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
     assertFalse(quest1.hasErrors())
     sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
 
@@ -227,14 +232,14 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
   void testPartageSujet() {
     Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
     Question quest1 = questionService.createQuestion(
-            [
-                    titre: "Question 1",
-                    type: QuestionTypeEnum.Decimal.questionType,
-                    estAutonome: true
-            ],
-            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
-            personne1,
-            )
+        [
+            titre: "Question 1",
+            type: QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
     assertFalse(quest1.hasErrors())
     sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
 
