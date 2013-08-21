@@ -44,6 +44,9 @@ import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.springframework.web.multipart.MultipartFile
 
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
+
 class QuestionController {
 
   static defaultAction = "recherche"
@@ -440,7 +443,7 @@ class QuestionController {
   def exporter(String format) {
 
     Question question = Question.get(params.id)
-    if(!question) {
+    if (!question) {
       throw new IllegalStateException(
           "Il n'existe pas de question d'id '${params.id}'"
       )
@@ -451,7 +454,11 @@ class QuestionController {
 
         JSON json = getQuestionAsJson(question)
         response.setHeader("Content-disposition", "attachment; filename=${ExportHelper.getFileName(question, Format.NATIF_JSON)}")
-        render(text: json.toString(false), contentType: "application/json", encoding: "UTF-8")
+
+        response.setCharacterEncoding('UTF-8')
+        response.contentType = 'application/tdbase'
+        GZIPOutputStream zipOutputStream = new GZIPOutputStream(response.outputStream)
+        json.render(new OutputStreamWriter(zipOutputStream))
         break
 
       case Format.MOODLE_XML.name():
@@ -504,7 +511,12 @@ class QuestionController {
       try {
         question = questionImporterService.importeQuestion(
             ExportMarshaller.parse(
-                JSON.parse(new ByteArrayInputStream(fichier.bytes), 'UTF-8')
+                JSON.parse(
+                    new GZIPInputStream(
+                        new ByteArrayInputStream(fichier.bytes)
+                    ),
+                    'UTF-8'
+                )
             ).question,
             null,
             proprietaire,

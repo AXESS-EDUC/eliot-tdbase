@@ -1,9 +1,11 @@
 package org.lilie.services.eliot.tdbase
 
 import grails.converters.JSON
+import org.apache.commons.io.output.WriterOutputStream
 import org.lilie.services.eliot.tdbase.importexport.ExportHelper
 import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.QuestionImporterService
+import org.lilie.services.eliot.tdbase.importexport.SujetExporterService
 import org.lilie.services.eliot.tdbase.importexport.SujetImporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
@@ -19,6 +21,10 @@ import org.lilie.services.eliot.tice.scolarite.ScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.springframework.web.multipart.MultipartFile
+
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
+import java.util.zip.ZipOutputStream
 
 class SujetController {
 
@@ -38,6 +44,7 @@ class SujetController {
   ScolariteService scolariteService
   QuestionImporterService questionImporterService
   SujetImporterService sujetImporterService
+  SujetExporterService sujetExporterService
   AttachementService attachementService
 
   /**
@@ -463,7 +470,7 @@ class SujetController {
   def exporter(String format) {
     Sujet sujet = Sujet.get(params.id)
 
-    if(!sujet) {
+    if (!sujet) {
       throw new IllegalStateException(
           "Il n'existe pas de sujet d'id '${params.id}'"
       )
@@ -473,8 +480,11 @@ class SujetController {
       case Format.NATIF_JSON.name():
         JSON json = getSujetAsJson(sujet)
         response.setHeader("Content-disposition", "attachment; filename=${ExportHelper.getFileName(sujet, Format.NATIF_JSON)}")
-        render(text: json.toString(false), contentType: "application/json", encoding: "UTF-8")
 
+        response.setCharacterEncoding('UTF-8')
+        response.contentType = 'application/tdbase'
+        GZIPOutputStream zipOutputStream = new GZIPOutputStream(response.outputStream)
+        json.render(new OutputStreamWriter(zipOutputStream))
         break
 
       case Format.MOODLE_XML.name():
@@ -491,7 +501,7 @@ class SujetController {
   }
 
   private JSON getSujetAsJson(Sujet sujet) {
-// TODO Gestion sécurité + service pour la paternité ?
+    sujet = sujetExporterService.getSujetPourExport(sujet, authenticatedPersonne)
 
     ExportMarshallerFactory exportMarshallerFactory = new ExportMarshallerFactory()
     ExportMarshaller exportMarshaller = exportMarshallerFactory.newInstance(attachementService)
@@ -608,7 +618,12 @@ class SujetController {
       try {
         questionImporterService.importeQuestion(
             ExportMarshaller.parse(
-                JSON.parse(new ByteArrayInputStream(fichier.bytes), 'UTF-8')
+                JSON.parse(
+                    new GZIPInputStream(
+                        new ByteArrayInputStream(fichier.bytes)
+                    ),
+                    'UTF-8'
+                )
             ).question,
             sujet,
             proprietaire,
@@ -659,8 +674,7 @@ class SujetController {
     } else if (!fichier.name) {
       flash.errorMessageCode = "question.document.fichier.nom.null"
       importSuccess = false
-    }
-    else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
+    } else if (fichier.size > 1024 * 1024 * maxSizeEnMega) {
       flash.errorMessageCode = "question.document.fichier.tropgros"
       importSuccess = false
     }
@@ -670,7 +684,12 @@ class SujetController {
       try {
         sujet = sujetImporterService.importeSujet(
             ExportMarshaller.parse(
-                JSON.parse(new ByteArrayInputStream(fichier.bytes), 'UTF-8')
+                JSON.parse(
+                    new GZIPInputStream(
+                        new ByteArrayInputStream(fichier.bytes)
+                    ),
+                    'UTF-8'
+                )
             ).sujet,
             proprietaire,
             new ReferentielEliot(

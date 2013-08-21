@@ -55,7 +55,7 @@ class ExportHelperSpec extends Specification {
     String fileName = ExportHelper.getFileName(artefact, Format.NATIF_JSON)
 
     expect:
-    fileName.endsWith('.tdbase.json')
+    fileName.endsWith('.tdbase')
     if(artefact instanceof Sujet) {
       fileName.startsWith(ExportHelper.TYPE_SUJET)
     }

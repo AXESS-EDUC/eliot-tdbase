@@ -43,6 +43,6 @@ class ExportHelper {
         Math.min(20, artefact.titreNormalise.size())
     )
 
-    return "${type}-${intitule}.tdbase.json"
+    return "${type}-${intitule}.tdbase"
   }
 }
