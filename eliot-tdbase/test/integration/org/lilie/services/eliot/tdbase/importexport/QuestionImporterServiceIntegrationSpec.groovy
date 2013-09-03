@@ -235,7 +235,7 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
             nom: "nom-$nom",
             typeMime: "typeMime-$nom",
             nomFichierOriginal: "nomFichierOriginal-$nom",
-            inputStream: new ByteArrayInputStream(blob.bytes)
+            bytes: blob.bytes
         )
     )
   }

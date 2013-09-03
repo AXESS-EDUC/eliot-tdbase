@@ -75,7 +75,7 @@ class AttachementService {
             typeMime: fichier.contentType,
             nom: fichier.originalFilename,
             nomFichierOriginal: fichier.originalFilename,
-            inputStream: fichier.inputStream
+            bytes: fichier.bytes
         ),
         config
     )
