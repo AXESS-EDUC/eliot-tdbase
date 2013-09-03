@@ -458,7 +458,7 @@ class QuestionController {
         response.setCharacterEncoding('UTF-8')
         response.contentType = 'application/tdbase'
         GZIPOutputStream zipOutputStream = new GZIPOutputStream(response.outputStream)
-        json.render(new OutputStreamWriter(zipOutputStream))
+        json.render(new OutputStreamWriter(zipOutputStream, 'UTF-8'))
         break
 
       case Format.MOODLE_XML.name():
