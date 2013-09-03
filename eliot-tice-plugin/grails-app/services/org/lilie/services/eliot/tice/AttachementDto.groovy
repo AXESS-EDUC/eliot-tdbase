@@ -8,5 +8,9 @@ class AttachementDto {
   String typeMime
   String nom
   String nomFichierOriginal
-  InputStream inputStream
+  byte[] bytes
+
+  InputStream getInputStream() {
+    return new ByteArrayInputStream(bytes)
+  }
 }

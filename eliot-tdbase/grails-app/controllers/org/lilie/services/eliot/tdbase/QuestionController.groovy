@@ -458,7 +458,7 @@ class QuestionController {
         response.setCharacterEncoding('UTF-8')
         response.contentType = 'application/tdbase'
         GZIPOutputStream zipOutputStream = new GZIPOutputStream(response.outputStream)
-        json.render(new OutputStreamWriter(zipOutputStream))
+        json.render(new OutputStreamWriter(zipOutputStream, 'UTF-8'))
         break
 
       case Format.MOODLE_XML.name():
@@ -478,7 +478,7 @@ class QuestionController {
    * Action donnant accès au formulaire d'import natif eliot-tdbase d'une question
    */
   def editeImportQuestionNatifTdBase() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.sujet.libelle"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.question.libelle"))
     Personne proprietaire = authenticatedPersonne
     [
         liens: breadcrumpsService.liens,

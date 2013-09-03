@@ -41,7 +41,7 @@ class ExportHelper {
     String intitule = artefact.titreNormalise.substring(
         0,
         Math.min(20, artefact.titreNormalise.size())
-    )
+    ).replace(' ', '_')
 
     return "${type}-${intitule}.tdbase"
   }

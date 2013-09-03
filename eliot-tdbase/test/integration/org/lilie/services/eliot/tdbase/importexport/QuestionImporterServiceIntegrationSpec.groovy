@@ -15,9 +15,7 @@ import org.lilie.services.eliot.tdbase.impl.open.OpenSpecification
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementDataStore
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.Attachement
@@ -57,7 +55,6 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
                                                     Boolean estInsereDansLaQuestion,
                                                     int nbQuestionAttachements) {
     given:
-    AttachementDataStore attachementDataStore = new AttachementDataStore()
     String titre = "titre"
     Question question = creeQuestion(
         titre,
@@ -238,7 +235,7 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
             nom: "nom-$nom",
             typeMime: "typeMime-$nom",
             nomFichierOriginal: "nomFichierOriginal-$nom",
-            inputStream: new ByteArrayInputStream(blob.bytes)
+            bytes: blob.bytes
         )
     )
   }

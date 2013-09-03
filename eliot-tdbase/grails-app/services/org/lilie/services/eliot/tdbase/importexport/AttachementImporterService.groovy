@@ -56,7 +56,7 @@ class AttachementImporterService {
             typeMime: attachementDto.typeMime,
             nom: attachementDto.nom,
             nomFichierOriginal: attachementDto.nomFichierOriginal,
-            inputStream: new ByteArrayInputStream(decodedBytes)
+            bytes: decodedBytes
         )
     )
   }
