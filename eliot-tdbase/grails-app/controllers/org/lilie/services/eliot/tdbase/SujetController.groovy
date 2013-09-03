@@ -552,11 +552,15 @@ class SujetController {
     }
     if (importSuccess) {
       try {
-        MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(fichier.bytes,
+        MoodleQuizImportReport report = moodleQuizImporterService.importMoodleQuiz(
+            fichier.bytes,
             sujet,
-            matiere,
-            niveau,
-            proprietaire)
+            new ReferentielEliot(
+                matiere: matiere,
+                niveau: niveau
+            ),
+            proprietaire
+        )
         flash.report = report
       } catch (Exception e) {
         log.error("Une erreur s'est produite durant l'import du quizz Moodle", e)
