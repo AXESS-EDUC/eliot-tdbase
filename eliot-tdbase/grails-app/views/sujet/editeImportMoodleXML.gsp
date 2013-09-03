@@ -56,6 +56,10 @@
   <div class="portal-form_container edite">
     <table>
       <tr>
+        <td>&nbsp;</td>
+        <td><b><g:message code="importexport.MOODLE_XML.explication.format"/></b></td>
+      </tr>
+      <tr>
         <td class="label">Mati&egrave;re&nbsp;:</td>
         <td>
           <g:select name="matiereId" value="${sujet.matiere?.id}"

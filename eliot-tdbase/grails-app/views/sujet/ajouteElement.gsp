@@ -112,15 +112,12 @@
     </g:if>
   </ul>
 
-  <h1><g:link action="editeImportMoodleXML" controller="sujet"
-              id="${sujet.id}">Importer et ajouter un quiz Moodle...</g:link></h1>
+  <h1>Importer et ajouter ...</h1>
+  <ul>
+    <li><g:link action="editeImportMoodleXML" controller="sujet" id="${sujet.id}">Un quiz Moodle</g:link></li>
+    <li><g:link action="editeImportQuestionNatifTdBase" controller="sujet" id="${sujet.id}">Un item TD Base</g:link></li>
+  </ul>
 
-  <h1>
-    <g:link action="editeImportQuestionNatifTdBase" controller="sujet" id="${sujet.id}">
-      %{-- TODO i18n --}%
-      Importer et ajouter une question eliot-tdbase
-    </g:link>
-  </h1>
 
 </div>
 
