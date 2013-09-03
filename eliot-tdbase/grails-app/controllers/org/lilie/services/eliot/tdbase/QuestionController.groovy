@@ -478,7 +478,7 @@ class QuestionController {
    * Action donnant accès au formulaire d'import natif eliot-tdbase d'une question
    */
   def editeImportQuestionNatifTdBase() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.sujet.libelle"))
+    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.question.libelle"))
     Personne proprietaire = authenticatedPersonne
     [
         liens: breadcrumpsService.liens,
