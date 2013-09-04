@@ -33,11 +33,13 @@
   <meta name="layout" content="eliot-tdbase"/>
   <r:require modules="eliot-tdbase-ui"/>
   <r:script>
+
     $(document).ready(function () {
       $('#menu-item-contributions').addClass('actif');
       initButtons();
     });
   </r:script>
+
   <title>
     <g:if test="${afficheFormulaire}">
       <g:message code="question.recherche.head.title"/>
@@ -200,21 +202,23 @@
           <g:else>
             <li>Partager</li>
           </g:else>
-          <g:each in="${Format.values()}" var="format">
-            <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, questionInstance, format)}">
-              <li>
-                <g:link
-                    action="exporter"
-                    controller="question"
-                    id="${questionInstance.id}" params="${[format: format]}">
-                  <g:message code="importexport.${format}.action.export.title"/>
-                </g:link>
-              </li>
-            </g:if>
-            <g:else>
-              <g:message code="importexport.${format}.action.export.title"/>
-            </g:else>
-          </g:each>
+
+          <g:set var="peutExporterNatifJson"
+                 value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, questionInstance, Format.NATIF_JSON)}"/>
+          <g:set var="peutExporterMoodleXml"
+                 value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, questionInstance, Format.MOODLE_XML)}"/>
+
+          <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
+            <li>
+              <g:set var="urlFormatNatifJson" value="${createLink(action: 'exporter', id: questionInstance.id, params: [format: Format.NATIF_JSON.name()])}"/>
+              <g:set var="urlFormatMoodleXml" value="${createLink(action: 'exporter', id: questionInstance.id, params: [format: Format.MOODLE_XML.name()])}"/>
+              <a href="#" onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
+            </li>
+          </g:if>
+          <g:else>
+            Exporter
+          </g:else>
+
           <li><hr/></li>
           <g:if
               test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
@@ -249,5 +253,6 @@
   </div>
 </g:else>
 
+<g:render template="../importexport/export_dialog"/>
 </body>
 </html>
