@@ -60,7 +60,7 @@ class QuestionService implements ApplicationContextAware {
    * @return le service ad-hoc pour le type de question
    */
   QuestionSpecificationService questionSpecificationServiceForQuestionType(QuestionType questionType) {
-    return (QuestionSpecificationService)applicationContext.getBean("question${questionType.code}SpecificationService")
+    return (QuestionSpecificationService) applicationContext.getBean("question${questionType.code}SpecificationService")
   }
 
   /**
@@ -89,6 +89,7 @@ class QuestionService implements ApplicationContextAware {
     } else if (question.principalAttachementFichier && !question.principalAttachementFichier.isEmpty()) {
       questionAttachementService.createPrincipalAttachementForQuestionFromMultipartFile(question.principalAttachementFichier, question)
     }
+
     // mise à jour spécification
     def specService = questionSpecificationServiceForQuestionType(question.type)
     specService.updateQuestionSpecificationForObject(question, specificationObject)

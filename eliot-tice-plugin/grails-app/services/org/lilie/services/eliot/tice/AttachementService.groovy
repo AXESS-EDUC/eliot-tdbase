@@ -63,10 +63,10 @@ class AttachementService {
       MultipartFile fichier,
       def config = ConfigurationHolder.config) {
     if (!fichier || fichier.isEmpty()) {
-      throw new IllegalArgumentException("question.document.fichier.vide")
+      throw new AttachementUploadException("question.document.fichier.vide")
     }
     if (!fichier.name) {
-      throw new IllegalArgumentException("question.document.fichier.nom.null")
+      throw new AttachementUploadException("question.document.fichier.nom.null")
     }
 
     return createAttachement(
@@ -86,7 +86,7 @@ class AttachementService {
                                 def maxSizeEnMega = 10) {
 
     if (attachementDto.taille > 1024 * 1024 * maxSizeEnMega) {
-      throw new IllegalArgumentException("question.document.fichier.tropgros")
+      throw new AttachementUploadException("question.document.fichier.tropgros")
     }
     // par defaut un nouvel attachement est marque a supprimer
     // c'est à la création d'un lien vers un item qu'il faut le
