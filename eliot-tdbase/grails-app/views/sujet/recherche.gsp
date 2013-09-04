@@ -178,18 +178,21 @@
             <li>Partager</li>
           </g:else>
 
-          <g:each in="${Format.values()}" var="format">
-            <g:if test="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, format)}">
-              <li>
-                <g:link action="exporter" id="${sujetInstance.id}"  params="${[format: format]}">
-                  <g:message code="importexport.${format}.action.export.title"/>
-                </g:link>
-              </li>
-            </g:if>
-            <g:else>
-              <li><g:message code="importexport.${format}.action.export.title"/></li>
-            </g:else>
-          </g:each>
+          <g:set var="peutExporterNatifJson"
+                 value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, Format.NATIF_JSON)}"/>
+          <g:set var="peutExporterMoodleXml"
+                 value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, Format.MOODLE_XML)}"/>
+
+          <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
+            <li>
+              <g:set var="urlFormatNatifJson" value="${createLink(action: 'exporter', id: sujetInstance.id, params: [format: Format.NATIF_JSON.name()])}"/>
+              <g:set var="urlFormatMoodleXml" value="${createLink(action: 'exporter', id: sujetInstance.id, params: [format: Format.MOODLE_XML.name()])}"/>
+              <a href="#" onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
+            </li>
+          </g:if>
+          <g:else>
+            Exporter
+          </g:else>
 
           <li><hr/></li>
           <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujetInstance)}">
@@ -226,5 +229,6 @@
   </div>
 </g:else>
 
+<g:render template="../importexport/export_dialog"/>
 </body>
 </html>

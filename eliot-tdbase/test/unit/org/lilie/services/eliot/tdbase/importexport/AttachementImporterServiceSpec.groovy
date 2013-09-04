@@ -24,9 +24,13 @@ class AttachementImporterServiceSpec extends Specification {
     attachementService = Mock(AttachementService)
     questionAttachementService = Mock(QuestionAttachementService)
 
+    def mockConfig = new ConfigObject()
+    mockConfig.eliot.fichiers.importexport.maxsize.mega = 25
+
     attachementImporterService = new AttachementImporterService(
         attachementService: attachementService,
-        questionAttachementService: questionAttachementService
+        questionAttachementService: questionAttachementService,
+        grailsApplication: [config: mockConfig]
     )
   }
 
@@ -51,13 +55,16 @@ class AttachementImporterServiceSpec extends Specification {
     attachementImporterService.importePrincipalAttachement(principalAttachementDto, question)
 
     then:
-    1 * attachementService.createAttachement {
+    1 * attachementService.createAttachement(
+        {
           it.taille == blob.size() &&
               it.typeMime == attachementDto.typeMime &&
               it.nom == attachementDto.nom &&
               it.nomFichierOriginal == attachementDto.nomFichierOriginal &&
               it.inputStream
-        } >> attachement
+        },
+        _
+    ) >> attachement
 
     then:
     1 * questionAttachementService.createPrincipalAttachementForQuestion(
@@ -84,7 +91,7 @@ class AttachementImporterServiceSpec extends Specification {
     )
 
     then:
-    nbAttachement * attachementService.createAttachement(_)
+    nbAttachement * attachementService.createAttachement(_, _)
     nbAttachement * questionAttachementService.createAttachementForQuestion(
         _,
         question,

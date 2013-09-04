@@ -37,6 +37,7 @@ import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarsh
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tice.AttachementService
+import org.lilie.services.eliot.tice.AttachementUploadException
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
@@ -69,8 +70,10 @@ class QuestionController {
    */
   def nouvelle() {
     breadcrumpsService.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
-    [liens: breadcrumpsService.liens,
-        typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation]
+    [
+        liens: breadcrumpsService.liens,
+        typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation
+    ]
   }
 
 /**
@@ -209,25 +212,53 @@ class QuestionController {
     def specifObject = getSpecificationObjectFromParams(params)
     boolean questionEnEdition = true
     Question question = Question.get(params.id)
-    if (question) {
-      questionService.updateProprietes(question, params, specifObject, personne)
-    } else {
-      question = questionService.createQuestion(params, specifObject, personne)
-      questionEnEdition = false
+
+    try {
+      if (question) {
+        questionService.updateProprietes(question, params, specifObject, personne)
+      } else {
+        question = questionService.createQuestion(params, specifObject, personne)
+        questionEnEdition = false
+      }
     }
+    catch (AttachementUploadException e) {
+
+      if(question) {
+        question.errors.reject(e.message)
+      }
+      else {
+        flash.errorMessage = g.message(code: e.message)
+
+        redirect(
+            controller: 'question',
+            action: 'edite',
+            params: [
+                creation: true,
+                questionTypeId: params.type.id
+            ]
+        )
+        return
+      }
+    }
+
     Sujet sujet = null
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId as Long)
     }
     if (question.hasErrors()) {
-      render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
-          question: question,
-          matieres: profilScolariteService.findMatieresForPersonne(personne),
-          niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-          sujet: sujet,
-          questionEnEdition: questionEnEdition,
-          artefactHelper: artefactAutorisationService,
-          utilisateur: personne])
+      render(
+          view: '/question/edite',
+          model: [
+              liens: breadcrumpsService.liens,
+              question: question,
+              matieres: profilScolariteService.findMatieresForPersonne(personne),
+              niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+              sujet: sujet,
+              questionEnEdition: questionEnEdition,
+              artefactHelper: artefactAutorisationService,
+              utilisateur: personne
+          ]
+      )
     } else {
       flash.messageCode = "question.enregistre.succes"
       def params = [:]
@@ -483,7 +514,9 @@ class QuestionController {
     [
         liens: breadcrumpsService.liens,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
+        fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
+          grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     ]
   }
 
@@ -493,7 +526,9 @@ class QuestionController {
   def importQuestionNatifTdBase(Long matiereId, Long niveauId) {
     Personne proprietaire = authenticatedPersonne
     MultipartFile fichier = request.getFile("fichierImport")
-    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
+      grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
+
     boolean importSuccess = true
     if (!fichier || fichier.isEmpty()) {
       flash.errorMessageCode = "question.document.fichier.vide"

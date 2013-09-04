@@ -203,6 +203,7 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
         ),
         personne
     )
+    assert !question.hasErrors()
 
     if (hasPrincipalAttachement) {
       Attachement attachement = creeAttachement("principalAttachement")

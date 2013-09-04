@@ -82,7 +82,7 @@
       <tr>
         <td class="label">Fichier&nbsp;:</td>
         <td id="fichier_import_td">
-          <input type="file" name="fichierImport">
+          <input type="file" name="fichierImport"> (max. ${fichierMaxSize}Mo)
         </td>
       </tr>
     </table>
