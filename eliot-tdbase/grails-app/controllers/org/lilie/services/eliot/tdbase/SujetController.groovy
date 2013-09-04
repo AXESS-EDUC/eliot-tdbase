@@ -524,7 +524,9 @@ class SujetController {
         liens: breadcrumpsService.liens,
         sujet: sujet,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
+        fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
+          grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     ]
 
   }
@@ -538,7 +540,9 @@ class SujetController {
     Niveau niveau = Niveau.get(importCommand.niveauId)
     Personne proprietaire = authenticatedPersonne
     MultipartFile fichier = request.getFile("fichierImport")
-    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
+      grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
+
     boolean importSuccess = true
     if (!fichier || fichier.isEmpty()) {
       flash.errorMessageCode = "question.document.fichier.vide"
@@ -594,7 +598,9 @@ class SujetController {
         liens: breadcrumpsService.liens,
         sujet: sujet,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
+        fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
+          grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     ]
   }
 
@@ -606,7 +612,9 @@ class SujetController {
     Sujet sujet = Sujet.load(importCommand.sujetId)
     Personne proprietaire = authenticatedPersonne
     MultipartFile fichier = request.getFile("fichierImport")
-    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
+      grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
+
     boolean importSuccess = true
     if (!fichier || fichier.isEmpty()) {
       flash.errorMessageCode = "question.document.fichier.vide"
@@ -660,7 +668,9 @@ class SujetController {
     [
         liens: breadcrumpsService.liens,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)
+        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
+        fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
+          grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     ]
   }
 
@@ -670,7 +680,9 @@ class SujetController {
   def importSujetNatifTdBase(Long matiereId, Long niveauId) {
     Personne proprietaire = authenticatedPersonne
     MultipartFile fichier = request.getFile("fichierImport")
-    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.maxsize.mega
+    def maxSizeEnMega = grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
+      grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
+
     boolean importSuccess = true
     if (!fichier || fichier.isEmpty()) {
       flash.errorMessageCode = "question.document.fichier.vide"

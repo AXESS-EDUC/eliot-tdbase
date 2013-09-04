@@ -19,6 +19,7 @@ class AttachementImporterService {
 
   AttachementService attachementService
   QuestionAttachementService questionAttachementService
+  def grailsApplication
 
   void importePrincipalAttachement(PrincipalAttachementDto principalAttachementDto,
                                    Question question) {
@@ -57,7 +58,8 @@ class AttachementImporterService {
             nom: attachementDto.nom,
             nomFichierOriginal: attachementDto.nomFichierOriginal,
             bytes: decodedBytes
-        )
+        ),
+          grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     )
   }
 

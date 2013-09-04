@@ -77,14 +77,14 @@ class AttachementService {
             nomFichierOriginal: fichier.originalFilename,
             bytes: fichier.bytes
         ),
-        config
+          config.eliot.fichiers.maxsize.mega ?: 10
     )
   }
 
   @Transactional
   Attachement createAttachement(AttachementDto attachementDto,
-                                def config = ConfigurationHolder.config) {
-    def maxSizeEnMega = config.eliot.fichiers.maxsize.mega ?: 10
+                                def maxSizeEnMega = 10) {
+
     if (attachementDto.taille > 1024 * 1024 * maxSizeEnMega) {
       throw new IllegalArgumentException("question.document.fichier.tropgros")
     }

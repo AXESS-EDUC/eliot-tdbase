@@ -282,6 +282,11 @@ environments {
     // configuration de la racine de l'espace de fichier
     eliot.fichiers.racine = '/Users/Shared/eliot-root'
     eliot.fichiers.maxsize.mega = 10
+
+    // Cette variable permet de définir une taille limite différente pour les fichiers d'import (format natif & Moodle)
+    // Si cette variable n'est pas définie, la variable eliot.fichiers.maxsize.mega sera utilisée
+    eliot.fichiers.importexport.maxsize.mega = 25
+
     // configuration des liens du menu portail et des annonces portail
     eliot.portail.menu.affichage = true
     eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
