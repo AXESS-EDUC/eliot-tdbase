@@ -92,7 +92,7 @@ class QuestionService implements ApplicationContextAware {
     // mise à jour spécification
     def specService = questionSpecificationServiceForQuestionType(question.type)
     specService.updateQuestionSpecificationForObject(question, specificationObject)
-    question.save(flush: true, failOnError: true)
+    question.save(flush: true)
     return question
   }
 

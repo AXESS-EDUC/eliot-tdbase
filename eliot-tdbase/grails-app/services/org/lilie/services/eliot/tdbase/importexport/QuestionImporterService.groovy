@@ -109,6 +109,7 @@ class QuestionImporterService implements ApplicationContextAware {
         objSpec,
         importeur
     )
+    assert !question.hasErrors()
 
     if (sujet) {
       sujetService.insertQuestionInSujet(
