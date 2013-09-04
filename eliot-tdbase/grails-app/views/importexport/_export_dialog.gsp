@@ -42,10 +42,11 @@
     $('#export-dialog').dialog('open');
   }
 </r:script>
-<div id="export-dialog" title="Exporter au format ..." style="display: none">
+<div id="export-dialog" title="Export" style="display: none">
   <form id="export-dialog-form">
     <g:hiddenField id="url-format-natif-json" name="url-format-natif-json"/>
     <g:hiddenField id="url-format-moodle-xml" name="url-format-moodle-xml"/>
+    <p>Indiquez le format de fichier à exporter :</p>
     <table>
       <tr>
         <td><g:radio id="radio-format-NatifJson" name="format-export" value="${Format.NATIF_JSON.name()}"
