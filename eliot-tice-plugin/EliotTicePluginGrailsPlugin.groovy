@@ -103,7 +103,7 @@ class EliotTicePluginGrailsPlugin {
       SpringSecurityUtils.registerProvider 'preauthAuthProvider'
       SpringSecurityUtils.registerFilter 'casContainerLilieAuthenticationFilter', SecurityFilterPosition.PRE_AUTH_FILTER
 
-      def continueOnUnsuccessfulAuthentication =  conf.eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication ?: false
+      def continueOnUnsuccessfulAuthentication = conf.eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication ?: false
 
       casContainerLilieAuthenticationFilter(CasContainerLilieAuthenticationFilter) {
         principalSessionKey = "ENT_USERID"
@@ -141,14 +141,16 @@ class EliotTicePluginGrailsPlugin {
     def prefixUri = conf.eliot.webservices.rest.client.textes.uriPrefix
     def conTimeout = conf.eliot.webservices.rest.client.textes.connexionTimeout ?: 15000
 
-    restClientForTextes(RestClient) {
-      authBasicUser = user
-      authBasicPassword = password
-      urlServer = url
-      uriPrefix = prefixUri
-      connexionTimeout = conTimeout
-      restOperationDirectory = ref("restOperationDirectory")
-      println "Auth Basic user for textes Web services client REST : ${user}"
+    if (user) { // Note: un paramètre d'activation de la fonctionnalité serait plus explicite - ici l'activation est ramenée à l'existence de la configuration du login
+      restClientForTextes(RestClient) {
+        authBasicUser = user
+        authBasicPassword = password
+        urlServer = url
+        uriPrefix = prefixUri
+        connexionTimeout = conTimeout
+        restOperationDirectory = ref("restOperationDirectory")
+        println "Auth Basic user for textes Web services client REST : ${user}"
+      }
     }
 
     def userNotes = conf.eliot.webservices.rest.client.notes.user
@@ -157,14 +159,16 @@ class EliotTicePluginGrailsPlugin {
     def prefixUriNotes = conf.eliot.webservices.rest.client.notes.uriPrefix
     def conTimeoutNotes = conf.eliot.webservices.rest.client.notes.connexionTimeout ?: 15000
 
-    restClientForNotes(RestClient) {
-      authBasicUser = userNotes
-      authBasicPassword = passwordNotes
-      urlServer = urlNotes
-      uriPrefix = prefixUriNotes
-      connexionTimeout = conTimeoutNotes
-      restOperationDirectory = ref("restOperationDirectory")
-      println "Auth Basic user for Notes Web services client REST : ${userNotes}"
+    if (userNotes) { // Note: un paramètre d'activation de la fonctionnalité serait plus explicite - ici l'activation est ramenée à l'existence de la configuration du login
+      restClientForNotes(RestClient) {
+        authBasicUser = userNotes
+        authBasicPassword = passwordNotes
+        urlServer = urlNotes
+        uriPrefix = prefixUriNotes
+        connexionTimeout = conTimeoutNotes
+        restOperationDirectory = ref("restOperationDirectory")
+        println "Auth Basic user for Notes Web services client REST : ${userNotes}"
+      }
     }
 
     // configure la gestion d'EliotUrlProvider
@@ -202,7 +206,7 @@ class EliotTicePluginGrailsPlugin {
       throw new IllegalStateException(message)
     }
     UrlServeurResolutionEnum urlServeurResolEnum = UrlServeurResolutionEnum.valueOf(UrlServeurResolutionEnum.class,
-                                                                                    urlResolutionMode.toUpperCase())
+        urlResolutionMode.toUpperCase())
     String urlServeurFromConfig = null
     if (urlServeurResolEnum == UrlServeurResolutionEnum.CONFIGURATION) {
       if (conf.eliot."${applicationEnum.code}".urlServeur) {

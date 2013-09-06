@@ -47,9 +47,13 @@ eliot-tdbase.esproj
 *.ipr
 *.iws
 *.ser
+atlassian-ide-plugin.xml
+eliot-tdbase/CodeNarcReport.html
 
 .DS_Store
 
 # config externe locale #
 #########################
 config
+
+
