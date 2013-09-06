@@ -11,8 +11,15 @@ TDBase a été développé à l'aide du framework propriétaire Apple WebObjects
 
 **TD Base** est développé à présent à l'aide du framework Open Source [Grails](http://www.grails.org) par la société [Ticetime](http://www.ticetime.com).
 
-Les committeurs actuels sont :
+Une version de démonstration de **TD Base** est accessible [ici](http://demo.ticetime.com/eliot-tdbase/).
+
+Les contributeurs actifs sont :
 
 -	[Frank Silvestre](http://fr.linkedin.com/pub/franck-silvestre/22/737/107)
+- [John Tranier](http://www.linkedin.com/pub/john-tranier/7b/7b3/295)
+
+
+Précédents contributeurs :
+
 -	[Bert Poller](http://www.linkedin.com/pub/bert-poller/21/5b8/880)
-- 	[Stéphane Sigur](http://www.linkedin.com/pub/st%C3%A9phane-sigur/2b/125/601)
+- [Stéphane Sigur](http://www.linkedin.com/pub/st%C3%A9phane-sigur/2b/125/601)
