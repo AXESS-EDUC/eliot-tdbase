@@ -21,10 +21,8 @@ import org.lilie.services.eliot.tice.scolarite.ScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.springframework.web.multipart.MultipartFile
-
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
-import java.util.zip.ZipOutputStream
 
 class SujetController {
 
