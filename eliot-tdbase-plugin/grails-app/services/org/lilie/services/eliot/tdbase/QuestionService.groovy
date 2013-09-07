@@ -93,6 +93,12 @@ class QuestionService implements ApplicationContextAware {
     // mise à jour spécification
     def specService = questionSpecificationServiceForQuestionType(question.type)
     specService.updateQuestionSpecificationForObject(question, specificationObject)
+
+    // La paternité n'est initialisée que si elle n'est pas fournie dans les propriétés de création
+    if(!proprietes.containsKey('paternite')) {
+      addPaterniteItem(proprietaire, question)
+    }
+
     question.save(flush: true)
     return question
   }
@@ -113,6 +119,10 @@ class QuestionService implements ApplicationContextAware {
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
     Question questionCopie = recopieQuestion(question, proprietaire)
+
+    if(!sujetService.isDernierAuteur(sujet, proprietaire)) {
+      sujetService.addPaterniteItem(proprietaire, sujet)
+    }
 
     sujetQuestion.question = questionCopie
     sujetQuestion.save()
@@ -142,8 +152,14 @@ class QuestionService implements ApplicationContextAware {
         type: question.type,
         matiere: question.matiere,
         niveau: question.niveau,
-        principalAttachement: question.principalAttachement)
+        principalAttachement: question.principalAttachement,
+        paternite: question.paternite
+    )
     questionCopie.save()
+
+    if(!isDernierAuteur(questionCopie, proprietaire)) {
+      addPaterniteItem(proprietaire, questionCopie)
+    }
 
     // recopie les attachements (on ne duplique pas les attachements)
     question.questionAttachements.each { QuestionAttachement questionAttachement ->
@@ -169,43 +185,47 @@ class QuestionService implements ApplicationContextAware {
    * @return la question
    */
   @Transactional
-  Question updateProprietes(Question laQuestion,
+  Question updateProprietes(Question question,
                             Map proprietes,
                             def specificationObject,
                             Personne proprietaire) {
 
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, laQuestion))
+    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, question))
 
-    if (proprietes.titre && laQuestion.titre != proprietes.titre) {
-      laQuestion.titreNormalise = StringUtils.normalise(proprietes.titre)
+    if(!isDernierAuteur(question, proprietaire)) {
+      addPaterniteItem(proprietaire, question)
     }
 
-    laQuestion.properties = proprietes
-    laQuestion.principalAttachementFichier = proprietes.principalAttachementFichier
+    if (proprietes.titre && question.titre != proprietes.titre) {
+      question.titreNormalise = StringUtils.normalise(proprietes.titre)
+    }
+
+    question.properties = proprietes
+    question.principalAttachementFichier = proprietes.principalAttachementFichier
     // mise à jour de l'attachement
-    if (laQuestion.principalAttachementId) {
-      if (laQuestion.principalAttachementId != laQuestion.principalAttachement?.id) {
-        if (laQuestion.principalAttachement) {
-          questionAttachementService.deletePrincipalAttachementForQuestion(laQuestion)
+    if (question.principalAttachementId) {
+      if (question.principalAttachementId != question.principalAttachement?.id) {
+        if (question.principalAttachement) {
+          questionAttachementService.deletePrincipalAttachementForQuestion(question)
         }
-        def attachement = Attachement.get(laQuestion.principalAttachementId)
-        questionAttachementService.createPrincipalAttachementForQuestion(attachement, laQuestion)
+        def attachement = Attachement.get(question.principalAttachementId)
+        questionAttachementService.createPrincipalAttachementForQuestion(attachement, question)
       }
-    } else if (laQuestion.principalAttachementFichier) {
-      if (laQuestion.principalAttachement) {
-        questionAttachementService.deletePrincipalAttachementForQuestion(laQuestion)
+    } else if (question.principalAttachementFichier) {
+      if (question.principalAttachement) {
+        questionAttachementService.deletePrincipalAttachementForQuestion(question)
       }
-      if (!laQuestion.principalAttachementFichier.isEmpty()) {
-        questionAttachementService.createPrincipalAttachementForQuestionFromMultipartFile(laQuestion.principalAttachementFichier,
-            laQuestion)
+      if (!question.principalAttachementFichier.isEmpty()) {
+        questionAttachementService.createPrincipalAttachementForQuestionFromMultipartFile(question.principalAttachementFichier,
+            question)
       }
     }
 
     // mise à jour de la spécification
-    def specService = questionSpecificationServiceForQuestionType(laQuestion.type)
-    specService.updateQuestionSpecificationForObject(laQuestion, specificationObject)
-    laQuestion.save(flush: true)
-    return laQuestion
+    def specService = questionSpecificationServiceForQuestionType(question.type)
+    specService.updateQuestionSpecificationForObject(question, specificationObject)
+    question.save(flush: true)
+    return question
   }
 
 /**
@@ -276,7 +296,8 @@ class QuestionService implements ApplicationContextAware {
   def partageQuestion(Question question, Personne partageur) {
     assert (artefactAutorisationService.utilisateurPeutPartageArtefact(partageur, question))
     CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
-    Publication publication = new Publication(dateDebut: new Date(),
+    Publication publication = new Publication(
+        dateDebut: new Date(),
         copyrightsType: ct)
     publication.save()
     question.copyrightsType = ct
@@ -284,40 +305,44 @@ class QuestionService implements ApplicationContextAware {
     question.publie = true
 
     // mise à jour de la paternite
-    addPaterniteItem(partageur, ct, publication.dateDebut, question)
-  }
-
-  /**
-   * Marque la paternité de la question (ajoute un PaterniteItem)
-   * Méthode invoquée avant d'effectuer un export
-   * @param question
-   * @param partageur
-   */
-  @Transactional
-  void marquePaternite(Question question, Personne partageur) {
-    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(partageur, question))
-
-    CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
-    addPaterniteItem(partageur, ct, new Date(), question)
+    addPaterniteItem(partageur, question, publication.dateDebut)
   }
 
   private void addPaterniteItem(Personne partageur,
-                                CopyrightsType ct,
-                                Date datePublication,
-                                Question laQuestion) {
+                                Question question,
+                                Date datePublication = null) {
+    CopyrightsType ct = question.copyrightsType
+
     PaterniteItem paterniteItem = new PaterniteItem(auteur: "${partageur.nomAffichage}",
         copyrightDescription: "${ct.presentation}",
         copyrighLien: "${ct.lien}",
         logoLien: ct.logo,
         datePublication: datePublication,
         oeuvreEnCours: true)
-    Paternite paternite = new Paternite(laQuestion.paternite)
+    Paternite paternite = new Paternite(question.paternite)
     paternite.paterniteItems.each {
       it.oeuvreEnCours = false
     }
     paternite.addPaterniteItem(paterniteItem)
-    laQuestion.paternite = paternite.toString()
-    laQuestion.save()
+    question.paternite = paternite.toString()
+    question.save()
+  }
+
+  /**
+   * Teste si un utilisateur est le dernier auteur d'un sujet (i.e. le dernier à
+   * avoir modifié le sujet)
+   * @param sujet
+   * @param utilisateur
+   * @return
+   */
+  private boolean isDernierAuteur(Question question, Personne utilisateur) {
+    Paternite paternite = new Paternite(question.paternite)
+
+    if(!paternite.paterniteItems) {
+      return false
+    }
+
+    return paternite.paterniteItems.last()?.auteur == utilisateur.nomAffichage
   }
 
   /**

@@ -2,6 +2,7 @@ package org.lilie.services.eliot.tdbase.importexport
 
 import grails.converters.JSON
 import grails.plugin.spock.IntegrationSpec
+import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionAttachement
 import org.lilie.services.eliot.tdbase.QuestionAttachementService
@@ -91,13 +92,14 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
     questionImportee.specification == question.specification
     questionImportee.specificationNormalise == question.specificationNormalise
     questionImportee.estAutonome == question.estAutonome
-    questionImportee.paternite == question.paternite
     questionImportee.versionQuestion == question.versionQuestion
     questionImportee.matiere?.id == referentielEliot?.matiere?.id
     questionImportee.niveau?.id == referentielEliot?.niveau?.id
     questionImportee.publication == null
     questionImportee.etablissement == null
     !questionImportee.publie
+    new JsonSlurper().parseText(questionImportee.paternite) ==
+        new JsonSlurper().parseText(question.paternite)
 
     if (hasPrincipalAttachement) {
       checkPrincipalAttachement(questionImportee, question)

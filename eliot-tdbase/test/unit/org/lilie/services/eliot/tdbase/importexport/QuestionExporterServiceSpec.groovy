@@ -1,9 +1,8 @@
 package org.lilie.services.eliot.tdbase.importexport
 
+import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionService
-import org.lilie.services.eliot.tdbase.Sujet
-import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import spock.lang.Specification
 
@@ -12,19 +11,19 @@ import spock.lang.Specification
  */
 class QuestionExporterServiceSpec extends Specification {
   QuestionService questionService
-  SujetService sujetService
   QuestionExporterService questionExporterService
+  ArtefactAutorisationService artefactAutorisationService
 
   def setup() {
     questionService = Mock(QuestionService)
-    sujetService = Mock(SujetService)
+    artefactAutorisationService = Mock(ArtefactAutorisationService)
     questionExporterService = new QuestionExporterService(
         questionService: questionService,
-        sujetService: sujetService
+        artefactAutorisationService: artefactAutorisationService
     )
   }
 
-  def "testGetQuestionPourExport - question atomique OK"() {
+  def "testGetQuestionPourExport - OK"() {
     given:
     Question question = new Question()
     Personne exporteur = new Personne()
@@ -33,24 +32,25 @@ class QuestionExporterServiceSpec extends Specification {
     Question questionPourExport = questionExporterService.getQuestionPourExport(question, exporteur)
 
     then:
-    1 * questionService.marquePaternite(question, exporteur)
+    1 * artefactAutorisationService.utilisateurPeutReutiliserArtefact(exporteur, question) >> true
 
     then:
     questionPourExport == question
   }
 
-  def "testGetQuestionPourExport - question composite OK"() {
+  def "testGetQuestionPourExport - erreur : artefact non réutilisable par l'utilisateur"() {
     given:
-    Question question = new Question(exercice: new Sujet())
+    Question question = new Question()
     Personne exporteur = new Personne()
 
     when:
-    Question questionPourExport = questionExporterService.getQuestionPourExport(question, exporteur)
-
-      then:
-    1 * sujetService.marquePaternite(question.exercice, exporteur)
+    questionExporterService.getQuestionPourExport(question, exporteur)
 
     then:
-    questionPourExport == question
+    1 * artefactAutorisationService.utilisateurPeutReutiliserArtefact(exporteur, question) >> false
+
+    then:
+    thrown(Error)
   }
+
 }

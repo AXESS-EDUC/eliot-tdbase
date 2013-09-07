@@ -1,5 +1,6 @@
 package org.lilie.services.eliot.tdbase.importexport
 
+import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tice.annuaire.Personne
@@ -19,9 +20,10 @@ class SujetExporterService {
   static transactional = true
 
   SujetService sujetService
+  ArtefactAutorisationService artefactAutorisationService
 
   Sujet getSujetPourExport(Sujet sujet, Personne exporteur) {
-    sujetService.marquePaternite(sujet, exporteur) // Permet aussi de vérifier le droit d'export
+    assert artefactAutorisationService.utilisateurPeutReutiliserArtefact(exporteur, sujet)
 
     // TODO fetcher les données
 

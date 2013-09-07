@@ -1,8 +1,8 @@
 package org.lilie.services.eliot.tdbase.importexport
 
+import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionService
-import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
@@ -21,17 +21,12 @@ class QuestionExporterService {
   static transactional = true
 
   QuestionService questionService
-  SujetService sujetService
+  ArtefactAutorisationService artefactAutorisationService
 
   Question getQuestionPourExport(Question question, Personne exporteur) {
-    if(question.exercice) { // Question composite
-      sujetService.marquePaternite(question.exercice, exporteur)
-    }
-    else {
-      questionService.marquePaternite(question, exporteur) // Permet aussi de vérifier le droit d'export
-    }
+    assert artefactAutorisationService.utilisateurPeutReutiliserArtefact(exporteur, question)
 
-    // TODO vérifier les données qui doivent être fetcher
+    // TODO fetcher les données
 
     return question
   }

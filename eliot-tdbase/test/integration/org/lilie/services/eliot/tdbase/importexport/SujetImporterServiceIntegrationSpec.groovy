@@ -122,7 +122,6 @@ class SujetImporterServiceIntegrationSpec extends IntegrationSpec {
             noteEnseignantMax: 8.0,
             accesSequentiel: true,
             ordreQuestionAleatoire: false,
-            paternite: '{json: paternite}',
             copyrightsType: CopyrightsTypeEnum.CC_BY_NC.copyrightsType,
             matiere: referentielEliot?.matiere,
             niveau: referentielEliot?.niveau
