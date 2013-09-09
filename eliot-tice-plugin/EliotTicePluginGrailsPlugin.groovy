@@ -141,7 +141,7 @@ class EliotTicePluginGrailsPlugin {
     def prefixUri = conf.eliot.webservices.rest.client.textes.uriPrefix
     def conTimeout = conf.eliot.webservices.rest.client.textes.connexionTimeout ?: 15000
 
-    if (user) { // Note: un paramètre d'activation de la fonctionnalité serait plus explicite - ici l'activation est ramenée à l'existence de la configuration du login
+    if (conf.eliot.interfacage.textes) {
       restClientForTextes(RestClient) {
         authBasicUser = user
         authBasicPassword = password
@@ -159,7 +159,7 @@ class EliotTicePluginGrailsPlugin {
     def prefixUriNotes = conf.eliot.webservices.rest.client.notes.uriPrefix
     def conTimeoutNotes = conf.eliot.webservices.rest.client.notes.connexionTimeout ?: 15000
 
-    if (userNotes) { // Note: un paramètre d'activation de la fonctionnalité serait plus explicite - ici l'activation est ramenée à l'existence de la configuration du login
+    if (conf.eliot.interfacage.notes) {
       restClientForNotes(RestClient) {
         authBasicUser = userNotes
         authBasicPassword = passwordNotes

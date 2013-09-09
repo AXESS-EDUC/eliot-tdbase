@@ -72,53 +72,77 @@ class SeanceController {
       params.bcInit = true
     } else {
       modaliteActivite = ModaliteActivite.get(params.id)
-      lienBookmarkable = createLink(controller: "accueil", action: "activite",
-                                    id: modaliteActivite.id,
-                                    absolute: true,
-                                    params: [sujetId: modaliteActivite.sujetId])
+      lienBookmarkable = createLink(
+          controller: "accueil", action: "activite",
+          id: modaliteActivite.id,
+          absolute: true,
+          params: [sujetId: modaliteActivite.sujetId]
+      )
+
       def strongCheck = grailsApplication.config.eliot.interfacage.strongCheck as Boolean
-      afficheLienCreationDevoir = modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(modaliteActivite,
-                                                                                                  personne,
-                                                                                                  strongCheck)
-      afficheLienCreationActivite = modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(modaliteActivite,
-                                                                                                       personne,
-                                                                                                       strongCheck)
-      if (!afficheLienCreationDevoir) {
-        afficheDevoirCree = modaliteActiviteService.modaliteActiviteHasNotesDevoir(modaliteActivite,
-                                                                                   personne,
-                                                                                   strongCheck)
-      } else {
-        services = notesService.findServicesEvaluablesByModaliteActivite(modaliteActivite,
-                                                                         personne,
-                                                                         codePorteur)
+      afficheLienCreationDevoir =
+        modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(
+            modaliteActivite,
+            personne,
+            strongCheck
+        )
+
+      if (grailsApplication.config.eliot.interfacage.notes) {
+        if (!afficheLienCreationDevoir) {
+          afficheDevoirCree = modaliteActiviteService.modaliteActiviteHasNotesDevoir(modaliteActivite,
+              personne,
+              strongCheck)
+        } else {
+          services = notesService.findServicesEvaluablesByModaliteActivite(
+              modaliteActivite,
+              personne,
+              codePorteur
+          )
+        }
       }
-      if (!afficheLienCreationActivite) {
-        afficheActiviteCreee = modaliteActiviteService.modaliteActiviteHasTextesActivite(modaliteActivite,
-                                                                                         personne,
-                                                                                         strongCheck)
-      } else {
-        cahiers = cahierTextesService.findCahiersTextesInfoByModaliteActivite(modaliteActivite,
-                                                                              personne,
-                                                                              codePorteur)
+
+      if (grailsApplication.config.eliot.interfacage.textes) {
+        afficheLienCreationActivite =
+          modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(
+              modaliteActivite,
+              personne,
+              strongCheck
+          )
+
+        if (!afficheLienCreationActivite) {
+          afficheActiviteCreee = modaliteActiviteService.modaliteActiviteHasTextesActivite(
+              modaliteActivite,
+              personne,
+              strongCheck
+          )
+        } else {
+          cahiers = cahierTextesService.findCahiersTextesInfoByModaliteActivite(
+              modaliteActivite,
+              personne,
+              codePorteur
+          )
+        }
       }
     }
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"), [services: services])
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     def etablissements = profilScolariteService.findEtablissementsForPersonne(personne)
     def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
-    render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
-            etablissements: etablissements,
-            niveaux: niveaux,
-            lienBookmarkable: lienBookmarkable,
-            afficheLienCreationDevoir: afficheLienCreationDevoir,
-            afficheLienCreationActivite: afficheLienCreationActivite,
-            afficheActiviteCreee: afficheActiviteCreee,
-            afficheDevoirCree: afficheDevoirCree,
-            modaliteActivite: modaliteActivite,
-            proprietesScolarite: proprietesScolarite,
-            cahiers: cahiers,
-            chapitres: chapitres,
-            services: services])
+    render(
+        view: '/seance/edite', model: [liens: breadcrumpsService.liens,
+        etablissements: etablissements,
+        niveaux: niveaux,
+        lienBookmarkable: lienBookmarkable,
+        afficheLienCreationDevoir: afficheLienCreationDevoir,
+        afficheLienCreationActivite: afficheLienCreationActivite,
+        afficheActiviteCreee: afficheActiviteCreee,
+        afficheDevoirCree: afficheDevoirCree,
+        modaliteActivite: modaliteActivite,
+        proprietesScolarite: proprietesScolarite,
+        cahiers: cahiers,
+        chapitres: chapitres,
+        services: services]
+    )
   }
 
   /**
@@ -141,43 +165,46 @@ class SeanceController {
       niveau = Niveau.get(command.niveauId)
     }
     def limit = grailsApplication.config.eliot.listes.structures.maxrecherche
-    def structures = scolariteService.findStructuresEnseignement(etabs,codePattern,niveau,limit)
+    def structures = scolariteService.findStructuresEnseignement(etabs, codePattern, niveau, limit)
     render(view: "/seance/_selectStructureEnseignement", model: [
-            rechercheStructuresCommand:command,
-            etablissements: allEtabs,
-            niveaux: scolariteService.findNiveauxForEtablissement(etabs),
-            structures: structures
+        rechercheStructuresCommand: command,
+        etablissements: allEtabs,
+        niveaux: scolariteService.findNiveauxForEtablissement(etabs),
+        structures: structures
     ])
   }
 
   /**
-     * Action updateChapitres
-     */
-    def updateNiveaux() {
-      Personne personne = authenticatedPersonne
-      def etabId = params.etablissementId
-      def etabs = null
-      if (etabId == 'null') {
-        etabs = profilScolariteService.findEtablissementsForPersonne(personne)
-      }  else {
-        etabs = [Etablissement.get(etabId as Long)]
-      }
-      def niveaux = scolariteService.findNiveauxForEtablissement(etabs)
-      render(view: "/seance/_selectNiveaux", model: [niveaux: niveaux])
+   * Action updateChapitres
+   */
+  def updateNiveaux() {
+    Personne personne = authenticatedPersonne
+    def etabId = params.etablissementId
+    def etabs = null
+    if (etabId == 'null') {
+      etabs = profilScolariteService.findEtablissementsForPersonne(personne)
+    } else {
+      etabs = [Etablissement.get(etabId as Long)]
     }
-
+    def niveaux = scolariteService.findNiveauxForEtablissement(etabs)
+    render(view: "/seance/_selectNiveaux", model: [niveaux: niveaux])
+  }
 
   /**
    * Action updateChapitres
    */
   def updateChapitres() {
+    assert grailsApplication.config.eliot.interfacage.textes
+
     Personne personne = authenticatedPersonne
     List<ChapitreInfo> chapitres = []
     if (params.cahierId != 'null') {
       def cahierId = params.cahierId as Long
-      chapitres = cahierTextesService.getChapitreInfosForCahierId(cahierId,
-                                                                  personne,
-                                                                  codePorteur)
+      chapitres = cahierTextesService.getChapitreInfosForCahierId(
+          cahierId,
+          personne,
+          codePorteur
+      )
     }
     render(view: "/seance/_selectChapitres", model: [chapitres: chapitres])
   }
@@ -206,14 +233,19 @@ class SeanceController {
 
     if (!modaliteActivite.hasErrors()) {
       flash.messageCode = "seance.enregistre.succes"
-      tryInsertActiviteForModaliteActivite(modaliteActivite, params, personne)
-      tryInsertDevoirForModaliteActivite(modaliteActivite, params, personne)
+
+      if (grailsApplication.config.eliot.interfacage.textes) {
+        tryInsertActiviteForModaliteActivite(modaliteActivite, params, personne)
+      }
+      if (grailsApplication.config.eliot.interfacage.notes) {
+        tryInsertDevoirForModaliteActivite(modaliteActivite, params, personne)
+      }
       redirect(action: "edite", id: modaliteActivite.id, params: [bcInit: true])
     } else {
       def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
       render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
-              modaliteActivite: modaliteActivite,
-              proprietesScolarite: proprietesScolarite])
+          modaliteActivite: modaliteActivite,
+          proprietesScolarite: proprietesScolarite])
     }
   }
 
@@ -227,14 +259,14 @@ class SeanceController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "seance.liste.titre"))
     Personne personne = authenticatedPersonne
     def modalitesActivites = modaliteActiviteService.findModalitesActivitesForEnseignant(personne,
-                                                                                         params)
+        params)
     boolean affichePager = false
     if (modalitesActivites.totalCount > maxItems) {
       affichePager = true
     }
     render(view: '/seance/liste', model: [liens: breadcrumpsService.liens,
-            seances: modalitesActivites,
-            affichePager: affichePager])
+        seances: modalitesActivites,
+        affichePager: affichePager])
   }
 
   /**
@@ -251,7 +283,7 @@ class SeanceController {
       flash.messageSuppressionNotesCode = "seance.suppression.devoirnonsupprime"
     }
     modaliteActiviteService.supprimeModaliteActivite(seance,
-                                                     personne)
+        personne)
     flash.messageSuppressionCode = "seance.suppression.succes"
     redirect(action: "liste", params: [bcInit: true])
   }
@@ -267,40 +299,44 @@ class SeanceController {
     Personne personne = authenticatedPersonne
     def strongCheck = grailsApplication.config.eliot.interfacage.strongCheck as Boolean
     def afficheLienMiseAjourNote = modaliteActiviteService.modaliteActiviteHasNotesDevoir(seance,
-                                                                                          personne,
-                                                                                          strongCheck)
+        personne,
+        strongCheck)
     def copies = copieService.findCopiesRemisesForModaliteActivite(seance,
-                                                            personne)
+        personne)
     def elevesSansCopies = copieService.findElevesSansCopieForModaliteActivite(seance,
-                                                                               copies,
-                                                                               personne)
+        copies,
+        personne)
     render(view: '/seance/listeResultats', model: [liens: breadcrumpsService.liens,
-            seance: seance,
-            afficheLienMiseAjourNote: afficheLienMiseAjourNote,
-            copies: copies,
-            elevesSansCopies: elevesSansCopies])
+        seance: seance,
+        afficheLienMiseAjourNote: afficheLienMiseAjourNote,
+        copies: copies,
+        elevesSansCopies: elevesSansCopies])
   }
 
   /**
    * Action de mise à jour des notes
    */
   def updateNotesDevoir() {
+    assert grailsApplication.config.eliot.interfacage.notes
+
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
-    def copies = copieService.findCopiesRemisesForModaliteActivite(seance,
-                                                            personne)
+    def copies = copieService.findCopiesRemisesForModaliteActivite(
+        seance,
+        personne
+    )
     def notes = [:]
     copies.each { Copie copie ->
-        notes.put(copie.eleveId, copie.correctionNoteFinale)
+      notes.put(copie.eleveId, copie.correctionNoteFinale)
     }
-    Long res =  notesService.updateNotes(seance,personne,codePorteur)
-    if (res == null ) {
+    Long res = notesService.updateNotes(seance, personne, codePorteur)
+    if (res == null) {
       flash.messageErreurNotesCode = "seance.updatenotes.echec"
     } else {
       flash.messageCode = "seance.updatenotes.succes"
       flash.messageArgs = [res]
     }
-    redirect(action: 'listeResultats',id: seance.id,controller: 'seance')
+    redirect(action: 'listeResultats', id: seance.id, controller: 'seance')
   }
 
   /**
@@ -312,11 +348,11 @@ class SeanceController {
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
     List<Copie> copies = copieService.findCopiesRemisesForModaliteActivite(seance,
-                                                                    personne,
-                                                                    params)
+        personne,
+        params)
     render(view: '/seance/copie/corrige', model: [liens: breadcrumpsService.liens,
-            copies: copies,
-            seance: seance])
+        copies: copies,
+        seance: seance])
   }
 
   /**
@@ -330,9 +366,9 @@ class SeanceController {
     if (!copieNotation.hasErrors()) {
       Copie copie = Copie.get(copieNotation.copieId)
       copieService.updateAnnotationAndModulationForCopie(copieNotation.copieAnnotation,
-                                                         copieNotation.copiePointsModulation,
-                                                         copie,
-                                                         personne)
+          copieNotation.copiePointsModulation,
+          copie,
+          personne)
       if (!copie.hasErrors()) {
         request.messageCode = "copie.correction.succes"
       } else {
@@ -342,12 +378,12 @@ class SeanceController {
       }
     }
     List<Copie> copies = copieService.findCopiesRemisesForModaliteActivite(seance,
-                                                                    personne,
-                                                                    params)
+        personne,
+        params)
     render(view: '/seance/copie/corrige', model: [liens: breadcrumpsService.liens,
-            copies: copies,
-            seance: seance,
-            copieNotation: copieNotation
+        copies: copies,
+        seance: seance,
+        copieNotation: copieNotation
 
     ])
   }
@@ -396,23 +432,26 @@ class SeanceController {
       }
       if (params.activiteContexteId) {
         activiteContext = ContexteActivite.valueOf(ContexteActivite.class,
-                                                  params.activiteContexteId)
+            params.activiteContexteId)
       }
       String urlSeance = createLink(controller: "accueil", action: "activite",
-                                    id: modaliteActivite.id, absolute: true,
-                                    params: [sujetId: modaliteActivite.sujetId])
+          id: modaliteActivite.id, absolute: true,
+          params: [sujetId: modaliteActivite.sujetId])
       // hack pour que l'url soit valide dans tous les cas
-      urlSeance = urlSeance.replaceFirst("localhost","127.0.0.1")
+      urlSeance = urlSeance.replaceFirst("localhost", "127.0.0.1")
 
       def description = ""
-      Long actId = cahierTextesService.createTextesActivite(cahierId,
-                                                            chapitreId,
-                                                            activiteContext,
-                                                            modaliteActivite,
-                                                            description,
-                                                            urlSeance,
-                                                            personne,
-                                                            codePorteur)
+      Long actId = cahierTextesService.createTextesActivite(
+          cahierId,
+          chapitreId,
+          activiteContext,
+          modaliteActivite,
+          description,
+          urlSeance,
+          personne,
+          codePorteur
+      )
+
       if (!actId) {
         flash.messageTextesCode = "seance.enregistre.liencahiertextes.erreur"
       }
@@ -431,11 +470,11 @@ class SeanceController {
     if (params.serviceId && params.serviceId != 'null') {
       serviceId = params.serviceId
       List<ServiceInfo> services = breadcrumpsService.getValeurPropriete('services')
-      ServiceInfo service = services.find {it.id == serviceId}
+      ServiceInfo service = services.find { it.id == serviceId }
       Long evalId = null
       if (service) {
         evalId = notesService.createDevoir(service, modaliteActivite,
-                                           personne, codePorteur)
+            personne, codePorteur)
       }
       if (!evalId) {
         flash.messageNotesCode = "seance.enregistre.liennotes.erreur"
