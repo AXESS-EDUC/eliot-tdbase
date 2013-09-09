@@ -45,9 +45,9 @@
   </repositories>
   <dependencies>
     <compile>
+      <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.2' />
       <dependency group='org.apache.maven.wagon' name='wagon-webdav' version='1.0-beta-2' />
       <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
-      <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.2' />
     </compile>
     <runtime>
       <dependency group='postgresql' name='postgresql' version='9.1-901.jdbc4' />
@@ -59,22 +59,22 @@
   </dependencies>
   <plugins>
     <test>
-      <plugin group='org.grails.plugins' name='code-coverage' version='1.2.5' />
       <plugin group='org.grails.plugins' name='spock' version='0.7' />
+      <plugin group='org.grails.plugins' name='code-coverage' version='1.2.5' />
     </test>
     <compile>
-      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
-      <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
-      <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
-      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
-      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
-      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
-      <plugin group='org.grails.plugins' name='mail' version='1.0' />
       <plugin group='org.grails.plugins' name='spring-security-core' version='1.2.7.2' />
+      <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
+      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
+      <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
+      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
+      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='mail' version='1.0' />
     </compile>
     <runtime>
-      <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
       <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
+      <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
     </runtime>
     <build>
       <plugin group='org.grails.plugins' name='tomcat' version='2.1.1' />
