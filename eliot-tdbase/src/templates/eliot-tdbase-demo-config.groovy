@@ -56,6 +56,7 @@ eliot.bootstrap.jeudetest = true
 //
 eliot.fichiers.racine = '/usr/share/eliot-root'
 eliot.fichiers.maxsize.mega = 10
+eliot.fichiers.importexport.maxsize.mega = 25 // taille max spécifique aux fichiers d'import
 
 // configuration des liens du menu portail et des annonces portail
 //

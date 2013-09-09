@@ -65,6 +65,7 @@ eliot.bootstrap.jeudetest = true
 //
 eliot.fichiers.racine = '/tmp/eliot-root'
 eliot.fichiers.maxsize.mega = 10
+eliot.fichiers.importexport.maxsize.mega = 25 // taille max spécifique aux fichiers d'import
 
 // les dimensions de div continer à prendre en compte si nécessaire
 eliot.pages.container.forceDimensions = false
