@@ -38,17 +38,30 @@ $(document).ready(function () {
     var paterniteObj = ${paternite};
     var nbItems = paterniteObj.paterniteItems.length
     var paterniteHtml = ""
-    var strPub1 = " a publié l'oeuvre réutilisée par la présente le  "
-    var strPub2 = " a publié cette oeuvre le "
+    var strOeuvrePubliee = " a publié cette oeuvre le "
+    var strOeuvreModifiee = " a contribué à cette oeuvre"
+    var strOeuvreReutiliseePubliee = " a publié l'oeuvre réutilisée par la présente le  "
+    var strOeuvreReutiliseeModifiee = " a contribué à l'oeuvre réutilisée par la présente"
     for (i = 0 ; i < nbItems ; i++) {
-       var strPub = strPub1 ;
        var paterniteItem = paterniteObj.paterniteItems[i];
-       if (paterniteItem.oeuvreEnCours == true ) {
-        strPub = strPub2 ;
+       paterniteHtml += paterniteItem.auteur;
+       if(paterniteItem.datePublication) {
+         var dateArray = paterniteItem.datePublication.substring(0,10).split("-") ;
+         if(paterniteItem.oeuvreEnCours == true) {
+            paterniteHtml += strOeuvrePubliee + dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0] + "<br/>";
+         }
+         else {
+            paterniteHtml += strOeuvreReutiliseePubliee + dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0] + "<br/>";
+         }
        }
-       paterniteHtml += paterniteItem.auteur + strPub  ;
-       var dateArray = paterniteItem.datePublication.substring(0,10).split("-") ;
-       paterniteHtml += dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0] + "<br/>"
+       else {
+        if(paterniteItem.oeuvreEnCours == true) {
+            paterniteHtml += strOeuvreModifiee + "<br/>"
+         }
+         else {
+            paterniteHtml += strOeuvreReutiliseeModifiee + "<br/>"
+         }
+       }
     }
     $("#paternite").html(paterniteHtml) ;
   });
