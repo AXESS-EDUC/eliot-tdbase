@@ -41,7 +41,6 @@ class ProprietesScolarite {
   StructureEnseignement structureEnseignement
   AnneeScolaire anneeScolaire
   Matiere matiere
-  Mef mef
   Fonction fonction
   Boolean responsableStructureEnseignement
   PorteurEnt porteurEnt
@@ -53,7 +52,6 @@ class ProprietesScolarite {
     anneeScolaire(nullable: true)
     fonction(nullable: true)
     matiere(nullable: true)
-    mef(nullable: true)
     porteurEnt(nullable: true)
     responsableStructureEnseignement(nullable: true)
   }
@@ -80,7 +78,6 @@ class ProprietesScolarite {
     table('ent.propriete_scolarite')
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.propriete_scolarite_id_seq']
     version false
-    mef column: 'mef_id'
   }
 
 }
