@@ -360,12 +360,7 @@ class BootstrapService {
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEnseignant(),
-                              structureEnseignement: classe1ere).save(flush: true)
-
-      new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionService.fonctionEnseignant(),
-                              etablissement: lycee,
-                              matiere: matiereMaths).save(flush: true, failOnError: true)
+                              structureEnseignement: classe1ere).save(failOnError: true, flush: true)
 
     }
 
