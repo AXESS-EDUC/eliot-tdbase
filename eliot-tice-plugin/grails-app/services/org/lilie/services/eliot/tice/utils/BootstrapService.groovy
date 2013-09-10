@@ -331,35 +331,41 @@ class BootstrapService {
     Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
     if (!ProprietesScolarite.findAllByEtablissementAndFonction(lycee, fonctionService.fonctionEnseignant())) {
 
-      def prop1 = new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                                          fonction: fonctionService.fonctionEnseignant(),
-                                          etablissement: leCollege,
-                                          matiere: matiereHistoire,
-                                          structureEnseignement: classe6eme).save()
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionService.fonctionEnseignant(),
+                              structureEnseignement: classe6eme).save(failOnError: true)
 
-      if (prop1.hasErrors()) {
-        prop1.errors.allErrors.each {
-          println ">>>>> PROP ERROR $it"
-        }
-      }
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionService.fonctionEnseignant(),
+                              etablissement: leCollege,
+                              matiere: matiereHistoire).save(failOnError: true)
+
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionService.fonctionEnseignant(),
+                              structureEnseignement: grpe1ere).save(failOnError: true)
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEnseignant(),
                               etablissement: lycee,
-                              matiere: matiereSES,
-                              structureEnseignement: grpe1ere).save()
+                              matiere: matiereSES).save(failOnError: true)
+
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionService.fonctionEnseignant(),
+                              structureEnseignement: classeTerminale).save(failOnError: true)
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEnseignant(),
                               etablissement: lycee,
-                              matiere: matiereMaths,
-                              structureEnseignement: classeTerminale).save()
+                              matiere: matiereMaths).save(failOnError: true)
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEnseignant(),
-                              etablissement: lycee,
-                              matiere: matiereMaths,
                               structureEnseignement: classe1ere).save(flush: true)
+
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionService.fonctionEnseignant(),
+                              etablissement: lycee,
+                              matiere: matiereMaths).save(flush: true, failOnError: true)
 
     }
 
@@ -387,36 +393,21 @@ class BootstrapService {
     Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
     if (!ProprietesScolarite.findAllByEtablissementAndFonction(lycee, fonctionService.fonctionEleve())) {
 
-      def prop1 = new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                                          fonction: fonctionService.fonctionEleve(),
-                                          etablissement: leCollege,
-                                          matiere: matiereHistoire,
-                                          structureEnseignement: classe6eme).save()
-
-      if (prop1.hasErrors()) {
-        prop1.errors.allErrors.each {
-          println ">>>>> PROP ERROR $it"
-        }
-      }
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionService.fonctionEleve(),
+                              structureEnseignement: classe6eme).save(failOnError: true)
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEleve(),
-                              etablissement: lycee,
-                              matiere: matiereSES,
-                              structureEnseignement: grpe1ere).save()
+                              structureEnseignement: grpe1ere).save(failOnError: true)
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEleve(),
-                              etablissement: lycee,
-                              matiere: matiereMaths,
-                              structureEnseignement: classeTerminale).save()
+                              structureEnseignement: classeTerminale).save(failOnError: true)
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEleve(),
-                              etablissement: lycee,
-                              matiere: matiereMaths,
-                              structureEnseignement: classe1ere).save(flush: true)
-
+                              structureEnseignement: classe1ere).save(flush: true, failOnError: true)
     }
 
   }
@@ -492,9 +483,7 @@ class BootstrapService {
       if (props.fonction == fonctionService.fonctionEleve()) {
         propsResp << new ProprietesScolarite(anneeScolaire: props.anneeScolaire,
                                              fonction: fonctionService.fonctionResponsableEleve(),
-                                             etablissement: props.etablissement,
-                                             matiere: props.matiere,
-                                             structureEnseignement: props.structureEnseignement).save()
+                                             porteurEnt: props.etablissement.porteurEnt).save(failOnError: true)
       }
     }
     addProprietesScolariteToPersonne(propsResp, resp)
