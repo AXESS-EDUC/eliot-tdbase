@@ -335,7 +335,6 @@ class BootstrapService {
                                           fonction: fonctionService.fonctionEnseignant(),
                                           etablissement: leCollege,
                                           matiere: matiereHistoire,
-                                          niveau: nivSixieme,
                                           structureEnseignement: classe6eme).save()
 
       if (prop1.hasErrors()) {
@@ -348,21 +347,18 @@ class BootstrapService {
                               fonction: fonctionService.fonctionEnseignant(),
                               etablissement: lycee,
                               matiere: matiereSES,
-                              niveau: nivPremiere,
                               structureEnseignement: grpe1ere).save()
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEnseignant(),
                               etablissement: lycee,
                               matiere: matiereMaths,
-                              niveau: nivTerminale,
                               structureEnseignement: classeTerminale).save()
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEnseignant(),
                               etablissement: lycee,
                               matiere: matiereMaths,
-                              niveau: nivPremiere,
                               structureEnseignement: classe1ere).save(flush: true)
 
     }
@@ -395,7 +391,6 @@ class BootstrapService {
                                           fonction: fonctionService.fonctionEleve(),
                                           etablissement: leCollege,
                                           matiere: matiereHistoire,
-                                          niveau: nivSixieme,
                                           structureEnseignement: classe6eme).save()
 
       if (prop1.hasErrors()) {
@@ -408,21 +403,18 @@ class BootstrapService {
                               fonction: fonctionService.fonctionEleve(),
                               etablissement: lycee,
                               matiere: matiereSES,
-                              niveau: nivPremiere,
                               structureEnseignement: grpe1ere).save()
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEleve(),
                               etablissement: lycee,
                               matiere: matiereMaths,
-                              niveau: nivTerminale,
                               structureEnseignement: classeTerminale).save()
 
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
                               fonction: fonctionService.fonctionEleve(),
                               etablissement: lycee,
                               matiere: matiereMaths,
-                              niveau: nivPremiere,
                               structureEnseignement: classe1ere).save(flush: true)
 
     }
@@ -502,7 +494,6 @@ class BootstrapService {
                                              fonction: fonctionService.fonctionResponsableEleve(),
                                              etablissement: props.etablissement,
                                              matiere: props.matiere,
-                                             niveau: props.niveau,
                                              structureEnseignement: props.structureEnseignement).save()
       }
     }

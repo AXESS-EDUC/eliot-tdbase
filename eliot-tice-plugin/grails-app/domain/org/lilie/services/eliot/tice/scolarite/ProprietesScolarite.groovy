@@ -40,7 +40,6 @@ class ProprietesScolarite {
   Etablissement etablissement
   StructureEnseignement structureEnseignement
   AnneeScolaire anneeScolaire
-  Niveau niveau
   Matiere matiere
   Mef mef
   Fonction fonction
@@ -53,7 +52,6 @@ class ProprietesScolarite {
     structureEnseignement(nullable: true)
     anneeScolaire(nullable: true)
     fonction(nullable: true)
-    niveau(nullable: true)
     matiere(nullable: true)
     mef(nullable: true)
     porteurEnt(nullable: true)
