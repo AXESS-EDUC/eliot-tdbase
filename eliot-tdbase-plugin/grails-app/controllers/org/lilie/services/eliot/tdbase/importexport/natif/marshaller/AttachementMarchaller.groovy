@@ -78,7 +78,7 @@ class AttachementMarchaller {
     return null
   }
 
-  static List<AttachementDto> parseQuestionAttachements(JSONArray jsonArray,
+  static List<PrincipalAttachementDto> parseQuestionAttachements(JSONArray jsonArray,
                                                         AttachementDataStore attachementDataStore) {
     jsonArray.collect {
       parseAttachement((JSONElement)it, attachementDataStore)

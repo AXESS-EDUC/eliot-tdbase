@@ -44,5 +44,7 @@ grails.project.dependency.resolution = {
       excludes "groovy-all"
       export = false
     }
+
+    test ":spock:0.7"
   }
 }

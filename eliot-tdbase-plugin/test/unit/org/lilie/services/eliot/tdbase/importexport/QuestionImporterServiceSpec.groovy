@@ -5,6 +5,7 @@ import grails.test.mixin.TestFor
 import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
 import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionService
+import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionType
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
@@ -12,8 +13,6 @@ import org.lilie.services.eliot.tdbase.ReferentielEliot
 import org.lilie.services.eliot.tdbase.ReferentielSujetSequenceQuestions
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetService
-import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecification
-import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 import org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
@@ -195,14 +194,7 @@ class QuestionImporterServiceSpec extends Specification {
       QuestionSpecificationService questionSpecificationService = Mock(QuestionSpecificationService)
 
       questionSpecificationService.getObjectFromSpecification(_) >> { String specification ->
-        return new MultipleChoiceSpecification(
-            libelle: "libelle",
-            correction: "correction",
-            reponses: [
-                new MultipleChoiceSpecificationReponsePossible(),
-                new MultipleChoiceSpecificationReponsePossible()
-            ]
-        )
+        return [:] as QuestionSpecification
       }
 
       return questionSpecificationService
@@ -251,14 +243,7 @@ class QuestionImporterServiceSpec extends Specification {
 
     Question question = new Question()
 
-    MultipleChoiceSpecification multipleChoiceSpecification = new MultipleChoiceSpecification(
-        libelle: "libelle",
-        correction: "correction",
-        reponses: [
-            new MultipleChoiceSpecificationReponsePossible(),
-            new MultipleChoiceSpecificationReponsePossible()
-        ]
-    )
+    QuestionSpecification multipleChoiceSpecification = [:] as QuestionSpecification
 
     artefactAutorisationService.utilisateurPeutModifierArtefact(importeur, sujet) >> true
 

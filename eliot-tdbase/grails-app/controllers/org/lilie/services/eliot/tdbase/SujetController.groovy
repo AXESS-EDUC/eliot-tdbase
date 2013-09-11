@@ -1,7 +1,6 @@
 package org.lilie.services.eliot.tdbase
 
 import grails.converters.JSON
-import org.apache.commons.io.output.WriterOutputStream
 import org.lilie.services.eliot.tdbase.importexport.ExportHelper
 import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.QuestionImporterService
