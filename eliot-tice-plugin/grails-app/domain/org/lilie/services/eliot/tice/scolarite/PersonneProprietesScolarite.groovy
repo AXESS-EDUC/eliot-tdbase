@@ -42,7 +42,7 @@ class PersonneProprietesScolarite {
   Long aafImportId
   Long udtImportId
   Date dateDesactivation
-  Date dateDebut
+  Date dateDebut = new Date()
   Date dateFin
   String origine = "AUTO"
 
