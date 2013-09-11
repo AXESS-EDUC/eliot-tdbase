@@ -18,7 +18,7 @@ class MarshallerHelper {
 
   public final static DateFormat ISO_DATE_FORMAT = new SimpleDateFormat(
       "yyyy-MM-dd'T'HH:mm:ss'Z'",
-      Locale.getDefault(Locale.Category.FORMAT)
+      Locale.getDefault()
   )
 
   static void checkIsNotNull(String elementNom, def element) {
