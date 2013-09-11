@@ -51,10 +51,10 @@ class DefaultPermissionsManagerTests extends GroovyTestCase {
     super.setUp()
     // initialise la session
 
-    autorite1 = new DomainAutorite(identifiant: "TEST_prof1", type: TypeAutorite.GROUPE_PERSONNE.libelle).save()
+    autorite1 = new DomainAutorite(identifiant: "TEST_prof1", type: TypeAutorite.GROUPE_PERSONNE.libelle, localisation : DomainAutorite.LOCALISATION_DISTANTE).save()
     session = new DefaultAclSecuritySession(defaultAutorite: autorite1, autorites: [autorite1, tousLesProfs])
     // intialise l'autorite
-    tousLesProfs = new DomainAutorite(identifiant: "TEST_tousLesProfs", type: TypeAutorite.GROUPE_PERSONNE.libelle).save()
+    tousLesProfs = new DomainAutorite(identifiant: "TEST_tousLesProfs", type: TypeAutorite.GROUPE_PERSONNE.libelle, localisation : DomainAutorite.LOCALISATION_DISTANTE).save()
 
     // initialise l'item
     projetB2I = new DomainItem(type: "PROJET")

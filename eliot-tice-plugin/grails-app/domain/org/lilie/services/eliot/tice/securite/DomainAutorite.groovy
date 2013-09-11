@@ -40,10 +40,13 @@ class DomainAutorite implements Autorite {
   public static final String COMPTE_UTILISATEUR_ETAT_INACTIF = "INACTIF"
   public static final String COMPTE_UTILISATEUR_ETAT_ACCES_RESTREINT = "ACCES_RESTREINT"
 
+  public static final String LOCALISATION_DISTANTE = "DISTANTE"
+
 
   String type
   String identifiant
   String idSts
+  String localisation
 
   Boolean estActive = true
   String etat = COMPTE_UTILISATEUR_ETAT_ACTIF
@@ -60,6 +63,7 @@ class DomainAutorite implements Autorite {
     importId nullable: true
     nomEntiteCible nullable: true
     idEnregistrementCible nullable: true
+    localisation nullable: true
   }
 
   static mapping = {
