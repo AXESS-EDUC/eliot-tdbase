@@ -112,7 +112,7 @@ class QuestionImporterServiceSpec extends Specification {
 
     then:
     def e = thrown(IllegalArgumentException)
-    e.message.startsWith("No enum constant org.lilie.services.eliot.tdbase.QuestionTypeEnum.Question")
+    e.message.startsWith("No enum")
   }
 
   def "testImporteQuestion - copyrightsType incorrect"() {
