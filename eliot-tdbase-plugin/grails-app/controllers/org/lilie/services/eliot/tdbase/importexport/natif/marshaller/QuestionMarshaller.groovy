@@ -35,6 +35,7 @@ public class QuestionMarshaller {
         class: ExportClass.QUESTION_ATOMIQUE.name(),
         type: question.type.code,
         titre: question.titre,
+        id: question.id.toString(),
         metadonnees: [
             proprietaire: personneMarshaller.marshall(question.proprietaire),
             dateCreated: question.dateCreated,

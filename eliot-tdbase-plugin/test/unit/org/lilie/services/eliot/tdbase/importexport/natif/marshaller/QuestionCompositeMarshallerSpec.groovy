@@ -47,6 +47,7 @@ class QuestionCompositeMarshallerSpec extends Specification {
         type: new QuestionType(
             code: QuestionTypeEnum.Composite.name()
         ),
+        id: 123,
         exercice: exercice
     )
 
@@ -60,9 +61,10 @@ class QuestionCompositeMarshallerSpec extends Specification {
     )
 
     expect:
-    questionCompositeRepresentation.size() == 2
+    questionCompositeRepresentation.size() == 3
     questionCompositeRepresentation.class == ExportClass.QUESTION_COMPOSITE.name()
     questionCompositeRepresentation.exercice == exerciceRepresentation
+    questionCompositeRepresentation.id == question.id.toString()
   }
 
   def "testParse - Erreur : exercice manquant"() {

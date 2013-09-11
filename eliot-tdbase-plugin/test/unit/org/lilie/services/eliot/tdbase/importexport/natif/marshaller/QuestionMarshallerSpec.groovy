@@ -58,6 +58,7 @@ class QuestionMarshallerSpec extends Specification {
     given:
     AttachementDataStore attachementDataStore = new AttachementDataStore()
     Question question = new Question(
+        id: 100,
         type: new QuestionType(code: "code"),
         titre: "titre",
         dateCreated: new Date() - 1,
@@ -87,10 +88,11 @@ class QuestionMarshallerSpec extends Specification {
     Map questionRepresentation = questionMarshaller.marshall(question, attachementDataStore)
 
     expect:
-    questionRepresentation.size() == 7
+    questionRepresentation.size() == 8
     questionRepresentation.class == ExportClass.QUESTION_ATOMIQUE.name()
     questionRepresentation.type == question.type.code
     questionRepresentation.titre == question.titre
+    questionRepresentation.id == question.id.toString()
 
     questionRepresentation.metadonnees.size() == 8
     questionRepresentation.metadonnees.dateCreated == question.dateCreated

@@ -29,6 +29,7 @@ class SujetMarshaller {
         class: ExportClass.SUJET.name(),
         type: sujet.sujetType.nom,
         titre: sujet.titre,
+        id: sujet.id.toString(),
         metadonnees: [
             proprietaire: personneMarshaller.marshall(sujet.proprietaire),
             dateCreated: sujet.dateCreated,

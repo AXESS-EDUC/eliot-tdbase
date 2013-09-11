@@ -21,6 +21,7 @@ class QuestionCompositeMarshaller {
 
     Map representation = [
         class: ExportClass.QUESTION_COMPOSITE.name(),
+        id: question.id.toString(),
         exercice: sujetMarshaller.marshall(question.exercice, attachementDataStore)
     ]
 

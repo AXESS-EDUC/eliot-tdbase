@@ -21,6 +21,7 @@ class SujetMarshallerSpec extends Specification {
     given:
     AttachementDataStore attachementDataStore = new AttachementDataStore()
     Sujet sujet = new Sujet(
+        id: 234,
         sujetType: new SujetType(id: 2),
         titre: 'titre',
         dateCreated: new Date() - 1,
@@ -79,7 +80,8 @@ class SujetMarshallerSpec extends Specification {
     Map sujetRepresentation = sujetMarshaller.marshall(sujet, attachementDataStore)
 
     expect:
-    sujetRepresentation.size() == 5
+    sujetRepresentation.size() == 6
+    sujetRepresentation.id == sujet.id.toString()
     sujetRepresentation.class == ExportClass.SUJET.name()
     sujetRepresentation.titre == sujet.titre
     sujetRepresentation.metadonnees.size() == 7
