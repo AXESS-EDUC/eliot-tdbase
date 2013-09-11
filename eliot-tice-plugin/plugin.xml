@@ -44,7 +44,6 @@
     <resource>org.lilie.services.eliot.tice.scolarite.Regime</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.RelPeriodeService</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.ResponsableEleve</resource>
-    <resource>org.lilie.services.eliot.tice.scolarite.ResponsableProprietesScolarite</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.Service</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.SousService</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.StructureEnseignement</resource>
