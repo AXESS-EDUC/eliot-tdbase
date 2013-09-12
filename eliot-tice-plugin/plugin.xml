@@ -14,9 +14,7 @@
     <resource>org.lilie.services.eliot.tice.ExportFormat</resource>
     <resource>org.lilie.services.eliot.tice.HashConstantes</resource>
     <resource>org.lilie.services.eliot.tice.Publication</resource>
-    <resource>org.lilie.services.eliot.tice.annuaire.AppartenancePersonneGroupe</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.Civilite</resource>
-    <resource>org.lilie.services.eliot.tice.annuaire.GroupePersonnes</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.Personne</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.PorteurEnt</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.SourceImport</resource>
@@ -46,7 +44,6 @@
     <resource>org.lilie.services.eliot.tice.scolarite.Regime</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.RelPeriodeService</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.ResponsableEleve</resource>
-    <resource>org.lilie.services.eliot.tice.scolarite.ResponsableProprietesScolarite</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.Service</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.SousService</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.StructureEnseignement</resource>

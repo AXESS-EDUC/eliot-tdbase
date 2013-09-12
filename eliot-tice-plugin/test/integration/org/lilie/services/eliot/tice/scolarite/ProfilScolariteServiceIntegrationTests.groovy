@@ -51,7 +51,7 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
   void testFindProprietesScolaritesForPersonne() {
     List<ProprietesScolarite> props = profilScolariteService.findProprietesScolaritesForPersonne(enseignant1.personne)
-    assertEquals("pas le bon de nombre de proprietes", 4, props.size())
+    assertEquals("pas le bon de nombre de proprietes", 7, props.size())
   }
 
   void testFindFonctions() {

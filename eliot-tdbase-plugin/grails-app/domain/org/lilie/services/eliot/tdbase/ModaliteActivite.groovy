@@ -28,13 +28,10 @@
 
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.annuaire.GroupePersonnes
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.notes.Evaluation
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
-import org.lilie.services.eliot.tice.textes.Activite
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 
 /**
@@ -54,7 +51,6 @@ class ModaliteActivite {
   Sujet sujet
 
   Personne responsable
-  GroupePersonnes groupe
   Etablissement etablissement
 
   Personne enseignant
@@ -67,19 +63,10 @@ class ModaliteActivite {
 
   static constraints = {
     responsable(nullable: true)
-    groupe(nullable: true)
     etablissement(nullable: true)
     activiteId(nullable: true)
     evaluationId(nullable: true)
-    structureEnseignement(nullable: true, validator: { val, obj ->
-      if (val == null) {
-        if (obj.groupe != null && obj.etablissement != null) {
-          return true
-        }
-        return ['invalid.groupenonselectionne']
-      }
-      return true
-    })
+    structureEnseignement(nullable: false)
     dateFin(validator: { val, obj ->
       if (!val.after(obj.dateDebut)) {
         return ['invalid.dateFinAvantDateDebut']
@@ -106,15 +93,10 @@ class ModaliteActivite {
 
   /**
    *
-   * @return le libelle du groupe ou de la structure d'enseignement concernée
+   * @return le libelle de la structure d'enseignement concernée
    */
   String getGroupeLibelle() {
-    if (structureEnseignement) {
-      return structureEnseignement.nomAffichage
-    } else if (groupe) {
-      return groupe.nom
-    }
-    return ''
+    return structureEnseignement.nomAffichage
   }
 
   /**

@@ -298,6 +298,14 @@ class BootstrapService {
                                    libelleCourt: "Anglais",
                                    libelleLong: "Anglais",
                                    anneeScolaire: anneeScolaire).save(flush: true)
+    } else {
+      matiereMaths = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_1")
+      matiereSES = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_2")
+      matiereSESSpe = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_3")
+      matiereHistoire = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_4")
+      matiereGeographie = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_5")
+      matiereCommunication = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_6")
+      matiereAnglais = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_7")
     }
   }
 
@@ -320,6 +328,12 @@ class BootstrapService {
       nivSixieme = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_5",
                               libelleLong: "6ème").save(flush: true)
 
+    } else {
+      nivPremiere = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
+      nivTerminale = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_2")
+      nivBTS1 = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_3")
+      nivBTS2 = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_4")
+      nivSixieme = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_5")
     }
   }
 
@@ -328,43 +342,83 @@ class BootstrapService {
 
 
   private def initialiseProprietesScolaritesEnseignantEnvDevelopmentTest() {
-    Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
-    if (!ProprietesScolarite.findAllByEtablissementAndFonction(lycee, fonctionService.fonctionEnseignant())) {
 
-      def prop1 = new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                                          fonction: fonctionService.fonctionEnseignant(),
-                                          etablissement: leCollege,
-                                          matiere: matiereHistoire,
-                                          niveau: nivSixieme,
-                                          structureEnseignement: classe6eme).save()
+    Fonction fonctionEnseignant = fonctionService.fonctionEnseignant()
 
-      if (prop1.hasErrors()) {
-        prop1.errors.allErrors.each {
-          println ">>>>> PROP ERROR $it"
-        }
-      }
-
+    if (!ProprietesScolarite.findAllByStructureEnseignementAndFonctionAndAnneeScolaire(
+        classe6eme,
+        fonctionEnseignant,
+        anneeScolaire
+    )) {
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionService.fonctionEnseignant(),
-                              etablissement: lycee,
-                              matiere: matiereSES,
-                              niveau: nivPremiere,
-                              structureEnseignement: grpe1ere).save()
+                              fonction: fonctionEnseignant,
+                              structureEnseignement: classe6eme).save(failOnError: true)
+    }
 
+    if (!ProprietesScolarite.findAllByStructureEnseignementAndFonctionAndAnneeScolaire(
+        grpe1ere,
+        fonctionEnseignant,
+        anneeScolaire
+    )) {
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionService.fonctionEnseignant(),
-                              etablissement: lycee,
-                              matiere: matiereMaths,
-                              niveau: nivTerminale,
-                              structureEnseignement: classeTerminale).save()
+                              fonction: fonctionEnseignant,
+                              structureEnseignement: grpe1ere).save(failOnError: true)
+    }
 
+    if (!ProprietesScolarite.findAllByStructureEnseignementAndFonctionAndAnneeScolaire(
+        classeTerminale,
+        fonctionEnseignant,
+        anneeScolaire
+    )) {
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionService.fonctionEnseignant(),
-                              etablissement: lycee,
-                              matiere: matiereMaths,
-                              niveau: nivPremiere,
-                              structureEnseignement: classe1ere).save(flush: true)
+                              fonction: fonctionEnseignant,
+                              structureEnseignement: classeTerminale).save(failOnError: true)
+    }
 
+    if (!ProprietesScolarite.findAllByStructureEnseignementAndFonctionAndAnneeScolaire(
+        classe1ere,
+        fonctionEnseignant,
+        anneeScolaire
+    )) {
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionEnseignant,
+                              structureEnseignement: classe1ere).save(failOnError: true)
+    }
+
+    if (!ProprietesScolarite.findAllByEtablissementAndFonctionAndAnneeScolaireAndMatiere(
+        leCollege,
+        fonctionEnseignant,
+        anneeScolaire,
+        matiereHistoire
+    )) {
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionEnseignant,
+                              etablissement: leCollege,
+                              matiere: matiereHistoire).save(failOnError: true)
+    }
+
+    if (!ProprietesScolarite.findAllByEtablissementAndFonctionAndAnneeScolaireAndMatiere(
+        leLycee,
+        fonctionEnseignant,
+        anneeScolaire,
+        matiereSES
+    )) {
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionEnseignant,
+                              etablissement: leLycee,
+                              matiere: matiereSES).save(failOnError: true)
+    }
+
+    if (!ProprietesScolarite.findAllByEtablissementAndFonctionAndAnneeScolaireAndMatiere(
+        leLycee,
+        fonctionEnseignant,
+        anneeScolaire,
+        matiereMaths
+    )) {
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionEnseignant,
+                              etablissement: leLycee,
+                              matiere: matiereMaths).save(failOnError: true)
     }
 
   }
@@ -388,43 +442,47 @@ class BootstrapService {
   }
 
   private def initialiseProprietesScolaritesEleveEnvDevelopmentTest() {
-    Etablissement lycee = Etablissement.findByUai(UAI_LYCEE)
-    if (!ProprietesScolarite.findAllByEtablissementAndFonction(lycee, fonctionService.fonctionEleve())) {
 
-      def prop1 = new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                                          fonction: fonctionService.fonctionEleve(),
-                                          etablissement: leCollege,
-                                          matiere: matiereHistoire,
-                                          niveau: nivSixieme,
-                                          structureEnseignement: classe6eme).save()
+    Fonction fonctionEleve = fonctionService.fonctionEleve()
 
-      if (prop1.hasErrors()) {
-        prop1.errors.allErrors.each {
-          println ">>>>> PROP ERROR $it"
-        }
-      }
-
+    if (!ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
+        classe6eme,
+        fonctionEleve,
+        anneeScolaire
+    )){
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionService.fonctionEleve(),
-                              etablissement: lycee,
-                              matiere: matiereSES,
-                              niveau: nivPremiere,
-                              structureEnseignement: grpe1ere).save()
+                              fonction: fonctionEleve,
+                              structureEnseignement: classe6eme).save(failOnError: true)
+    }
 
+    if (!ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
+        grpe1ere,
+        fonctionEleve,
+        anneeScolaire
+    )){
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionService.fonctionEleve(),
-                              etablissement: lycee,
-                              matiere: matiereMaths,
-                              niveau: nivTerminale,
-                              structureEnseignement: classeTerminale).save()
+                              fonction: fonctionEleve,
+                              structureEnseignement: grpe1ere).save(failOnError: true)
+    }
 
+    if (!ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
+        classeTerminale,
+        fonctionEleve,
+        anneeScolaire
+    )){
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionService.fonctionEleve(),
-                              etablissement: lycee,
-                              matiere: matiereMaths,
-                              niveau: nivPremiere,
-                              structureEnseignement: classe1ere).save(flush: true)
+                              fonction: fonctionEleve,
+                              structureEnseignement: classeTerminale).save(failOnError: true)
+    }
 
+    if (!ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
+        classe1ere,
+        fonctionEleve,
+        anneeScolaire
+    )){
+      new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                              fonction: fonctionEleve,
+                              structureEnseignement: classe1ere).save(failOnError: true)
     }
 
   }
@@ -435,7 +493,7 @@ class BootstrapService {
     Niveau niveauPrem = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
 
     if (!profilScolariteService.findProprietesScolaritesForPersonne(pers1)) {
-      def props = ProprietesScolarite.findAllByFonctionAndNiveau(fonctionService.fonctionEleve(), niveauPrem)
+      def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEleve())
       addProprietesScolariteToPersonne(props, pers1)
     }
   }
@@ -450,7 +508,7 @@ class BootstrapService {
       Personne pers = Personne.get(elv2.personneId)
       Niveau niveauPrem = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
 
-      def props = ProprietesScolarite.findAllByFonctionAndNiveau(fonctionService.fonctionEleve(), niveauPrem)
+      def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEleve())
       addProprietesScolariteToPersonne(props, pers)
 
     }
@@ -500,10 +558,7 @@ class BootstrapService {
       if (props.fonction == fonctionService.fonctionEleve()) {
         propsResp << new ProprietesScolarite(anneeScolaire: props.anneeScolaire,
                                              fonction: fonctionService.fonctionResponsableEleve(),
-                                             etablissement: props.etablissement,
-                                             matiere: props.matiere,
-                                             niveau: props.niveau,
-                                             structureEnseignement: props.structureEnseignement).save()
+                                             porteurEnt: props.structureEnseignement.etablissement.porteurEnt).save(failOnError: true)
       }
     }
     addProprietesScolariteToPersonne(propsResp, resp)

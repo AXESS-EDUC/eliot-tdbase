@@ -28,15 +28,25 @@
   -->
 
 <databaseChangeLog
-     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-    <include file="changelogs/scolarite/initialisation/2011-09-13-0014523.xml"/>
+  <changeSet id="1" author="bper">
+    <comment>
+      Suppression des tables 'appartenance_personne_groupe' et 'groupe_personnes'
+		</comment>
 
-    <include file="changelogs/scolarite/release-changes.xml"/>
-    <include file="migrations/changelog-tice-dbmigration.xml"/>
+    <dropColumn schemaName="td" tableName="modalite_activite" columnName="groupe_id" />
+    
+    <dropTable schemaName="ent" tableName="appartenance_personne_groupe" />
+    <dropSequence schemaName="ent" sequenceName="appartenance_personne_groupe_id_seq" />
 
-    <include file="migrations/2013-09-06-0028847.xml"/>
+    <dropTable schemaName="ent" tableName="appartenance_groupe_groupe" />
+    <dropSequence schemaName="ent" sequenceName="appartenance_groupe_groupe_id_seq" />
 
+    <dropTable schemaName="ent" tableName="groupe_personnes" />
+    <dropSequence schemaName="ent" sequenceName="groupe_personnes_id_seq" />
+
+  </changeSet>
 </databaseChangeLog>
