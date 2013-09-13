@@ -1,9 +1,7 @@
 project.group = "org.lilie.services.eliot"
-project.ext.artefactId = "eliot-tice-dbmigration-all"
-project.version = "2.3.0-SNAPSHOT"
+project.ext.artefactId = "eliot-competence-dbmigration"
+project.version = "1.0-SNAPSHOT"
 
-project.ext.versionSchemaEliot = "2.9.4-S36"
-// classifierSchemaEliot =
 
 apply plugin: 'idea'
 apply plugin: 'java'
@@ -12,37 +10,19 @@ apply plugin: 'maven'
 
 
 repositories {
-
-  //mavenLocal()
-  maven {
-    url "http://repository-ticetime.forge.cloudbees.com"
-    artifactUrls "http://repository-ticetime.forge.cloudbees.com/release"
-  }
-  maven {
-    url "http://repository-ticetime.forge.cloudbees.com/snapshot/"
-  }
-
   mavenCentral()
 }
 
 configurations {
-  liquibase.extendsFrom compile
+  liquibase
   deploiementArtefact
 }
 
 
 
 dependencies {
-  compile group: 'org.liquibase', name: 'liquibase-core', version: '2.0.2'
-  compile group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'
-
-  compile group: 'org.lilie.services.eliot', name:'eliot-securite-dbmigration', version:"${versionSchemaEliot}"
-  compile group: 'org.lilie.services.eliot', name:'eliot-demon-commons', version:"${versionSchemaEliot}"
-  compile group: 'org.lilie.services.eliot', name:'eliot-scolarite-dbmigration', version:"${versionSchemaEliot}"
-
-  compile group:'org.lilie.services.eliot', name:'eliot-tice-dbmigration', version:"${version}"
-
-  compile group:'org.lilie.services.eliot', name:'eliot-competence-dbmigration', version:"${versionSchemaCompetence}"
+  liquibase group: 'org.liquibase', name: 'liquibase-core', version: '2.0.2'
+  liquibase group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'
 
   //deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
   deploiementArtefact "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
@@ -61,6 +41,7 @@ project.ext {
   repositoryConfigFile = "${userHome}/.grails/settings.groovy"
   repositoryReleases = "ticetimereleases"
   repositorySnapshots = "ticetimesnapshot"
+
 }
 
 /**

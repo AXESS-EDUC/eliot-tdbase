@@ -25,54 +25,45 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
-
-grails.plugin.location.'eliot-tice-plugin' = "../eliot-tice-plugin"
-grails.plugin.location.'eliot-textes-plugin' = "../eliot-textes-plugin"
-grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
-
 grails.project.dependency.resolution = {
   // inherit Grails' default dependencies
   inherits("global") {
     // uncomment to disable ehcache
     // excludes 'ehcache'
-    excludes "xml-apis"
   }
   log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
   repositories {
+    grailsPlugins()
+    grailsHome()
     grailsCentral()
+    mavenCentral()
+
+    // uncomment the below to enable remote dependency resolution
+    // from public Maven repositories
+    //mavenLocal()
+    //mavenCentral()
+    //mavenRepo "http://snapshots.repository.codehaus.org"
+    //mavenRepo "http://repository.codehaus.org"
+    //mavenRepo "http://download.java.net/maven/2/"
+    //mavenRepo "http://repository.jboss.com/maven2/"
   }
   dependencies {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-    compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') {
-      excludes "commons-logging", "xml-apis", "groovy"
-    }
 
     runtime "postgresql:postgresql:9.1-901.jdbc4"
+
+    // runtime 'mysql:mysql-connector-java:5.1.13'
+    test "org.spockframework:spock-grails-support:0.6-groovy-1.7"
   }
-
   plugins {
-    build(":tomcat:$grailsVersion",
-          ":rest-client-builder:1.0.2",
-          ":release:2.0.2",
-          ":hibernate:$grailsVersion") {
-      export = false
+    compile ":codenarc:0.17"
+
+    test(":spock:0.6") {
+      exclude "spock-grails-support"
     }
-
-    compile(":codenarc:0.15") {
-      export = false
-    }
-
-
-    compile(":gmetrics:0.3.1") {
-      excludes "groovy-all"
-      export = false
-    }
-
-    test ":spock:0.7"
   }
 }
