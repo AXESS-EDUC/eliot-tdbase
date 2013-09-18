@@ -108,6 +108,15 @@ class FileUploadSpecification implements QuestionSpecification {
     questionAttachementId = map.questionAttachementId
   }
 
+  @Override
+  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
+    Long nouvelId = tableCorrespondanceId[questionAttachementId]
+    assert nouvelId != null
+    questionAttachementId = nouvelId
+
+    return this
+  }
+
   def Map toMap() {
     [
             questionTypeCode: questionTypeCode,

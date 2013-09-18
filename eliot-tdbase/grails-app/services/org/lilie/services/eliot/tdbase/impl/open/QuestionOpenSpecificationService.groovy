@@ -80,6 +80,12 @@ class OpenSpecification implements QuestionSpecification {
     correction = map.correction
   }
 
+  @Override
+  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
+    // Aucun id à actualiser dans cette spécification
+    return this
+  }
+
   def Map toMap() {
     [
             questionTypeCode: questionTypeCode,

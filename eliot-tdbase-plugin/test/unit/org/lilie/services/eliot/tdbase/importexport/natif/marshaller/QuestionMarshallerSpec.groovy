@@ -15,6 +15,7 @@ import org.lilie.services.eliot.tdbase.importexport.dto.NiveauDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PersonneDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
 import spock.lang.Specification
@@ -162,7 +163,7 @@ class QuestionMarshallerSpec extends Specification {
                                          MatiereDto matiere,
                                          NiveauDto niveau,
                                          PrincipalAttachementDto principalAttachement,
-                                         List<AttachementDto> questionAttachements) {
+                                         List<QuestionAttachementDto> questionAttachements) {
     given:
     AttachementDataStore attachementDataStore = new AttachementDataStore()
     String type = 'type'
@@ -195,7 +196,7 @@ class QuestionMarshallerSpec extends Specification {
       JSONElement jsonElement, AttachementDataStore attachementDataStore2 ->
       return principalAttachement
     }
-    AttachementMarchaller.metaClass.static.parseQuestionAttachements = {
+    AttachementMarchaller.metaClass.static.parseAllQuestionAttachement = {
       JSONArray jsonArray, AttachementDataStore attachementDataStore2 ->
       return questionAttachements
     }
@@ -267,7 +268,7 @@ class QuestionMarshallerSpec extends Specification {
     principalAttachement << [null, new PrincipalAttachementDto()]
     questionAttachements << [
         [],
-        [new AttachementDto(), new AttachementDto()]
+        [new QuestionAttachementDto(), new QuestionAttachementDto()]
     ]
   }
 

@@ -55,6 +55,12 @@ class CompositeSpecification implements QuestionSpecification {
 
   String questionTypeCode = QuestionTypeEnum.Composite.name()
 
+  @Override
+  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
+    // Aucun id à actualiser dans cette spécification
+    return this
+  }
+
   /**
    *
    * @return la représentation sous forme de map

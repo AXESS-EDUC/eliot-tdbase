@@ -48,7 +48,21 @@ public interface Specification {
 /**
  * Interface de marquage.
  */
-public interface QuestionSpecification extends Specification {}
+public interface QuestionSpecification extends Specification {
+
+  /**
+   * Actualise toutes les références à des identifiants de questionAttachementId
+   * en remplaçant les identifiants actuels par ceux qui leur sont associé dans la Map
+   * tableCorrespondanceId
+   *
+   * Cette méthode doit être appelé à l'import d'une question car les identifiants son
+   * locaux à un environnement (dans le cas d'un import / export, l'environnement d'export
+   * peut être différent de l'environnement d'import)
+   *
+   * @param tableCorrespondanceId
+   */
+  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId)
+}
 
 /**
  * Interface de marquage.

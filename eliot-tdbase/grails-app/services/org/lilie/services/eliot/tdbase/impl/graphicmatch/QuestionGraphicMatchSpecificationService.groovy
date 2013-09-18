@@ -167,6 +167,21 @@ class GraphicMatchSpecification implements QuestionSpecification {
   }
 
   @Override
+  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
+    Long nouvelId = tableCorrespondanceId[attachmentId]
+    assert nouvelId != null
+    attachmentId = nouvelId
+
+    icons.each { MatchIcon matchIcon ->
+      nouvelId = tableCorrespondanceId[matchIcon.attachmentId]
+      assert nouvelId != null
+      matchIcon.attachmentId = nouvelId
+    }
+
+    return this
+  }
+
+  @Override
   Map toMap() {
     [questionTypeCode: questionTypeCode,
             libelle: libelle,

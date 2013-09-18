@@ -5,6 +5,7 @@ package org.lilie.services.eliot.tdbase.importexport.natif.marshaller
  */
 public enum ExportClass {
   PRINCIPAL_ATTACHEMENT,
+  QUESTION_ATTACHEMENT,
   ATTACHEMENT,
   COPYRIGHTS_TYPE,
   ETABLISSEMENT,

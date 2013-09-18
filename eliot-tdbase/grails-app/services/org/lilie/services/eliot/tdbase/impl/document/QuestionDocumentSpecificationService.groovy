@@ -127,6 +127,15 @@ class DocumentSpecification implements QuestionSpecification {
     this.fichierEstVide = map.fichierEstVide
   }
 
+  @Override
+  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
+    Long nouvelId = tableCorrespondanceId[questionAttachementId]
+    assert nouvelId != null
+    questionAttachementId = nouvelId
+
+    return this
+  }
+
   Map toMap() {
     [
             questionTypeCode: questionTypeCode,

@@ -85,6 +85,12 @@ class OrderSpecification implements QuestionSpecification {
   }
 
   @Override
+  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
+    // Aucun id à actualiser dans cette spécification
+    return this
+  }
+
+  @Override
   Map toMap() {
     [
             questionTypeCode: questionTypeCode,

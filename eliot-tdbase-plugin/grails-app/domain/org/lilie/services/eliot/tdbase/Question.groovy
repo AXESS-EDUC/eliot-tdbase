@@ -70,7 +70,6 @@ class Question implements Artefact {
   Niveau niveau
   CopyrightsType copyrightsType
   Publication publication
-  SortedSet<QuestionAttachement> questionAttachements
 
   Attachement principalAttachement
   Boolean principalAttachementEstInsereDansLaQuestion

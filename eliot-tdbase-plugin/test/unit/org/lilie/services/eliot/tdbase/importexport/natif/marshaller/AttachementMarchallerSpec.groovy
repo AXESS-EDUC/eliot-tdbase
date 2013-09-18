@@ -4,8 +4,8 @@ import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.lilie.services.eliot.tdbase.QuestionAttachement
-import org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAttachementDto
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.AttachementService
 import spock.lang.Specification
@@ -65,7 +65,7 @@ class AttachementMarchallerSpec extends Specification {
     estInsereDansLaQuestion << [null, true, false]
   }
 
-  def "testMarshallQuestionAttachements - argument vide"(SortedSet<QuestionAttachement> questionAttachements) {
+  def "testMarshallQuestionAttachements - argument vide"(List<QuestionAttachement> questionAttachements) {
     given:
     AttachementDataStore attachementDataStore = new AttachementDataStore()
 
@@ -73,10 +73,10 @@ class AttachementMarchallerSpec extends Specification {
     attachementMarchaller.marshallQuestionAttachements(questionAttachements, attachementDataStore) == []
 
     where:
-    questionAttachements << [null, [] as SortedSet]
+    questionAttachements << [null, []]
   }
 
-  def "testMarshallQuestionAttachements - cas général"(SortedSet<QuestionAttachement> questionAttachements) {
+  def "testMarshallQuestionAttachements - cas général"(List<QuestionAttachement> questionAttachements) {
     given:
     AttachementDataStore attachementDataStore = new AttachementDataStore(attachementService: attachementService)
     attachementService.encodeToBase64(_) >> { arg ->
@@ -91,13 +91,16 @@ class AttachementMarchallerSpec extends Specification {
     expect:
     questionAttachements.size() == questionAttachements.size()
     questionAttachements.eachWithIndex { QuestionAttachement questionAttachement, int i ->
-      assert questionAttachementsRepresentation[i].size() == 6
-      assert questionAttachementsRepresentation[i].class == ExportClass.ATTACHEMENT.name()
-      assert questionAttachementsRepresentation[i].nom == questionAttachement.attachement.nom
-      assert questionAttachementsRepresentation[i].nomFichierOriginal == questionAttachement.attachement.nomFichierOriginal
-      assert questionAttachementsRepresentation[i].typeMime == questionAttachement.attachement.typeMime
-      assert questionAttachementsRepresentation[i].chemin == questionAttachement.attachement.chemin
-      assert questionAttachementsRepresentation[i].estInsereDansLaQuestion == questionAttachement.estInsereDansLaQuestion
+      assert questionAttachementsRepresentation[i].size() == 3
+      assert questionAttachementsRepresentation[i].class == ExportClass.QUESTION_ATTACHEMENT.name()
+      assert questionAttachementsRepresentation[i].id == questionAttachement.id
+      assert questionAttachementsRepresentation[i].attachement
+      assert questionAttachementsRepresentation[i].attachement.size() == 6
+      assert questionAttachementsRepresentation[i].attachement.nom == questionAttachement.attachement.nom
+      assert questionAttachementsRepresentation[i].attachement.nomFichierOriginal == questionAttachement.attachement.nomFichierOriginal
+      assert questionAttachementsRepresentation[i].attachement.typeMime == questionAttachement.attachement.typeMime
+      assert questionAttachementsRepresentation[i].attachement.chemin == questionAttachement.attachement.chemin
+      assert questionAttachementsRepresentation[i].attachement.estInsereDansLaQuestion == questionAttachement.estInsereDansLaQuestion
 
       attachementDataStore.getBlobBase64(questionAttachement.attachement.chemin) ==
           attachementService.encodeToBase64(questionAttachement.attachement)
@@ -110,11 +113,12 @@ class AttachementMarchallerSpec extends Specification {
     ]
   }
 
-  private SortedSet<QuestionAttachement> genereQuestionAttachements(int nbAttachement) {
-    SortedSet<QuestionAttachement> questionAttachements = [] as SortedSet
+  private List<QuestionAttachement> genereQuestionAttachements(int nbAttachement) {
+    List<QuestionAttachement> questionAttachements = []
 
     nbAttachement.times {
       questionAttachements << new QuestionAttachement(
+          id: it,
           rang: it,
           attachement: genereAttachement(it),
           estInsereDansLaQuestion: it % 2 == 0
@@ -313,42 +317,53 @@ class AttachementMarchallerSpec extends Specification {
     String json = """
       [
         {
-          class: '${ExportClass.ATTACHEMENT}',
-          nom: 'nom1',
-          nomFichierOriginal: 'nomFichierOriginal1',
-          typeMime: 'typeMime1',
-          chemin: 'chemin1',
-          estInsereDansLaQuestion:  true
+          class: '${ExportClass.QUESTION_ATTACHEMENT}',
+          id: 1,
+          attachement: {
+            class: '${ExportClass.ATTACHEMENT}',
+            nom: 'nom1',
+            nomFichierOriginal: 'nomFichierOriginal1',
+            typeMime: 'typeMime1',
+            chemin: 'chemin1',
+            estInsereDansLaQuestion:  true
+          }
         },
         {
-          class: '${ExportClass.ATTACHEMENT}',
-          nom: 'nom2',
-          nomFichierOriginal: 'nomFichierOriginal2',
-          typeMime: 'typeMime2',
-          chemin: 'chemin2',
-          estInsereDansLaQuestion:  false
+          class: '${ExportClass.QUESTION_ATTACHEMENT}',
+          id: 2,
+          attachement: {
+            class: '${ExportClass.ATTACHEMENT}',
+            nom: 'nom2',
+            nomFichierOriginal: 'nomFichierOriginal2',
+            typeMime: 'typeMime2',
+            chemin: 'chemin2',
+            estInsereDansLaQuestion:  false
+          }
         }
       ]
     """
 
-    List<AttachementDto> questionAttachementsDto =
-      AttachementMarchaller.parseQuestionAttachements(
+    List<QuestionAttachementDto> questionAttachementsDto =
+      AttachementMarchaller.parseAllQuestionAttachement(
           (JSONArray)JSON.parse(json),
           attachementDataStore
       )
 
     expect:
     questionAttachementsDto.size() == 2
-    questionAttachementsDto[0].nom == 'nom1'
-    questionAttachementsDto[0].nomFichierOriginal == 'nomFichierOriginal1'
-    questionAttachementsDto[0].typeMime == 'typeMime1'
-    questionAttachementsDto[0].blob == 'blob1'
-    questionAttachementsDto[0].estInsereDansLaQuestion
-    questionAttachementsDto[1].nom == 'nom2'
-    questionAttachementsDto[1].nomFichierOriginal == 'nomFichierOriginal2'
-    questionAttachementsDto[1].typeMime == 'typeMime2'
-    questionAttachementsDto[1].blob == 'blob2'
-    !questionAttachementsDto[1].estInsereDansLaQuestion
+    questionAttachementsDto[0].id == 1
+    questionAttachementsDto[0].attachement.nom == 'nom1'
+    questionAttachementsDto[0].attachement.nomFichierOriginal == 'nomFichierOriginal1'
+    questionAttachementsDto[0].attachement.typeMime == 'typeMime1'
+    questionAttachementsDto[0].attachement.blob == 'blob1'
+    questionAttachementsDto[0].attachement.estInsereDansLaQuestion
+
+    questionAttachementsDto[1].id == 2
+    questionAttachementsDto[1].attachement.nom == 'nom2'
+    questionAttachementsDto[1].attachement.nomFichierOriginal == 'nomFichierOriginal2'
+    questionAttachementsDto[1].attachement.typeMime == 'typeMime2'
+    questionAttachementsDto[1].attachement.blob == 'blob2'
+    !questionAttachementsDto[1].attachement.estInsereDansLaQuestion
   }
 
 }

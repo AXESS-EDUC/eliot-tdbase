@@ -61,10 +61,14 @@ class QuestionAttachementService {
                                                                     Boolean estInsereDansLaQuestion,
                                                                     Integer rang = 1) {
     def attachement = attachementService.createAttachementForMultipartFile(
-            fichier
+        fichier
     )
-    return createAttachementForQuestion(attachement, question,
-                                        estInsereDansLaQuestion, rang)
+    return createAttachementForQuestion(
+        attachement,
+        question,
+        estInsereDansLaQuestion,
+        rang
+    )
   }
 
   /**
@@ -81,10 +85,14 @@ class QuestionAttachementService {
                                                                Boolean estInsereDansLaQuestion = true,
                                                                Integer rang = 1) {
     def attachement = attachementService.createAttachementForImageIds(
-            fichier
+        fichier
     )
-    return createAttachementForQuestion(attachement, question,
-                                        estInsereDansLaQuestion, rang)
+    return createAttachementForQuestion(
+        attachement,
+        question,
+        estInsereDansLaQuestion,
+        rang
+    )
   }
 
   /**
@@ -101,10 +109,10 @@ class QuestionAttachementService {
                                                    Boolean estInsereDansLaQuestion = true,
                                                    Integer rang = 1) {
     QuestionAttachement questionAttachement = new QuestionAttachement(
-            question: question,
-            attachement: attachement,
-            estInsereDansLaQuestion: estInsereDansLaQuestion,
-            rang: rang
+        question: question,
+        attachement: attachement,
+        estInsereDansLaQuestion: estInsereDansLaQuestion,
+        rang: rang
     )
     questionAttachement.save(failOnError: true)
     // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
@@ -143,7 +151,7 @@ class QuestionAttachementService {
   Question createPrincipalAttachementForQuestionFromMultipartFile(MultipartFile fichier,
                                                                   Question question) {
     def attachement = attachementService.createAttachementForMultipartFile(
-            fichier
+        fichier
     )
     return createPrincipalAttachementForQuestion(attachement, question)
   }
@@ -160,7 +168,7 @@ class QuestionAttachementService {
   Question createPrincipalAttachementForQuestionFromImageIds(ImageIds fichier,
                                                              Question question) {
     def attachement = attachementService.createAttachementForImageIds(
-            fichier
+        fichier
     )
 
     return createPrincipalAttachementForQuestion(attachement, question)
@@ -182,10 +190,9 @@ class QuestionAttachementService {
     // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
     attachement.aSupprimer = false
     question.lastUpdated = new Date()
-    if(principalAttachementEstInsereDansLaQuestion != null) {
+    if (principalAttachementEstInsereDansLaQuestion != null) {
       question.principalAttachementEstInsereDansLaQuestion = principalAttachementEstInsereDansLaQuestion
-    }
-    else if (question.principalAttachementEstInsereDansLaQuestion == null) {
+    } else if (question.principalAttachementEstInsereDansLaQuestion == null) {
       question.principalAttachementEstInsereDansLaQuestion = true
     }
     question.save()

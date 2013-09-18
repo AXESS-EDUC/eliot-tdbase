@@ -2,6 +2,7 @@ package org.lilie.services.eliot.tdbase.importexport
 
 import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
 import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.QuestionAttachement
 import org.lilie.services.eliot.tdbase.QuestionService
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionType
@@ -11,6 +12,7 @@ import org.lilie.services.eliot.tdbase.ReferentielSujetSequenceQuestions
 import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
@@ -124,8 +126,37 @@ class QuestionImporterService implements ApplicationContextAware {
       attachementImporterService.importePrincipalAttachement(questionDto.principalAttachement, question)
     }
 
-    attachementImporterService.importeQuestionAttachements(questionDto.questionAttachements, question)
+    if (questionDto.questionAttachements) {
+      List<QuestionAttachement> allCreatedQuestionAttachement =
+        attachementImporterService.importeQuestionAttachements(questionDto.questionAttachements, question)
+
+      Map tableCorrespondanceId = creeTableCorrespondanceId(
+          questionDto.questionAttachements,
+          allCreatedQuestionAttachement
+      )
+
+      def specification = question.specificationObject.actualiseAllQuestionAttachementId(tableCorrespondanceId)
+      questionService.updateQuestionSpecificationForObject(question, specification)
+      question.save()
+    }
 
     return question
+  }
+
+  Map<Long, Long> creeTableCorrespondanceId(List<QuestionAttachementDto> allQuestionAttachementDto,
+                                            List<QuestionAttachement> allCreatedQuestionAttachement) {
+    assert allQuestionAttachementDto != null
+    assert allCreatedQuestionAttachement != null
+
+    Map<Long, Long> tableCorrespondanceId = [:]
+    assert allQuestionAttachementDto.size() == allCreatedQuestionAttachement.size()
+
+    allQuestionAttachementDto.eachWithIndex { QuestionAttachementDto questionAttachementDto, int i ->
+      QuestionAttachement questionAttachement = allCreatedQuestionAttachement[i]
+      assert questionAttachementDto.attachement.chemin == questionAttachement.attachement.chemin
+      tableCorrespondanceId[questionAttachementDto.id] = questionAttachement.id
+    }
+
+    return tableCorrespondanceId
   }
 }

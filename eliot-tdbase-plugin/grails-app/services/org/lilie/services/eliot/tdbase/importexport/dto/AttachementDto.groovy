@@ -4,6 +4,7 @@ package org.lilie.services.eliot.tdbase.importexport.dto
  * @author John Tranier
  */
 class AttachementDto {
+  Long questionAttachementId
   String nom
   String nomFichierOriginal
   String typeMime

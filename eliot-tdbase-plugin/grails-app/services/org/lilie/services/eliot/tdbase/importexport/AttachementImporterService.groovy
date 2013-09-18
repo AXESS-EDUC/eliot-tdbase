@@ -1,9 +1,11 @@
 package org.lilie.services.eliot.tdbase.importexport
 
 import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.QuestionAttachement
 import org.lilie.services.eliot.tdbase.QuestionAttachementService
 import org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAttachementDto
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerHelper
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.AttachementService
@@ -33,19 +35,25 @@ class AttachementImporterService {
     )
   }
 
-  void importeQuestionAttachements(List<AttachementDto> questionAttachementsDto,
-                                   Question question) {
-    questionAttachementsDto.eachWithIndex { AttachementDto attachementDto, int rang ->
-      Attachement attachement = importeAttachement(attachementDto)
+  List<QuestionAttachement> importeQuestionAttachements(List<QuestionAttachementDto> allQuestionAttachementDto,
+                                                        Question question) {
+    List<QuestionAttachement> allCreatedQuestionAttachement = []
 
-      questionAttachementService.createAttachementForQuestion(
-          attachement,
-          question,
-          attachementDto.estInsereDansLaQuestion,
-          rang
-      )
+    allQuestionAttachementDto.eachWithIndex { QuestionAttachementDto questionAttachementDto, int rang ->
+      Attachement attachement = importeAttachement(questionAttachementDto.attachement)
 
+      QuestionAttachement questionAttachement =
+        questionAttachementService.createAttachementForQuestion(
+            attachement,
+            question,
+            questionAttachementDto.attachement.estInsereDansLaQuestion,
+            rang
+        )
+
+      allCreatedQuestionAttachement << questionAttachement
     }
+
+    return allCreatedQuestionAttachement
   }
 
   private Attachement importeAttachement(AttachementDto attachementDto) {
@@ -59,7 +67,7 @@ class AttachementImporterService {
             nomFichierOriginal: attachementDto.nomFichierOriginal,
             bytes: decodedBytes
         ),
-          grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
+        grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     )
   }
 

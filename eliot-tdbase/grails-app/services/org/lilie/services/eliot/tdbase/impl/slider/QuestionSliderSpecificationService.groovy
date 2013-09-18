@@ -84,6 +84,12 @@ class SliderSpecification implements QuestionSpecification {
     correction = map.correction
   }
 
+  @Override
+  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
+    // Aucun id à actualiser dans cette spécification
+    return this
+  }
+
   Map toMap() {
     [
             questionTypeCode: questionTypeCode,

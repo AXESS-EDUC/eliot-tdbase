@@ -112,7 +112,7 @@ public class QuestionMarshaller {
             jsonElement.principalAttachement,
             attachementDataStore
         ),
-        questionAttachements: AttachementMarchaller.parseQuestionAttachements(
+        questionAttachements: AttachementMarchaller.parseAllQuestionAttachement(
             jsonElement.questionAttachements,
             attachementDataStore
         )

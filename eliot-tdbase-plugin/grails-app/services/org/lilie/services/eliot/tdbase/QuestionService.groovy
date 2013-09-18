@@ -91,8 +91,7 @@ class QuestionService implements ApplicationContextAware {
     }
 
     // mise à jour spécification
-    def specService = questionSpecificationServiceForQuestionType(question.type)
-    specService.updateQuestionSpecificationForObject(question, specificationObject)
+    updateQuestionSpecificationForObject(question, specificationObject)
 
     // La paternité n'est initialisée que si elle n'est pas fournie dans les propriétés de création
     if(!proprietes.containsKey('paternite')) {
@@ -101,6 +100,11 @@ class QuestionService implements ApplicationContextAware {
 
     question.save(flush: true)
     return question
+  }
+
+  void updateQuestionSpecificationForObject(Question question, QuestionSpecification specificationObject) {
+    def specService = questionSpecificationServiceForQuestionType(question.type)
+    specService.updateQuestionSpecificationForObject(question, specificationObject)
   }
 
   /**

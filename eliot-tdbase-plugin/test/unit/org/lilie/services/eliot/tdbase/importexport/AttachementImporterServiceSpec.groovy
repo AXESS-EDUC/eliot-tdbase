@@ -5,6 +5,7 @@ import org.lilie.services.eliot.tdbase.Question
 import org.lilie.services.eliot.tdbase.QuestionAttachementService
 import org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAttachementDto
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerHelper
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.AttachementService
@@ -82,11 +83,11 @@ class AttachementImporterServiceSpec extends Specification {
 
   def "testImporteQuestionAttachements"(int nbAttachement, Question question) {
     given:
-    List<AttachementDto> questionAttachementsDto = genereQuestionAttachementsDto(nbAttachement)
+    List<QuestionAttachementDto> allQuestionAttachementDto = genereQuestionAttachementsDto(nbAttachement)
 
     when:
     attachementImporterService.importeQuestionAttachements(
-        questionAttachementsDto,
+        allQuestionAttachementDto,
         question
     )
 
@@ -104,17 +105,21 @@ class AttachementImporterServiceSpec extends Specification {
     question = new Question()
   }
 
-  private List<AttachementDto> genereQuestionAttachementsDto(int nbAttachement) {
+  private List<QuestionAttachementDto> genereQuestionAttachementsDto(int nbAttachement) {
     List<AttachementDto> allAttachementDto = []
 
     nbAttachement.times {
-      allAttachementDto << new AttachementDto(
-          nom: "nom-$nbAttachement",
-          nomFichierOriginal: "nomFichierOriginal-$nbAttachement",
-          typeMime: "typeMime-$nbAttachement",
-          blob: MarshallerHelper.encodeAsBase64("blob-$nbAttachement"),
-          estInsereDansLaQuestion: true
+      allAttachementDto << new QuestionAttachementDto(
+          id: it,
+          attachement: new AttachementDto(
+              nom: "nom-$nbAttachement",
+              nomFichierOriginal: "nomFichierOriginal-$nbAttachement",
+              typeMime: "typeMime-$nbAttachement",
+              blob: MarshallerHelper.encodeAsBase64("blob-$nbAttachement"),
+              estInsereDansLaQuestion: true
+          )
       )
+
     }
 
     return allAttachementDto

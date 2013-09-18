@@ -57,7 +57,10 @@ class QuestionFillGraphicsSpecificationService extends QuestionSpecificationServ
     def oldImageId = question.specificationObject?.attachmentId
     if (spec.fichier && !spec.fichier.empty) {
       def questionAttachement = questionAttachementService.createAttachementForQuestionFromMultipartFile(
-              spec.fichier, question,true)
+              spec.fichier,
+          question,
+          true
+      )
 
       if (oldImageId) {
         questionAttachementService.deleteQuestionAttachement(
@@ -133,6 +136,15 @@ class FillGraphicsSpecification implements QuestionSpecification {
     def motsSugeres = textZones.collect {it.text}
     Collections.shuffle(motsSugeres)
     motsSugeres
+  }
+
+  @Override
+  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
+    Long nouvelId = tableCorrespondanceId[attachmentId]
+    assert nouvelId != null
+    attachmentId = nouvelId
+
+    return this
   }
 
   @Override

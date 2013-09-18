@@ -4,6 +4,7 @@ import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
 import org.lilie.services.eliot.tdbase.Question
+import org.lilie.services.eliot.tdbase.QuestionAttachement
 import org.lilie.services.eliot.tdbase.QuestionService
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
@@ -17,9 +18,11 @@ import org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
 import org.lilie.services.eliot.tdbase.importexport.dto.SujetDto
+import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
@@ -220,7 +223,7 @@ class QuestionImporterServiceSpec extends Specification {
 
   def "testImporteQuestion - question atomique OK"(ReferentielEliot referentielEliot,
                                                    PrincipalAttachementDto principalAttachementDto,
-                                                   List<AttachementDto> questionAttachementsDto) {
+                                                   List<QuestionAtomiqueDto> allQuestionAttachementDto) {
     given:
     CopyrightsTypeEnum copyrightsTypeEnum = CopyrightsTypeEnum.TousDroitsReserves
     QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.MultipleChoice
@@ -234,14 +237,16 @@ class QuestionImporterServiceSpec extends Specification {
         estAutonome: true,
         paternite: "paternite",
         principalAttachement: principalAttachementDto,
-        questionAttachements: questionAttachementsDto
+        questionAttachements: allQuestionAttachementDto
     )
 
     def sujet = new Sujet()
     def importeur = new Personne()
 
 
-    Question question = new Question()
+    QuestionSpecification questionSpecification = Mock(QuestionSpecification)
+    Question question = Mock(Question)
+    question.getSpecificationObject() >> questionSpecification
 
     QuestionSpecification multipleChoiceSpecification = [:] as QuestionSpecification
 
@@ -260,9 +265,13 @@ class QuestionImporterServiceSpec extends Specification {
       return questionSpecificationService
     }
 
+    List<QuestionAttachement> allQuestionAttachement = genereAllQuestionAttachementFromQuestionAttachementDto(
+        allQuestionAttachementDto
+    )
+
     when:
     Question questionImportee = questionImporterService.importeQuestion(
-        (QuestionAtomiqueDto)questionAtomiqueDto,
+        (QuestionAtomiqueDto) questionAtomiqueDto,
         sujet,
         importeur,
         referentielEliot
@@ -298,7 +307,16 @@ class QuestionImporterServiceSpec extends Specification {
       0 * attachementImporterService.importePrincipalAttachement(_)
     }
 
-    1 * attachementImporterService.importeQuestionAttachements(questionAtomiqueDto.questionAttachements, question)
+    if (allQuestionAttachementDto) {
+      1 * attachementImporterService.importeQuestionAttachements(
+          questionAtomiqueDto.questionAttachements,
+          question
+      ) >> allQuestionAttachement
+
+      1 * questionSpecification.actualiseAllQuestionAttachementId(_) // Il faudrait valider le paramètre
+    } else {
+      0 * attachementImporterService.importeQuestionAttachements(_, _)
+    }
     questionImportee == question
 
     where:
@@ -315,11 +333,37 @@ class QuestionImporterServiceSpec extends Specification {
         null, null, new PrincipalAttachementDto()
     ]
 
-    questionAttachementsDto << [
-        [],
-        [new AttachementDto()],
-        [new AttachementDto(), new AttachementDto(), new AttachementDto()]
+    allQuestionAttachementDto << [
+        genereAllQuestionAttachementDto(0),
+        genereAllQuestionAttachementDto(1),
+        genereAllQuestionAttachementDto(3)
     ]
+  }
+
+  private List<AttachementDto> genereAllQuestionAttachementDto(int nb) {
+    List<AttachementDto> allAttachementDto = []
+
+    nb.times {
+      allAttachementDto << new QuestionAttachementDto(
+          id: 5 * it,
+          attachement: new AttachementDto(
+              chemin: "chemin_$it"
+          )
+      )
+    }
+
+    return allAttachementDto
+  }
+
+  private List<QuestionAttachement> genereAllQuestionAttachementFromQuestionAttachementDto(List<QuestionAttachementDto> allQuestionAttachementDto) {
+    allQuestionAttachementDto.collect { QuestionAttachementDto questionAttachementDto ->
+      new QuestionAttachement(
+          id: 7 * questionAttachementDto.id, // génère un nouvel id pour vérifier l'actualisation des IDs
+          attachement: new Attachement(
+              chemin: questionAttachementDto.attachement.chemin
+          )
+      )
+    }
   }
 
   def "testImporteQuestion - question composite OK"(ReferentielEliot referentielEliot,

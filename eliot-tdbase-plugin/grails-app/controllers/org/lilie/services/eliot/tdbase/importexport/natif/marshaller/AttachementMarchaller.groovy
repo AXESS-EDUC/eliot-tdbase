@@ -6,6 +6,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.lilie.services.eliot.tdbase.QuestionAttachement
 import org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
+import org.lilie.services.eliot.tdbase.importexport.dto.QuestionAttachementDto
 import org.lilie.services.eliot.tice.Attachement
 
 /**
@@ -20,7 +21,7 @@ class AttachementMarchaller {
   Map marshallPrincipalAttachement(Attachement principalAttachement,
                                    estInsereDansLaQuestion,
                                    AttachementDataStore attachementDataStore) {
-    if(!principalAttachement) {
+    if (!principalAttachement) {
       return null
     }
 
@@ -34,18 +35,24 @@ class AttachementMarchaller {
     ]
   }
 
-  List marshallQuestionAttachements(SortedSet<QuestionAttachement> questionAttachements,
+  List marshallQuestionAttachements(Collection<QuestionAttachement> questionAttachements,
                                     AttachementDataStore attachementDataStore) {
-    if(!questionAttachements) {
+    if (!questionAttachements) {
       return []
     }
 
-    return questionAttachements.collect {
-      marshallAttachement(
-          it.attachement,
-          it.estInsereDansLaQuestion,
+    return questionAttachements.collect { QuestionAttachement questionAttachement ->
+      Map attachementRepresentation = marshallAttachement(
+          questionAttachement.attachement,
+          questionAttachement.estInsereDansLaQuestion,
           attachementDataStore
       )
+
+      return [
+          class: ExportClass.QUESTION_ATTACHEMENT.name(),
+          id: questionAttachement.id,
+          attachement: attachementRepresentation
+      ]
     }
   }
 
@@ -78,12 +85,23 @@ class AttachementMarchaller {
     return null
   }
 
-  static List<PrincipalAttachementDto> parseQuestionAttachements(JSONArray jsonArray,
-                                                        AttachementDataStore attachementDataStore) {
+  static List<QuestionAttachementDto> parseAllQuestionAttachement(JSONArray jsonArray,
+                                                                  AttachementDataStore attachementDataStore) {
     jsonArray.collect {
-      parseAttachement((JSONElement)it, attachementDataStore)
+      parseQuestionAttachement((JSONElement) it, attachementDataStore)
     }
+  }
 
+  static QuestionAttachementDto parseQuestionAttachement(JSONElement jsonElement,
+                                                         AttachementDataStore attachementDataStore) {
+    MarshallerHelper.checkClass(ExportClass.QUESTION_ATTACHEMENT, jsonElement)
+    MarshallerHelper.checkIsNotNull('questionAttachement.id', jsonElement.id)
+    MarshallerHelper.checkIsJsonElement('questionAttachement.attachement', jsonElement.attachement)
+
+    return new QuestionAttachementDto(
+        id: jsonElement.id,
+        attachement: parseAttachement(jsonElement.attachement, attachementDataStore)
+    )
   }
 
   static AttachementDto parseAttachement(JSONElement jsonElement,
@@ -95,6 +113,7 @@ class AttachementMarchaller {
     MarshallerHelper.checkIsNotNull('attachement.chemin', jsonElement.chemin)
 
     return new AttachementDto(
+        questionAttachementId: jsonElement.questionAttachementId,
         nom: jsonElement.nom,
         nomFichierOriginal: jsonElement.nomFichierOriginal,
         typeMime: jsonElement.typeMime,

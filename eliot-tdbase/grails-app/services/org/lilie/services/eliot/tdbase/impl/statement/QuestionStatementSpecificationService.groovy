@@ -56,6 +56,12 @@ class StatementSpecification implements QuestionSpecification {
   String questionTypeCode = QuestionTypeEnum.Statement.name()
   String enonce
 
+  @Override
+  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
+    // Aucun id à actualiser dans cette spécification
+    return this
+  }
+
   Map toMap() {
     [
             questionTypeCode: questionTypeCode,

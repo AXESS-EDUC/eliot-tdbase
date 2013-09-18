@@ -18,5 +18,5 @@ public class QuestionAtomiqueDto implements QuestionDto {
   NiveauDto niveau
   String specification
   PrincipalAttachementDto principalAttachement
-  List<AttachementDto> questionAttachements
+  List<QuestionAttachementDto> questionAttachements
 }

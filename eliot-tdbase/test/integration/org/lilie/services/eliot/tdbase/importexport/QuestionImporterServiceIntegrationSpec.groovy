@@ -250,8 +250,8 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
     checkAttachement(questionImportee.principalAttachement, question.principalAttachement)
   }
 
-  private void checkQuestionAttachements(SortedSet<QuestionAttachement> questionAttachementsImportes,
-                                         SortedSet<QuestionAttachement> questionAttachements) {
+  private void checkQuestionAttachements(List<QuestionAttachement> questionAttachementsImportes,
+                                         List<QuestionAttachement> questionAttachements) {
 
     assert questionAttachementsImportes?.size() == questionAttachements?.size()
 
