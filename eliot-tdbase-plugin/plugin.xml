@@ -5,6 +5,26 @@
   </description>
   <type>EliotTdbasePluginGrailsPlugin</type>
   <resources>
+    <resource>org.lilie.services.eliot.tdbase.importexport.ExportHelper</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementDataStore</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementDatastoreMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementMarchaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.CopyrightsTypeMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.EtablissementMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportClass</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerException</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerHelper</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionCompositeMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetSequenceQuestionsMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.QuestionMarshallerFactory</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.SujetMarshallerFactory</resource>
     <resource>org.lilie.services.eliot.tdbase.Copie</resource>
     <resource>org.lilie.services.eliot.tdbase.ModaliteActivite</resource>
     <resource>org.lilie.services.eliot.tdbase.Question</resource>
@@ -32,7 +52,27 @@
     <resource>org.lilie.services.eliot.tdbase.ReponseSpecificationService</resource>
     <resource>org.lilie.services.eliot.tdbase.Specification</resource>
     <resource>org.lilie.services.eliot.tdbase.SujetService</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.AttachementImporterService</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.Format</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.QuestionExporterService</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.QuestionImporterService</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.SujetExporterService</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.SujetImporterService</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.ArtefactDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.EtablissementDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.ExportDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.MatiereDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.NiveauDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.PersonneDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.QuestionAtomiqueDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.QuestionAttachementDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.SujetDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.SujetSequenceQuestionsDto</resource>
     <resource>org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService</resource>
   </resources>
   <repositories>
@@ -45,9 +85,9 @@
   </repositories>
   <dependencies>
     <compile>
-      <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.2' />
-      <dependency group='org.apache.maven.wagon' name='wagon-webdav' version='1.0-beta-2' />
       <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
+      <dependency group='org.apache.maven.wagon' name='wagon-webdav' version='1.0-beta-2' />
+      <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.2' />
     </compile>
     <runtime>
       <dependency group='postgresql' name='postgresql' version='9.1-901.jdbc4' />
@@ -63,23 +103,23 @@
       <plugin group='org.grails.plugins' name='code-coverage' version='1.2.5' />
     </test>
     <compile>
+      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
       <plugin group='org.grails.plugins' name='spring-security-core' version='1.2.7.2' />
       <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
-      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
+      <plugin group='org.grails.plugins' name='mail' version='1.0' />
       <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
       <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
       <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
       <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
-      <plugin group='org.grails.plugins' name='mail' version='1.0' />
     </compile>
     <runtime>
-      <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
       <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
+      <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
     </runtime>
     <build>
-      <plugin group='org.grails.plugins' name='tomcat' version='2.1.1' />
       <plugin group='org.grails.plugins' name='rest-client-builder' version='1.0.2' />
       <plugin group='org.grails.plugins' name='release' version='2.0.2' />
+      <plugin group='org.grails.plugins' name='tomcat' version='2.1.1' />
     </build>
   </plugins>
   <runtimePluginRequirements />
