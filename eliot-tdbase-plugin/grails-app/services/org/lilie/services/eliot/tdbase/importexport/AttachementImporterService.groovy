@@ -46,8 +46,7 @@ class AttachementImporterService {
         questionAttachementService.createAttachementForQuestion(
             attachement,
             question,
-            questionAttachementDto.attachement.estInsereDansLaQuestion,
-            rang
+            questionAttachementDto.attachement.estInsereDansLaQuestion
         )
 
       allCreatedQuestionAttachement << questionAttachement

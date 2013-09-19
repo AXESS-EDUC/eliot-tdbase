@@ -52,4 +52,16 @@
                 constraintName="uk_question_attachement_question_rang"/>
     </changeSet>
 
+    <changeSet id="2" author="jtra">
+        <comment>
+            Suppression de la contrainte d'unicité uk_question_attachement_question_rang qui n'est pas correctement
+            gérée avec la modélisation GORM actuelle du domaine
+        </comment>
+
+        <dropUniqueConstraint
+                schemaName="td"
+                tableName="question_attachement"
+                constraintName="uk_question_attachement_question_rang"/>
+    </changeSet>
+
 </databaseChangeLog>

@@ -221,8 +221,7 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
       questionAttachementService.createAttachementForQuestion(
           attachement,
           question,
-          estInsereDansLaQuestion,
-          it
+          estInsereDansLaQuestion
       )
     }
 
@@ -259,7 +258,6 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
     questionAttachementsImportes.each { QuestionAttachement questionAttachementImporte ->
       QuestionAttachement questionAttachement = (QuestionAttachement) iterator.next()
 
-      assert questionAttachementImporte.rang == questionAttachement.rang
       assert questionAttachementImporte.estInsereDansLaQuestion == questionAttachement.estInsereDansLaQuestion
       checkAttachement(questionAttachementImporte.attachement, questionAttachement.attachement)
     }

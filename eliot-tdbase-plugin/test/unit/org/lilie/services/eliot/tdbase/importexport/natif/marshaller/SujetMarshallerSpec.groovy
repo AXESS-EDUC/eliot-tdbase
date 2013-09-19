@@ -108,9 +108,6 @@ class SujetMarshallerSpec extends Specification {
     sujetRepresentation.specification.ordreQuestionsAleatoire == sujet.ordreQuestionsAleatoire
     if (questionsSequences) {
       sujetRepresentation.specification.questionsSequences.size() == questionsSequences.size()
-      sujetRepresentation.specification.questionsSequences.eachWithIndex { def questionSequence, int i ->
-        assert questionSequence.rang == i
-      }
     } else {
       sujetRepresentation.specification.questionsSequences == []
     }

@@ -74,6 +74,8 @@ class Question implements Artefact {
   Attachement principalAttachement
   Boolean principalAttachementEstInsereDansLaQuestion
 
+  List<QuestionAttachement> questionAttachements
+
   private def specificationObject
 
   static hasMany = [questionAttachements: QuestionAttachement]
@@ -126,7 +128,7 @@ class Question implements Artefact {
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
     cache(true)
     principalAttachement(column: 'attachement_id', fetch: 'join')
-    questionAttachements(lazy: 'false', sort: 'rang', order: 'asc')
+    questionAttachements(lazy: 'false', indexColumn: [name: 'rang', type: Integer])
   }
 
   static transients = ['questionService',

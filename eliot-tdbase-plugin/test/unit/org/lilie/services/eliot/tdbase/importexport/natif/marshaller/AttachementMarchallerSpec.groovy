@@ -119,7 +119,6 @@ class AttachementMarchallerSpec extends Specification {
     nbAttachement.times {
       questionAttachements << new QuestionAttachement(
           id: it,
-          rang: it,
           attachement: genereAttachement(it),
           estInsereDansLaQuestion: it % 2 == 0
       )

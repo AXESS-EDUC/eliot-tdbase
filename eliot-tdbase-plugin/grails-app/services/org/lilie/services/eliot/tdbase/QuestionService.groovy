@@ -167,9 +167,10 @@ class QuestionService implements ApplicationContextAware {
 
     // recopie les attachements (on ne duplique pas les attachements)
     question.questionAttachements.each { QuestionAttachement questionAttachement ->
-      QuestionAttachement copieQuestionAttachement = new QuestionAttachement(question: questionCopie,
-          attachement: questionAttachement.attachement,
-          rang: questionAttachement.rang)
+      QuestionAttachement copieQuestionAttachement = new QuestionAttachement(
+          question: questionCopie,
+          attachement: questionAttachement.attachement
+      )
       questionCopie.addToQuestionAttachements(copieQuestionAttachement)
       questionCopie.save()
     }
