@@ -64,4 +64,23 @@
                 constraintName="uk_question_attachement_question_rang"/>
     </changeSet>
 
+    <changeSet id="3" author="jtra">
+        <comment>Ajout de la table td.patch_execution pour tracer les exécutions de patches</comment>
+
+        <createTable schemaName="td" tableName="patch_execution">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="code" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created"
+                    type="timestamp without time zone"/>
+        </createTable>
+
+        <createSequence sequenceName="patch_execution_id_seq"
+                        schemaName="td"
+                        startValue="100"/>
+    </changeSet>
+
 </databaseChangeLog>

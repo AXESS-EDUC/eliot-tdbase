@@ -34,12 +34,15 @@ class PatchTDB40 implements Patch {
 
   ApplicationContext applicationContext
 
-  // TODO nom
-  void execute() {
-    // TODO Paginate
+  final static String CODE = "TDB-40"
+  private final static int BATCH_SIZE = 25
 
+  void execute() {
     def criteria = Question.createCriteria()
-    def allQuestion = criteria.list {
+    def allQuestionId = criteria.list {
+      projections {
+        property 'id'
+      }
       'type' {
         'in'(
             'code',
@@ -53,8 +56,13 @@ class PatchTDB40 implements Patch {
       }
     }
 
-    allQuestion.each { Question question ->
+    allQuestionId.eachWithIndex { Long questionId, int num ->
+      Question question = Question.get(questionId)
       verifieEtCorrigeSiNecessaire(question)
+
+      if(num % BATCH_SIZE == 0) {
+        cleanUpGorm()
+      }
     }
   }
 
@@ -97,8 +105,14 @@ class PatchTDB40 implements Patch {
     question.save()
   }
 
-  boolean isQuestionAttachementCorrect(Question question, QuestionAttachement questionAttachement) {
+  private boolean isQuestionAttachementCorrect(Question question, QuestionAttachement questionAttachement) {
     return questionAttachement.question.id == question.id
   }
 
+  private void cleanUpGorm() {
+    PatchExecution.withSession { def session ->
+      session.flush()
+      session.clear()
+    }
+  }
 }

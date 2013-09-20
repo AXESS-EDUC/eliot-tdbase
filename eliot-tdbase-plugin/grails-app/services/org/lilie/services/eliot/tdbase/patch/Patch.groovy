@@ -13,5 +13,8 @@ import org.springframework.context.ApplicationContextAware
  */
 public interface Patch extends ApplicationContextAware{
 
+  /**
+   * Execute le patch
+   */
   void execute()
 }
