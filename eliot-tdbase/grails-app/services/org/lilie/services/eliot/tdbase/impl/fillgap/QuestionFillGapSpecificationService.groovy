@@ -32,6 +32,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement
 
 import static java.util.Collections.shuffle
 
@@ -51,7 +52,8 @@ class QuestionFillGapSpecificationService extends QuestionSpecificationService<F
  * Specification de question de type text à trou
  */
 @Validateable
-class FillGapSpecification implements QuestionSpecification {
+class FillGapSpecification  extends AbstractQuestionSpecificationSansAttachement
+implements QuestionSpecification {
   String questionTypeCode = QuestionTypeEnum.FillGap.name()
   /**
    * Le libellé.
@@ -78,12 +80,6 @@ class FillGapSpecification implements QuestionSpecification {
    * Structure de donnée qui contient le text à trous.
    */
   List<TextATrouElement> texteATrousStructure = []
-
-  @Override
-  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
-    // Aucun id à actualiser dans cette spécification
-    return this
-  }
 
   @Override
   Map toMap() {

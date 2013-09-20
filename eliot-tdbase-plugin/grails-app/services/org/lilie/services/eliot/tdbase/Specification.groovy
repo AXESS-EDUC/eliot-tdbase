@@ -62,6 +62,19 @@ public interface QuestionSpecification extends Specification {
    * @param tableCorrespondanceId
    */
   QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId)
+
+  /**
+   * Remplace toutes les références à un QuestionAttachementId par un nouvel id
+   * @param ancienId
+   * @param nouvelId
+   * @return
+   */
+  QuestionSpecification remplaceQuestionAttachementId(Long ancienId, Long nouvelId)
+
+  /**
+   * @return tous les QuestionAttachementId référencés dans cette spécification
+   */
+  List<Long> getAllQuestionAttachementId()
 }
 
 /**

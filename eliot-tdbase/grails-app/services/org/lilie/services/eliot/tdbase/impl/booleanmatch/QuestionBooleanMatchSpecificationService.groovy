@@ -33,6 +33,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement
 
 /**
  * Service des specifications de questions de type booléenne.
@@ -50,7 +51,8 @@ class QuestionBooleanMatchSpecificationService extends QuestionSpecificationServ
  * Représente un objet spécification pour une question de type booléenne.
  */
 @Validateable
-class BooleanMatchSpecification implements QuestionSpecification {
+class BooleanMatchSpecification  extends AbstractQuestionSpecificationSansAttachement
+implements QuestionSpecification {
   String questionTypeCode = QuestionTypeEnum.BooleanMatch.name()
   /**
    * Le libellé.
@@ -89,12 +91,6 @@ class BooleanMatchSpecification implements QuestionSpecification {
     correction = map.correction
     reponses = map.reponses
     toutOuRien = map.toutOuRien
-  }
-
-  @Override
-  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
-    // Aucun id à actualiser dans cette spécification
-    return this
   }
 
   @Override

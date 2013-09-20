@@ -31,6 +31,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement
 
 /**
  *
@@ -49,7 +50,8 @@ class QuestionExclusiveChoiceSpecificationService extends QuestionSpecificationS
  * Représente un objet spécification pour une question de type MultipleChoice
  */
 @Validateable
-class ExclusiveChoiceSpecification implements QuestionSpecification {
+class ExclusiveChoiceSpecification extends AbstractQuestionSpecificationSansAttachement
+implements QuestionSpecification {
   /**
    * Le code du type de la question.
    */
@@ -96,12 +98,6 @@ class ExclusiveChoiceSpecification implements QuestionSpecification {
     reponses = map.reponses.collect {createReponsePossibles it}
     shuffled = map.shuffled
     indexBonneReponse = map.indexBonneReponse
-  }
-
-  @Override
-  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
-    // Aucun id à actualiser dans cette spécification
-    return this
   }
 
   def Map toMap() {

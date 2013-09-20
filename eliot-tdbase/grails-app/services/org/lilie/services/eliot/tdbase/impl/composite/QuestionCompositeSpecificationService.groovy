@@ -33,6 +33,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement
 
 /**
  *
@@ -51,15 +52,10 @@ class QuestionCompositeSpecificationService extends QuestionSpecificationService
  * Représente un objet spécification pour une question de type Decimal
  */
 @Validateable
-class CompositeSpecification implements QuestionSpecification {
+class CompositeSpecification  extends AbstractQuestionSpecificationSansAttachement
+implements QuestionSpecification {
 
   String questionTypeCode = QuestionTypeEnum.Composite.name()
-
-  @Override
-  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
-    // Aucun id à actualiser dans cette spécification
-    return this
-  }
 
   /**
    *

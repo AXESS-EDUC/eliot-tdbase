@@ -35,6 +35,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement
 
 /**
  *
@@ -56,7 +57,8 @@ class QuestionIntegerSpecificationService extends QuestionSpecificationService<I
  * Représente un objet spécification pour une question de type Integer
  */
 @Validateable
-class IntegerSpecification implements QuestionSpecification {
+class IntegerSpecification extends AbstractQuestionSpecificationSansAttachement
+implements QuestionSpecification {
   String questionTypeCode = QuestionTypeEnum.Integer.name()
   String libelle
   Integer valeur
@@ -78,12 +80,6 @@ class IntegerSpecification implements QuestionSpecification {
     valeur = map.valeur
     unite = map.unite
     correction = map.correction
-  }
-
-  @Override
-  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
-    // Aucun id à actualiser dans cette spécification
-    return this
   }
 
   def Map toMap() {

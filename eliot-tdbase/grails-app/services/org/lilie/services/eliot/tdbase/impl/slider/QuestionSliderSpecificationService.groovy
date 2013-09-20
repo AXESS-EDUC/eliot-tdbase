@@ -34,6 +34,7 @@ package org.lilie.services.eliot.tdbase.impl.slider
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement
 import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
@@ -54,7 +55,8 @@ class QuestionSliderSpecificationService extends QuestionSpecificationService<Sl
  * Représente un objet spécification pour une question de type Decimal
  */
 @Validateable
-class SliderSpecification implements QuestionSpecification {
+class SliderSpecification extends AbstractQuestionSpecificationSansAttachement
+implements QuestionSpecification {
   String questionTypeCode = QuestionTypeEnum.Slider.name()
   String libelle
   Float valeur
@@ -82,12 +84,6 @@ class SliderSpecification implements QuestionSpecification {
     precision = map.precision
     pas = map.pas
     correction = map.correction
-  }
-
-  @Override
-  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
-    // Aucun id à actualiser dans cette spécification
-    return this
   }
 
   Map toMap() {

@@ -32,6 +32,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement
 
 /**
  * Service des specifications de questios de type 'ordre à retablir'.
@@ -50,7 +51,8 @@ class QuestionOrderSpecificationService extends QuestionSpecificationService<Ord
  * Specification d'une question de type 'ordre à retablir'.
  */
 @Validateable
-class OrderSpecification implements QuestionSpecification {
+class OrderSpecification extends AbstractQuestionSpecificationSansAttachement
+implements QuestionSpecification {
   String questionTypeCode = QuestionTypeEnum.Order.name()
   /**
    * Le libellé.
@@ -82,12 +84,6 @@ class OrderSpecification implements QuestionSpecification {
     libelle = params.libelle
     correction = params.correction
     orderedItems = params.orderedItems.collect {new Item(it)}
-  }
-
-  @Override
-  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
-    // Aucun id à actualiser dans cette spécification
-    return this
   }
 
   @Override

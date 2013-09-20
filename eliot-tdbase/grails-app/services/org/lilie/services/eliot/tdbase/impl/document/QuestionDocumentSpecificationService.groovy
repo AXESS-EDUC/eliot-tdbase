@@ -136,6 +136,18 @@ class DocumentSpecification implements QuestionSpecification {
     return this
   }
 
+  @Override
+  QuestionSpecification remplaceQuestionAttachementId(Long ancienId, Long nouvelId) {
+    assert questionAttachementId == ancienId
+    questionAttachementId = nouvelId
+    return this
+  }
+
+  @Override
+  List<Long> getAllQuestionAttachementId() {
+    return [questionAttachementId]
+  }
+
   Map toMap() {
     [
             questionTypeCode: questionTypeCode,
