@@ -1,3 +1,17 @@
+=== Eliot tdbase 2.2.0-RC1-eliot-2.9.4-RC1 ===
+
+Liste des dépendances :
+
+ * Compatible avec les bases de données Eliot 2.9.4.RC1
+
+Liste des évolutions :
+
+   *   #195 Import / export natif tdbase
+
+Liste des anomalies corrigées :
+
+
+
 === Eliot tdbase 2.1.0-RC1-eliot-2.9.3-RC1 ===
 
 Liste des dépendances :
