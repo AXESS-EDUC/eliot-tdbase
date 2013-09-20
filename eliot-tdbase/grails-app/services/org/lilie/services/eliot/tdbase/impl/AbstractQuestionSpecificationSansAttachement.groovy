@@ -3,7 +3,8 @@ package org.lilie.services.eliot.tdbase.impl
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 
 /**
- * TODO
+ * Implémentation partielle de l'interface QuestionSpecification commune à tous les types
+ * de spécification qui ne contiennent aucune référence à des QuestionAttachement
  * @author John Tranier
  */
 abstract class AbstractQuestionSpecificationSansAttachement implements QuestionSpecification {
