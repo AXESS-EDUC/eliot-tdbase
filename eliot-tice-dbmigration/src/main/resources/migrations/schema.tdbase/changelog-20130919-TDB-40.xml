@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
+  ~ This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
+  ~
+  ~  Lilie is free software. You can redistribute it and/or modify since
+  ~  you respect the terms of either (at least one of the both license) :
+  ~  - under the terms of the GNU Affero General Public License as
+  ~  published by the Free Software Foundation, either version 3 of the
+  ~  License, or (at your option) any later version.
+  ~  - the CeCILL-C as published by CeCILL-C; either version 1 of the
+  ~  License, or any later version
+  ~
+  ~  There are special exceptions to the terms and conditions of the
+  ~  licenses as they are applied to this software. View the full text of
+  ~  the exception in file LICENSE.txt in the directory of this software
+  ~  distribution.
+  ~
+  ~  Lilie is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  Licenses for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  and the CeCILL-C along with Lilie. If not, see :
+  ~  <http://www.gnu.org/licenses/> and
+  ~  <http://www.cecill.info/licences.fr.html>.
+  -->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+
+    <changeSet id="1" author="jtra">
+        <comment>
+            Reprise de données pour renuméroter correctement le rang des td.question_attachement
+        </comment>
+        <sql>
+            update td.question_attachement as qa
+            SET rang = donnees.new_rang
+            FROM
+            (select (row_number() over(partition by question_id) - 1) as new_rang, id from td.question_attachement) as donnees
+            WHERE qa.id = donnees.id;
+        </sql>
+
+        <addUniqueConstraint
+                schemaName="td"
+                tableName="question_attachement"
+                columnNames="question_id, rang"
+                constraintName="uk_question_attachement_question_rang"/>
+    </changeSet>
+
+    <changeSet id="2" author="jtra">
+        <comment>
+            Suppression de la contrainte d'unicité uk_question_attachement_question_rang qui n'est pas correctement
+            gérée avec la modélisation GORM actuelle du domaine
+        </comment>
+
+        <dropUniqueConstraint
+                schemaName="td"
+                tableName="question_attachement"
+                constraintName="uk_question_attachement_question_rang"/>
+    </changeSet>
+
+    <changeSet id="3" author="jtra">
+        <comment>Ajout de la table td.patch_execution pour tracer les exécutions de patches</comment>
+
+        <createTable schemaName="td" tableName="patch_execution">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="code" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created"
+                    type="timestamp without time zone"/>
+        </createTable>
+
+        <createSequence sequenceName="patch_execution_id_seq"
+                        schemaName="td"
+                        startValue="100"/>
+    </changeSet>
+
+</databaseChangeLog>

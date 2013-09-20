@@ -148,6 +148,18 @@ class FillGraphicsSpecification implements QuestionSpecification {
   }
 
   @Override
+  QuestionSpecification remplaceQuestionAttachementId(Long ancienId, Long nouvelId) {
+    assert attachmentId == ancienId
+    attachmentId = nouvelId
+    return this
+  }
+
+  @Override
+  List<Long> getAllQuestionAttachementId() {
+    return [attachmentId]
+  }
+
+  @Override
   Map toMap() {
     [
             questionTypeCode: questionTypeCode,

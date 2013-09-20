@@ -34,13 +34,12 @@ import org.lilie.services.eliot.tice.Attachement
  * Classe représentant l'attachement d'une question
  * @author franck Silvestre
  */
-class QuestionAttachement implements Comparable {
+class QuestionAttachement  {
 
-    Integer rang
-
-  Question question
   Attachement attachement
   Boolean estInsereDansLaQuestion = true
+
+  static belongsTo = [question: Question]
 
   static mapping = {
     table('td.question_attachement')
@@ -49,15 +48,6 @@ class QuestionAttachement implements Comparable {
     cache(true)
     attachement(lazy: false)
     question(lazy: false)
-  }
-
-  /**
-   * Permet l'ordonnancement des attachements par le rang
-   * @param obj l'objet de comparaison
-   * @return
-   */
-  int compareTo(obj) {
-    rang.compareTo(obj.rang)
   }
 
 }

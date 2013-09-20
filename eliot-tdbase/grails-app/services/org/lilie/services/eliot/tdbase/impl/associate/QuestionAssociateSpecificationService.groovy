@@ -32,6 +32,7 @@ import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement
 import org.lilie.services.eliot.tice.utils.StringUtils
 
 /**
@@ -50,7 +51,8 @@ class QuestionAssociateSpecificationService extends QuestionSpecificationService
  * Specification de question de type associate
  */
 @Validateable
-class AssociateSpecification implements QuestionSpecification {
+class AssociateSpecification extends AbstractQuestionSpecificationSansAttachement
+implements QuestionSpecification {
 
   String questionTypeCode = QuestionTypeEnum.Associate.name()
 
@@ -96,12 +98,6 @@ class AssociateSpecification implements QuestionSpecification {
     associations = params.associations.collect {new Association(it)}
     montrerColonneAGauche = params.montrerColonneAGauche
     sauverParticipants(associations)
-  }
-
-  @Override
-  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
-    // Aucun id à actualiser dans cette spécification
-    return this
   }
 
   @Override

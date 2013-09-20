@@ -31,6 +31,7 @@ package org.lilie.services.eliot.tdbase.impl.statement
 import grails.validation.Validateable
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionSpecificationService
+import org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement
 import org.lilie.services.eliot.tice.utils.StringUtils
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 
@@ -52,15 +53,10 @@ class QuestionStatementSpecificationService extends QuestionSpecificationService
 }
 
 @Validateable
-class StatementSpecification implements QuestionSpecification {
+class StatementSpecification extends AbstractQuestionSpecificationSansAttachement
+implements QuestionSpecification {
   String questionTypeCode = QuestionTypeEnum.Statement.name()
   String enonce
-
-  @Override
-  QuestionSpecification actualiseAllQuestionAttachementId(Map<Long, Long> tableCorrespondanceId) {
-    // Aucun id à actualiser dans cette spécification
-    return this
-  }
 
   Map toMap() {
     [

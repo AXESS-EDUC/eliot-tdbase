@@ -26,6 +26,10 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
+
+import org.codehaus.groovy.grails.commons.ApplicationAttributes
+import org.lilie.services.eliot.tdbase.patch.PatchExecution
+import org.lilie.services.eliot.tdbase.patch.PatchTDB40
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
 import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.lilie.services.eliot.tice.utils.PortailTagLibService
@@ -67,9 +71,23 @@ class BootStrap {
     portailTagLibService.divHeight = config.eliot.pages.container.height
     portailTagLibService.divWidth = config.eliot.pages.container.width
 
-
+    executeAllPatch(servletContext)
   }
 
+  private void executeAllPatch(def servletContext) {
+    def applicationContext = servletContext.getAttribute(ApplicationAttributes.APPLICATION_CONTEXT)
+
+    if(!PatchExecution.findByCode(PatchTDB40.CODE)) {
+      PatchExecution.withTransaction {
+        PatchTDB40 patchTDB40 = new PatchTDB40(applicationContext: applicationContext)
+        patchTDB40.execute()
+
+        new PatchExecution(code: PatchTDB40.CODE).save()
+      }
+    }
+
+
+  }
 
   def destroy = {}
 

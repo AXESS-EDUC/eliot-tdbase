@@ -182,6 +182,30 @@ class GraphicMatchSpecification implements QuestionSpecification {
   }
 
   @Override
+  QuestionSpecification remplaceQuestionAttachementId(Long ancienId, Long nouvelId) {
+    if(attachmentId == ancienId) {
+      attachmentId = nouvelId
+      return this
+    }
+
+    MatchIcon matchIcon = icons.find { it.attachmentId == ancienId }
+    assert matchIcon
+    matchIcon.attachmentId = nouvelId
+
+    return this
+  }
+
+  @Override
+  List<Long> getAllQuestionAttachementId() {
+    List<Long> allId = [attachmentId]
+    icons.each { MatchIcon matchIcon ->
+      allId << matchIcon.attachmentId
+    }
+
+    return allId
+  }
+
+  @Override
   Map toMap() {
     [questionTypeCode: questionTypeCode,
             libelle: libelle,

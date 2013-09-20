@@ -117,6 +117,18 @@ class FileUploadSpecification implements QuestionSpecification {
     return this
   }
 
+  @Override
+  QuestionSpecification remplaceQuestionAttachementId(Long ancienId, Long nouvelId) {
+    assert questionAttachementId == ancienId
+    questionAttachementId = nouvelId
+    return this
+  }
+
+  @Override
+  List<Long> getAllQuestionAttachementId() {
+    return [questionAttachementId]
+  }
+
   def Map toMap() {
     [
             questionTypeCode: questionTypeCode,

@@ -96,7 +96,6 @@ class AttachementImporterServiceSpec extends Specification {
     nbAttachement * questionAttachementService.createAttachementForQuestion(
         _,
         question,
-        _,
         _
     )
 

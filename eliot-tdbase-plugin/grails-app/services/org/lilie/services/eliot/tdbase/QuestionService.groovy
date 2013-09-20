@@ -165,19 +165,38 @@ class QuestionService implements ApplicationContextAware {
       addPaterniteItem(proprietaire, questionCopie)
     }
 
+    QuestionSpecification questionSpecificationCopie = questionCopie.specificationObject
+
     // recopie les attachements (on ne duplique pas les attachements)
     question.questionAttachements.each { QuestionAttachement questionAttachement ->
-      QuestionAttachement copieQuestionAttachement = new QuestionAttachement(question: questionCopie,
-          attachement: questionAttachement.attachement,
-          rang: questionAttachement.rang)
-      questionCopie.addToQuestionAttachements(copieQuestionAttachement)
-      questionCopie.save()
+      QuestionAttachement questionAttachementCopie =
+        recopieQuestionAttachement(questionCopie, questionAttachement)
+
+      questionSpecificationCopie.remplaceQuestionAttachementId(
+          questionAttachement.id,
+          questionAttachementCopie.id
+      )
     }
+
+    updateQuestionSpecificationForObject(questionCopie, questionSpecificationCopie)
 
     // repertorie l'anteriorite
     questionCopie.paternite = question.paternite
 
+    questionCopie.save()
     return questionCopie
+  }
+
+  QuestionAttachement recopieQuestionAttachement(Question questionCible, QuestionAttachement questionAttachement) {
+    QuestionAttachement copieQuestionAttachement = new QuestionAttachement(
+        question: questionCible,
+        attachement: questionAttachement.attachement
+    )
+    questionCible.addToQuestionAttachements(copieQuestionAttachement)
+    questionCible.save()
+    copieQuestionAttachement.save() // Sans ce save, l'id n'est pas généré à ce stade (étrange)
+
+    return copieQuestionAttachement
   }
 
   /**

@@ -58,16 +58,14 @@ class QuestionAttachementService {
   @Transactional(propagation = Propagation.REQUIRED)
   QuestionAttachement createAttachementForQuestionFromMultipartFile(MultipartFile fichier,
                                                                     Question question,
-                                                                    Boolean estInsereDansLaQuestion,
-                                                                    Integer rang = 1) {
+                                                                    Boolean estInsereDansLaQuestion) {
     def attachement = attachementService.createAttachementForMultipartFile(
         fichier
     )
     return createAttachementForQuestion(
         attachement,
         question,
-        estInsereDansLaQuestion,
-        rang
+        estInsereDansLaQuestion
     )
   }
 
@@ -90,8 +88,7 @@ class QuestionAttachementService {
     return createAttachementForQuestion(
         attachement,
         question,
-        estInsereDansLaQuestion,
-        rang
+        estInsereDansLaQuestion
     )
   }
 
@@ -106,20 +103,19 @@ class QuestionAttachementService {
   @Transactional(propagation = Propagation.REQUIRED)
   QuestionAttachement createAttachementForQuestion(Attachement attachement,
                                                    Question question,
-                                                   Boolean estInsereDansLaQuestion = true,
-                                                   Integer rang = 1) {
+                                                   Boolean estInsereDansLaQuestion = true) {
     QuestionAttachement questionAttachement = new QuestionAttachement(
         question: question,
         attachement: attachement,
-        estInsereDansLaQuestion: estInsereDansLaQuestion,
-        rang: rang
+        estInsereDansLaQuestion: estInsereDansLaQuestion
     )
-    questionAttachement.save(failOnError: true)
+//    questionAttachement.save(failOnError: true)
     // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
     attachement.aSupprimer = false
     question.addToQuestionAttachements(questionAttachement)
     question.lastUpdated = new Date()
     question.save(failOnError: true)
+    questionAttachement.save(failOnError: true)
     return questionAttachement
   }
 
@@ -133,6 +129,7 @@ class QuestionAttachementService {
     def attachement = questionAttachement.attachement
     question.removeFromQuestionAttachements(questionAttachement)
     questionAttachement.delete(flush: true)
+    question.save(flush: true)
     def refCount = QuestionAttachement.countByAttachement(questionAttachement.attachement)
     if (refCount == 0) {
       attachement.delete()
