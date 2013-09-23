@@ -145,7 +145,7 @@ class DocumentSpecification implements QuestionSpecification {
 
   @Override
   List<Long> getAllQuestionAttachementId() {
-    return [questionAttachementId]
+    return questionAttachementId != null ? [questionAttachementId] : []
   }
 
   Map toMap() {

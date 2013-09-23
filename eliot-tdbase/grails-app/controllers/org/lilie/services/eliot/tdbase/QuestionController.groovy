@@ -223,10 +223,9 @@ class QuestionController {
     }
     catch (AttachementUploadException e) {
 
-      if(question) {
+      if (question) {
         question.errors.reject(e.message)
-      }
-      else {
+      } else {
         flash.errorMessage = g.message(code: e.message)
 
         redirect(
@@ -303,14 +302,19 @@ class QuestionController {
         breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
       }
     }
-    render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
-        question: question,
-        matieres: profilScolariteService.findMatieresForPersonne(personne),
-        niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-        sujet: sujet,
-        questionEnEdition: questionEnEdition,
-        artefactHelper: artefactAutorisationService,
-        utilisateur: personne])
+    render(
+        view: '/question/edite',
+        model: [
+            liens: breadcrumpsService.liens,
+            question: question,
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujet: sujet,
+            questionEnEdition: questionEnEdition,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne
+        ]
+    )
   }
 
 /**
@@ -608,13 +612,15 @@ class RechercheQuestionCommand {
   Long sujetId
 
   Map toParams() {
-    [patternAuteur: patternAuteur,
+    [
+        patternAuteur: patternAuteur,
         patternTitre: patternTitre,
         patternPresentation: patternSpecification,
         matiereId: matiereId,
         typeId: typeId,
         niveauId: niveauId,
-        sujetId: sujetId]
+        sujetId: sujetId
+    ]
   }
 
 }

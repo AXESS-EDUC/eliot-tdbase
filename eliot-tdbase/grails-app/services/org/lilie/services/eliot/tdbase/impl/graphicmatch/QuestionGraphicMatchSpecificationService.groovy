@@ -162,8 +162,8 @@ class GraphicMatchSpecification implements QuestionSpecification {
     correction = params.correction
     graphicMatches = params.graphicMatches
     attachmentId = params.attachmentId
-    hotspots = params.hotspots.collect {new Hotspot(it)}
-    icons = params.icons.collect {new MatchIcon(it)}
+    hotspots = params.hotspots.collect { new Hotspot(it) }
+    icons = params.icons.collect { new MatchIcon(it) }
   }
 
   @Override
@@ -183,7 +183,7 @@ class GraphicMatchSpecification implements QuestionSpecification {
 
   @Override
   QuestionSpecification remplaceQuestionAttachementId(Long ancienId, Long nouvelId) {
-    if(attachmentId == ancienId) {
+    if (attachmentId == ancienId) {
       attachmentId = nouvelId
       return this
     }
@@ -199,7 +199,9 @@ class GraphicMatchSpecification implements QuestionSpecification {
   List<Long> getAllQuestionAttachementId() {
     List<Long> allId = [attachmentId]
     icons.each { MatchIcon matchIcon ->
-      allId << matchIcon.attachmentId
+      if (matchIcon.attachmentId != null) {
+        allId << matchIcon.attachmentId
+      }
     }
 
     return allId
@@ -207,13 +209,15 @@ class GraphicMatchSpecification implements QuestionSpecification {
 
   @Override
   Map toMap() {
-    [questionTypeCode: questionTypeCode,
-            libelle: libelle,
-            correction: correction,
-            graphicMatches: graphicMatches,
-            attachmentId: attachmentId,
-            hotspots: hotspots.collect {it.toMap()},
-            icons: icons.collect {it.toMap()},]
+    [
+        questionTypeCode: questionTypeCode,
+        libelle: libelle,
+        correction: correction,
+        graphicMatches: graphicMatches,
+        attachmentId: attachmentId,
+        hotspots: hotspots.collect { it.toMap() },
+        icons: icons.collect { it.toMap() }
+    ]
   }
 
   /**
@@ -233,7 +237,7 @@ class GraphicMatchSpecification implements QuestionSpecification {
    * @return
    */
   Hotspot getCorrespondingHotspot(String iconId) {
-    hotspots.find {it.id == graphicMatches[iconId]}
+    hotspots.find { it.id == graphicMatches[iconId] }
   }
 
   static constraints = {
@@ -274,7 +278,7 @@ class Hotspot {
   /**
    * Constructeur par defaut.
    */
-  Hotspot() { super()}
+  Hotspot() { super() }
 
   /**
    * Conversion de l'objet en map.
@@ -282,11 +286,11 @@ class Hotspot {
    */
   Map toMap() {
     [
-            topDistance: topDistance,
-            leftDistance: leftDistance,
-            width: width,
-            height: height,
-            id: id
+        topDistance: topDistance,
+        leftDistance: leftDistance,
+        width: width,
+        height: height,
+        id: id
     ]
   }
 }
@@ -316,7 +320,7 @@ class MatchIcon {
    * Conversion de l'objet en map.
    * @return une map des attributs de l'objet.
    */
-  Map toMap() {[id: id, attachmentId: attachmentId, attachmentSizeOk: attachmentSizeOk]}
+  Map toMap() { [id: id, attachmentId: attachmentId, attachmentSizeOk: attachmentSizeOk] }
 
   /**
    * Retourne l'attachement correspondant

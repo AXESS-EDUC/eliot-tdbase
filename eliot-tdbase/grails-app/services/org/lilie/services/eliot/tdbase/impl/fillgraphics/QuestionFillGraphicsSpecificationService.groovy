@@ -156,7 +156,7 @@ class FillGraphicsSpecification implements QuestionSpecification {
 
   @Override
   List<Long> getAllQuestionAttachementId() {
-    return [attachmentId]
+    return attachmentId != null ? [attachmentId] : []
   }
 
   @Override

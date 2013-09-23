@@ -126,7 +126,7 @@ class FileUploadSpecification implements QuestionSpecification {
 
   @Override
   List<Long> getAllQuestionAttachementId() {
-    return [questionAttachementId]
+    return questionAttachementId != null ? [questionAttachementId] : []
   }
 
   def Map toMap() {
