@@ -67,7 +67,7 @@ class Competence {
     nom blank: false, unique: 'referentiel'
     description nullable: true
     domaine validator: { val, obj ->
-      domaine.referentiel == obj.referentiel
+      val.referentiel == obj.referentiel
     }
   }
 

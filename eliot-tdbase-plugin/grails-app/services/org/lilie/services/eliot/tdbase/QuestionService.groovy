@@ -51,6 +51,7 @@ class QuestionService implements ApplicationContextAware {
 
   SujetService sujetService
   QuestionAttachementService questionAttachementService
+  QuestionCompetenceService questionCompetenceService
   ArtefactAutorisationService artefactAutorisationService
 
   /**
@@ -178,6 +179,11 @@ class QuestionService implements ApplicationContextAware {
       )
     }
 
+    // Recopie les QuestionCompetence
+    question.allQuestionCompetence.each { QuestionCompetence questionCompetence ->
+      recopieQuestionCompetence(questionCopie, questionCompetence)
+    }
+
     updateQuestionSpecificationForObject(questionCopie, questionSpecificationCopie)
 
     // repertorie l'anteriorite
@@ -197,6 +203,19 @@ class QuestionService implements ApplicationContextAware {
     copieQuestionAttachement.save() // Sans ce save, l'id n'est pas généré à ce stade (étrange)
 
     return copieQuestionAttachement
+  }
+
+  private QuestionCompetence recopieQuestionCompetence(Question questionCible,
+                                                       QuestionCompetence questionCompetence) {
+    QuestionCompetence copieQuestionCompetence = new QuestionCompetence(
+        question: questionCible,
+        competence: questionCompetence.competence
+    )
+    questionCible.addToAllQuestionCompetence(copieQuestionCompetence)
+    questionCible.save()
+    copieQuestionCompetence.save()
+
+    return copieQuestionCompetence
   }
 
   /**
@@ -310,6 +329,12 @@ class QuestionService implements ApplicationContextAware {
     questionAttachements.each {
       questionAttachementService.deleteQuestionAttachement(it)
     }
+
+    // Supprime les compétences liées si nécessaire
+    new ArrayList<QuestionCompetence>(laQuestion.allQuestionCompetence).each {
+      questionCompetenceService.deleteQuestionCompetence(it)
+    }
+
 
     // supprimer la publication si nécessaire
     if (laQuestion.estPartage()) {
