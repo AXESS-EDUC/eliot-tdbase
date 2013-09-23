@@ -197,7 +197,7 @@ class GraphicMatchSpecification implements QuestionSpecification {
 
   @Override
   List<Long> getAllQuestionAttachementId() {
-    List<Long> allId = [attachmentId]
+    List<Long> allId = attachmentId != null ? [attachmentId] : []
     icons.each { MatchIcon matchIcon ->
       if (matchIcon.attachmentId != null) {
         allId << matchIcon.attachmentId

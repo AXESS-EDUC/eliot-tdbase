@@ -40,8 +40,6 @@ abstract class QuestionSpecificationService<QS extends QuestionSpecification> {
 
   static transactional = false
 
-  QuestionAttachementService questionAttachementService
-
   /**
    * Récupère la specification d'une question à partir d'un objet
    * @param object l'objet encapsulant la specification
@@ -71,15 +69,6 @@ abstract class QuestionSpecificationService<QS extends QuestionSpecification> {
    * @return la question mise à jour.
    */
   def updateQuestionSpecificationForObject(Question question, QS specification) {
-    Set<Long> allQuestionAttachementIdASupprimer = question.specificationObject.allQuestionAttachementId as Set
-    allQuestionAttachementIdASupprimer -= specification.allQuestionAttachementId
-
-    allQuestionAttachementIdASupprimer.each { Long questionAttachementIdASupprimer ->
-      questionAttachementService.deleteQuestionAttachement(
-          QuestionAttachement.load(questionAttachementIdASupprimer)
-      )
-    }
-
     question.specification = getSpecificationFromObject(specification)
     question.specificationNormalise = getSpecificationNormaliseFromObject(specification)
     question.save()
