@@ -87,6 +87,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
 	<td>type</td>
 	<td>id=specifobject.reponses[0].libelleReponse</td>
 	<td>reponse 1</td>
