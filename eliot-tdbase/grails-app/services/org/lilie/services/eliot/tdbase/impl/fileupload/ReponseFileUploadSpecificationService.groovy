@@ -62,7 +62,10 @@ class ReponseFileUploadSpecificationService extends ReponseSpecificationService<
 
     if (spec.fichier && !spec.fichier.empty) {
       def reponseAttachement = reponseAttachementService.createAttachementForResponse(
-              spec.fichier, reponse)
+              spec.fichier,
+          reponse
+      )
+
       if (oldRepAttId) {
         reponseAttachementService.deleteReponseAttachement(
                 ReponseAttachement.get(oldRepAttId))

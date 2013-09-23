@@ -70,7 +70,7 @@ class Reponse implements Comparable {
 
   Personne correcteur
   Personne eleve    // utile uniquement pour stats et securite
-  SortedSet<ReponseAttachement> reponseAttachements
+  List<ReponseAttachement> reponseAttachements
 
   static hasMany = [
           reponseAttachements: ReponseAttachement
@@ -95,6 +95,7 @@ class Reponse implements Comparable {
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.reponse_id_seq'])
     cache(true)
     sujetQuestion(fetch: 'join')
+    reponseAttachements(indexColumn: [name: 'rang', type: Integer])
   }
 
   static transients = ['reponseService', 'estEnNotationManuelle', 'question', 'questionType']

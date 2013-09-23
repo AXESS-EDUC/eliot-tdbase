@@ -57,21 +57,19 @@ class ReponseAttachementService {
    */
   @Transactional(propagation = Propagation.REQUIRED)
   ReponseAttachement createAttachementForResponse(MultipartFile fichier,
-                                                  Reponse reponse,
-                                                  Integer rang = 1) {
+                                                  Reponse reponse) {
     def attachement = attachementService.createAttachementForMultipartFile(
             fichier
     )
     ReponseAttachement reponseAttachement = new ReponseAttachement(
             reponse: reponse,
-            attachement: attachement,
-            rang: rang
+            attachement: attachement
     )
-    reponseAttachement.save()
     // si l'attachement est OK, on passe l'attachement "aSupprimer" à false
     attachement.aSupprimer = false
     reponse.addToReponseAttachements(reponseAttachement)
     reponse.save()
+    reponseAttachement.save()
     return reponseAttachement
   }
 
@@ -85,6 +83,7 @@ class ReponseAttachementService {
     def attachement = reponseAttachement.attachement
     reponse.removeFromReponseAttachements(reponseAttachement)
     reponseAttachement.delete(flush: true)
+    reponse.save(flush: true)
     def refCount = ReponseAttachement.countByAttachement(reponseAttachement.attachement)
     if (refCount == 0) {
       attachement.delete()

@@ -36,9 +36,7 @@ import org.lilie.services.eliot.tice.Attachement
  * Classe représentant l'attachement d'une réponse
  * @author franck Silvestre
  */
-class ReponseAttachement implements Comparable {
-
-  Integer rang
+class ReponseAttachement {
 
   Reponse reponse
   Attachement attachement
@@ -50,15 +48,6 @@ class ReponseAttachement implements Comparable {
     cache(true)
     attachement(lazy: false)
     reponse(lazy: false)
-  }
-
-  /**
-   * Permet l'ordonnancement des attachements par le rang
-   * @param obj l'objet de comparaison
-   * @return
-   */
-  int compareTo(obj) {
-    rang.compareTo(obj.rang)
   }
 
 }
