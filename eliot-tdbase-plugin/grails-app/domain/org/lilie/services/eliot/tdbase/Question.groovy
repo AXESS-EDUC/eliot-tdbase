@@ -78,7 +78,10 @@ class Question implements Artefact {
 
   private def specificationObject
 
-  static hasMany = [questionAttachements: QuestionAttachement]
+  static hasMany = [
+      questionAttachements: QuestionAttachement,
+      allQuestionCompetence: QuestionCompetence
+  ]
 
 
   static constraints = {
@@ -128,16 +131,19 @@ class Question implements Artefact {
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_id_seq'])
     cache(true)
     principalAttachement(column: 'attachement_id', fetch: 'join')
-    questionAttachements(lazy: 'false', indexColumn: [name: 'rang', type: Integer])
+    questionAttachements(lazy: false, indexColumn: [name: 'rang', type: Integer])
+    allQuestionCompetence(lazy: false, cascade: 'all-delete-orphan')
   }
 
-  static transients = ['questionService',
-          'specificationObject',
-          'estEnNotationManuelle',
-          'estInvariant',
-          'principalAttachementFichier',
-          'doitSupprimerPrincipalAttachement',
-          'principalAttachementId']
+  static transients = [
+      'questionService',
+      'specificationObject',
+      'estEnNotationManuelle',
+      'estInvariant',
+      'principalAttachementFichier',
+      'doitSupprimerPrincipalAttachement',
+      'principalAttachementId'
+  ]
 
   // transients
   // chaque question peut avoir au moins un attachement
@@ -161,7 +167,7 @@ class Question implements Artefact {
    */
   boolean estEnNotationManuelle() {
     return type.code == QuestionTypeEnum.Open.name() ||
-           type.code == QuestionTypeEnum.FileUpload.name()
+        type.code == QuestionTypeEnum.FileUpload.name()
   }
 
   boolean estComposite() {
@@ -258,14 +264,14 @@ class Question implements Artefact {
   @Override
   boolean estPresentableEnMoodleXML() {
     ["MultipleChoice",
-            "Open",
-            "Decimal",
-            "Integer",
-            "BooleanMatch",
-            "ExclusiveChoice",
-            "Associate",
-            "Statement",
-            "Composite"].contains(type.code)
+        "Open",
+        "Decimal",
+        "Integer",
+        "BooleanMatch",
+        "ExclusiveChoice",
+        "Associate",
+        "Statement",
+        "Composite"].contains(type.code)
   }
 
 /**

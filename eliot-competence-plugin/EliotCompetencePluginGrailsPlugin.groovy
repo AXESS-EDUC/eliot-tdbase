@@ -1,3 +1,6 @@
+import org.lilie.services.eliot.competence.CompetenceImporter
+import org.lilie.services.eliot.competence.DomaineImporter
+
 class EliotCompetencePluginGrailsPlugin {
     // the plugin version
     def version = "1.0-SNAPSHOT"
@@ -26,7 +29,11 @@ Plugin de gestion des référentiels de compétences Eliot
     }
 
     def doWithSpring = {
-        // TODO Implement runtime spring config (optional)
+      competenceImporter(CompetenceImporter)
+
+      domaineImporter(DomaineImporter) {
+        competenceImporter = ref('competenceImporter')
+      }
     }
 
     def doWithDynamicMethods = { ctx ->

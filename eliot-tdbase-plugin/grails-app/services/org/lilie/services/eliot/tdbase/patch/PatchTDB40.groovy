@@ -6,7 +6,6 @@ import org.lilie.services.eliot.tdbase.QuestionService
 import org.lilie.services.eliot.tdbase.QuestionSpecification
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 import org.springframework.context.ApplicationContext
-import org.springframework.context.ApplicationContextAware
 
 /**
  * Patch à appliquer pour corriger l'anomalie TDB-40

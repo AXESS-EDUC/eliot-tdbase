@@ -34,6 +34,7 @@
 
     <include file="changelogs/scolarite/initialisation/2011-09-13-0014523.xml"/>
 
+    <include file="migrations/changelog-eliot-competence-dbmigration.xml"/>
     <include file="changelogs/scolarite/release-changes.xml"/>
     <include file="migrations/changelog-tice-dbmigration.xml"/>
 
