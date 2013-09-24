@@ -95,7 +95,7 @@ class QuestionService implements ApplicationContextAware {
     updateQuestionSpecificationForObject(question, specificationObject)
 
     // La paternité n'est initialisée que si elle n'est pas fournie dans les propriétés de création
-    if(!proprietes.containsKey('paternite')) {
+    if (!proprietes.containsKey('paternite')) {
       addPaterniteItem(proprietaire, question)
     }
 
@@ -125,7 +125,7 @@ class QuestionService implements ApplicationContextAware {
 
     Question questionCopie = recopieQuestion(question, proprietaire)
 
-    if(!sujetService.isDernierAuteur(sujet, proprietaire)) {
+    if (!sujetService.isDernierAuteur(sujet, proprietaire)) {
       sujetService.addPaterniteItem(proprietaire, sujet)
     }
 
@@ -162,7 +162,7 @@ class QuestionService implements ApplicationContextAware {
     )
     questionCopie.save()
 
-    if(!isDernierAuteur(questionCopie, proprietaire)) {
+    if (!isDernierAuteur(questionCopie, proprietaire)) {
       addPaterniteItem(proprietaire, questionCopie)
     }
 
@@ -234,7 +234,7 @@ class QuestionService implements ApplicationContextAware {
 
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, question))
 
-    if(!isDernierAuteur(question, proprietaire)) {
+    if (!isDernierAuteur(question, proprietaire)) {
       addPaterniteItem(proprietaire, question)
     }
 
@@ -331,10 +331,11 @@ class QuestionService implements ApplicationContextAware {
     }
 
     // Supprime les compétences liées si nécessaire
-    new ArrayList<QuestionCompetence>(laQuestion.allQuestionCompetence).each {
-      questionCompetenceService.deleteQuestionCompetence(it)
+    if (laQuestion.allQuestionCompetence) {
+      new ArrayList<QuestionCompetence>(laQuestion.allQuestionCompetence).each {
+        questionCompetenceService.deleteQuestionCompetence(it)
+      }
     }
-
 
     // supprimer la publication si nécessaire
     if (laQuestion.estPartage()) {
@@ -395,7 +396,7 @@ class QuestionService implements ApplicationContextAware {
   private boolean isDernierAuteur(Question question, Personne utilisateur) {
     Paternite paternite = new Paternite(question.paternite)
 
-    if(!paternite.paterniteItems) {
+    if (!paternite.paterniteItems) {
       return false
     }
 
