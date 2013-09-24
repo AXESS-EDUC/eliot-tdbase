@@ -54,6 +54,8 @@ grails.project.dependency.resolution = {
     }
 
     runtime "postgresql:postgresql:9.1-901.jdbc4"
+    build group: 'net.sourceforge.saxon', name: 'saxon', version: '9.1.0.8'
+    build 'net.sf.saxon:saxon-dom:8.7'
   }
 
   plugins {
@@ -63,6 +65,8 @@ grails.project.dependency.resolution = {
           ":hibernate:$grailsVersion") {
       export = false
     }
+
+    compile ":spring-security-core:1.2.7.2"
 
     compile(":codenarc:0.15") {
       export = false

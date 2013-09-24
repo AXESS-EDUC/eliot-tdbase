@@ -1,3 +1,9 @@
+import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformationHelper
+import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer
+import org.lilie.services.eliot.tice.migrations.LiquibaseWrapper
+import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
+import org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar
+
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
  * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -37,7 +43,7 @@ class EliotTdbasePluginGrailsPlugin {
   def dependsOn = [:]
   // resources that are excluded from plugin packaging
   def pluginExcludes = [
-          "grails-app/views/error.gsp"
+      "grails-app/views/error.gsp"
   ]
 
   def title = "Eliot TD Base  Plugin" // Headline display name of the plugin
@@ -46,4 +52,31 @@ class EliotTdbasePluginGrailsPlugin {
   def description = '''\
   Plugin contenant les services métiers relatifs à la gestion des TD"
   '''
+
+  def doWithSpring = {
+    userDetailsService(EliotTiceUserDetailsService) {
+      utilisateurService = ref("utilisateurService")
+      roleUtilisateurService = ref("roleUtilisateurService")
+    }
+
+    // bean orientés sécurité
+
+    //bean orientés gestion des formulaires
+    customPropertyEditorRegistrar(EliotEditeurRegistrar)
+
+    // beans pour la migration des données
+    liquibase(LiquibaseWrapper) {
+      dataSource = ref("dataSource")
+      changeLog = "classpath:migrations/changelog-tice-dbmigration-all.xml"
+    }
+
+    // bean pour l'import moodle xml
+    xmlTransformationHelper(MoodleQuizTransformationHelper) {
+      dataStore = ref("dataStore")
+    }
+
+    moodleQuizTransformer(MoodleQuizTransformer) {
+      xmlTransformationHelper = ref("xmlTransformationHelper")
+    }
+  }
 }
