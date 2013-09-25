@@ -149,9 +149,9 @@ class BootstrapService {
   private def initialiseEnseignant1EnvDevelopment() {
     if (!utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)) {
       utilisateurService.createUtilisateur(UTILISATEUR_1_LOGIN,
-                                           UTILISATEUR_1_PASSWORD,
-                                           UTILISATEUR_1_NOM,
-                                           UTILISATEUR_1_PRENOM)
+          UTILISATEUR_1_PASSWORD,
+          UTILISATEUR_1_NOM,
+          UTILISATEUR_1_PRENOM)
     }
   }
 
@@ -163,38 +163,38 @@ class BootstrapService {
   private def initialiseStructuresEnseignementsEnvDevelopmentTest() {
     if (!StructureEnseignement.findAllByCodeLike("${CODE_STRUCTURE_PREFIXE}%")) {
       classe6eme = new StructureEnseignement(etablissement: leCollege,
-                                             anneeScolaire: anneeScolaire,
-                                             code: "${CODE_STRUCTURE_PREFIXE}_6ème1",
-                                             idExterne: "${leCollege.uai}.${CODE_STRUCTURE_PREFIXE}_6ème1",
-                                             type: StructureEnseignement.TYPE_CLASSE,
-                                             niveau: nivSixieme,
-                                             groupeEnt: false,
-                                             actif: true).save()
+          anneeScolaire: anneeScolaire,
+          code: "${CODE_STRUCTURE_PREFIXE}_6ème1",
+          idExterne: "${leCollege.uai}.${CODE_STRUCTURE_PREFIXE}_6ème1",
+          type: StructureEnseignement.TYPE_CLASSE,
+          niveau: nivSixieme,
+          groupeEnt: false,
+          actif: true).save()
       classe1ere = new StructureEnseignement(etablissement: leLycee,
-                                             anneeScolaire: anneeScolaire,
-                                             code: "${CODE_STRUCTURE_PREFIXE}_1ereA",
-                                             idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA",
-                                             type: StructureEnseignement.TYPE_CLASSE,
-                                             niveau: nivPremiere,
-                                             groupeEnt: false,
-                                             actif: true).save()
+          anneeScolaire: anneeScolaire,
+          code: "${CODE_STRUCTURE_PREFIXE}_1ereA",
+          idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA",
+          type: StructureEnseignement.TYPE_CLASSE,
+          niveau: nivPremiere,
+          groupeEnt: false,
+          actif: true).save()
       grpe1ere = new StructureEnseignement(etablissement: leLycee,
-                                           anneeScolaire: anneeScolaire,
-                                           code: "${CODE_STRUCTURE_PREFIXE}_1ereA_G1",
-                                           idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA_G1",
-                                           type: StructureEnseignement.TYPE_GROUPE,
-                                           groupeEnt: true,
-                                           actif: true).save()
+          anneeScolaire: anneeScolaire,
+          code: "${CODE_STRUCTURE_PREFIXE}_1ereA_G1",
+          idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_1ereA_G1",
+          type: StructureEnseignement.TYPE_GROUPE,
+          groupeEnt: true,
+          actif: true).save()
 
 
       classeTerminale = new StructureEnseignement(etablissement: leLycee,
-                                                  anneeScolaire: anneeScolaire,
-                                                  code: "${CODE_STRUCTURE_PREFIXE}_Terminale_D",
-                                                  idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_Terminale_D",
-                                                  type: StructureEnseignement.TYPE_CLASSE,
-                                                  niveau: nivTerminale,
-                                                  groupeEnt: false,
-                                                  actif: true).save()
+          anneeScolaire: anneeScolaire,
+          code: "${CODE_STRUCTURE_PREFIXE}_Terminale_D",
+          idExterne: "${leLycee.uai}.${CODE_STRUCTURE_PREFIXE}_Terminale_D",
+          type: StructureEnseignement.TYPE_CLASSE,
+          niveau: nivTerminale,
+          groupeEnt: false,
+          actif: true).save()
 
       grpe1ere.addToClasses(classe1ere)
       grpe1ere.addToClasses(classeTerminale)
@@ -216,13 +216,13 @@ class BootstrapService {
   private def initialiseEtablissementsEnvDevelopmentTest() {
     if (!Etablissement.findAllByUaiLike("${UAI_PREFIXE}%")) {
       leLycee = new Etablissement(codePorteurENT: DEFAULT_CODE_PORTEUR_ENT,
-                                  uai: UAI_LYCEE,
-                                  nomAffichage: "Lycée Montaigne",
-                                  idExterne: UAI_LYCEE).save()
+          uai: UAI_LYCEE,
+          nomAffichage: "Lycée Montaigne",
+          idExterne: UAI_LYCEE).save()
       leCollege = new Etablissement(codePorteurENT: DEFAULT_CODE_PORTEUR_ENT,
-                                    uai: UAI_COLLEGE,
-                                    nomAffichage: "Collège Pascal",
-                                    idExterne: UAI_COLLEGE).save(flush: true)
+          uai: UAI_COLLEGE,
+          nomAffichage: "Collège Pascal",
+          idExterne: UAI_COLLEGE).save(flush: true)
     } else {
       leLycee = Etablissement.findByUai(UAI_LYCEE)
       leCollege = Etablissement.findByUai(UAI_COLLEGE)
@@ -235,7 +235,7 @@ class BootstrapService {
     anneeScolaire = AnneeScolaire.findByAnneeEnCours(true)
     if (!anneeScolaire) {
       anneeScolaire = new AnneeScolaire(code: "${CODE_ANNEE_SCOLAIRE_PREFIXE}_2011-2012",
-                                        anneeEnCours: true).save(flush: true, failOnError: true)
+          anneeEnCours: true).save(flush: true, failOnError: true)
     }
     assert anneeScolaire != null
 
@@ -254,50 +254,50 @@ class BootstrapService {
     if (!Matiere.findAllByCodeGestionLike("${CODE_GESTION_PREFIXE}%")) {
 
       matiereMaths = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_1",
-                                 etablissement: leLycee,
-                                 libelleEdition: "Mathématiques",
-                                 libelleCourt: "Mathématiques",
-                                 libelleLong: "Mathématiques",
-                                 anneeScolaire: anneeScolaire).save()
+          etablissement: leLycee,
+          libelleEdition: "Mathématiques",
+          libelleCourt: "Mathématiques",
+          libelleLong: "Mathématiques",
+          anneeScolaire: anneeScolaire).save()
 
       assert matiereMaths != null
 
       matiereSES = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_2",
-                               etablissement: leLycee,
-                               libelleEdition: "SES",
-                               libelleCourt: "SES",
-                               libelleLong: "SES",
-                               anneeScolaire: anneeScolaire).save()
+          etablissement: leLycee,
+          libelleEdition: "SES",
+          libelleCourt: "SES",
+          libelleLong: "SES",
+          anneeScolaire: anneeScolaire).save()
       matiereSESSpe = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_3",
-                                  etablissement: leLycee,
-                                  libelleEdition: "SES Spécialité",
-                                  libelleCourt: "SES Spécialité",
-                                  libelleLong: "SES Spécialité",
-                                  anneeScolaire: anneeScolaire).save()
+          etablissement: leLycee,
+          libelleEdition: "SES Spécialité",
+          libelleCourt: "SES Spécialité",
+          libelleLong: "SES Spécialité",
+          anneeScolaire: anneeScolaire).save()
       matiereHistoire = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_4",
-                                    etablissement: leCollege,
-                                    libelleEdition: "Histoire",
-                                    libelleCourt: "Histoire",
-                                    libelleLong: "Histoire",
-                                    anneeScolaire: anneeScolaire).save()
+          etablissement: leCollege,
+          libelleEdition: "Histoire",
+          libelleCourt: "Histoire",
+          libelleLong: "Histoire",
+          anneeScolaire: anneeScolaire).save()
       matiereGeographie = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_5",
-                                      etablissement: leCollege,
-                                      libelleEdition: "Géographie",
-                                      libelleCourt: "Géographie",
-                                      libelleLong: "Géographie",
-                                      anneeScolaire: anneeScolaire).save()
+          etablissement: leCollege,
+          libelleEdition: "Géographie",
+          libelleCourt: "Géographie",
+          libelleLong: "Géographie",
+          anneeScolaire: anneeScolaire).save()
       matiereCommunication = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_6",
-                                         etablissement: leLycee,
-                                         libelleEdition: "Communication",
-                                         libelleCourt: "Communication",
-                                         libelleLong: "Communication",
-                                         anneeScolaire: anneeScolaire).save()
+          etablissement: leLycee,
+          libelleEdition: "Communication",
+          libelleCourt: "Communication",
+          libelleLong: "Communication",
+          anneeScolaire: anneeScolaire).save()
       matiereAnglais = new Matiere(codeGestion: "${CODE_GESTION_PREFIXE}_7",
-                                   etablissement: leLycee,
-                                   libelleEdition: "Anglais",
-                                   libelleCourt: "Anglais",
-                                   libelleLong: "Anglais",
-                                   anneeScolaire: anneeScolaire).save(flush: true)
+          etablissement: leLycee,
+          libelleEdition: "Anglais",
+          libelleCourt: "Anglais",
+          libelleLong: "Anglais",
+          anneeScolaire: anneeScolaire).save(flush: true)
     } else {
       matiereMaths = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_1")
       matiereSES = Matiere.findByCodeGestion("${CODE_GESTION_PREFIXE}_2")
@@ -318,15 +318,15 @@ class BootstrapService {
   private def initialiseNiveauxEnvDevelopmentTest() {
     if (!Niveau.findAllByLibelleCourtLike("${CODE_MEFSTAT4_PREFIXE}%")) {
       nivPremiere = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_1",
-                               libelleLong: "Première").save()
+          libelleLong: "Première").save()
       nivTerminale = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_2",
-                                libelleLong: "Terminale").save()
+          libelleLong: "Terminale").save()
       nivBTS1 = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_3",
-                           libelleLong: "BTS 1").save()
+          libelleLong: "BTS 1").save()
       nivBTS2 = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_4",
-                           libelleLong: "BTS 2").save()
+          libelleLong: "BTS 2").save()
       nivSixieme = new Niveau(libelleCourt: "${CODE_MEFSTAT4_PREFIXE}_5",
-                              libelleLong: "6ème").save(flush: true)
+          libelleLong: "6ème").save(flush: true)
 
     } else {
       nivPremiere = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
@@ -351,8 +351,8 @@ class BootstrapService {
         anneeScolaire
     )) {
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEnseignant,
-                              structureEnseignement: classe6eme).save(failOnError: true)
+          fonction: fonctionEnseignant,
+          structureEnseignement: classe6eme).save(failOnError: true)
     }
 
     if (!ProprietesScolarite.findAllByStructureEnseignementAndFonctionAndAnneeScolaire(
@@ -361,8 +361,8 @@ class BootstrapService {
         anneeScolaire
     )) {
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEnseignant,
-                              structureEnseignement: grpe1ere).save(failOnError: true)
+          fonction: fonctionEnseignant,
+          structureEnseignement: grpe1ere).save(failOnError: true)
     }
 
     if (!ProprietesScolarite.findAllByStructureEnseignementAndFonctionAndAnneeScolaire(
@@ -371,8 +371,8 @@ class BootstrapService {
         anneeScolaire
     )) {
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEnseignant,
-                              structureEnseignement: classeTerminale).save(failOnError: true)
+          fonction: fonctionEnseignant,
+          structureEnseignement: classeTerminale).save(failOnError: true)
     }
 
     if (!ProprietesScolarite.findAllByStructureEnseignementAndFonctionAndAnneeScolaire(
@@ -381,8 +381,8 @@ class BootstrapService {
         anneeScolaire
     )) {
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEnseignant,
-                              structureEnseignement: classe1ere).save(failOnError: true)
+          fonction: fonctionEnseignant,
+          structureEnseignement: classe1ere).save(failOnError: true)
     }
 
     if (!ProprietesScolarite.findAllByEtablissementAndFonctionAndAnneeScolaireAndMatiere(
@@ -392,9 +392,9 @@ class BootstrapService {
         matiereHistoire
     )) {
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEnseignant,
-                              etablissement: leCollege,
-                              matiere: matiereHistoire).save(failOnError: true)
+          fonction: fonctionEnseignant,
+          etablissement: leCollege,
+          matiere: matiereHistoire).save(failOnError: true)
     }
 
     if (!ProprietesScolarite.findAllByEtablissementAndFonctionAndAnneeScolaireAndMatiere(
@@ -404,9 +404,9 @@ class BootstrapService {
         matiereSES
     )) {
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEnseignant,
-                              etablissement: leLycee,
-                              matiere: matiereSES).save(failOnError: true)
+          fonction: fonctionEnseignant,
+          etablissement: leLycee,
+          matiere: matiereSES).save(failOnError: true)
     }
 
     if (!ProprietesScolarite.findAllByEtablissementAndFonctionAndAnneeScolaireAndMatiere(
@@ -416,9 +416,9 @@ class BootstrapService {
         matiereMaths
     )) {
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEnseignant,
-                              etablissement: leLycee,
-                              matiere: matiereMaths).save(failOnError: true)
+          fonction: fonctionEnseignant,
+          etablissement: leLycee,
+          matiere: matiereMaths).save(failOnError: true)
     }
 
   }
@@ -435,9 +435,9 @@ class BootstrapService {
   private def initialiseEleve1EnvDevelopment() {
     if (!utilisateurService.findUtilisateur(ELEVE_1_LOGIN)) {
       utilisateurService.createUtilisateur(ELEVE_1_LOGIN,
-                                           ELEVE_1_PASSWORD,
-                                           ELEVE_1_NOM,
-                                           ELEVE_1_PRENOM)
+          ELEVE_1_PASSWORD,
+          ELEVE_1_NOM,
+          ELEVE_1_PRENOM)
     }
   }
 
@@ -451,8 +451,8 @@ class BootstrapService {
         anneeScolaire
     )){
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEleve,
-                              structureEnseignement: classe6eme).save(failOnError: true)
+          fonction: fonctionEleve,
+          structureEnseignement: classe6eme).save(failOnError: true)
     }
 
     if (!ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
@@ -461,8 +461,8 @@ class BootstrapService {
         anneeScolaire
     )){
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEleve,
-                              structureEnseignement: grpe1ere).save(failOnError: true)
+          fonction: fonctionEleve,
+          structureEnseignement: grpe1ere).save(failOnError: true)
     }
 
     if (!ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
@@ -471,8 +471,8 @@ class BootstrapService {
         anneeScolaire
     )){
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEleve,
-                              structureEnseignement: classeTerminale).save(failOnError: true)
+          fonction: fonctionEleve,
+          structureEnseignement: classeTerminale).save(failOnError: true)
     }
 
     if (!ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
@@ -481,8 +481,8 @@ class BootstrapService {
         anneeScolaire
     )){
       new ProprietesScolarite(anneeScolaire: anneeScolaire,
-                              fonction: fonctionEleve,
-                              structureEnseignement: classe1ere).save(failOnError: true)
+          fonction: fonctionEleve,
+          structureEnseignement: classe1ere).save(failOnError: true)
     }
 
   }
@@ -501,9 +501,9 @@ class BootstrapService {
   private def initialiseEleve2EnvDevelopment() {
     if (!utilisateurService.findUtilisateur(ELEVE_2_LOGIN)) {
       utilisateurService.createUtilisateur(ELEVE_2_LOGIN,
-                                           ELEVE_2_PASSWORD,
-                                           ELEVE_2_NOM,
-                                           ELEVE_2_PRENOM)
+          ELEVE_2_PASSWORD,
+          ELEVE_2_NOM,
+          ELEVE_2_PRENOM)
       Utilisateur elv2 = utilisateurService.findUtilisateur(ELEVE_2_LOGIN)
       Personne pers = Personne.get(elv2.personneId)
       Niveau niveauPrem = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
@@ -517,9 +517,9 @@ class BootstrapService {
   private def initialiseRespEleve1EnvDevelopment() {
     if (!utilisateurService.findUtilisateur(RESP_1_LOGIN)) {
       utilisateurService.createUtilisateur(RESP_1_LOGIN,
-                                           RESP_1_PASSWORD,
-                                           RESP_1_NOM,
-                                           RESP_1_PRENOM)
+          RESP_1_PASSWORD,
+          RESP_1_NOM,
+          RESP_1_PRENOM)
       Utilisateur resp1 = utilisateurService.findUtilisateur(RESP_1_LOGIN)
       Personne pers = Personne.get(resp1.personneId)
       Utilisateur elv1 = utilisateurService.findUtilisateur(ELEVE_1_LOGIN)
@@ -536,12 +536,12 @@ class BootstrapService {
     PorteurEnt porteurEnt = PorteurEnt.findByCode(DEFAULT_CODE_PORTEUR_ENT)
     if (!porteurEnt) {
       porteurEnt = new PorteurEnt(code: DEFAULT_CODE_PORTEUR_ENT,
-                                  urlAccesEnt: DEFAULT_URL_ACCES_ENT,
-                                  urlRetourLogout: DEFAULT_URL_RETOUR_LOGOUT,
-                                  nom: 'Porteur Default pour tests et dev',
-                                  nomCourt: 'Porteur Default').save()
+          urlAccesEnt: DEFAULT_URL_ACCES_ENT,
+          urlRetourLogout: DEFAULT_URL_RETOUR_LOGOUT,
+          nom: 'Porteur Default pour tests et dev',
+          nomCourt: 'Porteur Default').save(flush: true)
     }
-
+    return porteurEnt
 
   }
 
@@ -549,19 +549,40 @@ class BootstrapService {
 
   private ResponsableEleve createResponsableEleve(Personne resp, Personne eleve) {
     ResponsableEleve responsableEleve = new ResponsableEleve(personne: resp,
-                                                             eleve: eleve,
-                                                             estActive: true,
-                                                             responsableLegal: 1).save()
-    def profilsEleve = profilScolariteService.findProprietesScolaritesForPersonne(eleve)
-    def propsResp = []
-    profilsEleve.each { ProprietesScolarite props ->
-      if (props.fonction == fonctionService.fonctionEleve()) {
-        propsResp << new ProprietesScolarite(anneeScolaire: props.anneeScolaire,
-                                             fonction: fonctionService.fonctionResponsableEleve(),
-                                             porteurEnt: props.structureEnseignement.etablissement.porteurEnt).save(failOnError: true)
+        eleve: eleve,
+        estActive: true,
+        responsableLegal: 1).save()
+    // groupes auxquels appartient l'élève
+    def groupes = profilScolariteService.findProprietesScolaritesForPersonne(eleve)
+    def groupesDeRespEleve = []
+
+    Fonction fonctionResp = fonctionService.fonctionResponsableEleve()
+    Fonction fonctionEleve = fonctionService.fonctionEleve()
+
+    // pour chaque groupe d'élèves auxquels appartient l'élève, on créé un groupe
+    // de responsables d'élèves s'il n'existe pas déjà
+    groupes.each { ProprietesScolarite groupe ->
+      if (groupe.fonction == fonctionEleve) {
+        PorteurEnt porteurEnt =
+          groupe.structureEnseignement.etablissement.porteurEnt ?: initialisePorteurEnt()
+
+        AnneeScolaire anneeScolaire = groupe.anneeScolaire
+
+        ProprietesScolarite ps = ProprietesScolarite.createCriteria().get{
+          eq 'anneeScolaire', anneeScolaire
+          eq 'fonction', fonctionResp
+          eq 'porteurEnt', porteurEnt
+        }
+
+        if (!ps){
+          // créer un groupe de responsables élèves
+          groupesDeRespEleve << new ProprietesScolarite(anneeScolaire: anneeScolaire,
+              fonction: fonctionResp,
+              porteurEnt: porteurEnt).save(flush : true, failOnError: true)
+        }
       }
     }
-    addProprietesScolariteToPersonne(propsResp, resp)
+    addProprietesScolariteToPersonne(groupesDeRespEleve, resp)
     return responsableEleve
   }
 
@@ -574,8 +595,8 @@ class BootstrapService {
                                                Personne personne) {
     proprietesScolariteList.each { ProprietesScolarite proprietesScolarite ->
       def ppp = new PersonneProprietesScolarite(personne: personne,
-                                                proprietesScolarite: proprietesScolarite,
-                                                estActive: true)
+          proprietesScolarite: proprietesScolarite,
+          estActive: true)
       ppp.save()
       if (ppp.hasErrors()) {
         ppp.errors.allErrors.each {
