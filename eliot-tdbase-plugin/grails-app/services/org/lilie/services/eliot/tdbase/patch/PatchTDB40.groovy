@@ -38,6 +38,8 @@ class PatchTDB40 implements Patch {
   private final static int BATCH_SIZE = 25
 
   void execute() {
+    log.info "Applique le patch TDB-40"
+
     def criteria = Question.createCriteria()
     def allQuestionId = criteria.list {
       projections {

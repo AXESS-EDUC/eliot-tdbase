@@ -247,6 +247,15 @@ class QuestionService implements ApplicationContextAware {
     // mise à jour de la spécification
     def specService = questionSpecificationServiceForQuestionType(question.type)
     specService.updateQuestionSpecificationForObject(question, specificationObject)
+
+    // Supprime les attachements qui ne sont plus utilisés
+    Set<Long> attachementIdExistantSet = question.questionAttachements*.id as Set
+    Set<Long> attachementIdUtiliseSet = specificationObject.allQuestionAttachementId as Set
+    Set<Long> attachementIdASupprimerSet = attachementIdExistantSet - attachementIdUtiliseSet
+    attachementIdASupprimerSet.each {
+      questionAttachementService.deleteQuestionAttachement(QuestionAttachement.load(it))
+    }
+
     question.save(flush: true)
     return question
   }

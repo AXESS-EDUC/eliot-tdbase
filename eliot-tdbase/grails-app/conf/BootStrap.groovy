@@ -74,11 +74,17 @@ class BootStrap {
     executeAllPatch(servletContext)
   }
 
-  private void executeAllPatch(def servletContext) {
-    def applicationContext = servletContext.getAttribute(ApplicationAttributes.APPLICATION_CONTEXT)
+  private static void executeAllPatch(def servletContext) {
+    final LOCK_ID = 1
 
-    if(!PatchExecution.findByCode(PatchTDB40.CODE)) {
-      PatchExecution.withTransaction {
+    PatchExecution.withTransaction {
+      PatchExecution.lock(LOCK_ID) // Verrouille la ligne correspondant au LOCK pour qu'il n'y ait pas d'applications de patches concurrentes
+
+
+      def applicationContext = servletContext.getAttribute(ApplicationAttributes.APPLICATION_CONTEXT)
+
+      if (!PatchExecution.findByCode(PatchTDB40.CODE)) {
+
         PatchTDB40 patchTDB40 = new PatchTDB40(applicationContext: applicationContext)
         patchTDB40.execute()
 

@@ -83,4 +83,17 @@
                         startValue="100"/>
     </changeSet>
 
+    <changeSet id="4" author="jtra">
+        <comment>
+            Ajout d'une ligne prédéfinie qui sera utilisée pour synchroniser les applications de patches
+            en effectuant un SELECT FOR UPDATE
+        </comment>
+        
+        <insert schemaName="td" tableName="patch_execution">
+            <column name="id">1</column>
+            <column name="code">LOCK</column>
+            <column name="date_created">now()</column>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
