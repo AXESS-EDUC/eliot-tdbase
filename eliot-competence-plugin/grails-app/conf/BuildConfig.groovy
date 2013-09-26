@@ -57,7 +57,7 @@ grails.project.dependency.resolution = {
     runtime "postgresql:postgresql:9.1-901.jdbc4"
 
     // runtime 'mysql:mysql-connector-java:5.1.13'
-    test "org.spockframework:spock-grails-support:0.6-groovy-1.7"
+    test "org.spockframework:spock-grails-support:0.6-groovy-1.8"
   }
   plugins {
     compile ":codenarc:0.17"
