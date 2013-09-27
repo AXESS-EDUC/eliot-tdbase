@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/eliot-tdbase" />
+<title>New Test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">New Test</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/eliot-tdbase/login/auth</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Nouveau</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=titre</td>
+	<td>Sujet QTI 3</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistrePropriete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Texte à trous</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=question.titre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Richard III (Take 1)</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>Identify the missing words in this famous quote from Shakespeare's Richard III</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.texteATrous</td>
+	<td>Now is the {=winter ~spring ~summer ~autumn} of our discontent&nbsp;&nbsp;Made glorious {~winter ~spring =summer ~autumn} by this sun of work&nbsp;&nbsp;And all the clouds that lour'd upon our house&nbsp;&nbsp;In the deep bosom of the ocean buried</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@name='specifobject.modeDeSaisie'])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_106</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Tester</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.valeursDeReponse[0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.valeursDeReponse[0]</td>
+	<td>label=winter</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.valeursDeReponse[1]</td>
+	<td>label=summer</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_106</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Exporter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//button[@type='button'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Importer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=fichierImport</td>
+	<td>/Users/fsil/Downloads/sujet-SUJET_QTI_3.tdbase</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_importSujetNatifTdBase</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier les propriétés du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=titre</td>
+	<td>Sujet QTI 3 import</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistrePropriete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_107</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_107</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Tester</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.valeursDeReponse[0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.valeursDeReponse[0]</td>
+	<td>label=winter</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.valeursDeReponse[1]</td>
+	<td>label=winter</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Déconnexion</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

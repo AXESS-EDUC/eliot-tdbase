@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/eliot-tdbase" />
+<title>14_Conception_sujet_demo_4</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">14_Conception_sujet_demo_4</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/eliot-tdbase/login/auth</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>tttt</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Nouveau</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=titre</td>
+	<td>Sujet QTI 4</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistrePropriete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Une question</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=113</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Insérer dans le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=115</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=115</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Dupliquer et modifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@name='specifobject.modeDeSaisie'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_108</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Tester</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.valeursDeReponse[0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.valeursDeReponse[0]</td>
+	<td>winter</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=reponsesCopie.listeReponses[0].specificationObject.valeursDeReponse[1]</td>
+	<td>summer</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Ouverte</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Writing a Postcard</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=principalAttachementFichier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=principalAttachementFichier</td>
+	<td>/Users/fsil/10_Dev/workspace-eliot-tdbase/QTI/imsqti_itemv2p0all/htmldocs/examples/items/images/postcard.png</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>Write Sam a postcard. Answer the questions. Write 25-35 words.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.nombreLignesReponse</td>
+	<td>5</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Test du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=116</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#menu_actions_116 &gt; li &gt; a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=principalAttachementEstInsereDansLaQuestion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Test du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[1].specificationObject.valeurReponse</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=reponsesCopie.listeReponses[1].specificationObject.valeurReponse</td>
+	<td>une <br />deux<br />trois <br />quatre<br />cinq</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=115</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Insérer un item avant</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Graphique à compléter</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Airport Tags</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.libelle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>Some of the labels on the following diagram are missing: can you identify the correct three-letter codes for the unlabelled airports?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=imageUpload</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>name=specifobject.fichier</td>
+	<td>/Users/fsil/10_Dev/workspace-eliot-tdbase/QTI/imsqti_itemv2p0all/htmldocs/examples/items/images/ukairtags.png</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.textZones[0].text</td>
+	<td>GLA</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.textZones[1].text</td>
+	<td>EDI</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.textZones[2].text</td>
+	<td>MAN</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.montrerLesMots</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=117</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Insérer un item avant</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Association graphique</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Airport Tags</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.libelle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>Some of the labels on the following diagram are missing: can you identify the correct three-letter codes for the unlabelled airports?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=imageUpload</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>name=specifobject.fichier</td>
+	<td>/Users/fsil/10_Dev/workspace-eliot-tdbase/QTI/imsqti_itemv2p0all/htmldocs/examples/items/images/ukairtags.png</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=iconUpload0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>name=specifobject.icons[0].fichier</td>
+	<td>/Users/fsil/10_Dev/workspace-eliot-tdbase/QTI/imsqti_itemv2p0all/htmldocs/examples/items/images/GLA.png</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=specifobject.icons[1].fichier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=iconUpload1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>name=specifobject.icons[1].fichier</td>
+	<td>/Users/fsil/10_Dev/workspace-eliot-tdbase/QTI/imsqti_itemv2p0all/htmldocs/examples/items/images/EDI.png</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=specifobject.icons[2].fichier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=iconUpload2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>name=specifobject.icons[2].fichier</td>
+	<td>/Users/fsil/10_Dev/workspace-eliot-tdbase/QTI/imsqti_itemv2p0all/htmldocs/examples/items/images/MAN.png</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_108</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Tester</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_108</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Réinitialiser la copie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Déconnexion</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

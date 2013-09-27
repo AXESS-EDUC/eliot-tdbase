@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/eliot-tdbase" />
+<title>11_Conception_sujet_demo</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">11_Conception_sujet_demo</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/eliot-tdbase/login/auth</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Créer un sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=titre</td>
+	<td>Sujet QTI</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=presentation</td>
+	<td>Un sujet inspriré des spécifications QTI</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistrePropriete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Choix exclusif</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=question.titre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Unattended Luggage</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=principalAttachementFichier</td>
+	<td>/Users/fsil/10_Dev/workspace-eliot-tdbase/QTI/imsqti_itemv2p0all/htmldocs/examples/items/images/sign.png</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=principalAttachementEstInsereDansLaQuestion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>Look at the text in the picture.<br />What does it say ?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[0].libelleReponse</td>
+	<td>You must stay with your luggage at all times.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[1].libelleReponse</td>
+	<td>Do not let someone else look after your luggage.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[2].libelleReponse</td>
+	<td>Remember your luggage when you leave.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.indexBonneReponse</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.shuffled</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Choix multiple</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=question.titre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Composition of Water</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>Wich of the following elements are used to form water ?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[0].libelleReponse</td>
+	<td>Hydrogen</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[1].libelleReponse</td>
+	<td>Helium</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[2].libelleReponse</td>
+	<td>Carbon</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[3].libelleReponse</td>
+	<td>Oxygen</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[4].libelleReponse</td>
+	<td>Chlorine</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[5].libelleReponse</td>
+	<td>Nitrogen</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.reponses[0].estUneBonneReponse</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.reponses[3].estUneBonneReponse</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Ordre à rétablir</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=question.titre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Grand prix of Bahrain</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>The following F1 drivers finished on the podium in the first ever Grand Prix of Bahrain. Can you rearrange them into the correct finishing order ?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.orderedItems[0].text</td>
+	<td>Rubens Barrichello</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.orderedItems[1].text</td>
+	<td>Jenson Button</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.orderedItems[0].text</td>
+	<td>Michael Schumacher</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.orderedItems[1].text</td>
+	<td>Rubens Barrichello</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.orderedItems[2].text</td>
+	<td>Jenson Button</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_103</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Tester</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@id='reponsesCopie.listeReponses[0].specificationObject.indexReponse'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[1].specificationObject.indexReponsesCoches[0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=reponsesCopie.listeReponses[1].specificationObject.indexReponsesCoches[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_103</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Exporter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//button[@type='button'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Importer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=fichierImport</td>
+	<td>/Users/fsil/Downloads/sujet-SUJET_QTI.tdbase</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_importSujetNatifTdBase</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Rechercher</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=104</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier les propriétés du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=titre</td>
+	<td>Sujet QTI import 1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistrePropriete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Déconnexion</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

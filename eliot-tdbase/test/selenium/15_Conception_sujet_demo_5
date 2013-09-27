@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/eliot-tdbase" />
+<title>15_Conception_sujet_demo_5</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">15_Conception_sujet_demo_5</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/eliot-tdbase/login/auth</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>sss</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Nouveau</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=titre</td>
+	<td>Sujet QTI 5</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistrePropriete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Curseur à déplacer</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Jedi Knights</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.libelle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>&lt;p&gt;<br />Much to the dismay of Star Wars fans, the 2001 UK national census classified people who identified themselves as<br />&lt;i&gt;Jedi Knights&lt;/i&gt;<br />as having no religion. In fact, the<br />&lt;i&gt;Jedi&lt;/i&gt;<br />accounted for more than 4% of this group!<br />&lt;/p&gt;<br /></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>&lt;p&gt;<br />Much to the dismay of Star Wars fans, the 2001 UK national census classified people who identified themselves as<br />&lt;i&gt;Jedi Knights&lt;/i&gt;<br />as having no religion. In fact, the<br />&lt;i&gt;Jedi&lt;/i&gt;<br />accounted for more than 4% of this group!<br />&lt;/p&gt;<br />&lt;p&gt;In total, what percentage of the UK population do you think were eventually classifed as having no religion?&lt;/p&gt;</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.valeur</td>
+	<td>16</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.precision</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.valeurMin</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.valeurMax</td>
+	<td>100</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.pas</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Un énoncé')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Un énoncé</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>No materials</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.enonce_forecolor_open</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=_mce_item_48</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=120</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#menu_actions_120 &gt; li &gt; a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=120</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Déplacer vers le haut</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Fichier à déposer</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Where is Edinburgh ?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.libelle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>Mark Edinburgh on this map of the United Kingdom.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=principalAttachementFichier</td>
+	<td>/Users/fsil/10_Dev/workspace-eliot-tdbase/QTI/imsqti_itemv2p0all/htmldocs/examples/items/images/uk.png</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=principalAttachementEstInsereDansLaQuestion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Entière</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Jedi Knights bis</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.libelle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>&lt;p&gt;<br />Much to the dismay of Star Wars fans, the 2001 UK national census classified people who identified themselves as<br />&lt;i&gt;Jedi Knights&lt;/i&gt;<br />as having no religion. In fact, the<br />&lt;i&gt;Jedi&lt;/i&gt;<br />accounted for more than 4% of this group!<br />&lt;/p&gt;</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>&lt;p&gt;<br />Much to the dismay of Star Wars fans, the 2001 UK national census classified people who identified themselves as<br />&lt;i&gt;Jedi Knights&lt;/i&gt;<br />as having no religion. In fact, the<br />&lt;i&gt;Jedi&lt;/i&gt;<br />accounted for more than 4% of this group!<br />&lt;/p&gt;<br />&lt;p&gt;In total, what percentage of the UK population do you think were eventually classifed as having no religion?&lt;/p&gt;</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.valeur</td>
+	<td>16</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.unite</td>
+	<td>%</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Décimale</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Jedi Knights</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=question.titre</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Jedi Knights 3</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>In total, what percentage of the UK population do you think were eventually classifed as having no religion?</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.valeur</td>
+	<td>16,5</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.unite</td>
+	<td>%</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.precision</td>
+	<td>0,1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>id=select_creation</td>
+	<td>label=Evaluation booléenne</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>16 % of the UK population </td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.libelle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.libelle</td>
+	<td>16 % of the UK population : what this percentage ?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input.button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[0]</td>
+	<td>population</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[1]</td>
+	<td>having</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Ajouter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=specifobject.reponses[2]</td>
+	<td>no religion</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_109</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Tester</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='slider_0']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=reponsesCopie.listeReponses[1].specificationObject.fichier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=reponsesCopie.listeReponses[1].specificationObject.fichier</td>
+	<td>/Users/fsil/10_Dev/workspace-eliot-tdbase/QTI/imsqti_itemv2p0all/htmldocs/examples/items/images/ukair.png</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=reponsesCopie.listeReponses[2].specificationObject.valeurReponse</td>
+	<td>16</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=reponsesCopie.listeReponses[3].specificationObject.valeurReponse</td>
+	<td>16,5</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=reponsesCopie.listeReponses[4].specificationObject.valeurDeReponse</td>
+	<td>the population having no religion</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_rendLaCopie</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Déconnexion</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

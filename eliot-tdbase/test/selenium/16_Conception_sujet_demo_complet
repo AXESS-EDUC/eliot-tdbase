@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/eliot-tdbase" />
+<title>16_assemblage_sujet_complet</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">16_assemblage_sujet_complet</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/eliot-tdbase/login/auth</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>jjj</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>ens1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Nouveau</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=titre</td>
+	<td>Sujet complet</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=titre</td>
+	<td>Sujet complet de démo</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistrePropriete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modifier le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter un item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Un énoncé')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=119</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Insérer dans le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=typeId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=typeId</td>
+	<td>label=Tous</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_recherche</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=123</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Insérer dans le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=122</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=121</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=120</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[4]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Suivant</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=118</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Insérer dans le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=117</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=116</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=115</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[4]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Suivant</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=113</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Insérer dans le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=111</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=110</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[4]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=109</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[5]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=107</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Insérer dans le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=108</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;dans&nbsp;le&nbsp;sujet')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Suivant</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=112</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#menu_actions_112 &gt; li &gt; a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=113</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Aperçu</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=114</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#menu_actions_114 &gt; li &gt; a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Insérer dans le sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=126</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Insérer&nbsp;un&nbsp;item&nbsp;avant')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Un document</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=question.titre</td>
+	<td>Chimical...</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=specifobject.auteur</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=specifobject.auteur</td>
+	<td>fsil</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=specifobject.source</td>
+	<td>fsil</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=specifobject.type</td>
+	<td>label=JMOL</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=specifobject.fichier</td>
+	<td>/Users/fsil/10_Dev/workspace-eliot-tdbase/workspace-projet/eliot-tdbase/eliot-tdbase/test/integration/org/lilie/services/eliot/tdbase/jmol/exemples/caffeine.xyz</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=specifobject.estInsereDansLeSujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_enregistreInsertNouvelItem</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Modification du sujet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_110</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Exporter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//button[@type='button'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=toolbar_110</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=div.container</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Importer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=fichierImport</td>
+	<td>/Users/fsil/Downloads/sujet-SUJET_COMPLET_DE_DEM.tdbase</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=_action_importSujetNatifTdBase</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Déconnexion</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
