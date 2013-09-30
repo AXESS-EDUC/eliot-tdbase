@@ -1,4 +1,4 @@
-=== Eliot tdbase 2.1.0-RC1-eliot-2.9.2.2 ===
+=== Eliot tdbase 2.1.0-RC1-eliot-2.9.2.3 ===
 
 Liste des dépendances :
 

@@ -1,4 +1,4 @@
-<plugin name='eliot-tdbase-plugin' version='2.1.0-RC1-eliot-2.9.2.2' grailsVersion='2.1.1 &gt; *'>
+<plugin name='eliot-tdbase-plugin' version='2.1.0-RC1-eliot-2.9.2.3' grailsVersion='2.1.1 &gt; *'>
   <author>Franck Silvestre - Ticetime</author>
   <title>Eliot Tdbase  Plugin</title>
   <description>  Plugin contenant les services métiers relatifs à la gestion des TD"
