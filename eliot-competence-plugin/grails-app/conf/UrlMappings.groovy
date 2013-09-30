@@ -7,7 +7,7 @@ class UrlMappings {
 			}
 		}
 
-		"/"(view:"/index")
+		"/"(controller: 'competence', action: 'afficheArbreCompetence')
 		"500"(view:'/error')
 	}
 }

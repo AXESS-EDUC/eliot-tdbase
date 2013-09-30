@@ -51,6 +51,10 @@ class Referentiel {
     description nullable: true
   }
 
+  Collection<Domaine> getDomaineRacineList() {
+    allDomaine.grep { Domaine domaine -> !domaine.domaineParent }
+  }
+
   /**
    * Affiche en console le contenu d'un référentiel
    */

@@ -1,32 +1,22 @@
-<plugin name='eliot-notes-plugin' version='2.3.0-SNAPSHOT' grailsVersion='2.1.1 &gt; *'>
-  <author>Franck Silvestre - Fylab</author>
-  <title>Eliot Notes  Plugin</title>
-  <description>Plugin contenant les services métiers relatifs à la gestion des notes"
+<plugin name='eliot-competence-plugin' version='1.0-SNAPSHOT' grailsVersion='1.3.7 &gt; *'>
+  <author>John Tranier</author>
+  <authorEmail>john.tranier@ticetime.com</authorEmail>
+  <title>eliot-competence-plugin</title>
+  <description>\
+Plugin de gestion des référentiels de compétences Eliot
 </description>
-  <type>EliotNotesPluginGrailsPlugin</type>
+  <type>EliotCompetencePluginGrailsPlugin</type>
   <resources>
-    <resource>org.lilie.services.eliot.tice.notes.AppreciationClasseEnseignementPeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.AppreciationEleveEnseignementPeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.AppreciationElevePeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.AvisConseilDeClasse</resource>
-    <resource>org.lilie.services.eliot.tice.notes.AvisOrientation</resource>
-    <resource>org.lilie.services.eliot.tice.notes.DernierChangementDansClasse</resource>
-    <resource>org.lilie.services.eliot.tice.notes.DirtyMoyenne</resource>
-    <resource>org.lilie.services.eliot.tice.notes.Evaluation</resource>
-    <resource>org.lilie.services.eliot.tice.notes.InfoCalculMoyennesClasse</resource>
-    <resource>org.lilie.services.eliot.tice.notes.ModeleAppreciation</resource>
-    <resource>org.lilie.services.eliot.tice.notes.ModeleAppreciationProfesseur</resource>
-    <resource>org.lilie.services.eliot.tice.notes.Note</resource>
-    <resource>org.lilie.services.eliot.tice.notes.ResultatClasseEnseignementPeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.ResultatClassePeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.ResultatClasseServicePeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.ResultatClasseSousServicePeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.ResultatEleveEnseignementPeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.ResultatElevePeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.ResultatEleveServicePeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.ResultatEleveSousServicePeriode</resource>
-    <resource>org.lilie.services.eliot.tice.notes.TypeAppreciationEnum</resource>
-    <resource>org.lilie.services.eliot.tice.notes.TypeMoyenneEnum</resource>
+    <resource>spring.resources</resource>
+    <resource>org.lilie.services.eliot.competence.CompetenceController</resource>
+    <resource>org.lilie.services.eliot.competence.Competence</resource>
+    <resource>org.lilie.services.eliot.competence.Domaine</resource>
+    <resource>org.lilie.services.eliot.competence.Referentiel</resource>
+    <resource>org.lilie.services.eliot.competence.CompetenceDto</resource>
+    <resource>org.lilie.services.eliot.competence.DomaineDto</resource>
+    <resource>org.lilie.services.eliot.competence.ReferentielBootstrapService</resource>
+    <resource>org.lilie.services.eliot.competence.ReferentielDto</resource>
+    <resource>org.lilie.services.eliot.competence.ReferentielService</resource>
   </resources>
   <repositories>
     <repository name='grailsCentral' url='http://grails.org/plugins' />

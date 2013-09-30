@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.competence.Competence
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
@@ -78,7 +79,8 @@ class QuestionService implements ApplicationContextAware {
         publie: false,
         versionQuestion: 1,
         copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
-        specification: "{}")
+        specification: "{}"
+    )
 
     question.properties = proprietes
     question.principalAttachementFichier = proprietes.principalAttachementFichier
@@ -98,6 +100,9 @@ class QuestionService implements ApplicationContextAware {
     if (!proprietes.containsKey('paternite')) {
       addPaterniteItem(proprietaire, question)
     }
+
+    List<Competence> competenceList = parseCompetenceListFromParams(proprietes)
+    questionCompetenceService.updateQuestionCompetenceList(question, competenceList)
 
     question.save(flush: true)
     return question
@@ -274,6 +279,9 @@ class QuestionService implements ApplicationContextAware {
     attachementIdASupprimerSet.each {
       questionAttachementService.deleteQuestionAttachement(QuestionAttachement.load(it))
     }
+
+    List<Competence> competenceList = parseCompetenceListFromParams(proprietes)
+    questionCompetenceService.updateQuestionCompetenceList(question, competenceList)
 
     question.save(flush: true)
     return question
@@ -572,4 +580,17 @@ class QuestionService implements ApplicationContextAware {
     typesQuestionsSupportes - Composite.questionType
   }
 
+  private List<Competence> parseCompetenceListFromParams(Map params) {
+    if (!params.competenceAssocieeIdList) {
+      return []
+    }
+
+    return Competence.getAll(
+        params.competenceAssocieeIdList.collect {
+          String id
+          Long.parseLong(it)
+        }
+    )
+
+  }
 }

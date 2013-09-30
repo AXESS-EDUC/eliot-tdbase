@@ -76,24 +76,47 @@ class ReferentielService {
    */
   Referentiel fetchReferentielByNom(String nom) {
 
-    // La requête générée par ce criteria comprend un INNER JOIN pour le domaine
-    // et un LEFT OUTER JOIN pour le référentiel
-    // Le référentiel n'étant pas NULLABLE, je n'explique pas ce phénomène
-    def allCompetence = Competence.withCriteria {
-      'referentiel' {
-        eq('nom', nom)
-      }
-      fetchMode('domaine', FetchMode.JOIN)
-      fetchMode('referentiel', FetchMode.JOIN)
+    def c = Referentiel.createCriteria()
+    Referentiel referentiel = c.get {
+      eq('nom', nom)
+      fetchMode('allDomaine', FetchMode.JOIN)
+      fetchMode('allDomaine.allSousDomaine', FetchMode.JOIN)
+      fetchMode('allDomaine.allCompetence', FetchMode.JOIN)
     }
 
-    if(!allCompetence) {
-      throw new IllegalStateException(
-          "Le référentiel $nom n'existe pas (ou il ne contient pas de compétence)"
-      )
+    if(!referentiel) {
+      throw new IllegalStateException("Le référentiel $nom n'existe pas")
     }
 
-    return allCompetence.first().referentiel
+    return referentiel
+  }
+
+  /**
+   * Récupère un référentiel par son id
+   *
+   * Note : cette méthode fetche l'ensemble du contenu du référentiel.
+   * Il est donc possible de parcourir l'ensemnble des domaines et des compétences du
+   * référentiel à partir de l'objet Referentiel retourné sans générer de nouvelles
+   * requêtes en base
+   *
+   * @param nom nom du référentiel
+   * @return
+   */
+  Referentiel fetchReferentielById(Long id) {
+
+    def c = Referentiel.createCriteria()
+    Referentiel referentiel = c.get {
+      eq('id', id)
+      fetchMode('allDomaine', FetchMode.JOIN)
+      fetchMode('allDomaine.allSousDomaine', FetchMode.JOIN)
+      fetchMode('allDomaine.allCompetence', FetchMode.JOIN)
+    }
+
+    if(!referentiel) {
+      throw new IllegalStateException("Le référentiel d'id $id n'existe pas")
+    }
+
+    return referentiel
   }
 }
 

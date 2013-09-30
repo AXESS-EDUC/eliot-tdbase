@@ -273,6 +273,14 @@
         <g:render template="/artefact/paternite"
                   model="[paternite: question.paternite]"/>
       </g:if>
+
+      <g:if test="${isAssociableACompetence}">
+      <g:render
+          template="/question/edite_competences"
+          model="[referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList]" />
+      </g:if>
+
+
     </table>
   </div>
   <g:hiddenField name="id" value="${question.id}"/>

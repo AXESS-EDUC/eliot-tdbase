@@ -49,29 +49,57 @@ class ReferentielBootstrapService {
             description: "Référentiel de test",
             allDomaine: [
                 new DomaineDto(
-                    nom: "Domaine 1",
+                    nom: "Maîtrise de la langue française",
                     allSousDomaine: [
                         new DomaineDto(
-                            nom: "Sous-domaine 1.1",
+                            nom: "Lire",
                             allCompetence: [
-                                new CompetenceDto(nom: "Compétence 1.1.1"),
-                                new CompetenceDto(nom: "Compétence 1.1.2")
+                                new CompetenceDto(nom: "Adapter son mode de lecture à la nature du texte proposé et à l'objectif poursuivi"),
+                                new CompetenceDto(nom: "Repérer les informations dans un texte à partir des éléments explicites et des éléments implicites nécessaires"),
+                                new CompetenceDto(nom: "Utiliser ses capacités de raisonnement, ses connaissances sur la langue, savoir faire appel à des outils appropriés pour lire"),
+                                new CompetenceDto(nom: "Dégager, par écrit ou oralement, l'essentiel d'un texte lu"),
+                                new CompetenceDto(nom: "Manifester, par des moyens divers, sa compréhension de textes variés")
                             ]
                         ),
                         new DomaineDto(
-                            nom: "Sous-domaine 1.2",
+                            nom: "Écrire",
                             allCompetence: [
-                                new CompetenceDto(nom: "Compétence 1.2.1"),
-                                new CompetenceDto(nom: "Compétence 1.2.2")
+                                new CompetenceDto(nom: "Reproduire un document sans erreur et avec une présentation adaptée"),
+                                new CompetenceDto(nom: "Écrire lisiblement un texte, spontanément ou sous la dictée, en respectant l'orthographe et la grammaire"),
+                                new CompetenceDto(nom: "Rédiger un texte bref, cohérent et ponctué, en réponse à une question ou à partir de consignes données"),
+                                new CompetenceDto(nom: "Utiliser ses capacités de raisonnement, ses connaissances sur la langue, savoir faire appel à des outils variés pour améliorer son texte")
+                            ]
+                        ),
+                        new DomaineDto(
+                            nom: "Dire",
+                            allCompetence: [
+                                new CompetenceDto(nom: "Formuler clairement un propos simple"),
+                                new CompetenceDto(nom: "Développer de façon suivie un propos en public sur un sujet déterminé"),
+                                new CompetenceDto(nom: "Adapter sa prise de parole à la situation de communication"),
+                                new CompetenceDto(nom: "Participer à un débat, à un échange verbal")
                             ]
                         )
                     ]
                 ),
                 new DomaineDto(
-                    nom: "Domaine 2",
-                    allCompetence: [
-                        new CompetenceDto(nom: "Compétence 2.1"),
-                        new CompetenceDto(nom: "Compétence 2.2")
+                    nom: "Pratique d'une langue vivante étrangère",
+                    allSousDomaine: [
+                        new DomaineDto(
+                            nom: "Réagir et dialoguer",
+                            allCompetence: [
+                                new CompetenceDto(nom: "Établir un contact social"),
+                                new CompetenceDto(nom: "Dialoguer sur des sujets familiers"),
+                                new CompetenceDto(nom: "Demander et donner des informations"),
+                                new CompetenceDto(nom: "Réagir à des propositions")
+                            ]
+                        ),
+                        new DomaineDto(
+                            nom: "écouter et comprendre",
+                            allCompetence: [
+                                new CompetenceDto(nom: "Comprendre un message oral pour réaliser une tâche"),
+                                new CompetenceDto(nom: "Comprendre les points essentiels d'un message oral (conversation, information, récit, exposé)")
+                            ]
+                        )
                     ]
                 )
             ]

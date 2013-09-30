@@ -76,11 +76,43 @@ class Domaine {
   }
 
   /**
+   * Teste si un domaine est un ancêtre d'une compétence
+   * @param competence
+   * @return
+   */
+  boolean isAncestorOf(Competence competence) {
+    return allCompetence*.id?.contains(competence.id) ||
+        allSousDomaine.any { Domaine sousDomaine ->
+          sousDomaine.isAncestorOf(competence)
+        }
+  }
+
+  /**
+   * Teste si un domaine est un ancêtre d'une des compétences
+   * de la liste fournie
+   * @param competence
+   * @return
+   */
+  boolean isAncestorOfAnyOf(Collection<Competence> competenceList) {
+    if (!competenceList) {
+      return false
+    }
+
+    if(allCompetence && !allCompetence*.id.disjoint(competenceList*.id)) {
+      return true
+    }
+
+    return allSousDomaine.any { Domaine sousDomaine ->
+          sousDomaine.isAncestorOfAnyOf(competenceList)
+        }
+  }
+
+  /**
    * Affiche en console le contenu d'un domaine
    * @param indent niveau du domaine dans le référentiel (0 pour les domaines racines)
    */
   void print(int indent = 0) {
-    (indent + 2).times { print "=== "}
+    (indent + 2).times { print "=== " }
     println "Domaine $nom"
     allSousDomaine.each { Domaine sousDomaine ->
       sousDomaine.print(indent + 1)
@@ -93,10 +125,9 @@ class Domaine {
 
   @Override
   public String toString() {
-    if(domaineParent) {
+    if (domaineParent) {
       return "${domaineParent.toString()}/$nom"
-    }
-    else {
+    } else {
       return "${referentiel.toString()}/$nom"
     }
   }

@@ -29,6 +29,8 @@
 package org.lilie.services.eliot.tdbase
 
 import grails.converters.JSON
+import org.lilie.services.eliot.competence.Referentiel
+import org.lilie.services.eliot.competence.ReferentielService
 import org.lilie.services.eliot.tdbase.importexport.ExportHelper
 import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.QuestionExporterService
@@ -51,8 +53,9 @@ import java.util.zip.GZIPOutputStream
 class QuestionController {
 
   static defaultAction = "recherche"
-  private static final String QUESTION_EST_DEJA_INSEREE = "questionEstDejaInseree"
 
+  private static final String QUESTION_EST_DEJA_INSEREE = "questionEstDejaInseree"
+  private static final String REFERENTIEL_COMPETENCE_DEFAUT = "Test"
 
   BreadcrumpsService breadcrumpsService
   ProfilScolariteService profilScolariteService
@@ -63,6 +66,8 @@ class QuestionController {
   AttachementService attachementService
   QuestionExporterService questionExporterService
   QuestionImporterService questionImporterService
+  ReferentielService referentielService
+  QuestionCompetenceService questionCompetenceService
 
   /**
    *
@@ -102,19 +107,30 @@ class QuestionController {
     if (questionEnEdition && sujet) {
       questionEstDejaInseree = true
     }
-    breadcrumpsService.manageBreadcrumps(params,
+    breadcrumpsService.manageBreadcrumps(
+        params,
         message(code: "question.edite.titre"),
-        [QUESTION_EST_DEJA_INSEREE: questionEstDejaInseree])
-    render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
-        question: question,
-        matieres: profilScolariteService.findMatieresForPersonne(personne),
-        niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-        sujet: sujet,
-        artefactHelper: artefactAutorisationService,
-        utilisateur: personne,
-        questionEnEdition: questionEnEdition,
-        attachementsSujets: attachementsSujets,
-        annulationNonPossible: params.annulationNonPossible,])
+        [QUESTION_EST_DEJA_INSEREE: questionEstDejaInseree]
+    )
+
+    render(
+        view: '/question/edite',
+        model: [
+            liens: breadcrumpsService.liens,
+            question: question,
+            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
+            sujet: sujet,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne,
+            questionEnEdition: questionEnEdition,
+            attachementsSujets: attachementsSujets,
+            annulationNonPossible: params.annulationNonPossible,
+            referentielCompetence: getRefentielCompetence(question),
+            isAssociableACompetence: questionCompetenceService.isQuestionAssociableACompetence(question),
+            competenceAssocieeList: question.allQuestionCompetence*.competence ?: []
+        ]
+    )
   }
 
   /**
@@ -130,11 +146,18 @@ class QuestionController {
     if (params.sujetId) {
       sujet = Sujet.get(params.sujetId)
     }
-    render(view: '/question/detail', model: [liens: breadcrumpsService.liens,
-        question: question,
-        sujet: sujet,
-        artefactHelper: artefactAutorisationService,
-        utilisateur: personne])
+    render(
+        view: '/question/detail',
+        model: [
+            liens: breadcrumpsService.liens,
+            question: question,
+            sujet: sujet,
+            artefactHelper: artefactAutorisationService,
+            utilisateur: personne,
+            referentielCompetence: getRefentielCompetence(question),
+            competenceAssocieeList: question.allQuestionCompetence*.competence
+        ]
+    )
   }
 
   /**
@@ -598,6 +621,12 @@ class QuestionController {
  */
   protected def getSpecificationObjectFromParams(Map params) {}
 
+  private Referentiel getRefentielCompetence(Question question) {
+    // Récupère le référentiel de compétence
+    return referentielService.fetchReferentielByNom(
+        REFERENTIEL_COMPETENCE_DEFAUT
+    )
+  }
 }
 
 

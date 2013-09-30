@@ -39,7 +39,7 @@ class QuestionCompetence {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.question_competence_id_seq'])
     cache(true)
-    question(lazy: false)
-    competence(lazy: false)
+    question(fetch: 'join')
+    competence(fetch: 'join')
   }
 }

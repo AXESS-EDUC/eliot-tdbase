@@ -60,4 +60,38 @@ class QuestionCompetenceService {
     question.removeFromAllQuestionCompetence(questionCompetence)
     question.save(flush: true)
   }
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  updateQuestionCompetenceList(Question question, List<Competence> competenceList) {
+    // Ajoute toutes les nouvelles compétences
+    List competenceExistanteList = question.allQuestionCompetence*.competence ?: []
+    competenceList.each { Competence competence ->
+      if(!competenceExistanteList*.id.contains(competence.id)) {
+        createQuestionCompetence(question, competence)
+      }
+    }
+
+    // Supprimes toutes les compétences qui ne sont plus associées à la question
+    new ArrayList<QuestionCompetence>(question.allQuestionCompetence ?: []).each { QuestionCompetence questionCompetence ->
+      if(!competenceList*.id.contains(questionCompetence.competence.id)) {
+        deleteQuestionCompetence(questionCompetence)
+      }
+    }
+  }
+
+  boolean isQuestionAssociableACompetence(Question question) {
+    return question.type.code in [
+        QuestionTypeEnum.MultipleChoice.name(),
+        QuestionTypeEnum.ExclusiveChoice.name(),
+        QuestionTypeEnum.Integer.name(),
+        QuestionTypeEnum.Decimal.name(),
+        QuestionTypeEnum.Slider.name(),
+        QuestionTypeEnum.FillGap.name(),
+        QuestionTypeEnum.FillGraphics.name(),
+        QuestionTypeEnum.GraphicMatch.name(),
+        QuestionTypeEnum.Associate.name(),
+        QuestionTypeEnum.Order.name(),
+        QuestionTypeEnum.BooleanMatch.name()
+    ]
+  }
 }

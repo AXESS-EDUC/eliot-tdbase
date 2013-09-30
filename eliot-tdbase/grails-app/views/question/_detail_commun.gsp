@@ -36,8 +36,13 @@
         </td>
       </tr>
       <g:render
-              template="/question/${question.type.code}/${question.type.code}Detail"
-              model="[question: question]"/>
+          template="/question/${question.type.code}/${question.type.code}Detail"
+          model="[question: question]"/>
+      <g:if test="${question.allQuestionCompetence}">
+        <g:render
+            template="/question/detail_competence"
+            model="[referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList]" />
+      </g:if>
 
     </table>
   </td>
@@ -92,7 +97,8 @@
         <td>
           <g:if test="${question.estPartage()}">
             <a href="${question.copyrightsType.lien}"
-               target="_blank"><img src="${question.copyrightsType.logo}" title="${question.copyrightsType.presentation}"/></a>
+               target="_blank"><img src="${question.copyrightsType.logo}"
+                                    title="${question.copyrightsType.presentation}"/></a>
           </g:if>
           <g:else>
             cette question n'est pas partagée
@@ -105,4 +111,5 @@
       </g:if>
     </table>
   </td>
-</tr></table>
+</tr>
+</table>

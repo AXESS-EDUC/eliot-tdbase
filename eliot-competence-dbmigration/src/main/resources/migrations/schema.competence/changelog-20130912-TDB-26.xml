@@ -118,4 +118,11 @@
 
     </changeSet>
 
+    <changeSet id="2" author="jtra">
+        <comment>Modification pour les colonnes nom du type varchar en text</comment>
+        <modifyDataType schemaName="competence" tableName="referentiel" columnName="nom" newDataType="text"/>
+        <modifyDataType schemaName="competence" tableName="domaine" columnName="nom" newDataType="text"/>
+        <modifyDataType schemaName="competence" tableName="competence" columnName="nom" newDataType="text"/>
+    </changeSet>
+
 </databaseChangeLog>
