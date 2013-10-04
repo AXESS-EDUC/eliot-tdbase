@@ -28,19 +28,56 @@
 package org.lilie.services.eliot.competence
 
 /**
- * Décrit une référentiel de compétences
+ * Représente l'identifiant d'un référentiel sur une source externe
  *
- * Classe non persistante utilisée lors de l'import d'un référentiel de compétence
+ * Ce domaine est introduit pour permettre de stocker les idExternes de différentes sources
  *
  * @author John Tranier
  */
-class ReferentielDto {
-  String nom
-  String description
+class ReferentielIdExterne {
+
   String idExterne
   SourceReferentiel sourceReferentiel
-  String version
-  String dateVersion
-  String urlReference
-  Collection<DomaineDto> allDomaine = []
+
+  static belongsTo = [referentiel: Referentiel]
+
+  static mapping = {
+    table 'competence.referentiel_id_externe'
+    id column: 'id', generator: 'sequence', params: [sequence: 'competence.referentiel_id_externe_id_seq']
+    sourceReferentiel column: 'source'
+    version false
+    cache true
+  }
+
+  static constraints = {
+    idExterne nullable: false, blank: false, unique: 'sourceReferentiel'
+    sourceReferentiel nullable: false
+  }
+
+  boolean equals(o) {
+    if (this.is(o)) return true
+    if (getClass() != o.class) return false
+
+    CompetenceIdExterne that = (CompetenceIdExterne) o
+
+    if (idExterne != that.idExterne) return false
+    if (sourceReferentiel != that.sourceReferentiel) return false
+
+    return true
+  }
+
+  int hashCode() {
+    int result
+    result = idExterne.hashCode()
+    result = 31 * result + sourceReferentiel.hashCode()
+    return result
+  }
+
+  @Override
+  public String toString() {
+    return "CompetenceIdExterne{" +
+        "sourceReferentiel=" + sourceReferentiel +
+        ", idExterne='" + idExterne + '\'' +
+        '}';
+  }
 }

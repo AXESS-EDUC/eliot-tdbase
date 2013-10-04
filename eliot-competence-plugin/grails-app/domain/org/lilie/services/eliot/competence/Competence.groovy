@@ -54,11 +54,16 @@ class Competence {
   String nom
   String description
 
+  static hasMany = [
+      idExterneList: CompetenceIdExterne
+  ]
+
   static mapping = {
     table 'competence.competence'
     id column: 'id', generator: 'sequence', params: [sequence: 'competence.competence_id_seq']
     domaine column: 'domaine_id'
     referentiel column: 'referentiel_id'
+    idExterneList lazy: false
     version false
     cache true
   }

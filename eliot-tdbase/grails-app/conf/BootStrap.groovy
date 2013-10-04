@@ -27,12 +27,19 @@
  */
 
 
+
+import groovy.util.slurpersupport.GPathResult
 import org.codehaus.groovy.grails.commons.ApplicationAttributes
+import org.lilie.services.eliot.competence.Referentiel
+import org.lilie.services.eliot.competence.ReferentielDto
+import org.lilie.services.eliot.competence.ReferentielService
+import org.lilie.services.eliot.tdbase.emaeval.ReferentielMarshaller
 import org.lilie.services.eliot.tdbase.patch.PatchExecution
 import org.lilie.services.eliot.tdbase.patch.PatchTDB40
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
 import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.lilie.services.eliot.tice.utils.PortailTagLibService
+import org.springframework.core.io.ClassPathResource
 
 
 class BootStrap {
@@ -40,6 +47,8 @@ class BootStrap {
   BootstrapService bootstrapService
   DbMigrationService dbMigrationService
   PortailTagLibService portailTagLibService
+
+  ReferentielService referentielService
 
   def init = { servletContext ->
 
@@ -51,6 +60,7 @@ class BootStrap {
 
     if (config.eliot.bootstrap.jeudetest) {
       bootstrapService.bootstrapJeuDeTestDevDemo()
+      initialiseReferentielCompetence()
     }
 
     try {
@@ -72,6 +82,20 @@ class BootStrap {
     portailTagLibService.divWidth = config.eliot.pages.container.width
 
     executeAllPatch(servletContext)
+  }
+
+  private void initialiseReferentielCompetence() {
+    final String REFERENTIEL_NOM = "Palier 1"
+    if(!Referentiel.findByNom(REFERENTIEL_NOM)) {
+      GPathResult xml = new XmlSlurper().parse(
+          new ClassPathResource('emaeval/palier1.xml').inputStream
+      )
+
+      ReferentielMarshaller referentielMarshaller = new ReferentielMarshaller()
+      ReferentielDto referentielDto = referentielMarshaller.parse(xml)
+
+      referentielService.importeReferentiel(referentielDto)
+    }
   }
 
   private static void executeAllPatch(def servletContext) {

@@ -30,8 +30,6 @@ package org.lilie.services.eliot.tice.utils
 
 import grails.util.Environment
 import org.hibernate.SessionFactory
-import org.lilie.services.eliot.competence.Referentiel
-import org.lilie.services.eliot.competence.ReferentielBootstrapService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 import org.lilie.services.eliot.tice.annuaire.UtilisateurService
@@ -41,7 +39,6 @@ import org.lilie.services.eliot.tice.scolarite.*
 class BootstrapService {
 
   static transactional = false
-  public static final String DEMO_ENVIRONMENT = "demo"
   private static final String DEFAULT_URL_ACCES_ENT = "http://localhost:8080/eliot-tdbase"
   private static final String DEFAULT_URL_RETOUR_LOGOUT = "http://localhost:8080/eliot-tdbase"
 
@@ -50,7 +47,6 @@ class BootstrapService {
   UtilisateurService utilisateurService
   FonctionService fonctionService
   ProfilScolariteService profilScolariteService
-  ReferentielBootstrapService referentielBootstrapService
   SessionFactory sessionFactory
 
   static final String DEFAULT_CODE_PORTEUR_ENT = "ENT"
@@ -87,10 +83,6 @@ class BootstrapService {
   private static final String CODE_ANNEE_SCOLAIRE_PREFIXE = 'TEST_'
   private static final String CODE_STRUCTURE_PREFIXE = 'TEST_'
 
-  private static final String REFERENTIEL_COMPETENCE_NOM = 'Test'
-
-  private List<ProprietesScolarite> proprietesScolariteListUtilisateur1 = []
-
   /**
    * Initialise l'application au lancement avec un jeu de test
    */
@@ -113,8 +105,6 @@ class BootstrapService {
     initialiseEleve2EnvDevelopment()
     initialiseRespEleve1EnvDevelopment()
     initialisePorteurEnt()
-
-    initialiseReferentielCompetence()
   }
 
   /**
@@ -548,13 +538,6 @@ class BootstrapService {
           nomCourt: 'Porteur Default').save(flush: true)
     }
     return porteurEnt
-  }
-
-  private void initialiseReferentielCompetence() {
-    Referentiel referentiel = Referentiel.findByNom(REFERENTIEL_COMPETENCE_NOM)
-    if(!referentiel) {
-      referentielBootstrapService.initialiseReferentielTest()
-    }
   }
 
   // methode utilitaires

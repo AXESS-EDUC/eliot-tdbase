@@ -36,12 +36,19 @@ class Referentiel {
 
   String nom
   String description
+  String referentielVersion
+  String dateVersion
+  String urlReference
 
-  static hasMany = [allDomaine: Domaine]
+  static hasMany = [
+      allDomaine: Domaine,
+      idExterneList: ReferentielIdExterne
+  ]
 
   static mapping = {
     table 'competence.referentiel'
     id column: 'id', generator: 'sequence', params: [sequence: 'competence.referentiel_id_seq']
+    idExterneList lazy: false
     version false
     cache true
   }
@@ -49,6 +56,9 @@ class Referentiel {
   static constraints = {
     nom blank: false, unique: true
     description nullable: true
+    referentielVersion nullable: true
+    dateVersion nullable: true
+    urlReference nullable: true
   }
 
   Collection<Domaine> getDomaineRacineList() {

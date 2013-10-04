@@ -55,7 +55,7 @@ class QuestionController {
   static defaultAction = "recherche"
 
   private static final String QUESTION_EST_DEJA_INSEREE = "questionEstDejaInseree"
-  private static final String REFERENTIEL_COMPETENCE_DEFAUT = "Test"
+  private static final String REFERENTIEL_COMPETENCE_DEFAUT = "Palier 1"
 
   BreadcrumpsService breadcrumpsService
   ProfilScolariteService profilScolariteService

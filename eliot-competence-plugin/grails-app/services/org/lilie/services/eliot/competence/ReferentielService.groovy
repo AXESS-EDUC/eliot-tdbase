@@ -51,8 +51,20 @@ class ReferentielService {
 
     Referentiel referentiel = new Referentiel(
         nom: referentielDto.nom,
-        description: referentielDto.description
+        description: referentielDto.description,
+        referentielVersion: referentielDto.version,
+        dateVersion: referentielDto.dateVersion,
+        urlReference: referentielDto.urlReference
     )
+
+    if (referentielDto.idExterne && referentielDto.sourceReferentiel) {
+      referentiel.addToIdExterneList(
+          new ReferentielIdExterne(
+              idExterne: referentielDto.idExterne,
+              sourceReferentiel: referentielDto.sourceReferentiel
+          )
+      )
+    }
 
     referentielDto.allDomaine.each { DomaineDto domaineDto ->
       Domaine domaine = domaineImporter.importeDomaine(referentiel, null, domaineDto)
@@ -84,7 +96,7 @@ class ReferentielService {
       fetchMode('allDomaine.allCompetence', FetchMode.JOIN)
     }
 
-    if(!referentiel) {
+    if (!referentiel) {
       throw new IllegalStateException("Le référentiel $nom n'existe pas")
     }
 
@@ -112,7 +124,7 @@ class ReferentielService {
       fetchMode('allDomaine.allCompetence', FetchMode.JOIN)
     }
 
-    if(!referentiel) {
+    if (!referentiel) {
       throw new IllegalStateException("Le référentiel d'id $id n'existe pas")
     }
 
@@ -143,6 +155,12 @@ class DomaineImporter {
         nom: domaineDto.nom,
         description: domaineDto.description
     )
+
+    if(domaineDto.idExterne && domaineDto.sourceReferentiel) {
+      domaine.addToIdExterneList(
+          new DomaineIdExterne(idExterne: domaineDto.idExterne, sourceReferentiel: domaineDto.sourceReferentiel)
+      )
+    }
 
     domaineDto.allSousDomaine.each { DomaineDto sousDomaineDto ->
       Domaine sousDomaine = importeDomaine(referentiel, domaine, sousDomaineDto)
@@ -176,6 +194,14 @@ class CompetenceImporter {
         nom: competenceDto.nom,
         description: competenceDto.description
     )
+
+    if(competenceDto.idExterne && competenceDto.sourceReferentiel) {
+      competence.addToIdExterneList(
+          new CompetenceIdExterne(
+              idExterne: competenceDto.idExterne,
+              sourceReferentiel: competenceDto.sourceReferentiel)
+      )
+    }
 
     return competence
   }

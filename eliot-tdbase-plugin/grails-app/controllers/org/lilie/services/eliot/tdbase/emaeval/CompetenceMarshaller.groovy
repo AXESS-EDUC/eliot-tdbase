@@ -25,22 +25,36 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-package org.lilie.services.eliot.competence
+
+package org.lilie.services.eliot.tdbase.emaeval
+
+import groovy.util.slurpersupport.GPathResult
+import org.lilie.services.eliot.competence.CompetenceDto
+import org.lilie.services.eliot.competence.SourceReferentiel
 
 /**
- * Décrit une référentiel de compétences
- *
- * Classe non persistante utilisée lors de l'import d'un référentiel de compétence
+ * Permet de parser une compétence au format XML EmaEval
  *
  * @author John Tranier
  */
-class ReferentielDto {
-  String nom
-  String description
-  String idExterne
-  SourceReferentiel sourceReferentiel
-  String version
-  String dateVersion
-  String urlReference
-  Collection<DomaineDto> allDomaine = []
+class CompetenceMarshaller {
+  private final static String TAG_NAME = "com.pentila.evalcomp.domain.definition.Competence"
+
+  CompetenceDto parse(GPathResult xmlCompetence) {
+    assert xmlCompetence.name() == TAG_NAME
+
+    String name = xmlCompetence.":name".text()
+    String idExterne = xmlCompetence.id.text()
+    String description = xmlCompetence.description.text()
+
+    assert name
+    assert idExterne
+
+    return new CompetenceDto(
+        nom: name,
+        description: description,
+        idExterne: idExterne,
+        sourceReferentiel: SourceReferentiel.EMA_EVAL
+    )
+  }
 }

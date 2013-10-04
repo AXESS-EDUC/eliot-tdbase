@@ -44,7 +44,6 @@
         <g:if test="${!selectionUniquement || competence in competenceSelectionList}">
           <li>
             <g:if test="${!lectureSeule}">
-              %{-- TODO nom du champs ? --}%
               <g:checkBox name="competence"
                           checked="${competence in competenceSelectionList}"
                           value="${competence.id}"/>

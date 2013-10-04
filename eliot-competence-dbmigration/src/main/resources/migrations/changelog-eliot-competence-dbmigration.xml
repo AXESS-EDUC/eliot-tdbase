@@ -33,5 +33,6 @@
      xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
     <include file="migrations/schema.competence/changelog-20130912-TDB-26.xml"/>
+    <include file="migrations/schema.competence/changelog-20131003-TDB-32.xml"/>
 
 </databaseChangeLog>

@@ -37,6 +37,8 @@ package org.lilie.services.eliot.competence
 class DomaineDto {
   String nom
   String description
+  String idExterne
+  SourceReferentiel sourceReferentiel
   Collection<DomaineDto> allSousDomaine = []
   Collection<CompetenceDto> allCompetence = []
 }

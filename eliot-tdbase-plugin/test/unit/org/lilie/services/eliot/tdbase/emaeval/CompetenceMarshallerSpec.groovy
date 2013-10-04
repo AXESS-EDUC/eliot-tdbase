@@ -25,22 +25,37 @@
  *  <http://www.gnu.org/licenses/> and
  *  <http://www.cecill.info/licences.fr.html>.
  */
-package org.lilie.services.eliot.competence
+
+package org.lilie.services.eliot.tdbase.emaeval
+
+import org.lilie.services.eliot.competence.CompetenceDto
+import org.lilie.services.eliot.competence.SourceReferentiel
+import spock.lang.Specification
 
 /**
- * Décrit une référentiel de compétences
- *
- * Classe non persistante utilisée lors de l'import d'un référentiel de compétence
- *
  * @author John Tranier
  */
-class ReferentielDto {
-  String nom
-  String description
-  String idExterne
-  SourceReferentiel sourceReferentiel
-  String version
-  String dateVersion
-  String urlReference
-  Collection<DomaineDto> allDomaine = []
+class CompetenceMarshallerSpec extends Specification {
+
+  def "testParse - OK"() {
+    given:
+    String nom = "Une compétence"
+    String description = "La description"
+    String idExterne = "123"
+
+    String xml = XmlGenerator.genereXmlCompetence(nom, description, idExterne)
+
+    CompetenceMarshaller competenceMarshaller = new CompetenceMarshaller()
+
+    when:
+    CompetenceDto competenceDto = competenceMarshaller.parse(
+        new XmlSlurper().parseText(xml)
+    )
+
+    then:
+    competenceDto.nom == nom
+    competenceDto.description == description
+    competenceDto.idExterne == idExterne
+    competenceDto.sourceReferentiel == SourceReferentiel.EMA_EVAL
+  }
 }

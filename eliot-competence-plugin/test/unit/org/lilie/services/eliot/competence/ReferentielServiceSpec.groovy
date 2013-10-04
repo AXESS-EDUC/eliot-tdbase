@@ -44,12 +44,16 @@ class ReferentielServiceSpec extends UnitSpec {
     )
 
     mockDomain(Referentiel)
+    mockDomain(ReferentielIdExterne)
   }
 
   def "testImporteReferentiel"(int nbDomaine) {
     given:
     String referentielNom = "nom"
     String referentielDescription = "description"
+    String version = "version"
+    String dateVersion = "dateVersion"
+    String idExterne = "idExterne"
 
     List<DomaineDto> allDomaineDto = []
     nbDomaine.times {
@@ -59,7 +63,11 @@ class ReferentielServiceSpec extends UnitSpec {
     ReferentielDto referentielDto = new ReferentielDto(
         nom: referentielNom,
         description: referentielDescription,
-        allDomaine: allDomaineDto
+        allDomaine: allDomaineDto,
+        version: version,
+        dateVersion: dateVersion,
+        idExterne: idExterne,
+        sourceReferentiel: SourceReferentiel.EMA_EVAL
     )
 
     when:
@@ -77,6 +85,16 @@ class ReferentielServiceSpec extends UnitSpec {
 
     referentiel.nom == referentielNom
     referentiel.description == referentielDescription
+    referentiel.dateVersion == referentielDto.dateVersion
+    referentiel.referentielVersion == referentielDto.version
+
+    referentiel.idExterneList.size() == 1
+    referentiel.idExterneList.every {
+      assert it.idExterne == idExterne
+      assert it.sourceReferentiel == SourceReferentiel.EMA_EVAL
+      return true
+    }
+
     if(nbDomaine == 0) {
       assert !referentiel.allDomaine
     }

@@ -54,7 +54,8 @@ class Domaine {
 
   static hasMany = [
       allSousDomaine: Domaine,
-      allCompetence: Competence
+      allCompetence: Competence,
+      idExterneList: DomaineIdExterne
   ]
 
   static mapping = {
@@ -62,6 +63,7 @@ class Domaine {
     id column: 'id', generator: 'sequence', params: [sequence: 'competence.domaine_id_seq']
     domaineParent column: 'domaine_parent_id'
     referentiel column: 'referentiel_id'
+    idExterneList lazy: false
     version false
     cache true
   }

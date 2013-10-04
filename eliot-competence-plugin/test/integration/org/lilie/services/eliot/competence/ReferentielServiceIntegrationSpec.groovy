@@ -70,6 +70,38 @@ class ReferentielServiceIntegrationSpec extends IntegrationSpec {
       }
     }
 
+    // Vérification de l'enregistrement des IdExterne
+    List<ReferentielIdExterne> referentielIdExterneList = ReferentielIdExterne.findAllByReferentiel(referentiel)
+    referentielIdExterneList.size() == 1
+    referentielIdExterneList.first().idExterne == referentielDto.idExterne
+    referentielIdExterneList.first().sourceReferentiel == SourceReferentiel.EMA_EVAL
+    referentielDto.allDomaine.each { DomaineDto domaineDto ->
+      checkDomaineIdExterne(domaineDto)
+      domaineDto.allSousDomaine.each { DomaineDto sousDomaineDto ->
+        checkDomaineIdExterne(sousDomaineDto)
+        sousDomaineDto.allCompetence.each { CompetenceDto competenceDto ->
+          checkCompetenceIdExterne(competenceDto)
+        }
+      }
+    }
+  }
+
+  private void checkDomaineIdExterne(DomaineDto domaineDto) {
+    DomaineIdExterne domaineIdExterne = DomaineIdExterne.findBySourceReferentielAndIdExterne(
+        SourceReferentiel.EMA_EVAL,
+        domaineDto.idExterne
+    )
+    assert domaineIdExterne
+    assert domaineIdExterne.domaine.nom == domaineDto.nom
+  }
+
+  private void checkCompetenceIdExterne(CompetenceDto competenceDto) {
+    CompetenceIdExterne competenceIdExterne = CompetenceIdExterne.findBySourceReferentielAndIdExterne(
+        SourceReferentiel.EMA_EVAL,
+        competenceDto.idExterne
+    )
+    assert competenceIdExterne
+    assert competenceIdExterne.competence.nom == competenceDto.nom
   }
 
   private ReferentielDto genereReferentielDto(String referentielNom,
@@ -80,17 +112,23 @@ class ReferentielServiceIntegrationSpec extends IntegrationSpec {
     nbDomaineRacine.times { int numDomaineRacine ->
 
       DomaineDto domaineRacineDto = new DomaineDto(
-          nom: "domaineRacine $numDomaineRacine"
+          nom: "domaineRacine $numDomaineRacine",
+          idExterne: "$numDomaineRacine",
+          sourceReferentiel: SourceReferentiel.EMA_EVAL
       )
 
       nbSousDomaineParDomaine.times { int numSousDomaine ->
         DomaineDto sousDomaineDto = new DomaineDto(
-            nom: "sous domaine ${numDomaineRacine}.${numSousDomaine}"
+            nom: "sous domaine ${numDomaineRacine}.${numSousDomaine}",
+            idExterne: "${numDomaineRacine}.${numSousDomaine}",
+            sourceReferentiel: SourceReferentiel.EMA_EVAL
         )
 
         nbCompetenceParSousDomaine.times { int numCompetence ->
           CompetenceDto competenceDto = new CompetenceDto(
-              nom: "compétence ${numDomaineRacine}.${numSousDomaine}.${numCompetence}"
+              nom: "compétence ${numDomaineRacine}.${numSousDomaine}.${numCompetence}",
+              idExterne: "${numDomaineRacine}.${numSousDomaine}.${numCompetence}",
+              sourceReferentiel: SourceReferentiel.EMA_EVAL
           )
 
           sousDomaineDto.allCompetence << competenceDto
@@ -108,6 +146,10 @@ class ReferentielServiceIntegrationSpec extends IntegrationSpec {
     return new ReferentielDto(
         nom: referentielNom,
         description: referentielDescription,
+        version: "version-$referentielNom",
+        dateVersion: "dateVersion-$referentielNom",
+        idExterne: "idExterne-$referentielNom",
+        sourceReferentiel: SourceReferentiel.EMA_EVAL,
         allDomaine: allDomaineRacine
     )
   }

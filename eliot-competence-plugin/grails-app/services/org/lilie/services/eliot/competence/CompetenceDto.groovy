@@ -37,4 +37,6 @@ package org.lilie.services.eliot.competence
 class CompetenceDto {
   String nom
   String description
+  String idExterne
+  SourceReferentiel sourceReferentiel
 }
