@@ -63,9 +63,9 @@ class Competence {
     id column: 'id', generator: 'sequence', params: [sequence: 'competence.competence_id_seq']
     domaine column: 'domaine_id'
     referentiel column: 'referentiel_id'
-    idExterneList lazy: false
+    idExterneList cache: 'nonstrict-read-write'
     version false
-    cache true
+    cache 'nonstrict-read-write'
   }
 
   static constraints = {

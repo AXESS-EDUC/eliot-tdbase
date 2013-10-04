@@ -48,9 +48,10 @@ class Referentiel {
   static mapping = {
     table 'competence.referentiel'
     id column: 'id', generator: 'sequence', params: [sequence: 'competence.referentiel_id_seq']
-    idExterneList lazy: false
+    idExterneList cache: 'nonstrict-read-write'
+    allDomaine cache: 'nonstrict-read-write'
     version false
-    cache true
+    cache 'nonstrict-read-write'
   }
 
   static constraints = {

@@ -63,9 +63,11 @@ class Domaine {
     id column: 'id', generator: 'sequence', params: [sequence: 'competence.domaine_id_seq']
     domaineParent column: 'domaine_parent_id'
     referentiel column: 'referentiel_id'
-    idExterneList lazy: false
+    idExterneList cache: 'nonstrict-read-write'
+    allSousDomaine cache: 'nonstrict-read-write'
+    allCompetence cache: 'nonstrict-read-write'
     version false
-    cache true
+    cache 'nonstrict-read-write'
   }
 
   static constraints = {
