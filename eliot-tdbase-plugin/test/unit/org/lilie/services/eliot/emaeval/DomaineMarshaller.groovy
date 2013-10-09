@@ -26,36 +26,51 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.emaeval
+package org.lilie.services.eliot.emaeval
 
+import groovy.util.slurpersupport.GPathResult
 import org.lilie.services.eliot.competence.CompetenceDto
+import org.lilie.services.eliot.competence.DomaineDto
 import org.lilie.services.eliot.competence.SourceReferentiel
-import spock.lang.Specification
 
 /**
+ * Permet de parser un Domaine au format XML EmaEval
+ *
  * @author John Tranier
  */
-class CompetenceMarshallerSpec extends Specification {
+class DomaineMarshaller {
 
-  def "testParse - OK"() {
-    given:
-    String nom = "Une compétence"
-    String description = "La description"
-    String idExterne = "123"
+  CompetenceMarshaller competenceMarshaller = new CompetenceMarshaller()
 
-    String xml = XmlGenerator.genereXmlCompetence(nom, description, idExterne)
+  private final static String TAG_NAME = "com.pentila.evalcomp.domain.definition.Domain"
 
-    CompetenceMarshaller competenceMarshaller = new CompetenceMarshaller()
+  DomaineDto parse(GPathResult xmlDomaine) {
+    assert xmlDomaine.name() == TAG_NAME
 
-    when:
-    CompetenceDto competenceDto = competenceMarshaller.parse(
-        new XmlSlurper().parseText(xml)
+    String name = xmlDomaine.":name".text()
+    String idExterne = xmlDomaine.id.text()
+    String description = xmlDomaine.description.text()
+
+    assert name
+    assert idExterne
+
+    List<DomaineDto> sousDomaineDtoList = []
+    xmlDomaine.domains.children().each { GPathResult xmlSousDomaine ->
+      sousDomaineDtoList << parse(xmlSousDomaine)
+    }
+
+    List<CompetenceDto> competenceDtoList = []
+    xmlDomaine.competences.children().each { GPathResult xmlCompetence ->
+      competenceDtoList << competenceMarshaller.parse(xmlCompetence)
+    }
+
+    return new DomaineDto(
+        nom: name,
+        description: description,
+        idExterne: idExterne,
+        sourceReferentiel: SourceReferentiel.EMA_EVAL,
+        allSousDomaine: sousDomaineDtoList,
+        allCompetence: competenceDtoList
     )
-
-    then:
-    competenceDto.nom == nom
-    competenceDto.description == description
-    competenceDto.idExterne == idExterne
-    competenceDto.sourceReferentiel == SourceReferentiel.EMA_EVAL
   }
 }

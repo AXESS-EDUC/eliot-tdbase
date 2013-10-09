@@ -26,7 +26,7 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.emaeval
+package org.lilie.services.eliot.emaeval
 
 import groovy.util.slurpersupport.GPathResult
 import org.lilie.services.eliot.competence.CompetenceDto

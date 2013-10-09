@@ -26,7 +26,7 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.emaeval
+package org.lilie.services.eliot.emaeval
 
 import groovy.util.slurpersupport.GPathResult
 import org.lilie.services.eliot.competence.ReferentielDto
@@ -50,7 +50,7 @@ class ReferentielMarshallerSpec extends Specification {
   def "testParse - Fichier XML complet"() {
     given:
     GPathResult xml = new XmlSlurper().parse(
-        new ClassPathResource('org/lilie/services/eliot/tdbase/emaeval/referentiel_get.xml').inputStream
+        new ClassPathResource('org/lilie/services/eliot/emaeval/referentiel_get.xml').inputStream
     )
 
     ReferentielMarshaller referentielMarshaller = new ReferentielMarshaller()
