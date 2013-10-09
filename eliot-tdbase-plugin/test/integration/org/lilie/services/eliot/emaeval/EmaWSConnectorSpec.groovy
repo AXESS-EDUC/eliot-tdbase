@@ -30,7 +30,10 @@ package org.lilie.services.eliot.emaeval
 
 import com.pentila.emawsconnector.manager.EvaluationObjectManager
 import com.pentila.emawsconnector.utils.EmaWSConnector
-import spock.lang.Specification
+import grails.plugin.spock.IntegrationSpec
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import org.codehaus.groovy.grails.commons.GrailsApplication
+import spock.lang.IgnoreIf
 
 /**
  * Ce test permet de vérifier la connexion aux webservices d'EmaEval.
@@ -38,7 +41,7 @@ import spock.lang.Specification
  * Il nécessite :
  *  1) Que l'application EmaEval soit lancée
  *  2) Que l'url de connexion aux webservices d'EmaEval soit bien configurée
- *  3) Qu'au moins un référentiel de compétence ait été initialisé dans l'application EmaEval // TODO ce point reste à vérifier
+ *  3) Qu'au moins un référentiel de compétence ait été initialisé dans l'application EmaEval
  *  4) Que le certificat d'EmaEval soit reconnu par la JVM (la statégie que j'ai mis en place localement a
  *  consistée à créer un TrustStore dans lequel le certificat d'EmaEval comme "trustedCertEntry" + de transmettre
  *  les informations sur le TrustStore au lancement de l'application eliot-tdbase par les variables d'environnement
@@ -48,12 +51,15 @@ import spock.lang.Specification
  *
  * @author John Tranier
  */
-class EmaWSConnectorSpec extends Specification {
+class EmaWSConnectorSpec extends IntegrationSpec {
 
+  GrailsApplication grailsApplication
+
+  @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
   def "testGetAllReferentiels"() {
     given:
-    String url = "https://emaeval.pentila.com/EvalComp/webservices/"
-    EmaWSConnector emaWSConnector = new EmaWSConnector(url, 'xml', 'login') // TODO : pourquoi est-ce que ça fonctionne avec n'importe quel login ?
+    String url = grailsApplication.config.eliot.interfacage.emaeval.url
+    EmaWSConnector emaWSConnector = new EmaWSConnector(url, 'xml', 'login') // Apparemment le webservice getAllReferentiels ne nécessite pas de login spécifique
     EvaluationObjectManager evaluationObjectManager = new EvaluationObjectManager(emaWSConnector)
 
     expect:

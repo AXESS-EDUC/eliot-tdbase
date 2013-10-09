@@ -463,3 +463,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
         responseContentStructure: "eliot-notes#evaluation#id>",
         //urlServer: "http://localhost:8090",
         uriTemplate: '/evaluations/$evaluationId/notes.json']]
+
+// Support de l'interface EmaEval
+eliot.interfacage.emaeval.actif = false
+eliot.interfacage.emaeval.url = "https://emaeval.pentila.com/EvalComp/webservices/"
