@@ -26,53 +26,58 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.emaeval
+package org.lilie.services.eliot.tdbase.emaeval
 
-import groovy.util.slurpersupport.GPathResult
 import org.lilie.services.eliot.competence.DomaineDto
-import org.lilie.services.eliot.competence.ReferentielDto
 import org.lilie.services.eliot.competence.SourceReferentiel
+import spock.lang.Specification
 
 /**
- * Permet de parser un référentiel au format XML EmaEval
- *
  * @author John Tranier
  */
-class ReferentielMarshaller {
+class DomaineMarshallerSpec extends Specification {
 
-  private final static String TAG_NAME = "com.pentila.evalcomp.domain.definition.Referentiel"
+  def "testParse - OK"(int nbSousDomaine, int nbCompetence) {
+    given:
+    String nom = "Une compétence"
+    String description = "La description"
+    String idExterne = "123"
 
-  DomaineMarshaller domaineMarshaller = new DomaineMarshaller()
+    String xml = XmlGenerator.genereXmlDomaine(
+        nom,
+        description,
+        idExterne,
+        nbSousDomaine,
+        nbCompetence
+    )
 
-  ReferentielDto parse(GPathResult xmlReferentiel) {
-    assert xmlReferentiel.name() == TAG_NAME
+    CompetenceMarshaller competenceMarshaller = Mock(CompetenceMarshaller)
+    DomaineMarshaller domaineMarshaller = new DomaineMarshaller(
+        competenceMarshaller: competenceMarshaller
+    )
 
-    String name = xmlReferentiel.":name".text()
-    String idExterne = xmlReferentiel.id.text()
-    String description = xmlReferentiel.description.text()
-    String version = xmlReferentiel.version.text()
-    String dateVersion = xmlReferentiel.dateVersion.text()
-    String urlReference = xmlReferentiel.reference.text()
+    when:
+    DomaineDto domaineDto = domaineMarshaller.parse(
+        new XmlSlurper().parseText(xml)
+    )
 
-    assert name
-    assert idExterne
-
-    List<DomaineDto> domaineDtoList = []
-    xmlReferentiel.domains.children().each { GPathResult xmlDomaine ->
-      domaineDtoList << domaineMarshaller.parse(xmlDomaine)
+    then:
+    domaineDto.nom == nom
+    domaineDto.description == description
+    domaineDto.idExterne == idExterne
+    domaineDto.sourceReferentiel == SourceReferentiel.EMA_EVAL
+    nbCompetence * competenceMarshaller.parse(_)
+    if(nbSousDomaine) {
+      domaineDto.allSousDomaine.size() == nbSousDomaine
+    }
+    else {
+      !domaineDto.allSousDomaine
     }
 
-    assert domaineDtoList
 
-    return new ReferentielDto(
-        nom: name,
-        description: description,
-        idExterne: idExterne,
-        sourceReferentiel: SourceReferentiel.EMA_EVAL,
-        version: version,
-        dateVersion: dateVersion,
-        urlReference: urlReference,
-        allDomaine: domaineDtoList
-    )
+    where:
+    nbSousDomaine << [0, 1, 3]
+    nbCompetence << [0, 1, 3]
   }
+
 }

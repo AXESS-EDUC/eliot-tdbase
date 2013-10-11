@@ -33,7 +33,7 @@ import org.codehaus.groovy.grails.commons.ApplicationAttributes
 import org.lilie.services.eliot.competence.Referentiel
 import org.lilie.services.eliot.competence.ReferentielDto
 import org.lilie.services.eliot.competence.ReferentielService
-import org.lilie.services.eliot.emaeval.ReferentielMarshaller
+import org.lilie.services.eliot.tdbase.emaeval.ReferentielMarshaller
 import org.lilie.services.eliot.tdbase.patch.PatchExecution
 import org.lilie.services.eliot.tdbase.patch.PatchTDB40
 import org.lilie.services.eliot.tice.migrations.DbMigrationService

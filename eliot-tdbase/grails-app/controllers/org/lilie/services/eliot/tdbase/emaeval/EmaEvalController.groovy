@@ -26,26 +26,37 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.emaeval
+package org.lilie.services.eliot.tdbase.emaeval
 
 import com.pentila.evalcomp.domain.definition.Referentiel as EmaEvalReferentiel
 import grails.converters.JSON
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.competence.Referentiel as EliotReferetiel
 import org.lilie.services.eliot.competence.SourceReferentiel
+import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class EmaEvalController {
 
   static defaultAction = "admin"
 
+  BreadcrumpsService breadcrumpsService
   EmaEvalService emaEvalService
   GrailsApplication grailsApplication
 
   def admin() {
-    return [
-        config: grailsApplication.config,
-        eliotReferentiel: emaEvalService.eliotReferentielPalier3
-    ]
+    breadcrumpsService.manageBreadcrumps(
+        params,
+        message(code: message(code: message(code: "maintenance.emaeval.title")))
+    )
+
+    render(
+        view: '/maintenance/emaEval/admin',
+        model: [
+            config: grailsApplication.config,
+            eliotReferentiel: emaEvalService.eliotReferentielPalier3,
+            liens: breadcrumpsService.liens
+        ]
+    )
   }
 
   /**
@@ -63,7 +74,7 @@ class EmaEvalController {
       redirect(action: 'admin')
     }
     catch (Exception e) {
-      render(view: 'erreurImport', model: [exception: e])
+      render(view: '/maintenance/emaEval/erreurImport', model: [exception: e])
     }
   }
 

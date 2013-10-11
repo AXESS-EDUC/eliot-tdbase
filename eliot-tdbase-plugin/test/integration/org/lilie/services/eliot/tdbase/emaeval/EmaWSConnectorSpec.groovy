@@ -26,7 +26,7 @@
  *   <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.emaeval
+package org.lilie.services.eliot.tdbase.emaeval
 
 import com.pentila.emawsconnector.manager.EvaluationObjectManager
 import com.pentila.emawsconnector.utils.EmaWSConnector

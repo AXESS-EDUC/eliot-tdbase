@@ -28,32 +28,36 @@
   --}%
 <html>
 <head>
+  <meta name="layout" content="eliot-tdbase-maintenance"/>
   <title>Administration de la liaison eliot-tdbase / EmaEval</title>
-  <r:require module="eliot-tdbase"/>
-  <r:layoutResources/>
 </head>
 
 <body>
-<div id="portal-content" class="container">
+<g:render template="/breadcrumps" plugin="eliot-tice-plugin"
+          model="[liens: liens]"/>
+
+<div style="margin-left: 30px;">
+
+
+%{--<div id="portal-content" class="container">--}%
   <h1 style="margin-left: 0;">Administration de la liaison à EmaEval</h1>
 
-  <g:render template="showConfig" model="[config: config]"/>
+  <g:render template="/maintenance/emaEval/showConfig" model="[config: config]"/>
 
 
   <g:if test="${config.eliot.interfacage.emaeval.actif}">
     <h2>Statut de la liaison EmaEval</h2>
 
     <g:if test="${!eliotReferentiel}">
-      <g:render template="importeReferentiel" />
+      <g:render template="/maintenance/emaEval/importeReferentiel" />
     </g:if>
     <g:else>
-      <g:render template="verifieLiaision" model="[eliotReferentiel: eliotReferentiel]"/>
+      <g:render template="/maintenance/emaEval/verifieLiaision" model="[eliotReferentiel: eliotReferentiel]"/>
     </g:else>
 
   </g:if>
 
 </div>
 
-<r:layoutResources/>
 </body>
 </html>
