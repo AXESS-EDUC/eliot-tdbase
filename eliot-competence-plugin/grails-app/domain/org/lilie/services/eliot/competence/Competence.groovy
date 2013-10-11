@@ -69,7 +69,7 @@ class Competence {
   }
 
   static constraints = {
-    nom blank: false, unique: 'referentiel'
+    nom blank: false
     description nullable: true
     domaine validator: { val, obj ->
       val.referentiel == obj.referentiel

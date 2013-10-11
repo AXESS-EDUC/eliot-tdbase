@@ -50,7 +50,7 @@ class ReferentielMarshallerSpec extends Specification {
   def "testParse - Fichier XML complet"() {
     given:
     GPathResult xml = new XmlSlurper().parse(
-        new ClassPathResource('org/lilie/services/eliot/emaeval/referentiel_get.xml').inputStream
+        new ClassPathResource('org/lilie/services/eliot/tdbase/emaeval/referentiel_get.xml').inputStream
     )
 
     ReferentielMarshaller referentielMarshaller = new ReferentielMarshaller()

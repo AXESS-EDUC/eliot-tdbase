@@ -72,7 +72,7 @@ class Domaine {
 
   static constraints = {
     domaineParent nullable: true
-    nom blank: false, unique: 'referentiel'
+    nom blank: false
     description nullable: true
     domaineParent validator: { val, obj ->
       !val || val.referentiel == obj.referentiel

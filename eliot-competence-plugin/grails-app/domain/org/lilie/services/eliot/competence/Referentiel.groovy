@@ -42,7 +42,7 @@ class Referentiel {
 
   static hasMany = [
       allDomaine: Domaine,
-      idExterneList: ReferentielIdExterne
+      idExterneList: ReferentielIdExterne   // TODO Voir si on ne peut pas définir une map plutôt qu'une collection ...
   ]
 
   static mapping = {
@@ -64,6 +64,11 @@ class Referentiel {
 
   Collection<Domaine> getDomaineRacineList() {
     allDomaine.grep { Domaine domaine -> !domaine.domaineParent }
+  }
+
+  String getIdExterne(SourceReferentiel sourceReferentiel) {
+    // TODO Vérifier les requêtes générées
+    return idExterneList.find { it.sourceReferentiel == sourceReferentiel }.idExterne
   }
 
   /**
