@@ -78,6 +78,12 @@ grails.project.dependency.resolution = {
       export = false
     }
 
-    test ":spock:0.7"
+    test(":spock:0.7"){
+      export = false
+    }
+
+    test(":code-coverage:1.2.5") {
+      export = false
+    }
   }
 }

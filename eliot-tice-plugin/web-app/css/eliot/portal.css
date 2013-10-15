@@ -168,6 +168,26 @@ Portal Messages styles
     background-image: none;
 }
 
+td .success {
+  background-color: transparent;
+  background-image: url('../../images/eliot/ico12/ok.gif');
+  background-repeat: no-repeat;
+  background-position: 5px 5px;
+  padding: 5px 25px;
+  color: #529214;
+}
+
+
+td .error {
+  background-color: transparent;
+  background-image: url('../../images/eliot/ico12/warning.gif');
+  background-repeat: no-repeat;
+  background-position: 5px 5px;
+  padding: 5px 25px;
+  color: #D12F19;
+}
+
+
 /*******************************************************************************
 
 Common helper styles

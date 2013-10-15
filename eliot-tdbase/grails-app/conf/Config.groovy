@@ -154,26 +154,46 @@ grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 
 // set security rbac
 //
-grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
+grails.plugins.springsecurity.interceptUrlMap = [
+    '/': ['IS_AUTHENTICATED_FULLY'],
     '/p/**': ['IS_AUTHENTICATED_FULLY'],
-    '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
+    '/dashboard/**': [
+        "${FonctionEnum.ENS.toRole()}",
         "${FonctionEnum.DOC.toRole()}",
-        'IS_AUTHENTICATED_FULLY'],
-    '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/sujet/**': [
+        "${FonctionEnum.ENS.toRole()}",
         "${FonctionEnum.DOC.toRole()}",
-        'IS_AUTHENTICATED_FULLY'],
-    '/question/**': ["${FonctionEnum.ENS.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/question/**': [
+        "${FonctionEnum.ENS.toRole()}",
         "${FonctionEnum.DOC.toRole()}",
-        'IS_AUTHENTICATED_FULLY'],
-    '/seance/**': ["${FonctionEnum.ENS.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/seance/**': [
+        "${FonctionEnum.ENS.toRole()}",
         "${FonctionEnum.DOC.toRole()}",
-        'IS_AUTHENTICATED_FULLY'],
-    '/activite/**': ["${FonctionEnum.ELEVE.toRole()}",
-        'IS_AUTHENTICATED_FULLY'],
-    '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-        'IS_AUTHENTICATED_FULLY'],
-    '/maintenance/**': ["${FonctionEnum.CD.toRole()}",
-        'IS_AUTHENTICATED_FULLY']]
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/activite/**': [
+        "${FonctionEnum.ELEVE.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/resultats/**': [
+        "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/maintenance/**': [
+        "${FonctionEnum.CD.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/emaEval/**': [
+        "${FonctionEnum.CD.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ]
+]
 
 // l'interfacage doit il effectuer des contrôles fort sur les "pseudo
 // clés étrangères"
@@ -463,3 +483,7 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
         responseContentStructure: "eliot-notes#evaluation#id>",
         //urlServer: "http://localhost:8090",
         uriTemplate: '/evaluations/$evaluationId/notes.json']]
+
+// Support de l'interface EmaEval
+eliot.interfacage.emaeval.actif = false
+eliot.interfacage.emaeval.url = "https://emaeval.pentila.com/EvalComp/webservices/"

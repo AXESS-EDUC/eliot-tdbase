@@ -66,12 +66,14 @@ class ReferentielService {
       )
     }
 
+    referentiel.save(flush: true, failOnError: true)
+
     referentielDto.allDomaine.each { DomaineDto domaineDto ->
       Domaine domaine = domaineImporter.importeDomaine(referentiel, null, domaineDto)
       referentiel.addToAllDomaine(domaine)
     }
 
-    referentiel.save(failOnError: true)
+    referentiel.save(flush: true, failOnError: true)
     return referentiel
   }
 
@@ -149,6 +151,7 @@ class DomaineImporter {
   Domaine importeDomaine(Referentiel referentiel,
                          Domaine domaineParent,
                          DomaineDto domaineDto) {
+
     Domaine domaine = new Domaine(
         referentiel: referentiel,
         domaineParent: domaineParent,
@@ -161,6 +164,8 @@ class DomaineImporter {
           new DomaineIdExterne(idExterne: domaineDto.idExterne, sourceReferentiel: domaineDto.sourceReferentiel)
       )
     }
+
+    domaine.save(flush: true, failOnError: true)
 
     domaineDto.allSousDomaine.each { DomaineDto sousDomaineDto ->
       Domaine sousDomaine = importeDomaine(referentiel, domaine, sousDomaineDto)
@@ -202,6 +207,8 @@ class CompetenceImporter {
               sourceReferentiel: competenceDto.sourceReferentiel)
       )
     }
+
+    competence.save(flush: true, failOnError: true)
 
     return competence
   }

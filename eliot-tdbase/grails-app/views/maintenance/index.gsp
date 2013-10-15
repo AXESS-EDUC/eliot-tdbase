@@ -38,21 +38,33 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <div style="margin-left: 30px;">
-  <h2 >
+  <h2>
     <g:message code="maintenance.head.title"/>
   </h2>
 
   <p>
     <g:link action="supprimeCopiesJetables"
-            controller="maintenance">Suppression des copies jetables</g:link></p>
+            controller="maintenance">Suppression des copies jetables</g:link>
+  </p>
+  <hr class="separator"/>
 
-
-
+  <div>
     <g:link action="garbageCollectAttachementDataStore"
-              controller="maintenance">Garbage collection des fichiers du datastore</g:link>
-  <div class="portal-messages notice" style="color: red">Par précauton, il est recommandé d'effectuer une sauvegarde du datastore avant de
-      lancer cette action de maintenance.</div>
-    <p>
+            controller="maintenance">Garbage collection des fichiers du datastore</g:link>
+
+    <div class="portal-messages notice"
+         style="color: red">
+      Par précaution, il est recommandé d'effectuer une sauvegarde du datastore avant de
+      lancer cette action de maintenance.
+    </div>
+  </div>
+  <hr class="separator"/>
+
+  <p>
+    <g:link controller="emaEval">Administration de la liaison eliot-tdbase / EmaEval</g:link>
+  </p>
+
+  <p>
   </p>
 </div>
 </body>

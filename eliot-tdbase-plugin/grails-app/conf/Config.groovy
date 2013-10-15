@@ -63,5 +63,9 @@ environments {
     eliot.webservices.rest.client.notes.password = "eliot-tdbase"
     eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
     eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+
+    // Support de l'interface EmaEval
+    eliot.interfacage.emaeval.actif = false
+    eliot.interfacage.emaeval.url = "https://emaeval.pentila.com/EvalComp/webservices/"
   }
 }

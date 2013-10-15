@@ -26,51 +26,35 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.emaeval
+package org.lilie.services.eliot.tdbase.emaeval.xml
 
 import groovy.util.slurpersupport.GPathResult
 import org.lilie.services.eliot.competence.CompetenceDto
-import org.lilie.services.eliot.competence.DomaineDto
 import org.lilie.services.eliot.competence.SourceReferentiel
 
 /**
- * Permet de parser un Domaine au format XML EmaEval
+ * Permet de parser une compétence au format XML EmaEval
  *
  * @author John Tranier
  */
-class DomaineMarshaller {
+class CompetenceMarshaller {
+  private final static String TAG_NAME = "com.pentila.evalcomp.domain.definition.Competence"
 
-  CompetenceMarshaller competenceMarshaller = new CompetenceMarshaller()
+  CompetenceDto parse(GPathResult xmlCompetence) {
+    assert xmlCompetence.name() == TAG_NAME
 
-  private final static String TAG_NAME = "com.pentila.evalcomp.domain.definition.Domain"
-
-  DomaineDto parse(GPathResult xmlDomaine) {
-    assert xmlDomaine.name() == TAG_NAME
-
-    String name = xmlDomaine.":name".text()
-    String idExterne = xmlDomaine.id.text()
-    String description = xmlDomaine.description.text()
+    String name = xmlCompetence.":name".text()
+    String idExterne = xmlCompetence.id.text()
+    String description = xmlCompetence.description.text()
 
     assert name
     assert idExterne
 
-    List<DomaineDto> sousDomaineDtoList = []
-    xmlDomaine.domains.children().each { GPathResult xmlSousDomaine ->
-      sousDomaineDtoList << parse(xmlSousDomaine)
-    }
-
-    List<CompetenceDto> competenceDtoList = []
-    xmlDomaine.competences.children().each { GPathResult xmlCompetence ->
-      competenceDtoList << competenceMarshaller.parse(xmlCompetence)
-    }
-
-    return new DomaineDto(
+    return new CompetenceDto(
         nom: name,
         description: description,
         idExterne: idExterne,
-        sourceReferentiel: SourceReferentiel.EMA_EVAL,
-        allSousDomaine: sousDomaineDtoList,
-        allCompetence: competenceDtoList
+        sourceReferentiel: SourceReferentiel.EMA_EVAL
     )
   }
 }

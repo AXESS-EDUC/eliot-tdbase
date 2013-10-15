@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.emaeval
 
 import org.lilie.services.eliot.competence.CompetenceDto
 import org.lilie.services.eliot.competence.SourceReferentiel
+import org.lilie.services.eliot.tdbase.emaeval.xml.CompetenceMarshaller
 import spock.lang.Specification
 
 /**

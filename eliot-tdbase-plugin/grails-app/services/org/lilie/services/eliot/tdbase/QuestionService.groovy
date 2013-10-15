@@ -585,12 +585,20 @@ class QuestionService implements ApplicationContextAware {
       return []
     }
 
-    return Competence.getAll(
-        params.competenceAssocieeIdList.collect {
-          String id
+    // Grails injecte une valeur atomique ou un tableau selon si le paramètre est multi-valué ou non
+    List competenceAssocieeIdList = params.competenceAssocieeIdList instanceof String[] ?
+      params.competenceAssocieeIdList :
+      [params.competenceAssocieeIdList]
+
+    List competenceList = Competence.getAll(
+        competenceAssocieeIdList.collect {
           Long.parseLong(it)
         }
     )
 
+    // Garanti que tous les identifiants correspondent bien à une compétence en base
+    competenceList.each { assert it != null }
+
+    return competenceList
   }
 }

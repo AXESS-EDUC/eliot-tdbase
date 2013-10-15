@@ -48,7 +48,7 @@ class Referentiel {
   static mapping = {
     table 'competence.referentiel'
     id column: 'id', generator: 'sequence', params: [sequence: 'competence.referentiel_id_seq']
-    idExterneList cache: 'nonstrict-read-write'
+    idExterneList cache: 'nonstrict-read-write', fetch: 'join'
     allDomaine cache: 'nonstrict-read-write'
     version false
     cache 'nonstrict-read-write'
@@ -64,6 +64,10 @@ class Referentiel {
 
   Collection<Domaine> getDomaineRacineList() {
     allDomaine.grep { Domaine domaine -> !domaine.domaineParent }
+  }
+
+  String getIdExterne(SourceReferentiel sourceReferentiel) {
+    return idExterneList.find { it.sourceReferentiel == sourceReferentiel }.idExterne
   }
 
   /**
