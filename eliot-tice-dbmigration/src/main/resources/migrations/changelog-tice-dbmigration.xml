@@ -49,4 +49,6 @@
     <include file="migrations/schema.tdbase/changelog-20130923-TDB-41.xml"/>
 
     <include file="migrations/schema.tdbase/changelog-20130923-TDB-29.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20131015-TDB-50.xml"/>
 </databaseChangeLog>

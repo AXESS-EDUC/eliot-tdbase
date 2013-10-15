@@ -56,6 +56,24 @@ class EmaEvalService {
   @SuppressWarnings('GrailsStatelessService') // singleton
   ReferentielMarshaller emaEvalReferentielMarshaller
 
+  // Indique si la liaison EmaEval est opérationnelle (null => à terminer,
+  // true => opérationnel, false => non opérationnel
+  @SuppressWarnings('GrailsStatelessService') // cache de scope application
+  private Boolean cacheLiaisonReady = null
+
+  public Boolean isLiaisonReady() {
+    if(cacheLiaisonReady == null) {
+      // La liaison est opérationnelle si
+      // - la config est activée
+      // - le référentiel Palier 3 existe en base
+      // - le référentiel Palier est associé à un idExterne pour la source EmaEval
+      cacheLiaisonReady = grailsApplication.config.eliot.interfacage.emaeval.actif &&
+          getEliotReferentielPalier3()
+    }
+
+    return cacheLiaisonReady
+  }
+
   /**
    * Importe un référentiel obtenu par les WS d'EmaEval dans la base de référentiel d'Eliot
    * @param emaEvalReferentiel
@@ -65,6 +83,10 @@ class EmaEvalService {
     referentielService.importeReferentiel(
         emaEvalReferentielMarshaller.parseReferentiel(emaEvalReferentiel)
     )
+
+    // On réinitialise l'état de la liaison pour qu'il puisse être déterminé à nouveau
+    // (la liaison peut devenir opérationnelle après un import)
+    liaisonReady = null
   }
 
   /**

@@ -31,6 +31,7 @@ package org.lilie.services.eliot.tdbase
 import grails.converters.JSON
 import org.lilie.services.eliot.competence.Referentiel
 import org.lilie.services.eliot.competence.ReferentielService
+import org.lilie.services.eliot.tdbase.emaeval.EmaEvalService
 import org.lilie.services.eliot.tdbase.importexport.ExportHelper
 import org.lilie.services.eliot.tdbase.importexport.Format
 import org.lilie.services.eliot.tdbase.importexport.QuestionExporterService
@@ -55,7 +56,6 @@ class QuestionController {
   static defaultAction = "recherche"
 
   private static final String QUESTION_EST_DEJA_INSEREE = "questionEstDejaInseree"
-  private static final String REFERENTIEL_COMPETENCE_DEFAUT = "Palier 1"
 
   BreadcrumpsService breadcrumpsService
   ProfilScolariteService profilScolariteService
@@ -68,6 +68,7 @@ class QuestionController {
   QuestionImporterService questionImporterService
   ReferentielService referentielService
   QuestionCompetenceService questionCompetenceService
+  EmaEvalService emaEvalService
 
   /**
    *
@@ -622,9 +623,17 @@ class QuestionController {
   protected def getSpecificationObjectFromParams(Map params) {}
 
   private Referentiel getRefentielCompetence(Question question) {
+    if(!emaEvalService.isLiaisonReady()) {
+      return null
+    }
+
+    if(!questionCompetenceService.isQuestionAssociableACompetence(question)) {
+      return null
+    }
+
     // Récupère le référentiel de compétence
     return referentielService.fetchReferentielByNom(
-        REFERENTIEL_COMPETENCE_DEFAUT
+        EmaEvalService.REFERENTIEL_PALIER_3_NOM
     )
   }
 }

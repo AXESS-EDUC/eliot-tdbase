@@ -172,11 +172,7 @@ class ReferentielServiceIntegrationSpec extends IntegrationSpec {
   def "testFetchReferentielByNom - erreur : référentiel inexistant"() {
     given:
     String referentielNom = 'inexistant'
-    when:
-    referentielService.fetchReferentielByNom(referentielNom)
-
-    then:
-    def e = thrown(IllegalStateException)
-    e.message.startsWith("Le référentiel $referentielNom n'existe pas")
+    expect:
+    !referentielService.fetchReferentielByNom(referentielNom)
   }
 }

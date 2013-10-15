@@ -274,7 +274,7 @@
                   model="[paternite: question.paternite]"/>
       </g:if>
 
-      <g:if test="${isAssociableACompetence}">
+      <g:if test="${isAssociableACompetence && referentielCompetence}">
       <g:render
           template="/question/edite_competences"
           model="[referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList]" />
