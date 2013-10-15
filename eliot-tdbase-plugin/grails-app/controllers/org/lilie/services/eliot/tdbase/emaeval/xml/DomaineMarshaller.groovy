@@ -26,53 +26,51 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.emaeval
+package org.lilie.services.eliot.tdbase.emaeval.xml
 
 import groovy.util.slurpersupport.GPathResult
+import org.lilie.services.eliot.competence.CompetenceDto
 import org.lilie.services.eliot.competence.DomaineDto
-import org.lilie.services.eliot.competence.ReferentielDto
 import org.lilie.services.eliot.competence.SourceReferentiel
 
 /**
- * Permet de parser un référentiel au format XML EmaEval
+ * Permet de parser un Domaine au format XML EmaEval
  *
  * @author John Tranier
  */
-class ReferentielMarshaller {
+class DomaineMarshaller {
 
-  private final static String TAG_NAME = "com.pentila.evalcomp.domain.definition.Referentiel"
+  CompetenceMarshaller competenceMarshaller = new CompetenceMarshaller()
 
-  DomaineMarshaller domaineMarshaller = new DomaineMarshaller()
+  private final static String TAG_NAME = "com.pentila.evalcomp.domain.definition.Domain"
 
-  ReferentielDto parse(GPathResult xmlReferentiel) {
-    assert xmlReferentiel.name() == TAG_NAME
+  DomaineDto parse(GPathResult xmlDomaine) {
+    assert xmlDomaine.name() == TAG_NAME
 
-    String name = xmlReferentiel.":name".text()
-    String idExterne = xmlReferentiel.id.text()
-    String description = xmlReferentiel.description.text()
-    String version = xmlReferentiel.version.text()
-    String dateVersion = xmlReferentiel.dateVersion.text()
-    String urlReference = xmlReferentiel.reference.text()
+    String name = xmlDomaine.":name".text()
+    String idExterne = xmlDomaine.id.text()
+    String description = xmlDomaine.description.text()
 
     assert name
     assert idExterne
 
-    List<DomaineDto> domaineDtoList = []
-    xmlReferentiel.domains.children().each { GPathResult xmlDomaine ->
-      domaineDtoList << domaineMarshaller.parse(xmlDomaine)
+    List<DomaineDto> sousDomaineDtoList = []
+    xmlDomaine.domains.children().each { GPathResult xmlSousDomaine ->
+      sousDomaineDtoList << parse(xmlSousDomaine)
     }
 
-    assert domaineDtoList
+    List<CompetenceDto> competenceDtoList = []
+    xmlDomaine.competences.children().each { GPathResult xmlCompetence ->
+      competenceDtoList << competenceMarshaller.parse(xmlCompetence)
+    }
 
-    return new ReferentielDto(
+    return new DomaineDto(
         nom: name,
         description: description,
         idExterne: idExterne,
         sourceReferentiel: SourceReferentiel.EMA_EVAL,
-        version: version,
-        dateVersion: dateVersion,
-        urlReference: urlReference,
-        allDomaine: domaineDtoList
+        allSousDomaine: sousDomaineDtoList,
+        allCompetence: competenceDtoList
     )
   }
 }

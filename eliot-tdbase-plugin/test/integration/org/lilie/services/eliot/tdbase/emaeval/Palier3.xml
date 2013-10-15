@@ -1,0 +1,1777 @@
+<!-- Fichier XML utilisé pour les tests d'intégration -->
+<com.pentila.evalcomp.domain.definition.Referentiel>
+    <description>description palier 3</description>
+    <id>1</id>
+    <idRef>1</idRef>
+    <name>Palier 3</name>
+    <version>1</version>
+    <dateVersion>7 août 2012</dateVersion>
+    <reference></reference>
+    <descriptionLong></descriptionLong>
+    <domains>
+        <com.pentila.evalcomp.domain.definition.Domain>
+            <description>La scolarité en collège prépare les élèves à la vie en société et favorise l’acquisition de
+                compétences sociales et civiques. La finalité recherchée est la formation de citoyens connaissant leurs
+                droits et devoirs, capables de les exercer et de les remplir. Avec l’aide déterminée et vigilante des
+                adultes, les élèves doivent apprendre la maîtrise des comportements qu’exige la vie en société. Les
+                collégiens ont à saisir les valeurs, principes et codes qui la permettent. Les compétences civiques
+                réclament une implication qui s’étend au-delà des relations sociales habituelles. Les élèves doivent
+                comprendre ce que leur apporte et leur impose leur appartenance à une société, dans le respect des
+                différences de chacun. Il leur est nécessaire de connaître et faire vivre l’héritage constitué par les
+                générations précédentes et de se préparer à exercer leurs libertés et responsabilités de futurs
+                citoyens. Le rôle éducatif de tous les membres de l’équipe pédagogique est essentiel dans la
+                construction des compétences sociales et civiques. Ce sont eux qui aident les élèves à comprendre
+                l’enjeu des relations sociales, leur permettent de le contextualiser et de lui donner tout son sens.
+                L’acquisition et l’évaluation de ces compétences ne peuvent se limiter à un seul enseignement ou à la
+                vie scolaire mais relèvent d’une démarche interdisciplinaire et transversale développée dans le cadre de
+                la classe et ou du CDI, mais aussi dans l’ensemble de l’établissement. Les connaissances fondamentales
+                sont étudiées et les capacités et attitudes indispensables au fonctionnement d’un groupe, constamment
+                travaillées. De sorte que tous les moments de la vie du collégien sont propices à l’acquisition de ces
+                compétences.
+            </description>
+            <id>104</id>
+            <idRef>1</idRef>
+            <name>Compétences sociales et civiques</name>
+            <descriptionLong></descriptionLong>
+            <competences/>
+            <domains>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>112</id>
+                    <idRef>1</idRef>
+                    <name>Avoir un comportement responsable</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Respecter l’autre dans ses différences, dans les mots comme dans les actes.
+                                Respecter la parole de l’autre. Reconnaître les situations de discrimination et lutter
+                                contre toutes ses formes : sexe, origine, orientation sexuelle, apparence physique,
+                                handicap, convictions religieuses, etc..
+                            </description>
+                            <id>114</id>
+                            <idRef>1</idRef>
+                            <name>Comprendre l&apos;importance du respect mutuel et accepter toutes les différences
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Connaître les notions de budget, de trésorerie, d’emprunt, de dette, d’épargne.
+                                Connaître les principes d’un budget équilibré : dépenses/recettes. Connaître les
+                                principes d’une consommation responsable.
+                            </description>
+                            <id>117</id>
+                            <idRef>1</idRef>
+                            <name>Savoir utiliser quelques notions économiques et budgétaires de base</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Respecter les principes et les règles énoncés dans le règlement intérieur de
+                                l’établissement. Respecter les principes de civilité. Respecter les règles de sécurité
+                                dans et aux abords de l’établissement. Respecter les règles d’écoute et de prise de
+                                parole.
+                            </description>
+                            <id>113</id>
+                            <idRef>1</idRef>
+                            <name>Respecter les règles de la vie collective</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Connaître quelques notions juridiques de base : l’identité de la personne ; la
+                                nationalité ; - le principe de responsabilité et la notion de contrat en référence à des
+                                situations courantes ; - le fonctionnement de la justice : la distinction entre le civil
+                                et le pénal, et entre judicaire et administratif. Prendre conscience des droits de
+                                obligations de l&apos;élève.
+                            </description>
+                            <id>116</id>
+                            <idRef>1</idRef>
+                            <name>Respecter quelques notions juridiques de base</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Respecter les règles de sécurité pour soi et pour les autres. Respecter les
+                                règles de sécurité routière. Apprécier en situation le rapport « risques/sécurité ».
+                                Connaître : - sa responsabilité de préservation envers soi-même et envers les autres ;
+                                -. les principes (comportements et gestes) d’une vie saine.
+                            </description>
+                            <id>115</id>
+                            <idRef>1</idRef>
+                            <name>Respecter des comportements favorables à sa santé et sa sécurité</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>105</id>
+                    <idRef>1</idRef>
+                    <name>Connaitre les principes et fondements de la vie civique et sociale</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Connaître les principaux articles de la Déclaration des droits de l’Homme et du
+                                Citoyen (articles 1, 6, 7, 8, 9). Définir la notion de loi et expliquer son rôle.
+                                Définir la notion de citoyenneté.
+                            </description>
+                            <id>106</id>
+                            <idRef>1</idRef>
+                            <name>Principaux droits de l&apos;Homme et du citoyen</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Connaître les grands médias d’information (presse écrite, presse audiovisuelle,
+                                nouvelles technologies de l’information et de la communication). Mener une réflexion
+                                critique sur l’information selon sa présentation par les différents médias.
+                            </description>
+                            <id>111</id>
+                            <idRef>1</idRef>
+                            <name>Fonctionnement et rôle de différents médias</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Donner une définition simple de la notion de République. Connaître la devise de
+                                la République française et expliquer le sens des 3 valeurs impliquées. Expliquer la
+                                signification du drapeau national. Donner une définition simple de la notion de laïcité.
+                                Connaître les principales institutions de la Vème République.
+                            </description>
+                            <id>107</id>
+                            <idRef>1</idRef>
+                            <name>Valeurs, symboles, institutions de la République</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Connaître les fondements de la démocratie politique (la souveraineté nationale,
+                                la liberté de vote, l’équilibre et la séparation des pouvoirs, le respect de la loi).
+                                Citer les principaux acteurs de la vie politique et sociale (partis, syndicats,
+                                associations, presse) et définir leurs rôles. Connaître les grands principes de
+                                l’institution judiciaire.
+                            </description>
+                            <id>108</id>
+                            <idRef>1</idRef>
+                            <name>Règles fondamentales de la démocratie et de la justice</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Connaître, dans leurs grandes lignes, l’organisation et les missions
+                                essentielles de la Défense nationale. Donner la signification de la Journée Défense et
+                                Citoyenneté.
+                            </description>
+                            <id>110</id>
+                            <idRef>1</idRef>
+                            <name>Rôle de la défense nationale</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Connaître et expliquer le rôle des grandes institutions européennes (le
+                                Parlement, la Commission, le Conseil européen, la Cour de justice européenne, la Cour
+                                européenne des droits de l’Homme). Connaître le rôle de l’ONU.
+                            </description>
+                            <id>109</id>
+                            <idRef>1</idRef>
+                            <name>Grandes institutions de l&apos;Union européenne et rôle des grands organismes
+                                internationaux
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+            </domains>
+            <parent class="com.pentila.evalcomp.domain.definition.Referentiel" reference="../../.."/>
+        </com.pentila.evalcomp.domain.definition.Domain>
+        <com.pentila.evalcomp.domain.definition.Domain>
+            <description>L’autonomie est la capacité reconnue à un élève de se fixer des principes et règles de
+                conduite, choisir ses cheminements personnels dans le respect des règles sociales en vigueur. Pour ce
+                faire, il doit pouvoir construire des parcours réalistes lui permettant d’atteindre les objectifs fixés
+                par la mobilisation des ressources nécessaires, la mise en œuvre des méthodes appropriées, la création
+                des relations qu’il juge satisfaisantes et par une auto-évaluation. Les élèves acquièrent
+                progressivement cette compétence par l’appropriation des espaces de liberté et de responsabilité que les
+                équipes éducatives leur confient. L’ensemble de la communauté éducative participe à la réalisation de
+                cet objectif qui nécessite persévérance, pédagogie et adaptation à la personnalité de chaque élève.
+                L’équipe éducative exploite toutes les situations et possibilités à sa disposition que ce soit dans la
+                classe ou dans le domaine de la vie scolaire. Ainsi l’élève est partie prenante à son parcours scolaire
+                et professionnel. Il est intégré dans un réseau relationnel, scolaire, associatif, culturel. Pour
+                évaluer l’esprit d’initiative des élèves, il convient de mettre en valeur leur motivation effective pour
+                les tâches scolaires, leur investissement concret dans des activités, leur participation active à la vie
+                de l’établissement : activités de recherche et de production, projets disciplinaires et
+                interdisciplinaires, stages de découverte professionnelle, participation à des clubs, associations
+                sportives et fonctions de délégués élus.
+            </description>
+            <id>118</id>
+            <idRef>1</idRef>
+            <name>Autonomie et initiative</name>
+            <descriptionLong></descriptionLong>
+            <competences/>
+            <domains>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>123</id>
+                    <idRef>1</idRef>
+                    <name>Être capable de mobiliser ses ressources intellectuelles et physiques dans diverses
+                        situations
+                    </name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Organiser son travail en classe. Gérer et organiser son travail personnel.
+                                Rechercher et sélectionner par soi-même des informations utiles dans son travail, pour
+                                accomplir une tâche, analyser une situation de la vie quotidienne.
+                            </description>
+                            <id>124</id>
+                            <idRef>1</idRef>
+                            <name>Être autonome dans son travail : savoir l&apos;organiser, le planifier, l&apos;anticiper,
+                                rechercher et sélectionner des informations utiles
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Construire et s’engager dans un projet d’entraînement physique et/ou de
+                                création artistique pour progresser au regard de son potentiel et d’objectifs
+                                atteignables. Savoir évaluer la dangerosité d’une situation et moduler sa prise de
+                                risque au regard de son potentiel.
+                            </description>
+                            <id>126</id>
+                            <idRef>1</idRef>
+                            <name>Mobiliser à bon escient ses capacités motrices dans le cadre d&apos;une pratique
+                                physique (sportive ou artistique) adaptée à son potentiel
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Dans une piscine, un plan d’eau calme, ou un parc aquatique : - nager en
+                                sécurité dans un espace surveillé ; - se sauver dans des situations inhabituelles.
+                            </description>
+                            <id>127</id>
+                            <idRef>1</idRef>
+                            <name>Savoir nager</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Identifier ses points forts et ses points faibles. Agir en fonction de ses
+                                atouts.
+                            </description>
+                            <id>125</id>
+                            <idRef>1</idRef>
+                            <name>Identifier ses points forts et ses points faibles dans des situations variées</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>128</id>
+                    <idRef>1</idRef>
+                    <name>Faire preuve d&apos;initative</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Dans tous les domaines : Manifester son désir de découvrir, de connaître et de
+                                comprendre. Montrer de l’originalité dans ses démarches et ses productions. Être actif
+                                dans son apprentissage.
+                            </description>
+                            <id>131</id>
+                            <idRef>1</idRef>
+                            <name>Manifester curiosité, créativité, motivation à travers des activités conduites ou
+                                reconnues par l&apos;établissement
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Dans une situation particulière, accepter des responsabilités. Se porter
+                                volontaire pour une action, un rôle, une mission.
+                            </description>
+                            <id>132</id>
+                            <idRef>1</idRef>
+                            <name>Assumer des rôles, prendre des initiatives et des décisions</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>S’impliquer dans la mise en œuvre du projet Dans tous les domaines : Participer
+                                à la conception d’un projet collectif collectif. en prenant en compte les potentialités
+                                du groupe et les objectifs fixés. Présenter le projet ou la production en valorisant la
+                                contribution de chacun.
+                            </description>
+                            <id>130</id>
+                            <idRef>1</idRef>
+                            <name>S&apos;intégrer et coopérer dans un projet collectif</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Dans tous les domaines (artistiques, culturels, linguistiques, patrimoniaux,
+                                scientifiques, sportifs, technologiques, etc.) : Concevoir un projet individuel à partir
+                                de ses potentialités et de ses propres objectifs. Mettre en œuvre un projet.
+                            </description>
+                            <id>129</id>
+                            <idRef>1</idRef>
+                            <name>S&apos;engager dans un projet individuel</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>119</id>
+                    <idRef>1</idRef>
+                    <name>Être acteur de son parcours de formation et d&apos;orientation</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Connaître les caractéristiques principales de son environnement
+                                socio-économique, les principaux secteurs d’activités et les emplois associés. Savoir
+                                identifier dans un secteur donné des métiers et leur niveaux de qualification associés.
+                                Connaître l&apos;organisation de l&apos;entreprise et ses différentes fonctions.
+                            </description>
+                            <id>120</id>
+                            <idRef>1</idRef>
+                            <name>Se familiariser avec l&apos;environnement économique, les entreprises, les métiers de
+                                secteurs et de niveaux de qualification variés
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Repérer et identifier ses acquis, ses compétences. Identifier et hiérarchiser
+                                ses intérêts et ses aspirations personnels. Analyser le niveau d’adéquation entre son
+                                potentiel et un projet d’orientation.
+                            </description>
+                            <id>122</id>
+                            <idRef>1</idRef>
+                            <name>Savoir s&apos;autoévaluer et être capable de décrire ses intérêts, ses compétences et
+                                ses acquis
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Connaître les voies de formation : initiale et continue, alternance,
+                                apprentissage. Connaître le schéma général des filières d’études en lycée, leurs
+                                caractéristiques et leurs débouchés. Identifier/ Rechercher/ Repérer les ressources
+                                locales de la carte des formations.
+                            </description>
+                            <id>121</id>
+                            <idRef>1</idRef>
+                            <name>Connaître les parcours de formation correspondant à ces métiers et les possibilités de
+                                s&apos;y intégrer
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+            </domains>
+            <parent class="com.pentila.evalcomp.domain.definition.Referentiel" reference="../../.."/>
+        </com.pentila.evalcomp.domain.definition.Domain>
+        <com.pentila.evalcomp.domain.definition.Domain>
+            <description>Savoir lire, écrire et parler le français conditionne l’accès à tous les domaines du savoir et
+                l’acquisition de toutes les compétences. Faire accéder tous les élèves à la maîtrise de la langue
+                française, à une expression précise à l’oral à l’écrit comme à l’écrit, relève de l’enseignement du
+                français mais aussi de toutes les disciplines. Les indications en italique dans la troisième colonne
+                concernent les aménagements proposés pour les élèves en situation de handicap.
+            </description>
+            <id>2</id>
+            <idRef>1</idRef>
+            <name>Maîtrise de la langue française</name>
+            <descriptionLong></descriptionLong>
+            <competences/>
+            <domains>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>9</id>
+                    <idRef>1</idRef>
+                    <name>Écrire</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Vérifier la cohérence : - énonciative (choix des pronoms, marques de
+                                subjectivité…), - chronologique (emploi des temps, des adverbes…), - logique
+                                (articulation des idées par les subordonnants et les coordonnants…). Compléter ou
+                                préciser ses connaissances en utilisant des outils : manuel de grammaire, dictionnaires,
+                                guide de conjugaison, correcteur orthographique, logiciels de reconnaissance vocale …
+                            </description>
+                            <id>13</id>
+                            <idRef>1</idRef>
+                            <name>Utiliser ses capacités de raisonnement, ses connaissances sur la langue, savoir faire
+                                appel à des outils variés pour améliorer son texte
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Écrire lisiblement à la main de façon à être lu et compris par le destinataire.
+                                Écrire à l’aide d’un outil informatique. Respecter les contraintes lexicales,
+                                grammaticales, orthographiques et de mise en page, de façon à écrire un texte
+                                compréhensible pour le destinataire et acceptable socialement. Orthographier
+                                correctement le texte d’autrui.
+                            </description>
+                            <id>11</id>
+                            <idRef>1</idRef>
+                            <name>Écrire lisiblement un texte, spontanément ou sous la dictée, en respectant l&apos;orthographe
+                                et la grammaire
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Reproduire toute forme de document en respectant l’orthographe, les normes
+                                typographiques et la disposition d’origine.
+                            </description>
+                            <id>10</id>
+                            <idRef>1</idRef>
+                            <name>Reproduire un document sans erreur et avec une présentation adaptée</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Répondre à une question par un énoncé complet, construit et pertinent. Tenir
+                                compte des indications du libellé et des consignes d’écriture données. Structurer son
+                                texte : maîtriser les reprises nominales ou pronominales, l’organisation chronologique
+                                et l’enchaînement logique, segmenter le texte en phrases et en paragraphes. Maîtriser le
+                                langage propre à chaque discipline : - utiliser le terme adéquat - utiliser la syntaxe
+                                appropriée - maîtriser le sens précis d’un terme polysémique.
+                            </description>
+                            <id>12</id>
+                            <idRef>1</idRef>
+                            <name>Rédiger un texte bref, cohérent et ponctué, en réponse à une question ou à partir de
+                                consignes données
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>14</id>
+                    <idRef>1</idRef>
+                    <name>Dire</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Tenir un propos acceptable socialement, adopter une attitude et choisir un
+                                niveau de langue (familier, courant, soutenu) en fonction de son ou de ses
+                                interlocuteurs et selon les effets recherchés.
+                            </description>
+                            <id>17</id>
+                            <idRef>1</idRef>
+                            <name>Adapter sa prise de parole à la situation de communication</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Écouter et prendre en compte les propos d’autrui. Exposer et faire valoir son
+                                propre point de vue.
+                            </description>
+                            <id>18</id>
+                            <idRef>1</idRef>
+                            <name>Participer à un débat, à un échange verbal</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Formuler : Organiser son propos, aller à l’essentiel. Reformuler : Reprendre
+                                son propre propos sous une autre forme. Reprendre, sans en déformer le sens, le propos
+                                d’autrui. Rendre compte de ce que l’on a compris, de ce que l’on a vu, en sélectionnant
+                                les informations de façon pertinente. Favoriser l’expression des élèves (oral, langue
+                                des signes, Langage Parlé Complété, mime ...) Favoriser la transposition orale d’un
+                                langage codé (figure géométrique, schéma, croquis, image …) Demander de restituer
+                                l’essentiel du cours précédent, d’exposer le résultat de recherche documentaire
+                            </description>
+                            <id>15</id>
+                            <idRef>1</idRef>
+                            <name>Formuler clairement un propos simple</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Construire et présenter un compte rendu ou un exposé. Souligner les
+                                articulations du propos. Prendre appui sur des documents iconographiques, savoir les
+                                articuler à l’exposé en évitant les redondances.
+                            </description>
+                            <id>16</id>
+                            <idRef>1</idRef>
+                            <name>Développer de façon suivie un propos en public sur un sujet déterminé</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>3</id>
+                    <idRef>1</idRef>
+                    <name>Lire</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Lecture silencieuse : Lire pour soi. Choisir un mode de lecture adapté au
+                                support : - lire de façon linéaire la totalité du texte - pratiquer une lecture
+                                hiérarchisée afin de sélectionner certaines informations. Procéder à des allers et
+                                retours dans un document ou dans un texte. Circuler du texte à l’image et au schéma
+                                (tableaux, figures, graphiques, dessins, photos). Lecture à voix haute : Lire pour soi :
+                                Oraliser un écrit pour se l’approprier. Lire pour autrui : Lire de façon claire, fluide,
+                                expressive afin de se faire entendre et comprendre.
+                            </description>
+                            <id>4</id>
+                            <idRef>1</idRef>
+                            <name>Adapter son mode de lecture à la nature du texte proposé et à l&apos;objectif
+                                poursuivi
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Capacités de raisonnement : Pour parvenir à une compréhension fine du texte : -
+                                prendre en compte des éléments implicites complexes - percevoir le déroulement
+                                chronologique et /ou l’enchaînement logique d’un texte. Connaissances sur la langue et
+                                les langages des disciplines Pour comprendre un texte : - mobiliser les connaissances
+                                nécessaires : lexique, grammaire, orthographe, symboles, abréviations. - construire de
+                                nouvelles connaissances en utilisant les outils nécessaires : encyclopédies,
+                                dictionnaires, manuels de grammaire, enregistrements vocaux, logiciels
+                                d’audio-description, etc.
+                            </description>
+                            <id>6</id>
+                            <idRef>1</idRef>
+                            <name>Utiliser ses capacités de raisonnement, ses connaissances sur la langue, savoir faire
+                                appel à des outils appropriés pour lire
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Pour parvenir à une compréhension littérale du texte : - rechercher, extraire,
+                                organiser des informations explicites pour saisir et construire le sens d’un texte -
+                                rechercher, extraire, organiser des informations implicites simples pour saisir et
+                                construire le sens d’un texte.
+                            </description>
+                            <id>5</id>
+                            <idRef>1</idRef>
+                            <name>Repérer les informations dans un texte à partir des éléments explicites et des
+                                éléments implicites nécessaires
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Identifier :- le genre et la provenance d’un texte - ce dont il parle (le
+                                thème) - ce qu’il dit (le propos), - la situation de communication (qui parle ? à qui ?
+                                avec quel objectif ?). Reformuler. Résumer.
+                            </description>
+                            <id>7</id>
+                            <idRef>1</idRef>
+                            <name>Dégager, par écrit ou oralement, l&apos;essentiel d&apos;un texte lu</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>En prenant appui sur le texte, réagir et donner un avis. Passer de la réaction
+                                spontanée à l’avis argumenté.
+                            </description>
+                            <id>8</id>
+                            <idRef>1</idRef>
+                            <name>Manifester, par des moyens divers, sa compréhension de textes variés</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+            </domains>
+            <parent class="com.pentila.evalcomp.domain.definition.Referentiel" reference="../../.."/>
+        </com.pentila.evalcomp.domain.definition.Domain>
+        <com.pentila.evalcomp.domain.definition.Domain>
+            <description>L&apos;acquisition d&apos;une culture humaniste au collège mobilise plusieurs disciplines.
+                Ensemble, celles-ci apportent aux élèves des connaissances et des repères, qu’ils relèvent de la
+                géographie, de l’histoire, des lettres ou des arts ; elles les forment à des langages et à des méthodes
+                d&apos;information, d&apos;analyse, de réflexion et de création ; elles les aident à construire leur
+                pensée, à développer leur esprit critique, à nourrir leur curiosité et à développer leur sensibilité.
+                Enrichie par l’enseignement de l’histoire des arts, la culture humaniste, à la fois commune à tous et
+                ouverte à l’altérité, constitue une base indispensable à la construction d&apos;un jugement éclairé.
+            </description>
+            <id>83</id>
+            <idRef>1</idRef>
+            <name>Culture humaniste</name>
+            <descriptionLong></descriptionLong>
+            <competences/>
+            <domains>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>84</id>
+                    <idRef>1</idRef>
+                    <name>Avoir des connaissances et des repères</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève connaît et se réfère à un répertoire d’œuvres étudiées au collège.
+                            </description>
+                            <id>88</id>
+                            <idRef>1</idRef>
+                            <name>relevant de la culture artistique : œuvres picturales, musicales, scéniques,
+                                architecturales ou cinématographiques du patrimoine
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève connaît les repères historiques étudiés au collège. Il connaît les
+                                grandes phases de l’histoire de l’humanité et les différentes périodes de l’histoire de
+                                la France.
+                            </description>
+                            <id>86</id>
+                            <idRef>1</idRef>
+                            <name>relevant du temps : les différentes périodes de l&apos;histoire de l&apos;humanité -
+                                Les grands traits de l&apos;histoire (politique, sociale, économique, littéraire,
+                                artistique, culturelle) de la France et de l&apos;Europe
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève connaît les principales références qui fondent les questions
+                                politiques, sociales, éthiques, économiques, environnementales et culturelles qui
+                                animent le débat public.
+                            </description>
+                            <id>89</id>
+                            <idRef>1</idRef>
+                            <name>relevant de la culture civique : Droits de l&apos;Homme – Formes d&apos;organisation
+                                politique, économique et sociale dans l&apos;Union européenne – Place et rôle de l&apos;État
+                                en France – Mondialisation – Développement durable
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève sait : - nommer, localiser et situer les repères géographiques étudiés
+                                au collège, en particulier ceux qui concernent la France et l’Europe ; - caractériser
+                                l’espace dans lequel il vit ; - mobiliser un vocabulaire approprié.
+                            </description>
+                            <id>85</id>
+                            <idRef>1</idRef>
+                            <name>relevant de l&apos;espace : les grands ensembles physiques et humains et les grands
+                                types d&apos;aménagements dans le monde, les principales caractéristiques géographiques
+                                de la France et de l&apos;Europe
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L&apos;élève connaît et se réfère à un répertoire d&apos;oeuvres étudiées ou
+                                lues au collège.
+                            </description>
+                            <id>87</id>
+                            <idRef>1</idRef>
+                            <name>relevant de la culture littéraire : œuvres littéraires du patrimoine</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>90</id>
+                    <idRef>1</idRef>
+                    <name>Situer dans le temps, l&apos;espace, les civilisations</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Face à des événements historiques, des situations géographiques, des œuvres
+                                littéraires ou artistiques, des découvertes scientifiques ou techniques, l’élève sait
+                                mobiliser ses connaissances et les démarches utiles : - pour les situer dans le temps et
+                                l’espace ; - pour dégager, le cas échéant, les liens de continuité et de rupture qu’ils
+                                entretiennent.
+                            </description>
+                            <id>91</id>
+                            <idRef>1</idRef>
+                            <name>Situer des événements, des œuvres littéraires ou artistiques, des découvertes
+                                scientifiques ou techniques, des ensembles géographiques
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L&apos;élève connait les principales civilisations, dans le temps comme dans l&apos;espace.</description>
+                            <id>92</id>
+                            <idRef>1</idRef>
+                            <name>Identifier la diversité des civilisations, des langues, des sociétés, des religions
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève mobilise ses connaissances pour établir des liens entre l’actualité
+                                dont il est le témoin et/ou l’acteur et des situations passées ou présentes qui peuvent
+                                l’éclairer.
+                            </description>
+                            <id>94</id>
+                            <idRef>1</idRef>
+                            <name>Mobiliser ses connaissances pour donner du sens à l&apos;actualité</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Partant d’une œuvre artistique ou littéraire caractéristique d’une période et
+                                d’une esthétique données, l’élève est capable d’identifier les liens qu’elle entretient
+                                avec plusieurs autres.
+                            </description>
+                            <id>93</id>
+                            <idRef>1</idRef>
+                            <name>Établir des liens entre les œuvres (littéraires, artistiques) pour mieux les
+                                comprendre
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>95</id>
+                    <idRef>1</idRef>
+                    <name>Lire et pratiquer différents langages</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L&apos;élève sait mobiliser les moyens utilses à la communication d&apos;une
+                                information, d&apos;un savoir, d&apos;un point de vue.
+                            </description>
+                            <id>96</id>
+                            <idRef>1</idRef>
+                            <name>Lire et employer différents langages : textes – graphiques – cartes – images –
+                                musique
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L&apos;élève sait prendre en compte des choix formels et des procédés d&apos;écriture
+                                pour mieux comprendre et donner sens à un texte littéraire (quelques données simple
+                                relevant de l&apos;énonciation, le jeu avec les mots, les implicites possibles d&apos;un
+                                énoncé).
+                            </description>
+                            <id>97</id>
+                            <idRef>1</idRef>
+                            <name>Connaître et pratiquer diverses formes d&apos;expression à visée littéraire</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève sait mobiliser des techniques élémentaires relevant de diverses formes
+                                d’expression artistique pour exprimer une intention, un projet, une émotion.
+                            </description>
+                            <id>98</id>
+                            <idRef>1</idRef>
+                            <name>Connaître et pratiquer diverses formes d&apos;expression à visée artistique</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>99</id>
+                    <idRef>1</idRef>
+                    <name>Faire preuve de sensibilité, d&apos;esprit critique, de curiosité</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève maîtrise, en étant guidé, les étapes de l’analyse de documents de
+                                nature variée (texte, carte, image, œuvre). Il est capable d&apos;un minimum de recul
+                                critique par rapport aux documents qu&apos;on lui soumet. Il sait qu&apos;il est
+                                souhaitable de porter un regard distancié sur le réel et a les moyens (connaissances,
+                                méthodes) de le faire, à son niveau de collégien.
+                            </description>
+                            <id>102</id>
+                            <idRef>1</idRef>
+                            <name>Être capable de porter un regard critique sur un fait, un document, une œuvre</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L&apos;élève sait : apprécier la dimension poétique d&apos;un texte et ne pas
+                                le réduire à sa seule valeur informative; - être sensible aux questions humaines dont la
+                                littérature se fait particulièrement l&apos;écho.
+                            </description>
+                            <id>100</id>
+                            <idRef>1</idRef>
+                            <name>Être sensible aux enjeux esthétiques et humains d&apos;un texte littéraire</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>l&apos;élève s&apos;intéresse à l&apos;actualité générale, qu&apos;elle soit
+                                politique, économique, culturelle, scientifique... Il fait écho aux grands moments de la
+                                vie collective. Il s&apos;informe (télévision, internet, presse, radio...) et se montre
+                                curieux du monde qui l&apos;entoure.
+                            </description>
+                            <id>103</id>
+                            <idRef>1</idRef>
+                            <name>Manifester sa curiosité pour l&apos;actualité et pour les activités culturelles ou
+                                artistiques
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève sait identifier et interroger les enjeux que porte une création
+                                artistique.
+                            </description>
+                            <id>101</id>
+                            <idRef>1</idRef>
+                            <name>Être sensible aux enjeux esthétiques et humains d&apos;une œuvre artistique</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+            </domains>
+            <parent class="com.pentila.evalcomp.domain.definition.Referentiel" reference="../../.."/>
+        </com.pentila.evalcomp.domain.definition.Domain>
+        <com.pentila.evalcomp.domain.definition.Domain>
+            <description>description</description>
+            <id>19</id>
+            <idRef>1</idRef>
+            <name>Pratique d&apos;une langue vivante étrangère</name>
+            <descriptionLong></descriptionLong>
+            <competences/>
+            <domains>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>28</id>
+                    <idRef>1</idRef>
+                    <name>Parler en continu</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Faire une brève annonce ou un exposé préparé ; lire de manière expressive.
+                            </description>
+                            <id>31</id>
+                            <idRef>1</idRef>
+                            <name>Présenter un projet et lire à haute voix</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description></description>
+                            <id>29</id>
+                            <idRef>1</idRef>
+                            <name>Reproduire un modèle oral</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Présenter sa vie quotidienne (son environnement, ses activités, ses goûts…), un
+                                objet, se décrire, décrire les autres. Raconter une histoire, un événement, une
+                                expérience. Faire des comparaisons, donner les raisons d’un choix.
+                            </description>
+                            <id>30</id>
+                            <idRef>1</idRef>
+                            <name>Décrire, raconter, expliquer</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>25</id>
+                    <idRef>1</idRef>
+                    <name>écouter et comprendre</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Suivre instructions et consignes, comprendre des expressions familières de la
+                                vie quotidienne, présentations, indications chiffrées, récits…
+                            </description>
+                            <id>26</id>
+                            <idRef>1</idRef>
+                            <name>Comprendre un message oral pour réaliser une tâche</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Identifier le contenu d’un message, le sujet d’une discussion, suivre un
+                                récit.
+                            </description>
+                            <id>27</id>
+                            <idRef>1</idRef>
+                            <name>Comprendre les points essentiels d&apos;un message oral (conversation, information,
+                                récit, exposé)
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>32</id>
+                    <idRef>1</idRef>
+                    <name>Lire</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Pouvoir exploiter des documents factuels simples, prospectus, menus, annonces,
+                                inventaires et horaires, signalétique urbaine, lettres, brochures, courts articles de
+                                journaux, une histoire.
+                            </description>
+                            <id>33</id>
+                            <idRef>1</idRef>
+                            <name>Comprendre le sens général de documents écrits</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Pouvoir exploiter des documents factuels simples, prospectus, menus, annonces,
+                                inventaires et horaires, signalétique urbaine, lettres, brochures, courts articles de
+                                journaux, une histoire.
+                            </description>
+                            <id>34</id>
+                            <idRef>1</idRef>
+                            <name>Savoir repérer des informations dans un texte</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>20</id>
+                    <idRef>1</idRef>
+                    <name>Réagir et dialoguer</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Pouvoir effectuer des présentations, salutations et congé, remerciements,
+                                échange de nouvelles…
+                            </description>
+                            <id>21</id>
+                            <idRef>1</idRef>
+                            <name>Établir un contact social</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Pouvoir échanger des informations dans des situations de la vie courante
+                                (itinéraire, repas, achats, horaires, prix, événement…), réagir et répondre à une
+                                demande d’aide, d’explication, de confirmation, de permission…
+                            </description>
+                            <id>23</id>
+                            <idRef>1</idRef>
+                            <name>Demander et donner des informations</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>En réponse à différentes situations : accepter, refuser, exprimer ses goûts,
+                                ses opinions, faire des suggestions.
+                            </description>
+                            <id>24</id>
+                            <idRef>1</idRef>
+                            <name>Réagir à des propositions</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Établir un dialogue sur des situations courantes, faits, personnages
+                                légendaires ou contemporains
+                            </description>
+                            <id>22</id>
+                            <idRef>1</idRef>
+                            <name>Dialoguer sur des sujets familiers</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>35</id>
+                    <idRef>1</idRef>
+                    <name>Écrire</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>descriptionCompetence</description>
+                            <id>36</id>
+                            <idRef>1</idRef>
+                            <name>Copier, écrire sous la dictée</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Pouvoir par écrit décrire un événement, une activité passée, une expérience
+                                personnelle ou imaginée, les aspects quotidiens de son environnement (gens, lieux,
+                                école, paysages, objets…).
+                            </description>
+                            <id>40</id>
+                            <idRef>1</idRef>
+                            <name>Écrire un court récit, une description</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Être capable par écrit de demander un renseignement, faire une proposition ou
+                                réagir à une proposition, se présenter, remercier, proposer une rencontre, inviter,
+                                exprimer des excuses
+                            </description>
+                            <id>38</id>
+                            <idRef>1</idRef>
+                            <name>Écrire un message simple</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Être capable par écrit de demander un renseignement, faire une proposition ou
+                                réagir à une proposition, se présenter, remercier, proposer une rencontre, inviter,
+                                exprimer des excuses
+                            </description>
+                            <id>37</id>
+                            <idRef>1</idRef>
+                            <name>Renseigner un questionnaire</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Pouvoir par écrit décrire un événement, une activité passée, une expérience
+                                personnelle ou imaginée, les aspects quotidiens de son environnement (gens, lieux,
+                                école, paysages, objets…).
+                            </description>
+                            <id>39</id>
+                            <idRef>1</idRef>
+                            <name>Rendre compte de faits</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+            </domains>
+            <parent class="com.pentila.evalcomp.domain.definition.Referentiel" reference="../../.."/>
+        </com.pentila.evalcomp.domain.definition.Domain>
+        <com.pentila.evalcomp.domain.definition.Domain>
+            <description>La culture numérique implique l’usage sûr et critique des techniques de la société de
+                l’information. Il s’agit de l’informatique, du multimédia et de l’internet, qui désormais irriguent tous
+                les domaines économiques et sociaux. Ces techniques font souvent l’objet d’un apprentissage empirique
+                hors de l’école. Il appartient néanmoins à celle-ci de faire acquérir à chaque élève un ensemble de
+                compétences lui permettant de les utiliser de façon réfléchie et plus efficace. Les connaissances et les
+                capacités exigibles pour le B2i collège (Brevet informatique et internet) correspondent au niveau requis
+                pour le socle commun. Elles sont acquises dans le cadre d’activités relevant des différents champs
+                disciplinaires. Le brevet informatique et Internet est une attestation qui comporte trois niveaux
+                (école, collège et lycée) de maîtrise des technologies de l&apos;information et de la communication. La
+                feuille de position B2i (Brevet informatique et internet – Collège) peut vous permettre d’organiser
+                cette évaluation. Elle est disponible sur le site : eduscol.education.fr/b2i. Les items du B2i sont
+                repris ici comme indications pour l’évaluation. Un tableau de correspondance entre les items du B2i et
+                ceux de la compétence 4 est publié dans les outils pour l’évaluation des compétences sur
+                eduscol.education.fr/soclecommun.
+            </description>
+            <id>60</id>
+            <idRef>1</idRef>
+            <name>maitriser des techniques usuelles de l&apos;information et de la communication</name>
+            <descriptionLong></descriptionLong>
+            <competences/>
+            <domains>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>75</id>
+                    <idRef>1</idRef>
+                    <name>S&apos;informer, se documenter</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L&apos;élève sait classer les résultats d&apos;une recherche internet d&apos;après
+                                les dates, auteurs et sources des informations trouvées.
+                            </description>
+                            <id>77</id>
+                            <idRef>1</idRef>
+                            <name>Identifier, trier et évaluer des ressources</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève maîtrise un logiciel de navigation sur le web, notamment pour y
+                                effectuer des recherches dans des annuaires ou par des moteurs de recherche. Il sait
+                                utiliser le logiciel documentaire spécifique au CDI.
+                            </description>
+                            <id>76</id>
+                            <idRef>1</idRef>
+                            <name>Consulter des bases de données documentaires en mode simple (plein texte)</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Après avoir effectué une recherche sur internet, l&apos;élève sait choisir les
+                                réponses les plus appropriées en justifiant ses choix.
+                            </description>
+                            <id>78</id>
+                            <idRef>1</idRef>
+                            <name>Chercher et sélectionner l&apos;information demandée</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>70</id>
+                    <idRef>1</idRef>
+                    <name>Créer, produire, traiter, exploiter des données</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève peut organiser un document dans sa globalité mais aussi choisir
+                                différents types de représentations adaptés à sa communication. Il peut le faire dans un
+                                traitement de texte ou un tableur.
+                            </description>
+                            <id>73</id>
+                            <idRef>1</idRef>
+                            <name>Organiser la composition du document, prévoir sa présentation en fonction de sa
+                                destination
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève sait utiliser un logiciel orienté vers le traitement des images (photo,
+                                vidéo) et/ou des sons.
+                            </description>
+                            <id>72</id>
+                            <idRef>1</idRef>
+                            <name>Traiter une image, un son ou une vidéo</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève est capable de distinguer une modélisation de la réalité, lors du
+                                traitement comme dans les résultats.
+                            </description>
+                            <id>74</id>
+                            <idRef>1</idRef>
+                            <name>Différencier une situation simulée ou modélisée d&apos;une situation réelle</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Au delà de la frappe d’un texte, l’élève peut le mettre en forme,
+                                éventuellement en utilisant des fonctions automatisées d’un traitement de texte.
+                            </description>
+                            <id>71</id>
+                            <idRef>1</idRef>
+                            <name>Saisir et mettre en page un texte</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>79</id>
+                    <idRef>1</idRef>
+                    <name>Commnuniquer, échanger</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève réfléchit aux conséquences possibles de ses envois, dans l’immédiat et
+                                à plus long terme.
+                            </description>
+                            <id>82</id>
+                            <idRef>1</idRef>
+                            <name>Exploiter les spécificités des différentes situations de communication en temps réel
+                                ou différé
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève sait envoyer un message en choisissant le ou les destinataires dans une
+                                liste, et sait joindre des pièces à son envoi. Il sait déposer un message sur un site
+                                collaboratif.
+                            </description>
+                            <id>80</id>
+                            <idRef>1</idRef>
+                            <name>Écrire, envoyer, diffuser, publier</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève sait manipuler une pièce jointe à un message reçu.</description>
+                            <id>81</id>
+                            <idRef>1</idRef>
+                            <name>Recevoir un commentaire, un message y compris avec pièces jointes</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>61</id>
+                    <idRef>1</idRef>
+                    <name>S&apos;approprier un environnement informatique de travail</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève sait ouvrir des documents et des logiciels situés dans différents
+                                espaces de l’ordinateur. Il sait créer des dossiers, les organiser et y transférer ou en
+                                extraire différents documents.
+                            </description>
+                            <id>62</id>
+                            <idRef>1</idRef>
+                            <name>Utiliser, gérer des espaces de stockage à disposition</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève peut imprimer des documents en choisissant son imprimante et ses
+                                options d’impression.
+                            </description>
+                            <id>63</id>
+                            <idRef>1</idRef>
+                            <name>Utiliser les périphériques à disposition</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Au delà de l’utilisation directe de logiciels, l’élève peut accéder à un réseau
+                                (identification, déconnection), y déposer et y puiser des ressources. Il sait lire et
+                                exploiter les propriétés d’un fichier.
+                            </description>
+                            <id>64</id>
+                            <idRef>1</idRef>
+                            <name>Utiliser les logiciels et les services à disposition</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>65</id>
+                    <idRef>1</idRef>
+                    <name>Adopter une attitude responsable</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève n’accorde pas une confiance aveugle aux résultats fournis par une
+                                calculatrice ou un ordinateur ; il s’interroge sur leurs limites.
+                            </description>
+                            <id>68</id>
+                            <idRef>1</idRef>
+                            <name>Faire preuve d&apos;esprit critique face à l&apos;information et à son traitement
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève met ses compétences informatiques au service d&apos;une production
+                                collective en restant attentif au respect des droits de chaque participant.
+                            </description>
+                            <id>69</id>
+                            <idRef>1</idRef>
+                            <name>Participer à des travaux collaboratifs en connaissant les enjeux et en respectant les
+                                règles
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève connaît et respecte la charte d’usage des TIC en usage dans
+                                l’établissement. Plus généralement il s’interroge sur son droit à utiliser et publier
+                                des documents.
+                            </description>
+                            <id>66</id>
+                            <idRef>1</idRef>
+                            <name>Connaître et respecter les règles élémentaires du droit relatif à sa pratique</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève met en œuvre la sécurisation de ses données par des sauvegardes et des
+                                limitations d’accès (mots de passe) ainsi que par des logiciels anti-virus et anti-spam.
+                                Il se protège en réfléchissant aux informations personnelles qu’il transmet selon ses
+                                interlocuteurs et les lecteurs potentiels.
+                            </description>
+                            <id>67</id>
+                            <idRef>1</idRef>
+                            <name>Protéger sa personne et ses données</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+            </domains>
+            <parent class="com.pentila.evalcomp.domain.definition.Referentiel" reference="../../.."/>
+        </com.pentila.evalcomp.domain.definition.Domain>
+        <com.pentila.evalcomp.domain.definition.Domain>
+            <description>L’acquisition des « principaux éléments de mathématiques et de culture scientifique et
+                technologique » est évaluée dans le cadre de la résolution de problèmes mathématiques, scientifiques ou
+                technologiques inspirés de situations concrètes de la vie courante. Cette compétence met en jeu des
+                capacités (« rechercher, extraire et organiser l’information utile», « réaliser, manipuler, mesurer,
+                calculer, appliquer des consignes », « raisonner, argumenter, pratiquer une démarche expérimentale ou
+                technologique », « présenter la démarche suivie, les résultats obtenus, communiquer »), des
+                connaissances et des attitudes. La résolution d&apos;un problème ou la pratique d’une démarche
+                scientifique ou technologique doit être appréciée avec discernement : l’évaluation doit prendre appui
+                sur l’engagement de l’élève à mobiliser certaines ressources tout autant que sur la justesse du résultat
+                final. De même, on distinguera ce qui relève de la connaissance du vocabulaire mathématique ou de la
+                notion scientifique ou technologique et ce qui relève de la compréhension du concept et de son
+                utilisation. Comme pour les sept compétences, la validation de la compétence 3 du socle commun est une
+                décision collégiale éclairée par les évaluations menées dans diverses situations, par divers enseignants
+                et en particulier par les quatre professeurs concernés (physique-chimie, sciences de la vie et de la
+                Terre, technologie et mathématiques). Elle est réalisée à partir des évaluations habituellement
+                pratiquées à l&apos;occasion des devoirs surveillés ou des devoirs à la maison, mais aussi en situation
+                de classe, à travers la pratique d’une démarche d’investigation ou de projet, la résolution de
+                problèmes, la mise en œuvre d’une tâche complexe disciplinaire ou pluridisciplinaire. Les pratiques de
+                classe offrent des occasions privilégiées d’évaluation diversifiée permettant de varier les capacités
+                mises en jeu. L’évaluation à l’oral permet de lever certains obstacles comme l’impossibilité pour
+                certains élèves d’entrer dans un processus de rédaction alors qu’ils sont tout à fait capables de
+                raisonner et d’expliquer oralement leur raisonnement. Les tableaux ci-dessous indiquent pour les
+                capacités mises en œuvre lors de la résolution de problèmes mathématiques, scientifiques ou
+                technologiques le niveau attendu en fin de palier 3. Concernant le tableau des connaissances, celui-ci
+                ne dresse pas une liste exhaustive des connaissances mais signale comment elles doivent être mobilisées
+                dans des tâches et des problèmes utilisés pour contribuer à la validation de la compétence 3 du socle
+                commun. Ces exigences de fin de palier 3 correspondent à des connaissances abordées tout au long de la
+                scolarité au collège et donc évaluées pendant l’ensemble du cursus. Pour faciliter cette évaluation
+                progressive un tableau détaillé a été élaboré pour définir les exigences à chaque niveau de la 6ème à la
+                3ème. Il est publié dans les outils pour l’évaluation du socle commun sur
+                eduscol.education.fr/soclecommun.
+            </description>
+            <id>41</id>
+            <idRef>1</idRef>
+            <name>Principaux éléments de mathématiques et culture scientifique et technologique</name>
+            <descriptionLong></descriptionLong>
+            <competences/>
+            <domains>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>58</id>
+                    <idRef>1</idRef>
+                    <name>Environnement et développement durable</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève doit : - maîtriser des connaissances sur l’influence de l’Homme sur
+                                l’écosystème (gestion des ressources …) ; - justifier, grâce aux connaissances qu’il a
+                                acquises, les attitudes responsables à avoir en matière d’environnement et de
+                                développement durable.
+                            </description>
+                            <id>59</id>
+                            <idRef>1</idRef>
+                            <name>Mobiliser ses connaissances pour comprendre des questions liées à l&apos;environnement
+                                et au développement durable
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>47</id>
+                    <idRef>1</idRef>
+                    <name>Savoir utiliser des connaissances et des compétences mathématiques</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>En situation, l’élève est capable de : • mesurer une distance, un angle, une
+                                durée. • calculer une longueur, une aire, un volume, une durée, une vitesse. Les
+                                exigences concernant les données permettant le calcul sont les mêmes que celles de la
+                                partie « nombres et calcul ». • effectuer des conversions d’unités relatives aux
+                                grandeurs étudiées. Les exigences concernant les mesures données sont les mêmes que
+                                celles de la partie « nombres et calcul ».
+                            </description>
+                            <id>51</id>
+                            <idRef>1</idRef>
+                            <name>grandeurs et mesures : réaliser des mesures (longueurs, durées, …), calculer des
+                                valeurs (volumes, vitesses, …) en utilisant différentes unités
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>En situation, l’élève est capable de : • effectuer des constructions simples en
+                                utilisant : - des outils (instruments de dessin, logiciels) - des définitions, des
+                                propriétés (en acte et sans nécessité d’indiquer ou de justifier la méthode choisie).
+                                Les tracés doivent pouvoir être réalisés sur papier uni ou support informatique. •
+                                utiliser les propriétés d’une figure et les théorèmes de géométrie pour résoudre par
+                                déduction un problème simple. • raisonner, démontrer. Les supports sont des
+                                configurations immédiatement lisibles ; les raisonnements ne font pas systématiquement
+                                l’objet d’une mise en forme écrite. Il est seulement attendu des élèves qu’ils sachent
+                                utiliser en situation les propriétés. • interpréter une représentation plane d’un objet
+                                de l’espace, un patron.
+                            </description>
+                            <id>50</id>
+                            <idRef>1</idRef>
+                            <name>géométrie : connaître et représenter des figures géométriques et des objets de l&apos;espace.
+                                Utiliser leurs propriétés
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>En situation, l’élève est capable de : • reconnaître si deux grandeurs sont ou
+                                non proportionnelles et, dans l’affirmative : - déterminer et utiliser un coefficient de
+                                proportionnalité ; - utiliser les propriétés de linéarité ; - calculer une quatrième
+                                proportionnelle. • relier pourcentages et fractions. • appliquer un pourcentage. •
+                                calculer un pourcentage, une fréquence. • repérer un point sur une droite graduée, dans
+                                un plan muni d’un repère orthogonal. • lire des données présentées sous forme de
+                                tableaux, de graphiques. • effectuer, à la main ou avec un tableur- grapheur, des
+                                traitements de données. Les données seront, autant que possible, recueillies à l’issue
+                                d’expériences ou d’enquêtes. • utiliser un tableur-grapheur pour : - présenter des
+                                données ; - calculer des effectifs, des fréquences, des moyennes ; - créer un graphique
+                                ou un diagramme. • déterminer des probabilités dans des contextes familiers par : - un
+                                calcul exact lorsque la situation le permet ; - des fréquences observées
+                                expérimentalement dans le cas contraire.
+                            </description>
+                            <id>48</id>
+                            <idRef>1</idRef>
+                            <name>organisation et gestion de données : reconnaître des situations de proportionnalité,
+                                utiliser des pourcentages, des tableaux, des graphiques. Exploiter des données
+                                statistiques et aborder des situations simples de probabilité
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>En situation, l’élève est capable de : • traduire les données d’un exercice à
+                                l’aide de nombres relatifs. • mobiliser des écritures différentes d’un même nombre. •
+                                comparer des nombres. • choisir l’opération qui convient. • maîtriser de manière
+                                automatisée les tables de multiplication « dans un sens ou dans l’autre » pour effectuer
+                                un calcul mental simple, un calcul réfléchi, un calcul posé portant sur des nombres de
+                                taille raisonnable. • mener à bien un calcul instrumenté (calculatrice, tableur). •
+                                conduire un calcul littéral simple. • évaluer mentalement un ordre de grandeur du
+                                résultat avant de se lancer dans un calcul. • contrôler un résultat à l’aide d’une
+                                calculatrice ou d’un tableur.
+                            </description>
+                            <id>49</id>
+                            <idRef>1</idRef>
+                            <name>Nombres et calculs : connaître et utiliser les nombres entiers, décimaux et
+                                fractionnaires. Mener à bien un calcul : mental, à la main, à la calculatrice, avec un
+                                ordinateur
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>52</id>
+                    <idRef>1</idRef>
+                    <name>Savoir utiliser des connaissances dans divers domaines scientifiques</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L&apos;èlve doit : savoir que la maîtrise progressive de la matière et de l&apos;énergie
+                                permet à l&apos;Homme d&apos;élaborer une extrême diversité d&apos;objets techniques,
+                                dont il convient de connaître : - les conditions d&apos;utilisations, l&apos;impact sur
+                                l&apos;environnement, -le fonctionnement et les conditions de sécurité. Être familiarisé
+                                avec les techniques courantes, le traitement électronique et numérique de l&apos;information
+                                et les processus automatisés, à la base du fonctionnement d&apos;objets de la vie
+                                courante.
+                            </description>
+                            <id>57</id>
+                            <idRef>1</idRef>
+                            <name>Les objets techniques : analyse, conception et réalisation ; fonctionnement et
+                                conditions d&apos;utilisation
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève doit : • savoir que l’Univers est structuré : -du niveau microscopique
+                                (atomes, molécules, cellules du vivant) ; - au niveau macroscopique (planètes, étoiles,
+                                galaxies) ; • savoir que la planète Terre : - est un des objets du système solaire,
+                                lequel est gouverné par la gravitation ; - présente une structure et des phénomènes
+                                dynamiques internes et externes ; • savoir que l’Univers, la matière, les organismes
+                                vivant baignent dans une multitude d’interactions et de signaux, notamment lumineux, qui
+                                se propagent et agissent à distance.
+                            </description>
+                            <id>53</id>
+                            <idRef>1</idRef>
+                            <name>L&apos;univers et la terre : organisation de l&apos;univers ; structure et évolution
+                                au cours des temps géologiques de la Terre, phénomènes physiques
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève doit : • savoir que la matière se présente sous une multitude de formes
+                                : - sujettes à transformations et réactions ; - organisées du plus simple au plus
+                                complexe, de l’inerte au vivant.
+                            </description>
+                            <id>54</id>
+                            <idRef>1</idRef>
+                            <name>La matière : principales caractéristiques, états et transformations ; propriétés
+                                physiques et chimiques de la matière et des matériaux ; comportement électrique,
+                                interactions avec la lumière
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève doit : • savoir que l’énergie, perceptible dans le mouvement, peut
+                                revêtir des formes différentes et se transformer de l’une à l’autre ; connaître
+                                l’énergie électrique et son importance ; connaître les ressources en énergie fossile et
+                                les énergies renouvelables.
+                            </description>
+                            <id>56</id>
+                            <idRef>1</idRef>
+                            <name>L&apos;énergie : différentes formes d&apos;énergie, notamment l&apos;énergie
+                                électrique, et transformations d&apos;une forme à une autre
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>L’élève doit : • connaître les caractéristiques du vivant : - unité
+                                d’organisation (cellule) et biodiversité ; - modalités de la reproduction, du
+                                développement et du fonctionnement des organismes vivants ; - unité du vivant (ADN) et
+                                évolution des espèces ; • maîtriser des connaissances sur l’Homme : - unicité et
+                                diversité des individus qui composent l’espèce humaine (génétique, reproduction) ; -
+                                l’organisation et le fonctionnement du corps humain ; - le corps humain et ses
+                                possibilités).
+                            </description>
+                            <id>55</id>
+                            <idRef>1</idRef>
+                            <name>Le vivant : unité d&apos;organisation et diversité ; fonctionnement des organismes
+                                vivants, évolution des espèces, organisation et fonctionnement du corps humain
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+                <com.pentila.evalcomp.domain.definition.Domain>
+                    <description></description>
+                    <id>42</id>
+                    <idRef>1</idRef>
+                    <name>pratiquer une démarche scientifique et technoLogique, résoudre des problèmes</name>
+                    <descriptionLong></descriptionLong>
+                    <competences>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Observer, recenser des informations : extraire d&apos;un document, d&apos;un
+                                fait observé, les informations utiles. Décrire le comportement d&apos;une grandeur.
+                                Distinguer ce qui est établi de ce qui est à prouver ou à réfuter. Confronter l&apos;information
+                                disponible à ses connaissances. Organiser les informations pour les utiliser :
+                                reformuler, traduire, coder, décoder.
+                            </description>
+                            <id>43</id>
+                            <idRef>1</idRef>
+                            <name>Rechercher, extraire et organiser l&apos;information utile</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Présenter, sous une forme appropriée, une situation (avec une formulation
+                                adaptée), un questionnement, une démarche suivie, conjecture, une démarche (aboutie ou
+                                non), un algorithme, un résultat, une solution : obtenus, - au cours d’un débat ; - par
+                                un texte écrit ; l’aide d’un langage - à l’oral ; - par une représentation adapté
+                                (schéma, graphique, tableau, figure…) ; - dans un environnement informatique.
+                            </description>
+                            <id>46</id>
+                            <idRef>1</idRef>
+                            <name>Présenter la démarche suivie, les résultats obtenus, communiquer à l&apos;aide d&apos;un
+                                langage adapté
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Suivre un protocole, un programme (de construction ou de calcul). Mesurer :
+                                lire et estimer la précision d&apos;une mesure. Calculer, utiliser une formule. utiliser
+                                un instrument (de construction, de mesure ou de calcul), une machine, un dispositif.
+                                Construire en appliquant des consignes et en respectant des conventions, un schéma, un
+                                tableau, un dessin, un graphique, une figure géométrique.
+                            </description>
+                            <id>44</id>
+                            <idRef>1</idRef>
+                            <name>Réaliser, manipuler, mesurer, calculer, appliquer des consignes</name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                        <com.pentila.evalcomp.domain.definition.Competence>
+                            <description>Proposer une démarche de résolution : formuler un problème; comparer une
+                                situation à un modèle connu; émettre une hypothèse, une conjecture : proposer une
+                                méthode, un calcul, un algorithme, une procédure, une expérience (protocole), un outil
+                                adapté ;faire des essais ; choisir, adapter une méthode, un protocole. Exploiter les
+                                résultats : confronter le résultat obtenu au résultat attendu ; mettre en relation ;
+                                déduire ; valider ou invalider la conjecture, l’hypothèse.
+                            </description>
+                            <id>45</id>
+                            <idRef>1</idRef>
+                            <name>Raisonner, argumenter, pratiquer une démarche expérimentale ou technologique,
+                                démontrer
+                            </name>
+                            <descriptionLong></descriptionLong>
+                            <domain reference="../../.."/>
+                            <required>false</required>
+                        </com.pentila.evalcomp.domain.definition.Competence>
+                    </competences>
+                    <domains/>
+                    <parent class="com.pentila.evalcomp.domain.definition.Domain" reference="../../.."/>
+                </com.pentila.evalcomp.domain.definition.Domain>
+            </domains>
+            <parent class="com.pentila.evalcomp.domain.definition.Referentiel" reference="../../.."/>
+        </com.pentila.evalcomp.domain.definition.Domain>
+    </domains>
+</com.pentila.evalcomp.domain.definition.Referentiel>

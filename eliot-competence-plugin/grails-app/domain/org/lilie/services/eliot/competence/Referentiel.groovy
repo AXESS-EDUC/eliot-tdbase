@@ -42,13 +42,13 @@ class Referentiel {
 
   static hasMany = [
       allDomaine: Domaine,
-      idExterneList: ReferentielIdExterne   // TODO Voir si on ne peut pas définir une map plutôt qu'une collection ...
+      idExterneList: ReferentielIdExterne
   ]
 
   static mapping = {
     table 'competence.referentiel'
     id column: 'id', generator: 'sequence', params: [sequence: 'competence.referentiel_id_seq']
-    idExterneList cache: 'nonstrict-read-write'
+    idExterneList cache: 'nonstrict-read-write', fetch: 'join'
     allDomaine cache: 'nonstrict-read-write'
     version false
     cache 'nonstrict-read-write'
@@ -67,7 +67,6 @@ class Referentiel {
   }
 
   String getIdExterne(SourceReferentiel sourceReferentiel) {
-    // TODO Vérifier les requêtes générées
     return idExterneList.find { it.sourceReferentiel == sourceReferentiel }.idExterne
   }
 

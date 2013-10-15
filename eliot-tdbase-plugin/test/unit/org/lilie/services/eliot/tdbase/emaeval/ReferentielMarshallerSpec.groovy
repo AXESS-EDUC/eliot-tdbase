@@ -31,6 +31,8 @@ package org.lilie.services.eliot.tdbase.emaeval
 import groovy.util.slurpersupport.GPathResult
 import org.lilie.services.eliot.competence.ReferentielDto
 import org.lilie.services.eliot.competence.SourceReferentiel
+import org.lilie.services.eliot.tdbase.emaeval.xml.DomaineMarshaller
+import org.lilie.services.eliot.tdbase.emaeval.xml.ReferentielMarshaller
 import org.springframework.core.io.ClassPathResource
 import spock.lang.Specification
 

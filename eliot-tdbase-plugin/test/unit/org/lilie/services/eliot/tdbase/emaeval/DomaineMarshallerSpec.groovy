@@ -30,6 +30,8 @@ package org.lilie.services.eliot.tdbase.emaeval
 
 import org.lilie.services.eliot.competence.DomaineDto
 import org.lilie.services.eliot.competence.SourceReferentiel
+import org.lilie.services.eliot.tdbase.emaeval.xml.CompetenceMarshaller
+import org.lilie.services.eliot.tdbase.emaeval.xml.DomaineMarshaller
 import spock.lang.Specification
 
 /**

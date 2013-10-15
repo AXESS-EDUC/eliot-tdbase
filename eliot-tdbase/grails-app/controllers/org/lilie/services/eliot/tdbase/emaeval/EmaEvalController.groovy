@@ -32,7 +32,6 @@ import com.pentila.evalcomp.domain.definition.Referentiel as EmaEvalReferentiel
 import grails.converters.JSON
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.competence.Referentiel as EliotReferetiel
-import org.lilie.services.eliot.competence.SourceReferentiel
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class EmaEvalController {
@@ -64,6 +63,7 @@ class EmaEvalController {
    * @param emaEvalReferentielId l'identifiant EmaEval du référentiel à importer
    * @return
    */
+  @SuppressWarnings('CatchException') // Exception traitée sur la vue
   def importeReferentiel(Long emaEvalReferentielId) {
 
     try {
@@ -82,6 +82,7 @@ class EmaEvalController {
    * Vérifie que l'on peut bien récupérer le référentiel "Palier 3" par les WS
    * EmaEval
    */
+  @SuppressWarnings(['CatchException', 'ReturnNullFromCatchBlock']) // Exception traitée sur la vue
   def verifiePreconditionImportReferentielEmaEvalVersEliot() {
     EmaEvalReferentiel emaEvalReferentiel = null
 
@@ -119,14 +120,15 @@ class EmaEvalController {
    * @param eliotReferentielId
    * @return
    */
+  @SuppressWarnings(['CatchException', 'ReturnNullFromCatchBlock']) // Exception traitée sur la vue
   def verifieLiaisonEliotEmaEvalReferentiel(Long eliotReferentielId) {
     try {
       EliotReferetiel eliotReferentiel = EliotReferetiel.get(eliotReferentielId)
 
       EmaEvalReferentiel emaEvalReferentiel
       try {
-        emaEvalReferentiel = emaEvalService.findEmaEvalReferentielById(
-            Long.parseLong(eliotReferentiel.getIdExterne(SourceReferentiel.EMA_EVAL))
+        emaEvalReferentiel = emaEvalService.findEmaEvalReferentielByEliotReferentiel(
+            eliotReferentiel
         )
       }
       catch (Exception e) {

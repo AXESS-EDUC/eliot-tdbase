@@ -1,3 +1,4 @@
+import org.lilie.services.eliot.tdbase.emaeval.emawsconnector.ReferentielMarshaller
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformationHelper
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer
 import org.lilie.services.eliot.tice.migrations.LiquibaseWrapper
@@ -78,5 +79,8 @@ class EliotTdbasePluginGrailsPlugin {
     moodleQuizTransformer(MoodleQuizTransformer) {
       xmlTransformationHelper = ref("xmlTransformationHelper")
     }
+
+    // bean pour convertir les référentiels EmaEval en référentiels Eliot
+    emaEvalReferentielMarshaller(ReferentielMarshaller)
   }
 }

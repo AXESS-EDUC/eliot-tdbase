@@ -26,35 +26,53 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase.emaeval
+package org.lilie.services.eliot.tdbase.emaeval.xml
 
 import groovy.util.slurpersupport.GPathResult
-import org.lilie.services.eliot.competence.CompetenceDto
+import org.lilie.services.eliot.competence.DomaineDto
+import org.lilie.services.eliot.competence.ReferentielDto
 import org.lilie.services.eliot.competence.SourceReferentiel
 
 /**
- * Permet de parser une compétence au format XML EmaEval
+ * Permet de parser un référentiel au format XML EmaEval
  *
  * @author John Tranier
  */
-class CompetenceMarshaller {
-  private final static String TAG_NAME = "com.pentila.evalcomp.domain.definition.Competence"
+class ReferentielMarshaller {
 
-  CompetenceDto parse(GPathResult xmlCompetence) {
-    assert xmlCompetence.name() == TAG_NAME
+  private final static String TAG_NAME = "com.pentila.evalcomp.domain.definition.Referentiel"
 
-    String name = xmlCompetence.":name".text()
-    String idExterne = xmlCompetence.id.text()
-    String description = xmlCompetence.description.text()
+  DomaineMarshaller domaineMarshaller = new DomaineMarshaller()
+
+  ReferentielDto parse(GPathResult xmlReferentiel) {
+    assert xmlReferentiel.name() == TAG_NAME
+
+    String name = xmlReferentiel.":name".text()
+    String idExterne = xmlReferentiel.id.text()
+    String description = xmlReferentiel.description.text()
+    String version = xmlReferentiel.version.text()
+    String dateVersion = xmlReferentiel.dateVersion.text()
+    String urlReference = xmlReferentiel.reference.text()
 
     assert name
     assert idExterne
 
-    return new CompetenceDto(
+    List<DomaineDto> domaineDtoList = []
+    xmlReferentiel.domains.children().each { GPathResult xmlDomaine ->
+      domaineDtoList << domaineMarshaller.parse(xmlDomaine)
+    }
+
+    assert domaineDtoList
+
+    return new ReferentielDto(
         nom: name,
         description: description,
         idExterne: idExterne,
-        sourceReferentiel: SourceReferentiel.EMA_EVAL
+        sourceReferentiel: SourceReferentiel.EMA_EVAL,
+        version: version,
+        dateVersion: dateVersion,
+        urlReference: urlReference,
+        allDomaine: domaineDtoList
     )
   }
 }

@@ -30,16 +30,12 @@ package org.lilie.services.eliot.tdbase.emaeval
 
 import com.pentila.emawsconnector.manager.EvaluationObjectManager
 import com.pentila.emawsconnector.utils.EmaWSConnector
-import com.pentila.evalcomp.domain.definition.Competence
-import com.pentila.evalcomp.domain.definition.Domain
 import com.pentila.evalcomp.domain.definition.Referentiel as EmaEvalReferentiel
 import org.codehaus.groovy.grails.commons.GrailsApplication
-import org.lilie.services.eliot.competence.CompetenceDto
-import org.lilie.services.eliot.competence.DomaineDto
 import org.lilie.services.eliot.competence.Referentiel as EliotReferentiel
-import org.lilie.services.eliot.competence.ReferentielDto
 import org.lilie.services.eliot.competence.ReferentielService
 import org.lilie.services.eliot.competence.SourceReferentiel
+import org.lilie.services.eliot.tdbase.emaeval.emawsconnector.ReferentielMarshaller
 import org.springframework.transaction.annotation.Transactional
 
 /**
@@ -53,8 +49,12 @@ class EmaEvalService {
 
   final static REFERENTIEL_PALIER_3_NOM = "Palier 3"
 
+  @SuppressWarnings('GrailsStatelessService') // singleton
   GrailsApplication grailsApplication
   ReferentielService referentielService
+
+  @SuppressWarnings('GrailsStatelessService') // singleton
+  ReferentielMarshaller emaEvalReferentielMarshaller
 
   /**
    * Importe un référentiel obtenu par les WS d'EmaEval dans la base de référentiel d'Eliot
@@ -62,54 +62,8 @@ class EmaEvalService {
    */
   @Transactional
   void importeReferentielDansEliot(EmaEvalReferentiel emaEvalReferentiel) {
-    referentielService.importeReferentiel(parseReferentiel(emaEvalReferentiel))
-  }
-
-  /**
-   * Converti un référentiel EmaEval dans un ReferentielDto d'Eliot
-   * @param emaEvalReferentiel
-   * @return
-   */
-  private ReferentielDto parseReferentiel(EmaEvalReferentiel emaEvalReferentiel) {
-    return new ReferentielDto(
-        nom: emaEvalReferentiel.name,
-        description: emaEvalReferentiel.description,
-        idExterne: emaEvalReferentiel.id,
-        sourceReferentiel: SourceReferentiel.EMA_EVAL,
-        version: emaEvalReferentiel.version,
-        dateVersion: emaEvalReferentiel.dateVersion,
-        urlReference: emaEvalReferentiel.reference,
-        allDomaine: emaEvalReferentiel.domains.collect { parseDomaine(it) }
-    )
-  }
-
-  /**
-   * Converti un Domain d'EmaEval dans un DomainDto d'Eliot
-   * @param emaEvalDomain
-   * @return
-   */
-  private DomaineDto parseDomaine(Domain emaEvalDomain) {
-    return new DomaineDto(
-        nom: emaEvalDomain.name,
-        description: emaEvalDomain.description,
-        idExterne: emaEvalDomain.id,
-        sourceReferentiel: SourceReferentiel.EMA_EVAL,
-        allSousDomaine: emaEvalDomain.domains.collect { parseDomaine(it) },
-        allCompetence: emaEvalDomain.competences.collect { parseCompetence(it) }
-    )
-  }
-
-  /**
-   * Converti une Competence d'EmaEval dans un CompetenceDto d'Eliot
-   * @param emaEvalCompetence
-   * @return
-   */
-  private CompetenceDto parseCompetence(Competence emaEvalCompetence) {
-    return new CompetenceDto(
-        nom: emaEvalCompetence.name,
-        description: emaEvalCompetence.description,
-        idExterne: emaEvalCompetence.id,
-        sourceReferentiel: SourceReferentiel.EMA_EVAL
+    referentielService.importeReferentiel(
+        emaEvalReferentielMarshaller.parseReferentiel(emaEvalReferentiel)
     )
   }
 
@@ -117,7 +71,15 @@ class EmaEvalService {
    * @return Le référentiel "Palier 3" dans la base de référentiel d'Eliot
    */
   EliotReferentiel getEliotReferentielPalier3() {
-    return EliotReferentiel.findByNom(REFERENTIEL_PALIER_3_NOM) // TODO il faut fetcher l'idExterne
+
+    EliotReferentiel referentiel = (EliotReferentiel)EliotReferentiel.withCriteria(uniqueResult: true) {
+      eq('nom', REFERENTIEL_PALIER_3_NOM)
+      idExterneList {
+        eq('sourceReferentiel', SourceReferentiel.EMA_EVAL)
+      }
+    }
+
+    return referentiel
   }
 
   /**
@@ -138,10 +100,21 @@ class EmaEvalService {
     }
   }
 
+  /**
+   * Récupère, par webservice, un référentiel EmaEval correspondant à un référentiel Eliot
+   * @param eliotReferentiel
+   * @return
+   */
   EmaEvalReferentiel findEmaEvalReferentielByEliotReferentiel(EliotReferentiel eliotReferentiel) {
-    return findEmaEvalReferentielById(
-        Long.parseLong(eliotReferentiel.getIdExterne(SourceReferentiel.EMA_EVAL))
-    )
+    String idExterne = eliotReferentiel.getIdExterne(SourceReferentiel.EMA_EVAL)
+    if(!idExterne) {
+      throw new IllegalStateException(
+          "Le référentiel Eliot ${eliotReferentiel.id} n'est pas rattaché à un identifiant " +
+              "externe pour la source EmaEval"
+      )
+    }
+
+    return findEmaEvalReferentielById(Long.parseLong(idExterne))
   }
 
   /**
