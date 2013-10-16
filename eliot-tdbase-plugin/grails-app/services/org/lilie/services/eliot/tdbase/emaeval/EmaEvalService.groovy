@@ -86,7 +86,7 @@ class EmaEvalService {
 
     // On réinitialise l'état de la liaison pour qu'il puisse être déterminé à nouveau
     // (la liaison peut devenir opérationnelle après un import)
-    liaisonReady = null
+    cacheLiaisonReady = null
   }
 
   /**

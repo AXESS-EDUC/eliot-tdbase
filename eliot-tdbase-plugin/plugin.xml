@@ -6,6 +6,10 @@
   <type>EliotTdbasePluginGrailsPlugin</type>
   <resources>
     <resource>spring.resources</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.emawsconnector.ReferentielMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.xml.CompetenceMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.xml.DomaineMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.xml.ReferentielMarshaller</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.ExportHelper</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementDataStore</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementDatastoreMarshaller</resource>
@@ -58,6 +62,7 @@
     <resource>org.lilie.services.eliot.tdbase.ReponseSpecificationService</resource>
     <resource>org.lilie.services.eliot.tdbase.Specification</resource>
     <resource>org.lilie.services.eliot.tdbase.SujetService</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.EmaEvalService</resource>
     <resource>org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement</resource>
     <resource>org.lilie.services.eliot.tdbase.impl.associate.QuestionAssociateSpecificationService</resource>
     <resource>org.lilie.services.eliot.tdbase.impl.associate.ReponseAssociateSpecificationService</resource>
@@ -130,8 +135,8 @@
   </repositories>
   <dependencies>
     <compile>
-      <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.2' />
       <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
+      <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.2' />
       <dependency group='org.apache.maven.wagon' name='wagon-webdav' version='1.0-beta-2' />
     </compile>
     <runtime>
@@ -144,26 +149,26 @@
   </dependencies>
   <plugins>
     <test>
-      <plugin group='org.grails.plugins' name='code-coverage' version='1.2.5' />
       <plugin group='org.grails.plugins' name='spock' version='0.7' />
+      <plugin group='org.grails.plugins' name='code-coverage' version='1.2.5' />
     </test>
     <compile>
-      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
       <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
-      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
       <plugin group='org.grails.plugins' name='mail' version='1.0' />
-      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
       <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
+      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
       <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
     </compile>
     <runtime>
-      <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
       <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
+      <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
     </runtime>
     <build>
-      <plugin group='org.grails.plugins' name='rest-client-builder' version='1.0.2' />
-      <plugin group='org.grails.plugins' name='tomcat' version='2.1.1' />
       <plugin group='org.grails.plugins' name='release' version='2.0.2' />
+      <plugin group='org.grails.plugins' name='tomcat' version='2.1.1' />
+      <plugin group='org.grails.plugins' name='rest-client-builder' version='1.0.2' />
     </build>
   </plugins>
   <runtimePluginRequirements />
