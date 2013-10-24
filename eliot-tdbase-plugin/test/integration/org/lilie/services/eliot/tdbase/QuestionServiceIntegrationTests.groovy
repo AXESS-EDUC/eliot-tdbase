@@ -44,7 +44,6 @@ import org.lilie.services.eliot.tice.Publication
 class QuestionServiceIntegrationTests extends GroovyTestCase {
 
   private static final String SUJET_1_TITRE = "Sujet test 1"
-  private static final String SUJET_2_TITRE = "Sujet test 2"
 
 
   Utilisateur utilisateur1

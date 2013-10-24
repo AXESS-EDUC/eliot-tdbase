@@ -52,5 +52,7 @@
 
     <include file="migrations/schema.tdbase/changelog-20131015-TDB-50.xml"/>
 
+    <include file="migrations/schema.tdbase/changelog-20131023-TDB-34.xml"/>
+
     <include file="migrations/schema.tdbase/changelog-20131031-TDB-51.xml"/>
 </databaseChangeLog>

@@ -80,10 +80,12 @@ class Sujet implements Artefact {
 
   Integer rangInsertion
 
-  static transients = ['rangInsertion',
-          'estUnExercice',
-          'questionComposite',
-          'estInvariant']
+  static transients = [
+      'rangInsertion',
+      'estUnExercice',
+      'questionComposite',
+      'estInvariant'
+  ]
 
   static constraints = {
     titre(blank: false, nullable: false)
@@ -155,7 +157,7 @@ class Sujet implements Artefact {
    */
   Float calculNoteMax() {
     def res = 0
-    questionsSequences.each {SujetSequenceQuestions sujetQuest ->
+    questionsSequences.each { SujetSequenceQuestions sujetQuest ->
       if (sujetQuest.question.estComposite()) {
         res += sujetQuest.question.exercice.calculNoteMax()
       } else {
@@ -221,5 +223,33 @@ class Sujet implements Artefact {
     return nbSeances == 0
   }
 
+  /**
+   * Vrai si ce sujet contient des questions associées à des compétences
+   * @return
+   */
+  boolean hasCompetence() {
+    def c1 = SujetSequenceQuestions.createCriteria()
+    def nbQuestionAvecCompetence = c1.count {
+      eq 'sujet', this
+      'question' {
+        isNotEmpty 'allQuestionCompetence'
+      }
+    }
 
+    def c2 = SujetSequenceQuestions.createCriteria()
+    def nbExerciceAvecCompetence = c2.count {
+      eq 'sujet', this
+      'question' {
+        'exercice' {
+          'questionsSequences' {
+            'question' {
+              isNotEmpty 'allQuestionCompetence'
+            }
+          }
+        }
+      }
+    }
+
+    return nbQuestionAvecCompetence + nbExerciceAvecCompetence > 0
+  }
 }
