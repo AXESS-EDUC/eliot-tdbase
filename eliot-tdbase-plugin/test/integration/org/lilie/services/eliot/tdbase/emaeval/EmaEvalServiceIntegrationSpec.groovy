@@ -28,6 +28,10 @@
 
 package org.lilie.services.eliot.tdbase.emaeval
 
+import com.pentila.emawsconnector.manager.EvaluationObjectManager
+import com.pentila.emawsconnector.manager.MethodManager
+import com.pentila.emawsconnector.manager.PlanManager
+import com.pentila.emawsconnector.manager.WorkFlowManager
 import grails.plugin.spock.IntegrationSpec
 import groovy.util.slurpersupport.GPathResult
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
@@ -48,10 +52,14 @@ import spock.lang.IgnoreIf
  */
 class EmaEvalServiceIntegrationSpec extends IntegrationSpec {
   EmaEvalService emaEvalService
+  EmaEvalFactoryService emaEvalFactoryService
   ReferentielService referentielService
+  String emaEvalUserLogin = "100000000000001027"
+  EmaEvalProprieteService emaEvalProprieteService
+
 
   def setup() {
-    importeReferentielPalier3()
+
   }
 
   private void importeReferentielPalier3() {
@@ -66,40 +74,140 @@ class EmaEvalServiceIntegrationSpec extends IntegrationSpec {
     assert Referentiel.findByNom("Palier 3")
   }
 
-  def "testGetEliotReferentielPalier3"() {
+  def "test findEliotReferentiel"() {
+    given:
+    importeReferentielPalier3()
+
     when:
-    Referentiel referentiel = emaEvalService.eliotReferentielPalier3
+    Referentiel referentiel = emaEvalService.findEliotReferentiel()
 
     then:
-    referentiel.nom == EmaEvalService.REFERENTIEL_PALIER_3_NOM
+    referentiel.nom == emaEvalService.defautReferentielNom
     Long.parseLong(referentiel.getIdExterne(SourceReferentiel.EMA_EVAL)) == 1
   }
 
   @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
-  def "testFindEmaEvalReferentielByName"() {
+  def "test FindEmaEvalReferentielByName"() {
+    given:
+    EvaluationObjectManager evaluationObjectManager =
+      emaEvalFactoryService.getEvaluationObjectManager(
+          emaEvalFactoryService.creeEmaWSConnector(emaEvalUserLogin)
+      )
+
     expect:
-    !emaEvalService.findEmaEvalReferentielByName('Inexistant')
+    !emaEvalService.findEmaEvalReferentielByName(evaluationObjectManager, 'Inexistant')
+
     com.pentila.evalcomp.domain.definition.Referentiel emaEvalReferentiel =
-      emaEvalService.findEmaEvalReferentielByName(EmaEvalService.REFERENTIEL_PALIER_3_NOM)
-    emaEvalReferentiel.name == EmaEvalService.REFERENTIEL_PALIER_3_NOM
+      emaEvalService.findEmaEvalReferentielByName(
+          evaluationObjectManager,
+          emaEvalService.defautReferentielNom
+      )
+    emaEvalReferentiel.name == emaEvalService.defautReferentielNom
   }
 
   @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
-  def "testFindEmaEvalReferentielByEliotReferentiel"() {
+  def "test findEmaEvalReferentielByEliotReferentiel"() {
     given:
-    Referentiel referentiel = emaEvalService.eliotReferentielPalier3
+    importeReferentielPalier3()
+    EvaluationObjectManager evaluationObjectManager =
+      emaEvalFactoryService.getEvaluationObjectManager(
+          emaEvalFactoryService.creeEmaWSConnector(emaEvalUserLogin)
+      )
+    Referentiel referentiel = emaEvalService.findEliotReferentiel()
 
     expect:
-    emaEvalService.findEmaEvalReferentielByEliotReferentiel(referentiel).name == referentiel.nom
+    emaEvalService.findEmaEvalReferentielByEliotReferentiel(
+        evaluationObjectManager,
+        referentiel
+    ).name == referentiel.nom
   }
 
   @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
-  def "testFindEmaEvalReferentielById"() {
+  def "test findEmaEvalReferentielById"() {
     given:
-    Referentiel referentiel = emaEvalService.eliotReferentielPalier3
+    importeReferentielPalier3()
+    EvaluationObjectManager evaluationObjectManager =
+      emaEvalFactoryService.getEvaluationObjectManager(
+          emaEvalFactoryService.creeEmaWSConnector(emaEvalUserLogin)
+      )
+    Referentiel referentiel = emaEvalService.findEliotReferentiel()
     Long id = Long.parseLong(referentiel.getIdExterne(SourceReferentiel.EMA_EVAL))
 
     expect:
-    emaEvalService.findEmaEvalReferentielById(id).name == referentiel.nom
+    emaEvalService.findEmaEvalReferentielById(
+        evaluationObjectManager,
+        id
+    ).name == referentiel.nom
+  }
+
+  @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
+  def "test importeReferentielFromEmaEval"() {
+    given:
+    EvaluationObjectManager evaluationObjectManager =
+      emaEvalFactoryService.getEvaluationObjectManager(
+          emaEvalFactoryService.creeEmaWSConnector(emaEvalUserLogin)
+      )
+
+    when:
+    emaEvalService.importeReferentielFromEmaEval(evaluationObjectManager)
+
+    then:
+    Propriete propriete = emaEvalProprieteService.getPropriete(ProprieteId.REFERENTIEL_STATUT)
+    propriete.valeur == "OK"
+    emaEvalService.initialiseOuVerifieReferentiel()
+  }
+
+  @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
+  def "test creePlanDansEmaEval"() {
+    given:
+    PlanManager planManager = emaEvalFactoryService.getPlanManager(
+        emaEvalFactoryService.creeEmaWSConnector(emaEvalUserLogin)
+    )
+
+    when:
+    emaEvalService.creePlanDansEmaEval(planManager)
+
+    then:
+    Propriete propriete = emaEvalProprieteService.getPropriete(
+        ProprieteId.PLAN_TDBASE_ID
+    )
+    propriete.valeur
+    emaEvalService.initialiseOuVerifiePlan()
+  }
+
+  @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
+  def "test importeScenarioFromEmaEval"() {
+    given:
+    WorkFlowManager workFlowManager = emaEvalFactoryService.getWorkFlowManager(
+        emaEvalFactoryService.creeEmaWSConnector(emaEvalUserLogin)
+    )
+
+    when:
+    emaEvalService.importeScenarioFromEmaEval(workFlowManager)
+
+    then:
+    Propriete propriete = emaEvalProprieteService.getPropriete(
+        ProprieteId.SCENARIO_EVALUATION_DIRECTE_ID
+    )
+    propriete.valeur
+    emaEvalService.initialiseOuVerifieScenario()
+  }
+
+  @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
+  def "test importeMethodeEvaluationFromEmaEval"() {
+    given:
+    MethodManager methodManager = emaEvalFactoryService.getMethodManager(
+        emaEvalFactoryService.creeEmaWSConnector(emaEvalUserLogin)
+    )
+
+    when:
+    emaEvalService.importeMethodeEvaluationFromEmaEval(methodManager)
+
+    then:
+    Propriete propriete = emaEvalProprieteService.getPropriete(
+        ProprieteId.METHODE_EVALUATION_BOOLEENNE_ID
+    )
+    propriete.valeur
+    emaEvalService.initialiseOuVerifieMethodeEvaluation()
   }
 }

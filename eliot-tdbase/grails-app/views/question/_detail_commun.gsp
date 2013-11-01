@@ -38,7 +38,7 @@
       <g:render
           template="/question/${question.type.code}/${question.type.code}Detail"
           model="[question: question]"/>
-      <g:if test="${question.allQuestionCompetence}">
+      <g:if test="${referentielCompetence && question.allQuestionCompetence}">
         <g:render
             template="/question/detail_competence"
             model="[referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList]" />

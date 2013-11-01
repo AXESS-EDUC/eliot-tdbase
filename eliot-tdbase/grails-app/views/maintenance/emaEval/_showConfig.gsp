@@ -27,19 +27,47 @@
   --}%
 <h2>Configuration</h2>
 
-<table class="portal-default_table">
+<table class="portal-default_table" style="width: 95%;">
   <tr>
     <td class="inspect_field"><code>eliot.interfacage.emaeval.actif</code></td>
-    %{-- TODO CSS --}%
     <td style="text-align: left">
       ${config.eliot.interfacage.emaeval.actif.toString()}
     </td>
   </tr>
   <tr>
     <td class="inspect_field"><code>eliot.interfacage.emaeval.url</code></td>
-    %{-- TODO CSS--}%
     <td style="text-align: left;">
       ${config.eliot.interfacage.emaeval.url}
+    </td>
+  </tr>
+  <tr>
+    <td class="inspect_field"><code>eliot.interfacage.emaeval.referentiel.nom</code></td>
+    <td style="text-align: left;">
+      ${config.eliot.interfacage.emaeval.referentiel.nom}
+    </td>
+  </tr>
+  <tr>
+    <td class="inspect_field"><code>eliot.interfacage.emaeval.plan.nom</code></td>
+    <td style="text-align: left;">
+      ${config.eliot.interfacage.emaeval.plan.nom}
+    </td>
+  </tr>
+  <tr>
+    <td class="inspect_field"><code>eliot.interfacage.emaeval.scenario.nom</code></td>
+    <td style="text-align: left;">
+      ${config.eliot.interfacage.emaeval.scenario.nom}
+    </td>
+  </tr>
+  <tr>
+    <td class="inspect_field"><code>eliot.interfacage.emaeval.methodeEvaluation.nom</code></td>
+    <td style="text-align: left;">
+      ${config.eliot.interfacage.emaeval.methodeEvaluation.nom}
+    </td>
+  </tr>
+  <tr>
+    <td class="inspect_field"><code>config.eliot.interfacage.emaeval.admin.login</code></td>
+    <td style="text-align: left;">
+      ${config.eliot.interfacage.emaeval.admin.login}
     </td>
   </tr>
 </table>

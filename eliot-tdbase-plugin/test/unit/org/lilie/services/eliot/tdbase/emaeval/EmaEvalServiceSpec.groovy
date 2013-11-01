@@ -28,115 +28,56 @@
 
 package org.lilie.services.eliot.tdbase.emaeval
 
-import com.pentila.evalcomp.domain.definition.Referentiel as EmaEvalReferentiel
-import grails.plugin.spock.UnitSpec
-import org.lilie.services.eliot.competence.Referentiel as EliotReferentiel
-import org.lilie.services.eliot.competence.ReferentielDto
-import org.lilie.services.eliot.competence.ReferentielIdExterne
+import grails.test.mixin.TestFor
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.competence.ReferentielService
-import org.lilie.services.eliot.competence.SourceReferentiel
-import org.lilie.services.eliot.tdbase.emaeval.emawsconnector.ReferentielMarshaller
+import spock.lang.Specification
 
 /**
  * @author John Tranier
  */
-class EmaEvalServiceSpec extends UnitSpec {
+@TestFor(EmaEvalService)
+class EmaEvalServiceSpec extends Specification {
+
   EmaEvalService emaEvalService
   ReferentielService referentielService
-  ReferentielMarshaller referentielMarshaller
+  EmaEvalProprieteService emaEvalProprieteService
+  EmaEvalFactoryService emaEvalFactoryService
 
-  void setup() {
-    referentielMarshaller = Mock(ReferentielMarshaller)
+  def setup() {
     referentielService = Mock(ReferentielService)
+    emaEvalProprieteService = Mock(EmaEvalProprieteService)
+    emaEvalFactoryService = Mock(EmaEvalFactoryService)
+
     emaEvalService = new EmaEvalService(
         referentielService: referentielService,
-        emaEvalReferentielMarshaller: referentielMarshaller
+        emaEvalProprieteService: emaEvalProprieteService,
+        emaEvalFactoryService: emaEvalFactoryService
     )
+
+    def config = new ConfigObject()
+    config.eliot.interfacage.emaeval.actif = true
+    config.eliot.interfacage.emaeval.referentiel.nom = "referentiel"
+    config.eliot.interfacage.emaeval.plan.nom = "plan"
+    config.eliot.interfacage.emaeval.scenario.nom = "scenario"
+    config.eliot.interfacage.emaeval.methodeEvaluation.nom = "méthode"
+
+    emaEvalService.grailsApplication = [getConfig: {config}] as GrailsApplication
   }
 
-  def "testImporteReferentielDansEliot"() {
+  def "test isLiaisonReady"(boolean actif) {
     given:
-    EmaEvalReferentiel emaEvalReferentiel = new EmaEvalReferentiel()
-    ReferentielDto eliotReferentielDto = new ReferentielDto()
+    emaEvalService.grailsApplication.config.eliot.interfacage.emaeval.actif = actif
+    emaEvalProprieteService.getPropriete(ProprieteId.REFERENTIEL_STATUT) >> new Propriete(valeur: "OK")
+    emaEvalProprieteService.getPropriete(ProprieteId.PLAN_TDBASE_ID) >> new Propriete(valeur: "1")
+    emaEvalProprieteService.getPropriete(ProprieteId.SCENARIO_EVALUATION_DIRECTE_ID) >> new Propriete(valeur: "2")
+    emaEvalProprieteService.getPropriete(ProprieteId.METHODE_EVALUATION_BOOLEENNE_ID) >> new Propriete(valeur: "3")
 
-    referentielMarshaller.parseReferentiel(emaEvalReferentiel) >> eliotReferentielDto
+    expect:
+    emaEvalService.isLiaisonReady() == actif
 
-    when:
-    emaEvalService.importeReferentielDansEliot(emaEvalReferentiel)
-
-    then:
-    1 * referentielService.importeReferentiel(eliotReferentielDto)
+    where:
+    actif << [true, false]
   }
 
-  def "testVerifieCorrespondanceReferentiel - OK"() {
-    given:
-    String nom = 'nom'
-    String version = 'version'
-
-    EliotReferentiel eliotReferentiel = new EliotReferentiel(
-        nom: nom,
-        referentielVersion: version
-    )
-
-    EmaEvalReferentiel emaEvalReferentiel = new EmaEvalReferentiel(
-        name: nom,
-        version: version
-    )
-
-    when:
-    emaEvalService.verifieCorrespondanceReferentiel(eliotReferentiel, emaEvalReferentiel)
-
-    then:
-    notThrown(Throwable)
-  }
-
-  def "testVerifieCorrespondanceReferentiel - erreur : noms différents"() {
-    given:
-    String nom = 'nom'
-    String version = 'version'
-
-    EliotReferentiel eliotReferentiel = new EliotReferentiel(
-        nom: nom,
-        referentielVersion: version,
-        idExterneList: [
-            new ReferentielIdExterne(
-                idExterne: '1',
-                sourceReferentiel: SourceReferentiel.EMA_EVAL
-            )
-        ] as Set
-    )
-
-    EmaEvalReferentiel emaEvalReferentiel = new EmaEvalReferentiel(
-        name: nom + ' modifié',
-        version: version
-    )
-
-    when:
-    emaEvalService.verifieCorrespondanceReferentiel(eliotReferentiel, emaEvalReferentiel)
-
-    then:
-    thrown(IllegalStateException)
-  }
-
-  def "testVerifieCorrespondanceReferentiel - erreur : versions différentes"() {
-    given:
-    String nom = 'nom'
-    String version = 'version'
-
-    EliotReferentiel eliotReferentiel = new EliotReferentiel(
-        nom: nom,
-        referentielVersion: version
-    )
-
-    EmaEvalReferentiel emaEvalReferentiel = new EmaEvalReferentiel(
-        name: nom,
-        version: version + ' modifiée'
-    )
-
-    when:
-    emaEvalService.verifieCorrespondanceReferentiel(eliotReferentiel, emaEvalReferentiel)
-
-    then:
-    thrown(IllegalStateException)
-  }
 }

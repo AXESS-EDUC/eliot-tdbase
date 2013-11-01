@@ -28,12 +28,13 @@
 
 package org.lilie.services.eliot.tdbase.emaeval
 
-import com.pentila.evalcomp.domain.definition.Referentiel as EmaEvalReferentiel
 import grails.converters.JSON
 import org.codehaus.groovy.grails.commons.GrailsApplication
-import org.lilie.services.eliot.competence.Referentiel as EliotReferetiel
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
+/**
+ * @author John Tranier
+ */
 class EmaEvalController {
 
   static defaultAction = "admin"
@@ -42,140 +43,143 @@ class EmaEvalController {
   EmaEvalService emaEvalService
   GrailsApplication grailsApplication
 
+  /**
+   * Page d'administration de la liaison TDBase / EmaEval
+   * Cette page permet de consulter la configuration de la liaison, d'initialiser la liaison, et de vérifier son
+   * bon fonctionnement par la suite
+   * @return la vue /maintenance/emaEval/admin
+   */
   def admin() {
     breadcrumpsService.manageBreadcrumps(
         params,
-        message(code: message(code: message(code: "maintenance.emaeval.title")))
+        (String)message(code: message(code: message(code: "maintenance.emaeval.title")))
     )
 
     render(
         view: '/maintenance/emaEval/admin',
         model: [
             config: grailsApplication.config,
-            eliotReferentiel: emaEvalService.eliotReferentielPalier3,
             liens: breadcrumpsService.liens
         ]
     )
   }
 
   /**
-   * Importe un référentiel depuis EmaEval dans Eliot
-   * @param emaEvalReferentielId l'identifiant EmaEval du référentiel à importer
-   * @return
+   * Action permettant d'initialiser le référentiel de compétence pour la liaison TD Base / EmaEval, puis de
+   * vérifier la cohérence des référentiels par la suite
+   *
+   * L'initialisation consiste en :
+   *  - L'import du référentiel dans Eliot
+   *  - Le stockage de l'identifiant EmaEval du référentiel dans la base eliot-scolarite (emaeval_interface.propriete)
+   *
+   * La vérification du référentiel consiste en :
+   *  - Vérifier que le référentiel existe dans la base eliot-scolarite
+   *  - Vérifier que le référentiel existe dans EmaEval
+   *  - Vérifier que les 2 référentiels portent le même nom et la même version
+   *
+   * @return réponse JSON indiquant si le référentiel est opérationnel (success) et la stacktrace d'une erreur le cas
+   * échéant
    */
-  @SuppressWarnings('CatchException') // Exception traitée sur la vue
-  def importeReferentiel(Long emaEvalReferentielId) {
+  @SuppressWarnings('CatchThrowable') // Les exceptions sont rendues sur la page
+  def initialiseOuVerifieReferentiel() {
+    boolean success = true
+    Throwable error = null
 
     try {
-      emaEvalService.importeReferentielDansEliot(
-          emaEvalService.findEmaEvalReferentielById(emaEvalReferentielId)
-      )
-
-      redirect(action: 'admin')
+      emaEvalService.initialiseOuVerifieReferentiel()
     }
-    catch (Exception e) {
-      render(view: '/maintenance/emaEval/erreurImport', model: [exception: e])
-    }
-  }
-
-  /**
-   * Vérifie que l'on peut bien récupérer le référentiel "Palier 3" par les WS
-   * EmaEval
-   */
-  @SuppressWarnings(['CatchException', 'ReturnNullFromCatchBlock']) // Exception traitée sur la vue
-  def verifiePreconditionImportReferentielEmaEvalVersEliot() {
-    EmaEvalReferentiel emaEvalReferentiel = null
-
-    try {
-      emaEvalReferentiel = emaEvalService.findEmaEvalReferentielByName(
-          EmaEvalService.REFERENTIEL_PALIER_3_NOM
-      )
-    }
-    catch (Exception e) {
-      log.warn("La connexion à EmaEval a échouée", e)
-
-      render([
-          connexionEtablie: false,
-          exception: g.renderStackTrace(exception: e)
-      ] as JSON)
-      return
-    }
-
-    if (!emaEvalReferentiel) {
-      render([
-          connexionEtablie: true,
-          emaEvalReferentielId: null
-      ] as JSON)
-      return
+    catch (Throwable e) {
+      log.warn("Erreur durant l'initialisation ou la vérification du référentiel", e)
+      success = false
+      error = e
     }
 
     render([
-        connexionEtablie: true,
-        emaEvalReferentielId: emaEvalReferentiel.id
+        success: success,
+        error: g.renderStackTrace(exception: error)
     ] as JSON)
   }
 
   /**
-   * Vérifie que la correspondance entre un référentiel Eliot et son homologue dans EmaEval
-   * @param eliotReferentielId
-   * @return
+   * Action permettant d'initialiser le plan, puis de vérifier son existence par la suite
+   * L'initialisation du plan consiste en la création d'un plan spécifique à la liaison TD Base / EmaEval et le
+   * stockage de son identifiant EmaEval dans la base eliot-scolarite (emaeval_interface.propriete)
+   * @return réponse JSON indiquant si le plan est opérationnel (success) et la stacktrace d'une erreur le cas
+   * échéant
    */
-  @SuppressWarnings(['CatchException', 'ReturnNullFromCatchBlock']) // Exception traitée sur la vue
-  def verifieLiaisonEliotEmaEvalReferentiel(Long eliotReferentielId) {
+  @SuppressWarnings('CatchThrowable') // Les exceptions sont rendues sur la page
+  def initialiseOuVerifiePlan() {
+
+    boolean success = true
+    Throwable error = null
+
     try {
-      EliotReferetiel eliotReferentiel = EliotReferetiel.get(eliotReferentielId)
-
-      EmaEvalReferentiel emaEvalReferentiel
-      try {
-        emaEvalReferentiel = emaEvalService.findEmaEvalReferentielByEliotReferentiel(
-            eliotReferentiel
-        )
-      }
-      catch (Exception e) {
-        log.warn("La connexion à EmaEval a échouée", e)
-
-        render([
-            connexionEtablie: false,
-            exception: g.renderStackTrace(exception: e)
-        ] as JSON)
-        return
-      }
-
-      if (!emaEvalReferentiel) {
-        render([
-            connexionEtablie: true,
-            emaEvalReferentiel: false
-        ] as JSON)
-        return
-      }
-
-      try {
-        emaEvalService.verifieCorrespondanceReferentiel(
-            eliotReferentiel,
-            emaEvalReferentiel
-        )
-      }
-      catch (Exception e) {
-        render([
-            connexionEtablie: true,
-            emaEvalReferentiel: true,
-            exception: g.renderStackTrace(exception: e)
-        ] as JSON)
-        return
-      }
-
-      render([
-          connexionEtablie: true,
-          emaEvalReferentiel: true,
-          coherenceReferentiel: true
-      ] as JSON)
-      return
+      emaEvalService.initialiseOuVerifiePlan()
     }
-    catch (Exception e) {
-      render([
-          exception: e
-      ])
+    catch (Throwable e) {
+      log.warn("Erreur durant l'initialisation ou la vérification du plan", e)
+      success = false
+      error = e
     }
+
+    render([
+        success: success,
+        error: g.renderStackTrace(exception: error)
+    ] as JSON)
   }
 
+  /**
+   * Action permettant d'initialiser le scénario, puis de vérifier son existence par la suite
+   * L'initialisation du scenario consiste en la récupération de son identifiant EmaEval et son stockage
+   * dans la base eliot-scolarite (emaeval_interface.propriete)
+   * @return réponse JSON indiquant si le scenario est opérationnel (success) et la stacktrace d'une erreur le cas
+   * échéant
+   */
+  @SuppressWarnings('CatchThrowable') // Les exceptions sont rendues sur la page
+  def initialiseOuVerifieScenario() {
+    boolean success = true
+    Throwable error = null
+
+    try {
+      emaEvalService.initialiseOuVerifieScenario()
+    }
+    catch (Throwable e) {
+      log.warn("Erreur durant l'initialisation ou la vérification du scénario", e)
+      success = false
+      error = e
+    }
+
+    render([
+        success: success,
+        error: g.renderStackTrace(exception: error)
+    ] as JSON)
+  }
+
+  /**
+   * Action permettant d'initialiser la méthode d'évaluation, puis de vérifier son existence par la suite
+   * L'initialisation de la méthode d'évaluation consiste en la récupération de son identifiant EmaEval et son
+   * stockage dans la base eliot-scolarite (emaeval_interface.propriete)
+   * @return réponse JSON indiquant si la méthode d'évaluation est opérationnels (success) et la stacktrace
+   * d'une erreur le cas échéant
+   */
+  @SuppressWarnings('CatchThrowable') // Les exceptions sont rendues sur la page
+  def initialiseOuVerifieMethodeEvaluation() {
+    boolean success = true
+    Throwable error = null
+
+
+    try {
+      emaEvalService.initialiseOuVerifieMethodeEvaluation()
+    }
+    catch (Throwable e) {
+      log.warn("Erreur durant l'initialisation ou la vérification de la méthode d'évaluation", e)
+      success = false
+      error = e
+    }
+
+    render([
+        success: success,
+        error: g.renderStackTrace(exception: error)
+    ] as JSON)
+  }
 }

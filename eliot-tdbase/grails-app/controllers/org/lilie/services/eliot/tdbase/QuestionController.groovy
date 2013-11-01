@@ -632,9 +632,7 @@ class QuestionController {
     }
 
     // Récupère le référentiel de compétence
-    return referentielService.fetchReferentielByNom(
-        EmaEvalService.REFERENTIEL_PALIER_3_NOM
-    )
+    return referentielService.fetchReferentielByNom(emaEvalService.defautReferentielNom)
   }
 }
 
