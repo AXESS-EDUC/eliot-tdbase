@@ -419,7 +419,11 @@ class SujetController {
    * Action ajoute séance
    */
   def ajouteSeance() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteseance.titre"))
+    breadcrumpsService.manageBreadcrumps(
+        params,
+        message(code: "sujet.ajouteseance.titre")
+    )
+
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
     def modaliteActivite = new ModaliteActivite(enseignant: personne,
@@ -427,15 +431,22 @@ class SujetController {
     def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
     def etablissements = profilScolariteService.findEtablissementsForPersonne(personne)
     def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
-    render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
-        etablissements: etablissements,
-        niveaux: niveaux,
-        afficheLienCreationDevoir: false,
-        afficheLienCreationActivite: false,
-        afficheActiviteCreee: false,
-        afficheDevoirCree: false,
-        modaliteActivite: modaliteActivite,
-        proprietesScolarite: proprietesScolarite])
+
+    render(
+        view: '/seance/edite',
+        model: [
+            liens: breadcrumpsService.liens,
+            etablissements: etablissements,
+            niveaux: niveaux,
+            afficheLienCreationDevoir: false,
+            afficheLienCreationActivite: false,
+            afficheActiviteCreee: false,
+            afficheDevoirCree: false,
+            modaliteActivite: modaliteActivite,
+            proprietesScolarite: proprietesScolarite,
+            competencesEvaluables: modaliteActivite.sujet.hasCompetence()
+        ]
+    )
   }
 
   /**

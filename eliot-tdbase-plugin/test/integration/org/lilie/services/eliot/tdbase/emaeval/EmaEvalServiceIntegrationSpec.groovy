@@ -40,6 +40,8 @@ import org.lilie.services.eliot.competence.ReferentielDto
 import org.lilie.services.eliot.competence.ReferentielService
 import org.lilie.services.eliot.competence.SourceReferentiel
 import org.lilie.services.eliot.tdbase.emaeval.xml.ReferentielMarshaller
+import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.springframework.core.io.ClassPathResource
 import spock.lang.IgnoreIf
 
@@ -55,11 +57,14 @@ class EmaEvalServiceIntegrationSpec extends IntegrationSpec {
   EmaEvalFactoryService emaEvalFactoryService
   ReferentielService referentielService
   String emaEvalUserLogin = "100000000000001027"
+  Personne emaEvalUser // Mock d'une personne correspondant à un utilisateur existant dans la VM EmaEval
   EmaEvalProprieteService emaEvalProprieteService
 
 
   def setup() {
-
+    DomainAutorite autorite = new DomainAutorite(identifiant: emaEvalUserLogin)
+    emaEvalUser = new Personne(autorite: autorite)
+    emaEvalUser.autorite >> autorite
   }
 
   private void importeReferentielPalier3() {
@@ -154,7 +159,7 @@ class EmaEvalServiceIntegrationSpec extends IntegrationSpec {
     then:
     Propriete propriete = emaEvalProprieteService.getPropriete(ProprieteId.REFERENTIEL_STATUT)
     propriete.valeur == "OK"
-    emaEvalService.initialiseOuVerifieReferentiel()
+    emaEvalService.initialiseOuVerifieReferentiel(emaEvalUser)
   }
 
   @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
@@ -172,7 +177,7 @@ class EmaEvalServiceIntegrationSpec extends IntegrationSpec {
         ProprieteId.PLAN_TDBASE_ID
     )
     propriete.valeur
-    emaEvalService.initialiseOuVerifiePlan()
+    emaEvalService.initialiseOuVerifiePlan(emaEvalUser)
   }
 
   @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
@@ -190,7 +195,7 @@ class EmaEvalServiceIntegrationSpec extends IntegrationSpec {
         ProprieteId.SCENARIO_EVALUATION_DIRECTE_ID
     )
     propriete.valeur
-    emaEvalService.initialiseOuVerifieScenario()
+    emaEvalService.initialiseOuVerifieScenario(emaEvalUser)
   }
 
   @IgnoreIf({ !ConfigurationHolder.config.eliot.interfacage.emaeval.actif })
@@ -208,6 +213,6 @@ class EmaEvalServiceIntegrationSpec extends IntegrationSpec {
         ProprieteId.METHODE_EVALUATION_BOOLEENNE_ID
     )
     propriete.valeur
-    emaEvalService.initialiseOuVerifieMethodeEvaluation()
+    emaEvalService.initialiseOuVerifieMethodeEvaluation(emaEvalUser)
   }
 }

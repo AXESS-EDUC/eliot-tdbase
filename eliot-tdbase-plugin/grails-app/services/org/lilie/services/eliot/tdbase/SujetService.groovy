@@ -449,9 +449,11 @@ class SujetService {
       questionService.partageQuestion(question, proprietaire)
     }
 
-    def sequence = new SujetSequenceQuestions(question: question,
+    def sequence = new SujetSequenceQuestions(
+        question: question,
         sujet: sujet,
-        rang: sujet.questionsSequences?.size())
+        rang: sujet.questionsSequences?.size()
+    )
     if (referentielSujetSequenceQuestions?.noteSeuilPoursuite != null) {
       sequence.noteSeuilPoursuite = referentielSujetSequenceQuestions?.noteSeuilPoursuite
     }

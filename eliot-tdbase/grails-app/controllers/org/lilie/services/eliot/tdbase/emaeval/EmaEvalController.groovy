@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.emaeval
 
 import grails.converters.JSON
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 /**
@@ -86,7 +87,7 @@ class EmaEvalController {
     Throwable error = null
 
     try {
-      emaEvalService.initialiseOuVerifieReferentiel()
+      emaEvalService.initialiseOuVerifieReferentiel((Personne)authenticatedPersonne)
     }
     catch (Throwable e) {
       log.warn("Erreur durant l'initialisation ou la vérification du référentiel", e)
@@ -114,7 +115,7 @@ class EmaEvalController {
     Throwable error = null
 
     try {
-      emaEvalService.initialiseOuVerifiePlan()
+      emaEvalService.initialiseOuVerifiePlan((Personne)authenticatedPersonne)
     }
     catch (Throwable e) {
       log.warn("Erreur durant l'initialisation ou la vérification du plan", e)
@@ -141,7 +142,7 @@ class EmaEvalController {
     Throwable error = null
 
     try {
-      emaEvalService.initialiseOuVerifieScenario()
+      emaEvalService.initialiseOuVerifieScenario((Personne)authenticatedPersonne)
     }
     catch (Throwable e) {
       log.warn("Erreur durant l'initialisation ou la vérification du scénario", e)
@@ -169,7 +170,7 @@ class EmaEvalController {
 
 
     try {
-      emaEvalService.initialiseOuVerifieMethodeEvaluation()
+      emaEvalService.initialiseOuVerifieMethodeEvaluation((Personne)authenticatedPersonne)
     }
     catch (Throwable e) {
       log.warn("Erreur durant l'initialisation ou la vérification de la méthode d'évaluation", e)

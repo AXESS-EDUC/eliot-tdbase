@@ -71,6 +71,5 @@ environments {
     eliot.interfacage.emaeval.plan.nom = "Plan TDBase"
     eliot.interfacage.emaeval.scenario.nom = "Evaluation directe"
     eliot.interfacage.emaeval.methodeEvaluation.nom = "Methode d'évaluation" // Note : je ne comprends pas pourquoi la méthode n'a pas pour nom "Méthode d'évaluation booléenne" ...
-    eliot.interfacage.emaeval.admin.login = "100000000000001027" // TODO: Bouchon le temps de vérifier que les comptes CD ont bien accès à EmaEval
   }
 }

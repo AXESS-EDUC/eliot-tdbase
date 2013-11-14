@@ -134,7 +134,7 @@
 <g:if test="${flash.messageTextesCode}">
   <div class="portal-messages">
     <li class="notice"><g:message code="${flash.messageTextesCode}"
-                                   class="portal-messages notice"/></li>
+                                  class="portal-messages notice"/></li>
   </div>
 </g:if>
 
@@ -153,11 +153,11 @@
           </g:if>
           <g:else>
             <div id="structure-selection" style="float: left; margin-right: 10px;">
-            <g:select name="proprietesScolariteSelectionId"
-                      noSelection="${['null': g.message(code: "default.select.null")]}"
-                      from="${proprietesScolarite}"
-                      optionKey="id"
-                      optionValue="structureEnseignementNomAffichage"/>
+              <g:select name="proprietesScolariteSelectionId"
+                        noSelection="${['null': g.message(code: "default.select.null")]}"
+                        from="${proprietesScolarite}"
+                        optionKey="id"
+                        optionValue="structureEnseignementNomAffichage"/>
             </div>
             <a id="select-other-structure">Choisir une autre classe ou un autre groupe ...</a>
           </g:else>
@@ -190,7 +190,7 @@
         <td>
           <g:checkBox name="copieAmeliorable" title="améliorable"
                       checked="${modaliteActivite.copieAmeliorable}"/> <span
-                class="label">Copie&nbsp;améliorable</span>
+            class="label">Copie&nbsp;améliorable</span>
         </td>
       </tr>
       <g:if test="${lienBookmarkable}">
@@ -224,7 +224,7 @@
               </table>
             </g:if>
             <g:if test="${afficheDevoirCree}">
-              <span class="label"><g:message code="seance.label.devoirlie" /></span>
+              <span class="label"><g:message code="seance.label.devoirlie"/></span>
             </g:if>
           </td>
         </tr>
@@ -243,7 +243,7 @@
                 <tr>
                   <td class="label"
                       style="width: 110px;">Cahier&nbsp;de&nbsp;textes<span
-                          class="obligatoire">*</span>&nbsp;:</td>
+                      class="obligatoire">*</span>&nbsp;:</td>
                   <td><g:select name="cahierId"
                                 noSelection="${['null': 'Faites votre choix...']}"
                                 from="${cahiers}"
@@ -270,8 +270,19 @@
               </table>
             </g:if>
             <g:if test="${afficheActiviteCreee}">
-              <span class="label"><g:message code="seance.label.activitetextesliee" /></span>
+              <span class="label"><g:message code="seance.label.activitetextesliee"/></span>
             </g:if>
+          </td>
+        </tr>
+      </g:if>
+
+      <g:if test="${competencesEvaluables}">
+        <tr>
+          <td class="label"></td>
+          <td>
+            <g:checkBox name="optionEvaluerCompetences" title="Evaluer les competences"
+                        checked="${modaliteActivite.optionEvaluerCompetences}"/> <span
+              class="label">Evaluer les compétences</span>
           </td>
         </tr>
       </g:if>
@@ -290,8 +301,8 @@
 
 <div id="search-structure-form" style="background-color: #ffffff">
   <g:render template="/seance/selectStructureEnseignement" model="[etablissements: etablissements,
-          niveaux:niveaux,
-          rechercheStructuresCommand: new RechercheStructuresCommand() ]"/>
+      niveaux: niveaux,
+      rechercheStructuresCommand: new RechercheStructuresCommand()]"/>
 </div>
 
 </body>

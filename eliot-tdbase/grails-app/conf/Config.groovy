@@ -269,24 +269,37 @@ environments {
   development {
     eliot.listes.structures.maxrecherche = 3
     eliot.pages.container.forceDimensions = true
-    grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
+    grails.plugins.springsecurity.interceptUrlMap = [
+        '/': ['IS_AUTHENTICATED_FULLY'],
         '/p/**': ['IS_AUTHENTICATED_FULLY'],
-        '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
+        '/dashboard/**': [
+            "${FonctionEnum.ENS.toRole()}",
             "${FonctionEnum.DOC.toRole()}",
-            'IS_AUTHENTICATED_FULLY'],
-        '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ],
+        '/sujet/**': [
+            "${FonctionEnum.ENS.toRole()}",
             "${FonctionEnum.DOC.toRole()}",
-            'IS_AUTHENTICATED_FULLY'],
-        '/question/**': ["${FonctionEnum.ENS.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ],
+        '/question/**': [
+            "${FonctionEnum.ENS.toRole()}",
             "${FonctionEnum.DOC.toRole()}",
-            'IS_AUTHENTICATED_FULLY'],
-        '/seance/**': ["${FonctionEnum.ENS.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ],
+        '/seance/**': [
+            "${FonctionEnum.ENS.toRole()}",
             "${FonctionEnum.DOC.toRole()}",
-            'IS_AUTHENTICATED_FULLY'],
-        '/activite/**': ["${FonctionEnum.ELEVE.toRole()}",
-            'IS_AUTHENTICATED_FULLY'],
-        '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-            'IS_AUTHENTICATED_FULLY']
+            'IS_AUTHENTICATED_FULLY'
+        ],
+        '/activite/**': [
+            "${FonctionEnum.ELEVE.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ],
+        '/resultats/**': [
+            "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ]
     ]
 
     grails.plugins.springsecurity.cas.active = false
@@ -419,7 +432,8 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
     responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
     //urlServer: "http://localhost:8090",
     uriTemplate: '/cahiers/$cahierId/chapitres'],
-    [operationName: "findCahiersByStructureAndEnseignant",
+    [
+        operationName: "findCahiersByStructureAndEnseignant",
         description: "Retourne la liste des cahiers pour une structure et un enseignant donné",
         contentType: ContentType.JSON,
         method: Method.GET,
@@ -427,7 +441,8 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
         responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
         //urlServer: "http://localhost:8090",
         uriTemplate: '/cahiers-service'],
-    [operationName: "createTextesActivite",
+    [
+        operationName: "createTextesActivite",
         description: "Insert une activité dans un cahier de textes",
         contentType: ContentType.JSON,
         method: Method.POST,
@@ -446,7 +461,8 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
         responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
         //urlServer: "http://localhost:8090",
         uriTemplate: '/cahiers/$cahierId/activites-interactives'],
-    [operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
+    [
+        operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
         description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
         contentType: ContentType.JSON,
         method: Method.GET,
@@ -454,7 +470,8 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
         responseContentStructure: "List<eliot-notes#evaluation-contextes#standard>",
         //urlServer: "http://localhost:8090",
         uriTemplate: '/evaluation-contextes.json'],
-    [operationName: "createDevoir",
+    [
+        operationName: "createDevoir",
         description: "Insert un devoir dans le module Notes",
         contentType: ContentType.JSON,
         method: Method.POST,
@@ -470,7 +487,8 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
         responseContentStructure: "eliot-notes#evaluation#id>",
         //urlServer: "http://localhost:8090",
         uriTemplate: '/evaluations'],
-    [operationName: "updateNotes",
+    [
+        operationName: "updateNotes",
         description: "Met à jour les notes d'un devoir dans le module Notes",
         contentType: ContentType.JSON,
         method: Method.PUT,
@@ -482,7 +500,9 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                  ''',
         responseContentStructure: "eliot-notes#evaluation#id>",
         //urlServer: "http://localhost:8090",
-        uriTemplate: '/evaluations/$evaluationId/notes.json']]
+        uriTemplate: '/evaluations/$evaluationId/notes.json'
+    ]
+]
 
 // Support de l'interface EmaEval
 eliot.interfacage.emaeval.actif = false
@@ -491,4 +511,12 @@ eliot.interfacage.emaeval.referentiel.nom = "Palier 3"
 eliot.interfacage.emaeval.plan.nom = "Plan TDBase"
 eliot.interfacage.emaeval.scenario.nom = "Evaluation directe"
 eliot.interfacage.emaeval.methodeEvaluation.nom = "Methode d'évaluation" // Note : je ne comprends pas pourquoi la méthode n'a pas pour nom "Méthode d'évaluation booléenne" ...
-eliot.interfacage.emaeval.admin.login = "100000000000001027" // TODO: Bouchon le temps de vérifier que les comptes CD ont bien accès à EmaEval
+
+// Trigger définissant la périodicité du job exécutant en tâche de fond
+// les opérations distantes sur EmaEval (via les webservices)
+eliot.interfacage.emaeval.trigger = {
+  simple name: 'emaEvalTrigger', startDelay: 1000, repeatInterval: 1000
+}
+
+// Configuration plugin Quartz 2
+grails.plugin.quartz2.autoStartup = true

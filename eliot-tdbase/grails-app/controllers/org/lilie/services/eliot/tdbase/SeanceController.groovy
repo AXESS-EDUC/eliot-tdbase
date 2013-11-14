@@ -124,24 +124,36 @@ class SeanceController {
         }
       }
     }
-    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.edite.titre"), [services: services])
-    def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
+
+    breadcrumpsService.manageBreadcrumps(
+        params,
+        message(code: "seance.edite.titre"),
+        [services: services]
+    )
+    def proprietesScolarite =
+      profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
+
     def etablissements = profilScolariteService.findEtablissementsForPersonne(personne)
     def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
+
     render(
-        view: '/seance/edite', model: [liens: breadcrumpsService.liens,
-        etablissements: etablissements,
-        niveaux: niveaux,
-        lienBookmarkable: lienBookmarkable,
-        afficheLienCreationDevoir: afficheLienCreationDevoir,
-        afficheLienCreationActivite: afficheLienCreationActivite,
-        afficheActiviteCreee: afficheActiviteCreee,
-        afficheDevoirCree: afficheDevoirCree,
-        modaliteActivite: modaliteActivite,
-        proprietesScolarite: proprietesScolarite,
-        cahiers: cahiers,
-        chapitres: chapitres,
-        services: services]
+        view: '/seance/edite',
+        model: [
+            liens: breadcrumpsService.liens,
+            etablissements: etablissements,
+            niveaux: niveaux,
+            lienBookmarkable: lienBookmarkable,
+            afficheLienCreationDevoir: afficheLienCreationDevoir,
+            afficheLienCreationActivite: afficheLienCreationActivite,
+            afficheActiviteCreee: afficheActiviteCreee,
+            afficheDevoirCree: afficheDevoirCree,
+            modaliteActivite: modaliteActivite,
+            proprietesScolarite: proprietesScolarite,
+            cahiers: cahiers,
+            chapitres: chapitres,
+            services: services,
+            competencesEvaluables: modaliteActivite.sujet.hasCompetence()
+        ]
     )
   }
 
@@ -216,10 +228,14 @@ class SeanceController {
   def enregistre() {
     ModaliteActivite modaliteActivite
     Personne personne = authenticatedPersonne
+
     def propsId = params.proprietesScolariteSelectionId
     if (propsId && propsId != 'null') {
-      ProprietesScolarite props = ProprietesScolarite.get(params.proprietesScolariteSelectionId)
+      ProprietesScolarite props = ProprietesScolarite.get(
+          params.proprietesScolariteSelectionId
+      )
       params.'structureEnseignement.id' = props.structureEnseignement.id
+
       if (props.matiere) {
         params.'matiere.id' = props.matiere.id
       }
@@ -242,10 +258,18 @@ class SeanceController {
       }
       redirect(action: "edite", id: modaliteActivite.id, params: [bcInit: true])
     } else {
-      def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
-      render(view: '/seance/edite', model: [liens: breadcrumpsService.liens,
-          modaliteActivite: modaliteActivite,
-          proprietesScolarite: proprietesScolarite])
+      def proprietesScolarite =
+        profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne)
+
+      render(
+          view: '/seance/edite',
+          model: [
+              liens: breadcrumpsService.liens,
+              modaliteActivite: modaliteActivite,
+              proprietesScolarite: proprietesScolarite,
+              competencesEvaluables: modaliteActivite.sujet.hasCompetence()
+          ]
+      )
     }
   }
 
