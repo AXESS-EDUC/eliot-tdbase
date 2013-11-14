@@ -242,6 +242,25 @@ class ModaliteActiviteService {
     return true
   }
 
+  /**
+   * Retourne la liste des dernières séances (ModaliteActivite) en attente de création
+   * d'une campagne d'évaluation EmaEval
+   *
+   *  Traitement LIFO pour assurer que des campagnes en échec de création ne vont pas bloquer
+   *  toutes les créations de campagnes à venir
+   *
+   * @param max le nombre max de séance à retourner
+   * @return
+   */
+  List<ModaliteActivite> findAllModaliteActiviteEnAttenteCampagneEmaEval(int max) {
+    ModaliteActivite.withCriteria {
+      eq('optionEvaluerCompetences', true)
+      isNull('campagneEmaevalIdExterne')
+
+      order('id', 'desc')
+      maxResults(max)
+    }
+  }
 }
 
 

@@ -28,7 +28,6 @@
 
 
 import org.codehaus.groovy.grails.commons.ApplicationAttributes
-import org.lilie.services.eliot.competence.ReferentielService
 import org.lilie.services.eliot.tdbase.patch.PatchExecution
 import org.lilie.services.eliot.tdbase.patch.PatchTDB40
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
@@ -41,8 +40,6 @@ class BootStrap {
   BootstrapService bootstrapService
   DbMigrationService dbMigrationService
   PortailTagLibService portailTagLibService
-
-  ReferentielService referentielService
 
   def init = { servletContext ->
 
@@ -59,8 +56,7 @@ class BootStrap {
     try {
       portailTagLibService.addManuelDocumentUrls(config.eliot.manuels.documents.urlMap)
     } catch (Exception e) {
-      log.error("manuels.urls.update.echec")
-      log.error(e.message)
+      log.error("manuels.urls.update.echec", e)
     }
 
     try {

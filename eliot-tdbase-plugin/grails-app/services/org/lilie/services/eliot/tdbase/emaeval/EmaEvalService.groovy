@@ -28,19 +28,32 @@
 
 package org.lilie.services.eliot.tdbase.emaeval
 
+import com.pentila.emawsconnector.manager.EvaluationDefinitionManager
 import com.pentila.emawsconnector.manager.EvaluationObjectManager
 import com.pentila.emawsconnector.manager.MethodManager
 import com.pentila.emawsconnector.manager.PlanManager
 import com.pentila.emawsconnector.manager.WorkFlowManager
+import com.pentila.emawsconnector.utils.EmaWSConnector
+import com.pentila.evalcomp.domain.Entity
+import com.pentila.evalcomp.domain.User
+import com.pentila.evalcomp.domain.definition.EntityDefinition
+import com.pentila.evalcomp.domain.definition.EvaluationDefinition
+import com.pentila.evalcomp.domain.definition.EvaluationSubject
 import com.pentila.evalcomp.domain.definition.MethodEval
+import com.pentila.evalcomp.domain.definition.ProcessRoleDefinition
 import com.pentila.evalcomp.domain.definition.Referentiel as EmaEvalReferentiel
+import com.pentila.evalcomp.domain.definition.ScenarioDefinition
 import com.pentila.evalcomp.domain.plan.Plan
 import com.pentila.evalcomp.domain.transit.TransitProcessDefinition
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.lilie.services.eliot.competence.Competence
+import org.lilie.services.eliot.competence.CompetenceIdExterne
 import org.lilie.services.eliot.competence.Referentiel as EliotReferentiel
 import org.lilie.services.eliot.competence.ReferentielService
 import org.lilie.services.eliot.competence.SourceReferentiel
+import org.lilie.services.eliot.tdbase.ModaliteActivite
 import org.lilie.services.eliot.tdbase.emaeval.emawsconnector.ReferentielMarshaller
+import org.lilie.services.eliot.tice.annuaire.Personne
 import org.springframework.transaction.annotation.Transactional
 
 /**
@@ -82,15 +95,13 @@ class EmaEvalService {
    *  - Vérifier que les deux référentiels ont le même nom et la même version
    */
   @Transactional
-  void initialiseOuVerifieReferentiel() {
+  void initialiseOuVerifieReferentiel(Personne operateur) {
     assert grailsApplication.config.eliot.interfacage.emaeval.actif
 
     // Création du manager
     EvaluationObjectManager evaluationObjectManager =
       emaEvalFactoryService.getEvaluationObjectManager(
-          emaEvalFactoryService.creeEmaWSConnector(
-              grailsApplication.config.eliot.interfacage.emaeval.admin.login
-          )
+          emaEvalFactoryService.creeEmaWSConnector(operateur.autorite.identifiant)
       )
 
     EliotReferentiel eliotReferentiel = findEliotReferentiel()
@@ -111,14 +122,12 @@ class EmaEvalService {
    * stockage de son identifiant EmaEval dans la base eliot-scolarite (emaeval_interface.propriete)
    */
   @Transactional
-  void initialiseOuVerifiePlan() {
+  void initialiseOuVerifiePlan(Personne operateur) {
     assert grailsApplication.config.eliot.interfacage.emaeval.actif
 
     // Création du manager
     PlanManager planManager = emaEvalFactoryService.getPlanManager(
-        emaEvalFactoryService.creeEmaWSConnector(
-            grailsApplication.config.eliot.interfacage.emaeval.admin.login
-        )
+        emaEvalFactoryService.creeEmaWSConnector(operateur.autorite.identifiant)
     )
 
     Long planId = emaEvalPlanIdFromEliot
@@ -135,14 +144,12 @@ class EmaEvalService {
    * dans la base eliot-scolarite (emaeval_interface.propriete)
    */
   @Transactional
-  void initialiseOuVerifieScenario() {
+  void initialiseOuVerifieScenario(Personne operateur) {
     assert grailsApplication.config.eliot.interfacage.emaeval.actif
 
     // Création du manager
     WorkFlowManager workFlowManager = emaEvalFactoryService.getWorkFlowManager(
-        emaEvalFactoryService.creeEmaWSConnector(
-            grailsApplication.config.eliot.interfacage.emaeval.admin.login
-        )
+        emaEvalFactoryService.creeEmaWSConnector(operateur.autorite.identifiant)
     )
 
     String scenarioId = emaEvalScenarioIdFromEliot
@@ -159,14 +166,12 @@ class EmaEvalService {
    * stockage dans la base eliot-scolarite (emaeval_interface.propriete)
    */
   @Transactional
-  void initialiseOuVerifieMethodeEvaluation() {
+  void initialiseOuVerifieMethodeEvaluation(Personne operateur) {
     assert grailsApplication.config.eliot.interfacage.emaeval.actif
 
     // Création du manager
     MethodManager methodManager = emaEvalFactoryService.getMethodManager(
-        emaEvalFactoryService.creeEmaWSConnector(
-            grailsApplication.config.eliot.interfacage.emaeval.admin.login
-        )
+        emaEvalFactoryService.creeEmaWSConnector(operateur.autorite.identifiant)
     )
 
     Long methodeEvaluationId = emaEvalMethodeEvaluationIdFromEliot
@@ -191,6 +196,45 @@ class EmaEvalService {
 
   String getDefautMethodeEvaluationNom() {
     return grailsApplication.config.eliot.interfacage.emaeval.methodeEvaluation.nom
+  }
+
+  /**
+   * Retourne le plan par défaut utilisé pour la liaison TD Base / EmaEval
+   * Cette méthode vérifie que le plan obtenu depuis EmaEval est correct
+   * @param connector
+   * @return
+   */
+  Plan getDefautPlan(EmaWSConnector connector) {
+    return verifiePlan(
+        emaEvalFactoryService.getPlanManager(connector),
+        emaEvalPlanIdFromEliot
+    )
+  }
+
+  /**
+   * Retourne le scénario par défaut utilisé pour la liaison TD Base / EmaEva
+   * Cette méthode vérifie que le scénario obtenu depuis EmaEval est correct
+   * @param connector
+   * @return
+   */
+  TransitProcessDefinition getDefautScenario(EmaWSConnector connector) {
+    return verifieScenario(
+        emaEvalFactoryService.getWorkFlowManager(connector),
+        emaEvalScenarioIdFromEliot
+    )
+  }
+
+  /**
+   * Retourne la méthode d'évaluation par défaut utilisée pour la liaison TD Base / EmaEval
+   * Cette méthode vérifie que la méthode obtenue depiuis EmaEval est correcte
+   * @param connector
+   * @return
+   */
+  MethodEval getDefautMethodeEvaluation(EmaWSConnector connector) {
+    return verifieMethodeEvaluation(
+        emaEvalFactoryService.getMethodManager(connector),
+        emaEvalMethodeEvaluationIdFromEliot
+    )
   }
 
   /**
@@ -335,7 +379,7 @@ class EmaEvalService {
    * @param planManager
    * @param planId
    */
-  void verifiePlan(PlanManager planManager, long planId) {
+  Plan verifiePlan(PlanManager planManager, long planId) {
     Plan plan = planManager.getPlan(planId)
 
     if (!plan) {
@@ -351,6 +395,8 @@ class EmaEvalService {
               "${plan.name} au lieu de $defautPlanNom."
       )
     }
+
+    return plan
   }
 
   /**
@@ -413,7 +459,8 @@ class EmaEvalService {
     propriete.save(failOnError: true)
   }
 
-  void verifieScenario(WorkFlowManager workFlowManager, String scenarioId) {
+  TransitProcessDefinition verifieScenario(WorkFlowManager workFlowManager,
+                                           String scenarioId) {
 
     // Note : le workFlowManager ne permet pas de récupérer un scenario à partir de son identifiant
     TransitProcessDefinition scenario = workFlowManager.allScenarios.find {
@@ -433,6 +480,8 @@ class EmaEvalService {
               "${scenario.name} au lieu de $defautScenarioNom."
       )
     }
+
+    return scenario
   }
 
   /**
@@ -479,7 +528,7 @@ class EmaEvalService {
    * @param methodManager
    * @param methodeId
    */
-  void verifieMethodeEvaluation(MethodManager methodManager, long methodeId) {
+  MethodEval verifieMethodeEvaluation(MethodManager methodManager, long methodeId) {
 
     // Note : il n'y a pas de méthode dans MethodManager permettant de récupérer une méthode
     // à partir de son identifiant
@@ -499,6 +548,184 @@ class EmaEvalService {
               "La méthode retournée par EmaEval  pour cet identifiant ne correspond pas à celle attendue : " +
               "${methodEval.name} au lieu de $defautMethodeEvaluationNom."
       )
+    }
+
+    return methodEval
+  }
+
+  /**
+   * Crée une campagne d'évaluation EmaEval pour une séance TD Base
+   * @param modaliteActivite la séance TD Base
+   *
+   * L'identifiant de la campagne créée est stocké en base pour pouvoir ensuite transmettre les résultats
+   *
+   * @return
+   */
+  EvaluationDefinition creeCampagne(ModaliteActivite modaliteActivite) {
+    String login = modaliteActivite.enseignant.autorite.identifiant
+
+    // Récupère les éléments nécessaire à la création d'une campagne
+    EmaWSConnector connector = emaEvalFactoryService.creeEmaWSConnector(login)
+    Plan plan = getDefautPlan(connector)
+    TransitProcessDefinition scenario = getDefautScenario(connector)
+    MethodEval methodEval = getDefautMethodeEvaluation(connector)
+    EvaluationDefinitionManager evaluationDefinitionManager =
+      emaEvalFactoryService.getEvaluationDefinitionManager(
+          emaEvalFactoryService.creeEmaWSConnector(login)
+      )
+
+    // Création campagne
+    EvaluationDefinition campagne = creeCampagneEmaEval(
+        evaluationDefinitionManager,
+        modaliteActivite,
+        login
+    )
+
+    // Mise à jour du plan de la campagne
+    campagne = evaluationDefinitionManager.replacePlan(campagne,plan)
+
+    // Mise à jour du scénario de la campagne
+    campagne = evaluationDefinitionManager.replaceScenarioEvaluation(
+        campagne,
+        scenario.UUID
+    )
+
+    // Mise à jour de la méthode d'évaluation
+    campagne = evaluationDefinitionManager.replaceMethodEval(
+        campagne,
+        methodEval
+    )
+
+    // Mise à jour des compétences évaluées
+    campagne = metAJourCompetenceList(
+        modaliteActivite,
+        evaluationDefinitionManager,
+        campagne
+    )
+
+    // Mise à jour de l'évaluateur
+    campagne = metAJourEvaluateur(modaliteActivite, evaluationDefinitionManager, campagne)
+
+    // Mise à jour des candidats
+    campagne = metAJourCandidatList(
+        modaliteActivite,
+        evaluationDefinitionManager,
+        campagne
+    )
+
+    // Association de l'évaluateur à tous les sujets
+    campagne = associeEvaluateurSujetList(campagne, evaluationDefinitionManager)
+
+    // instantiateED
+    campagne = evaluationDefinitionManager.instantiateED(campagne)
+
+
+    // Mémorisation de l'identifiant de la campagne
+    modaliteActivite.campagneEmaevalIdExterne = campagne.id
+    modaliteActivite.save(failOnError: true)
+
+    return campagne
+  }
+
+  private EvaluationDefinition associeEvaluateurSujetList(EvaluationDefinition campagne,
+                                                          evaluationDefinitionManager) {
+    Set<EntityDefinition> entityDefinitionSet = [] as Set
+    campagne.scenarioDefinitions.each { ScenarioDefinition scenarioDefinition ->
+      scenarioDefinition.pid.processRoleDefinitions.each { ProcessRoleDefinition processRoleDefinition ->
+        if (processRoleDefinition.name == "Evaluateurs") {
+          processRoleDefinition.entityDefinitions.each {
+            entityDefinitionSet << it
+          }
+        }
+      }
+    }
+
+
+    Set<EvaluationSubject> evaluationSubjectSet = campagne.evaluationSubjects
+
+    evaluationSubjectSet.each { EvaluationSubject evaluationSubject ->
+      entityDefinitionSet.each { EntityDefinition entityDefinition ->
+        campagne = evaluationDefinitionManager.addEDefToES(entityDefinition.id, evaluationSubject.id, campagne)
+      }
+    }
+
+    return campagne
+  }
+
+  private EvaluationDefinition metAJourCandidatList(ModaliteActivite modaliteActivite,
+                                                    EvaluationDefinitionManager evaluationDefinitionManager,
+                                                    EvaluationDefinition campagne) {
+    Set<Entity> candidatList = [] as Set
+    modaliteActivite.personnesDevantRendreCopie.each { Personne personne ->
+      candidatList << new User(uid: personne.autorite.identifiant)
+    }
+    campagne = evaluationDefinitionManager.addEntities(
+        campagne,
+        candidatList,
+        "Candidats"
+    )
+
+    return campagne
+  }
+
+  private EvaluationDefinition metAJourEvaluateur(ModaliteActivite modaliteActivite,
+                                                  EvaluationDefinitionManager evaluationDefinitionManager,
+                                                  EvaluationDefinition campagne) {
+    Set<Entity> evaluateurList = [] as Set
+    evaluateurList << new User(
+        uid: modaliteActivite.sujet.proprietaire.autorite.identifiant
+    )
+
+    campagne = evaluationDefinitionManager.addEntities(
+        campagne,
+        evaluateurList,
+        "Evaluateurs"
+    )
+
+    return campagne
+  }
+
+  private EvaluationDefinition metAJourCompetenceList(ModaliteActivite modaliteActivite,
+                                                      EvaluationDefinitionManager evaluationDefinitionManager, EvaluationDefinition campagne) {
+    List<Competence> competenceList = modaliteActivite.sujet.findAllCompetence()
+    List<Long> evaluationObjectIdList = getCompetenceIdEmaEvalList(competenceList)
+
+    campagne = evaluationDefinitionManager.addEvaluationObjects(
+        campagne,
+        evaluationObjectIdList
+    )
+
+    return campagne
+  }
+
+  private EvaluationDefinition creeCampagneEmaEval(EvaluationDefinitionManager evaluationDefinitionManager,
+                                                   ModaliteActivite modaliteActivite,
+                                                   String login) {
+    evaluationDefinitionManager.addEvaluationDefinition(
+        modaliteActivite.dateDebut,
+        modaliteActivite.dateFin,
+        login,
+        "Campagne d'évaluation de la séance TD Base " + modaliteActivite.id,
+        "Campagne d'évaluation de la séance TD Base " + modaliteActivite.id
+    )
+  }
+
+  /**
+   * Permet de récupérer la liste des identifiants dans EmaEval d'une liste de compétence Eliot
+   *
+   * Note d'implémentation : on passe par un criteria global pour éviter un N+1 SELECT
+   *
+   * @param competenceList
+   * @return
+   */
+  private List<Long> getCompetenceIdEmaEvalList(List<Competence> competenceList) {
+    List<CompetenceIdExterne> competenceIdExterneList = CompetenceIdExterne.withCriteria {
+      inList('competence', competenceList)
+      eq('sourceReferentiel', SourceReferentiel.EMA_EVAL)
+    } ?: []
+
+    return competenceIdExterneList.collect {
+      Long.parseLong(it.idExterne)
     }
   }
 }

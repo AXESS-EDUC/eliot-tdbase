@@ -64,10 +64,4 @@
       ${config.eliot.interfacage.emaeval.methodeEvaluation.nom}
     </td>
   </tr>
-  <tr>
-    <td class="inspect_field"><code>config.eliot.interfacage.emaeval.admin.login</code></td>
-    <td style="text-align: left;">
-      ${config.eliot.interfacage.emaeval.admin.login}
-    </td>
-  </tr>
 </table>

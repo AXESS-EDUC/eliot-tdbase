@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.emaeval
 
+import com.pentila.emawsconnector.manager.EvaluationDefinitionManager
 import com.pentila.emawsconnector.manager.EvaluationObjectManager
 import com.pentila.emawsconnector.manager.MethodManager
 import com.pentila.emawsconnector.manager.PlanManager
@@ -76,5 +77,9 @@ class EmaEvalFactoryService {
 
   EvaluationObjectManager getEvaluationObjectManager(EmaWSConnector connector) {
     return new EvaluationObjectManager(connector)
+  }
+
+  EvaluationDefinitionManager getEvaluationDefinitionManager(EmaWSConnector connector) {
+    return new EvaluationDefinitionManager(connector)
   }
 }
