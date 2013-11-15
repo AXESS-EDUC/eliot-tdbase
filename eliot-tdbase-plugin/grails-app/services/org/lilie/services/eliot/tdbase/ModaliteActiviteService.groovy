@@ -30,6 +30,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tdbase.emaeval.CampagneProxyService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.notes.Evaluation
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
@@ -45,6 +46,7 @@ class ModaliteActiviteService {
   static transactional = false
   ProfilScolariteService profilScolariteService
   CopieService copieService
+  CampagneProxyService campagneProxyService
 
   /**
    * Créé une séance (modaliteActivite)
@@ -57,6 +59,11 @@ class ModaliteActiviteService {
     ModaliteActivite modaliteActivite = new ModaliteActivite(enseignant: proprietaire)
     modaliteActivite.properties = proprietes
     modaliteActivite.save(flush: true)
+
+    if(modaliteActivite.optionEvaluerCompetences && !modaliteActivite.hasErrors()) {
+      campagneProxyService.promesseCreeCampagne(modaliteActivite)
+    }
+
     return modaliteActivite
   }
 
@@ -68,12 +75,26 @@ class ModaliteActiviteService {
    * @return la séance modifiée
    */
   @Transactional
-  ModaliteActivite updateProprietes(ModaliteActivite modaliteActivite, Map proprietes,
+  ModaliteActivite updateProprietes(ModaliteActivite modaliteActivite,
+                                    Map proprietes,
                                     Personne proprietaire) {
 
     assert (modaliteActivite.enseignant == proprietaire)
 
+    Boolean originalOptionEvaluerCompetences = modaliteActivite.optionEvaluerCompetences
+
     modaliteActivite.properties = proprietes
+
+    // Si changement de l'option Evaluer les compétences
+    if((originalOptionEvaluerCompetences as boolean) != (modaliteActivite.optionEvaluerCompetences as boolean) ) {
+      if(modaliteActivite.optionEvaluerCompetences) {
+        campagneProxyService.promesseCreeCampagne(modaliteActivite)
+      }
+      else {
+        campagneProxyService.promesseSupprimeCampagne(modaliteActivite)
+      }
+    }
+
     modaliteActivite.save(flush: true)
     return modaliteActivite
   }
@@ -155,6 +176,9 @@ class ModaliteActiviteService {
     assert (modaliteActivite?.enseignant == personne)
 
     copieService.supprimeCopiesForModaliteActivite(modaliteActivite, personne)
+
+    campagneProxyService.promesseSupprimeCampagne(modaliteActivite)
+
     modaliteActivite.delete()
   }
 
@@ -242,25 +266,6 @@ class ModaliteActiviteService {
     return true
   }
 
-  /**
-   * Retourne la liste des dernières séances (ModaliteActivite) en attente de création
-   * d'une campagne d'évaluation EmaEval
-   *
-   *  Traitement LIFO pour assurer que des campagnes en échec de création ne vont pas bloquer
-   *  toutes les créations de campagnes à venir
-   *
-   * @param max le nombre max de séance à retourner
-   * @return
-   */
-  List<ModaliteActivite> findAllModaliteActiviteEnAttenteCampagneEmaEval(int max) {
-    ModaliteActivite.withCriteria {
-      eq('optionEvaluerCompetences', true)
-      isNull('campagneEmaevalIdExterne')
-
-      order('id', 'desc')
-      maxResults(max)
-    }
-  }
 }
 
 

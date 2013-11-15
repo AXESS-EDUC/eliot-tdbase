@@ -62,7 +62,6 @@ class ModaliteActivite {
 
   Boolean copieAmeliorable = true
   Boolean optionEvaluerCompetences
-  Long campagneEmaevalIdExterne
 
   static constraints = {
     responsable(nullable: true)
@@ -78,7 +77,6 @@ class ModaliteActivite {
     matiere(nullable: true)
 
     optionEvaluerCompetences(nullable: true)
-    campagneEmaevalIdExterne(nullable: true)
   }
 
   static mapping = {

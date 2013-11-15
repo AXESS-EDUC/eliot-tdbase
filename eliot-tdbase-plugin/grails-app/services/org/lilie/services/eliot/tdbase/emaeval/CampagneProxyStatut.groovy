@@ -25,32 +25,20 @@
  *   <http://www.gnu.org/licenses/> and
  *   <http://www.cecill.info/licences.fr.html>.
  */
-
 package org.lilie.services.eliot.tdbase.emaeval
 
 /**
- * Service de gestion des propriétés de la liaison TDBase / EmaEval
+ * Décrit les statuts possibles pour un CampagneProxy
  * @author John Tranier
  */
-class EmaEvalProprieteService {
-  static transactional = false
+public enum CampagneProxyStatut {
+  EN_ATTENTE_CREATION,
+  OK, // Indique que la campagne existe (elle a été correctement créée)
+  ECHEC_CREATION,
+  EN_ATTENTE_SUPPRESSION,
+  ECHEC_SUPPRESSION
 
-  Propriete getPropriete(ProprieteId proprieteId) {
-    Propriete propriete = Propriete.get(proprieteId.dbId)
-
-    if(!propriete) {
-      throw new IllegalStateException(
-          "La propriété $proprieteId n'est pas définie en base."
-      )
-    }
-
-    return propriete
-  }
-
-  void setPropriete(ProprieteId proprieteId, String valeur) {
-    Propriete propriete = getPropriete(proprieteId)
-
-    propriete.valeur = valeur
-    propriete.save(failOnError: true)
+  String getId() {
+    return this
   }
 }

@@ -28,6 +28,8 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tdbase.emaeval.CampagneProxy
+import org.lilie.services.eliot.tdbase.emaeval.CampagneProxyService
 import org.lilie.services.eliot.tdbase.emaeval.EmaEvalService
 
 /**
@@ -41,8 +43,8 @@ class EmaEvalJob {
 
   private final static int BATCH_SIZE = 25
 
-  ModaliteActiviteService modaliteActiviteService
   EmaEvalService emaEvalService
+  CampagneProxyService campagneProxyService
 
   def getTriggers() {
     if (!config.eliot.interfacage.emaeval.actif) {
@@ -55,18 +57,16 @@ class EmaEvalJob {
   def execute() {
     log.info "Exécution du Job EmaEval"
 
-    List<ModaliteActivite> modaliteActiviteList =
-      modaliteActiviteService.findAllModaliteActiviteEnAttenteCampagneEmaEval(BATCH_SIZE)
+    List<CampagneProxy> campagneProxyList =
+      campagneProxyService.findLotCampagneProxyEnAttenteOperation(BATCH_SIZE)
 
-    modaliteActiviteList.each { ModaliteActivite modaliteActivite ->
-      log.info "Création d'une campagne EmaEval pour la séance $modaliteActivite"
+    campagneProxyList.each { CampagneProxy campagneProxy ->
       try {
-        emaEvalService.creeCampagne(modaliteActivite)
+        campagneProxyService.realisePromesse(campagneProxy)
       }
       catch (Throwable throwable) {
         log.error(
-            "Erreur lors de la création de la campagne EmaEval " +
-                "pour la séance $modaliteActivite",
+            "Une erreur inconnue s'est produite durant l'exécution d'une opération EmaEval",
             throwable
         )
       }

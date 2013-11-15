@@ -326,9 +326,10 @@ class EmaEvalService {
       )
     }
 
-    Propriete propriete = emaEvalProprieteService.getPropriete(ProprieteId.REFERENTIEL_STATUT)
-    propriete.valeur = "OK"
-    propriete.save(failOnError: true)
+    emaEvalProprieteService.setPropriete(
+        ProprieteId.REFERENTIEL_STATUT,
+        "OK"
+    )
   }
 
   /**
@@ -355,9 +356,10 @@ class EmaEvalService {
         emaEvalReferentielMarshaller.parseReferentiel(referentiel)
     )
 
-    Propriete propriete = emaEvalProprieteService.getPropriete(ProprieteId.REFERENTIEL_STATUT)
-    propriete.valeur = "OK"
-    propriete.save(failOnError: true)
+    emaEvalProprieteService.setPropriete(
+        ProprieteId.REFERENTIEL_STATUT,
+        "OK"
+    )
   }
 
   /**
@@ -413,11 +415,10 @@ class EmaEvalService {
       )
     }
 
-    Propriete propriete = emaEvalProprieteService.getPropriete(
-        ProprieteId.PLAN_TDBASE_ID
+    emaEvalProprieteService.setPropriete(
+        ProprieteId.PLAN_TDBASE_ID,
+        plan.id.toString()
     )
-    propriete.valeur = plan.id.toString()
-    propriete.save(failOnError: true)
 
     return plan
   }
@@ -452,11 +453,10 @@ class EmaEvalService {
       )
     }
 
-    Propriete propriete = emaEvalProprieteService.getPropriete(
-        ProprieteId.SCENARIO_EVALUATION_DIRECTE_ID
+    emaEvalProprieteService.setPropriete(
+        ProprieteId.SCENARIO_EVALUATION_DIRECTE_ID,
+        scenario.id
     )
-    propriete.valeur = scenario.id
-    propriete.save(failOnError: true)
   }
 
   TransitProcessDefinition verifieScenario(WorkFlowManager workFlowManager,
@@ -515,11 +515,10 @@ class EmaEvalService {
     }
 
     // Enregistrement de l'identifiant en base
-    Propriete propriete = emaEvalProprieteService.getPropriete(
-        ProprieteId.METHODE_EVALUATION_BOOLEENNE_ID
+    emaEvalProprieteService.setPropriete(
+        ProprieteId.METHODE_EVALUATION_BOOLEENNE_ID,
+        methodEval.id.toString()
     )
-    propriete.valeur = methodEval.id.toString()
-    propriete.save(failOnError: true)
   }
 
   /**
@@ -570,9 +569,7 @@ class EmaEvalService {
     TransitProcessDefinition scenario = getDefautScenario(connector)
     MethodEval methodEval = getDefautMethodeEvaluation(connector)
     EvaluationDefinitionManager evaluationDefinitionManager =
-      emaEvalFactoryService.getEvaluationDefinitionManager(
-          emaEvalFactoryService.creeEmaWSConnector(login)
-      )
+      emaEvalFactoryService.getEvaluationDefinitionManager(connector)
 
     // Création campagne
     EvaluationDefinition campagne = creeCampagneEmaEval(
@@ -619,12 +616,22 @@ class EmaEvalService {
     // instantiateED
     campagne = evaluationDefinitionManager.instantiateED(campagne)
 
-
-    // Mémorisation de l'identifiant de la campagne
-    modaliteActivite.campagneEmaevalIdExterne = campagne.id
-    modaliteActivite.save(failOnError: true)
-
     return campagne
+  }
+
+  void supprimeCampagneEmaEval(String operateurLogin, Long campagneId) {
+
+    EmaWSConnector connector = emaEvalFactoryService.creeEmaWSConnector(operateurLogin)
+    EvaluationDefinitionManager evaluationDefinitionManager =
+      emaEvalFactoryService.getEvaluationDefinitionManager(connector)
+
+    // Récupère la campagne
+    EvaluationDefinition campagne = evaluationDefinitionManager.getEvaluationDefinition(
+        campagneId
+    )
+
+    // Supprime la campagne
+    evaluationDefinitionManager.deleteEvaluationDefinition(campagne)
   }
 
   private EvaluationDefinition associeEvaluateurSujetList(EvaluationDefinition campagne,

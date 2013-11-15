@@ -515,7 +515,7 @@ eliot.interfacage.emaeval.methodeEvaluation.nom = "Methode d'évaluation" // Not
 // Trigger définissant la périodicité du job exécutant en tâche de fond
 // les opérations distantes sur EmaEval (via les webservices)
 eliot.interfacage.emaeval.trigger = {
-  simple name: 'emaEvalTrigger', startDelay: 1000, repeatInterval: 1000
+  simple name: 'emaEvalTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15
 }
 
 // Configuration plugin Quartz 2
