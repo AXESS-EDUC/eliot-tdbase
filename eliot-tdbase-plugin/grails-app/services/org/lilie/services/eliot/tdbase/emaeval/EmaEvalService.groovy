@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase.emaeval
 
 import com.pentila.emawsconnector.manager.EvaluationDefinitionManager
 import com.pentila.emawsconnector.manager.EvaluationObjectManager
+import com.pentila.emawsconnector.manager.EvaluationSubjectInstanceManager
 import com.pentila.emawsconnector.manager.MethodManager
 import com.pentila.emawsconnector.manager.PlanManager
 import com.pentila.emawsconnector.manager.WorkFlowManager
@@ -615,6 +616,12 @@ class EmaEvalService {
 
     // instantiateED
     campagne = evaluationDefinitionManager.instantiateED(campagne)
+
+    // TODO *** Test transmission des scores
+    EvaluationSubjectInstanceManager evaluationSubjectInstanceManager =
+      new EvaluationSubjectInstanceManager(connector)
+
+    evaluationSubjectInstanceManager.putResult()
 
     return campagne
   }
