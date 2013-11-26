@@ -39,6 +39,7 @@ class CampagneProxy {
   ModaliteActivite modaliteActivite // Séance associée à cette campagne
   CampagneProxyStatut statut
   String operateurLogin // Login emaeval de l'utilisateur utilisé pour créer la campagne
+  ScoreTransmissionStatut scoreTransmissionStatut = ScoreTransmissionStatut.EN_ATTENTE_FIN_SEANCE
 
   static constraints = {
     campagneId nullable: true
@@ -46,7 +47,9 @@ class CampagneProxy {
     statut validator: { val, obj ->
       switch (val) {
         case CampagneProxyStatut.EN_ATTENTE_CREATION:
-          return obj.campagneId == null && obj.modaliteActivite
+          return obj.campagneId == null &&
+              obj.modaliteActivite &&
+              scoreTransmissionStatut == ScoreTransmissionStatut.EN_ATTENTE_FIN_SEANCE
 
         case CampagneProxyStatut.OK:
           return obj.campagneId != null && obj.modaliteActivite
