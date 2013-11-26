@@ -43,7 +43,7 @@ class CampagneProxyService {
   /**
    * Mémorise une demande de création de campagne pour une séance TD Base.
    * La création de campagne sera effectuée ultérieurement, de manière asynchrone,
-   * par EmaEvalJob.
+   * par EmaEvalCampagneJob.
    * Il s'agit donc d'une promesse de création de campagne.
    * @param modaliteActivite
    * @return
@@ -68,7 +68,7 @@ class CampagneProxyService {
   /**
    * Mémorise une demande de suppression de campagne EmaEval.
    * La suppression de campagne sera effectuée ultérieurement, de manière asynchrone,
-   * par EmaEvalJob.
+   * par EmaEvalCampagneJob.
    * Il s'agit donc d'une promesse de suppression de campagne.
    * @param modaliteActivite
    * @return
@@ -159,6 +159,25 @@ class CampagneProxyService {
               CampagneProxyStatut.EN_ATTENTE_SUPPRESSION
           ]
       )
+      order('id', 'asc')
+      maxResults(max)
+    }
+  }
+
+  /**
+   * Retourne un lot de CampagneProxy qui sont attentes de transmission des scores
+   * de la séance TD Base associée
+   * @param max le nombre max de résultat à retourner (le traitement s'effectue par lot)
+   * @return
+   */
+  List<CampagneProxy> findLotCampagneProxyEnAttenteTransmissionScore(int max) {
+    CampagneProxy.withCriteria {
+      eq('statut', CampagneProxyStatut.OK)
+      eq('scoreTransmissionStatut', ScoreTransmissionStatut.EN_ATTENTE_FIN_SEANCE)
+      'modaliteActivite' {
+        le('dateFin', new Date())
+        eq('optionEvaluerCompetences', true)
+      }
       order('id', 'asc')
       maxResults(max)
     }

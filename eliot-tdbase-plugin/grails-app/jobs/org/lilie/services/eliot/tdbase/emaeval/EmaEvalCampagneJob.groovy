@@ -26,19 +26,19 @@
  *   <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase
+package org.lilie.services.eliot.tdbase.emaeval
 
 import org.lilie.services.eliot.tdbase.emaeval.CampagneProxy
 import org.lilie.services.eliot.tdbase.emaeval.CampagneProxyService
 import org.lilie.services.eliot.tdbase.emaeval.EmaEvalService
 
 /**
- * Job prenant en charge l'exécution asynchrone des appels aux webservices d'EmaEval pour assurer la
- * liaison TD Base / EmaEval
+ * Job prenant en charge la gestion asynchrone des campagnes EmaEval associées
+ * aux séances TD Base
  *
  * @author John Tranier
  */
-class EmaEvalJob {
+class EmaEvalCampagneJob {
   def concurrent = false
 
   private final static int BATCH_SIZE = 25
@@ -51,11 +51,11 @@ class EmaEvalJob {
       return null
     }
 
-    return config.eliot.interfacage.emaeval.trigger
+    return config.eliot.interfacage.emaeval.campagne.trigger
   }
 
   def execute() {
-    log.info "Exécution du Job EmaEval"
+    log.info "Exécution du EmaEvalCampagneJob"
 
     List<CampagneProxy> campagneProxyList =
       campagneProxyService.findLotCampagneProxyEnAttenteOperation(BATCH_SIZE)
@@ -66,7 +66,7 @@ class EmaEvalJob {
       }
       catch (Throwable throwable) {
         log.error(
-            "Une erreur inconnue s'est produite durant l'exécution d'une opération EmaEval",
+            "Une erreur inconnue s'est produite durant l'exécution de EmaEvalCampagneJob",
             throwable
         )
       }

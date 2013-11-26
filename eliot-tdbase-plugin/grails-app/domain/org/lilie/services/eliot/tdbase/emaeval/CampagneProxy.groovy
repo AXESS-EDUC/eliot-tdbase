@@ -68,13 +68,13 @@ class CampagneProxy {
 
   static mapping = {
     table 'emaeval_interface.campagne_proxy'
-    version(true) // Le versionnement est nécessaire pour prévenir de modification concurrente d'une séance par l'utilisateur & par EmaEvalJob
+    version(true) // Le versionnement est nécessaire pour prévenir de modification concurrente d'une séance par l'utilisateur & par EmaEvalCampagneJob
     id(column: "id", generator: "sequence", params: [sequence: 'emaeval_interface.campagne_proxy_id_seq'])
   }
 
   /**
    * Mémorise dans l'objet CampagneProxy que la campagne associée doit être créée.
-   * La création sera gérée de manière asynchrone (par EmaEvalJob).
+   * La création sera gérée de manière asynchrone (par EmaEvalCampagneJob).
    *
    * Cette méthode effectue un traitement différent suivant le statut actuel du CampagneProxy
    */
@@ -103,7 +103,7 @@ class CampagneProxy {
 
   /**
    * Mémorise dans l'objet CampagneProxy que la campagne associée doit être supprimée.
-   * La suppression sera gérée de manière asynchrone (par EmaEvalJob).
+   * La suppression sera gérée de manière asynchrone (par EmaEvalCampagneJob).
    *
    * Cette méthode effectue un traitement différent suivant le statut actuel du CampagneProxy
    */
