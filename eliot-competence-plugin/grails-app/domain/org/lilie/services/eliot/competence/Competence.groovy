@@ -76,6 +76,10 @@ class Competence {
     }
   }
 
+  String getIdExterne(SourceReferentiel sourceReferentiel) {
+    return idExterneList.find { it.sourceReferentiel == sourceReferentiel }.idExterne
+  }
+
   /**
    * Affiche en console une compétence
    * @param indent niveau du domaine parent dans le référentiel (0 pour un domaine racine)

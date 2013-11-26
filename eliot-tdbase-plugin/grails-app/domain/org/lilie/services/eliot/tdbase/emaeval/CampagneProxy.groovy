@@ -49,7 +49,7 @@ class CampagneProxy {
         case CampagneProxyStatut.EN_ATTENTE_CREATION:
           return obj.campagneId == null &&
               obj.modaliteActivite &&
-              scoreTransmissionStatut == ScoreTransmissionStatut.EN_ATTENTE_FIN_SEANCE
+              obj.scoreTransmissionStatut == ScoreTransmissionStatut.EN_ATTENTE_FIN_SEANCE
 
         case CampagneProxyStatut.OK:
           return obj.campagneId != null && obj.modaliteActivite
@@ -140,5 +140,15 @@ class CampagneProxy {
         CampagneProxyStatut.EN_ATTENTE_CREATION,
         CampagneProxyStatut.EN_ATTENTE_SUPPRESSION
     ]
+  }
+
+  void notifieSuccesTransmissionScore() {
+    this.scoreTransmissionStatut = ScoreTransmissionStatut.TRANSMIS
+    this.save()
+  }
+
+  void notifieEchecTransmissionScore() {
+    this.scoreTransmissionStatut = ScoreTransmissionStatut.ECHEC_TRANSMISSION
+    this.save()
   }
 }

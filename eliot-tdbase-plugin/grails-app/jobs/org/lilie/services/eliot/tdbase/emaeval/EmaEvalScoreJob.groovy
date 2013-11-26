@@ -27,6 +27,9 @@
  */
 
 package org.lilie.services.eliot.tdbase.emaeval
+
+import org.lilie.services.eliot.tdbase.emaeval.score.EmaEvalScoreService
+
 /**
  * Job prenant en charge la transmission asynchrone des scores entre un séance TD Base
  * et une campagne EmaEval
@@ -36,7 +39,7 @@ package org.lilie.services.eliot.tdbase.emaeval
 class EmaEvalScoreJob {
   def concurrent = false
 
-  CampagneProxyService campagneProxyService
+  EmaEvalScoreService emaEvalScoreService
 
   private final static int BATCH_SIZE = 10
 
@@ -51,15 +54,22 @@ class EmaEvalScoreJob {
   def execute() {
     log.info "Exécution du EmaEvalScoreJob"
 
-    // TODO itérer tant qu'il en reste ...
-
     List<CampagneProxy> campagneProxyList =
-      campagneProxyService.findLotCampagneProxyEnAttenteTransmissionScore(BATCH_SIZE)
+      emaEvalScoreService.findLotCampagneProxyEnAttenteTransmissionScore(BATCH_SIZE)
 
+    while(campagneProxyList) {
+      traiteLot(campagneProxyList)
+
+      campagneProxyList =
+        emaEvalScoreService.findLotCampagneProxyEnAttenteTransmissionScore(BATCH_SIZE)
+    }
+
+  }
+
+  private void traiteLot(List<CampagneProxy> campagneProxyList) {
     campagneProxyList.each { CampagneProxy campagneProxy ->
       try {
-        println "*** TRANSMISSION RESULTAT $campagneProxy"
-        // TODO implémenter traitement
+        emaEvalScoreService.transmetScoreCampagne(campagneProxy)
       }
       catch (Throwable throwable) {
         log.error(

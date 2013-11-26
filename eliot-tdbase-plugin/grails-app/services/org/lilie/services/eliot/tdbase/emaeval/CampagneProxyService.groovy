@@ -163,23 +163,4 @@ class CampagneProxyService {
       maxResults(max)
     }
   }
-
-  /**
-   * Retourne un lot de CampagneProxy qui sont attentes de transmission des scores
-   * de la séance TD Base associée
-   * @param max le nombre max de résultat à retourner (le traitement s'effectue par lot)
-   * @return
-   */
-  List<CampagneProxy> findLotCampagneProxyEnAttenteTransmissionScore(int max) {
-    CampagneProxy.withCriteria {
-      eq('statut', CampagneProxyStatut.OK)
-      eq('scoreTransmissionStatut', ScoreTransmissionStatut.EN_ATTENTE_FIN_SEANCE)
-      'modaliteActivite' {
-        le('dateFin', new Date())
-        eq('optionEvaluerCompetences', true)
-      }
-      order('id', 'asc')
-      maxResults(max)
-    }
-  }
 }

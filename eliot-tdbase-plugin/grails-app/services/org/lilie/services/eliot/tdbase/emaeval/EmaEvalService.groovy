@@ -54,6 +54,8 @@ import org.lilie.services.eliot.competence.ReferentielService
 import org.lilie.services.eliot.competence.SourceReferentiel
 import org.lilie.services.eliot.tdbase.ModaliteActivite
 import org.lilie.services.eliot.tdbase.emaeval.emawsconnector.ReferentielMarshaller
+import org.lilie.services.eliot.tdbase.emaeval.score.EvaluationCopie
+import org.lilie.services.eliot.tdbase.emaeval.score.EvaluationSeance
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.springframework.transaction.annotation.Transactional
 
@@ -580,7 +582,7 @@ class EmaEvalService {
     )
 
     // Mise à jour du plan de la campagne
-    campagne = evaluationDefinitionManager.replacePlan(campagne,plan)
+    campagne = evaluationDefinitionManager.replacePlan(campagne, plan)
 
     // Mise à jour du scénario de la campagne
     campagne = evaluationDefinitionManager.replaceScenarioEvaluation(
@@ -617,13 +619,35 @@ class EmaEvalService {
     // instantiateED
     campagne = evaluationDefinitionManager.instantiateED(campagne)
 
-    // TODO *** Test transmission des scores
+    return campagne
+  }
+
+  /**
+   * Transmet à EmaEval les scores des élèves sur les compétences évaluées dans une séance TD Base
+   * @param evaluationSeance
+   */
+  void transmetScore(EvaluationSeance evaluationSeance) {
+    CampagneProxy campagneProxy = evaluationSeance.campagneProxy
+    EmaWSConnector connector = emaEvalFactoryService.creeEmaWSConnector(
+        campagneProxy.operateurLogin
+    )
+    EvaluationDefinitionManager evaluationDefinitionManager =
+      emaEvalFactoryService.getEvaluationDefinitionManager(connector)
     EvaluationSubjectInstanceManager evaluationSubjectInstanceManager =
       new EvaluationSubjectInstanceManager(connector)
 
-    evaluationSubjectInstanceManager.putResult()
+    EvaluationDefinition campagne = evaluationDefinitionManager.getEvaluationDefinition(campagneProxy.campagneId)
 
-    return campagne
+    evaluationSeance.eachEleve { Personne eleve, EvaluationCopie evaluationCopie ->
+      User user = new User()
+      user.setUid(eleve.autorite.identifiant)
+
+      evaluationSubjectInstanceManager.putResult(
+          campagne,
+          user,
+          evaluationCopie.emaEvalScore
+      )
+    }
   }
 
   void supprimeCampagneEmaEval(String operateurLogin, Long campagneId) {
@@ -641,8 +665,8 @@ class EmaEvalService {
     evaluationDefinitionManager.deleteEvaluationDefinition(campagne)
   }
 
-  private EvaluationDefinition associeEvaluateurSujetList(EvaluationDefinition campagne,
-                                                          evaluationDefinitionManager) {
+  private static EvaluationDefinition associeEvaluateurSujetList(EvaluationDefinition campagne,
+                                                                 evaluationDefinitionManager) {
     Set<EntityDefinition> entityDefinitionSet = [] as Set
     campagne.scenarioDefinitions.each { ScenarioDefinition scenarioDefinition ->
       scenarioDefinition.pid.processRoleDefinitions.each { ProcessRoleDefinition processRoleDefinition ->
@@ -666,9 +690,9 @@ class EmaEvalService {
     return campagne
   }
 
-  private EvaluationDefinition metAJourCandidatList(ModaliteActivite modaliteActivite,
-                                                    EvaluationDefinitionManager evaluationDefinitionManager,
-                                                    EvaluationDefinition campagne) {
+  private static EvaluationDefinition metAJourCandidatList(ModaliteActivite modaliteActivite,
+                                                           EvaluationDefinitionManager evaluationDefinitionManager,
+                                                           EvaluationDefinition campagne) {
     Set<Entity> candidatList = [] as Set
     modaliteActivite.personnesDevantRendreCopie.each { Personne personne ->
       candidatList << new User(uid: personne.autorite.identifiant)
@@ -682,9 +706,9 @@ class EmaEvalService {
     return campagne
   }
 
-  private EvaluationDefinition metAJourEvaluateur(ModaliteActivite modaliteActivite,
-                                                  EvaluationDefinitionManager evaluationDefinitionManager,
-                                                  EvaluationDefinition campagne) {
+  private static EvaluationDefinition metAJourEvaluateur(ModaliteActivite modaliteActivite,
+                                                         EvaluationDefinitionManager evaluationDefinitionManager,
+                                                         EvaluationDefinition campagne) {
     Set<Entity> evaluateurList = [] as Set
     evaluateurList << new User(
         uid: modaliteActivite.sujet.proprietaire.autorite.identifiant
@@ -699,8 +723,9 @@ class EmaEvalService {
     return campagne
   }
 
-  private EvaluationDefinition metAJourCompetenceList(ModaliteActivite modaliteActivite,
-                                                      EvaluationDefinitionManager evaluationDefinitionManager, EvaluationDefinition campagne) {
+  private static EvaluationDefinition metAJourCompetenceList(ModaliteActivite modaliteActivite,
+                                                             EvaluationDefinitionManager evaluationDefinitionManager,
+                                                             EvaluationDefinition campagne) {
     List<Competence> competenceList = modaliteActivite.sujet.findAllCompetence()
     List<Long> evaluationObjectIdList = getCompetenceIdEmaEvalList(competenceList)
 
@@ -712,12 +737,12 @@ class EmaEvalService {
     return campagne
   }
 
-  private EvaluationDefinition creeCampagneEmaEval(EvaluationDefinitionManager evaluationDefinitionManager,
-                                                   ModaliteActivite modaliteActivite,
-                                                   String login) {
+  private static EvaluationDefinition creeCampagneEmaEval(EvaluationDefinitionManager evaluationDefinitionManager,
+                                                          ModaliteActivite modaliteActivite,
+                                                          String login) {
     evaluationDefinitionManager.addEvaluationDefinition(
         modaliteActivite.dateDebut,
-        modaliteActivite.dateFin,
+        modaliteActivite.dateFin + 2, // 2j plus tard car EmaEval impose de transmettre les résultats avant la fin de la campagne
         login,
         "Campagne d'évaluation de la séance TD Base " + modaliteActivite.id,
         "Campagne d'évaluation de la séance TD Base " + modaliteActivite.id
@@ -732,7 +757,7 @@ class EmaEvalService {
    * @param competenceList
    * @return
    */
-  private List<Long> getCompetenceIdEmaEvalList(List<Competence> competenceList) {
+  private static List<Long> getCompetenceIdEmaEvalList(List<Competence> competenceList) {
     List<CompetenceIdExterne> competenceIdExterneList = CompetenceIdExterne.withCriteria {
       inList('competence', competenceList)
       eq('sourceReferentiel', SourceReferentiel.EMA_EVAL)
