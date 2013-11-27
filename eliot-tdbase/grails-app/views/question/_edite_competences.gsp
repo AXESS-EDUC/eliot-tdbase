@@ -30,10 +30,10 @@
   <td class="label">Compétences&nbsp;:</td>
   <td id="section-competence">
     <g:if test="${competenceAssocieeList}">
-      <input type="button" value="Modifier les compétences" class="button" onclick="actionSelectionCompetence()"/>
+      <input type="button" value="Modifier" class="button" onclick="actionSelectionCompetence()"/>
     </g:if>
     <g:else>
-      <input type="button" value="Ajouter des compétences" class="button" onclick="actionSelectionCompetence()"/>
+      <input type="button" value="Ajouter" class="button" onclick="actionSelectionCompetence()"/>
     </g:else>
 
     <br/>

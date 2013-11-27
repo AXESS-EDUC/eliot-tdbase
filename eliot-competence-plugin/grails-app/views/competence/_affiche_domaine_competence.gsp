@@ -30,10 +30,13 @@
 %{-- Si le filtre est actif, on affiche uniquement les domaines ancêtres des compétences sélectionnées --}%
 <g:if test="${!selectionUniquement || domaine.isAncestorOfAnyOf(competenceSelectionList)}">
 
-  <li>
-    <b>${domaine.nom}</b>
+  <li style="list-style: none">
+    <a href="#" onclick="toggleDomaine('${domaine.id}');">
+      <g:img id="domaine-${domaine.id}-image" file="TriangleDown8.png" />
+      <b>${domaine.nom}</b>
+    </a>
 
-    <ul>
+    <ul id="domaine-${domaine.id}-contenu">
       <g:each in="${domaine.allSousDomaine.sort { it.nom }}" var="sousDomaine">
         <g:render
             template="/competence/affiche_domaine_competence"
