@@ -40,5 +40,29 @@
               competenceSelectionList: competenceSelectionList
           ]"/>
     </g:each>
+
+    %{-- Images de référence utilisées par la méthode toggleDomaine pour changer l'image d'un domaine --}%
+    %{-- suivant si celui-ci est ouvert ou fermé --}%
+    <g:img id="image-triangle-down" file="TriangleDown8.png" style="display: none" />
+    <g:img id="image-triangle-right" file="TriangleRight8.png" style="display: none" />
+
+    <script>
+    var imageTriangleDownElement = document.getElementById('image-triangle-down');
+    var imageTriangleRightElement = document.getElementById('image-triangle-right');
+
+      function toggleDomaine(domaineId) {
+        var domaineContenuElement = document.getElementById('domaine-' + domaineId + '-contenu');
+        var domaineImage = document.getElementById('domaine-' + domaineId + '-image');
+
+        if (domaineContenuElement.style.display == 'none') {
+          domaineContenuElement.style.display = 'block';
+          domaineImage.src = imageTriangleDownElement.src;
+        }
+        else {
+          domaineContenuElement.style.display = 'none';
+          domaineImage.src = imageTriangleRightElement.src;
+        }
+      }
+    </script>
   </form>
 </ul>
