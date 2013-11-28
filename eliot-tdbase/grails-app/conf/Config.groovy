@@ -515,13 +515,29 @@ eliot.interfacage.emaeval.methodeEvaluation.nom = "Methode d'évaluation" // Not
 // Trigger définissant la périodicité du job exécutant en tâche de fond
 // la gestion des campagnes EmaEval (via les webservices)
 eliot.interfacage.emaeval.campagne.trigger = {
-  simple name: 'emaEvalCampagneTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15
+  simple name: 'emaEvalCampagneTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
 }
 
 // Trigger définissant la périodicité du job exécutant en tâche de fond
 // la transmission des résultats entre une séance TD Base et une campagne EmaEval
 eliot.interfacage.emaeval.score.trigger = {
-  simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15
+  simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
+}
+
+environments {
+  production { // Surcharge de la configuration des jobs pour la production
+    // Trigger définissant la périodicité du job exécutant en tâche de fond
+    // la gestion des campagnes EmaEval (via les webservices)
+    eliot.interfacage.emaeval.campagne.trigger = {
+      simple name: 'emaEvalCampagneTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 10 // Toutes les 10 minutes
+    }
+
+    // Trigger définissant la périodicité du job exécutant en tâche de fond
+    // la transmission des résultats entre une séance TD Base et une campagne EmaEval
+    eliot.interfacage.emaeval.score.trigger = {
+      simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 1000 * 60 * 4 // Toutes les 4h
+    }
+  }
 }
 
 // Configuration plugin Quartz 2
