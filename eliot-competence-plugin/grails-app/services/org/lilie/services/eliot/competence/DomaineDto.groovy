@@ -41,4 +41,12 @@ class DomaineDto {
   SourceReferentiel sourceReferentiel
   Collection<DomaineDto> allSousDomaine = []
   Collection<CompetenceDto> allCompetence = []
+
+
+  @Override
+  public String toString() {
+    return "DomaineDto{" +
+        "nom='" + nom + '\'' +
+        '}';
+  }
 }

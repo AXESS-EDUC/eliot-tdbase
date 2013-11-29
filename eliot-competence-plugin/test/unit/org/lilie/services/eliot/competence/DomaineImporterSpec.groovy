@@ -45,11 +45,16 @@ class DomaineImporterSpec extends UnitSpec {
     mockDomain(Domaine)
   }
 
-  def "testImporteDomaine"(Domaine domaineParent, int nbSousDomaine, int nbCompetence) {
+  def "testImporteDomaine"(boolean hasDomaineParent, int nbSousDomaine, int nbCompetence) {
     given:
-    Referentiel referentiel = new Referentiel()
+    Referentiel referentiel = new Referentiel(nom: "Référentiel")
 
-    String domaineNom = "nom"
+    Domaine domaineParent = null
+    if(hasDomaineParent) {
+      domaineParent = new Domaine(nom: "domaineParentNom", referentiel: referentiel)
+    }
+
+    String domaineNom = "domaineNom"
     String domaineDescription = "description"
 
     List<DomaineDto> allSousDomaineDto = []
@@ -119,7 +124,7 @@ class DomaineImporterSpec extends UnitSpec {
             referentiel,
             _ as Domaine,
             sousDomaineDto
-        ) >> new Domaine(nom: sousDomaineDto.nom)
+        ) >> new Domaine(nom: sousDomaineDto.nom, referentiel: referentiel)
       }
     }
 
@@ -128,7 +133,7 @@ class DomaineImporterSpec extends UnitSpec {
         1 * competenceImporter.importeCompetence(
             _ as Domaine,
             competenceDto
-        ) >> new Competence(nom: competenceDto.nom)
+        ) >> new Competence(nom: competenceDto.nom, referentiel: referentiel)
       }
     }
     domaine.nom == domaineNom
@@ -151,7 +156,7 @@ class DomaineImporterSpec extends UnitSpec {
     domaineImporter.metaClass.importeDomaine = null
 
     where:
-    domaineParent << [null, new Domaine()]
+    hasDomaineParent << [false, true]
     nbSousDomaine << [0, 2]
     nbCompetence << [0, 2]
   }

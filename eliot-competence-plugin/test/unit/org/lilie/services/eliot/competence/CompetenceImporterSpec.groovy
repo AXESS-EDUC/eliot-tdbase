@@ -37,6 +37,7 @@ class CompetenceImporterSpec extends UnitSpec {
 
   def setup() {
     competenceImporter = new CompetenceImporter()
+    mockDomain(Competence)
   }
 
   def "testImporteCompetence"() {

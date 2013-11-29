@@ -161,10 +161,12 @@ class DomaineImporter {
 
     if(domaineDto.idExterne && domaineDto.sourceReferentiel) {
       domaine.addToIdExterneList(
-          new DomaineIdExterne(idExterne: domaineDto.idExterne, sourceReferentiel: domaineDto.sourceReferentiel)
+          new DomaineIdExterne(
+              idExterne: domaineDto.idExterne,
+              sourceReferentiel: domaineDto.sourceReferentiel
+          )
       )
     }
-
     domaine.save(flush: true, failOnError: true)
 
     domaineDto.allSousDomaine.each { DomaineDto sousDomaineDto ->
