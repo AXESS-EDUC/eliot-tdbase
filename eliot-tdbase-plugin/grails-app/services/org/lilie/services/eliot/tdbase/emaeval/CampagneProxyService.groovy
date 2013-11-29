@@ -43,7 +43,7 @@ class CampagneProxyService {
   /**
    * Mémorise une demande de création de campagne pour une séance TD Base.
    * La création de campagne sera effectuée ultérieurement, de manière asynchrone,
-   * par EmaEvalJob.
+   * par EmaEvalCampagneJob.
    * Il s'agit donc d'une promesse de création de campagne.
    * @param modaliteActivite
    * @return
@@ -68,7 +68,7 @@ class CampagneProxyService {
   /**
    * Mémorise une demande de suppression de campagne EmaEval.
    * La suppression de campagne sera effectuée ultérieurement, de manière asynchrone,
-   * par EmaEvalJob.
+   * par EmaEvalCampagneJob.
    * Il s'agit donc d'une promesse de suppression de campagne.
    * @param modaliteActivite
    * @return

@@ -39,6 +39,7 @@ class CampagneProxy {
   ModaliteActivite modaliteActivite // Séance associée à cette campagne
   CampagneProxyStatut statut
   String operateurLogin // Login emaeval de l'utilisateur utilisé pour créer la campagne
+  ScoreTransmissionStatut scoreTransmissionStatut = ScoreTransmissionStatut.EN_ATTENTE_FIN_SEANCE
 
   static constraints = {
     campagneId nullable: true
@@ -46,7 +47,9 @@ class CampagneProxy {
     statut validator: { val, obj ->
       switch (val) {
         case CampagneProxyStatut.EN_ATTENTE_CREATION:
-          return obj.campagneId == null && obj.modaliteActivite
+          return obj.campagneId == null &&
+              obj.modaliteActivite &&
+              obj.scoreTransmissionStatut == ScoreTransmissionStatut.EN_ATTENTE_FIN_SEANCE
 
         case CampagneProxyStatut.OK:
           return obj.campagneId != null && obj.modaliteActivite
@@ -65,13 +68,13 @@ class CampagneProxy {
 
   static mapping = {
     table 'emaeval_interface.campagne_proxy'
-    version(true) // Le versionnement est nécessaire pour prévenir de modification concurrente d'une séance par l'utilisateur & par EmaEvalJob
+    version(true) // Le versionnement est nécessaire pour prévenir de modification concurrente d'une séance par l'utilisateur & par EmaEvalCampagneJob
     id(column: "id", generator: "sequence", params: [sequence: 'emaeval_interface.campagne_proxy_id_seq'])
   }
 
   /**
    * Mémorise dans l'objet CampagneProxy que la campagne associée doit être créée.
-   * La création sera gérée de manière asynchrone (par EmaEvalJob).
+   * La création sera gérée de manière asynchrone (par EmaEvalCampagneJob).
    *
    * Cette méthode effectue un traitement différent suivant le statut actuel du CampagneProxy
    */
@@ -100,7 +103,7 @@ class CampagneProxy {
 
   /**
    * Mémorise dans l'objet CampagneProxy que la campagne associée doit être supprimée.
-   * La suppression sera gérée de manière asynchrone (par EmaEvalJob).
+   * La suppression sera gérée de manière asynchrone (par EmaEvalCampagneJob).
    *
    * Cette méthode effectue un traitement différent suivant le statut actuel du CampagneProxy
    */
@@ -137,5 +140,15 @@ class CampagneProxy {
         CampagneProxyStatut.EN_ATTENTE_CREATION,
         CampagneProxyStatut.EN_ATTENTE_SUPPRESSION
     ]
+  }
+
+  void notifieSuccesTransmissionScore() {
+    this.scoreTransmissionStatut = ScoreTransmissionStatut.TRANSMIS
+    this.save()
+  }
+
+  void notifieEchecTransmissionScore() {
+    this.scoreTransmissionStatut = ScoreTransmissionStatut.ECHEC_TRANSMISSION
+    this.save()
   }
 }

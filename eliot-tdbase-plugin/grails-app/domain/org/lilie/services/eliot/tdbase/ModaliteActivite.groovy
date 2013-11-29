@@ -46,7 +46,7 @@ class ModaliteActivite {
   Date dateRemiseReponses = new Date()
 
   Date dateDebut = new Date()
-  Date dateFin = new Date()
+  Date dateFin = new Date() + 1
 
   Sujet sujet
 
