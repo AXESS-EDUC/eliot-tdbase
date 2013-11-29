@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.competence.Competence
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
@@ -80,10 +81,12 @@ class Sujet implements Artefact {
 
   Integer rangInsertion
 
-  static transients = ['rangInsertion',
-          'estUnExercice',
-          'questionComposite',
-          'estInvariant']
+  static transients = [
+      'rangInsertion',
+      'estUnExercice',
+      'questionComposite',
+      'estInvariant'
+  ]
 
   static constraints = {
     titre(blank: false, nullable: false)
@@ -155,7 +158,7 @@ class Sujet implements Artefact {
    */
   Float calculNoteMax() {
     def res = 0
-    questionsSequences.each {SujetSequenceQuestions sujetQuest ->
+    questionsSequences.each { SujetSequenceQuestions sujetQuest ->
       if (sujetQuest.question.estComposite()) {
         res += sujetQuest.question.exercice.calculNoteMax()
       } else {
@@ -221,5 +224,66 @@ class Sujet implements Artefact {
     return nbSeances == 0
   }
 
+  /**
+   * @return toutes les compétences associées à un sujet (i.e. associées à une question
+   * contenue dans le sujet)
+   */
+  List<Competence> findAllCompetence() {
+    String hqlQuestionAtomique = """
+    SELECT DISTINCT competence
+    FROM SujetSequenceQuestions sujetSequenceQuestions
+    INNER JOIN sujetSequenceQuestions.question question
+    INNER JOIN question.allQuestionCompetence questionCompetence
+    INNER JOIN questionCompetence.competence competence
+    """
 
+    String hqlQuestionComposite = """
+    SELECT DISTINCT competence
+    FROM SujetSequenceQuestions sujetSequenceQuestions
+    INNER JOIN sujetSequenceQuestions.question questionComposite
+    INNER JOIN questionComposite.exercice exercice
+    INNER JOIN exercice.questionsSequences exerciceSequenceQuestions
+    INNER JOIN exerciceSequenceQuestions.question questionAtomique
+    INNER JOIN questionAtomique.allQuestionCompetence questionCompetence
+    INNER JOIN questionCompetence.competence competence
+    """
+
+    List<Competence> competenceList =
+      (List<Competence>)executeQuery(hqlQuestionAtomique) +
+          (List<Competence>)executeQuery(hqlQuestionComposite)
+
+    // TODO Tester cette méthode
+
+    return competenceList
+  }
+
+  /**
+   * Vrai si ce sujet contient des questions associées à des compétences
+   * @return
+   */
+  boolean hasCompetence() {
+    def c1 = SujetSequenceQuestions.createCriteria()
+    def nbQuestionAvecCompetence = c1.count {
+      eq 'sujet', this
+      'question' {
+        isNotEmpty 'allQuestionCompetence'
+      }
+    }
+
+    def c2 = SujetSequenceQuestions.createCriteria()
+    def nbExerciceAvecCompetence = c2.count {
+      eq 'sujet', this
+      'question' {
+        'exercice' {
+          'questionsSequences' {
+            'question' {
+              isNotEmpty 'allQuestionCompetence'
+            }
+          }
+        }
+      }
+    }
+
+    return nbQuestionAvecCompetence + nbExerciceAvecCompetence > 0
+  }
 }

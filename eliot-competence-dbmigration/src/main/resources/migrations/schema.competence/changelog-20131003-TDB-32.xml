@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
+  ~ This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
+  ~
+  ~ Lilie is free software. You can redistribute it and/or modify since
+  ~ you respect the terms of either (at least one of the both license) :
+  ~ - under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~ - the CeCILL-C as published by CeCILL-C; either version 1 of the
+  ~ License, or any later version
+  ~
+  ~ There are special exceptions to the terms and conditions of the
+  ~ licenses as they are applied to this software. View the full text of
+  ~ the exception in file LICENSE.txt in the directory of this software
+  ~ distribution.
+  ~
+  ~ Lilie is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ Licenses for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ and the CeCILL-C along with Lilie. If not, see :
+  ~ <http://www.gnu.org/licenses/> and
+  ~ <http://www.cecill.info/licences.fr.html>.
+  -->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="1" author="jtra">
+        <comment>
+            Complément d'information concernant les référentiels
+        </comment>
+
+        <addColumn schemaName="competence" tableName="referentiel">
+            <column name="referentiel_version" type="varchar(128)"/>
+        </addColumn>
+
+        <addColumn schemaName="competence" tableName="referentiel">
+            <column name="date_version" type="varchar(128)"/>
+        </addColumn>
+
+        <addColumn schemaName="competence" tableName="referentiel">
+            <column name="url_reference" type="varchar(128)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2" author="jtra">
+        <comment>
+            Ajout des tables permettant d'associer des identifiants externes aux
+            référentiels, domaines et compétences
+        </comment>
+
+        <createTable schemaName="competence" tableName="referentiel_id_externe">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="referentiel_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_externe" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="referentiel_id_externe_id_seq" schemaName="competence"/>
+
+        <addForeignKeyConstraint
+                baseTableSchemaName="competence"
+                baseTableName="referentiel_id_externe"
+                baseColumnNames="referentiel_id"
+                referencedTableSchemaName="competence"
+                referencedTableName="referentiel"
+                referencedColumnNames="id"
+                constraintName="fk_referentiel_id_externe_referentiel" />
+
+
+
+        <createTable schemaName="competence" tableName="domaine_id_externe">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="domaine_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_externe" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="domaine_id_externe_id_seq" schemaName="competence"/>
+
+        <addForeignKeyConstraint
+                baseTableSchemaName="competence"
+                baseTableName="domaine_id_externe"
+                baseColumnNames="domaine_id"
+                referencedTableSchemaName="competence"
+                referencedTableName="domaine"
+                referencedColumnNames="id"
+                constraintName="fk_domaine_id_externe_domaine" />
+
+
+
+        <createTable schemaName="competence" tableName="competence_id_externe">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="competence_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_externe" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="competence_id_externe_id_seq" schemaName="competence"/>
+
+        <addForeignKeyConstraint
+                baseTableSchemaName="competence"
+                baseTableName="competence_id_externe"
+                baseColumnNames="competence_id"
+                referencedTableSchemaName="competence"
+                referencedTableName="competence"
+                referencedColumnNames="id"
+                constraintName="fk_competence_id_externe_competence" />
+    </changeSet>
+
+    <changeSet id="3" author="jtra">
+        <comment>Ajouter des contraintes d'unicité sur les idExternes</comment>
+        <addUniqueConstraint
+                schemaName="competence"
+                tableName="referentiel_id_externe"
+                columnNames="id_externe, source"
+                constraintName="UK_referentiel_id_externe_source" />
+
+        <addUniqueConstraint
+                schemaName="competence"
+                tableName="domaine_id_externe"
+                columnNames="id_externe, source"
+                constraintName="UK_domaine_id_externe_source" />
+
+        <addUniqueConstraint
+                schemaName="competence"
+                tableName="competence_id_externe"
+                columnNames="id_externe, source"
+                constraintName="UK_competence_id_externe_source" />
+    </changeSet>
+
+</databaseChangeLog>

@@ -63,5 +63,13 @@ environments {
     eliot.webservices.rest.client.notes.password = "eliot-tdbase"
     eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
     eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+
+    // Support de l'interface EmaEval
+    eliot.interfacage.emaeval.actif = false
+    eliot.interfacage.emaeval.url = "https://emaeval.pentila.com/EvalComp/webservices/"
+    eliot.interfacage.emaeval.referentiel.nom = "Palier 3"
+    eliot.interfacage.emaeval.plan.nom = "Plan TDBase"
+    eliot.interfacage.emaeval.scenario.nom = "Evaluation directe"
+    eliot.interfacage.emaeval.methodeEvaluation.nom = "Methode d'évaluation" // Note : je ne comprends pas pourquoi la méthode n'a pas pour nom "Méthode d'évaluation booléenne" ...
   }
 }

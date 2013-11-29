@@ -48,4 +48,15 @@
     <include file="migrations/schema.tdbase/changelog-20130919-TDB-40.xml"/>
     <include file="migrations/schema.tdbase/changelog-20130923-TDB-41.xml"/>
 
+    <include file="migrations/schema.tdbase/changelog-20130923-TDB-29.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20131015-TDB-50.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20131023-TDB-34.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20131031-TDB-51.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20131114-TDB-35.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20131126-TDB-62.xml"/>
 </databaseChangeLog>

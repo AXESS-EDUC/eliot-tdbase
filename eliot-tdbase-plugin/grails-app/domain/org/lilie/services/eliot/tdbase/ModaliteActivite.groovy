@@ -46,7 +46,7 @@ class ModaliteActivite {
   Date dateRemiseReponses = new Date()
 
   Date dateDebut = new Date()
-  Date dateFin = new Date()
+  Date dateFin = new Date() + 1
 
   Sujet sujet
 
@@ -59,7 +59,9 @@ class ModaliteActivite {
 
   Long activiteId
   Long evaluationId
+
   Boolean copieAmeliorable = true
+  Boolean optionEvaluerCompetences
 
   static constraints = {
     responsable(nullable: true)
@@ -73,6 +75,15 @@ class ModaliteActivite {
       }
     })
     matiere(nullable: true)
+
+    optionEvaluerCompetences(nullable: true)
+  }
+
+  static mapping = {
+    table('td.modalite_activite')
+    version(false)
+    id(column: 'id', generator: 'sequence', params: [sequence: 'td.modalite_activite_id_seq'])
+    cache(true)
   }
 
   static transients = ['groupeLibelle', 'estOuverte', 'estPerimee','profilScolariteService']
@@ -116,14 +127,4 @@ class ModaliteActivite {
     Date now = new Date()
     now.after(dateFin)
   }
-
-
-  static mapping = {
-    table('td.modalite_activite')
-    version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.modalite_activite_id_seq'])
-    cache(true)
-  }
-
-
 }

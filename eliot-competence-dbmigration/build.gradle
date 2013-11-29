@@ -1,0 +1,123 @@
+project.group = "org.lilie.services.eliot"
+project.ext.artefactId = "eliot-competence-dbmigration"
+project.version = "1.0-SNAPSHOT"
+
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+
+
+repositories {
+  mavenCentral()
+}
+
+configurations {
+  liquibase
+  deploiementArtefact
+}
+
+
+
+dependencies {
+  liquibase group: 'org.liquibase', name: 'liquibase-core', version: '2.0.2'
+  liquibase group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'
+
+  //deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
+  deploiementArtefact "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+}
+
+/**
+ *   Deploiement artefact
+ */
+
+/**
+ *  La config du repository est au format des parametres attendus par Grails
+ *  pour ne pas avoir à dupliquer les informations de connexion au repositoty
+ */
+project.ext {
+  userHome = System.properties['user.home']
+  repositoryConfigFile = "${userHome}/.grails/settings.groovy"
+  repositoryReleases = "ticetimereleases"
+  repositorySnapshots = "ticetimesnapshot"
+
+}
+
+/**
+ * Configuration de la tache upload archives
+ */
+uploadArchives {
+  if (!project.hasProperty('environment')) {
+    project.ext.environment = 'development'
+  }
+  project.ext.configRepository = new ConfigSlurper(project.environment).parse(
+          new File(repositoryConfigFile).toURL())
+
+  repositories.mavenDeployer {
+    configuration = configurations.deploiementArtefact
+    def reposName = repositoryReleases
+    if (version.endsWith("SNAPSHOT")) {
+      reposName = repositorySnapshots
+    }
+    repository(url: configRepository.grails.project.repos."${reposName}".url) {
+      authentication(
+              userName: configRepository.grails.project.repos."${reposName}".username,
+              password: configRepository.grails.project.repos."${reposName}".password
+      )
+    }
+  }
+}
+
+// Lancement liquibase
+
+
+project.ext.dataSourceConfigFile = "${projectDir}/DataSource.groovy"
+
+/**
+ * Configuration de la tache update
+ * Pour lancer en mode dev : gradle update
+ * Pour lancer en mode test : gradle update -Penvironment=test
+ */
+task update(dependsOn: build) {
+  if (!project.hasProperty('environment')) {
+    project.ext.environment = 'development'
+  }
+  project.ext.configDataSource = new ConfigSlurper(project.environment).parse(new File(dataSourceConfigFile).toURL())
+  displayConfig(configDataSource)
+  ant.path(id: 'classpath') {
+    ant.pathelement(path: configurations.liquibase.asPath)
+    ant.pathelement(location: "${project.buildDir}/libs/${project.name}-${version}.jar")
+  }
+  ant.taskdef(resource: 'liquibasetasks.properties', classpathref: 'classpath')
+}
+
+/**
+ * Action de la tâche update
+ */
+update << {
+  println configurations.liquibase.asPath
+  ant.updateDatabase(
+          changeLogFile: "${project.configDataSource.liquibase.changelogfile}",
+          driver: "${project.configDataSource.dataSource.driverClassName}",
+          url: "${project.configDataSource.dataSource.url}",
+          username: "${project.configDataSource.dataSource.username}",
+          password: "${project.configDataSource.dataSource.password}",
+          promptOnNonLocalDatabase: "false",
+          dropFirst: "false",
+          classpathref: 'classpath')
+}
+
+// methode utilitaire
+
+def displayConfig(config) {
+  println """
+  ---   Config DataSource ---
+  Environnement : ${environment}
+  liquibase.changelogfile : ${config.liquibase.changelogfile}
+  dataSource.driverClassName: ${config.dataSource.driverClassName}
+  dataSource.url: ${config.dataSource.url}
+  ---
+  """
+
+}

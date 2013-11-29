@@ -1,8 +1,9 @@
 project.group = "org.lilie.services.eliot"
 project.ext.artefactId = "eliot-tice-dbmigration-all"
-project.version = "2.2.0-SNAPSHOT"
+project.version = "2.3.0-SNAPSHOT"
 
 project.ext.versionSchemaEliot = "2.9.4.8"
+project.ext.versionSchemaCompetence = "1.0-SNAPSHOT"
 // classifierSchemaEliot =
 
 apply plugin: 'idea'
@@ -41,6 +42,8 @@ dependencies {
   compile group: 'org.lilie.services.eliot', name:'eliot-scolarite-dbmigration', version:"${versionSchemaEliot}"
 
   compile group:'org.lilie.services.eliot', name:'eliot-tice-dbmigration', version:"${version}"
+
+  compile group:'org.lilie.services.eliot', name:'eliot-competence-dbmigration', version:"${versionSchemaCompetence}"
 
   //deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
   deploiementArtefact "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"

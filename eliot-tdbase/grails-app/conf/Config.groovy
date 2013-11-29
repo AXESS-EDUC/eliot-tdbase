@@ -66,17 +66,17 @@ grails.project.groupId = "org.lilie.services.eliot" // change this to alter the 
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
 grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
-        xml: ['text/xml', 'application/xml'],
-        text: 'text/plain',
-        js: 'text/javascript',
-        rss: 'application/rss+xml',
-        atom: 'application/atom+xml',
-        css: 'text/css',
-        csv: 'text/csv',
-        all: '*/*',
-        json: ['application/json', 'text/json'],
-        form: 'application/x-www-form-urlencoded',
-        multipartForm: 'multipart/form-data']
+    xml: ['text/xml', 'application/xml'],
+    text: 'text/plain',
+    js: 'text/javascript',
+    rss: 'application/rss+xml',
+    atom: 'application/atom+xml',
+    css: 'text/css',
+    csv: 'text/csv',
+    all: '*/*',
+    json: ['application/json', 'text/json'],
+    form: 'application/x-www-form-urlencoded',
+    multipartForm: 'multipart/form-data']
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
@@ -126,16 +126,16 @@ log4j = {
   //}
 
   error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
-        'org.codehaus.groovy.grails.web.pages', //  GSP
-        'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-        'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-        'org.codehaus.groovy.grails.web.mapping', // URL mapping
-        'org.codehaus.groovy.grails.commons', // core / classloading
-        'org.codehaus.groovy.grails.plugins', // plugins
-        'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-        'org.springframework',
-        'org.hibernate',
-        'net.sf.ehcache.hibernate'
+      'org.codehaus.groovy.grails.web.pages', //  GSP
+      'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+      'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+      'org.codehaus.groovy.grails.web.mapping', // URL mapping
+      'org.codehaus.groovy.grails.commons', // core / classloading
+      'org.codehaus.groovy.grails.plugins', // plugins
+      'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+      'org.springframework',
+      'org.hibernate',
+      'net.sf.ehcache.hibernate'
 
   warn 'org.mortbay.log'
 
@@ -154,26 +154,46 @@ grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 
 // set security rbac
 //
-grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
-        '/p/**': ['IS_AUTHENTICATED_FULLY'],
-        '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
-                "${FonctionEnum.DOC.toRole()}",
-                'IS_AUTHENTICATED_FULLY'],
-        '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
-                "${FonctionEnum.DOC.toRole()}",
-                'IS_AUTHENTICATED_FULLY'],
-        '/question/**': ["${FonctionEnum.ENS.toRole()}",
-                "${FonctionEnum.DOC.toRole()}",
-                'IS_AUTHENTICATED_FULLY'],
-        '/seance/**': ["${FonctionEnum.ENS.toRole()}",
-                "${FonctionEnum.DOC.toRole()}",
-                'IS_AUTHENTICATED_FULLY'],
-        '/activite/**': ["${FonctionEnum.ELEVE.toRole()}",
-                'IS_AUTHENTICATED_FULLY'],
-        '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-                'IS_AUTHENTICATED_FULLY'],
-        '/maintenance/**': ["${FonctionEnum.CD.toRole()}",
-                'IS_AUTHENTICATED_FULLY']]
+grails.plugins.springsecurity.interceptUrlMap = [
+    '/': ['IS_AUTHENTICATED_FULLY'],
+    '/p/**': ['IS_AUTHENTICATED_FULLY'],
+    '/dashboard/**': [
+        "${FonctionEnum.ENS.toRole()}",
+        "${FonctionEnum.DOC.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/sujet/**': [
+        "${FonctionEnum.ENS.toRole()}",
+        "${FonctionEnum.DOC.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/question/**': [
+        "${FonctionEnum.ENS.toRole()}",
+        "${FonctionEnum.DOC.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/seance/**': [
+        "${FonctionEnum.ENS.toRole()}",
+        "${FonctionEnum.DOC.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/activite/**': [
+        "${FonctionEnum.ELEVE.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/resultats/**': [
+        "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/maintenance/**': [
+        "${FonctionEnum.CD.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/emaEval/**': [
+        "${FonctionEnum.CD.toRole()}",
+        'IS_AUTHENTICATED_FULLY'
+    ]
+]
 
 // l'interfacage doit il effectuer des contrôles fort sur les "pseudo
 // clés étrangères"
@@ -192,7 +212,7 @@ eliot.listes.maxrecherche = 5
 eliot.listes.max = 7
 
 // le nombre d'éléments max à affichier dans une liste de structure
-eliot.listes.structures.maxrecherche=200
+eliot.listes.structures.maxrecherche = 200
 
 // les dimensions de div continer à prendre en compte si nécessaire
 eliot.pages.container.forceDimensions = false
@@ -202,36 +222,37 @@ eliot.pages.container.height = 629
 eliot.pages.container.width = 931
 
 // l'url des fichiers de documentation par fonction
-eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
-        "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"]
+eliot.manuels.documents.urlMap = [
+    "${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
+    "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"
+]
 
 // l'url des fichiers de documentation par identifiant (item de question,...)
 eliot.help.documents.urlMap = [
-        "eliot.tdbase.item.${QuestionTypeEnum.Associate.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.BooleanMatch.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.Composite.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.Decimal.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.Document.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.ExclusiveChoice.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.FileUpload.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.FillGap.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.FillGraphics.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.GraphicMatch.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.Integer.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.MultipleChoice.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.Open.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.Order.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.Slider.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.item.${QuestionTypeEnum.Statement.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "eliot.tdbase.introduction": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html"]
-
+    "eliot.tdbase.item.${QuestionTypeEnum.Associate.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.BooleanMatch.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.Composite.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.Decimal.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.Document.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.ExclusiveChoice.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.FileUpload.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.FillGap.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.FillGraphics.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.GraphicMatch.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.Integer.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.MultipleChoice.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.Open.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.Order.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.Slider.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.item.${QuestionTypeEnum.Statement.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "eliot.tdbase.introduction": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html"]
 
 // les ressources JS et Applet Java Jmol sont recherchées dans l'URI
 // relative au serveur Grails (l'URI doit commencer par '/'):
 eliot.jmol.resourcesURI = "/js/lib/jmol/"
 
-eliot.graphicitems.dimension=750
+eliot.graphicitems.dimension = 750
 
 environments {
   test {
@@ -246,27 +267,40 @@ environments {
     eliot.bootstrap.migration = true
   }
   development {
-    eliot.listes.structures.maxrecherche=3
+    eliot.listes.structures.maxrecherche = 3
     eliot.pages.container.forceDimensions = true
-    grails.plugins.springsecurity.interceptUrlMap = ['/': ['IS_AUTHENTICATED_FULLY'],
-            '/p/**': ['IS_AUTHENTICATED_FULLY'],
-            '/dashboard/**': ["${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'],
-            '/sujet/**': ["${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'],
-            '/question/**': ["${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'],
-            '/seance/**': ["${FonctionEnum.ENS.toRole()}",
-                    "${FonctionEnum.DOC.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'],
-            '/activite/**': ["${FonctionEnum.ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_FULLY'],
-            '/resultats/**': ["${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-                    'IS_AUTHENTICATED_FULLY']
-            ]
+    grails.plugins.springsecurity.interceptUrlMap = [
+        '/': ['IS_AUTHENTICATED_FULLY'],
+        '/p/**': ['IS_AUTHENTICATED_FULLY'],
+        '/dashboard/**': [
+            "${FonctionEnum.ENS.toRole()}",
+            "${FonctionEnum.DOC.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ],
+        '/sujet/**': [
+            "${FonctionEnum.ENS.toRole()}",
+            "${FonctionEnum.DOC.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ],
+        '/question/**': [
+            "${FonctionEnum.ENS.toRole()}",
+            "${FonctionEnum.DOC.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ],
+        '/seance/**': [
+            "${FonctionEnum.ENS.toRole()}",
+            "${FonctionEnum.DOC.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ],
+        '/activite/**': [
+            "${FonctionEnum.ELEVE.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ],
+        '/resultats/**': [
+            "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+            'IS_AUTHENTICATED_FULLY'
+        ]
+    ]
 
     grails.plugins.springsecurity.cas.active = false
     eliot.tdbase.nomApplication = "eliot-tdbase"
@@ -290,15 +324,15 @@ environments {
     // configuration des liens du menu portail et des annonces portail
     eliot.portail.menu.affichage = true
     eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
-            libelle: "ticetime"],
-            [url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                    libelle: "eliot-tdbase sur Github"]]
+        libelle: "ticetime"],
+        [url: "https://github.com/ticetime/eliot-tdbase/wiki",
+            libelle: "eliot-tdbase sur Github"]]
     eliot.portail.news = ["TD Base version ${appVersion} - environnement DEV.",
-            "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
-            "Login / mot de passe enseignant : ens1 / ens1",
-            "Login / mot de passe élève 1 : elv1 / elv1",
-            "Login / mot de passe élève 2 : elv2 / elv2",
-            "Login / mot de passe parent 1 : resp1 / resp1"]
+        "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
+        "Login / mot de passe enseignant : ens1 / ens1",
+        "Login / mot de passe élève 1 : elv1 / elv1",
+        "Login / mot de passe élève 2 : elv2 / elv2",
+        "Login / mot de passe parent 1 : resp1 / resp1"]
   }
   testlilie {
     eliot.tdbase.nomApplication = "eliot-tdbase"
@@ -325,12 +359,12 @@ environments {
     // configuration des liens du menu portail et des annonces portail
     eliot.portail.menu.affichage = true
     eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
-            libelle: "ticetime"],
-            [url: "https://github.com/ticetime/eliot-tdbase/wiki",
-                    libelle: "eliot-tdbase sur Github"]]
+        libelle: "ticetime"],
+        [url: "https://github.com/ticetime/eliot-tdbase/wiki",
+            libelle: "eliot-tdbase sur Github"]]
     eliot.portail.news = ["TD Base version ${appVersion} - environnement TESTLILIE ",
-            "Login / mot de passe : voir base de test eliot/lilie",
-            "Pierre Baudet : UT110000000000005027"]
+        "Login / mot de passe : voir base de test eliot/lilie",
+        "Pierre Baudet : UT110000000000005027"]
   }
   production {
     // paramètres par defaut de CAS
@@ -391,26 +425,28 @@ environments {
 }
 
 eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitresForCahierId",
-        description: "Retourne la liste arborescente de chapitres d'un cahier",
+    description: "Retourne la liste arborescente de chapitres d'un cahier",
+    contentType: ContentType.JSON,
+    method: Method.GET,
+    requestBodyTemplate: null,
+    responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
+    //urlServer: "http://localhost:8090",
+    uriTemplate: '/cahiers/$cahierId/chapitres'],
+    [
+        operationName: "findCahiersByStructureAndEnseignant",
+        description: "Retourne la liste des cahiers pour une structure et un enseignant donné",
         contentType: ContentType.JSON,
         method: Method.GET,
         requestBodyTemplate: null,
-        responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
+        responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
         //urlServer: "http://localhost:8090",
-        uriTemplate: '/cahiers/$cahierId/chapitres'],
-        [operationName: "findCahiersByStructureAndEnseignant",
-                description: "Retourne la liste des cahiers pour une structure et un enseignant donné",
-                contentType: ContentType.JSON,
-                method: Method.GET,
-                requestBodyTemplate: null,
-                responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
-                //urlServer: "http://localhost:8090",
-                uriTemplate: '/cahiers-service'],
-        [operationName: "createTextesActivite",
-                description: "Insert une activité dans un cahier de textes",
-                contentType: ContentType.JSON,
-                method: Method.POST,
-                requestBodyTemplate: '''
+        uriTemplate: '/cahiers-service'],
+    [
+        operationName: "createTextesActivite",
+        description: "Insert une activité dans un cahier de textes",
+        contentType: ContentType.JSON,
+        method: Method.POST,
+        requestBodyTemplate: '''
                                             {
                                             "kind" : "eliot-textes#activite-interactive#insert",
                                             "titre" : "$titre",
@@ -422,22 +458,24 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                             "ressource-interactive-url" : "$urlSeance"
                                             }
                                             ''',
-                responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
-                //urlServer: "http://localhost:8090",
-                uriTemplate: '/cahiers/$cahierId/activites-interactives'],
-        [operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
-                description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
-                contentType: ContentType.JSON,
-                method: Method.GET,
-                requestBodyTemplate: null,
-                responseContentStructure: "List<eliot-notes#evaluation-contextes#standard>",
-                //urlServer: "http://localhost:8090",
-                uriTemplate: '/evaluation-contextes.json'],
-        [operationName: "createDevoir",
-                description: "Insert un devoir dans le module Notes",
-                contentType: ContentType.JSON,
-                method: Method.POST,
-                requestBodyTemplate: '''
+        responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+        //urlServer: "http://localhost:8090",
+        uriTemplate: '/cahiers/$cahierId/activites-interactives'],
+    [
+        operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
+        description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
+        contentType: ContentType.JSON,
+        method: Method.GET,
+        requestBodyTemplate: null,
+        responseContentStructure: "List<eliot-notes#evaluation-contextes#standard>",
+        //urlServer: "http://localhost:8090",
+        uriTemplate: '/evaluation-contextes.json'],
+    [
+        operationName: "createDevoir",
+        description: "Insert un devoir dans le module Notes",
+        contentType: ContentType.JSON,
+        method: Method.POST,
+        requestBodyTemplate: '''
                                   {
                                   "kind" : "eliot-notes#evaluation#insert",
                                   "titre" : "$titre",
@@ -446,19 +484,61 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                   "evaluation-contexte-id" : "$serviceId",
                                    }
                                    ''',
-                responseContentStructure: "eliot-notes#evaluation#id>",
-                //urlServer: "http://localhost:8090",
-                uriTemplate: '/evaluations'],
-        [operationName: "updateNotes",
-                description: "Met à jour les notes d'un devoir dans le module Notes",
-                contentType: ContentType.JSON,
-                method: Method.PUT,
-                requestBodyTemplate: '''
+        responseContentStructure: "eliot-notes#evaluation#id>",
+        //urlServer: "http://localhost:8090",
+        uriTemplate: '/evaluations'],
+    [
+        operationName: "updateNotes",
+        description: "Met à jour les notes d'un devoir dans le module Notes",
+        contentType: ContentType.JSON,
+        method: Method.PUT,
+        requestBodyTemplate: '''
                                  {
                                  "kind" : "eliot-notes#evaluation-notes#standard",
                                  "notes": $notesJson
                                  }
                                  ''',
-                responseContentStructure: "eliot-notes#evaluation#id>",
-                //urlServer: "http://localhost:8090",
-                uriTemplate: '/evaluations/$evaluationId/notes.json']]
+        responseContentStructure: "eliot-notes#evaluation#id>",
+        //urlServer: "http://localhost:8090",
+        uriTemplate: '/evaluations/$evaluationId/notes.json'
+    ]
+]
+
+// Support de l'interface EmaEval
+eliot.interfacage.emaeval.actif = false
+eliot.interfacage.emaeval.url = "https://emaeval.pentila.com/EvalComp/webservices/"
+eliot.interfacage.emaeval.referentiel.nom = "Palier 3"
+eliot.interfacage.emaeval.plan.nom = "Plan TDBase"
+eliot.interfacage.emaeval.scenario.nom = "Evaluation directe"
+eliot.interfacage.emaeval.methodeEvaluation.nom = "Methode d'évaluation" // Note : je ne comprends pas pourquoi la méthode n'a pas pour nom "Méthode d'évaluation booléenne" ...
+
+// Trigger définissant la périodicité du job exécutant en tâche de fond
+// la gestion des campagnes EmaEval (via les webservices)
+eliot.interfacage.emaeval.campagne.trigger = {
+  simple name: 'emaEvalCampagneTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
+}
+
+// Trigger définissant la périodicité du job exécutant en tâche de fond
+// la transmission des résultats entre une séance TD Base et une campagne EmaEval
+eliot.interfacage.emaeval.score.trigger = {
+  simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
+}
+
+environments {
+  production { // Surcharge de la configuration des jobs pour la production
+    // Trigger définissant la périodicité du job exécutant en tâche de fond
+    // la gestion des campagnes EmaEval (via les webservices)
+    eliot.interfacage.emaeval.campagne.trigger = {
+      simple name: 'emaEvalCampagneTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 10 // Toutes les 10 minutes
+    }
+
+    // Trigger définissant la périodicité du job exécutant en tâche de fond
+    // la transmission des résultats entre une séance TD Base et une campagne EmaEval
+    eliot.interfacage.emaeval.score.trigger = {
+      simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 1000 * 60 * 4 // Toutes les 4h
+    }
+  }
+}
+
+// Configuration plugin Quartz 2
+grails.plugin.quartz2.autoStartup = true

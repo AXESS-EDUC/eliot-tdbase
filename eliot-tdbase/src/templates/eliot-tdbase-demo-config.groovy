@@ -159,3 +159,6 @@ log4j = {
   error file: "StackTrace"
 
 }
+
+// Support de l'interface EmaEval
+eliot.interfacage.emaeval.actif = false

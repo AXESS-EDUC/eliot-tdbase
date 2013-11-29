@@ -39,7 +39,6 @@ import org.lilie.services.eliot.tice.scolarite.*
 class BootstrapService {
 
   static transactional = false
-  public static final String DEMO_ENVIRONMENT = "demo"
   private static final String DEFAULT_URL_ACCES_ENT = "http://localhost:8080/eliot-tdbase"
   private static final String DEFAULT_URL_RETOUR_LOGOUT = "http://localhost:8080/eliot-tdbase"
 
@@ -83,9 +82,6 @@ class BootstrapService {
 
   private static final String CODE_ANNEE_SCOLAIRE_PREFIXE = 'TEST_'
   private static final String CODE_STRUCTURE_PREFIXE = 'TEST_'
-
-
-  private List<ProprietesScolarite> proprietesScolariteListUtilisateur1 = []
 
   /**
    * Initialise l'application au lancement avec un jeu de test
@@ -542,7 +538,6 @@ class BootstrapService {
           nomCourt: 'Porteur Default').save(flush: true)
     }
     return porteurEnt
-
   }
 
   // methode utilitaires
