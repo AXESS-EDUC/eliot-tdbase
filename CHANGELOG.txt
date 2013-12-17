@@ -2,6 +2,12 @@
 
 Liste des dépendances :
 
+ * Compatible avec les bases de données Eliot 2.9.4-S51
+
+=== Eliot tdbase 2.3.0 ===
+
+Liste des dépendances :
+
  * Compatible avec les bases de données Eliot 2.9.4.8
 
 
