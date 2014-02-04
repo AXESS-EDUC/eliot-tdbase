@@ -105,6 +105,12 @@ class ReponseService implements ApplicationContextAware {
     return reponse
   }
 
+  Float evalueReponse(Reponse reponse) {
+    QuestionType qtype = reponse.sujetQuestion.question.type
+    def specService = reponseSpecificationServiceForQuestionType(qtype)
+    return specService.evalueReponse(reponse)
+  }
+
   /**
      * Modifie les proprietes de la réponse passée en paramètre
      * @param reponse la reponse

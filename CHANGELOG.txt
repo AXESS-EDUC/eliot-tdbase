@@ -1,8 +1,28 @@
-=== Eliot tdbase 2.2.0-RC2-eliot-2.9.4.10 ===
+=== Eliot tdbase 2.3.0-eliot-2.9.4.11-RC2 =
 
 Liste des dépendances :
 
- * Compatible avec les bases de données Eliot 2.9.4.10
+ * Compatible avec les bases de données Eliot 2.9.4.11-RC1
+
+
+=== Eliot tdbase 2.3.0 ===
+
+Liste des dépendances :
+
+ * Compatible avec les bases de données Eliot 2.9.4-S51
+
+=== Eliot tdbase 2.3.0 ===
+
+Liste des dépendances :
+
+ * Compatible avec les bases de données Eliot 2.9.4.8
+
+
+Liste des évolutions :
+
+ * TDB-7 - Intégration TD Base / EmaEval
+
+
 
 === Eliot tdbase 2.2.0-RC2-eliot-2.9.4.9 ===
 

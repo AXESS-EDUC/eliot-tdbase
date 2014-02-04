@@ -126,6 +126,31 @@ eliot.help.documents.urlMap = [
         "eliot.tdbase.item.${QuestionTypeEnum.Statement.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
         "eliot.tdbase.introduction": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html"]
 
+// Support de l'interface EmaEval
+eliot.interfacage.emaeval.actif = false
+eliot.interfacage.emaeval.url = "https://emaeval.pentila.com/EvalComp/webservices/"
+eliot.interfacage.emaeval.referentiel.nom = "Palier 3"
+eliot.interfacage.emaeval.plan.nom = "Plan TDBase"
+eliot.interfacage.emaeval.scenario.nom = "Evaluation directe"
+eliot.interfacage.emaeval.methodeEvaluation.nom = "Methode d'évaluation" // Note : je ne comprends pas pourquoi la méthode n'a pas pour nom "Méthode d'évaluation booléenne" ...
+
+// Trigger définissant la périodicité du job exécutant en tâche de fond
+// la gestion des campagnes EmaEval (via les webservices)
+eliot.interfacage.emaeval.campagne.trigger = {
+  simple name: 'emaEvalCampagneTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15
+}
+
+// Trigger définissant la périodicité du job exécutant en tâche de fond
+// la transmission des résultats entre une séance TD Base et une campagne EmaEval
+eliot.interfacage.emaeval.score.trigger = {
+  simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15
+}
+
+
+// Configuration plugin Quartz 2
+grails.plugin.quartz2.autoStartup = true
+
+
 
 // data source
 dataSource {

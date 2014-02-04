@@ -33,7 +33,9 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 
-versionTDBase = "2.2.0-RC2-eliot-2.9.4.10"
+versionTDBase = "2.3.0-eliot-2.9.4.11-RC2"
+
+grails.plugin.location.'eliot-competence-plugin' = "../eliot-competence-plugin"
 
 grails.project.dependency.resolution = {
   checksums(false)

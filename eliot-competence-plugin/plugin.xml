@@ -1,0 +1,73 @@
+<plugin name='eliot-competence-plugin' version='1.0' grailsVersion='2.1.1 &gt; *'>
+  <author>John Tranier</author>
+  <authorEmail>john.tranier@ticetime.com</authorEmail>
+  <title>eliot-competence-plugin</title>
+  <description>\
+Plugin de gestion des référentiels de compétences Eliot
+</description>
+  <type>EliotCompetencePluginGrailsPlugin</type>
+  <resources>
+    <resource>spring.resources</resource>
+    <resource>org.lilie.services.eliot.competence.CompetenceController</resource>
+    <resource>org.lilie.services.eliot.competence.Competence</resource>
+    <resource>org.lilie.services.eliot.competence.CompetenceIdExterne</resource>
+    <resource>org.lilie.services.eliot.competence.Domaine</resource>
+    <resource>org.lilie.services.eliot.competence.DomaineIdExterne</resource>
+    <resource>org.lilie.services.eliot.competence.Referentiel</resource>
+    <resource>org.lilie.services.eliot.competence.ReferentielIdExterne</resource>
+    <resource>org.lilie.services.eliot.competence.CompetenceDto</resource>
+    <resource>org.lilie.services.eliot.competence.DomaineDto</resource>
+    <resource>org.lilie.services.eliot.competence.ReferentielBootstrapService</resource>
+    <resource>org.lilie.services.eliot.competence.ReferentielDto</resource>
+    <resource>org.lilie.services.eliot.competence.ReferentielService</resource>
+    <resource>org.lilie.services.eliot.competence.SourceReferentiel</resource>
+  </resources>
+  <repositories>
+    <repository name='grailsCentral' url='http://grails.org/plugins' />
+    <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
+    <repository name='http://repository-ticetime.forge.cloudbees.com/release' url='http://repository-ticetime.forge.cloudbees.com/release/' />
+    <repository name='http://repository-ticetime.forge.cloudbees.com/snapshot' url='http://repository-ticetime.forge.cloudbees.com/snapshot/' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+    <repository name='http://download.java.net/maven/2/' url='http://download.java.net/maven/2/' />
+  </repositories>
+  <dependencies>
+    <compile>
+      <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.2' />
+      <dependency group='org.apache.maven.wagon' name='wagon-webdav' version='1.0-beta-2' />
+      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
+    </compile>
+    <runtime>
+      <dependency group='postgresql' name='postgresql' version='9.1-901.jdbc4' />
+    </runtime>
+    <build>
+      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
+      <dependency group='net.sf.saxon' name='saxon-dom' version='8.7' />
+    </build>
+  </dependencies>
+  <plugins>
+    <test>
+      <plugin group='org.grails.plugins' name='code-coverage' version='1.2.5' />
+      <plugin group='org.grails.plugins' name='spock' version='0.7' />
+    </test>
+    <compile>
+      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
+      <plugin group='org.grails.plugins' name='mail' version='1.0' />
+      <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
+      <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
+      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
+    </compile>
+    <runtime>
+      <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
+      <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
+    </runtime>
+    <build>
+      <plugin group='org.grails.plugins' name='rest-client-builder' version='1.0.2' />
+      <plugin group='org.grails.plugins' name='tomcat' version='2.1.1' />
+      <plugin group='org.grails.plugins' name='release' version='2.0.2' />
+    </build>
+  </plugins>
+  <runtimePluginRequirements />
+  <behavior />
+</plugin>

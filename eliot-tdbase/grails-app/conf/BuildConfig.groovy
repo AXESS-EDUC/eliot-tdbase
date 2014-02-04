@@ -34,6 +34,7 @@ grails.plugin.location.'eliot-tice-plugin' = "../eliot-tice-plugin"
 grails.plugin.location.'eliot-tdbase-plugin' = "../eliot-tdbase-plugin"
 grails.plugin.location.'eliot-textes-plugin' = "../eliot-textes-plugin"
 grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
+grails.plugin.location.'eliot-competence-plugin' = "../eliot-competence-plugin"
 //grails.plugin.location.'spring-security-cas' = '../grails-spring-security-cas'
 
 if (System.properties['war.version']) {
@@ -93,7 +94,7 @@ grails.project.dependency.resolution = {
 
     compile ":mail:1.0"
 
-    compile ":spring-security-core:1.2.7.2"
+//    compile ":spring-security-core:1.2.7.2"
 
     build(":tomcat:$grailsVersion",
         ":rest-client-builder:1.0.2",

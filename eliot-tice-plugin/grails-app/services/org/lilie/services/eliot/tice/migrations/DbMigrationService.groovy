@@ -39,7 +39,9 @@ class DbMigrationService {
   LiquibaseWrapper liquibase
 
   def updateDb() {
+    log.info "[LIQUIBASE] Lancement de la mise à jour de la base de données"
     liquibase.runUpdate()
+    log.info "[LIQUIBASE] Fin de la mise à jour de la base de données"
   }
 
 

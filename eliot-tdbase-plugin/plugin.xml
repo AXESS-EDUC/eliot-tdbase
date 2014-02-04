@@ -1,10 +1,15 @@
-<plugin name='eliot-tdbase-plugin' version='2.2.0-RC2-eliot-2.9.4.10' grailsVersion='2.1.1 &gt; *'>
+<plugin name='eliot-tdbase-plugin' version='2.3.0-eliot-2.9.4.11-RC2' grailsVersion='2.1.1 &gt; *'>
   <author>Franck Silvestre - Ticetime</author>
   <title>Eliot Tdbase  Plugin</title>
   <description>  Plugin contenant les services métiers relatifs à la gestion des TD"
   </description>
   <type>EliotTdbasePluginGrailsPlugin</type>
   <resources>
+    <resource>spring.resources</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.emawsconnector.ReferentielMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.xml.CompetenceMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.xml.DomaineMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.xml.ReferentielMarshaller</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.ExportHelper</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementDataStore</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementDatastoreMarshaller</resource>
@@ -29,6 +34,7 @@
     <resource>org.lilie.services.eliot.tdbase.ModaliteActivite</resource>
     <resource>org.lilie.services.eliot.tdbase.Question</resource>
     <resource>org.lilie.services.eliot.tdbase.QuestionAttachement</resource>
+    <resource>org.lilie.services.eliot.tdbase.QuestionCompetence</resource>
     <resource>org.lilie.services.eliot.tdbase.QuestionExport</resource>
     <resource>org.lilie.services.eliot.tdbase.QuestionType</resource>
     <resource>org.lilie.services.eliot.tdbase.Reponse</resource>
@@ -36,13 +42,18 @@
     <resource>org.lilie.services.eliot.tdbase.Sujet</resource>
     <resource>org.lilie.services.eliot.tdbase.SujetSequenceQuestions</resource>
     <resource>org.lilie.services.eliot.tdbase.SujetType</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.Propriete</resource>
+    <resource>org.lilie.services.eliot.tdbase.patch.PatchExecution</resource>
     <resource>org.lilie.services.eliot.tdbase.Artefact</resource>
     <resource>org.lilie.services.eliot.tdbase.ArtefactAutorisationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.CahierTextesService</resource>
     <resource>org.lilie.services.eliot.tdbase.CopieJobService</resource>
     <resource>org.lilie.services.eliot.tdbase.CopieService</resource>
     <resource>org.lilie.services.eliot.tdbase.ModaliteActiviteService</resource>
+    <resource>org.lilie.services.eliot.tdbase.NotesService</resource>
     <resource>org.lilie.services.eliot.tdbase.Paternite</resource>
     <resource>org.lilie.services.eliot.tdbase.QuestionAttachementService</resource>
+    <resource>org.lilie.services.eliot.tdbase.QuestionCompetenceService</resource>
     <resource>org.lilie.services.eliot.tdbase.QuestionService</resource>
     <resource>org.lilie.services.eliot.tdbase.QuestionSpecificationService</resource>
     <resource>org.lilie.services.eliot.tdbase.ReferentielEliot</resource>
@@ -52,6 +63,41 @@
     <resource>org.lilie.services.eliot.tdbase.ReponseSpecificationService</resource>
     <resource>org.lilie.services.eliot.tdbase.Specification</resource>
     <resource>org.lilie.services.eliot.tdbase.SujetService</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.EmaEvalFactoryService</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.EmaEvalProprieteService</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.EmaEvalService</resource>
+    <resource>org.lilie.services.eliot.tdbase.emaeval.ProprieteId</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.AbstractQuestionSpecificationSansAttachement</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.associate.QuestionAssociateSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.associate.ReponseAssociateSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.booleanmatch.QuestionBooleanMatchSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.booleanmatch.ReponseBooleanMatchSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.composite.QuestionCompositeSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.composite.ReponseCompositeSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.decimal.QuestionDecimalSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.decimal.ReponseDecimalSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.document.QuestionDocumentSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.exclusivechoice.QuestionExclusiveChoiceSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.exclusivechoice.ReponseExclusiveChoiceSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.fileupload.QuestionFileUploadSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.fileupload.ReponseFileUploadSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.fillgap.QuestionFillGapSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.fillgap.ReponseFillGapSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.fillgraphics.QuestionFillGraphicsSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.fillgraphics.ReponseFillGraphicsSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.graphicmatch.QuestionGraphicMatchSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.graphicmatch.ReponseGraphicMatchSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.integer.QuestionIntegerSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.integer.ReponseIntegerSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.multiplechoice.QuestionMultipleChoiceSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.multiplechoice.ReponseMultipleChoiceSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.open.QuestionOpenSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.open.ReponseOpenSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.order.QuestionOrderSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.order.ReponseOrderSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.slider.QuestionSliderSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.slider.ReponseSliderSpecificationService</resource>
+    <resource>org.lilie.services.eliot.tdbase.impl.statement.QuestionStatementSpecificationService</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.AttachementImporterService</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.Format</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.QuestionExporterService</resource>
@@ -73,7 +119,15 @@
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.SujetDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.SujetSequenceQuestionsDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.patch.Patch</resource>
+    <resource>org.lilie.services.eliot.tdbase.patch.PatchTDB40</resource>
     <resource>org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService</resource>
+    <resource>org.lilie.services.eliot.tdbase.webservices.rest.client.CahierTextesRestService</resource>
+    <resource>org.lilie.services.eliot.tdbase.webservices.rest.client.NotesRestService</resource>
+    <resource>org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService</resource>
+    <resource>org.lilie.services.eliot.tdbase.xml.MoodleQuizImporterService</resource>
+    <resource>org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformationHelper</resource>
+    <resource>org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer</resource>
   </resources>
   <repositories>
     <repository name='grailsCentral' url='http://grails.org/plugins' />
@@ -85,41 +139,40 @@
   </repositories>
   <dependencies>
     <compile>
-      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
-      <dependency group='org.apache.maven.wagon' name='wagon-webdav' version='1.0-beta-2' />
       <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.2' />
+      <dependency group='org.apache.maven.wagon' name='wagon-webdav' version='1.0-beta-2' />
+      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
     </compile>
     <runtime>
       <dependency group='postgresql' name='postgresql' version='9.1-901.jdbc4' />
     </runtime>
     <build>
-      <dependency group='net.sf.saxon' name='saxon-dom' version='8.7' />
       <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
+      <dependency group='net.sf.saxon' name='saxon-dom' version='8.7' />
     </build>
   </dependencies>
   <plugins>
     <test>
-      <plugin group='org.grails.plugins' name='spock' version='0.7' />
       <plugin group='org.grails.plugins' name='code-coverage' version='1.2.5' />
+      <plugin group='org.grails.plugins' name='spock' version='0.7' />
     </test>
     <compile>
-      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
-      <plugin group='org.grails.plugins' name='spring-security-core' version='1.2.7.2' />
-      <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
-      <plugin group='org.grails.plugins' name='mail' version='1.0' />
       <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
+      <plugin group='org.grails.plugins' name='mail' version='1.0' />
+      <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
       <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
-      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
       <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
     </compile>
     <runtime>
-      <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
       <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
+      <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
     </runtime>
     <build>
       <plugin group='org.grails.plugins' name='rest-client-builder' version='1.0.2' />
-      <plugin group='org.grails.plugins' name='release' version='2.0.2' />
       <plugin group='org.grails.plugins' name='tomcat' version='2.1.1' />
+      <plugin group='org.grails.plugins' name='release' version='2.0.2' />
     </build>
   </plugins>
   <runtimePluginRequirements />

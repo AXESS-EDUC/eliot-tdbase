@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
+  ~  This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
+  ~
+  ~  Lilie is free software. You can redistribute it and/or modify since
+  ~  you respect the terms of either (at least one of the both license) :
+  ~  - under the terms of the GNU Affero General Public License as
+  ~  published by the Free Software Foundation, either version 3 of the
+  ~  License, or (at your option) any later version.
+  ~  - the CeCILL-C as published by CeCILL-C; either version 1 of the
+  ~  License, or any later version
+  ~
+  ~  There are special exceptions to the terms and conditions of the
+  ~  licenses as they are applied to this software. View the full text of
+  ~  the exception in file LICENSE.txt in the directory of this software
+  ~  distribution.
+  ~
+  ~  Lilie is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  Licenses for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  and the CeCILL-C along with Lilie. If not, see :
+  ~   <http://www.gnu.org/licenses/> and
+  ~   <http://www.cecill.info/licences.fr.html>.
+  -->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+
+    <changeSet id="1" author="jtra">
+        <comment>
+            Ajout de la table emaeval.campagne_proxy pour gérer les interfactions avec
+            les campagnes EmaEval
+        </comment>
+        <createTable schemaName="emaeval_interface" tableName="campagne_proxy">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="campagne_id" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="modalite_activite_id" type="bigint"/>
+            <column name="statut" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="campagne_proxy_id_seq" schemaName="emaeval_interface" startValue="100"/>
+
+        <addForeignKeyConstraint
+                baseTableSchemaName="emaeval_interface"
+                baseTableName="campagne_proxy"
+                baseColumnNames="modalite_activite_id"
+                constraintName="fk_campagne_proxy_modalite_activite_id"
+                referencedTableSchemaName="td"
+                referencedTableName="modalite_activite"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2" author="jtra">
+        <comment>
+            Ajout du champs operateur_login pour stocker le login emaeval
+            utilisé pour créer une campagne
+        </comment>
+        <addColumn schemaName="emaeval_interface" tableName="campagne_proxy">
+            <column name="operateur_login" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="3" author="jtra">
+        <comment>
+            Le champs campagne_id doit être nullable pour permettre la création
+            d'un CampagneProxy support à la création d'une campagne.
+        </comment>
+        <dropNotNullConstraint
+                schemaName="emaeval_interface"
+                tableName="campagne_proxy"
+                columnName="campagne_id"/>
+    </changeSet>
+
+    <changeSet id="4" author="jtra">
+        <comment>
+            Suppression de la référence à la campagne depuis td.modalite_activite
+        </comment>
+        <dropColumn
+                schemaName="td"
+                tableName="modalite_activite"
+                columnName="campagne_emaeval_id_externe"/>
+    </changeSet>
+
+    <changeSet id="5" author="jtra">
+        <comment>Versionnement de la table emaevai_interface.campagne_proxy</comment>
+        <addColumn schemaName="emaeval_interface" tableName="campagne_proxy">
+            <column name="version" type="bigint"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="6" author="jtra">
+        <comment>Création des index de performances</comment>
+        <addUniqueConstraint
+                schemaName="emaeval_interface"
+                tableName="campagne_proxy"
+                columnNames="modalite_activite_id"/>
+        <sql>
+            CREATE INDEX idx_campagne_proxy_statut
+            ON emaeval_interface.campagne_proxy(statut)
+            WHERE (statut = 'EN_ATTENTE_CREATION' OR statut = 'EN_ATTENTE_SUPPRESSION')
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -56,8 +56,7 @@ class BootStrap {
     try {
       portailTagLibService.addManuelDocumentUrls(config.eliot.manuels.documents.urlMap)
     } catch (Exception e) {
-      log.error("manuels.urls.update.echec")
-      log.error(e.message)
+      log.error("manuels.urls.update.echec", e)
     }
 
     try {

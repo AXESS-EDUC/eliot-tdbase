@@ -11,7 +11,7 @@ bin
 *.dmg
 *.gz
 *.iso
-*.jar
+# *.jar --Les librairies EmaEval sont stockées directement dans lib/jar pour l'instant
 *.rar
 *.tar
 *.zip
