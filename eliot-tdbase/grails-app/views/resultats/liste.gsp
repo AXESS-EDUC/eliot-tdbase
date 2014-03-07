@@ -58,7 +58,7 @@
         <td class="label">Élève :</td>
         <td><strong><g:select from="${eleves}" name="eleveId"
                               optionKey="id" optionValue="nomAffichage"
-                              value="${eleveSelectionne.id}"/></strong>
+                              value="${eleveSelectionne?.id}"/></strong>
         </td>
       </tr>
     </table>

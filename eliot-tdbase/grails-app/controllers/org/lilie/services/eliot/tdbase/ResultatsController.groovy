@@ -51,21 +51,26 @@ class ResultatsController {
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
     breadcrumpsService.manageBreadcrumps(params, message(code: "resultats.titre"))
     Personne parent = authenticatedPersonne
+
+    def copies = []
+    Personne eleveSelectionne = null
     List<Personne> eleves = profilScolariteService.findElevesForResponsable(parent)
-    Personne eleveSelectionne = Personne.get(params.eleveId as Long)
-    if (!eleveSelectionne) {
-      eleveSelectionne = eleves[0]
+    if (eleves.size() > 0){
+      eleveSelectionne = Personne.get(params.eleveId as Long)
+      if (!eleveSelectionne) {
+        eleveSelectionne = eleves[0]
+      }
+      copies = copieService.findCopiesEnVisualisationForResponsableAndApprenant(
+          parent,
+          eleveSelectionne,
+          params
+      )
     }
-    def copies = copieService.findCopiesEnVisualisationForResponsableAndApprenant(
-            parent,
-            eleveSelectionne,
-            params
-    )
     [
-            liens: breadcrumpsService.liens,
-            copies: copies,
-            eleves: eleves,
-            eleveSelectionne: eleveSelectionne
+        liens: breadcrumpsService.liens,
+        copies: copies,
+        eleves: eleves,
+        eleveSelectionne: eleveSelectionne
     ]
   }
 
@@ -77,8 +82,8 @@ class ResultatsController {
     breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
     Copie copie = Copie.get(params.id)
     render(view: '/resultats/copie/visualise', model: [
-            liens: breadcrumpsService.liens,
-            copie: copie
+        liens: breadcrumpsService.liens,
+        copie: copie
     ])
   }
 
