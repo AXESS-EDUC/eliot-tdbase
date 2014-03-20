@@ -42,7 +42,6 @@ class Etablissement {
   String nomAffichage
   String idExterne
   String uai
-  String codePorteurENT
 
   PorteurEnt porteurEnt
 
@@ -50,7 +49,6 @@ class Etablissement {
   static mapping = {
     table 'ent.etablissement'
     id column: 'id', generator: 'sequence', params: [sequence: 'ent.etablissement_id_seq']
-    codePorteurENT column: 'code_porteur_ent'
     cache usage: 'read-write'
   }
 
@@ -59,7 +57,17 @@ class Etablissement {
     uai(nullable: true)
     nomAffichage(maxSize: 1024)
     porteurEnt(nullable: true)
-
   }
 
+  static transients = ['codePorteurENT']
+
+  String getCodePorteurENT() {
+    return porteurEnt.code
+  }
+
+  transient beforeInsert = {
+    if (porteurEnt == null) {
+      porteurEnt = PorteurEnt.findByParDefaut(true)
+    }
+  }
 }

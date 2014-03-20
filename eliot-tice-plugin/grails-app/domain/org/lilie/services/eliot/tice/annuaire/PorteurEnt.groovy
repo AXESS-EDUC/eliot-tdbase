@@ -40,6 +40,7 @@ class PorteurEnt {
   String emailProjet
   String urlRetourLogout
   String urlAccesEnt
+  Boolean parDefaut = false
 
   static constraints = {
     code(nullable: false)
@@ -48,6 +49,7 @@ class PorteurEnt {
     emailProjet(nullable: true)
     urlRetourLogout(nullable: true)
     urlAccesEnt(nullable: true)
+    parDefaut(nullable: false)
   }
 
   static mapping = {
