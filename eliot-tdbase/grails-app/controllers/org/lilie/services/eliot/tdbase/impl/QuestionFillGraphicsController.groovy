@@ -37,6 +37,8 @@ import org.lilie.services.eliot.tdbase.impl.fillgraphics.TextZone
  */
 class QuestionFillGraphicsController extends QuestionController {
 
+  static scope = "singleton"
+
   @Override
   protected def getSpecificationObjectFromParams(Map params) {
 

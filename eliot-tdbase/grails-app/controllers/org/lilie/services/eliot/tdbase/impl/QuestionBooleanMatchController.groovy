@@ -32,6 +32,8 @@ import org.lilie.services.eliot.tdbase.impl.booleanmatch.BooleanMatchSpecificati
 
 class QuestionBooleanMatchController extends QuestionController {
 
+  static scope = "singleton"
+
   /**
    *
    * Action "ajouteReponse"

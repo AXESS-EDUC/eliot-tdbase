@@ -35,17 +35,17 @@ import groovy.transform.EqualsAndHashCode
  * @author franck Silvestre
  */
 @EqualsAndHashCode(excludes = "params, index, libelle")
-class BreadcrumpsLien {
+class BreadcrumpsLien implements Serializable {
   String action
   String controller
   String libelle
-  Map params
+  Map params = [:]
   int index
   Map proprietes
   String url = null
 }
 
-class Breadcrumps {
+class Breadcrumps implements Serializable {
 
   static final String PARAM_BREADCRUMPS_INIT = "bcInit"
   static final String PARAM_BREADCRUMPS_INDEX = "bcIdx"
@@ -86,7 +86,9 @@ class Breadcrumps {
       lienRes = lien
     }
     params."$PARAM_BREADCRUMPS_INDEX" = lienRes.index
-    lienRes.params = params
+
+    params.each {k,v -> lienRes.params.put(k,v)}
+
     if (newproprietes) {
       if (lienRes.proprietes == null) {
         lienRes.proprietes = [:]

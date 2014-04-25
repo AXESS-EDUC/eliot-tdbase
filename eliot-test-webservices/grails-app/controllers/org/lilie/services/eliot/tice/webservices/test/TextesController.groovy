@@ -32,6 +32,8 @@ import groovy.json.JsonBuilder
 
 class TextesController {
 
+  static scope = "singleton"
+
   def getStructure() {
     def cid = params.cahierId as Long
     if (cid > 0) {

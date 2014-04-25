@@ -26,13 +26,6 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-
-
-
-
-
-
-
 package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
@@ -40,6 +33,8 @@ import org.lilie.services.eliot.tdbase.impl.fileupload.FileUploadSpecification
 import org.lilie.services.eliot.tdbase.impl.fileupload.ReponseFileUploadSpecification
 
 class QuestionFileUploadController extends QuestionController {
+
+  static scope = "singleton"
 
   /**
    * Action "supprimeAttachement"

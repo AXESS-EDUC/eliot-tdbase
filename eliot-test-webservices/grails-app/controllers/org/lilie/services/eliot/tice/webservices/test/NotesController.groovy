@@ -32,6 +32,8 @@ import groovy.json.JsonBuilder
 
 class NotesController {
 
+  static scope = "singleton"
+
   def getServicesEvaluables() {
     println("INFO - getServicesEvaluables porteur et user: ")
     println("Porteur ENT : ${params.codePorteur}")

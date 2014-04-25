@@ -33,6 +33,8 @@ import org.lilie.services.eliot.tdbase.impl.composite.CompositeSpecification
 
 class QuestionCompositeController extends QuestionController {
 
+  static scope = "singleton"
+
   /**
    *
    * @param params les paramètres de la requête

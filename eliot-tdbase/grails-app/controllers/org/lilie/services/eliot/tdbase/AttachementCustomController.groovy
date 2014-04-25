@@ -33,6 +33,8 @@ import org.lilie.services.eliot.tice.Attachement
 
 class AttachementCustomController {
 
+  static scope = "singleton"
+
 
   /**
    *

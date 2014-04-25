@@ -145,9 +145,6 @@ log4j = {
 
 }
 
-grails.controllers.defaultScope = "session"
-
-
 grails.plugins.springsecurity.dao.reflectionSaltSourceProperty = 'username'
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"

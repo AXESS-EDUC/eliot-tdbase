@@ -26,8 +26,6 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-
-
 package org.lilie.services.eliot.tdbase
 
 import groovy.json.JsonBuilder
@@ -42,9 +40,11 @@ import org.lilie.services.eliot.tice.utils.NumberUtils
 
 class SeanceController {
 
+  static scope = "singleton"
+
   static defaultAction = "liste"
 
-  BreadcrumpsService breadcrumpsService
+  BreadcrumpsService breadcrumpsServiceProxy
   ModaliteActiviteService modaliteActiviteService
   CopieService copieService
   ProfilScolariteService profilScolariteService
@@ -125,7 +125,7 @@ class SeanceController {
       }
     }
 
-    breadcrumpsService.manageBreadcrumps(
+    breadcrumpsServiceProxy.manageBreadcrumps(
         params,
         message(code: "seance.edite.titre"),
         [services: services]
@@ -139,7 +139,7 @@ class SeanceController {
     render(
         view: '/seance/edite',
         model: [
-            liens: breadcrumpsService.liens,
+            liens: breadcrumpsServiceProxy.liens,
             etablissements: etablissements,
             niveaux: niveaux,
             lienBookmarkable: lienBookmarkable,
@@ -264,7 +264,7 @@ class SeanceController {
       render(
           view: '/seance/edite',
           model: [
-              liens: breadcrumpsService.liens,
+              liens: breadcrumpsServiceProxy.liens,
               modaliteActivite: modaliteActivite,
               proprietesScolarite: proprietesScolarite,
               competencesEvaluables: modaliteActivite.sujet.hasCompetence()
@@ -280,7 +280,7 @@ class SeanceController {
   def liste() {
     def maxItems = grailsApplication.config.eliot.listes.max
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.liste.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "seance.liste.titre"))
     Personne personne = authenticatedPersonne
     def modalitesActivites = modaliteActiviteService.findModalitesActivitesForEnseignant(personne,
         params)
@@ -288,7 +288,7 @@ class SeanceController {
     if (modalitesActivites.totalCount > maxItems) {
       affichePager = true
     }
-    render(view: '/seance/liste', model: [liens: breadcrumpsService.liens,
+    render(view: '/seance/liste', model: [liens: breadcrumpsServiceProxy.liens,
         seances: modalitesActivites,
         affichePager: affichePager])
   }
@@ -317,7 +317,7 @@ class SeanceController {
    * Action liste résultats
    */
   def listeResultats() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.resultats.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "seance.resultats.titre"))
 
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
@@ -330,7 +330,7 @@ class SeanceController {
     def elevesSansCopies = copieService.findElevesSansCopieForModaliteActivite(seance,
         copies,
         personne)
-    render(view: '/seance/listeResultats', model: [liens: breadcrumpsService.liens,
+    render(view: '/seance/listeResultats', model: [liens: breadcrumpsServiceProxy.liens,
         seance: seance,
         afficheLienMiseAjourNote: afficheLienMiseAjourNote,
         copies: copies,
@@ -368,13 +368,13 @@ class SeanceController {
    * Action visualise copie
    */
   def visualiseCopie() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Personne personne = authenticatedPersonne
     List<Copie> copies = copieService.findCopiesRemisesForModaliteActivite(seance,
         personne,
         params)
-    render(view: '/seance/copie/corrige', model: [liens: breadcrumpsService.liens,
+    render(view: '/seance/copie/corrige', model: [liens: breadcrumpsServiceProxy.liens,
         copies: copies,
         seance: seance])
   }
@@ -404,7 +404,7 @@ class SeanceController {
     List<Copie> copies = copieService.findCopiesRemisesForModaliteActivite(seance,
         personne,
         params)
-    render(view: '/seance/copie/corrige', model: [liens: breadcrumpsService.liens,
+    render(view: '/seance/copie/corrige', model: [liens: breadcrumpsServiceProxy.liens,
         copies: copies,
         seance: seance,
         copieNotation: copieNotation
@@ -493,7 +493,7 @@ class SeanceController {
     String serviceId = null
     if (params.serviceId && params.serviceId != 'null') {
       serviceId = params.serviceId
-      List<ServiceInfo> services = breadcrumpsService.getValeurPropriete('services')
+      List<ServiceInfo> services = breadcrumpsServiceProxy.getValeurPropriete('services')
       ServiceInfo service = services.find { it.id == serviceId }
       Long evalId = null
       if (service) {

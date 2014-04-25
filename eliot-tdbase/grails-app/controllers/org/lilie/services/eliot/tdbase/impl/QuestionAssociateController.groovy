@@ -37,6 +37,8 @@ import org.lilie.services.eliot.tdbase.impl.associate.Association
  */
 class QuestionAssociateController extends QuestionController {
 
+  static scope = "singleton"
+
   @Override
   protected def getSpecificationObjectFromParams(Map params) {
 

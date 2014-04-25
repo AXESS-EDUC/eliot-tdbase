@@ -34,8 +34,10 @@ import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class DashboardController {
 
+  static scope = "singleton"
+
   SujetService sujetService
-  BreadcrumpsService breadcrumpsService
+  BreadcrumpsService breadcrumpsServiceProxy
   ModaliteActiviteService modaliteActiviteService
   QuestionService questionService
 
@@ -45,10 +47,10 @@ class DashboardController {
    */
   def index() {
     params.max = Math.min(params.max ? params.int('max') : 5, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "accueil.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "accueil.titre"))
     Personne personne = authenticatedPersonne
     [
-            liens: breadcrumpsService.liens,
+            liens: breadcrumpsServiceProxy.liens,
             sujets: sujetService.findSujetsForProprietaire(
                     personne,
                     params),
