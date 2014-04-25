@@ -5,6 +5,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.lilie.services.eliot.tdbase.importexport.dto.EtablissementDto
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import spock.lang.Specification
+import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 
 /**
  * @author John Tranier
@@ -23,7 +24,7 @@ class EtablissementMarshallerSpec extends Specification {
         nomAffichage: "nomAffichage",
         idExterne: "idExterne",
         uai: "uai",
-        codePorteurENT: "codePorteurENT"
+        porteurEnt: new PorteurEnt(code: 'CRIF')
     )
     Map representation = etablissementMarshaller.marshall(etablissement)
 
