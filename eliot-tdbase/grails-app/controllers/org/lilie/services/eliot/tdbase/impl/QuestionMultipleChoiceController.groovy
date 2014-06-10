@@ -26,8 +26,6 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-
-
 package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
@@ -35,6 +33,8 @@ import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecifi
 import org.lilie.services.eliot.tdbase.impl.multiplechoice.MultipleChoiceSpecificationReponsePossible
 
 class QuestionMultipleChoiceController extends QuestionController {
+
+  static scope = "singleton"
 
   /**
    *

@@ -8,6 +8,8 @@ package org.lilie.services.eliot.competence
  */
 class CompetenceController {
 
+  static scope = "singleton"
+
   ReferentielService referentielService
 
   /**
@@ -27,7 +29,7 @@ class CompetenceController {
    *  - command.competenceSelectionIdList : list des identifiants des compétences sélectionnées
    * @return le fragment HTML représentant l'arbre de compétence
    */
-  def afficheArbreCompetence = { AfficheArbreCompetenceCommand command ->
+  def afficheArbreCompetence(AfficheArbreCompetenceCommand command) {
 
     render(
         template: '/competence/affiche_arbre_competence',

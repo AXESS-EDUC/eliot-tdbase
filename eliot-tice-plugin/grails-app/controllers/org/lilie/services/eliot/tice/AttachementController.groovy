@@ -32,6 +32,8 @@ package org.lilie.services.eliot.tice
 
 class AttachementController {
 
+  static scope = "singleton"
+
   AttachementService attachementService
 
   /**

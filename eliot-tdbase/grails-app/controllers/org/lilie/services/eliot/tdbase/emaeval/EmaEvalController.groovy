@@ -38,9 +38,11 @@ import org.lilie.services.eliot.tice.utils.BreadcrumpsService
  */
 class EmaEvalController {
 
+  static scope = "singleton"
+
   static defaultAction = "admin"
 
-  BreadcrumpsService breadcrumpsService
+  BreadcrumpsService breadcrumpsServiceProxy
   EmaEvalService emaEvalService
   GrailsApplication grailsApplication
 
@@ -51,7 +53,7 @@ class EmaEvalController {
    * @return la vue /maintenance/emaEval/admin
    */
   def admin() {
-    breadcrumpsService.manageBreadcrumps(
+    breadcrumpsServiceProxy.manageBreadcrumps(
         params,
         (String)message(code: message(code: message(code: "maintenance.emaeval.title")))
     )
@@ -60,7 +62,7 @@ class EmaEvalController {
         view: '/maintenance/emaEval/admin',
         model: [
             config: grailsApplication.config,
-            liens: breadcrumpsService.liens
+            liens: breadcrumpsServiceProxy.liens
         ]
     )
   }

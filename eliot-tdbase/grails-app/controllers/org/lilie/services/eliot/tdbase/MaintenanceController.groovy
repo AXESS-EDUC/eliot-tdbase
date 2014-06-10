@@ -33,8 +33,10 @@ import org.lilie.services.eliot.tice.GarbageCollectionDataStoreRapport
 
 class MaintenanceController {
 
+  static scope = "singleton"
+
   CopieJobService copieJobService
-  BreadcrumpsService breadcrumpsService
+  BreadcrumpsService breadcrumpsServiceProxy
   AttachementJobService attachementJobService
 
   /**
@@ -42,9 +44,9 @@ class MaintenanceController {
    * @return
    */
   def index() {
-    breadcrumpsService.manageBreadcrumps(params,
+    breadcrumpsServiceProxy.manageBreadcrumps(params,
                                          message(code: message(code: message(code: "maintenance.index.title"))))
-    [liens: breadcrumpsService.liens]
+    [liens: breadcrumpsServiceProxy.liens]
   }
 
   /**
@@ -52,23 +54,23 @@ class MaintenanceController {
    * de plus de 10 jours
    */
   def supprimeCopiesJetables() {
-    breadcrumpsService.manageBreadcrumps(params,
+    breadcrumpsServiceProxy.manageBreadcrumps(params,
                                          message(code: message(code: "maintenance.supprimecopiesjetables.title")))
     def nbJ = params?.nbJ as Integer
     SupprimeCopiesJetablesRapport rapport = copieJobService.supprimeCopiesJetablesForNombreJoursPasses(nbJ)
     render(view: '/maintenance/rapportSupprimeCopieJetable',
-           model: [liens: breadcrumpsService.liens, rapport: rapport])
+           model: [liens: breadcrumpsServiceProxy.liens, rapport: rapport])
   }
 
   /**
    * Action de garbage collection des fichiers du datastore
    */
   def garbageCollectAttachementDataStore() {
-    breadcrumpsService.manageBreadcrumps(params,
+    breadcrumpsServiceProxy.manageBreadcrumps(params,
                                          message(code: message(code: message(code:"maintenance.garbagecollectiondatastore.title"))))
     GarbageCollectionDataStoreRapport rapport = attachementJobService.garbageCollectDataStore()
     render(view: '/maintenance/rapportGarbageCollectionAttachementDataStore',
-           model: [liens: breadcrumpsService.liens, rapport: rapport])
+           model: [liens: breadcrumpsServiceProxy.liens, rapport: rapport])
   }
 
 

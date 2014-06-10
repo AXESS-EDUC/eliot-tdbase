@@ -38,6 +38,8 @@ import org.lilie.services.eliot.tdbase.impl.graphicmatch.MatchIcon
  */
 class QuestionGraphicMatchController extends QuestionController {
 
+  static scope = "singleton"
+
   @Override
   protected def getSpecificationObjectFromParams(Map params) {
 

@@ -86,6 +86,7 @@ grails.project.dependency.resolution = {
     compile ":jquery:1.7.1"
     compile ":jquery-ui:1.8.15"
     compile ":resources:1.1.6"
+    compile ":scoped-proxy:0.2"
 
     compile ":codenarc:0.15"
     compile(":gmetrics:0.3.1") {

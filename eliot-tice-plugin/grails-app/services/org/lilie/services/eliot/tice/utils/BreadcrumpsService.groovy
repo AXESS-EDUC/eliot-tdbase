@@ -32,11 +32,11 @@ package org.lilie.services.eliot.tice.utils
  * Classe fournissant le service de gestion de breadcrumps
  * @author franck silvestre
  */
-class BreadcrumpsService {
-
+class BreadcrumpsService implements Serializable {
 
   static transactional = false
   static scope = "session"
+  static proxy = true
 
   Breadcrumps breadcrumps = new Breadcrumps()
 

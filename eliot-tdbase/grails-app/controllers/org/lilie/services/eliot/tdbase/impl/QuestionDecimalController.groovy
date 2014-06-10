@@ -34,6 +34,8 @@ import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 
 class QuestionDecimalController extends QuestionController {
 
+  static scope = "singleton"
+
   /**
    *
    * @param params les paramètres de la requête

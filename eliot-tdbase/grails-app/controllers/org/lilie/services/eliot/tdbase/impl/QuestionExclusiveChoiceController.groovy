@@ -33,6 +33,8 @@ import org.lilie.services.eliot.tdbase.impl.exclusivechoice.ExclusiveChoiceSpeci
 
 class QuestionExclusiveChoiceController extends QuestionController {
 
+  static scope = "singleton"
+
   /**
    *
    * Action "ajouteReponse"

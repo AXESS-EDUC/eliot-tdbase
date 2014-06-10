@@ -25,6 +25,8 @@ import java.util.zip.GZIPOutputStream
 
 class SujetController {
 
+  static scope = "singleton"
+
   static defaultAction = "mesSujets"
   private static final String PARAM_DIRECTION_AVANT = 'avant'
   static final String PROP_RANG_INSERTION = 'rangInsertion'
@@ -34,7 +36,7 @@ class SujetController {
   CopieService copieService
   ReponseService reponseService
   ProfilScolariteService profilScolariteService
-  BreadcrumpsService breadcrumpsService
+  BreadcrumpsService breadcrumpsServiceProxy
   MoodleQuizImporterService moodleQuizImporterService
   ArtefactAutorisationService artefactAutorisationService
   MoodleQuizExporterService moodleQuizExporterService
@@ -51,7 +53,7 @@ class SujetController {
   def recherche(RechercheSujetCommand rechCmd) {
     def maxItems = grailsApplication.config.eliot.listes.maxrecherche
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.recherche.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.recherche.titre"))
     Personne personne = authenticatedPersonne
     def rechercheUniquementSujetsChercheur = false
     def moiLabel = message(code: "eliot.label.me").toString().toUpperCase()
@@ -76,7 +78,7 @@ class SujetController {
       affichePager = true
     }
 
-    [liens: breadcrumpsService.liens,
+    [liens: breadcrumpsServiceProxy.liens,
         afficheFormulaire: true,
         affichePager: affichePager,
         typesSujet: sujetService.getAllSujetTypes(),
@@ -95,14 +97,14 @@ class SujetController {
   def mesSujets() {
     def maxItems = grailsApplication.config.eliot.listes.max
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.messujets.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.messujets.titre"))
     Personne personne = authenticatedPersonne
     def sujets = sujetService.findSujetsForProprietaire(personne, params)
     boolean affichePager = false
     if (sujets.totalCount > maxItems) {
       affichePager = true
     }
-    def model = [liens: breadcrumpsService.liens,
+    def model = [liens: breadcrumpsServiceProxy.liens,
         afficheFormulaire: false,
         affichePager: affichePager,
         sujets: sujets,
@@ -116,9 +118,9 @@ class SujetController {
    * Action "nouveau"
    */
   def nouveau() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
     Personne proprietaire = authenticatedPersonne
-    render(view: "editeProprietes", model: [liens: breadcrumpsService.liens,
+    render(view: "editeProprietes", model: [liens: breadcrumpsServiceProxy.liens,
         sujet: new Sujet(),
         typesSujet: sujetService.getAllSujetTypes(),
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
@@ -130,10 +132,10 @@ class SujetController {
    * Action "editeProprietes"
    */
   def editeProprietes() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.editeproprietes.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.editeproprietes.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
-    render(view: "editeProprietes", model: [liens: breadcrumpsService.liens,
+    render(view: "editeProprietes", model: [liens: breadcrumpsServiceProxy.liens,
         sujet: sujet,
         typesSujet: sujetService.getAllSujetTypes(),
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
@@ -145,10 +147,10 @@ class SujetController {
    * Action "edite"
    */
   def edite() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.edite.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.edite.titre"))
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
-    [liens: breadcrumpsService.liens,
+    [liens: breadcrumpsServiceProxy.liens,
         titreSujet: sujet.titre,
         sujet: sujet,
         sujetEnEdition: true,
@@ -174,7 +176,7 @@ class SujetController {
       redirect(action: 'detailProprietes', id: sujet.id)
       return
     }
-    render(view: "editeProprietes", model: [liens: breadcrumpsService.liens,
+    render(view: "editeProprietes", model: [liens: breadcrumpsServiceProxy.liens,
         sujet: sujet,
         typesSujet: sujetService.getAllSujetTypes(),
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
@@ -185,10 +187,10 @@ class SujetController {
    *
    */
   def detailProprietes() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.detailproprietes.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.detailproprietes.titre"))
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
-    [liens: breadcrumpsService.liens,
+    [liens: breadcrumpsServiceProxy.liens,
         sujet: sujet,
         peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
         peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
@@ -224,7 +226,7 @@ class SujetController {
       redirect(action: 'edite', id: sujet.id)
       return
     }
-    render(view: '/sujet/edite', model: [liens: breadcrumpsService.liens,
+    render(view: '/sujet/edite', model: [liens: breadcrumpsServiceProxy.liens,
         titreSujet: sujet.titre,
         sujet: sujet,
         sujetEnEdition: true,
@@ -251,11 +253,11 @@ class SujetController {
    * Action "teste"
    */
   def teste() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.teste.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.teste.titre"))
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
     Copie copie = copieService.getCopieTestForSujetAndPersonne(sujet, personne)
-    [liens: breadcrumpsService.liens,
+    [liens: breadcrumpsServiceProxy.liens,
         copie: copie,
         afficheCorrection: false,
         sujet: sujet,
@@ -298,7 +300,7 @@ class SujetController {
         eleve)
     request.messageCode = "copie.remise.succes"
 
-    render(view: '/sujet/teste', model: [liens: breadcrumpsService.liens,
+    render(view: '/sujet/teste', model: [liens: breadcrumpsServiceProxy.liens,
         copie: copie,
         afficheCorrection: true,
         sujet: copie.sujet,
@@ -334,7 +336,7 @@ class SujetController {
       render copie.dateEnregistrement?.format(message(code: 'default.date.format'))
     } else {
       request.messageCode = "copie.enregistre.succes"
-      render(view: '/sujet/teste', model: [liens: breadcrumpsService.liens,
+      render(view: '/sujet/teste', model: [liens: breadcrumpsServiceProxy.liens,
           copie: copie,
           afficheCorrection: copie.dateRemise,
           sujet: copie.sujet,
@@ -354,7 +356,7 @@ class SujetController {
     render(view: '/sujet/edite', model: [sujet: sujet,
         titreSujet: sujet.titre,
         sujetEnEdition: true,
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         artefactHelper: artefactAutorisationService,
         utilisateur: proprietaire])
   }
@@ -370,7 +372,7 @@ class SujetController {
     render(view: '/sujet/edite', model: [sujet: sujet,
         titreSujet: sujet.titre,
         sujetEnEdition: true,
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         artefactHelper: artefactAutorisationService,
         utilisateur: proprietaire])
   }
@@ -386,7 +388,7 @@ class SujetController {
     render(view: '/sujet/edite', model: [sujet: sujet,
         titreSujet: sujet.titre,
         sujetEnEdition: true,
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         artefactHelper: artefactAutorisationService,
         utilisateur: proprietaire])
   }
@@ -406,11 +408,11 @@ class SujetController {
         props."${PROP_RANG_INSERTION}" = rang + 1
       }
     }
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"), props)
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"), props)
     Sujet sujet = Sujet.get(params.id)
 
     [sujet: sujet,
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         typesQuestionSupportes: questionService.typesQuestionsInteractionSupportes,
         typesQuestionSupportesPourCreation: questionService.typesQuestionsInteractionSupportesPourCreation]
   }
@@ -419,7 +421,7 @@ class SujetController {
    * Action ajoute séance
    */
   def ajouteSeance() {
-    breadcrumpsService.manageBreadcrumps(
+    breadcrumpsServiceProxy.manageBreadcrumps(
         params,
         message(code: "sujet.ajouteseance.titre")
     )
@@ -435,7 +437,7 @@ class SujetController {
     render(
         view: '/seance/edite',
         model: [
-            liens: breadcrumpsService.liens,
+            liens: breadcrumpsServiceProxy.liens,
             etablissements: etablissements,
             niveaux: niveaux,
             afficheLienCreationDevoir: false,
@@ -525,11 +527,11 @@ class SujetController {
    * Action donnant accès au formulaire d'import d'un fichier moodle XML
    */
   def editeImportMoodleXML() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.importmoodlexml.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.importmoodlexml.titre"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
     [
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         sujet: sujet,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
         niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
@@ -580,7 +582,7 @@ class SujetController {
         importSuccess = false
       }
     }
-    flash.liens = breadcrumpsService.liens
+    flash.liens = breadcrumpsServiceProxy.liens
     if (importSuccess) {
       redirect(action: 'rapportImportMoodleXML')
     } else {
@@ -592,18 +594,18 @@ class SujetController {
    * Action présentant le rapport d'importMoodle XML
    */
   def rapportImportMoodleXML() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "sujet.rapportmoodlexml.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.rapportmoodlexml.titre"))
   }
 
   /**
    * Action donnant accès au formulaire d'import natif eliot-tdbase d'une question
    */
   def editeImportQuestionNatifTdBase() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.question.libelle"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.question.libelle"))
     Sujet sujet = Sujet.get(params.id)
     Personne proprietaire = authenticatedPersonne
     [
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         sujet: sujet,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
         niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
@@ -658,7 +660,7 @@ class SujetController {
         importSuccess = false
       }
     }
-    flash.liens = breadcrumpsService.liens
+    flash.liens = breadcrumpsServiceProxy.liens
     if (importSuccess) {
       flash.messageCode = "La question a été correctement importée."
       redirect(action: 'edite', id: sujet.id)
@@ -671,10 +673,10 @@ class SujetController {
    * Action donnant accès au formulaire d'import natif eliot-tdbase d'un sujet
    */
   def editeImportSujetNatifTdBase() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.sujet.libelle"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.sujet.libelle"))
     Personne proprietaire = authenticatedPersonne
     [
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
         niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
@@ -727,7 +729,7 @@ class SujetController {
         importSuccess = false
       }
     }
-    flash.liens = breadcrumpsService.liens
+    flash.liens = breadcrumpsServiceProxy.liens
     if (importSuccess) {
       flash.messageCode = "Le sujet a été correctement importé."
       redirect(action: 'edite', id: sujet.id)

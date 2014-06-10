@@ -34,6 +34,8 @@ import org.lilie.services.eliot.tdbase.impl.order.OrderSpecification
 
 class QuestionOrderController extends QuestionController {
 
+  static scope = "singleton"
+
   @Override
   protected def getSpecificationObjectFromParams(Map params) {
 

@@ -53,11 +53,13 @@ import java.util.zip.GZIPOutputStream
 
 class QuestionController {
 
+  static scope = "singleton"
+
   static defaultAction = "recherche"
 
   private static final String QUESTION_EST_DEJA_INSEREE = "questionEstDejaInseree"
 
-  BreadcrumpsService breadcrumpsService
+  BreadcrumpsService breadcrumpsServiceProxy
   ProfilScolariteService profilScolariteService
   QuestionService questionService
   SujetService sujetService
@@ -75,9 +77,9 @@ class QuestionController {
    * Action ajoute element
    */
   def nouvelle() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
     [
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation
     ]
   }
@@ -108,7 +110,7 @@ class QuestionController {
     if (questionEnEdition && sujet) {
       questionEstDejaInseree = true
     }
-    breadcrumpsService.manageBreadcrumps(
+    breadcrumpsServiceProxy.manageBreadcrumps(
         params,
         message(code: "question.edite.titre"),
         [QUESTION_EST_DEJA_INSEREE: questionEstDejaInseree]
@@ -117,7 +119,7 @@ class QuestionController {
     render(
         view: '/question/edite',
         model: [
-            liens: breadcrumpsService.liens,
+            liens: breadcrumpsServiceProxy.liens,
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
@@ -139,7 +141,7 @@ class QuestionController {
    * Action "detail"
    */
   def detail() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "question.detail.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "question.detail.titre"))
     Question question
     question = Question.get(params.id)
     Personne personne = authenticatedPersonne
@@ -150,7 +152,7 @@ class QuestionController {
     render(
         view: '/question/detail',
         model: [
-            liens: breadcrumpsService.liens,
+            liens: breadcrumpsServiceProxy.liens,
             question: question,
             sujet: sujet,
             artefactHelper: artefactAutorisationService,
@@ -272,7 +274,7 @@ class QuestionController {
       render(
           view: '/question/edite',
           model: [
-              liens: breadcrumpsService.liens,
+              liens: breadcrumpsServiceProxy.liens,
               question: question,
               matieres: profilScolariteService.findMatieresForPersonne(personne),
               niveaux: profilScolariteService.findNiveauxForPersonne(personne),
@@ -313,8 +315,8 @@ class QuestionController {
       sujet = Sujet.get(params.sujetId as Long)
     }
     if (sujet && question.id && !question.hasErrors()) {
-      if (!breadcrumpsService.getValeurPropriete(QUESTION_EST_DEJA_INSEREE)) {
-        Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
+      if (!breadcrumpsServiceProxy.getValeurPropriete(QUESTION_EST_DEJA_INSEREE)) {
+        Integer rang = breadcrumpsServiceProxy.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
         sujetService.insertQuestionInSujet(
             question,
             sujet,
@@ -323,13 +325,13 @@ class QuestionController {
                 rang: rang
             )
         )
-        breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
+        breadcrumpsServiceProxy.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
       }
     }
     render(
         view: '/question/edite',
         model: [
-            liens: breadcrumpsService.liens,
+            liens: breadcrumpsServiceProxy.liens,
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
@@ -350,7 +352,7 @@ class QuestionController {
     def specifObject = getSpecificationObjectFromParams(params)
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
-    Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
+    Integer rang = breadcrumpsServiceProxy.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
     boolean questionEnEdition = false
     Question question = questionService.createQuestionAndInsertInSujet(
         params,
@@ -363,7 +365,7 @@ class QuestionController {
     )
 
     if (question.hasErrors()) {
-      render(view: '/question/edite', model: [liens: breadcrumpsService.liens,
+      render(view: '/question/edite', model: [liens: breadcrumpsServiceProxy.liens,
           question: question,
           sujet: sujet,
           matieres: profilScolariteService.findMatieresForPersonne(personne),
@@ -374,7 +376,7 @@ class QuestionController {
           peutPartagerQuestion: false])
     } else {
       flash.messageCode = "question.enregistre.succes"
-      breadcrumpsService.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
+      breadcrumpsServiceProxy.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
       redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
     }
 
@@ -390,7 +392,7 @@ class QuestionController {
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
     Question question = Question.get(params.id)
-    Integer rang = breadcrumpsService.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
+    Integer rang = breadcrumpsServiceProxy.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
     sujetService.insertQuestionInSujet(
         question,
         sujet,
@@ -400,7 +402,7 @@ class QuestionController {
         )
     )
     if (sujet.hasErrors()) {
-      render(view: '/sujet/edite', model: [liens: breadcrumpsService.liens,
+      render(view: '/sujet/edite', model: [liens: breadcrumpsServiceProxy.liens,
           titreSujet: sujet.titre,
           sujet: sujet,
           sujetEnEdition: true,
@@ -422,7 +424,7 @@ class QuestionController {
   def recherche(RechercheQuestionCommand rechCmd) {
     def maxItems = grailsApplication.config.eliot.listes.maxrecherche
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "question.recherche.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "question.recherche.titre"))
     Personne personne = authenticatedPersonne
     def rechercheUniquementQuestionsChercheur = false
     def moiLabel = message(code: "eliot.label.me").toString().toUpperCase()
@@ -459,7 +461,7 @@ class QuestionController {
     if (questions.totalCount > maxItems) {
       affichePager = true
     }
-    [liens: breadcrumpsService.liens,
+    [liens: breadcrumpsServiceProxy.liens,
         afficheFormulaire: true,
         typesQuestion: typesQuestions,
         matieres: profilScolariteService.findMatieresForPersonne(personne),
@@ -476,7 +478,7 @@ class QuestionController {
   def mesItems() {
     def maxItems = grailsApplication.config.eliot.listes.max
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "question.mesitems.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "question.mesitems.titre"))
     Personne personne = authenticatedPersonne
     def questions = questionService.findQuestionsForProprietaire(personne,
         params)
@@ -485,7 +487,7 @@ class QuestionController {
     if (questions.totalCount > maxItems) {
       affichePager = true
     }
-    def model = [liens: breadcrumpsService.liens,
+    def model = [liens: breadcrumpsServiceProxy.liens,
         afficheFormulaire: false,
         questions: questions,
         afficheLiensModifier: afficheLiensModifier,
@@ -537,10 +539,10 @@ class QuestionController {
    * Action donnant accès au formulaire d'import natif eliot-tdbase d'une question
    */
   def editeImportQuestionNatifTdBase() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.question.libelle"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.question.libelle"))
     Personne proprietaire = authenticatedPersonne
     [
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
         niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
@@ -594,7 +596,7 @@ class QuestionController {
         importSuccess = false
       }
     }
-    flash.liens = breadcrumpsService.liens
+    flash.liens = breadcrumpsServiceProxy.liens
     if (importSuccess) {
       flash.messageCode = "La question a été correctement importée."
       redirect(action: 'detail', id: question.id)

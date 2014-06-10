@@ -26,16 +26,14 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-
-
-
-
 package org.lilie.services.eliot.tdbase.impl
 
 import org.lilie.services.eliot.tdbase.QuestionController
 import org.lilie.services.eliot.tdbase.impl.statement.StatementSpecification
 
 class QuestionStatementController extends QuestionController {
+
+  static scope = "singleton"
 
   /**
    *

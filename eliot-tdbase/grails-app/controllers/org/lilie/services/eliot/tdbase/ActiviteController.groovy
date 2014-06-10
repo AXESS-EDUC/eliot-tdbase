@@ -26,23 +26,19 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-
-
-
-
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class ActiviteController {
 
+  static scope = "singleton"
+
   static defaultAction = "listeSeances"
 
-  BreadcrumpsService breadcrumpsService
+  BreadcrumpsService breadcrumpsServiceProxy
   ModaliteActiviteService modaliteActiviteService
-  ProfilScolariteService profilScolariteService
   CopieService copieService
   ReponseService reponseService
 
@@ -52,13 +48,13 @@ class ActiviteController {
    */
   def index() {
     params.max = Math.min(params.max ? params.int('max') : 5, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "accueil.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "accueil.titre"))
     Personne personne = authenticatedPersonne
     def modalitesActivites = modaliteActiviteService.findModalitesActivitesForApprenant(personne,
                                                                                         params)
     def copies = copieService.findCopiesEnVisualisationForApprenant(personne,
                                                                     params)
-    [liens: breadcrumpsService.liens,
+    [liens: breadcrumpsServiceProxy.liens,
             seances: modalitesActivites,
             copies: copies]
   }
@@ -70,7 +66,7 @@ class ActiviteController {
   def listeSeances() {
     def maxItems = grailsApplication.config.eliot.listes.max
     params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.liste.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "seance.liste.titre"))
     Personne personne = authenticatedPersonne
     def modalitesActivites = modaliteActiviteService.findModalitesActivitesForApprenant(personne,
                                                                                         params)
@@ -78,7 +74,7 @@ class ActiviteController {
     if (modalitesActivites.totalCount > maxItems) {
       affichePager = true
     }
-    render(view: '/activite/seance/liste', model: [liens: breadcrumpsService.liens,
+    render(view: '/activite/seance/liste', model: [liens: breadcrumpsServiceProxy.liens,
             seances: modalitesActivites,
             affichePager: affichePager])
   }
@@ -88,11 +84,11 @@ class ActiviteController {
    * Action "Faire sujet"
    */
   def travailleCopie() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "copie.edition.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "copie.edition.titre"))
     Personne eleve = authenticatedPersonne
     ModaliteActivite seance = ModaliteActivite.get(params.id)
     Copie copie = copieService.getCopieForModaliteActiviteAndEleve(seance, eleve)
-    render(view: '/activite/copie/edite', model: [liens: breadcrumpsService.liens,
+    render(view: '/activite/copie/edite', model: [liens: breadcrumpsServiceProxy.liens,
             copie: copie])
   }
 
@@ -121,7 +117,7 @@ class ActiviteController {
                                                         eleve)
     request.messageCode = "copie.enregistre.succes"
 
-    render(view: '/activite/copie/edite', model: [liens: breadcrumpsService.liens,
+    render(view: '/activite/copie/edite', model: [liens: breadcrumpsServiceProxy.liens,
             copie: copie])
   }
 
@@ -153,7 +149,7 @@ class ActiviteController {
     } else {
       request.messageCode = "copie.enregistre.succes"
 
-      render(view: '/activite/copie/edite', model: [liens: breadcrumpsService.liens,
+      render(view: '/activite/copie/edite', model: [liens: breadcrumpsServiceProxy.liens,
               copie: copie])
     }
   }
@@ -164,11 +160,11 @@ class ActiviteController {
    */
   def listeResultats() {
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "seance.resultats.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "seance.resultats.titre"))
     Personne personne = authenticatedPersonne
     def copies = copieService.findCopiesEnVisualisationForApprenant(personne,
                                                                     params)
-    render(view: '/activite/seance/resultats', model: [liens: breadcrumpsService.liens,
+    render(view: '/activite/seance/resultats', model: [liens: breadcrumpsServiceProxy.liens,
             copies: copies])
   }
 
@@ -177,9 +173,9 @@ class ActiviteController {
    * Action visualise copie
    */
   def visualiseCopie() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
     Copie copie = Copie.get(params.id)
-    render(view: '/activite/copie/visualise', model: [liens: breadcrumpsService.liens,
+    render(view: '/activite/copie/visualise', model: [liens: breadcrumpsServiceProxy.liens,
             copie: copie])
   }
 

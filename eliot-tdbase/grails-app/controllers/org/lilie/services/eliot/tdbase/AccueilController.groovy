@@ -26,12 +26,6 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-
-
-
-
-
-
 package org.lilie.services.eliot.tdbase
 
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
@@ -39,6 +33,8 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 
 class AccueilController {
+
+  static scope = "singleton"
 
   FonctionService fonctionService
   CopieService copieService

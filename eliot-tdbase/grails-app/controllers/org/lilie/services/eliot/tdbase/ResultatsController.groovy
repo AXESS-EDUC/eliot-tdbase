@@ -35,13 +35,13 @@ import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class ResultatsController {
 
+  static scope = "singleton"
+
   static defaultAction = "listeEleves"
 
-  BreadcrumpsService breadcrumpsService
-  ModaliteActiviteService modaliteActiviteService
+  BreadcrumpsService breadcrumpsServiceProxy
   ProfilScolariteService profilScolariteService
   CopieService copieService
-  ReponseService reponseService
 
   /**
    * Action liste résulats
@@ -49,7 +49,7 @@ class ResultatsController {
    */
   def liste() {
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
-    breadcrumpsService.manageBreadcrumps(params, message(code: "resultats.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "resultats.titre"))
     Personne parent = authenticatedPersonne
 
     def copies = []
@@ -67,7 +67,7 @@ class ResultatsController {
       )
     }
     [
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         copies: copies,
         eleves: eleves,
         eleveSelectionne: eleveSelectionne
@@ -79,10 +79,10 @@ class ResultatsController {
    * Action visualise copie
    */
   def visualiseCopie() {
-    breadcrumpsService.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
     Copie copie = Copie.get(params.id)
     render(view: '/resultats/copie/visualise', model: [
-        liens: breadcrumpsService.liens,
+        liens: breadcrumpsServiceProxy.liens,
         copie: copie
     ])
   }
