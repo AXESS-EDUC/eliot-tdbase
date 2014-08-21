@@ -539,3 +539,6 @@ environments {
 
 // Configuration plugin Quartz 2
 grails.plugin.quartz2.autoStartup = true
+
+// Activation/desactivation du partage en CC par les enseignants d'un artefact (i.e. d'un sujet ou d'une question)
+eliot.artefact.partage_CC_autorise = false

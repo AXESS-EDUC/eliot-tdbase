@@ -54,6 +54,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
   SujetService sujetService
   ModaliteActiviteService modaliteActiviteService
   QuestionService questionService
+  ArtefactAutorisationService artefactAutorisationService
 
 
   protected void setUp() {
@@ -230,6 +231,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
   }
 
   void testPartageSujet() {
+    artefactAutorisationService.partageArtefactCCActive = true
     Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
     Question quest1 = questionService.createQuestion(
         [
@@ -258,7 +260,29 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, sujet1.publication.copyrightsType)
     assertNotNull(sujet1.publication)
 
+  }
 
+  void testDesactivationPartageSurPartageSujet() {
+      artefactAutorisationService.partageArtefactCCActive = false
+      Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+      Question quest1 = questionService.createQuestion(
+              [
+                      titre: "Question 1",
+                      type: QuestionTypeEnum.Decimal.questionType,
+                      estAutonome: true
+              ],
+              new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+              personne1,
+      )
+      assertFalse(quest1.hasErrors())
+      sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+
+      assertEquals(1, sujet1.questionsSequences.size())
+
+      assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet1.copyrightsType)
+      assertNull(sujet1.publication)
+
+      assertFalse(artefactAutorisationService.utilisateurPeutPartageArtefact(personne1, sujet1))
   }
 
 }
