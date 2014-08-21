@@ -58,7 +58,7 @@ class SujetController {
     def rechercheUniquementSujetsChercheur = false
     def moiLabel = message(code: "eliot.label.me").toString().toUpperCase()
     def patternAuteur = rechCmd.patternAuteur
-    if (moiLabel == rechCmd.patternAuteur?.toUpperCase()) {
+    if (!artefactAutorisationService.partageArtefactCCActive || moiLabel == rechCmd.patternAuteur?.toUpperCase()) {
       rechercheUniquementSujetsChercheur = true
       patternAuteur = null
     }
