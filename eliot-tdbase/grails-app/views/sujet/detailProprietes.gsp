@@ -76,6 +76,7 @@
         <li>Dupliquer</li>
       </g:else>
       <li><hr/></li>
+    <g:if test="${artefactHelper.partageArtefactCCActive}">
       <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
         <%
           def docLoc = g.createLink(action: 'partage', id: sujet.id)
@@ -88,7 +89,7 @@
       <g:else>
         <li>Partager</li>
       </g:else>
-
+    </g:if>
       <g:set var="peutExporterNatifJson"
              value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.NATIF_JSON)}"/>
       <g:set var="peutExporterMoodleXml"

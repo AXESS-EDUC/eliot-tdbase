@@ -189,6 +189,7 @@
             <li>Dupliquer</li>
           </g:else>
           <li><hr/></li>
+        <g:if test="${artefactHelper.partageArtefactCCActive}">
           <g:if
               test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
             <%
@@ -202,7 +203,7 @@
           <g:else>
             <li>Partager</li>
           </g:else>
-
+        </g:if>
           <g:set var="peutExporterNatifJson"
                  value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, questionInstance, Format.NATIF_JSON)}"/>
           <g:set var="peutExporterMoodleXml"
