@@ -123,6 +123,7 @@ class SujetController {
     render(view: "editeProprietes", model: [liens: breadcrumpsServiceProxy.liens,
         sujet: new Sujet(),
         typesSujet: sujetService.getAllSujetTypes(),
+        artefactHelper: artefactAutorisationService,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
         niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
   }
