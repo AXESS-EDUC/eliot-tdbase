@@ -101,12 +101,21 @@
           </td>
         </tr>
         <tr>
-          <td class="label">Auteur :
-          </td>
-          <td>
-            <g:textField name="patternAuteur" title="auteur"
-                         value="${rechercheCommand.patternAuteur}"/>
-          </td>
+            <g:if test="${artefactHelper.partageArtefactCCActive}">
+                <td class="label">Auteur :
+                </td>
+                <td>
+                    <g:textField name="patternAuteur" title="auteur"
+                                 value="${rechercheCommand.patternAuteur}"/>
+                </td>
+            </g:if>
+            <g:else>
+                <td class="label">&nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </g:else>
 
           <td class="label">Niveau :
           </td>
@@ -240,7 +249,9 @@
           <g:if
               test="${questionInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${questionInstance.matiere?.libelleLong}</g:if>
           <strong>» Type :</strong>  ${questionInstance.type.nom}
+         <g:if test="${artefactHelper.partageArtefactCCActive}">
           <strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
+         </g:if>
         </p>
 
       </div>

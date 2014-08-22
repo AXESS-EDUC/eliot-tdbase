@@ -92,12 +92,21 @@
           </td>
         </tr>
         <tr>
+        <g:if test="${artefactHelper.partageArtefactCCActive}">
           <td class="label">Auteur :
           </td>
           <td>
             <g:textField name="patternAuteur" title="auteur"
                          value="${rechercheCommand.patternAuteur}"/>
           </td>
+         </g:if>
+         <g:else>
+             <td class="label">&nbsp;
+             </td>
+             <td>
+                 &nbsp;
+             </td>
+         </g:else>
           <td width="20"/>
           <td class="label">Niveau :
           </td>
@@ -213,10 +222,12 @@
               test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${sujetInstance.matiere?.libelleLong}</g:if>
           <g:if
               test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</g:if>
-          <g:if test="${afficheFormulaire}">
+          <g:if test="${artefactHelper.partageArtefactCCActive && afficheFormulaire}">
             <strong>» Auteur :</strong> ${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}
           </g:if>
+          <g:if test="${artefactHelper.partageArtefactCCActive}">
           <strong>» Partagé :</strong> ${sujetInstance.estPartage() ? 'oui' : 'non'}
+          </g:if>
         </p>
 
       </div>
