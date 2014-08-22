@@ -57,6 +57,12 @@ class BootstrapService {
   private static final String UTILISATEUR_1_NOM = "dupond"
   private static final String UTILISATEUR_1_PRENOM = "mary"
 
+  private static final String UTILISATEUR_2_LOGIN = "_test_francky"
+  private static final String UTILISATEUR_2_LOGIN_ALIAS = "ens2"
+  private static final String UTILISATEUR_2_PASSWORD = "ens2"
+  private static final String UTILISATEUR_2_NOM = "dupond"
+  private static final String UTILISATEUR_2_PRENOM = "francky"
+
   private static final String ELEVE_1_LOGIN = "elv1"
   private static final String ELEVE_1_PASSWORD = "elv1"
   private static final String ELEVE_1_NOM = "durand"
@@ -98,11 +104,14 @@ class BootstrapService {
 
     initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
     initialiseEnseignant1EnvDevelopment()
+    initialiseEnseignant2EnvDevelopment()
     initialiseProfilsScolaritesEnseignant1EnvDevelopment()
+    initialiseProfilsScolaritesEnseignant2EnvDevelopment()
     initialiseEleve1EnvDevelopment()
     initialiseProprietesScolaritesEleveEnvDevelopmentTest()
     initialiseProfilsScolaritesEleve1EnvDevelopment()
     changeLoginAliasMotdePassePourEnseignant1()
+    changeLoginAliasMotdePassePourEnseignant2()
     initialiseEleve2EnvDevelopment()
     initialiseRespEleve1EnvDevelopment()
   }
@@ -140,6 +149,18 @@ class BootstrapService {
     }
   }
 
+    private def changeLoginAliasMotdePassePourEnseignant2() {
+        def ens = utilisateurService.findUtilisateur(UTILISATEUR_2_LOGIN_ALIAS)
+        if (!ens) {
+            ens = utilisateurService.findUtilisateur(UTILISATEUR_2_LOGIN)
+            if (ens) {
+                utilisateurService.setAliasLogin(UTILISATEUR_2_LOGIN, UTILISATEUR_2_LOGIN_ALIAS)
+                ens.password = UTILISATEUR_2_PASSWORD
+                utilisateurService.updateUtilisateur(UTILISATEUR_2_LOGIN, ens)
+            }
+        }
+    }
+
 
 
   private def initialiseEnseignant1EnvDevelopment() {
@@ -150,6 +171,15 @@ class BootstrapService {
           UTILISATEUR_1_PRENOM)
     }
   }
+
+    private def initialiseEnseignant2EnvDevelopment() {
+        if (!utilisateurService.findUtilisateur(UTILISATEUR_2_LOGIN)) {
+            utilisateurService.createUtilisateur(UTILISATEUR_2_LOGIN,
+                    UTILISATEUR_2_PASSWORD,
+                    UTILISATEUR_2_NOM,
+                    UTILISATEUR_2_PRENOM)
+        }
+    }
 
   StructureEnseignement classe1ere
   StructureEnseignement classe6eme
@@ -426,6 +456,15 @@ class BootstrapService {
       addProprietesScolariteToPersonne(props, pers1)
     }
   }
+
+    private def initialiseProfilsScolaritesEnseignant2EnvDevelopment() {
+        Utilisateur ens2 = utilisateurService.findUtilisateur(UTILISATEUR_2_LOGIN)
+        Personne pers2 = Personne.get(ens2.personneId)
+        if (!profilScolariteService.findProprietesScolaritesForPersonne(pers2)) {
+            def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEnseignant())
+            addProprietesScolariteToPersonne(props, pers2)
+        }
+    }
 
   private def initialiseEleve1EnvDevelopment() {
     if (!utilisateurService.findUtilisateur(ELEVE_1_LOGIN)) {
