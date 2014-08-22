@@ -144,7 +144,7 @@
 
 <div class="portal-form_container edite apercu">
   <g:render template="/question/detail_commun"
-            model="[question: question, referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList]"/>
+            model="[question: question, referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList, artefactHelper:artefactHelper]"/>
 
 </div>
 

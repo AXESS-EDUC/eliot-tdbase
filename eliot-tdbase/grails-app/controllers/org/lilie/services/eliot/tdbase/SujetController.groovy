@@ -137,6 +137,7 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     render(view: "editeProprietes", model: [liens: breadcrumpsServiceProxy.liens,
         sujet: sujet,
+        artefactHelper: artefactAutorisationService,
         typesSujet: sujetService.getAllSujetTypes(),
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
         niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])

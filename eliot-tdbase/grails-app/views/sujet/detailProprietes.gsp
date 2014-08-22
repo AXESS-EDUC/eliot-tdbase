@@ -177,6 +177,7 @@
         ${sujet.presentation}
       </td>
     </tr>
+  <g:if test="${artefactHelper.partageArtefactCCActive}">
     <tr>
       <td class="label">Partage :</td>
       <td>
@@ -195,6 +196,7 @@
       <g:render template="/artefact/paternite"
                 model="[paternite: sujet.paternite]"/>
     </g:if>
+   </g:if>
   </table>
 </div>
 
