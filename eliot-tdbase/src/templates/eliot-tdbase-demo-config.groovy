@@ -162,3 +162,6 @@ log4j = {
 
 // Support de l'interface EmaEval
 eliot.interfacage.emaeval.actif = false
+
+// Activation/desactivation du partage en CC par les enseignants d'un artefact (i.e. d'un sujet ou d'une question)
+eliot.artefact.partage_CC_autorise = false
