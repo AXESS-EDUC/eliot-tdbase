@@ -1,7 +1,8 @@
-package org.lilie.services.eliot.tdbase
+package org.lilie.services.eliot.tdbase.parametrage
 
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
+
 
 /**
  * Classe qui représente les préférences d'un établissement : concerne
@@ -26,3 +27,4 @@ class PreferenceEtablissement {
         cache(true)
     }
 }
+
