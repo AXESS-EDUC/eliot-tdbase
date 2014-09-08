@@ -63,4 +63,23 @@
                 referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="2" author="fsil">
+        <comment>
+            Ajout des colonnes pour tracer qui a fait la dernière modification des préférences.
+        </comment>
+        <addColumn tableName="preference_etablissement" schemaName="td">
+            <column name="last_updated" type="timestamp with timezone"/>
+            <column name="last_update_auteur_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint
+                baseTableSchemaName="td"
+                baseTableName="preference_etablissement"
+                baseColumnNames="last_update_auteur_id"
+                constraintName="fk_preference_etablissement_last_auteur"
+                referencedTableSchemaName="ent"
+                referencedTableName="personne"
+                referencedColumnNames="id"/>
+    </changeSet>
+
 </databaseChangeLog>
