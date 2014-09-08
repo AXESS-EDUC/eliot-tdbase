@@ -1,5 +1,7 @@
-package org.lilie.services.eliot.tdbase
+package org.lilie.services.eliot.tdbase.parametrage
 
+import org.lilie.services.eliot.tdbase.PreferenceEtablissement
+import org.lilie.services.eliot.tdbase.RoleApplicatif
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.utils.contract.ContractService
