@@ -17,11 +17,16 @@ class MappingFonctionRole {
     private Map mapping = [:]
 
     /**
+     * Default constructeur
+     */
+    MappingFonctionRole() {}
+
+    /**
      * Crée et initialise le mapping à partir d'une map
      * @param mapping le mapping d'initialisation
      */
-    MappingFonctionRole(HashMap aMapping) {
-        //contractService.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
+    MappingFonctionRole(Map aMapping) {
+        contractService.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
         this.mapping = aMapping
     }
 

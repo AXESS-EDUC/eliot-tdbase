@@ -29,12 +29,11 @@
 package org.lilie.services.eliot.tdbase
 
 import grails.plugin.spock.IntegrationSpec
+import org.lilie.services.eliot.tdbase.parametrage.PreferenceEtablissement
+import org.lilie.services.eliot.tdbase.parametrage.PreferenceEtablissementService
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.utils.contract.PreConditionException
-
-import java.lang.reflect.UndeclaredThrowableException
 
 /**
  * @author Franck Silvestre

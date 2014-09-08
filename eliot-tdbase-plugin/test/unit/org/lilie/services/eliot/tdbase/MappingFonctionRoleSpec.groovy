@@ -28,77 +28,108 @@
 
 package org.lilie.services.eliot.tdbase
 
-import grails.plugin.spock.IntegrationSpec
-import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
-import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.utils.contract.PreConditionException
-
-import java.lang.reflect.UndeclaredThrowableException
+import org.lilie.services.eliot.tdbase.parametrage.MappingFonctionRole
+import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.utils.contract.ContractService
+import spock.lang.Specification
 
 /**
  * @author Franck Silvestre
  */
-class MappingFonctionRoleSpec extends IntegrationSpec {
+class MappingFonctionRoleSpec extends Specification {
 
-    Personne personne1
-    Etablissement etablissement
-
-    TdBaseInitialisationTestService tdBaseInitialisationTestService
-    PreferenceEtablissementService preferenceEtablissementService
+    Fonction ens
+    Fonction elv
+    ContractService contractService = new ContractService()
 
     def setup() {
-        tdBaseInitialisationTestService.bootstrapForIntegrationTest()
-        personne1 = tdBaseInitialisationTestService.utilisateur1.personne
-        etablissement = tdBaseInitialisationTestService.leLycee
+        ens = new Fonction(code: "ens",libelle: "enseignant")
+        elv = new Fonction(code: "elv",libelle: "eleve")
     }
 
-    def "Recuperation des preferences etablissement"() {
+   def "creation d'un mapping fonction role"() {
 
-        given: "un etablissement sans preference etablissement"
-        PreferenceEtablissement.findByEtablissement(etablissement) == null
+       given:"les fonctions disponibles"
+       ens
+       elv
 
-        when:"la preference de l'etablissement est demandee par un non administrateur"
-        def pref = preferenceEtablissementService.getPreferenceForEtablissement(personne1,etablissement)
+       when: "un nveau mapping est cree"
+       MappingFonctionRole mapping = new MappingFonctionRole()
 
-        then:"la preference n'est pas creee"
-        !pref
+       then: "le mapping est vide"
+       mapping.isEmpty()
 
-        when:"la preference de l'etablissement est demandee par un administrateur"
-        pref = preferenceEtablissementService.getPreferenceForEtablissement(personne1
-                                                        ,etablissement, RoleApplicatif.ADMINISTRATEUR)
+   }
 
-        then:"la preference de l'etablissement est cree"
-        !pref.hasErrors()
+    def "ajout d'associations fonction role"() {
 
-        and: "l'etablissement est correct"
-        pref.etablissement == etablissement
+        given:"un mapping tout neuf"
+        MappingFonctionRole mapping = new MappingFonctionRole()
 
-        and: "l'auteur de la modification est l'administreur ayant demande la pref"
-        pref.lastUpdateAuteur == personne1
+        when:"un role est associe a une fonction"
+        mapping.addRoleForFonction(RoleApplicatif.ENSEIGNANT,ens)
+
+        then: "le role est ajoute a la liste des roles associes a la fonction"
+        mapping.getRolesForFonction(ens).contains(RoleApplicatif.ENSEIGNANT)
+
+        when:"un deuxieme role est ajoute"
+        mapping.addRoleForFonction(RoleApplicatif.ELEVE, ens)
+
+        then:"deux roles sont dans la liste des roles associes a la fonction"
+        mapping.getRolesForFonction(ens).size() == 2
+
+        when: "une nouveau role est associe a une nouvelle fonction"
+        mapping.addRoleForFonction(RoleApplicatif.ENSEIGNANT, elv)
+
+        then: "la deuxieme fonction a bien un role dans sa liste de role"
+        mapping.getRolesForFonction(ens).size() == 2
+        mapping.getRolesForFonction(elv).first() == RoleApplicatif.ENSEIGNANT
 
     }
 
-    def "une preference etablissement n'est pas recree quand elle existe"() {
+    def "suppression d'associations fonction role sur un mapping vide"() {
 
-        given: "un etablissement avec preference etablissement"
-        def pref = preferenceEtablissementService.getPreferenceForEtablissement(personne1,
-                etablissement, RoleApplicatif.ADMINISTRATEUR)
+        given: "un nouveau mapping vierge"
+        MappingFonctionRole mapping = new MappingFonctionRole()
 
-        when: "la preference est demandee par un administrateur"
-        def pref2 = preferenceEtablissementService.getPreferenceForEtablissement(personne1,
-                etablissement, RoleApplicatif.ADMINISTRATEUR)
+        when: "tentative de supprimer une association"
+        mapping.deleteRoleForFonction(RoleApplicatif.ENSEIGNANT,ens)
 
-        then: "la preference unique de l'etablissement est recuperee"
-        !pref.hasErrors()
-        pref == pref2
+        then: "il ne se passe rien, le mapping est vide"
+        mapping.isEmpty()
 
-        when: "un utilisateur non administrateur demande la preference"
-        def pref3 = preferenceEtablissementService.getPreferenceForEtablissement(personne1,
-                etablissement)
+    }
 
-        then: "la preference unique de l'etablissement est recuperee"
-        pref == pref3
+    def "suppression d'associations fonction role sur un mapping non vide"() {
+
+        given: "un mapping contenant des associations"
+        MappingFonctionRole mapping = new MappingFonctionRole()
+        mapping.addRoleForFonction(RoleApplicatif.ENSEIGNANT,ens)
+        mapping.addRoleForFonction(RoleApplicatif.ELEVE, ens)
+        mapping.addRoleForFonction(RoleApplicatif.ENSEIGNANT, elv)
+
+        when: "tentative de supprimer une association"
+        mapping.deleteRoleForFonction(RoleApplicatif.ENSEIGNANT,ens)
+
+        then: "le mapping est modifie en consequence"
+        !mapping.isEmpty()
+        mapping.getRolesForFonction(ens).size() ==1
+        !mapping.getRolesForFonction(ens).contains(RoleApplicatif.ENSEIGNANT)
+
+    }
+
+    def "creation d'un mapping a partir d'une map existante"() {
+
+        given:"une map valide"
+        Map aMap = ["${ens.code}": [RoleApplicatif.ENSEIGNANT.name(),RoleApplicatif.ELEVE.name()],
+                    "${elv.code}":[RoleApplicatif.ENSEIGNANT.name(),RoleApplicatif.ELEVE.name()]]
+
+        when: "creation d'un mapping a partir d'une map existente valide"
+        MappingFonctionRole mapping = new MappingFonctionRole(aMap)
+
+        then: "le mapping est cree et initialise correctement"
+        noExceptionThrown()
+        !mapping.isEmpty()
 
     }
 
