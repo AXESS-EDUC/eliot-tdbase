@@ -3,15 +3,13 @@ package org.lilie.services.eliot.tdbase.parametrage
 import org.lilie.services.eliot.tdbase.RoleApplicatif
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.utils.contract.ContractService
+
 
 /**
  * Service de gestion des préférences établissement
  * @author Franck Silvestre
  */
 class PreferenceEtablissementService {
-
-    ContractService contractService
 
     /**
      * Récupère l'objet correspondant aux préférences d'un établissement
