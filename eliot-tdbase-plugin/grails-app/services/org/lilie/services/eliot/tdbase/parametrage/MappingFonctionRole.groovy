@@ -24,8 +24,10 @@ class MappingFonctionRole {
      * @param mapping le mapping d'initialisation
      */
     MappingFonctionRole(Map aMapping) {
-        Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
-        this.mapping = aMapping
+        if (aMapping) {
+            Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
+            this.mapping = aMapping
+        }
     }
 
     /**
@@ -33,10 +35,14 @@ class MappingFonctionRole {
      * @param jsonString
      */
     MappingFonctionRole(String jsonString) {
-        def slurper = new JsonSlurper()
-        def aMapping = slurper.parseText(jsonString)
-        Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
-        this.mapping = aMapping
+        if (jsonString) {
+            def slurper = new JsonSlurper()
+            def aMapping = slurper.parseText(jsonString)
+            if (aMapping) {
+                Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
+                this.mapping = aMapping
+            }
+        }
     }
 
     /**
@@ -104,11 +110,13 @@ class MappingFonctionRole {
             return true
         }
         boolean res = true
-        aMapping.each { key, value ->
-            if (!key in FonctionEnum.values()*.name()) {
+        def goodKeys = (FonctionEnum.values())*.name()
+        def goodValues = (RoleApplicatif.values())*.name()
+        aMapping.each { String key, value ->
+            if (!(key in goodKeys)) {
                 res = false
             }
-            if (!value in RoleApplicatif.values()*.name()) {
+            if (!goodValues.containsAll(value)) {
                 res = false
             }
         }
