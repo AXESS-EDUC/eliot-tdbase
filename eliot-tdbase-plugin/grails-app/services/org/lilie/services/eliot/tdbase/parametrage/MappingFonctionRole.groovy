@@ -5,14 +5,12 @@ import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.RoleApplicatif
 import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
-import org.lilie.services.eliot.tice.utils.contract.ContractService
+import org.lilie.services.eliot.tice.utils.contract.Contract
 
 /**
  * Created by franck on 08/09/2014.
  */
 class MappingFonctionRole {
-
-    ContractService contractService = new ContractService()
 
     private Map mapping = [:]
 
@@ -26,7 +24,7 @@ class MappingFonctionRole {
      * @param mapping le mapping d'initialisation
      */
     MappingFonctionRole(Map aMapping) {
-        contractService.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
+        Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
         this.mapping = aMapping
     }
 
@@ -37,7 +35,7 @@ class MappingFonctionRole {
     MappingFonctionRole(String jsonString) {
         def slurper = new JsonSlurper()
         def aMapping = slurper.parseText(jsonString)
-        contractService.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
+        Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
         this.mapping = aMapping
     }
 

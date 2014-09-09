@@ -30,7 +30,7 @@ package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tdbase.parametrage.MappingFonctionRole
 import org.lilie.services.eliot.tice.scolarite.Fonction
-import org.lilie.services.eliot.tice.utils.contract.ContractService
+import org.lilie.services.eliot.tice.utils.contract.Contract
 import spock.lang.Specification
 
 /**
@@ -40,7 +40,6 @@ class MappingFonctionRoleSpec extends Specification {
 
     Fonction ens
     Fonction elv
-    ContractService contractService = new ContractService()
 
     def setup() {
         ens = new Fonction(code: "ens",libelle: "enseignant")
