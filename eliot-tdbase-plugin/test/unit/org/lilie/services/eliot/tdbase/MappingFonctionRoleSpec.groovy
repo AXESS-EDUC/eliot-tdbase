@@ -30,7 +30,9 @@ package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tdbase.parametrage.MappingFonctionRole
 import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.contract.Contract
+import org.lilie.services.eliot.tice.utils.contract.PreConditionException
 import spock.lang.Specification
 
 /**
@@ -42,39 +44,39 @@ class MappingFonctionRoleSpec extends Specification {
     Fonction elv
 
     def setup() {
-        ens = new Fonction(code: "ens",libelle: "enseignant")
-        elv = new Fonction(code: "elv",libelle: "eleve")
+        ens = new Fonction(code: FonctionEnum.ENS.name(), libelle: "enseignant")
+        elv = new Fonction(code: FonctionEnum.ELEVE.name(), libelle: "eleve")
     }
 
-   def "creation d'un mapping fonction role"() {
+    def "creation d'un mapping fonction role"() {
 
-       given:"les fonctions disponibles"
-       ens
-       elv
+        given: "les fonctions disponibles"
+        ens
+        elv
 
-       when: "un nveau mapping est cree"
-       MappingFonctionRole mapping = new MappingFonctionRole()
+        when: "un nveau mapping est cree"
+        MappingFonctionRole mapping = new MappingFonctionRole()
 
-       then: "le mapping est vide"
-       mapping.isEmpty()
+        then: "le mapping est vide"
+        mapping.isEmpty()
 
-   }
+    }
 
     def "ajout d'associations fonction role"() {
 
-        given:"un mapping tout neuf"
+        given: "un mapping tout neuf"
         MappingFonctionRole mapping = new MappingFonctionRole()
 
-        when:"un role est associe a une fonction"
-        mapping.addRoleForFonction(RoleApplicatif.ENSEIGNANT,ens)
+        when: "un role est associe a une fonction"
+        mapping.addRoleForFonction(RoleApplicatif.ENSEIGNANT, ens)
 
         then: "le role est ajoute a la liste des roles associes a la fonction"
         mapping.getRolesForFonction(ens).contains(RoleApplicatif.ENSEIGNANT)
 
-        when:"un deuxieme role est ajoute"
+        when: "un deuxieme role est ajoute"
         mapping.addRoleForFonction(RoleApplicatif.ELEVE, ens)
 
-        then:"deux roles sont dans la liste des roles associes a la fonction"
+        then: "deux roles sont dans la liste des roles associes a la fonction"
         mapping.getRolesForFonction(ens).size() == 2
 
         when: "une nouveau role est associe a une nouvelle fonction"
@@ -92,7 +94,7 @@ class MappingFonctionRoleSpec extends Specification {
         MappingFonctionRole mapping = new MappingFonctionRole()
 
         when: "tentative de supprimer une association"
-        mapping.deleteRoleForFonction(RoleApplicatif.ENSEIGNANT,ens)
+        mapping.deleteRoleForFonction(RoleApplicatif.ENSEIGNANT, ens)
 
         then: "il ne se passe rien, le mapping est vide"
         mapping.isEmpty()
@@ -103,25 +105,25 @@ class MappingFonctionRoleSpec extends Specification {
 
         given: "un mapping contenant des associations"
         MappingFonctionRole mapping = new MappingFonctionRole()
-        mapping.addRoleForFonction(RoleApplicatif.ENSEIGNANT,ens)
+        mapping.addRoleForFonction(RoleApplicatif.ENSEIGNANT, ens)
         mapping.addRoleForFonction(RoleApplicatif.ELEVE, ens)
         mapping.addRoleForFonction(RoleApplicatif.ENSEIGNANT, elv)
 
         when: "tentative de supprimer une association"
-        mapping.deleteRoleForFonction(RoleApplicatif.ENSEIGNANT,ens)
+        mapping.deleteRoleForFonction(RoleApplicatif.ENSEIGNANT, ens)
 
         then: "le mapping est modifie en consequence"
         !mapping.isEmpty()
-        mapping.getRolesForFonction(ens).size() ==1
+        mapping.getRolesForFonction(ens).size() == 1
         !mapping.getRolesForFonction(ens).contains(RoleApplicatif.ENSEIGNANT)
 
     }
 
     def "creation d'un mapping a partir d'une map existante"() {
 
-        given:"une map valide"
-        Map aMap = ["${ens.code}": [RoleApplicatif.ENSEIGNANT.name(),RoleApplicatif.ELEVE.name()],
-                    "${elv.code}":[RoleApplicatif.ENSEIGNANT.name(),RoleApplicatif.ELEVE.name()]]
+        given: "une map valide"
+        Map aMap = ["${ens.code}": [RoleApplicatif.ENSEIGNANT.name(), RoleApplicatif.ELEVE.name()],
+                    "${elv.code}": [RoleApplicatif.ENSEIGNANT.name(), RoleApplicatif.ELEVE.name()]]
 
         when: "creation d'un mapping a partir d'une map existente valide"
         MappingFonctionRole mapping = new MappingFonctionRole(aMap)
@@ -129,6 +131,87 @@ class MappingFonctionRoleSpec extends Specification {
         then: "le mapping est cree et initialise correctement"
         noExceptionThrown()
         !mapping.isEmpty()
+
+    }
+
+    def "creation d'un mapping a partir d'une map null ou vide"(Map aMap, _) {
+
+        when: "creation d'un mapping a partir de la map null ou d'une map vide"
+        MappingFonctionRole mapping = new MappingFonctionRole(aMap)
+
+        then: "le mapping est initialisé à vide"
+        noExceptionThrown()
+        mapping != null
+        mapping.isEmpty()
+
+        where:
+        aMap | _
+        null | _
+        [:]  | _
+
+    }
+
+    def "creation d'un mapping a partir d'une map non valide"(Map aMap, _) {
+
+        when: "creation d'un mapping a partir de la map avec bad key"
+        new MappingFonctionRole(aMap)
+
+
+        then: "la creation du mapping echoue"
+        thrown(PreConditionException)
+
+        where:
+        aMap                                                                                                                                                 | _
+        ["ENS": [RoleApplicatif.ENSEIGNANT.name(), RoleApplicatif.ELEVE.name()], "bad_key": [RoleApplicatif.ENSEIGNANT.name(), RoleApplicatif.ELEVE.name()]] | _
+        ["ENS": "bad_value", "elv": [RoleApplicatif.ENSEIGNANT.name(), RoleApplicatif.ELEVE.name()]]                                                         | _
+
+    }
+
+    def "creation d'un mapping a partir d'un Json valide"(String json, _) {
+
+        when: "creation d'un mapping a partir de json"
+        MappingFonctionRole mapping = new MappingFonctionRole(json)
+
+        then: "le mapping est initialisé correctement"
+        noExceptionThrown()
+        mapping != null
+        mapping.getRolesForFonction(ens) == [RoleApplicatif.ENSEIGNANT, RoleApplicatif.ELEVE]
+
+        where:
+        json                                               | _
+        '{"ENS":["ENSEIGNANT","ELEVE"]}'                   | _
+        '{"ENS":["ENSEIGNANT","ELEVE"],"ELEVE":["ELEVE"]}' | _
+
+    }
+
+    def "creation d'un mapping a partir d'un Json vide ou null"(String json, _) {
+
+        when: "creation d'un mapping a partir de json"
+        MappingFonctionRole mapping = new MappingFonctionRole(json)
+
+        then: "le mapping est initialisé à vide"
+        noExceptionThrown()
+        mapping.isEmpty()
+
+        where:
+        json | _
+        '{}' | _
+        null | _
+
+    }
+
+    def "creation d'un mapping a partir d'un Json non valide"(String json, _) {
+
+        when: "creation d'un mapping a partir de json"
+        new MappingFonctionRole(json)
+
+        then: "le mapping est initialisé à vide"
+        thrown(PreConditionException)
+
+        where:
+        json                                                 | _
+        '{"bad key":["ENSEIGNANT","ELEVE"]}'                 | _
+        '{"ENS":["ENSEIGNANT","ELEVE"],"ELEVE":"bad value"}' | _
 
     }
 
