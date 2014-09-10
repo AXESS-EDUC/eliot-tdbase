@@ -52,7 +52,7 @@ class MappingFonctionRole {
     String toJsonString() {
         def builder = new JsonBuilder()
         builder.call(mapping)
-        builder.toPrettyString()
+        builder.toString()
     }
 
     /**
