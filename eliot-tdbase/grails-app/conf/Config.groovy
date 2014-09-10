@@ -2,6 +2,7 @@ import grails.plugins.springsecurity.SecurityConfigType
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
+import org.lilie.services.eliot.tdbase.RoleApplicatif
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
@@ -543,3 +544,55 @@ grails.plugin.quartz2.autoStartup = true
 
 // Activation/desactivation du partage en CC par les enseignants d'un artefact (i.e. d'un sujet ou d'une question)
 eliot.artefact.partage_CC_autorise = true
+
+// parametrage par defaut du mmapping fonction role pour tdbase
+eliot.tdbase.mappingFonctionRole.defaut = [
+        "${FonctionEnum.DIR.name()}" : [
+                "${RoleApplicatif.ADMINISTRATEUR.name()}":[associe:true,modifiable:true],
+                "${RoleApplicatif.ELEVE.name()}":[associe:true,modifiable: true],
+                "${RoleApplicatif.ENSEIGNANT.name()}":[associe:true,modifiable: true],
+                "${RoleApplicatif.PARENT.name()}":[associe:true,modifiable: false]
+        ],
+        "${FonctionEnum.AL.name()}" : [
+                "${RoleApplicatif.ADMINISTRATEUR.name()}":[associe:true,modifiable:true],
+                "${RoleApplicatif.ELEVE.name()}":[associe:true,modifiable: true],
+                "${RoleApplicatif.ENSEIGNANT.name()}":[associe:true,modifiable: true],
+                "${RoleApplicatif.PARENT.name()}":[associe:true,modifiable: false]
+        ],
+        "${FonctionEnum.ENS.name()}" : [
+                "${RoleApplicatif.ADMINISTRATEUR.name()}":[associe:false,modifiable:false],
+                "${RoleApplicatif.ELEVE.name()}":[associe:true,modifiable: true],
+                "${RoleApplicatif.ENSEIGNANT.name()}":[associe:true,modifiable: false],
+                "${RoleApplicatif.PARENT.name()}":[associe:false,modifiable: false]
+        ],
+        "${FonctionEnum.DOC.name()}" : [
+                "${RoleApplicatif.ADMINISTRATEUR.name()}":[associe:false,modifiable:false],
+                "${RoleApplicatif.ELEVE.name()}":[associe:true,modifiable: true],
+                "${RoleApplicatif.ENSEIGNANT.name()}":[associe:true,modifiable: true],
+                "${RoleApplicatif.PARENT.name()}":[associe:false,modifiable: false]
+        ],
+        "${FonctionEnum.ELEVE.name()}" : [
+                "${RoleApplicatif.ADMINISTRATEUR.name()}":[associe:false,modifiable:false],
+                "${RoleApplicatif.ELEVE.name()}":[associe:true,modifiable: false],
+                "${RoleApplicatif.ENSEIGNANT.name()}":[associe:false,modifiable: true],
+                "${RoleApplicatif.PARENT.name()}":[associe:false,modifiable: false]
+        ],
+        "${FonctionEnum.PERS_REL_ELEVE.name()}" : [
+                "${RoleApplicatif.ADMINISTRATEUR.name()}":[associe:false,modifiable:false],
+                "${RoleApplicatif.ELEVE.name()}":[associe:true,modifiable: true],
+                "${RoleApplicatif.ENSEIGNANT.name()}":[associe:false,modifiable: true],
+                "${RoleApplicatif.PARENT.name()}":[associe:true,modifiable: false]
+        ],
+        "${FonctionEnum.EDU.name()}" : [
+                "${RoleApplicatif.ADMINISTRATEUR.name()}":[associe:false,modifiable:false],
+                "${RoleApplicatif.ELEVE.name()}":[associe:true,modifiable: true],
+                "${RoleApplicatif.ENSEIGNANT.name()}":[associe:false,modifiable: true],
+                "${RoleApplicatif.PARENT.name()}":[associe:false,modifiable: false]
+        ],
+        "${FonctionEnum.CTR.name()}" : [
+                "${RoleApplicatif.ADMINISTRATEUR.name()}":[associe:false,modifiable:false],
+                "${RoleApplicatif.ELEVE.name()}":[associe:true,modifiable: true],
+                "${RoleApplicatif.ENSEIGNANT.name()}":[associe:false,modifiable: true],
+                "${RoleApplicatif.PARENT.name()}":[associe:false,modifiable: false]
+        ]
+]
