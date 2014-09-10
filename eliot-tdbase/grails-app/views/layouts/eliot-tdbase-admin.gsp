@@ -48,7 +48,10 @@
   <div class="portal-menu">
     <ul id="portal-hz-menu">
       <li>
-        <a title="Maintenance TD Base">Maintenance TD Base</a>
+          <g:link title="Préférences" controller="preferences" params="[bcInit: true]">Préférences</g:link>
+      </li>
+      <li>
+        <g:link title="Maintenance TD Base" controller="maintenance" params="[bcInit: true]">Maintenance</g:link>
       </li>
     </ul>
   </div>
