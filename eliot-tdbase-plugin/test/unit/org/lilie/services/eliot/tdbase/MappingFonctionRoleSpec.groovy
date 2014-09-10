@@ -34,6 +34,7 @@ import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.contract.Contract
 import org.lilie.services.eliot.tice.utils.contract.PreConditionException
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * @author Franck Silvestre
@@ -212,6 +213,28 @@ class MappingFonctionRoleSpec extends Specification {
         json                                                 | _
         '{"bad key":["ENSEIGNANT","ELEVE"]}'                 | _
         '{"ENS":["ENSEIGNANT","ELEVE"],"ELEVE":"bad value"}' | _
+
+    }
+
+    @Unroll
+    def "conversion en Json d'un mapping"(Map aMap, String jsonAttendu) {
+
+        given: "un mapping existant"
+        def mapping = new MappingFonctionRole(aMap)
+
+        when: "une conversion est demandee"
+        String json = mapping.toJsonString()
+
+        then: "le json obtenu correspond bien au mapping"
+        json == jsonAttendu
+
+        where:
+        aMap                                                 | jsonAttendu
+        null                                                 | '{}'
+        [:]                                                  | '{}'
+        ["ENS": ["ENSEIGNANT", "ELEVE"]]                     | '{"ENS":["ENSEIGNANT","ELEVE"]}'
+        ["ENS": ["ENSEIGNANT", "ELEVE"], "ELEVE": ["ELEVE"]] | '{"ENS":["ENSEIGNANT","ELEVE"],"ELEVE":["ELEVE"]}'
+
 
     }
 
