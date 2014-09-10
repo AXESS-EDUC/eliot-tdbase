@@ -3,7 +3,6 @@ package org.lilie.services.eliot.tdbase.parametrage
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.RoleApplicatif
-import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.contract.Contract
 
@@ -11,6 +10,9 @@ import org.lilie.services.eliot.tice.utils.contract.Contract
  * Created by franck on 08/09/2014.
  */
 class MappingFonctionRole {
+
+    public static final String KEY_ASSOCIE = 'associe'
+    public static final String KEY_MODIFIABLE = 'modifiable'
 
     private Map mapping = [:]
 
@@ -60,9 +62,16 @@ class MappingFonctionRole {
      * @param fonction la fonction
      * @return les rôles associés
      */
-    List<RoleApplicatif> getRolesForFonction(Fonction fonction) {
-        def rolesAsString = mapping.get(fonction.code) ?: []
-        def roles = rolesAsString.collect { RoleApplicatif.valueOf(it) }
+    List<RoleApplicatif> getRolesForFonction(FonctionEnum fonction) {
+        def rolesAsMap = mapping.get(fonction.name())
+        def roles = []
+        if (rolesAsMap) {
+            rolesAsMap.each { String key, value ->
+                if (value.get(KEY_ASSOCIE) == true) {
+                    roles << RoleApplicatif.valueOf(key)
+                }
+            }
+        }
         roles
     }
 
@@ -71,12 +80,19 @@ class MappingFonctionRole {
      * @param role le role
      * @param fonction la fonction
      */
-    def addRoleForFonction(RoleApplicatif role, Fonction fonction) {
-        List<String> rolesAsString = mapping.get(fonction.code) ?: []
-        if (!rolesAsString.contains(role.name())) {
-            rolesAsString << role.name()
+    def addRoleForFonction(RoleApplicatif role, FonctionEnum fonction) {
+        Map rolesAsMap = mapping.get(fonction.name())
+        if (rolesAsMap == null) {
+            rolesAsMap = [:]
+            mapping.put(fonction.name(), rolesAsMap)
         }
-        mapping.put(fonction.code, rolesAsString)
+        Map roleAsMap = rolesAsMap.get(role.name())
+        if (roleAsMap) {
+            Contract.requires(roleAsMap.get(KEY_MODIFIABLE) == true)
+            roleAsMap.put(KEY_ASSOCIE, true)
+        } else {
+            rolesAsMap.put(role.name(), [("$KEY_ASSOCIE".toString()):true,("$KEY_MODIFIABLE".toString()):true])
+        }
     }
 
     /**
@@ -84,12 +100,15 @@ class MappingFonctionRole {
      * @param role le role
      * @param fonction la fonction
      */
-    def deleteRoleForFonction(RoleApplicatif role, Fonction fonction) {
-        List<String> rolesAsString = mapping.get(fonction.code) ?: []
-        if (rolesAsString.contains(role.name())) {
-            rolesAsString.remove(role.name())
+    def deleteRoleForFonction(RoleApplicatif role, FonctionEnum fonction) {
+        Map rolesAsMap = mapping.get(fonction.name())
+        if (rolesAsMap) {
+            Map roleAsMap = rolesAsMap.get(role.name())
+            if (roleAsMap) {
+                Contract.requires(roleAsMap.get(KEY_MODIFIABLE) == true)
+                roleAsMap.put(KEY_ASSOCIE,false)
+            }
         }
-        mapping.put(fonction.code, rolesAsString)
     }
 
     /**
@@ -116,8 +135,14 @@ class MappingFonctionRole {
             if (!(key in goodKeys)) {
                 res = false
             }
-            if (!goodValues.containsAll(value)) {
+            if (!(value instanceof Map)) {
                 res = false
+            } else {
+                value.each { String innerKey, innerValue ->
+                    if (!(innerKey in goodValues)) {
+                        res = false
+                    }
+                }
             }
         }
         res
