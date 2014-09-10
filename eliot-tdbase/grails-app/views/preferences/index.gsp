@@ -29,43 +29,18 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="layout" content="eliot-tdbase-admin"/>
-  <r:require modules="eliot-tdbase"/>
-  <title><g:message code="maintenance.head.title"/></title>
+    <meta name="layout" content="eliot-tdbase-admin"/>
+    <r:require modules="eliot-tdbase"/>
+    <title><g:message code="maintenance.head.title"/></title>
 </head>
 
 <body>
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <div style="margin-left: 30px;">
-  <h2>
-    <g:message code="maintenance.head.title"/>
-  </h2>
-
-  <p>
-    <g:link action="supprimeCopiesJetables"
-            controller="maintenance">Suppression des copies jetables</g:link>
-  </p>
-  <hr class="separator"/>
-
-  <div>
-    <g:link action="garbageCollectAttachementDataStore"
-            controller="maintenance">Garbage collection des fichiers du datastore</g:link>
-
-    <div class="portal-messages notice"
-         style="color: red">
-      Par précaution, il est recommandé d'effectuer une sauvegarde du datastore avant de
-      lancer cette action de maintenance.
-    </div>
-  </div>
-  <hr class="separator"/>
-
-  <p>
-    <g:link controller="emaEval">Administration de la liaison eliot-tdbase / EmaEval</g:link>
-  </p>
-
-  <p>
-  </p>
+    <p>
+        Correspondances fonctions rôle
+    </p>
 </div>
 </body>
 </html>
