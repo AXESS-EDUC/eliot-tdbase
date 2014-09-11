@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tdbase.parametrage.AssociationFonctionRole
 import org.lilie.services.eliot.tdbase.parametrage.MappingFonctionRole
 import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
@@ -45,15 +46,15 @@ class MappingFonctionRoleSpec extends Specification {
 
     def setup() {
         aMap = [
-                ("${FonctionEnum.ENS.name()}".toString()): [
+                ("${FonctionEnum.ENS.name()}".toString())           : [
                         ("${RoleApplicatif.ENSEIGNANT.name()}".toString()): [associe: true, modifiable: false],
                         ("${RoleApplicatif.ELEVE.name()}".toString())     : [associe: true, modifiable: true]],
-                ("${FonctionEnum.ELEVE.name()}".toString()): [
+                ("${FonctionEnum.ELEVE.name()}".toString())         : [
                         ("${RoleApplicatif.ENSEIGNANT.name()}".toString()): [associe: false, modifiable: true],
                         ("${RoleApplicatif.ELEVE.name()}".toString())     : [associe: true, modifiable: true]],
                 ("${FonctionEnum.PERS_REL_ELEVE.name()}".toString()): [
                         ("${RoleApplicatif.ENSEIGNANT.name()}".toString()): [associe: false, modifiable: false],
-                        ("${RoleApplicatif.PARENT.name()}".toString())     : [associe: true, modifiable: false]]
+                        ("${RoleApplicatif.PARENT.name()}".toString())    : [associe: true, modifiable: false]]
         ]
     }
 
@@ -78,7 +79,7 @@ class MappingFonctionRoleSpec extends Specification {
 
         then: "le mapping est initialise de manier coherente"
         mapping.getRolesForFonction(FonctionEnum.ENS).size() == 2
-        mapping.getRolesForFonction(FonctionEnum.ENS).containsAll([RoleApplicatif.ENSEIGNANT,RoleApplicatif.ELEVE])
+        mapping.getRolesForFonction(FonctionEnum.ENS).containsAll([RoleApplicatif.ENSEIGNANT, RoleApplicatif.ELEVE])
         mapping.getRolesForFonction(FonctionEnum.ELEVE).size() == 1
         mapping.getRolesForFonction(FonctionEnum.ELEVE).contains(RoleApplicatif.ELEVE)
     }
@@ -134,7 +135,7 @@ class MappingFonctionRoleSpec extends Specification {
         thrown(PreConditionException)
 
         when: "un role est supprime a une fonction sur association non modifiable"
-        mapping.deleteRoleForFonction(RoleApplicatif.PARENT,FonctionEnum.PERS_REL_ELEVE)
+        mapping.deleteRoleForFonction(RoleApplicatif.PARENT, FonctionEnum.PERS_REL_ELEVE)
 
         then: "une exception de type precondition est levee"
         thrown(PreConditionException)
@@ -200,9 +201,9 @@ class MappingFonctionRoleSpec extends Specification {
         thrown(PreConditionException)
 
         where:
-        aMap                                                                                                           | _
+        aMap                                                                                                                                  | _
         ["${FonctionEnum.ENS.name()}": ["${RoleApplicatif.ENSEIGNANT.name()}": [:]], "bad_key": ["${RoleApplicatif.ENSEIGNANT.name()}": [:]]] | _
-        ["${FonctionEnum.ENS.name()}": "bad_value", "${FonctionEnum.ELEVE.name()}": ["${RoleApplicatif.ENSEIGNANT.name()}": [:]]]                                    | _
+        ["${FonctionEnum.ENS.name()}": "bad_value", "${FonctionEnum.ELEVE.name()}": ["${RoleApplicatif.ENSEIGNANT.name()}": [:]]]             | _
 
     }
 
@@ -271,10 +272,34 @@ class MappingFonctionRoleSpec extends Specification {
         json == jsonAttendu
 
         where:
-        aMap                                                                                                    | jsonAttendu
-        null                                                                                                    | '{}'
-        [:]                                                                                                     | '{}'
+        aMap                                                                                                            | jsonAttendu
+        null                                                                                                            | '{}'
+        [:]                                                                                                             | '{}'
         ["ENS": ["ENSEIGNANT": ["associe": true, "modifiable": false], "ELEVE": ["associe": true, "modifiable": true]]] | '{"ENS":{"ENSEIGNANT":{"associe":true,"modifiable":false},"ELEVE":{"associe":true,"modifiable":true}}}'
+
+    }
+
+    @Unroll
+    def "recuperation des caracteristiques d'une association fonction #fonction role #role"(role, fonction, associe, modifiable) {
+
+        given: "un mapping initialise"
+        MappingFonctionRole mapping = new MappingFonctionRole(aMap)
+
+        when: "une associassion est recuperee"
+        AssociationFonctionRole ass = mapping.hasRoleForFonction(role, fonction)
+
+        then: "l'association est conforme"
+        ass.associe == associe
+        ass.modifiable == modifiable
+
+        where:
+        role                          | fonction           | associe | modifiable
+        RoleApplicatif.ENSEIGNANT     | FonctionEnum.ENS   | true    | false
+        RoleApplicatif.ENSEIGNANT     | FonctionEnum.ELEVE | false   | true
+        RoleApplicatif.ELEVE          | FonctionEnum.ELEVE | true    | true
+        RoleApplicatif.ELEVE          | FonctionEnum.ENS   | true    | true
+        RoleApplicatif.ADMINISTRATEUR | FonctionEnum.DIR   | false   | true
+
 
     }
 }

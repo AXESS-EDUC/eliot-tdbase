@@ -551,13 +551,13 @@ eliot.tdbase.mappingFonctionRole.defaut = [
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:true,modifiable:true],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:true,modifiable: false]
+                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
         ],
         ("${FonctionEnum.AL.name()}".toString()) : [
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:true,modifiable:true],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:true,modifiable: false]
+                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
         ],
         ("${FonctionEnum.ENS.name()}".toString()) : [
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],

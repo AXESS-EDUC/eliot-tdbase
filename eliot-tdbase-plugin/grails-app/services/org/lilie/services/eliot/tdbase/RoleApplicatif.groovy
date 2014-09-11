@@ -6,10 +6,10 @@ import org.springframework.security.core.GrantedAuthority
  * Les roles applicatifs de TDBase
  */
 public enum RoleApplicatif implements GrantedAuthority{
+    ADMINISTRATEUR,
     ENSEIGNANT,
     ELEVE,
-    PARENT,
-    ADMINISTRATEUR
+    PARENT
 
     @Override
     String getAuthority() {

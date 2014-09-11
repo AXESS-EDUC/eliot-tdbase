@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tice.scolarite.Fonction" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -31,16 +32,59 @@
 <head>
     <meta name="layout" content="eliot-tdbase-admin"/>
     <r:require modules="eliot-tdbase"/>
-    <title><g:message code="maintenance.head.title"/></title>
+    <title><g:message code="preferences.head.title"/></title>
 </head>
 
 <body>
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
+
 <div style="margin-left: 30px;">
-    <p>
-        Correspondances fonctions rôle
-    </p>
+    <div class="portal-tabs">
+        <span class="portal-tabs-famille-liens">
+            Établissement ${etablissement.nomAffichage}
+        </span>
+     </div>
 </div>
+
+<g:form method="post" controller="seance" action="edite">
+    <div class="portal-form_container edite" style="width: 69%;">
+        <table>
+
+            <tr>
+                <td class="label">&nbsp;
+                </td>
+                <g:each in="${org.lilie.services.eliot.tdbase.RoleApplicatif.values()*.name()}" var="codeRole">
+                    <td class="label">
+                        <g:message code="preferences.role.$codeRole" default="$codeRole"/>
+                    </td>
+                </g:each>
+            </tr>
+            <g:each in="${fonctions}" var="fonction">
+                <tr>
+                <td class="label">
+                    ${fonction.libelle}
+                </td>
+                    <g:each in="${org.lilie.services.eliot.tdbase.RoleApplicatif.values()}" var="role">
+                        <td class="label">
+                            <g:checkBox name="fonction_role"
+                                        checked="${mappingFonctionRole.hasRoleForFonction(role,FonctionEnum.valueOf(fonction.code)).associe}"
+                                        disabled="${!mappingFonctionRole.hasRoleForFonction(role,FonctionEnum.valueOf(fonction.code)).modifiable}"
+                            />
+                        </td>
+                    </g:each>
+                </tr>
+            </g:each>
+        </table>
+    </div>
+
+    <div class="form_actions edite">
+        <g:actionSubmit value="Enregistrer" class="button"
+                        action="enregistre" controller="preferences"
+                        title="Enregistrer"/>
+    </div>
+
+</g:form>
+
 </body>
 </html>
