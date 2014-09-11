@@ -27,8 +27,10 @@
  */
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.AttachementJobService
-import org.lilie.services.eliot.tice.GarbageCollectionDataStoreRapport
+import org.lilie.services.eliot.tdbase.parametrage.PreferenceEtablissement
+import org.lilie.services.eliot.tdbase.parametrage.PreferenceEtablissementService
+import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class PreferencesController {
@@ -36,6 +38,7 @@ class PreferencesController {
   static scope = "singleton"
 
   BreadcrumpsService breadcrumpsServiceProxy
+  PreferenceEtablissementService preferenceEtablissementServiceProxy
 
 
   /**
@@ -43,9 +46,15 @@ class PreferencesController {
    * @return
    */
   def index() {
+    Personne user = authenticatedPersonne
     breadcrumpsServiceProxy.manageBreadcrumps(params,
                                          message(code: "preferences.index.title"))
-    [liens: breadcrumpsServiceProxy.liens]
+    Etablissement etab = preferenceEtablissementServiceProxy.currentEtablissement
+    PreferenceEtablissement pref = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(user,etab,RoleApplicatif.ADMINISTRATEUR)
+    [liens: breadcrumpsServiceProxy.liens,
+            etablissement: etab,
+            mappingFonctionRole: pref.mappingFonctionRoleAsMap()
+    ]
   }
 
 

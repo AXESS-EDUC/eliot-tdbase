@@ -16,10 +16,14 @@ class PreferenceEtablissement {
     String mappingFonctionRole
     Date lastUpdated
 
-
     static constraints = {
         lastUpdateAuteur nullable: true
     }
+
+    MappingFonctionRole mappingFonctionRoleAsMap() {
+        new MappingFonctionRole(mappingFonctionRole)
+    }
+
 
     static mapping = {
         table('td.preference_etablissement')
