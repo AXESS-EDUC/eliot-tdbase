@@ -11,6 +11,8 @@ import org.lilie.services.eliot.tice.utils.contract.Contract
  */
 class MappingFonctionRole {
 
+    static MappingFonctionRole defaultMappingFonctionRole
+
     public static final String KEY_ASSOCIE = 'associe'
     public static final String KEY_MODIFIABLE = 'modifiable'
 
@@ -73,6 +75,15 @@ class MappingFonctionRole {
             }
         }
         roles
+    }
+
+    AssociationFonctionRole hasRoleForFonction(RoleApplicatif role, FonctionEnum fonction) {
+        def res = new AssociationFonctionRole()
+        def roleAsMap = mapping.get(fonction.name())?.get(role.name())
+        if (roleAsMap) {
+           res = new AssociationFonctionRole(roleAsMap)
+        }
+        res
     }
 
     /**
@@ -148,4 +159,9 @@ class MappingFonctionRole {
         res
     }
 
+}
+
+class AssociationFonctionRole {
+    boolean associe = false
+    boolean modifiable = true
 }

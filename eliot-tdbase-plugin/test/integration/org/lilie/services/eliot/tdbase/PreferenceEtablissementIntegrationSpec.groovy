@@ -29,6 +29,7 @@
 package org.lilie.services.eliot.tdbase
 
 import grails.plugin.spock.IntegrationSpec
+import org.lilie.services.eliot.tdbase.parametrage.MappingFonctionRole
 import org.lilie.services.eliot.tdbase.parametrage.PreferenceEtablissement
 import org.lilie.services.eliot.tdbase.parametrage.PreferenceEtablissementService
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
@@ -44,12 +45,13 @@ class PreferenceEtablissementIntegrationSpec extends IntegrationSpec {
     Etablissement etablissement
 
     TdBaseInitialisationTestService tdBaseInitialisationTestService
-    PreferenceEtablissementService preferenceEtablissementService
+    PreferenceEtablissementService preferenceEtablissementServiceProxy = new PreferenceEtablissementService()
 
     def setup() {
         tdBaseInitialisationTestService.bootstrapForIntegrationTest()
         personne1 = tdBaseInitialisationTestService.utilisateur1.personne
         etablissement = tdBaseInitialisationTestService.leLycee
+        MappingFonctionRole.defaultMappingFonctionRole =[:]
     }
 
     def "Recuperation des preferences etablissement"() {
@@ -58,13 +60,13 @@ class PreferenceEtablissementIntegrationSpec extends IntegrationSpec {
         PreferenceEtablissement.findByEtablissement(etablissement) == null
 
         when:"la preference de l'etablissement est demandee par un non administrateur"
-        def pref = preferenceEtablissementService.getPreferenceForEtablissement(personne1,etablissement)
+        def pref = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(personne1,etablissement)
 
         then:"la preference n'est pas creee"
         !pref
 
         when:"la preference de l'etablissement est demandee par un administrateur"
-        pref = preferenceEtablissementService.getPreferenceForEtablissement(personne1
+        pref = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(personne1
                                                         ,etablissement, RoleApplicatif.ADMINISTRATEUR)
 
         then:"la preference de l'etablissement est cree"
@@ -81,11 +83,11 @@ class PreferenceEtablissementIntegrationSpec extends IntegrationSpec {
     def "une preference etablissement n'est pas recree quand elle existe"() {
 
         given: "un etablissement avec preference etablissement"
-        def pref = preferenceEtablissementService.getPreferenceForEtablissement(personne1,
+        def pref = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(personne1,
                 etablissement, RoleApplicatif.ADMINISTRATEUR)
 
         when: "la preference est demandee par un administrateur"
-        def pref2 = preferenceEtablissementService.getPreferenceForEtablissement(personne1,
+        def pref2 = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(personne1,
                 etablissement, RoleApplicatif.ADMINISTRATEUR)
 
         then: "la preference unique de l'etablissement est recuperee"
@@ -93,7 +95,7 @@ class PreferenceEtablissementIntegrationSpec extends IntegrationSpec {
         pref == pref2
 
         when: "un utilisateur non administrateur demande la preference"
-        def pref3 = preferenceEtablissementService.getPreferenceForEtablissement(personne1,
+        def pref3 = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(personne1,
                 etablissement)
 
         then: "la preference unique de l'etablissement est recuperee"

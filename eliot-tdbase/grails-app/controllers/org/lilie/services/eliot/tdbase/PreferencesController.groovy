@@ -35,29 +35,41 @@ import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class PreferencesController {
 
-  static scope = "singleton"
+    static scope = "singleton"
 
-  BreadcrumpsService breadcrumpsServiceProxy
-  PreferenceEtablissementService preferenceEtablissementServiceProxy
+    BreadcrumpsService breadcrumpsServiceProxy
+    PreferenceEtablissementService preferenceEtablissementServiceProxy
 
+    /**
+     * Accueil preferences
+     * @return
+     */
+    def index() {
+        Personne user = authenticatedPersonne
+        breadcrumpsServiceProxy.manageBreadcrumps(params,
+                message(code: "preferences.index.title"))
 
-  /**
-   * Accueil maintenance
-   * @return
-   */
-  def index() {
-    Personne user = authenticatedPersonne
-    breadcrumpsServiceProxy.manageBreadcrumps(params,
-                                         message(code: "preferences.index.title"))
-    Etablissement etab = preferenceEtablissementServiceProxy.currentEtablissement
-    PreferenceEtablissement pref = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(user,etab,RoleApplicatif.ADMINISTRATEUR)
-    [liens: breadcrumpsServiceProxy.liens,
-            etablissement: etab,
-            mappingFonctionRole: pref.mappingFonctionRoleAsMap()
-    ]
-  }
+        // TODO : initialisation à supprimer quand branchement securite OK
+        preferenceEtablissementServiceProxy.currentEtablissement = Etablissement.findByUai("TEST_L")
+        // ---
 
+        Etablissement etab = preferenceEtablissementServiceProxy.currentEtablissement
+        PreferenceEtablissement pref = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(user, etab, RoleApplicatif.ADMINISTRATEUR)
 
+        [liens              : breadcrumpsServiceProxy.liens,
+         etablissement      : etab,
+         mappingFonctionRole: pref.mappingFonctionRoleAsMap(),
+         fonctions          : preferenceEtablissementServiceProxy.getFonctionsForEtablissement(etab)
+        ]
+    }
+
+    /**
+     * Enregistre une nouvelle version du mapping fonction rôle
+     * @return
+     */
+    def enregistre() {
+        index()
+    }
 
 
 }

@@ -3,6 +3,8 @@ package org.lilie.services.eliot.tdbase.parametrage
 import org.lilie.services.eliot.tdbase.RoleApplicatif
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
+import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 
 
 /**
@@ -14,8 +16,7 @@ class PreferenceEtablissementService {
     static scope = "session"
     static proxy = true
 
-    // TODO : initialisation à supprimer quand branchement securite OK
-    Etablissement currentEtablissement = Etablissement.findByUai("TEST_L")
+    Etablissement currentEtablissement
 
     /**
      * Récupère l'objet correspondant aux préférences d'un établissement
@@ -32,12 +33,29 @@ class PreferenceEtablissementService {
         if (!pref && role == RoleApplicatif.ADMINISTRATEUR) {
             pref = new PreferenceEtablissement(etablissement: etablissement,
                     lastUpdateAuteur: personne,
-                    mappingFonctionRole: "{}")
+                    mappingFonctionRole: MappingFonctionRole.defaultMappingFonctionRole.toJsonString())
             pref.save(failOnError: true)
         }
         pref
     }
 
-
-
+    //TODO : à coder reellement après WS fourni par OMT
+    /**
+     * Récupère la liste des fonctions administrables pour un établissement donné
+     * @param etablissement l'établissement
+     * @return la liste des fonctions
+     */
+    List<Fonction> getFonctionsForEtablissement(Etablissement etablissement) {
+        [
+                FonctionEnum.DIR.fonction,
+                FonctionEnum.AL.fonction,
+                FonctionEnum.ENS.fonction,
+                FonctionEnum.DOC.fonction,
+                FonctionEnum.ELEVE.fonction,
+                FonctionEnum.PERS_REL_ELEVE.fonction,
+                FonctionEnum.EDU.fonction,
+                FonctionEnum.CTR.fonction
+        ]
+    }
 }
+
