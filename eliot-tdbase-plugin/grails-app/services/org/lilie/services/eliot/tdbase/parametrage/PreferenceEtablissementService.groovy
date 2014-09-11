@@ -11,6 +11,12 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
  */
 class PreferenceEtablissementService {
 
+    static scope = "session"
+    static proxy = true
+
+    // TODO : initialisation à supprimer quand branchement securite OK
+    Etablissement currentEtablissement = Etablissement.findByUai("TEST_L")
+
     /**
      * Récupère l'objet correspondant aux préférences d'un établissement
      * @param personne la personne effectuant la demande
@@ -31,4 +37,7 @@ class PreferenceEtablissementService {
         }
         pref
     }
+
+
+
 }
