@@ -27,10 +27,12 @@
  */
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tdbase.parametrage.PreferenceEtablissement
-import org.lilie.services.eliot.tdbase.parametrage.PreferenceEtablissementService
+import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
+import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
+import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
+import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class PreferencesController {
@@ -56,10 +58,11 @@ class PreferencesController {
         Etablissement etab = preferenceEtablissementServiceProxy.currentEtablissement
         PreferenceEtablissement pref = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(user, etab, RoleApplicatif.ADMINISTRATEUR)
 
-        [liens              : breadcrumpsServiceProxy.liens,
-         etablissement      : etab,
-         mappingFonctionRole: pref.mappingFonctionRoleAsMap(),
-         fonctions          : preferenceEtablissementServiceProxy.getFonctionsForEtablissement(etab)
+        [liens                  : breadcrumpsServiceProxy.liens,
+         etablissement          : etab,
+         mappingFonctionRole    : pref.mappingFonctionRoleAsMap(),
+         fonctions              : preferenceEtablissementServiceProxy.getFonctionsForEtablissement(etab),
+         preferenceEtablissement: pref
         ]
     }
 
@@ -68,9 +71,27 @@ class PreferencesController {
      * @return
      */
     def enregistre() {
-        index()
+        PreferenceEtablissement prefEtab = PreferenceEtablissement.get(params.prefEtabId)
+        def mapping = getMappingFromParamsForPreferenceEtablissement(params, prefEtab)
+        prefEtab.mappingFonctionRole = mapping.toJsonString()
+        prefEtab.save(failOnError: true)
+        redirect(controller: "preferences", action: "index", params: [bcInit: true])
     }
 
+    private MappingFonctionRole getMappingFromParamsForPreferenceEtablissement(
+            def params, PreferenceEtablissement prefEtab) {
+        // start with the current mapping
+        MappingFonctionRole mapping = prefEtab.mappingFonctionRoleAsMap()
+        // apply changes
+        params.each { String key, value ->
+            if (key.startsWith("fonction_")) {
+                println ">>>>>>>>>>>>>>>>>>>>>> $value"
+                def keyParts = key.split("__")
+                mapping.addRoleForFonction(RoleApplicatif.valueOf(keyParts[3]), FonctionEnum.valueOf(keyParts[1]))
+            }
+        }
+        mapping
+    }
 
 }
 

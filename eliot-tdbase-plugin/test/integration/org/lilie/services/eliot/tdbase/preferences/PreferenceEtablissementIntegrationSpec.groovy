@@ -26,12 +26,13 @@
  *   <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase
+package org.lilie.services.eliot.tdbase.preferences
 
 import grails.plugin.spock.IntegrationSpec
-import org.lilie.services.eliot.tdbase.parametrage.MappingFonctionRole
-import org.lilie.services.eliot.tdbase.parametrage.PreferenceEtablissement
-import org.lilie.services.eliot.tdbase.parametrage.PreferenceEtablissementService
+import org.lilie.services.eliot.tdbase.RoleApplicatif
+import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
+import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
+import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement

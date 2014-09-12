@@ -1,4 +1,4 @@
-package org.lilie.services.eliot.tdbase.parametrage
+package org.lilie.services.eliot.tdbase.preferences
 
 import org.lilie.services.eliot.tdbase.RoleApplicatif
 import org.lilie.services.eliot.tice.annuaire.Personne

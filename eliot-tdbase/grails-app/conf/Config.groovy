@@ -548,7 +548,7 @@ eliot.artefact.partage_CC_autorise = true
 // parametrage par defaut du mmapping fonction role pour tdbase
 eliot.tdbase.mappingFonctionRole.defaut = [
         ("${FonctionEnum.DIR.name()}".toString()) : [
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:true,modifiable:true],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:true,modifiable:false],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
