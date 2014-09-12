@@ -47,7 +47,8 @@
      </div>
 </div>
 
-<g:form method="post" controller="seance" action="edite">
+<g:form method="post" controller="preferences" action="enregistre">
+    <g:hiddenField name="prefEtabId" value="${preferenceEtablissement.id}"/>
     <div class="portal-form_container edite" style="width: 69%;">
         <table>
 
@@ -67,7 +68,7 @@
                 </td>
                     <g:each in="${org.lilie.services.eliot.tdbase.RoleApplicatif.values()}" var="role">
                         <td class="label">
-                            <g:checkBox name="fonction_role"
+                            <g:checkBox name="fonction__${fonction.code}__role__${role.name()}"
                                         checked="${mappingFonctionRole.hasRoleForFonction(role,FonctionEnum.valueOf(fonction.code)).associe}"
                                         disabled="${!mappingFonctionRole.hasRoleForFonction(role,FonctionEnum.valueOf(fonction.code)).modifiable}"
                             />

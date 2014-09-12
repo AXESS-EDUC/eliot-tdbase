@@ -1,4 +1,4 @@
-package org.lilie.services.eliot.tdbase.parametrage
+package org.lilie.services.eliot.tdbase.preferences
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper

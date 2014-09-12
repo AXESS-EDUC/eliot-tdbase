@@ -26,13 +26,12 @@
  *   <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tdbase
+package org.lilie.services.eliot.tdbase.preferences
 
-import org.lilie.services.eliot.tdbase.parametrage.AssociationFonctionRole
-import org.lilie.services.eliot.tdbase.parametrage.MappingFonctionRole
-import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tdbase.RoleApplicatif
+import org.lilie.services.eliot.tdbase.preferences.AssociationFonctionRole
+import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
-import org.lilie.services.eliot.tice.utils.contract.Contract
 import org.lilie.services.eliot.tice.utils.contract.PreConditionException
 import spock.lang.Specification
 import spock.lang.Unroll
