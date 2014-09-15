@@ -62,6 +62,7 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
 
   protected void setUp() {
     super.setUp()
+    tdBaseInitialisationTestService.bootstrapForIntegrationTest()
     utilisateur1 = tdBaseInitialisationTestService.getUtilisateur1()
     personne1 = utilisateur1.personne
     utilisateur2 = tdBaseInitialisationTestService.getUtilisateur2()
@@ -106,6 +107,9 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
             props,
             personne1
     )
+    if (seance1.hasErrors()) {
+        println seance1.errors
+    }
     assertFalse(seance1.hasErrors())
     assertTrue(quest1.estDistribue())
     modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
