@@ -135,6 +135,20 @@ class MappingFonctionRole {
         isEmpty
     }
 
+    /**
+     * Conserve les valeurs non modifiables et remet les autres valeurs à "non associe"
+     */
+    def reset() {
+        this.mapping.each { key, value ->
+            value.each { innerKey, innerValue ->
+                if (innerValue.get(KEY_MODIFIABLE) == true) {
+                    innerValue.put(KEY_ASSOCIE, false)
+                }
+            }
+        }
+
+    }
+
     private static boolean allKeysAndValuesAreFonctionCodesAndRoleCodes(Map aMapping) {
         if (aMapping.isEmpty()) {
             return true

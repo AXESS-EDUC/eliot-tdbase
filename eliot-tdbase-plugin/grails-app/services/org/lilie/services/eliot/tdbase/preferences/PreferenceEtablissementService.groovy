@@ -5,6 +5,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
+import org.lilie.services.eliot.tice.utils.contract.Contract
 
 
 /**
@@ -37,6 +38,23 @@ class PreferenceEtablissementService {
             pref.save(failOnError: true)
         }
         pref
+    }
+
+    /**
+     * Met à jour en base une préférence établissement
+     * @param personne la personne effectuant la mise à jour
+     * @param preferenceEtablissement la préférence établissement
+     * @param roleApplicatif le rôle de la personne mettant à jour
+     * @return la préférence établissement mise à jour
+     */
+    PreferenceEtablissement updatePreferenceEtablissement(Personne personne,
+                                      PreferenceEtablissement preferenceEtablissement,
+                                      RoleApplicatif roleApplicatif) {
+        Contract.requires(roleApplicatif == RoleApplicatif.ADMINISTRATEUR)
+        preferenceEtablissement.lastUpdateAuteur = personne
+        preferenceEtablissement.lastUpdated = new Date()
+        preferenceEtablissement.save(failOnError: true)
+        preferenceEtablissement
     }
 
     //TODO : à coder reellement après WS fourni par OMT
