@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tice.scolarite.Fonction" %>
+<%@ page import="org.lilie.services.eliot.tdbase.RoleApplicatif; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tice.scolarite.Fonction" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -39,13 +39,19 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 
-<div style="margin-left: 30px;">
+<div>
     <div class="portal-tabs">
         <span class="portal-tabs-famille-liens">
             Établissement ${etablissement.nomAffichage}
         </span>
      </div>
 </div>
+<g:if test="${flash.messageTextesCode}">
+    <div class="portal-messages">
+        <li class="success"><g:message code="${flash.messageTextesCode}"
+                                      class="portal-messages success"/></li>
+    </div>
+</g:if>
 
 <g:form method="post" controller="preferences" action="enregistre">
     <g:hiddenField name="prefEtabId" value="${preferenceEtablissement.id}"/>
@@ -56,7 +62,7 @@
                 <td class="label">&nbsp;
                 </td>
                 <g:each in="${org.lilie.services.eliot.tdbase.RoleApplicatif.values()*.name()}" var="codeRole">
-                    <td class="label">
+                    <td class="label" title="${message(code:'preferences.aide.role.'+codeRole)}">
                         <g:message code="preferences.role.$codeRole" default="$codeRole"/>
                     </td>
                 </g:each>

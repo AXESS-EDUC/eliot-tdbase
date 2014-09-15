@@ -81,6 +81,8 @@ class MappingFonctionRoleSpec extends Specification {
         mapping.getRolesForFonction(FonctionEnum.ENS).containsAll([RoleApplicatif.ENSEIGNANT, RoleApplicatif.ELEVE])
         mapping.getRolesForFonction(FonctionEnum.ELEVE).size() == 1
         mapping.getRolesForFonction(FonctionEnum.ELEVE).contains(RoleApplicatif.ELEVE)
+        mapping.getRolesForFonction(FonctionEnum.PERS_REL_ELEVE).size() == 1
+        mapping.getRolesForFonction(FonctionEnum.PERS_REL_ELEVE).contains(RoleApplicatif.PARENT)
     }
 
     def "ajout d'associations fonction role a un mapping vide"() {
@@ -299,6 +301,20 @@ class MappingFonctionRoleSpec extends Specification {
         RoleApplicatif.ELEVE          | FonctionEnum.ENS   | true    | true
         RoleApplicatif.ADMINISTRATEUR | FonctionEnum.DIR   | false   | true
 
+    }
+
+    def "reset d'un mapping"() {
+
+        given:"un mapping initialise"
+        MappingFonctionRole mapping = new MappingFonctionRole(aMap)
+
+        when: "un reset est execute sur le mapping"
+        mapping.reset()
+
+        then: "toutes les correspondances non modifiable sont laissées intactes, les autres sont positionnées à non assiciées"
+        mapping.getRolesForFonction(FonctionEnum.ENS).size() == 1
+        mapping.getRolesForFonction(FonctionEnum.ELEVE).size() == 0
+        mapping.getRolesForFonction(FonctionEnum.PERS_REL_ELEVE).size() == 1
 
     }
 }

@@ -74,7 +74,8 @@ class PreferencesController {
         PreferenceEtablissement prefEtab = PreferenceEtablissement.get(params.prefEtabId)
         def mapping = getMappingFromParamsForPreferenceEtablissement(params, prefEtab)
         prefEtab.mappingFonctionRole = mapping.toJsonString()
-        prefEtab.save(failOnError: true)
+        preferenceEtablissementServiceProxy.updatePreferenceEtablissement(authenticatedPersonne, prefEtab,RoleApplicatif.ADMINISTRATEUR)
+        flash.messageTextesCode = "preferences.save.success"
         redirect(controller: "preferences", action: "index", params: [bcInit: true])
     }
 
@@ -83,9 +84,9 @@ class PreferencesController {
         // start with the current mapping
         MappingFonctionRole mapping = prefEtab.mappingFonctionRoleAsMap()
         // apply changes
+        mapping.reset()
         params.each { String key, value ->
             if (key.startsWith("fonction_")) {
-                println ">>>>>>>>>>>>>>>>>>>>>> $value"
                 def keyParts = key.split("__")
                 mapping.addRoleForFonction(RoleApplicatif.valueOf(keyParts[3]), FonctionEnum.valueOf(keyParts[1]))
             }
