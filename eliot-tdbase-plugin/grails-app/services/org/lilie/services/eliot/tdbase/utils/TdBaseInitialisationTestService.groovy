@@ -32,14 +32,22 @@
 
 package org.lilie.services.eliot.tdbase.utils
 
+import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 import org.lilie.services.eliot.tice.utils.InitialisationTestService
 
 class TdBaseInitialisationTestService extends InitialisationTestService {
 
+  def bootstrapForIntegrationTest() {
+      bootstrapService.bootstrapForIntegrationTest()
+  }
+
   StructureEnseignement findStructure1ere() {
-    bootstrapService.bootstrapForIntegrationTest()
     return bootstrapService.classe1ere
+  }
+
+  Etablissement getLeLycee() {
+    return  bootstrapService.leLycee
   }
 
 
