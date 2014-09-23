@@ -52,10 +52,9 @@ class PreferencesController {
                 message(code: "preferences.index.title"))
 
         // TODO : initialisation à supprimer quand branchement securite OK
-        preferenceEtablissementServiceProxy.currentEtablissement = Etablissement.findByUai("TEST_L")
+        Etablissement etab = Etablissement.findByUai("TEST_L")
         // ---
 
-        Etablissement etab = preferenceEtablissementServiceProxy.currentEtablissement
         PreferenceEtablissement pref = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(user, etab, RoleApplicatif.ADMINISTRATEUR)
 
         [liens                  : breadcrumpsServiceProxy.liens,

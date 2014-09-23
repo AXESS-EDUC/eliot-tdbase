@@ -5,6 +5,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
+import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.contract.Contract
 
 
@@ -16,8 +17,6 @@ class PreferenceEtablissementService {
 
     static scope = "session"
     static proxy = true
-
-    Etablissement currentEtablissement
 
     /**
      * Récupère l'objet correspondant aux préférences d'un établissement
@@ -36,6 +35,20 @@ class PreferenceEtablissementService {
                     lastUpdateAuteur: personne,
                     mappingFonctionRole: MappingFonctionRole.defaultMappingFonctionRole.toJsonString())
             pref.save(failOnError: true)
+        }
+        pref
+    }
+
+    /**
+     * Récupère l'objet correspondant aux préférences d'un établissement
+     * @param etablissement
+     * @return l'objet correspondant aux préférences de l'établissement
+     */
+    PreferenceEtablissement getPreferenceForEtablissement(Etablissement etablissement) {
+
+        PreferenceEtablissement pref = PreferenceEtablissement.findByEtablissement(etablissement)
+        if (!pref) {
+            throw new PreferenceEtablissementNotSetException()
         }
         pref
     }

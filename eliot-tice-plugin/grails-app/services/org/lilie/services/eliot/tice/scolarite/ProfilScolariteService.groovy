@@ -27,7 +27,6 @@
  */
 
 
-
 package org.lilie.services.eliot.tice.scolarite
 
 import org.lilie.services.eliot.tice.annuaire.Personne
@@ -39,197 +38,218 @@ import org.springframework.transaction.annotation.Transactional
  */
 public class ProfilScolariteService {
 
-  ScolariteService scolariteService
+    ScolariteService scolariteService
 
-  static transactional = false
+    static transactional = false
 
-  /**
-   * Récupère les profils de scolarite correspondant à la personne
-   * passée en paramètre
-   * @param personne la personne dont on cherche les profils scolarite
-   * @return les proprietes scolarites correspant à la personne
-   */
-  List<ProprietesScolarite> findProprietesScolaritesForPersonne(Personne personne) {
-    List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true)
-    return profils*.proprietesScolarite
-  }
-
-  /**
-   * Récupère les fonctions occupées par la personne passée en paramètre, tout
-   * établissement confondu
-   * @param Personne la personne
-   * @return la liste des fonctions
-   */
-  @Transactional
-  List<Fonction> findFonctionsForPersonne(Personne personne) {
-    List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
-    List<Fonction> fonctions = []
-    profils.each {
-      Fonction fonction = it.proprietesScolarite.fonction
-      if (fonction && !fonctions.contains(fonction)) {
-        fonctions << fonction
-      }
+    /**
+     * Récupère les profils de scolarite correspondant à la personne
+     * passée en paramètre
+     * @param personne la personne dont on cherche les profils scolarite
+     * @return les proprietes scolarites correspant à la personne
+     */
+    List<ProprietesScolarite> findProprietesScolaritesForPersonne(Personne personne) {
+        List<PersonneProprietesScolarite> profils =
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true)
+        return profils*.proprietesScolarite
     }
-    return fonctions
-  }
 
-  /**
-   * Récupère les matières caractérisant la personne passée en paramètre, tout
-   * établissement confondu
-   * @param Personne la personne
-   * @return la liste des matières
-   */
-  List<Matiere> findMatieresForPersonne(Personne personne) {
-    List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
-    List<Matiere> matieres = []
-    profils.each {
-      Matiere matiere = it.proprietesScolarite.matiere
-      if (matiere && !matieres.contains(matiere)) {
-        matieres << matiere
-      }
-    }
-    return matieres
-  }
-
-  /**
-   * Récupère les niveaux caractérisant la personne passée en paramètre, tout
-   * établissement confondu
-   * @param Personne la personne
-   * @return la liste des niveaux
-   */
-  List<Niveau> findNiveauxForPersonne(Personne personne) {
-    List<StructureEnseignement> structs = findStructuresEnseignementForPersonne(personne)
-    List<Niveau> niveaux = []
-    structs.each { struct ->
-      def niveauxByStruct = scolariteService.findNiveauxForStructureEnseignement(struct)
-      niveauxByStruct.each { niveau ->
-        if (niveau && !niveaux.contains(niveau)) {
-          niveaux.add(niveau)
+    /**
+     * Récupère les fonctions occupées par la personne passée en paramètre, tout
+     * établissement confondu
+     * @param Personne la personne
+     * @return la liste des fonctions
+     */
+    @Transactional
+    List<Fonction> findFonctionsForPersonne(Personne personne) {
+        List<PersonneProprietesScolarite> profils =
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+        List<Fonction> fonctions = []
+        profils.each {
+            Fonction fonction = it.proprietesScolarite.fonction
+            if (fonction && !fonctions.contains(fonction)) {
+                fonctions << fonction
+            }
         }
-      }
+        return fonctions
     }
-    return niveaux
-  }
 
+    /**
+     * Récupère les fonctions occupées par la personne passée en paramètre, pour
+     * un établissement donné
+     * @param Personne la personne
+     * @return la liste des fonctions
+     */
+    @Transactional
+    List<Fonction> findFonctionsForPersonneAndEtablissement(Personne personne, Etablissement etablissement) {
+        List<PersonneProprietesScolarite> profils =
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+        List<Fonction> fonctions = []
+        profils.each {
+            if (it.proprietesScolarite.etablissement == etablissement) {
+                Fonction fonction = it.proprietesScolarite.fonction
+                if (fonction && !fonctions.contains(fonction)) {
+                    fonctions << fonction
+                }
+            }
+        }
+        return fonctions
+    }
 
-  /**
-   * Récupère les établissements caractérisant la personne passée en paramètre
-   * @param Personne la personne
-   * @return la liste des établissements
-   */
-  List<Etablissement> findEtablissementsForPersonne(Personne personne) {
-    List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
-    List<Etablissement> etablissements = []
-    profils.each {
-      Etablissement etablissement = it.proprietesScolarite.etablissement
-      if (etablissement && !etablissements.contains(etablissement)) {
-        etablissements << etablissement
-      }
+    /**
+     * Récupère les matières caractérisant la personne passée en paramètre, tout
+     * établissement confondu
+     * @param Personne la personne
+     * @return la liste des matières
+     */
+    List<Matiere> findMatieresForPersonne(Personne personne) {
+        List<PersonneProprietesScolarite> profils =
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+        List<Matiere> matieres = []
+        profils.each {
+            Matiere matiere = it.proprietesScolarite.matiere
+            if (matiere && !matieres.contains(matiere)) {
+                matieres << matiere
+            }
+        }
+        return matieres
     }
-    return etablissements
-  }
 
-  /**
-   * Récupère les structures d'enseignement (classes / divisions) caractérisant la
-   * personne passée en paramètre, tout établissement confondu
-   * @param Personne la personne
-   * @return la liste des structures d'enseignements
-   */
-  List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne) {
-    List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
-    List<StructureEnseignement> structures = []
-    profils.each {
-      StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
-      if (structureEnseignement && !structures.contains(structureEnseignement)) {
-        structures << structureEnseignement
-      }
+    /**
+     * Récupère les niveaux caractérisant la personne passée en paramètre, tout
+     * établissement confondu
+     * @param Personne la personne
+     * @return la liste des niveaux
+     */
+    List<Niveau> findNiveauxForPersonne(Personne personne) {
+        List<StructureEnseignement> structs = findStructuresEnseignementForPersonne(personne)
+        List<Niveau> niveaux = []
+        structs.each { struct ->
+            def niveauxByStruct = scolariteService.findNiveauxForStructureEnseignement(struct)
+            niveauxByStruct.each { niveau ->
+                if (niveau && !niveaux.contains(niveau)) {
+                    niveaux.add(niveau)
+                }
+            }
+        }
+        return niveaux
     }
-    return structures
-  }
 
-  /**
-   * Récupère les propriétés de scolarité d'une personne référençant une structure
-   * s'enseignement
-   * @param personne la personne
-   * @return la liste des propriétés de scolarité
-   */
-  List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne) {
-    def props = []
-    List<PersonneProprietesScolarite> profils =
-      PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
-    profils.each {
-      StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
-      if (structureEnseignement && !props.contains(it.proprietesScolarite)) {
-        props << it.proprietesScolarite
-      }
+    /**
+     * Récupère les établissements caractérisant la personne passée en paramètre
+     * @param Personne la personne
+     * @return la liste des établissements
+     */
+    List<Etablissement> findEtablissementsForPersonne(Personne personne) {
+        List<PersonneProprietesScolarite> profils =
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+        List<Etablissement> etablissements = []
+        profils.each {
+            Etablissement etablissement = it.proprietesScolarite.etablissement
+            if (etablissement && !etablissements.contains(etablissement)) {
+                etablissements << etablissement
+            }
+        }
+        return etablissements
     }
-    return props
-  }
 
-  /**
-   * Méthode recherchant la liste des élèves d'une structure d'enseignement
-   * @param struct la structure d'enseignement
-   * @return la liste des eleves
-   */
-  List<Personne> findElevesForStructureEnseignement(StructureEnseignement struct) {
-    def criteria = PersonneProprietesScolarite.createCriteria()
-    def personneProprietesScolarites = criteria.list {
-      proprietesScolarite {
-        eq 'structureEnseignement', struct
-        eq 'fonction', FonctionEnum.ELEVE.fonction
-      }
-      eq 'estActive', true
-      personne {
-        order 'nom', 'asc'
-      }
-      join 'personne'
+    /**
+     * Récupère les structures d'enseignement (classes / divisions) caractérisant la
+     * personne passée en paramètre, tout établissement confondu
+     * @param Personne la personne
+     * @return la liste des structures d'enseignements
+     */
+    List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne) {
+        List<PersonneProprietesScolarite> profils =
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+        List<StructureEnseignement> structures = []
+        profils.each {
+            StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
+            if (structureEnseignement && !structures.contains(structureEnseignement)) {
+                structures << structureEnseignement
+            }
+        }
+        return structures
     }
-    def eleves = []
-    if (personneProprietesScolarites) {
-      eleves = personneProprietesScolarites*.personne
-    }
-    return eleves
-  }
 
-  /**
-   * Méthode recherchant la liste des élèves d'un responsable
-   * @param responsable le responsable élève
-   * @return la liste des eleves du responsable
-   */
-  List<Personne> findElevesForResponsable(Personne responsable) {
-    def criteria = ResponsableEleve.createCriteria()
-    def respEleves = criteria.list {
-      eq 'personne', responsable
-      eq 'estActive', true
-      join 'eleve'
+    /**
+     * Récupère les propriétés de scolarité d'une personne référençant une structure
+     * s'enseignement
+     * @param personne la personne
+     * @return la liste des propriétés de scolarité
+     */
+    List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne) {
+        def props = []
+        List<PersonneProprietesScolarite> profils =
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+        profils.each {
+            StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
+            if (structureEnseignement && !props.contains(it.proprietesScolarite)) {
+                props << it.proprietesScolarite
+            }
+        }
+        return props
     }
-    def eleves = []
-    if (respEleves) {
-      eleves = respEleves*.eleve
-    }
-    return eleves
-  }
 
-  /**
-   * Méthode indiquant si une personne est responsable d'un élève
-   * @param personne le responsable présumé
-   * @param eleve l'élève
-   * @return true si la personne est bien responsable de l'eleve
-   */
-  boolean personneEstResponsableEleve(Personne personne, Personne eleve) {
-    def criteria = ResponsableEleve.createCriteria()
-    def countRespEleves = criteria.count {
-      eq 'personne', personne
-      eq 'eleve', eleve
-      eq 'estActive', true
+    /**
+     * Méthode recherchant la liste des élèves d'une structure d'enseignement
+     * @param struct la structure d'enseignement
+     * @return la liste des eleves
+     */
+    List<Personne> findElevesForStructureEnseignement(StructureEnseignement struct) {
+        def criteria = PersonneProprietesScolarite.createCriteria()
+        def personneProprietesScolarites = criteria.list {
+            proprietesScolarite {
+                eq 'structureEnseignement', struct
+                eq 'fonction', FonctionEnum.ELEVE.fonction
+            }
+            eq 'estActive', true
+            personne {
+                order 'nom', 'asc'
+            }
+            join 'personne'
+        }
+        def eleves = []
+        if (personneProprietesScolarites) {
+            eleves = personneProprietesScolarites*.personne
+        }
+        return eleves
     }
-    return countRespEleves > 0
-  }
+
+    /**
+     * Méthode recherchant la liste des élèves d'un responsable
+     * @param responsable le responsable élève
+     * @return la liste des eleves du responsable
+     */
+    List<Personne> findElevesForResponsable(Personne responsable) {
+        def criteria = ResponsableEleve.createCriteria()
+        def respEleves = criteria.list {
+            eq 'personne', responsable
+            eq 'estActive', true
+            join 'eleve'
+        }
+        def eleves = []
+        if (respEleves) {
+            eleves = respEleves*.eleve
+        }
+        return eleves
+    }
+
+    /**
+     * Méthode indiquant si une personne est responsable d'un élève
+     * @param personne le responsable présumé
+     * @param eleve l'élève
+     * @return true si la personne est bien responsable de l'eleve
+     */
+    boolean personneEstResponsableEleve(Personne personne, Personne eleve) {
+        def criteria = ResponsableEleve.createCriteria()
+        def countRespEleves = criteria.count {
+            eq 'personne', personne
+            eq 'eleve', eleve
+            eq 'estActive', true
+        }
+        return countRespEleves > 0
+    }
 
 
 }
