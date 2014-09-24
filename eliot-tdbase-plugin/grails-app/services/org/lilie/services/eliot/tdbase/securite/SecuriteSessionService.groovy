@@ -12,9 +12,10 @@ class SecuriteSessionService {
 
     static scope = "session"
     static proxy = true
+    static transactional = false
 
     ProfilScolariteService profilScolariteService
-    PreferenceEtablissementService preferenceEtablissementServiceProxy
+    PreferenceEtablissementService preferenceEtablissementService
 
     Long personneId
     Etablissement currentEtablissement
@@ -65,7 +66,7 @@ class SecuriteSessionService {
         roleApplicatifList = [] // TODO : use a set to not have several times the same role
         if (currentEtablissement) {
             def fonctions = profilScolariteService.findFonctionsForPersonneAndEtablissement(personne, currentEtablissement)
-            PreferenceEtablissement pref = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(currentEtablissement)
+            PreferenceEtablissement pref = preferenceEtablissementService.getPreferenceForEtablissement(currentEtablissement)
             def mapping = pref.mappingFonctionRoleAsMap()
             fonctions.each {
                 roleApplicatifList.addAll(mapping.getRolesForFonction(it))
