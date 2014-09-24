@@ -1,12 +1,15 @@
 package org.lilie.services.eliot.tdbase.securite
 
 import org.lilie.services.eliot.tdbase.RoleApplicatif
+import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.Etablissement
+import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+
 
 class SecuriteSessionService {
 
@@ -19,9 +22,10 @@ class SecuriteSessionService {
 
     Long personneId
     Etablissement currentEtablissement
+    PreferenceEtablissement currentPreferenceEtablissement
     List<Etablissement> etablissementList
     RoleApplicatif currentRoleApplicatif
-    List<RoleApplicatif> roleApplicatifList
+    SortedSet<RoleApplicatif> roleApplicatifList
 
     /**
      * Initialise l'objet Securite Session
@@ -52,8 +56,14 @@ class SecuriteSessionService {
         }
         // mise à jour du current etablissement
         currentEtablissement = newCurrentEtablissement
+        // mise à jour du current preference etablissement
+        if (currentEtablissement != null) {
+            currentPreferenceEtablissement = preferenceEtablissementService.getPreferenceForEtablissement(currentEtablissement)
+        } else {
+            currentPreferenceEtablissement = null
+        }
         // mise à jour de la liste des rôles applicatifs
-        initialiseRoleApplicatifListForCurrentEtablissement(Personne.get(personneId))
+        initialiseRoleApplicatifListForCurrentEtablissement(personne)
         // mise à jour du current role
         currentRoleApplicatif = roleApplicatifList?.first()
     }
@@ -62,14 +72,13 @@ class SecuriteSessionService {
      * Initialise la liste des rôles applicatifs pour le currentEtablissement
      * @param personne la personne authentifiée
      */
-    private initialiseRoleApplicatifListForCurrentEtablissement(Personne personne) {
-        roleApplicatifList = [] // TODO : use a set to not have several times the same role
-        if (currentEtablissement) {
-            def fonctions = profilScolariteService.findFonctionsForPersonneAndEtablissement(personne, currentEtablissement)
-            PreferenceEtablissement pref = preferenceEtablissementService.getPreferenceForEtablissement(currentEtablissement)
-            def mapping = pref.mappingFonctionRoleAsMap()
-            fonctions.each {
-                roleApplicatifList.addAll(mapping.getRolesForFonction(it))
+    def initialiseRoleApplicatifListForCurrentEtablissement(Personne personne) {
+        roleApplicatifList = new TreeSet<RoleApplicatif>()
+        if (currentEtablissement != null) {
+            def fonctions = profilScolariteService.findFonctionEnumsForPersonneAndEtablissement(personne, currentEtablissement)
+            MappingFonctionRole mapping = currentPreferenceEtablissement.mappingFonctionRoleAsMap()
+            fonctions.each { FonctionEnum fct ->
+                roleApplicatifList.addAll(mapping.getRolesForFonction(fct))
             }
         }
     }
