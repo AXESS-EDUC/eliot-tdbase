@@ -40,7 +40,7 @@ class PreferencesController {
     static scope = "singleton"
 
     BreadcrumpsService breadcrumpsServiceProxy
-    PreferenceEtablissementService preferenceEtablissementServiceProxy
+    PreferenceEtablissementService preferenceEtablissementService
 
     /**
      * Accueil preferences
@@ -55,12 +55,12 @@ class PreferencesController {
         Etablissement etab = Etablissement.findByUai("TEST_L")
         // ---
 
-        PreferenceEtablissement pref = preferenceEtablissementServiceProxy.getPreferenceForEtablissement(user, etab, RoleApplicatif.ADMINISTRATEUR)
+        PreferenceEtablissement pref = preferenceEtablissementService.getPreferenceForEtablissement(user, etab, RoleApplicatif.ADMINISTRATEUR)
 
         [liens                  : breadcrumpsServiceProxy.liens,
          etablissement          : etab,
          mappingFonctionRole    : pref.mappingFonctionRoleAsMap(),
-         fonctions              : preferenceEtablissementServiceProxy.getFonctionsForEtablissement(etab),
+         fonctions              : preferenceEtablissementService.getFonctionsForEtablissement(etab),
          preferenceEtablissement: pref
         ]
     }
@@ -73,7 +73,7 @@ class PreferencesController {
         PreferenceEtablissement prefEtab = PreferenceEtablissement.get(params.prefEtabId)
         def mapping = getMappingFromParamsForPreferenceEtablissement(params, prefEtab)
         prefEtab.mappingFonctionRole = mapping.toJsonString()
-        preferenceEtablissementServiceProxy.updatePreferenceEtablissement(authenticatedPersonne, prefEtab,RoleApplicatif.ADMINISTRATEUR)
+        preferenceEtablissementService.updatePreferenceEtablissement(authenticatedPersonne, prefEtab,RoleApplicatif.ADMINISTRATEUR)
         flash.messageTextesCode = "preferences.save.success"
         redirect(controller: "preferences", action: "index", params: [bcInit: true])
     }
