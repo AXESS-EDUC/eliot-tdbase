@@ -159,4 +159,47 @@ class SecuriteSessionServiceSpec extends Specification {
         securiteSessionService.currentRoleApplicatif == RoleApplicatif.ADMINISTRATEUR
 
     }
+
+    def "test de l'initialisation d'un objet securite session deja initialisé pour le même utilisateur"() {
+        given: "un utilisateur"
+        def personne = Mock(Personne) {
+            getId() >> 1
+        }
+        def utilisateur = Mock(Utilisateur) {
+            getPersonneId() >> 1
+            getPersonne() >> personne
+        }
+        and: "un objet securite session deja initialise"
+        SecuriteSessionService securiteSessionService = new SecuriteSessionService()
+        securiteSessionService.personneId = 1
+        def profilScolariteService = Mock(ProfilScolariteService)
+        securiteSessionService.profilScolariteService = profilScolariteService
+
+        when:"l'initialisation est déclenchée par l'utilisateur autorisé"
+        securiteSessionService.initialiseSecuriteSessionForUtilisateur(utilisateur)
+
+        then:"aucune interaction n'est provoquee car l'objet est laissé inchangé"
+        0 * profilScolariteService.findEtablissementsForPersonne()
+        0 * profilScolariteService.findFonctionEnumsForPersonneAndEtablissement(_,_)
+    }
+
+    def "test de l'initialisation d'un objet securite session deja initialisé par un utilisateur different"() {
+        given: "un utilisateur"
+        def personne = Mock(Personne) {
+            getId() >> 1
+        }
+        def utilisateur = Mock(Utilisateur) {
+            getPersonneId() >> 1
+            getPersonne() >> personne
+        }
+        and: "un objet securite session deja initialise par un autre utilisateur"
+        SecuriteSessionService securiteSessionService = new SecuriteSessionService()
+        securiteSessionService.personneId = 2
+
+        when:"l'initialisation est déclenchée par l'utilisateur non autorisé"
+        securiteSessionService.initialiseSecuriteSessionForUtilisateur(utilisateur)
+
+        then:"une exception de sécurité est levée"
+        thrown(BadPersonnSecuritySessionException)
+    }
 }
