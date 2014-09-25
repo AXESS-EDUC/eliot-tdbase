@@ -19,83 +19,144 @@ import spock.lang.Specification
 @TestMixin(GrailsUnitTestMixin)
 class SecuriteSessionServiceSpec extends Specification {
 
-    Personne personne
-    def utilisateur
-    def profilScolariteService
-    def preferenceEtablissementService
-    def preferenceEtablissement
-    def etablissement1
-    def etablissement2
+    MappingFonctionRole mappingFonctionRole
 
     def setup() {
-        def personneMock = mockFor(Personne)
-        personneMock.demand.getId { 1 }
-        personne = personneMock.createMock()
 
-        def utilisateurMock = mockFor(Utilisateur)
-        utilisateurMock.demand.getPersonneId { 1 }
-        utilisateurMock.demand.getPersonne { personne }
-        utilisateur = utilisateurMock.createMock()
-
-        def profilScolariteServiceMock = mockFor(ProfilScolariteService)
-        profilScolariteServiceMock.demand.findFonctionEnumsForPersonneAndEtablissement { Personne personne1, Etablissement etab ->
-            [FonctionEnum.ENS, FonctionEnum.AL]
-        }
-        profilScolariteService = profilScolariteServiceMock.createMock()
-
-        def etablissementMock = mockFor(Etablissement)
-        etablissement1 = etablissementMock.createMock()
-        etablissement2 = etablissementMock.createMock()
-
-        def mapping = new MappingFonctionRole(["ENS":
+        mappingFonctionRole = new MappingFonctionRole(["ENS":
                                                        ["ENSEIGNANT":
                                                                 ["associe"   : true,
                                                                  "modifiable": true],
-                                                        "ELEVE":["associe"   : true,
-                                                                 "modifiable": true],
-                                                        "PARENT":["associe"   : false,
-                                                                  "modifiable": false]
+                                                        "ELEVE"     : ["associe"   : true,
+                                                                       "modifiable": true],
+                                                        "PARENT"    : ["associe"   : false,
+                                                                       "modifiable": false]
                                                        ],
                                                "AL" :
                                                        ["ADMINISTRATEUR": ["associe"   : true,
                                                                            "modifiable": true],
-                                                        "ENSEIGNANT":
+                                                        "ENSEIGNANT"    :
                                                                 ["associe"   : true,
                                                                  "modifiable": true]
                                                        ]
         ])
 
-        def preferenceEtablissementMock = mockFor(PreferenceEtablissement)
-        preferenceEtablissementMock.demand.mappingFonctionRoleAsMap { ->
-            mapping
-        }
-        preferenceEtablissement = preferenceEtablissementMock.createMock()
-
-//        def preferenceEtablissementServiceMock = mockFor(PreferenceEtablissementService)
-//        preferenceEtablissementServiceMock.demand.getPreferenceForEtablissement { Etablissement etab ->
-//            preferenceEtablissement
-//        }
-//        preferenceEtablissementService = preferenceEtablissementServiceMock.createMock()
 
     }
 
-    void "initialisation de la liste des roles applicatifs pour l'etablissement courant"() {
+    void "test de l'initialisation de la liste des roles applicatifs pour l'etablissement courant"() {
 
         given: "un objet securite session avec un current etablissement"
         SecuriteSessionService securiteSessionService = new SecuriteSessionService()
-        securiteSessionService.profilScolariteService = profilScolariteService
-        securiteSessionService.preferenceEtablissementService = preferenceEtablissementService
-        securiteSessionService.currentEtablissement = etablissement1
-        securiteSessionService.currentPreferenceEtablissement = preferenceEtablissement
+        securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
+            findFonctionEnumsForPersonneAndEtablissement(_,_) >> [FonctionEnum.ENS, FonctionEnum.AL]
+        }
+        securiteSessionService.currentEtablissement = Mock(Etablissement)
+        securiteSessionService.currentPreferenceEtablissement = Mock(PreferenceEtablissement) {
+            mappingFonctionRoleAsMap() >> mappingFonctionRole
+        }
+        and: "une personne déclenchant l'appel à la méthode"
+        def personne = Mock(Personne)
 
-        when:"on initialise la liste des roles applicatifs"
+        when: "on initialise la liste des roles applicatifs"
         securiteSessionService.initialiseRoleApplicatifListForCurrentEtablissement(personne)
 
-        then:"la liste des roles applicatifs de la securité session sont mis à jours"
+        then: "la liste des roles applicatifs de la securité session est mise à jours"
         securiteSessionService.roleApplicatifList.size() == 3
         securiteSessionService.roleApplicatifList.contains(RoleApplicatif.ENSEIGNANT)
         securiteSessionService.roleApplicatifList.contains(RoleApplicatif.ELEVE)
         securiteSessionService.roleApplicatifList.contains(RoleApplicatif.ADMINISTRATEUR)
+
+    }
+
+    def "test du onChange etalissement"() {
+
+        given: "un etablissement"
+        def etab = Mock(Etablissement)
+
+        and: "un objet securite session"
+        SecuriteSessionService securiteSessionService = new SecuriteSessionService()
+        securiteSessionService.personneId =1
+        securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
+            findFonctionEnumsForPersonneAndEtablissement(_,_) >> [FonctionEnum.ENS, FonctionEnum.AL]
+        }
+        def preferenceEtablissement = Mock(PreferenceEtablissement) {
+            mappingFonctionRoleAsMap() >> mappingFonctionRole
+        }
+        securiteSessionService.preferenceEtablissementService = Mock(PreferenceEtablissementService) {
+            getPreferenceForEtablissement(etab) >> preferenceEtablissement
+        }
+
+        and:" une personne déclenchant le changement d'établissement"
+        def personne = Mock(Personne) {
+            getId() >> 1
+        }
+
+        when: "le changement d'établissement est demandé par la personne"
+        securiteSessionService.onChangeEtablissement(personne,etab)
+
+        then:"l'objet securite session est mis a jour"
+        securiteSessionService.currentEtablissement == etab
+        securiteSessionService.currentPreferenceEtablissement == preferenceEtablissement
+        securiteSessionService.roleApplicatifList.size() == 3
+        securiteSessionService.roleApplicatifList.contains(RoleApplicatif.ENSEIGNANT)
+        securiteSessionService.roleApplicatifList.contains(RoleApplicatif.ELEVE)
+        securiteSessionService.roleApplicatifList.contains(RoleApplicatif.ADMINISTRATEUR)
+        securiteSessionService.currentRoleApplicatif == RoleApplicatif.ADMINISTRATEUR
+    }
+
+    def "test onChange etablissement par une personne non autorisée "() {
+        given: "une personne non autorisee"
+        def personne = Mock(Personne) {
+            getId() >> 2
+        }
+        and: "un objet securite session"
+        SecuriteSessionService securiteSessionService = new SecuriteSessionService()
+        securiteSessionService.personneId = 1
+
+        when:"un changement d'établissement est demandé par la personne non autorisée"
+        securiteSessionService.onChangeEtablissement(personne,Mock(Etablissement))
+
+        then:"une exception de sécurité est levée"
+        thrown(BadPersonnSecuritySessionException)
+    }
+
+    def "test de la premiere initialisation d'un objet securite session"() {
+        given:"un utilisateur"
+        def personne = Mock(Personne) {
+            getId() >> 1
+        }
+        def utilisateur = Mock(Utilisateur) {
+            getPersonneId() >> 1
+            getPersonne() >> personne
+        }
+        and:" un nouvel objet securite session non encore initialisé"
+        SecuriteSessionService securiteSessionService = new SecuriteSessionService()
+        def etab = Mock(Etablissement)
+        securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
+            findEtablissementsForPersonne(personne) >> [etab, Mock(Etablissement)]
+            findFonctionEnumsForPersonneAndEtablissement(_,_) >> [FonctionEnum.ENS, FonctionEnum.AL]
+        }
+        def preferenceEtablissement = Mock(PreferenceEtablissement) {
+            mappingFonctionRoleAsMap() >> mappingFonctionRole
+        }
+        securiteSessionService.preferenceEtablissementService = Mock(PreferenceEtablissementService) {
+            getPreferenceForEtablissement(etab) >> preferenceEtablissement
+        }
+
+        when:"l'initialisation est déclenchée pour l'utilisateur donné"
+        securiteSessionService.initialiseSecuriteSessionForUtilisateur(utilisateur)
+
+        then:"l'objet securité session est mis à jour"
+        securiteSessionService.personneId == 1
+        securiteSessionService.etablissementList.size() == 2
+        securiteSessionService.currentEtablissement == etab
+        securiteSessionService.currentPreferenceEtablissement == preferenceEtablissement
+        securiteSessionService.roleApplicatifList.size() == 3
+        securiteSessionService.roleApplicatifList.contains(RoleApplicatif.ENSEIGNANT)
+        securiteSessionService.roleApplicatifList.contains(RoleApplicatif.ELEVE)
+        securiteSessionService.roleApplicatifList.contains(RoleApplicatif.ADMINISTRATEUR)
+        securiteSessionService.currentRoleApplicatif == RoleApplicatif.ADMINISTRATEUR
 
     }
 }
