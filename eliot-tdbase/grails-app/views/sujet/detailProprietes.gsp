@@ -76,6 +76,7 @@
         <li>Dupliquer</li>
       </g:else>
       <li><hr/></li>
+    <g:if test="${artefactHelper.partageArtefactCCActive}">
       <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
         <%
           def docLoc = g.createLink(action: 'partage', id: sujet.id)
@@ -88,7 +89,7 @@
       <g:else>
         <li>Partager</li>
       </g:else>
-
+    </g:if>
       <g:set var="peutExporterNatifJson"
              value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.NATIF_JSON)}"/>
       <g:set var="peutExporterMoodleXml"
@@ -176,6 +177,7 @@
         ${sujet.presentation}
       </td>
     </tr>
+  <g:if test="${artefactHelper.partageArtefactCCActive}">
     <tr>
       <td class="label">Partage :</td>
       <td>
@@ -194,6 +196,7 @@
       <g:render template="/artefact/paternite"
                 model="[paternite: sujet.paternite]"/>
     </g:if>
+   </g:if>
   </table>
 </div>
 

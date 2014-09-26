@@ -101,12 +101,21 @@
           </td>
         </tr>
         <tr>
-          <td class="label">Auteur :
-          </td>
-          <td>
-            <g:textField name="patternAuteur" title="auteur"
-                         value="${rechercheCommand.patternAuteur}"/>
-          </td>
+            <g:if test="${artefactHelper.partageArtefactCCActive}">
+                <td class="label">Auteur :
+                </td>
+                <td>
+                    <g:textField name="patternAuteur" title="auteur"
+                                 value="${rechercheCommand.patternAuteur}"/>
+                </td>
+            </g:if>
+            <g:else>
+                <td class="label">&nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </g:else>
 
           <td class="label">Niveau :
           </td>
@@ -189,6 +198,7 @@
             <li>Dupliquer</li>
           </g:else>
           <li><hr/></li>
+        <g:if test="${artefactHelper.partageArtefactCCActive}">
           <g:if
               test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
             <%
@@ -202,7 +212,7 @@
           <g:else>
             <li>Partager</li>
           </g:else>
-
+        </g:if>
           <g:set var="peutExporterNatifJson"
                  value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, questionInstance, Format.NATIF_JSON)}"/>
           <g:set var="peutExporterMoodleXml"
@@ -239,7 +249,9 @@
           <g:if
               test="${questionInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${questionInstance.matiere?.libelleLong}</g:if>
           <strong>» Type :</strong>  ${questionInstance.type.nom}
+         <g:if test="${artefactHelper.partageArtefactCCActive}">
           <strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
+         </g:if>
         </p>
 
       </div>

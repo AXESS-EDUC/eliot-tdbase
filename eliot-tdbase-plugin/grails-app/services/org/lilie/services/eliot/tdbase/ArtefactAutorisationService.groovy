@@ -41,6 +41,13 @@ class ArtefactAutorisationService {
 
   static transactional = false
 
+    /**
+     * Flag indiquant si le partage des artefacts en CC est active.
+     * Ce flag peut-être configuré à l'aide du paramètre de configuration :
+     * eliot.artefact.partage_CC_autorise
+     */
+  boolean partageArtefactCCActive
+
   /**
    * Vérifie qu'un utilisateur peut supprimer un artefact
    * @param utilisateur l'utilisateur sur lequel on vérifie l'autorisation
@@ -104,6 +111,9 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutPartageArtefact(Personne utilisateur, Artefact artefact) {
+    if (!partageArtefactCCActive) {
+        return false
+    }
     if (artefact.estInvariant()) {
       return false
     }

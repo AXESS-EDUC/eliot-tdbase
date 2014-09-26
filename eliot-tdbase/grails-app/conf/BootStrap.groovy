@@ -28,6 +28,7 @@
 
 
 import org.codehaus.groovy.grails.commons.ApplicationAttributes
+import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
 import org.lilie.services.eliot.tdbase.patch.PatchExecution
 import org.lilie.services.eliot.tdbase.patch.PatchTDB40
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
@@ -40,6 +41,7 @@ class BootStrap {
   BootstrapService bootstrapService
   DbMigrationService dbMigrationService
   PortailTagLibService portailTagLibService
+  ArtefactAutorisationService artefactAutorisationService
 
   def init = { servletContext ->
 
@@ -69,6 +71,8 @@ class BootStrap {
     portailTagLibService.applicationInFrame = config.eliot.pages.container.forceDimensions
     portailTagLibService.divHeight = config.eliot.pages.container.height
     portailTagLibService.divWidth = config.eliot.pages.container.width
+
+    artefactAutorisationService.partageArtefactCCActive = config.eliot.artefact.partage_CC_autorise
 
     executeAllPatch(servletContext)
   }

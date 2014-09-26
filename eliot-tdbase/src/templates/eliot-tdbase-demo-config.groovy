@@ -33,6 +33,8 @@ import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 // L'URL d'accès à l'application
 //
 
+println "In custom config file eliot-tdbase-demo-config.groovy."
+
 grails.serverURL = "http://demo.ticetime.com/eliot-tdbase"
 eliot.tdbase.nomApplication = "eliot-tdbase"
 eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
@@ -44,6 +46,9 @@ eliot.portail.lilie = false
 eliot.portail.lilieCasActive = false
 eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
 
+grails.plugins.springsecurity.cas.active = true
+grails.plugins.springsecurity.cas.useSingleSignout = true
+
 // application de la migration définie dans eliot-tice-dbmigration)
 //
 eliot.bootstrap.migration = true
@@ -54,7 +59,7 @@ eliot.bootstrap.jeudetest = true
 
 // configuration de la racine de l'espace de fichier
 //
-eliot.fichiers.racine = '/usr/share/eliot-root'
+eliot.fichiers.racine = '/srv/datadisk01/FileDataStore/eliot-tdbase-demo'
 eliot.fichiers.maxsize.mega = 10
 eliot.fichiers.importexport.maxsize.mega = 25 // taille max spécifique aux fichiers d'import
 
@@ -68,9 +73,23 @@ eliot.portail.menu.liens = [[url: "http://wwww.ticetime.com",
 eliot.portail.news = ["Environnement DEMO",
         "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
         "Login / mot de passe enseignant : ens1 / ens1",
+        "Login / mot de passe enseignant 2 : ens2 / ens2",
         "Login / mot de passe eleve 1 : elv1 / elv1",
         "Login / mot de passe eleve 2 : elv2 / elv2",
         "Login / mot de passe parent 1 : resp1 / resp1"]
+
+// l'interfacage doit il effectuer des contrôles fort sur les "pseudo
+// clés étrangères"
+eliot.interfacage.strongCheck = false
+
+//  support de l'interfaçage eliot-notes
+//
+eliot.interfacage.notes = false
+
+//  support de l'interfaçage eliot-textes
+//
+eliot.interfacage.textes = false
+
 
 // set url documentation
 eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
@@ -101,42 +120,26 @@ eliot.help.documents.urlMap = [
         "eliot.tdbase.introduction": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html"]
 
 
-// Spécifie si les objets sensés être créés sont bien créés
-// à n'activier que si les données tdbase, notes et textes sont stockées dans
-// la même base
-eliot.interfacage.strongCheck = false
-// rest client config for textes
-eliot.webservices.rest.client.textes.user = "api"
-eliot.webservices.rest.client.textes.password = "api"
-eliot.webservices.rest.client.textes.urlServer = "http://www.ticeitime.com:8090"
-eliot.webservices.rest.client.textes.uriPrefix = "/eliot-textes/echanges/v2"
-eliot.webservices.rest.client.textes.connexionTimeout = 10000 // ms
-// rest client config for notes
-eliot.webservices.rest.client.notes.user = "api"
-eliot.webservices.rest.client.notes.password = "api"
-eliot.webservices.rest.client.notes.urlServer = "http://www.ticeitime.com:8090"
-eliot.webservices.rest.client.notes.uriPrefix = "/eliot-notes/echanges/v2"
-eliot.webservices.rest.client.notes.connexionTimeout = 10000 // ms
 
 // data source
 dataSource {
   pooled = false
   driverClassName = "org.postgresql.Driver"
   url = "jdbc:postgresql://localhost:5432/eliot-tdbase-demo"
-  username = "eliot"
+  username = "eliot_scolarite"
   password = "eliot"
-  logSql = false
+  logSql = true
 }
 
 log4j = {
 
   appenders {
     //file name:'file', file:'/appli/tomcat/logs/eliot-tdbase-app.log'
-    file name: 'file', file: '/tmp/eliot-tdbase-app.log'
+    file name: 'file', file: '/srv/datadisk01/Logs/eliot-tdbase-demo.log'
   }
 
   root {
-    info 'file'
+    info 'stdout','file','stderr'
     additivity = true
   }
 
@@ -149,16 +152,20 @@ log4j = {
         'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
         'org.codehaus.groovy.grails.web.mapping', // URL mapping
         'org.codehaus.groovy.grails.commons', // core / classloading
-        'org.codehaus.groovy.grails.plugins',
-        'org.codehaus.groovy.grails.orm.hibernate' // plugins
-  //		'org.springframework'
+        'org.codehaus.groovy.grails.plugins'
+
+   error 'org.codehaus.groovy.grails.orm.hibernate' // plugins
+   error 'org.springframework'
 
   warn 'org.mortbay.log'
-  info 'grails.app'
+  error 'grails.app'
   error 'org.lilie.services.eliot.tice.webservices.rest.client.RestClient'
-  error file: "StackTrace"
+  debug file: "StackTrace"
 
 }
-
 // Support de l'interface EmaEval
 eliot.interfacage.emaeval.actif = false
+
+// Activation/desactivation du partage en CC par les enseignants d'un artefact (i.e. d'un sujet ou d'une question)
+eliot.artefact.partage_CC_autorise = false
+

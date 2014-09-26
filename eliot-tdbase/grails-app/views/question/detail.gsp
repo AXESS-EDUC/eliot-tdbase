@@ -82,6 +82,7 @@
         <li>Dupliquer</li>
       </g:else>
       <li><hr/></li>
+    <g:if test="${artefactHelper.partageArtefactCCActive}">
       <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
         <%
           def docLoc = g.createLink(action: 'partage', controller: "question${question.type.code}", id: question.id)
@@ -95,6 +96,7 @@
       <g:else>
         <li>Partager</li>
       </g:else>
+     </g:if>
 
       <g:set var="peutExporterNatifJson"
              value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question, Format.NATIF_JSON)}"/>
@@ -142,7 +144,7 @@
 
 <div class="portal-form_container edite apercu">
   <g:render template="/question/detail_commun"
-            model="[question: question, referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList]"/>
+            model="[question: question, referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList, artefactHelper:artefactHelper]"/>
 
 </div>
 

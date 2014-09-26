@@ -255,6 +255,7 @@
       <g:render
           template="/question/${question.type.code}/${question.type.code}Edition"
           model="[question: question]"/>
+    <g:if test="${artefactHelper.partageArtefactCCActive}">
       <tr>
         <td class="label">Partage :</td>
         <td>
@@ -273,7 +274,7 @@
         <g:render template="/artefact/paternite"
                   model="[paternite: question.paternite]"/>
       </g:if>
-
+    </g:if>
       <g:if test="${isAssociableACompetence && referentielCompetence}">
       <g:render
           template="/question/edite_competences"

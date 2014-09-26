@@ -58,7 +58,7 @@ class SujetController {
     def rechercheUniquementSujetsChercheur = false
     def moiLabel = message(code: "eliot.label.me").toString().toUpperCase()
     def patternAuteur = rechCmd.patternAuteur
-    if (moiLabel == rechCmd.patternAuteur?.toUpperCase()) {
+    if (!artefactAutorisationService.partageArtefactCCActive || moiLabel == rechCmd.patternAuteur?.toUpperCase()) {
       rechercheUniquementSujetsChercheur = true
       patternAuteur = null
     }
@@ -123,6 +123,7 @@ class SujetController {
     render(view: "editeProprietes", model: [liens: breadcrumpsServiceProxy.liens,
         sujet: new Sujet(),
         typesSujet: sujetService.getAllSujetTypes(),
+        artefactHelper: artefactAutorisationService,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
         niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])
   }
@@ -137,6 +138,7 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     render(view: "editeProprietes", model: [liens: breadcrumpsServiceProxy.liens,
         sujet: sujet,
+        artefactHelper: artefactAutorisationService,
         typesSujet: sujetService.getAllSujetTypes(),
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
         niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire)])

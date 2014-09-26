@@ -91,7 +91,7 @@
           ${question.niveau?.libelleLong}
         </td>
       </tr>
-
+   <g:if test="${artefactHelper.partageArtefactCCActive}">
       <tr>
         <td class="label">Partage&nbsp;:</td>
         <td>
@@ -109,6 +109,7 @@
         <g:render template="/artefact/paternite"
                   model="[paternite: question.paternite]"/>
       </g:if>
+     </g:if>
     </table>
   </td>
 </tr>

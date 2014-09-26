@@ -326,7 +326,8 @@ environments {
             libelle: "eliot-tdbase sur Github"]]
     eliot.portail.news = ["TD Base version ${appVersion} - environnement DEV.",
         "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
-        "Login / mot de passe enseignant : ens1 / ens1",
+        "Login / mot de passe enseignant 1 : ens1 / ens1",
+        "Login / mot de passe enseignant 2 : ens2 / ens2",
         "Login / mot de passe élève 1 : elv1 / elv1",
         "Login / mot de passe élève 2 : elv2 / elv2",
         "Login / mot de passe parent 1 : resp1 / resp1"]
@@ -539,3 +540,6 @@ environments {
 
 // Configuration plugin Quartz 2
 grails.plugin.quartz2.autoStartup = true
+
+// Activation/desactivation du partage en CC par les enseignants d'un artefact (i.e. d'un sujet ou d'une question)
+eliot.artefact.partage_CC_autorise = true

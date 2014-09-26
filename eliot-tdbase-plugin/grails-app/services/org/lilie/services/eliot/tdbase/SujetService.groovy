@@ -241,7 +241,7 @@ class SujetService {
     // il faut partager les questions qui ne sont pas partagées
     sujet.questionsSequences.each {
       def question = it.question
-      if (question.estComposite()) {
+      if (question.estComposite() && !question.exercice.estPartage() ) {
         partageSujet(question.exercice, partageur)
       } else {
         if (!question.estPartage()) {
