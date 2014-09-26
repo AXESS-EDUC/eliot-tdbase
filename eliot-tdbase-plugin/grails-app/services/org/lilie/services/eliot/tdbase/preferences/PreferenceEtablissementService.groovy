@@ -15,8 +15,6 @@ import org.lilie.services.eliot.tice.utils.contract.Contract
  */
 class PreferenceEtablissementService {
 
-    static scope = "session"
-    static proxy = true
 
     /**
      * Récupère l'objet correspondant aux préférences d'un établissement
@@ -26,11 +24,10 @@ class PreferenceEtablissementService {
      * @return l'objet correspondant aux préférences de l'établissement
      */
     PreferenceEtablissement getPreferenceForEtablissement(Personne personne,
-                                                          Etablissement etablissement,
-                                                          RoleApplicatif role = null) {
+                                                          Etablissement etablissement) {
 
         PreferenceEtablissement pref = PreferenceEtablissement.findByEtablissement(etablissement)
-        if (!pref && role == RoleApplicatif.ADMINISTRATEUR) {
+        if (!pref) {
             pref = new PreferenceEtablissement(etablissement: etablissement,
                     lastUpdateAuteur: personne,
                     mappingFonctionRole: MappingFonctionRole.defaultMappingFonctionRole.toJsonString())
@@ -39,19 +36,6 @@ class PreferenceEtablissementService {
         pref
     }
 
-    /**
-     * Récupère l'objet correspondant aux préférences d'un établissement
-     * @param etablissement
-     * @return l'objet correspondant aux préférences de l'établissement
-     */
-    PreferenceEtablissement getPreferenceForEtablissement(Etablissement etablissement) {
-
-        PreferenceEtablissement pref = PreferenceEtablissement.findByEtablissement(etablissement)
-        if (!pref) {
-            throw new PreferenceEtablissementNotSetException()
-        }
-        pref
-    }
 
     /**
      * Met à jour en base une préférence établissement

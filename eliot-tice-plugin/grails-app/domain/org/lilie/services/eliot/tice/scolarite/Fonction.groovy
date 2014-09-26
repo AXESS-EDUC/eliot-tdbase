@@ -1,11 +1,13 @@
 package org.lilie.services.eliot.tice.scolarite
 
+import groovy.transform.EqualsAndHashCode
 import org.springframework.security.core.GrantedAuthority
 
 /**
  * Table fonction
  * @author othe
  */
+@EqualsAndHashCode(includes = 'code')
 class Fonction implements GrantedAuthority {
   Long id
   String code

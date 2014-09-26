@@ -37,7 +37,7 @@ import org.springframework.security.core.GrantedAuthority
  *
  * @author franck Silvestre
  */
-class DefaultRoleUtilisateurService implements RoleUtilisateurService {
+class DefaultTDBaseRoleUtilisateurService implements RoleUtilisateurService {
 
     SecuriteSessionService securiteSessionServiceProxy
 

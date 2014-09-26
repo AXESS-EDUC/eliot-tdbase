@@ -1,6 +1,12 @@
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import org.lilie.services.eliot.tdbase.annuaire.DefaultTDBaseRoleUtilisateurService
 import org.lilie.services.eliot.tdbase.emaeval.emawsconnector.ReferentielMarshaller
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformationHelper
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer
+import org.lilie.services.eliot.tice.annuaire.impl.DefaultRoleUtilisateurService
+import org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService
+import org.lilie.services.eliot.tice.annuaire.impl.LilieRoleUtilisateurService
+import org.lilie.services.eliot.tice.annuaire.impl.LilieUtilisateurService
 import org.lilie.services.eliot.tice.migrations.LiquibaseWrapper
 import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 import org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar
@@ -59,6 +65,31 @@ class EliotTdbasePluginGrailsPlugin {
       utilisateurService = ref("utilisateurService")
       roleUtilisateurService = ref("roleUtilisateurService")
     }
+
+      def conf = ConfigurationHolder.config
+
+      // configure la gestion de l'annuaire
+      //
+      if (conf.eliot.portail.lilie) {
+
+          utilisateurService(LilieUtilisateurService) {
+              springSecurityService = ref("springSecurityService")
+          }
+
+          roleUtilisateurService(LilieRoleUtilisateurService) {
+              profilScolariteService = ref("profilScolariteService")
+          }
+
+      } else {
+
+          utilisateurService(DefaultUtilisateurService) {
+              springSecurityService = ref("springSecurityService")
+          }
+
+          roleUtilisateurService(DefaultTDBaseRoleUtilisateurService) {
+              securiteSessionServiceProxy = ref("securiteSessionServiceProxy")
+          }
+      }
 
     // bean orientés sécurité
 
