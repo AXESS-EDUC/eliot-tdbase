@@ -33,13 +33,15 @@ class SecuriteSessionService {
      */
     def initialiseSecuriteSessionForUtilisateur(Utilisateur utilisateur) {
         if (!personneId) {
-            // initialise personneId
-            personneId = utilisateur.personneId
-            // initialise la lsite d'établissement
-            Personne personne = utilisateur.personne
-            etablissementList = profilScolariteService.findEtablissementsForPersonne(personne) ?: []
-            // initialise currentEtablissement (le premier de la liste) et les autres proprietes
-            onChangeEtablissement(personne, etablissementList?.first())
+            Personne.withTransaction {
+                // initialise personneId
+                personneId = utilisateur.personneId
+                // initialise la lsite d'établissement
+                Personne personne = utilisateur.personne
+                etablissementList = profilScolariteService.findEtablissementsForPersonne(personne) ?: []
+                // initialise currentEtablissement (le premier de la liste) et les autres proprietes
+                onChangeEtablissement(personne, etablissementList?.first())
+            }
         } else if (utilisateur.personneId != personneId) {
             throw new BadPersonnSecuritySessionException()
         }
@@ -58,7 +60,7 @@ class SecuriteSessionService {
         currentEtablissement = newCurrentEtablissement
         // mise à jour du current preference etablissement
         if (currentEtablissement != null) {
-            currentPreferenceEtablissement = preferenceEtablissementService.getPreferenceForEtablissement(currentEtablissement)
+            currentPreferenceEtablissement = preferenceEtablissementService.getPreferenceForEtablissement(personne,currentEtablissement)
         } else {
             currentPreferenceEtablissement = null
         }

@@ -83,13 +83,13 @@ class SecuriteSessionServiceSpec extends Specification {
         def preferenceEtablissement = Mock(PreferenceEtablissement) {
             mappingFonctionRoleAsMap() >> mappingFonctionRole
         }
-        securiteSessionService.preferenceEtablissementService = Mock(PreferenceEtablissementService) {
-            getPreferenceForEtablissement(etab) >> preferenceEtablissement
-        }
 
         and:" une personne déclenchant le changement d'établissement"
         def personne = Mock(Personne) {
             getId() >> 1
+        }
+        securiteSessionService.preferenceEtablissementService = Mock(PreferenceEtablissementService) {
+            getPreferenceForEtablissement(personne,etab) >> preferenceEtablissement
         }
 
         when: "le changement d'établissement est demandé par la personne"
@@ -141,7 +141,7 @@ class SecuriteSessionServiceSpec extends Specification {
             mappingFonctionRoleAsMap() >> mappingFonctionRole
         }
         securiteSessionService.preferenceEtablissementService = Mock(PreferenceEtablissementService) {
-            getPreferenceForEtablissement(etab) >> preferenceEtablissement
+            getPreferenceForEtablissement(personne,etab) >> preferenceEtablissement
         }
 
         when:"l'initialisation est déclenchée pour l'utilisateur donné"

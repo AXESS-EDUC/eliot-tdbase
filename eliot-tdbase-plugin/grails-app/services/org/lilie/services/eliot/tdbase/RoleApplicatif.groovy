@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority
  * Les roles applicatifs de TDBase
  */
 public enum RoleApplicatif implements GrantedAuthority{
+    SUPER_ADMINISTRATEUR,
     ADMINISTRATEUR,
     ENSEIGNANT,
     ELEVE,
@@ -13,6 +14,6 @@ public enum RoleApplicatif implements GrantedAuthority{
 
     @Override
     String getAuthority() {
-        return name()
+        return "ROLE_${name()}"
     }
 }

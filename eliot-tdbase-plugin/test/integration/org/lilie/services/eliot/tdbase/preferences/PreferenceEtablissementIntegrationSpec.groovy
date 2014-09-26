@@ -57,15 +57,11 @@ class PreferenceEtablissementIntegrationSpec extends IntegrationSpec {
         given: "un etablissement sans preference etablissement"
         PreferenceEtablissement.findByEtablissement(etablissement) == null
 
-        when:"la preference de l'etablissement est demandee par un non administrateur"
-        def pref = preferenceEtablissementService.getPreferenceForEtablissement(personne1,etablissement)
 
-        then:"la preference n'est pas creee"
-        !pref
 
-        when:"la preference de l'etablissement est demandee par un administrateur"
-        pref = preferenceEtablissementService.getPreferenceForEtablissement(personne1
-                                                        ,etablissement, RoleApplicatif.ADMINISTRATEUR)
+        when:"la preference de l'etablissement est demandee"
+        def pref = preferenceEtablissementService.getPreferenceForEtablissement(personne1
+                                                        ,etablissement)
 
         then:"la preference de l'etablissement est cree"
         !pref.hasErrors()
@@ -82,11 +78,11 @@ class PreferenceEtablissementIntegrationSpec extends IntegrationSpec {
 
         given: "un etablissement avec preference etablissement"
         def pref = preferenceEtablissementService.getPreferenceForEtablissement(personne1,
-                etablissement, RoleApplicatif.ADMINISTRATEUR)
+                etablissement)
 
         when: "la preference est demandee par un administrateur"
         def pref2 = preferenceEtablissementService.getPreferenceForEtablissement(personne1,
-                etablissement, RoleApplicatif.ADMINISTRATEUR)
+                etablissement)
 
         then: "la preference unique de l'etablissement est recuperee"
         !pref.hasErrors()

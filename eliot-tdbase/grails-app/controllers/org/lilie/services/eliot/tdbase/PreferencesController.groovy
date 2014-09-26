@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase
 import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
+import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
@@ -40,6 +41,7 @@ class PreferencesController {
     static scope = "singleton"
 
     BreadcrumpsService breadcrumpsServiceProxy
+    SecuriteSessionService securiteSessionServiceProxy
     PreferenceEtablissementService preferenceEtablissementService
 
     /**
@@ -51,11 +53,8 @@ class PreferencesController {
         breadcrumpsServiceProxy.manageBreadcrumps(params,
                 message(code: "preferences.index.title"))
 
-        // TODO : initialisation à supprimer quand branchement securite OK
-        Etablissement etab = Etablissement.findByUai("TEST_L")
-        // ---
-
-        PreferenceEtablissement pref = preferenceEtablissementService.getPreferenceForEtablissement(user, etab, RoleApplicatif.ADMINISTRATEUR)
+        Etablissement etab = securiteSessionServiceProxy.currentEtablissement
+        PreferenceEtablissement pref = securiteSessionServiceProxy.currentPreferenceEtablissement
 
         [liens                  : breadcrumpsServiceProxy.liens,
          etablissement          : etab,

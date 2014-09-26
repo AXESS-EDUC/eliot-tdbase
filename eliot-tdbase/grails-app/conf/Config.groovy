@@ -156,39 +156,39 @@ grails.plugins.springsecurity.interceptUrlMap = [
     '/': ['IS_AUTHENTICATED_FULLY'],
     '/p/**': ['IS_AUTHENTICATED_FULLY'],
     '/dashboard/**': [
-        "${FonctionEnum.ENS.toRole()}",
-        "${FonctionEnum.DOC.toRole()}",
+        "${RoleApplicatif.ENSEIGNANT.authority}",
         'IS_AUTHENTICATED_FULLY'
     ],
     '/sujet/**': [
-        "${FonctionEnum.ENS.toRole()}",
-        "${FonctionEnum.DOC.toRole()}",
+        "${RoleApplicatif.ENSEIGNANT.authority}",
         'IS_AUTHENTICATED_FULLY'
     ],
     '/question/**': [
-        "${FonctionEnum.ENS.toRole()}",
-        "${FonctionEnum.DOC.toRole()}",
+        "${RoleApplicatif.ENSEIGNANT.authority}",
         'IS_AUTHENTICATED_FULLY'
     ],
     '/seance/**': [
-        "${FonctionEnum.ENS.toRole()}",
-        "${FonctionEnum.DOC.toRole()}",
+        "${RoleApplicatif.ENSEIGNANT.authority}",
         'IS_AUTHENTICATED_FULLY'
     ],
     '/activite/**': [
-        "${FonctionEnum.ELEVE.toRole()}",
+        "${RoleApplicatif.ELEVE.authority}",
         'IS_AUTHENTICATED_FULLY'
     ],
     '/resultats/**': [
-        "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
+        "${RoleApplicatif.PARENT.authority}",
+        'IS_AUTHENTICATED_FULLY'
+    ],
+    '/preferences/**': [
+        "${RoleApplicatif.ADMINISTRATEUR.authority}",
         'IS_AUTHENTICATED_FULLY'
     ],
     '/maintenance/**': [
-        "${FonctionEnum.CD.toRole()}",
+        "${RoleApplicatif.SUPER_ADMINISTRATEUR.authority}",
         'IS_AUTHENTICATED_FULLY'
     ],
     '/emaEval/**': [
-        "${FonctionEnum.CD.toRole()}",
+        "${RoleApplicatif.SUPER_ADMINISTRATEUR.authority}",
         'IS_AUTHENTICATED_FULLY'
     ]
 ]
@@ -268,36 +268,36 @@ environments {
     eliot.listes.structures.maxrecherche = 3
     eliot.pages.container.forceDimensions = true
     grails.plugins.springsecurity.interceptUrlMap = [
-        '/': ['IS_AUTHENTICATED_FULLY'],
-        '/p/**': ['IS_AUTHENTICATED_FULLY'],
-        '/dashboard/**': [
-            "${FonctionEnum.ENS.toRole()}",
-            "${FonctionEnum.DOC.toRole()}",
-            'IS_AUTHENTICATED_FULLY'
-        ],
-        '/sujet/**': [
-            "${FonctionEnum.ENS.toRole()}",
-            "${FonctionEnum.DOC.toRole()}",
-            'IS_AUTHENTICATED_FULLY'
-        ],
-        '/question/**': [
-            "${FonctionEnum.ENS.toRole()}",
-            "${FonctionEnum.DOC.toRole()}",
-            'IS_AUTHENTICATED_FULLY'
-        ],
-        '/seance/**': [
-            "${FonctionEnum.ENS.toRole()}",
-            "${FonctionEnum.DOC.toRole()}",
-            'IS_AUTHENTICATED_FULLY'
-        ],
-        '/activite/**': [
-            "${FonctionEnum.ELEVE.toRole()}",
-            'IS_AUTHENTICATED_FULLY'
-        ],
-        '/resultats/**': [
-            "${FonctionEnum.PERS_REL_ELEVE.toRole()}",
-            'IS_AUTHENTICATED_FULLY'
-        ]
+            '/': ['IS_AUTHENTICATED_FULLY'],
+            '/p/**': ['IS_AUTHENTICATED_FULLY'],
+            '/dashboard/**': [
+                    "${RoleApplicatif.ENSEIGNANT.authority}",
+                    'IS_AUTHENTICATED_FULLY'
+            ],
+            '/sujet/**': [
+                    "${RoleApplicatif.ENSEIGNANT.authority}",
+                    'IS_AUTHENTICATED_FULLY'
+            ],
+            '/question/**': [
+                    "${RoleApplicatif.ENSEIGNANT.authority}",
+                    'IS_AUTHENTICATED_FULLY'
+            ],
+            '/seance/**': [
+                    "${RoleApplicatif.ENSEIGNANT.authority}",
+                    'IS_AUTHENTICATED_FULLY'
+            ],
+            '/activite/**': [
+                    "${RoleApplicatif.ELEVE.authority}",
+                    'IS_AUTHENTICATED_FULLY'
+            ],
+            '/resultats/**': [
+                    "${RoleApplicatif.PARENT.authority}",
+                    'IS_AUTHENTICATED_FULLY'
+            ],
+            '/preferences/**': [
+                    "${RoleApplicatif.ADMINISTRATEUR.authority}",
+                    'IS_AUTHENTICATED_FULLY'
+            ]
     ]
 
     grails.plugins.springsecurity.cas.active = false
@@ -548,51 +548,66 @@ eliot.artefact.partage_CC_autorise = true
 // parametrage par defaut du mmapping fonction role pour tdbase
 eliot.tdbase.mappingFonctionRole.defaut = [
         ("${FonctionEnum.DIR.name()}".toString()) : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:true,modifiable:false],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
         ],
         ("${FonctionEnum.AL.name()}".toString()) : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:true,modifiable:true],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
         ],
         ("${FonctionEnum.ENS.name()}".toString()) : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: false],
                 ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
         ],
         ("${FonctionEnum.DOC.name()}".toString()) : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
         ],
         ("${FonctionEnum.ELEVE.name()}".toString()) : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: false],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:false,modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
         ],
         ("${FonctionEnum.PERS_REL_ELEVE.name()}".toString()) : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:false,modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString()):[associe:true,modifiable: false]
         ],
         ("${FonctionEnum.EDU.name()}".toString()) : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:false,modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
         ],
         ("${FonctionEnum.CTR.name()}".toString()) : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
                 ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:false,modifiable: true],
+                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
+        ],
+        ("${FonctionEnum.CD.name()}".toString()) : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:true,modifiable:false],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
+                ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:false,modifiable: false],
+                ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:false,modifiable: false],
                 ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
         ]
 ]
