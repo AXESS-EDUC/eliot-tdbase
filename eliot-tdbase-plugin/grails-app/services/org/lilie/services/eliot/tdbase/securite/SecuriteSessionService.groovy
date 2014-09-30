@@ -77,7 +77,7 @@ class SecuriteSessionService {
     def initialiseRoleApplicatifListForCurrentEtablissement(Personne personne) {
         roleApplicatifList = new TreeSet<RoleApplicatif>()
         if (currentEtablissement != null) {
-            def fonctions = profilScolariteService.findFonctionEnumsForPersonneAndEtablissement(personne, currentEtablissement)
+            def fonctions = profilScolariteService.findFonctionsForPersonneAndEtablissement(personne, currentEtablissement)
             MappingFonctionRole mapping = currentPreferenceEtablissement.mappingFonctionRoleAsMap()
             fonctions.each { FonctionEnum fct ->
                 roleApplicatifList.addAll(mapping.getRolesForFonction(fct))

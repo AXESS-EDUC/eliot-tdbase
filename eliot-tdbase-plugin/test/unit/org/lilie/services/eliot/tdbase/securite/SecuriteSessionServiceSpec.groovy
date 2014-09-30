@@ -49,7 +49,7 @@ class SecuriteSessionServiceSpec extends Specification {
         given: "un objet securite session avec un current etablissement"
         SecuriteSessionService securiteSessionService = new SecuriteSessionService()
         securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
-            findFonctionEnumsForPersonneAndEtablissement(_,_) >> [FonctionEnum.ENS, FonctionEnum.AL]
+            findFonctionsForPersonneAndEtablissement(_,_) >> [FonctionEnum.ENS, FonctionEnum.AL]
         }
         securiteSessionService.currentEtablissement = Mock(Etablissement)
         securiteSessionService.currentPreferenceEtablissement = Mock(PreferenceEtablissement) {
@@ -78,7 +78,7 @@ class SecuriteSessionServiceSpec extends Specification {
         SecuriteSessionService securiteSessionService = new SecuriteSessionService()
         securiteSessionService.personneId =1
         securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
-            findFonctionEnumsForPersonneAndEtablissement(_,_) >> [FonctionEnum.ENS, FonctionEnum.AL]
+            findFonctionsForPersonneAndEtablissement(_,_) >> [FonctionEnum.ENS, FonctionEnum.AL]
         }
         def preferenceEtablissement = Mock(PreferenceEtablissement) {
             mappingFonctionRoleAsMap() >> mappingFonctionRole
@@ -135,7 +135,7 @@ class SecuriteSessionServiceSpec extends Specification {
         def etab = Mock(Etablissement)
         securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
             findEtablissementsForPersonne(personne) >> [etab, Mock(Etablissement)]
-            findFonctionEnumsForPersonneAndEtablissement(_,_) >> [FonctionEnum.ENS, FonctionEnum.AL]
+            findFonctionsForPersonneAndEtablissement(_,_) >> [FonctionEnum.ENS, FonctionEnum.AL]
         }
         def preferenceEtablissement = Mock(PreferenceEtablissement) {
             mappingFonctionRoleAsMap() >> mappingFonctionRole
@@ -143,6 +143,17 @@ class SecuriteSessionServiceSpec extends Specification {
         securiteSessionService.preferenceEtablissementService = Mock(PreferenceEtablissementService) {
             getPreferenceForEtablissement(personne,etab) >> preferenceEtablissement
         }
+
+        and:"une transaction"
+//        GroovyMock(Personne, global:true) {
+//            withTransaction(_) >> { v -> return v[0]}
+//        }
+        // tip given by Burt Beckwith here :
+        // http://grails.1312388.n4.nabble.com/Testing-plugin-how-to-mock-withTransaction-on-Domain-object-td1368196.html
+        Personne.metaClass.'static'.withTransaction = { Closure callable ->
+            callable.call(null)
+        }
+
 
         when:"l'initialisation est déclenchée pour l'utilisateur donné"
         securiteSessionService.initialiseSecuriteSessionForUtilisateur(utilisateur)
@@ -180,7 +191,7 @@ class SecuriteSessionServiceSpec extends Specification {
 
         then:"aucune interaction n'est provoquee car l'objet est laissé inchangé"
         0 * profilScolariteService.findEtablissementsForPersonne()
-        0 * profilScolariteService.findFonctionEnumsForPersonneAndEtablissement(_,_)
+        0 * profilScolariteService.findFonctionsForPersonneAndEtablissement(_,_)
     }
 
     def "test de l'initialisation d'un objet securite session deja initialisé par un utilisateur different"() {

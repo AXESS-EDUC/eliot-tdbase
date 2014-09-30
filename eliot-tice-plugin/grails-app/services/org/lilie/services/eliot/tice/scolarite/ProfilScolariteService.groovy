@@ -79,7 +79,7 @@ public class ProfilScolariteService {
      * @param Personne la personne
      * @return la liste des fonctions
      */
-    List<Fonction> findFonctionsForPersonneAndEtablissement(Personne personne, Etablissement etablissement) {
+    List findFonctionsForPersonneAndEtablissement(Personne personne, Etablissement etablissement, Boolean returnFontionEnum = true) {
         List<PersonneProprietesScolarite> profils =
                 PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
         List<Fonction> fonctions = []
@@ -88,34 +88,17 @@ public class ProfilScolariteService {
                     it.proprietesScolarite.structureEnseignement?.etablissement == etablissement) {
                 Fonction fonction = it.proprietesScolarite.fonction
                 if (fonction && !fonctions.contains(fonction)) {
-                    fonctions << fonction
+                    if (returnFontionEnum) {
+                        fonctions << FonctionEnum.valueOf(fonction.code)
+                    } else {
+                        fonctions << fonction
+                    }
                 }
             }
         }
         return fonctions
     }
 
-    /**
-     * Récupère les fonctions occupées par la personne passée en paramètre, pour
-     * un établissement donné
-     * @param Personne la personne
-     * @return la liste des fonctions
-     */
-    List<FonctionEnum> findFonctionEnumsForPersonneAndEtablissement(Personne personne, Etablissement etablissement) {
-        List<PersonneProprietesScolarite> profils =
-                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
-        List<Fonction> fonctions = []
-        profils.each {
-            if (it.proprietesScolarite.etablissement == etablissement ||
-                    it.proprietesScolarite.structureEnseignement?.etablissement == etablissement) {
-                Fonction fonction = it.proprietesScolarite.fonction
-                if (fonction && !fonctions.contains(fonction)) {
-                    fonctions << FonctionEnum.valueOf(fonction.code)
-                }
-            }
-        }
-        return fonctions
-    }
 
     /**
      * Récupère les matières caractérisant la personne passée en paramètre, tout
