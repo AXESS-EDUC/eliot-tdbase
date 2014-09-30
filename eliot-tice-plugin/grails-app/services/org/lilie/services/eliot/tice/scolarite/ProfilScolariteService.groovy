@@ -84,7 +84,8 @@ public class ProfilScolariteService {
                 PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
         List<Fonction> fonctions = []
         profils.each {
-            if (it.proprietesScolarite.etablissement == etablissement) {
+            if (it.proprietesScolarite.etablissement == etablissement ||
+                    it.proprietesScolarite.structureEnseignement?.etablissement == etablissement) {
                 Fonction fonction = it.proprietesScolarite.fonction
                 if (fonction && !fonctions.contains(fonction)) {
                     fonctions << fonction
