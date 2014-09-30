@@ -1,5 +1,5 @@
 import grails.util.Environment
-import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
+import org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -32,7 +32,9 @@ import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 beans = {
     switch(Environment.current) {
         case Environment.TEST:
-            securiteSessionServiceProxy(SecuriteSessionService)
+            utilisateurService(DefaultUtilisateurService) {
+                springSecurityService = ref("springSecurityService")
+            }
             break
     }
 
