@@ -154,7 +154,8 @@ public class ProfilScolariteService {
             StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
             if (etablissement && !etablissements.contains(etablissement)) {
                 etablissements << etablissement
-            } else if (structureEnseignement && !etablissements.contains(structureEnseignement.etablissement)) {
+            }
+            if (structureEnseignement && !etablissements.contains(structureEnseignement.etablissement)) {
                 etablissements << structureEnseignement.etablissement
             }
             // todo : pour les parents

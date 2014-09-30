@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tdbase.securite.SecuriteSessionService; org.lilie.services.eliot.tdbase.RoleApplicatif; org.lilie.services.eliot.tdbase.importexport.Format; org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -43,6 +43,10 @@
 </head>
 
 <body>
+%{--<g:set var="securiteSessionServiceProxy" bean="securiteSessionServiceProxy" scope="session"/>--}%
+<%
+    def securiteSessionServiceProxy = grailsApplication.mainContext.getBean("securiteSessionServiceProxy");
+%>
 <et:container class="container">
   <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
     <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
@@ -109,11 +113,21 @@
                 title="Liste des séances"
                 params="[bcInit: true]">Séances</g:link>
       </li>
+      <li id="menu-item-etablissements">
+          <a title="Mes établissements">Établissements</a>
+      <ul>
+          <g:each in="${securiteSessionServiceProxy.etablissementList}" var="etablissement">
+              <li title="${etablissement.nomAffichage}">
+                  <a><g:radio name="etablissement.id" value="${etablissement.id}" checked="${etablissement == securiteSessionServiceProxy.currentEtablissement}"/> ${etablissement.nomAffichage}</a>
+              </li>
+          </g:each>
+      </ul>
+      </li>
     </ul>
 
   </div>
 
-  <g:if test="${SpringSecurityUtils.ifAllGranted(FonctionEnum.ENS.toRole())}">
+  <g:if test="${SpringSecurityUtils.ifAllGranted(RoleApplicatif.ENSEIGNANT.authority)}">
     <et:manuelLink fonctionEnum="${FonctionEnum.ENS}"
                    class="portal-manuel"><g:message
             code="manuels.libellelien"/></et:manuelLink>
