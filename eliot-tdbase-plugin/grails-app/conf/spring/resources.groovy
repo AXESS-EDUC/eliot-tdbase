@@ -1,3 +1,5 @@
+import grails.util.Environment
+import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 
 /*
@@ -29,5 +31,10 @@ import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 */
 
 beans = {
+    switch(Environment.current) {
+        case Environment.TEST:
+            securiteSessionServiceProxy(SecuriteSessionService)
+            break
+    }
 
 }
