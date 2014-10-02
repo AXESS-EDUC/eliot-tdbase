@@ -28,71 +28,98 @@
 
 package org.lilie.services.eliot.tdbase
 
+import grails.plugins.springsecurity.SpringSecurityService
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 
 class AccueilController {
 
-  static scope = "singleton"
+    static scope = "singleton"
 
-  FonctionService fonctionService
-  CopieService copieService
+    FonctionService fonctionService
+    CopieService copieService
+    SecuriteSessionService securiteSessionServiceProxy
+    SpringSecurityService springSecurityService
 
-  /**
-   * Accueil tdbase
-   */
-  def index() {
-    if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionEleve().authority)) {
-      redirect(controller: 'activite', action: 'index', params: [bcInit: true])
-    } else if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionResponsableEleve().authority)) {
-      redirect(controller: 'resultats', action: 'liste', params: [bcInit: true])
-    } else {
-      redirect(controller: 'dashboard', action: 'index', params: [bcInit: true])
+    /**
+     * Accueil tdbase
+     */
+    def index() {
+        if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.ELEVE.authority)) {
+            redirect(controller: 'activite', action: 'index', params: [bcInit: true])
+        } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.PARENT.authority)) {
+            redirect(controller: 'resultats', action: 'liste', params: [bcInit: true])
+        } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.ENSEIGNANT.authority)){
+            redirect(controller: 'dashboard', action: 'index', params: [bcInit: true])
+        } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.ADMINISTRATEUR.authority)) {
+            redirect(controller: 'preferences', action: 'index',params: [bcInit: true])
+        } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.SUPER_ADMINISTRATEUR.authority)) {
+            redirect(controller: 'maintenance', action: 'index', params: [bcInit: true])
+        } else {
+            redirect(controller: 'resultats', action: 'liste', params: [bcInit: true])
+        }
     }
-  }
 
-  /**
-   * Accueil activite : lien d'accès à une séance ou à un sujet via le cahier de
-   * textes ou une URL externe
-   */
-  def activite() {
-    params.bcInit = true
-    def seance = ModaliteActivite.get(params.id)
-    if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionEleve().authority)) {
-      if (!seance) {
-        flash.messageCode = "seance.nondisponible"
-        redirect(controller: 'activite', action: 'listeSeances', params: params)
-      } else if (seance.estOuverte()) {
-        redirect(controller: 'activite', action: 'travailleCopie', params: params)
-      } else {
-        Personne personne = authenticatedPersonne
-        Copie copie = copieService.getCopieForModaliteActiviteAndEleve(seance, personne)
-        redirect(controller: 'activite', action: 'visualiseCopie',id: copie.id, params: [bcInit: true])
-      }
-    } else if (SpringSecurityUtils.ifAllGranted(fonctionService.fonctionResponsableEleve().authority)) {
-      if (!seance) {
-        flash.messageCode = "seance.nondisponible"
-      } else if (seance.estOuverte()) {
-        flash.messageCode = "seance.resultats.nondisponible"
-      }
-      redirect(controller: 'resultats', action: 'liste', params: [bcInit: true])
-    } else {
-      if (!seance) {
-        flash.messageCode = "seance.nondisponible.sujet.disponible"
-        redirect(controller:'sujet', action: 'teste', id: params.sujetId, params: [bcInit: true])
-      } else {
-        redirect(controller: 'seance', action: 'listeResultats', params: params)
-      }
+    def changeEtablissement() {
+        def personne = authenticatedPersonne
+        Etablissement etablissement = Etablissement.get(params.id)
+        securiteSessionServiceProxy.onChangeEtablissement(personne, etablissement)
+        springSecurityService.reauthenticate(securiteSessionServiceProxy.login)
+        index()
     }
-  }
+
+    def changeRoleApplicatif() {
+        def personne = authenticatedPersonne
+        RoleApplicatif roleApplicatif = RoleApplicatif.valueOf(params.roleApplicatif)
+        securiteSessionServiceProxy.onChangeRoleApplicatif(personne,roleApplicatif)
+        springSecurityService.reauthenticate(securiteSessionServiceProxy.login)
+        index()
+    }
+
+    /**
+     * Accueil activite : lien d'accès à une séance ou à un sujet via le cahier de
+     * textes ou une URL externe
+     */
+    def activite() {
+        params.bcInit = true
+        def seance = ModaliteActivite.get(params.id)
+        if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.ELEVE.authority)) {
+            if (!seance) {
+                flash.messageCode = "seance.nondisponible"
+                redirect(controller: 'activite', action: 'listeSeances', params: params)
+            } else if (seance.estOuverte()) {
+                redirect(controller: 'activite', action: 'travailleCopie', params: params)
+            } else {
+                Personne personne = authenticatedPersonne
+                Copie copie = copieService.getCopieForModaliteActiviteAndEleve(seance, personne)
+                redirect(controller: 'activite', action: 'visualiseCopie', id: copie.id, params: [bcInit: true])
+            }
+        } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.PARENT.authority)) {
+            if (!seance) {
+                flash.messageCode = "seance.nondisponible"
+            } else if (seance.estOuverte()) {
+                flash.messageCode = "seance.resultats.nondisponible"
+            }
+            redirect(controller: 'resultats', action: 'liste', params: [bcInit: true])
+        } else {
+            if (!seance) {
+                flash.messageCode = "seance.nondisponible.sujet.disponible"
+                redirect(controller: 'sujet', action: 'teste', id: params.sujetId, params: [bcInit: true])
+            } else {
+                redirect(controller: 'seance', action: 'listeResultats', params: params)
+            }
+        }
+    }
 
 /**
  * Hack pour requête Jmol
  */
-  def ignore() {
-    render("Canceled")
-  }
+    def ignore() {
+        render("Canceled")
+    }
 
 
 }

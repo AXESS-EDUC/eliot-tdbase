@@ -43,7 +43,6 @@
 </head>
 
 <body>
-%{--<g:set var="securiteSessionServiceProxy" bean="securiteSessionServiceProxy" scope="session"/>--}%
 <%
     SecuriteSessionService securiteSessionServiceProxy = grailsApplication.mainContext.getBean("securiteSessionServiceProxy");
 %>
@@ -113,34 +112,12 @@
                         title="Liste des séances"
                         params="[bcInit: true]">Séances</g:link>
             </li>
-            <li id="menu-item-etablissements">
-                <a title="Mes établissements">Établissements</a>
-                <ul>
-                    <g:each in="${securiteSessionServiceProxy.etablissementList}" var="etablissement">
-                        <li title="${etablissement.nomAffichage}">
-                            <a><g:radio name="etablissement.id" value="${etablissement.id}"
-                                        checked="${etablissement == securiteSessionServiceProxy.currentEtablissement}"/> ${etablissement.nomAffichage}</a>
-                        </li>
-                    </g:each>
-                </ul>
-            </li>
+            <g:render template="/menuItemEtablissements" model="[securiteSessionServiceProxy:securiteSessionServiceProxy]"></g:render>
         </ul>
 
     </div>
 
-    <g:if test="${SpringSecurityUtils.ifAllGranted(RoleApplicatif.ENSEIGNANT.authority)}">
-        <et:manuelLink fonctionEnum="${FonctionEnum.ENS}"
-                       class="portal-manuel"><g:message
-                code="manuels.libellelien"/></et:manuelLink>
-    </g:if>
-    <sec:ifLoggedIn>
-        <div style="float:right">Rôle <g:select name="currentRoleApplicatif.authority" from="${securiteSessionServiceProxy.roleApplicatifList}"
-                  optionKey="code" value="${securiteSessionServiceProxy.currentRoleApplicatif.code}"
-                  valueMessagePrefix="preferences.role"
-                  /></div>
-    </sec:ifLoggedIn>
-
-
+    <g:render template="/roleApplicatifSelection" model="[authority:RoleApplicatif.ENSEIGNANT.authority,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>
 
     <g:layoutBody/>
     <r:script>

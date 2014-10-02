@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tdbase.securite.SecuriteSessionService; org.lilie.services.eliot.tdbase.RoleApplicatif" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -44,6 +45,9 @@
 </head>
 
 <body>
+<%
+    SecuriteSessionService securiteSessionServiceProxy = grailsApplication.mainContext.getBean("securiteSessionServiceProxy");
+%>
 <et:container class="container">
   <div class="portal-menu">
     <ul id="portal-hz-menu">
@@ -53,9 +57,14 @@
       <li>
         <g:link title="Maintenance TD Base" controller="maintenance" params="[bcInit: true]">Maintenance</g:link>
       </li>
+      <g:render template="/menuItemEtablissements" model="[securiteSessionServiceProxy:securiteSessionServiceProxy]"></g:render>
     </ul>
   </div>
-  <g:layoutBody/>
+
+  <g:render template="/roleApplicatifSelection" model="[authority: RoleApplicatif.SUPER_ADMINISTRATEUR.authority,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>
+
+
+    <g:layoutBody/>
   <r:script>
     $('form[method="post"]').attr('enctype', 'multipart/form-data');
   </r:script>

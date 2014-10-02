@@ -28,7 +28,7 @@
 
 
 
-<%@ page import="org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tdbase.RoleApplicatif; org.lilie.services.eliot.tdbase.securite.SecuriteSessionService; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
 <!doctype html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -46,6 +46,9 @@
 </head>
 
 <body>
+<%
+    SecuriteSessionService securiteSessionServiceProxy = grailsApplication.mainContext.getBean("securiteSessionServiceProxy");
+%>
 <et:container class="container">
   <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
     <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
@@ -56,18 +59,16 @@
         <g:link action="liste" controller="resultats" params="[bcInit: true]"
                 title="Liste des résultats">Résultats</g:link>
       </li>
+      <g:render template="/menuItemEtablissements" model="[securiteSessionServiceProxy:securiteSessionServiceProxy]"></g:render>
     </ul>
   </div>
-  <et:manuelLink fonctionEnum="${FonctionEnum.PERS_REL_ELEVE}"
-                 class="portal-manuel"><g:message
-          code="manuels.libellelien"/></et:manuelLink>
+  <g:render template="/roleApplicatifSelection" model="[authority: RoleApplicatif.PARENT.authority,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>
+
   <g:layoutBody/>
   <r:script>
     $('form[method="post"]').attr('enctype', 'multipart/form-data');
   </r:script>
 </et:container>
-
 <r:layoutResources/>
-
 </body>
 </html>
