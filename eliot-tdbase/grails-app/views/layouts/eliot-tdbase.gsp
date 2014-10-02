@@ -33,111 +33,119 @@
 <!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"><!--<![endif]-->
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title><g:layoutTitle default="TDbase"/></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <r:require module="eliot-tdbase"/>
-  <r:layoutResources/>
-  <g:layoutHead/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title><g:layoutTitle default="TDbase"/></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <r:require module="eliot-tdbase"/>
+    <r:layoutResources/>
+    <g:layoutHead/>
 </head>
 
 <body>
 %{--<g:set var="securiteSessionServiceProxy" bean="securiteSessionServiceProxy" scope="session"/>--}%
 <%
-    def securiteSessionServiceProxy = grailsApplication.mainContext.getBean("securiteSessionServiceProxy");
+    SecuriteSessionService securiteSessionServiceProxy = grailsApplication.mainContext.getBean("securiteSessionServiceProxy");
 %>
 <et:container class="container">
-  <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
-    <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
-  </g:if>
-  <div class="portal-menu">
-    <ul id="portal-hz-menu">
-      <li id="menu-item-accueil">
-        <g:link controller="dashboard" action="index"
-                title="Accueil"
-                params="[bcInit: true]">Accueil TD Base</g:link>
-      </li>
-      <li id="menu-item-sujets">
-        <a title="Sujets">Sujets</a>
-        <ul>
-          <li title="Nouveau">
-            <g:link controller="sujet" action="nouveau"
-                    title="Créer un nouveau sujet"
-                    params="[bcInit: true]">Nouveau</g:link>
-          </li>
-          <li title="Rechercher">
-            <g:link controller="sujet" action="recherche"
-                    title="Rechercher des sujets"
-                    params="[bcInit: true, patternAuteur: message(code: 'eliot.label.me')]">Rechercher</g:link>
-          </li>
-          <li title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}">
-            <g:link controller="sujet"
-                    action="editeImportSujetNatifTdBase"
-                    title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}"
-                    params="[bcInit: true, format: Format.NATIF_JSON]">
-              <g:message code="importexport.NATIF_JSON.action.import.title"/>
-            </g:link>
-          </li>
+    <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
+        <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
+    </g:if>
+    <div class="portal-menu">
+        <ul id="portal-hz-menu">
+            <li id="menu-item-accueil">
+                <g:link controller="dashboard" action="index"
+                        title="Accueil"
+                        params="[bcInit: true]">Accueil TD Base</g:link>
+            </li>
+            <li id="menu-item-sujets">
+                <a title="Sujets">Sujets</a>
+                <ul>
+                    <li title="Nouveau">
+                        <g:link controller="sujet" action="nouveau"
+                                title="Créer un nouveau sujet"
+                                params="[bcInit: true]">Nouveau</g:link>
+                    </li>
+                    <li title="Rechercher">
+                        <g:link controller="sujet" action="recherche"
+                                title="Rechercher des sujets"
+                                params="[bcInit: true, patternAuteur: message(code: 'eliot.label.me')]">Rechercher</g:link>
+                    </li>
+                    <li title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}">
+                        <g:link controller="sujet"
+                                action="editeImportSujetNatifTdBase"
+                                title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}"
+                                params="[bcInit: true, format: Format.NATIF_JSON]">
+                            <g:message code="importexport.NATIF_JSON.action.import.title"/>
+                        </g:link>
+                    </li>
+                </ul>
+            </li>
+            <li id="menu-item-contributions">
+                <a title="Mes items">Items</a>
+                <ul>
+                    <li title="Nouvelle">
+                        <g:link controller="question"
+                                action="nouvelle"
+                                title="Créer un nouvel item"
+                                params="[bcInit: true]">
+                            Nouveau
+                        </g:link>
+                    </li>
+                    <li title="Rechercher">
+                        <g:link controller="question" action="recherche"
+                                title="Rechercher des items"
+                                params="[bcInit: true, patternAuteur: message(code: 'eliot.label.me')]">Rechercher</g:link>
+
+                    </li>
+                    <li title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}">
+                        <g:link controller="question"
+                                action="editeImportQuestionNatifTdBase"
+                                title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}"
+                                params="[bcInit: true, format: Format.NATIF_JSON]">
+                            <g:message code="importexport.NATIF_JSON.action.import.title"/>
+                        </g:link>
+                    </li>
+                </ul>
+            </li>
+            <li id="menu-item-seances">
+                <g:link controller="seance" action="liste"
+                        title="Liste des séances"
+                        params="[bcInit: true]">Séances</g:link>
+            </li>
+            <li id="menu-item-etablissements">
+                <a title="Mes établissements">Établissements</a>
+                <ul>
+                    <g:each in="${securiteSessionServiceProxy.etablissementList}" var="etablissement">
+                        <li title="${etablissement.nomAffichage}">
+                            <a><g:radio name="etablissement.id" value="${etablissement.id}"
+                                        checked="${etablissement == securiteSessionServiceProxy.currentEtablissement}"/> ${etablissement.nomAffichage}</a>
+                        </li>
+                    </g:each>
+                </ul>
+            </li>
         </ul>
-      </li>
-      <li id="menu-item-contributions">
-        <a title="Mes items">Items</a>
-        <ul>
-          <li title="Nouvelle">
-            <g:link controller="question"
-                    action="nouvelle"
-                    title="Créer un nouvel item"
-                    params="[bcInit: true]">
-              Nouveau
-            </g:link>
-          </li>
-          <li title="Rechercher">
-            <g:link controller="question" action="recherche"
-                    title="Rechercher des items"
-                    params="[bcInit: true, patternAuteur: message(code: 'eliot.label.me')]">Rechercher</g:link>
 
-          </li>
-          <li title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}">
-            <g:link controller="question"
-                    action="editeImportQuestionNatifTdBase"
-                    title="${g.message(code: 'importexport.NATIF_JSON.action.import.title')}"
-                    params="[bcInit: true, format: Format.NATIF_JSON]">
-              <g:message code="importexport.NATIF_JSON.action.import.title"/>
-            </g:link>
-          </li>
-        </ul>
-      </li>
-      <li id="menu-item-seances">
-        <g:link controller="seance" action="liste"
-                title="Liste des séances"
-                params="[bcInit: true]">Séances</g:link>
-      </li>
-      <li id="menu-item-etablissements">
-          <a title="Mes établissements">Établissements</a>
-      <ul>
-          <g:each in="${securiteSessionServiceProxy.etablissementList}" var="etablissement">
-              <li title="${etablissement.nomAffichage}">
-                  <a><g:radio name="etablissement.id" value="${etablissement.id}" checked="${etablissement == securiteSessionServiceProxy.currentEtablissement}"/> ${etablissement.nomAffichage}</a>
-              </li>
-          </g:each>
-      </ul>
-      </li>
-    </ul>
+    </div>
 
-  </div>
-
-  <g:if test="${SpringSecurityUtils.ifAllGranted(RoleApplicatif.ENSEIGNANT.authority)}">
-    <et:manuelLink fonctionEnum="${FonctionEnum.ENS}"
-                   class="portal-manuel"><g:message
-            code="manuels.libellelien"/></et:manuelLink>
-  </g:if>
+    <g:if test="${SpringSecurityUtils.ifAllGranted(RoleApplicatif.ENSEIGNANT.authority)}">
+        <et:manuelLink fonctionEnum="${FonctionEnum.ENS}"
+                       class="portal-manuel"><g:message
+                code="manuels.libellelien"/></et:manuelLink>
+    </g:if>
+    <sec:ifLoggedIn>
+        <div style="float:right">Rôle <g:select name="currentRoleApplicatif.authority" from="${securiteSessionServiceProxy.roleApplicatifList}"
+                  optionKey="code" value="${securiteSessionServiceProxy.currentRoleApplicatif.code}"
+                  valueMessagePrefix="preferences.role"
+                  /></div>
+    </sec:ifLoggedIn>
 
 
-  <g:layoutBody/>
-  <r:script>
-    $('form[method="post"]').attr('enctype', 'multipart/form-data');
-  </r:script>
+
+    <g:layoutBody/>
+    <r:script>
+        $('form[method="post"]').attr('enctype', 'multipart/form-data');
+    </r:script>
 </et:container>
 <r:layoutResources/>
 </body>
