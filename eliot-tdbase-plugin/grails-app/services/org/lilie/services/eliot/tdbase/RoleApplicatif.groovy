@@ -16,4 +16,13 @@ public enum RoleApplicatif implements GrantedAuthority{
     String getAuthority() {
         return "ROLE_${name()}"
     }
+
+    /**
+     *
+     * @return the name of the Role applicatif
+     */
+    String getCode() {
+        name()
+    }
+
 }
