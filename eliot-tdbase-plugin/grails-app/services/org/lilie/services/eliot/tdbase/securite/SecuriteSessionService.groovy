@@ -17,6 +17,7 @@ class SecuriteSessionService {
     static proxy = true
     static transactional = false
 
+    String login
     ProfilScolariteService profilScolariteService
     PreferenceEtablissementService preferenceEtablissementService
 
@@ -34,6 +35,7 @@ class SecuriteSessionService {
     def initialiseSecuriteSessionForUtilisateur(Utilisateur utilisateur) {
         if (!personneId) {
             Personne.withTransaction {
+                login = utilisateur.login
                 // initialise personneId
                 personneId = utilisateur.personneId
                 // initialise la lsite d'établissement
@@ -56,6 +58,9 @@ class SecuriteSessionService {
         if (personne.id != personneId) {
             throw new BadPersonnSecuritySessionException()
         }
+        if (!etablissementList.contains(newCurrentEtablissement)) {
+            throw new BadEtablissementSecuritySessionException()
+        }
         // mise à jour du current etablissement
         currentEtablissement = newCurrentEtablissement
         // mise à jour du current preference etablissement
@@ -68,6 +73,21 @@ class SecuriteSessionService {
         initialiseRoleApplicatifListForCurrentEtablissement(personne)
         // mise à jour du current role
         currentRoleApplicatif = roleApplicatifList?.first()
+    }
+
+    /**
+     * Met à jour l'objet Securite Session suite à un changement de rôle applicatif
+     * @param personne la personne déclenchant le changement
+     * @param newRoleAppliatif le nouveau rôle applicatif
+     */
+    def onChangeRoleApplicatif(Personne personne, RoleApplicatif newRoleAppliatif) {
+        if (personne.id != personneId) {
+            throw new BadPersonnSecuritySessionException()
+        }
+        if (!roleApplicatifList.contains(newRoleAppliatif)) {
+            throw new BadRoleApplicatifSecuritySessionException()
+        }
+        currentRoleApplicatif = newRoleAppliatif
     }
 
     /**
