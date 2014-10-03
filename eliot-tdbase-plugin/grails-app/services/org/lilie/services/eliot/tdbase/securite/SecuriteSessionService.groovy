@@ -58,7 +58,7 @@ class SecuriteSessionService {
         if (personne.id != personneId) {
             throw new BadPersonnSecuritySessionException()
         }
-        if (!etablissementList.contains(newCurrentEtablissement)) {
+        if (!etablissementList?.contains(newCurrentEtablissement)) {
             throw new BadEtablissementSecuritySessionException()
         }
         // mise à jour du current etablissement
@@ -84,7 +84,7 @@ class SecuriteSessionService {
         if (personne.id != personneId) {
             throw new BadPersonnSecuritySessionException()
         }
-        if (!roleApplicatifList.contains(newRoleAppliatif)) {
+        if (!roleApplicatifList?.contains(newRoleAppliatif)) {
             throw new BadRoleApplicatifSecuritySessionException()
         }
         currentRoleApplicatif = newRoleAppliatif
@@ -96,13 +96,19 @@ class SecuriteSessionService {
      */
     def initialiseRoleApplicatifListForCurrentEtablissement(Personne personne) {
         roleApplicatifList = new TreeSet<RoleApplicatif>()
-        if (currentEtablissement != null) {
-            def fonctions = profilScolariteService.findFonctionsForPersonneAndEtablissement(personne, currentEtablissement)
-            MappingFonctionRole mapping = currentPreferenceEtablissement.mappingFonctionRoleAsMap()
-            fonctions.each { FonctionEnum fct ->
-                roleApplicatifList.addAll(mapping.getRolesForFonction(fct))
+        // test si la personne est responsable eleve
+        if (profilScolariteService.personneEstResponsableEleve(personne)) {
+            roleApplicatifList.add(RoleApplicatif.PARENT)
+        } else { // sinon cherche en fonction des profils
+            if (currentEtablissement != null) {
+                def fonctions = profilScolariteService.findFonctionsForPersonneAndEtablissement(personne, currentEtablissement)
+                MappingFonctionRole mapping = currentPreferenceEtablissement.mappingFonctionRoleAsMap()
+                fonctions.each { FonctionEnum fct ->
+                    roleApplicatifList.addAll(mapping.getRolesForFonction(fct))
+                }
             }
         }
+
     }
 
 }
