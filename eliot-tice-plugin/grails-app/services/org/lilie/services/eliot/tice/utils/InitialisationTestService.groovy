@@ -36,6 +36,9 @@ import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.annuaire.Personne
 
+/**
+ * @deprecated use BoostrapService instead
+ */
 class InitialisationTestService {
 
 

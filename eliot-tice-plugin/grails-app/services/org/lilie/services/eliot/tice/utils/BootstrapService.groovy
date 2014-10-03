@@ -448,21 +448,24 @@ class BootstrapService {
 
   }
 
+  Personne enseignant1
+  Personne enseignant2
+
   private def initialiseProfilsScolaritesEnseignant1EnvDevelopment() {
     Utilisateur ens1 = utilisateurService.findUtilisateur(UTILISATEUR_1_LOGIN)
-    Personne pers1 = Personne.get(ens1.personneId)
-    if (!profilScolariteService.findProprietesScolaritesForPersonne(pers1)) {
+    enseignant1 = Personne.get(ens1.personneId)
+    if (!profilScolariteService.findProprietesScolaritesForPersonne(enseignant1)) {
       def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEnseignant())
-      addProprietesScolariteToPersonne(props, pers1)
+      addProprietesScolariteToPersonne(props, enseignant1)
     }
   }
 
     private def initialiseProfilsScolaritesEnseignant2EnvDevelopment() {
         Utilisateur ens2 = utilisateurService.findUtilisateur(UTILISATEUR_2_LOGIN)
-        Personne pers2 = Personne.get(ens2.personneId)
-        if (!profilScolariteService.findProprietesScolaritesForPersonne(pers2)) {
+        enseignant2 = Personne.get(ens2.personneId)
+        if (!profilScolariteService.findProprietesScolaritesForPersonne(enseignant2)) {
             def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEnseignant())
-            addProprietesScolariteToPersonne(props, pers2)
+            addProprietesScolariteToPersonne(props, enseignant2)
         }
     }
 
@@ -521,14 +524,17 @@ class BootstrapService {
 
   }
 
+
+  Personne eleve1
+  Personne eleve2
+
   private def initialiseProfilsScolaritesEleve1EnvDevelopment() {
     Utilisateur elv1 = utilisateurService.findUtilisateur(ELEVE_1_LOGIN)
-    Personne pers1 = Personne.get(elv1.personneId)
-    Niveau niveauPrem = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
+    eleve1 = Personne.get(elv1.personneId)
 
-    if (!profilScolariteService.findProprietesScolaritesForPersonne(pers1)) {
+    if (!profilScolariteService.findProprietesScolaritesForPersonne(eleve1)) {
       def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEleve())
-      addProprietesScolariteToPersonne(props, pers1)
+      addProprietesScolariteToPersonne(props, eleve1)
     }
   }
 
@@ -539,14 +545,15 @@ class BootstrapService {
           ELEVE_2_NOM,
           ELEVE_2_PRENOM)
       Utilisateur elv2 = utilisateurService.findUtilisateur(ELEVE_2_LOGIN)
-      Personne pers = Personne.get(elv2.personneId)
-      Niveau niveauPrem = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_1")
+      eleve2 = Personne.get(elv2.personneId)
 
       def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEleve())
-      addProprietesScolariteToPersonne(props, pers)
+      addProprietesScolariteToPersonne(props, eleve2)
 
     }
   }
+
+  Personne parent1
 
   private def initialiseRespEleve1EnvDevelopment() {
     if (!utilisateurService.findUtilisateur(RESP_1_LOGIN)) {
@@ -555,13 +562,9 @@ class BootstrapService {
           RESP_1_NOM,
           RESP_1_PRENOM)
       Utilisateur resp1 = utilisateurService.findUtilisateur(RESP_1_LOGIN)
-      Personne pers = Personne.get(resp1.personneId)
-      Utilisateur elv1 = utilisateurService.findUtilisateur(ELEVE_1_LOGIN)
-      Personne perselv1 = Personne.get(elv1.personneId)
-      Utilisateur elv2 = utilisateurService.findUtilisateur(ELEVE_2_LOGIN)
-      Personne perselv2 = Personne.get(elv2.personneId)
-      createResponsableEleve(pers, perselv1)
-      createResponsableEleve(pers, perselv2)
+      parent1 = Personne.get(resp1.personneId)
+      createResponsableEleve(parent1, eleve1)
+      createResponsableEleve(parent1, eleve2)
 
     }
   }

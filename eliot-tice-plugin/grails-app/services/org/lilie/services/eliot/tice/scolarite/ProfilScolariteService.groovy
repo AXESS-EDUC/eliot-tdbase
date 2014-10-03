@@ -145,22 +145,29 @@ public class ProfilScolariteService {
      * @return la liste des établissements
      */
     List<Etablissement> findEtablissementsForPersonne(Personne personne) {
-        List<PersonneProprietesScolarite> profils =
-                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
-        List<Etablissement> etablissements = []
-        profils.each {
-            // pour les personnels edu
-            Etablissement etablissement = it.proprietesScolarite.etablissement
-            StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
-            if (etablissement && !etablissements.contains(etablissement)) {
-                etablissements << etablissement
+        Set<Etablissement> etablissements = new HashSet<Etablissement>()
+        // test d'abord si la personne est responsable eleves
+        List<Personne> eleves = findElevesForResponsable(personne)
+        if (eleves) { // si oui, on recupere les etablissements des enfants associés
+            eleves.each {
+                etablissements.addAll(findEtablissementsForPersonne(it))
             }
-            if (structureEnseignement && !etablissements.contains(structureEnseignement.etablissement)) {
-                etablissements << structureEnseignement.etablissement
+        } else { // sinon on parcours les profils
+            List<PersonneProprietesScolarite> profils =
+                    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+
+            profils.each {
+                Etablissement etablissement = it.proprietesScolarite.etablissement
+                StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
+                if (etablissement) {
+                    etablissements << etablissement
+                }
+                if (structureEnseignement) {
+                    etablissements << structureEnseignement.etablissement
+                }
             }
-            // todo : pour les parents
         }
-        return etablissements
+        etablissements as List<Etablissement>
     }
 
     /**
@@ -251,11 +258,13 @@ public class ProfilScolariteService {
      * @param eleve l'élève
      * @return true si la personne est bien responsable de l'eleve
      */
-    boolean personneEstResponsableEleve(Personne personne, Personne eleve) {
+    boolean personneEstResponsableEleve(Personne personne, Personne eleve = null) {
         def criteria = ResponsableEleve.createCriteria()
         def countRespEleves = criteria.count {
             eq 'personne', personne
-            eq 'eleve', eleve
+            if (eleve) {
+                eq 'eleve', eleve
+            }
             eq 'estActive', true
         }
         return countRespEleves > 0

@@ -83,6 +83,7 @@ class SecuriteSessionServiceSpec extends Specification {
         def preferenceEtablissement = Mock(PreferenceEtablissement) {
             mappingFonctionRoleAsMap() >> mappingFonctionRole
         }
+        securiteSessionService.etablissementList = [etab]
 
         and:" une personne déclenchant le changement d'établissement"
         def personne = Mock(Personne) {

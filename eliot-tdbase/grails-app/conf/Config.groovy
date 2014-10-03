@@ -154,6 +154,7 @@ grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 //
 grails.plugins.springsecurity.interceptUrlMap = [
     '/': ['IS_AUTHENTICATED_FULLY'],
+    '/accueil/**':['IS_AUTHENTICATED_FULLY'],
     '/p/**': ['IS_AUTHENTICATED_FULLY'],
     '/dashboard/**': [
         "${RoleApplicatif.ENSEIGNANT.authority}",
@@ -267,38 +268,6 @@ environments {
   development {
     eliot.listes.structures.maxrecherche = 3
     eliot.pages.container.forceDimensions = true
-    grails.plugins.springsecurity.interceptUrlMap = [
-            '/': ['IS_AUTHENTICATED_FULLY'],
-            '/p/**': ['IS_AUTHENTICATED_FULLY'],
-            '/dashboard/**': [
-                    "${RoleApplicatif.ENSEIGNANT.authority}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/sujet/**': [
-                    "${RoleApplicatif.ENSEIGNANT.authority}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/question/**': [
-                    "${RoleApplicatif.ENSEIGNANT.authority}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/seance/**': [
-                    "${RoleApplicatif.ENSEIGNANT.authority}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/activite/**': [
-                    "${RoleApplicatif.ELEVE.authority}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/resultats/**': [
-                    "${RoleApplicatif.PARENT.authority}",
-                    'IS_AUTHENTICATED_FULLY'
-            ],
-            '/preferences/**': [
-                    "${RoleApplicatif.ADMINISTRATEUR.authority}",
-                    'IS_AUTHENTICATED_FULLY'
-            ]
-    ]
 
     grails.plugins.springsecurity.cas.active = false
     eliot.tdbase.nomApplication = "eliot-tdbase"

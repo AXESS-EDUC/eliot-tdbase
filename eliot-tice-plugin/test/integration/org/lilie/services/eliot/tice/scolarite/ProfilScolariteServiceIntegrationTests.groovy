@@ -39,52 +39,69 @@ import org.lilie.services.eliot.tice.utils.InitialisationTestService
  */
 class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
-  InitialisationTestService initialisationTestService
+  BootstrapService bootstrapService
   ProfilScolariteService profilScolariteService
   FonctionService fonctionService
 
-  Utilisateur enseignant1
 
   void setUp() {
-    enseignant1 = initialisationTestService.enseignant1
+      bootstrapService.bootstrapJeuDeTestDevDemo()
   }
 
   void testFindProprietesScolaritesForPersonne() {
-    List<ProprietesScolarite> props = profilScolariteService.findProprietesScolaritesForPersonne(enseignant1.personne)
+    List<ProprietesScolarite> props = profilScolariteService.findProprietesScolaritesForPersonne(bootstrapService.enseignant1)
     assertEquals("pas le bon de nombre de proprietes", 7, props.size())
   }
 
   void testFindFonctions() {
-    List<Fonction> fonctions = profilScolariteService.findFonctionsForPersonne(enseignant1.personne)
+    List<Fonction> fonctions = profilScolariteService.findFonctionsForPersonne(bootstrapService.enseignant1)
     assertEquals("pas le bon de nombre de fonction", 1, fonctions.size())
     assertEquals("pas la bonne fonction", fonctionService.fonctionEnseignant(), fonctions.last())
   }
 
   void testFindProprietesScolaritesWithStructureForPersonne() {
-    List<ProprietesScolarite> props = profilScolariteService.findProprietesScolariteWithStructureForPersonne(enseignant1.personne)
+    List<ProprietesScolarite> props = profilScolariteService.findProprietesScolariteWithStructureForPersonne(bootstrapService.enseignant1)
     assertEquals("pas le bon de nombre de props", 4, props.size())
   }
 
   void testFindNiveauxForPersonne() {
-    def niveaux = profilScolariteService.findNiveauxForPersonne(enseignant1.personne)
+    def niveaux = profilScolariteService.findNiveauxForPersonne(bootstrapService.enseignant1)
     assertEquals(3, niveaux.size())
-    assertTrue("Niveau 6ème pas trouvé",niveaux.contains(bootstrapservice.nivSixieme))
-    assertTrue("Niveau terminale pas trouvé",niveaux.contains(bootstrapservice.nivTerminale))
-    assertTrue("Niveau 1ère pas trouvé",niveaux.contains(bootstrapservice.nivPremiere) )
+    assertTrue("Niveau 6ème pas trouvé",niveaux.contains(bootstrapService.nivSixieme))
+    assertTrue("Niveau terminale pas trouvé",niveaux.contains(bootstrapService.nivTerminale))
+    assertTrue("Niveau 1ère pas trouvé",niveaux.contains(bootstrapService.nivPremiere) )
 
   }
 
 
   void testFindEtablissementsForPersonne() {
-      def etabs = profilScolariteService.findEtablissementsForPersonne(enseignant1.personne)
+      // test pour un enseignant
+      def etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.enseignant1)
       assertEquals(2, etabs.size())
-      assertTrue("college pas trouvé",etabs.contains(bootstrapservice.leCollege))
-      assertTrue("lycee pas trouvé",etabs.contains(bootstrapservice.leLycee))
+      assertTrue("college pas trouvé",etabs.contains(bootstrapService.leCollege))
+      assertTrue("lycee pas trouvé",etabs.contains(bootstrapService.leLycee))
 
+      // test sur un eleve
+      etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.eleve1)
+      assertEquals(2, etabs.size())
+      assertTrue("college pas trouvé",etabs.contains(bootstrapService.leCollege))
+      assertTrue("lycee pas trouvé",etabs.contains(bootstrapService.leLycee))
+
+      // test sur un parent
+      etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.parent1)
+      assertEquals(2, etabs.size())
+      assertTrue("college pas trouvé",etabs.contains(bootstrapService.leCollege))
+      assertTrue("lycee pas trouvé",etabs.contains(bootstrapService.leLycee))
+    }
+
+    void testPersonneEstResponsableEleve() {
+
+        assertTrue(profilScolariteService.personneEstResponsableEleve(bootstrapService.parent1))
+        assertTrue(profilScolariteService.personneEstResponsableEleve(bootstrapService.parent1, bootstrapService.eleve1))
+
+        assertFalse(profilScolariteService.personneEstResponsableEleve(bootstrapService.enseignant1))
+        assertFalse(profilScolariteService.personneEstResponsableEleve(bootstrapService.parent1, bootstrapService.enseignant1))
     }
 
 
-  private BootstrapService getBootstrapservice() {
-    initialisationTestService.bootstrapService
-  }
 }
