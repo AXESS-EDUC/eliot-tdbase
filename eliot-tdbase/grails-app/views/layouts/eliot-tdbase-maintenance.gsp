@@ -52,13 +52,13 @@
   <div class="portal-menu">
     <ul id="portal-hz-menu">
       <li>
-          <g:link title="Préférences" controller="preferences" params="[bcInit: true]">Préférences</g:link>
+        <g:link title="Maintenance TD Base" controller="maintenance" params="[bcInit: true]">Maintenance</g:link>
       </li>
       <g:render template="/menuItemEtablissements" model="[securiteSessionServiceProxy:securiteSessionServiceProxy]"></g:render>
     </ul>
   </div>
 
-  <g:render template="/roleApplicatifSelection" model="[authority: RoleApplicatif.ADMINISTRATEUR.authority,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>
+  <g:render template="/roleApplicatifSelection" model="[authority: RoleApplicatif.SUPER_ADMINISTRATEUR.authority,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>
 
 
     <g:layoutBody/>
