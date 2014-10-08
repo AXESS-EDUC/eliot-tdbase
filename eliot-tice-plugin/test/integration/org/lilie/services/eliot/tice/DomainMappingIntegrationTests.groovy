@@ -31,14 +31,6 @@
 
 package org.lilie.services.eliot.tice
 
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.lilie.services.eliot.tice.scolarite.Fonction
-import org.lilie.services.eliot.tice.scolarite.FonctionService
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
-import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
-import org.lilie.services.eliot.tice.utils.InitialisationTestService
-import org.lilie.services.eliot.tice.scolarite.Periode
-import org.codehaus.groovy.grails.commons.GrailsApplication
 
 /**
  *  Test la classe ProfilScolariteService

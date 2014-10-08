@@ -31,15 +31,15 @@ import grails.plugin.spock.IntegrationSpec
 import org.lilie.services.eliot.competence.Competence
 import org.lilie.services.eliot.competence.ReferentielBootstrapService
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
-import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.utils.BootstrapService
 
 /**
  * @author John Tranier
  */
 class QuestionCompetenceServiceIntegrationSpec extends IntegrationSpec {
 
-  TdBaseInitialisationTestService tdBaseInitialisationTestService
+  BootstrapService bootstrapService
   ReferentielBootstrapService referentielBootstrapService
   QuestionService questionService
   QuestionCompetenceService questionCompetenceService
@@ -47,7 +47,8 @@ class QuestionCompetenceServiceIntegrationSpec extends IntegrationSpec {
   Personne personne1
 
   def setup() {
-    personne1 = tdBaseInitialisationTestService.utilisateur1.personne
+    bootstrapService.bootstrapForIntegrationTest()
+    personne1 = bootstrapService.enseignant1
     referentielBootstrapService.initialiseReferentielTest()
   }
 

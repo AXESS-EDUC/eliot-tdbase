@@ -35,8 +35,8 @@ import org.lilie.services.eliot.competence.DomaineDto
 import org.lilie.services.eliot.competence.ReferentielDto
 import org.lilie.services.eliot.competence.ReferentielService
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
-import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.utils.BootstrapService
 
 /**
  * @author John Tranier
@@ -45,14 +45,15 @@ class SujetIntegrationSpec extends IntegrationSpec {
 
   Personne personne1
 
-  TdBaseInitialisationTestService tdBaseInitialisationTestService
+  BootstrapService bootstrapService
   SujetService sujetService
   QuestionService questionService
   ReferentielService referentielService
   QuestionCompetenceService questionCompetenceService
 
   def setup() {
-    personne1 = tdBaseInitialisationTestService.utilisateur1.personne
+    bootstrapService.bootstrapForIntegrationTest()
+    personne1 = bootstrapService.enseignant1
 
     importeReferentielDeTest()
   }

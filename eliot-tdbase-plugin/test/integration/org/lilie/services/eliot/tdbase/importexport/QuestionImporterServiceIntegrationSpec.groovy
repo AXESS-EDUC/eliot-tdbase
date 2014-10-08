@@ -18,7 +18,6 @@ import org.lilie.services.eliot.tdbase.importexport.dto.QuestionCompositeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.QuestionDto
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
-import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.AttachementDto
 import org.lilie.services.eliot.tice.AttachementService
@@ -33,7 +32,6 @@ import org.lilie.services.eliot.tice.utils.BootstrapService
  */
 class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
 
-  TdBaseInitialisationTestService tdBaseInitialisationTestService
   SujetService sujetService
   QuestionService questionService
   QuestionImporterService questionImporterService
@@ -44,8 +42,8 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
   Personne personne
 
   def setup() {
-    personne = tdBaseInitialisationTestService.utilisateur1.personne
     bootstrapService.bootstrapForIntegrationTest()
+    personne = bootstrapService.enseignant1
 
     assert Matiere.first()
     assert Niveau.first()

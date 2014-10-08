@@ -29,10 +29,9 @@
 package org.lilie.services.eliot.tdbase.preferences
 
 import grails.plugin.spock.IntegrationSpec
-import org.lilie.services.eliot.tdbase.RoleApplicatif
-import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
+import org.lilie.services.eliot.tice.utils.BootstrapService
 
 /**
  * @author Franck Silvestre
@@ -42,13 +41,13 @@ class PreferenceEtablissementIntegrationSpec extends IntegrationSpec {
     Personne personne1
     Etablissement etablissement
 
-    TdBaseInitialisationTestService tdBaseInitialisationTestService
+    BootstrapService bootstrapService
     PreferenceEtablissementService preferenceEtablissementService
 
     def setup() {
-        tdBaseInitialisationTestService.bootstrapForIntegrationTest()
-        personne1 = tdBaseInitialisationTestService.utilisateur1.personne
-        etablissement = tdBaseInitialisationTestService.leLycee
+        bootstrapService.bootstrapForIntegrationTest()
+        personne1 = bootstrapService.enseignant1
+        etablissement = bootstrapService.leLycee
         MappingFonctionRole.defaultMappingFonctionRole =[:]
     }
 
