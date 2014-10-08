@@ -99,7 +99,6 @@ class BootstrapService {
 
     initialiseMatieresEnvDevelopmentTest()
     initialiseNiveauxEnvDevelopmentTest()
-
     initialiseStructuresEnseignementsEnvDevelopmentTest()
 
     initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
@@ -131,6 +130,12 @@ class BootstrapService {
 
       initialiseProprietesScolaritesEnseignantEnvDevelopmentTest()
       initialiseProprietesScolaritesEleveEnvDevelopmentTest()
+
+      initialiseEnseignant1EnvDevelopment()
+      initialiseEnseignant2EnvDevelopment()
+      initialiseProfilsScolaritesEnseignant1EnvDevelopment()
+      initialiseProfilsScolaritesEnseignant2EnvDevelopment()
+
     }
 
   }

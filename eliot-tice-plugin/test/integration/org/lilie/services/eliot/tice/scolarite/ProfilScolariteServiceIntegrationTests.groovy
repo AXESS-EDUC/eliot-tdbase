@@ -29,9 +29,7 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.utils.BootstrapService
-import org.lilie.services.eliot.tice.utils.InitialisationTestService
 
 /**
  *  Test la classe ProfilScolariteService
