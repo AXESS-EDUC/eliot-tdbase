@@ -270,5 +270,41 @@ public class ProfilScolariteService {
         return countRespEleves > 0
     }
 
+    /**
+     * Indique si une personne dirige un établissement
+     * @param personne la personne
+     * @param etablissement l'établissement
+     * @return true si la personne dirige l'établissement
+     */
+    boolean personneEstPersonnelDirectionForEtablissement(Personne personne, Etablissement etablissement) {
+        def criteria = PersonneProprietesScolarite.createCriteria()
+        def countPPS = criteria.count {
+            eq 'personne', personne
+            proprietesScolarite {
+                eq 'etablissement', etablissement
+                eq 'fonction', FonctionEnum.DIR.fonction
+            }
+            eq 'estActive', true
+        }
+        return countPPS > 0
+    }
 
+    /**
+     * Indique si une personne dirige un établissement
+     * @param personne la personne
+     * @param etablissement l'établissement
+     * @return true si la personne dirige l'établissement
+     */
+    boolean personneEstAdministrateurLocalForEtablissement(Personne personne, Etablissement etablissement) {
+        def criteria = PersonneProprietesScolarite.createCriteria()
+        def countPPS = criteria.count {
+            eq 'personne', personne
+            proprietesScolarite {
+                eq 'etablissement', etablissement
+                eq 'fonction', FonctionEnum.AL.fonction
+            }
+            eq 'estActive', true
+        }
+        return countPPS > 0
+    }
 }

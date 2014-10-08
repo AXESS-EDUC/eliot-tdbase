@@ -300,7 +300,8 @@ environments {
         "Login / mot de passe enseignant 2 : ens2 / ens2",
         "Login / mot de passe élève 1 : elv1 / elv1",
         "Login / mot de passe élève 2 : elv2 / elv2",
-        "Login / mot de passe parent 1 : resp1 / resp1"]
+        "Login / mot de passe parent 1 : resp1 / resp1",
+        "Login / mot de passe personnel de direction 1 : dir1 / dir1"]
   }
   testlilie {
     eliot.tdbase.nomApplication = "eliot-tdbase"

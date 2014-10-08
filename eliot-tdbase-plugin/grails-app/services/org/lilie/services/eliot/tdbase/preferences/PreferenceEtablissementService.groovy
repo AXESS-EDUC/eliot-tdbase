@@ -15,6 +15,7 @@ import org.lilie.services.eliot.tice.utils.contract.Contract
  */
 class PreferenceEtablissementService {
 
+    ProfilScolariteService profilScolariteService
 
     /**
      * Récupère l'objet correspondant aux préférences d'un établissement
@@ -45,9 +46,9 @@ class PreferenceEtablissementService {
      * @return la préférence établissement mise à jour
      */
     PreferenceEtablissement updatePreferenceEtablissement(Personne personne,
-                                      PreferenceEtablissement preferenceEtablissement,
-                                      RoleApplicatif roleApplicatif) {
-        Contract.requires(roleApplicatif == RoleApplicatif.ADMINISTRATEUR)
+                                      PreferenceEtablissement preferenceEtablissement) {
+        Contract.requires(profilScolariteService.personneEstPersonnelDirectionForEtablissement(personne, preferenceEtablissement.etablissement)
+        || profilScolariteService.personneEstAdministrateurLocalForEtablissement(personne, preferenceEtablissement.etablissement))
         preferenceEtablissement.lastUpdateAuteur = personne
         preferenceEtablissement.lastUpdated = new Date()
         preferenceEtablissement.save(failOnError: true)
