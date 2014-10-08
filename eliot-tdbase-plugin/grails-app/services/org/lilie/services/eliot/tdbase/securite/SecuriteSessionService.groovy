@@ -5,6 +5,7 @@ import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
@@ -32,7 +33,8 @@ class SecuriteSessionService {
      * Initialise l'objet Securite Session
      * @param personne
      */
-    def initialiseSecuriteSessionForUtilisateur(Utilisateur utilisateur) {
+    def initialiseSecuriteSessionForUtilisateur(Utilisateur utilisateur, PorteurEnt porteurEnt = null) {
+        // todo : comment injecter le porteur ENt dans l'objet securitesession ???
         if (!personneId) {
             Personne.withTransaction {
                 login = utilisateur.login
@@ -42,7 +44,11 @@ class SecuriteSessionService {
                 Personne personne = utilisateur.personne
                 etablissementList = profilScolariteService.findEtablissementsForPersonne(personne) ?: []
                 // initialise currentEtablissement (le premier de la liste) et les autres proprietes
-                onChangeEtablissement(personne, etablissementList?.first())
+                if (!etablissementList.isEmpty()) {
+                  onChangeEtablissement(personne, etablissementList.first())
+                } else {
+                    inialiseRoleApplicatifForPersonneWithoutEtablissementForPorteurEnt(personne, porteurEnt)
+                }
             }
         } else if (utilisateur.personneId != personneId) {
             throw new BadPersonnSecuritySessionException()
@@ -58,7 +64,7 @@ class SecuriteSessionService {
         if (personne.id != personneId) {
             throw new BadPersonnSecuritySessionException()
         }
-        if (!etablissementList?.contains(newCurrentEtablissement)) {
+        if (!etablissementList.contains(newCurrentEtablissement)) {
             throw new BadEtablissementSecuritySessionException()
         }
         // mise à jour du current etablissement
@@ -73,6 +79,21 @@ class SecuriteSessionService {
         initialiseRoleApplicatifListForCurrentEtablissement(personne)
         // mise à jour du current role
         currentRoleApplicatif = roleApplicatifList?.first()
+    }
+
+    /**
+     * Initialise le role applicatif d'une personne sans établissement
+     * @param personne
+     */
+    def inialiseRoleApplicatifForPersonneWithoutEtablissementForPorteurEnt(Personne personne,PorteurEnt porteurEnt ) {
+        if (personne.id != personneId) {
+            throw new BadPersonnSecuritySessionException()
+        }
+        if (profilScolariteService.personneEstAdministrateurCentralForPorteurEnt(personne,porteurEnt)) {
+            currentRoleApplicatif = RoleApplicatif.SUPER_ADMINISTRATEUR
+        } else {
+            currentRoleApplicatif = null
+        }
     }
 
     /**

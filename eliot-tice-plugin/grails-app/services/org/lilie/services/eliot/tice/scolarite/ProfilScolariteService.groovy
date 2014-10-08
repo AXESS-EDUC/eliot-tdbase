@@ -30,6 +30,7 @@
 package org.lilie.services.eliot.tice.scolarite
 
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 import org.springframework.transaction.annotation.Transactional
 
 /**
@@ -290,10 +291,10 @@ public class ProfilScolariteService {
     }
 
     /**
-     * Indique si une personne dirige un établissement
+     * Indique si une personne administre  un établissement
      * @param personne la personne
      * @param etablissement l'établissement
-     * @return true si la personne dirige l'établissement
+     * @return true si la personne administre l'établissement
      */
     boolean personneEstAdministrateurLocalForEtablissement(Personne personne, Etablissement etablissement) {
         def criteria = PersonneProprietesScolarite.createCriteria()
@@ -301,6 +302,25 @@ public class ProfilScolariteService {
             eq 'personne', personne
             proprietesScolarite {
                 eq 'etablissement', etablissement
+                eq 'fonction', FonctionEnum.AL.fonction
+            }
+            eq 'estActive', true
+        }
+        return countPPS > 0
+    }
+
+    /**
+     * Indique si une personne est administrateur central
+     * @param personne la personne
+     * @param porteurEnt le porteur ENT
+     * @return true si la personne est admin central
+     */
+    boolean personneEstAdministrateurCentralForPorteurEnt(Personne personne, PorteurEnt porteurEnt) {
+        def criteria = PersonneProprietesScolarite.createCriteria()
+        def countPPS = criteria.count {
+            eq 'personne', personne
+            proprietesScolarite {
+                eq 'porteurEnt', porteurEnt
                 eq 'fonction', FonctionEnum.AL.fonction
             }
             eq 'estActive', true

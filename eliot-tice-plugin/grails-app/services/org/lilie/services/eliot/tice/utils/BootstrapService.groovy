@@ -81,6 +81,11 @@ class BootstrapService {
     private static final String DIR_1_NOM = "Dart"
     private static final String DIR_1_PRENOM = "Dominique"
 
+    private static final String SUPER_ADMIN_1_LOGIN = "sadm1"
+    private static final String SUPER_ADMIN_1_PASSWORD = "sadm1"
+    private static final String SUPER_ADMIN_1_NOM = "Super"
+    private static final String SUPER_ADMIN_1_PRENOM = "Admin"
+
     private static final String UAI_LYCEE = 'TEST_L'
     private static final String UAI_COLLEGE = 'TEST_C'
     private static final String UAI_PREFIXE = 'TEST_'
@@ -116,6 +121,7 @@ class BootstrapService {
         initialiseEleve2EnvDevelopment()
         initialiseRespEleve1EnvDevelopment()
         initialisePersDirection1()
+        initialiseSuperAdmin1()
     }
 
     /**
@@ -621,6 +627,33 @@ class BootstrapService {
         }
 
         persDirection1 = utilisateurDir.personne
+    }
+
+    Personne superAdmin1
+
+    private def initialiseSuperAdmin1() {
+        def utilisateurDir = utilisateurService.findUtilisateur(SUPER_ADMIN_1_LOGIN)
+        if (!utilisateurDir) {
+            utilisateurDir = utilisateurService.createUtilisateur(SUPER_ADMIN_1_LOGIN,
+                    SUPER_ADMIN_1_PASSWORD,
+                    SUPER_ADMIN_1_NOM,
+                    SUPER_ADMIN_1_PRENOM)
+            Fonction fonctionDir = fonctionService.fonctionAdministrateurCentral()
+            def ps = ProprietesScolarite.findAllByPorteurEntAndFonctionAndAnneeScolaire(
+                    leLycee.porteurEnt,
+                    fonctionDir,
+                    anneeScolaire
+            )
+            if (!ps) {
+                ps = new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                        fonction: fonctionDir,
+                        porteurEnt: leLycee.porteurEnt).save(failOnError: true)
+            }
+
+            addProprietesScolariteToPersonne([ps], utilisateurDir.personne)
+        }
+
+        superAdmin1 = utilisateurDir.personne
     }
 
     // methode utilitaires
