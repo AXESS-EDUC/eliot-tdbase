@@ -55,13 +55,16 @@
 
 <g:form method="post" controller="preferences" action="enregistre">
     <g:hiddenField name="prefEtabId" value="${preferenceEtablissement.id}"/>
+    <%
+        def rolesModifiables = [RoleApplicatif.ENSEIGNANT, RoleApplicatif.ELEVE]
+    %>
     <div class="portal-form_container edite" style="width: 69%;">
         <table>
 
             <tr>
                 <td class="label">&nbsp;
                 </td>
-                <g:each in="${org.lilie.services.eliot.tdbase.RoleApplicatif.values()*.name()}" var="codeRole">
+                <g:each in="${rolesModifiables*.name()}" var="codeRole">
                     <td class="label" title="${message(code:'preferences.aide.role.'+codeRole)}">
                         <g:message code="preferences.role.$codeRole" default="$codeRole"/>
                     </td>
@@ -72,7 +75,7 @@
                 <td class="label">
                     ${fonction.libelle}
                 </td>
-                    <g:each in="${org.lilie.services.eliot.tdbase.RoleApplicatif.values()}" var="role">
+                    <g:each in="${rolesModifiables}" var="role">
                         <td class="label">
                             <g:checkBox name="fonction__${fonction.code}__role__${role.name()}"
                                         checked="${mappingFonctionRole.hasRoleForFonction(role,FonctionEnum.valueOf(fonction.code)).associe}"
