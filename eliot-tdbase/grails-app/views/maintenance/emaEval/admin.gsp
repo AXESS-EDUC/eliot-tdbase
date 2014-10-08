@@ -56,7 +56,7 @@
   --}%
 <html>
 <head>
-  <meta name="layout" content="eliot-tdbase-admin"/>
+  <meta name="layout" content="eliot-tdbase-maintenance"/>
   <title>Administration de la liaison eliot-tdbase / EmaEval</title>
 </head>
 

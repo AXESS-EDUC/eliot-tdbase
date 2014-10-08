@@ -28,7 +28,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="layout" content="eliot-tdbase-admin"/>
+  <meta name="layout" content="eliot-tdbase-maintenance"/>
   <r:require modules="eliot-tdbase"/>
   <title><g:message code="maintenance.head.title"/></title>
 </head>
