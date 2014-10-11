@@ -95,11 +95,24 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
     void testPersonneEstResponsableEleve() {
 
         assertTrue(profilScolariteService.personneEstResponsableEleve(bootstrapService.parent1))
-        assertTrue(profilScolariteService.personneEstResponsableEleve(bootstrapService.parent1, bootstrapService.eleve1))
+        assertTrue(profilScolariteService.personneEstResponsableEleve(bootstrapService.parent1,
+                bootstrapService.eleve1))
 
         assertFalse(profilScolariteService.personneEstResponsableEleve(bootstrapService.enseignant1))
-        assertFalse(profilScolariteService.personneEstResponsableEleve(bootstrapService.parent1, bootstrapService.enseignant1))
+        assertFalse(profilScolariteService.personneEstResponsableEleve(bootstrapService.parent1,
+                bootstrapService.enseignant1))
     }
 
+    void testPersonneEstPersonnelDirection() {
+        assertTrue(profilScolariteService.personneEstPersonnelDirectionForEtablissement(bootstrapService.persDirection1,
+                bootstrapService.leCollege))
+        assertTrue(profilScolariteService.personneEstPersonnelDirectionForEtablissement(bootstrapService.persDirection1,
+                bootstrapService.leLycee))
+    }
+
+    void testPersonneEstAdministrateurCentral() {
+        assertTrue(profilScolariteService.personneEstAdministrateurCentralForPorteurEnt(bootstrapService.superAdmin1,
+                bootstrapService.leLycee.porteurEnt))
+    }
 
 }

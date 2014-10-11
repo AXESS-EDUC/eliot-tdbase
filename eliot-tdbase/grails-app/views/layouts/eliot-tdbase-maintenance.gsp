@@ -49,16 +49,18 @@
     SecuriteSessionService securiteSessionServiceProxy = grailsApplication.mainContext.getBean("securiteSessionServiceProxy");
 %>
 <et:container class="container">
+    <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
+        <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
+    </g:if>
   <div class="portal-menu">
     <ul id="portal-hz-menu">
       <li>
         <g:link title="Maintenance TD Base" controller="maintenance" params="[bcInit: true]">Maintenance</g:link>
       </li>
-      <g:render template="/menuItemEtablissements" model="[securiteSessionServiceProxy:securiteSessionServiceProxy]"></g:render>
+
     </ul>
   </div>
 
-  <g:render template="/roleApplicatifSelection" model="[authority: RoleApplicatif.SUPER_ADMINISTRATEUR.authority,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>
 
 
     <g:layoutBody/>

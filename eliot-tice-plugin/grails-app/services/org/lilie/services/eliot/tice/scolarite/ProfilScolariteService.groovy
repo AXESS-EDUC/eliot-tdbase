@@ -320,8 +320,13 @@ public class ProfilScolariteService {
         def countPPS = criteria.count {
             eq 'personne', personne
             proprietesScolarite {
-                eq 'porteurEnt', porteurEnt
-                eq 'fonction', FonctionEnum.AL.fonction
+                // TODO prendre en compte porteur ENT
+                //eq 'porteurEnt', porteurEnt
+                or {
+                eq 'fonction', FonctionEnum.CD.fonction
+                eq 'fonction', FonctionEnum.AC.fonction
+                }
+
             }
             eq 'estActive', true
         }

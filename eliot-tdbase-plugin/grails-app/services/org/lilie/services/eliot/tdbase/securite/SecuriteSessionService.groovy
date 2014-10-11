@@ -64,21 +64,22 @@ class SecuriteSessionService {
         if (personne.id != personneId) {
             throw new BadPersonnSecuritySessionException()
         }
-        if (!etablissementList.contains(newCurrentEtablissement)) {
+        if (newCurrentEtablissement == null || !etablissementList.contains(newCurrentEtablissement)) {
             throw new BadEtablissementSecuritySessionException()
         }
         // mise à jour du current etablissement
         currentEtablissement = newCurrentEtablissement
         // mise à jour du current preference etablissement
-        if (currentEtablissement != null) {
-            currentPreferenceEtablissement = preferenceEtablissementService.getPreferenceForEtablissement(personne,currentEtablissement)
-        } else {
-            currentPreferenceEtablissement = null
-        }
+        currentPreferenceEtablissement = preferenceEtablissementService.getPreferenceForEtablissement(personne,currentEtablissement)
         // mise à jour de la liste des rôles applicatifs
         initialiseRoleApplicatifListForCurrentEtablissement(personne)
         // mise à jour du current role
-        currentRoleApplicatif = roleApplicatifList?.first()
+        if (!roleApplicatifList.isEmpty()) {
+            currentRoleApplicatif = roleApplicatifList.first()
+        } else {
+            currentRoleApplicatif = null
+        }
+
     }
 
     /**
