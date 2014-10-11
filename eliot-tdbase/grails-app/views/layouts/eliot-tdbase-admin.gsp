@@ -49,6 +49,9 @@
     SecuriteSessionService securiteSessionServiceProxy = grailsApplication.mainContext.getBean("securiteSessionServiceProxy");
 %>
 <et:container class="container">
+    <g:if test="${grailsApplication.config.eliot.portail.menu.affichage}">
+        <g:render template="/menuPortail" plugin="eliot-tice-plugin"/>
+    </g:if>
   <div class="portal-menu">
     <ul id="portal-hz-menu">
       <li>
