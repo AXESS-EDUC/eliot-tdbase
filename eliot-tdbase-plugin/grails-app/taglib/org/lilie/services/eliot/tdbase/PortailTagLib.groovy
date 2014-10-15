@@ -26,10 +26,10 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice
+package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.scolarite.FonctionEnum
-import org.lilie.services.eliot.tice.utils.PortailTagLibService
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
+import org.lilie.services.eliot.tdbase.utils.PortailTagLibService
 
 import org.lilie.services.eliot.tice.utils.EliotUrlProvider
 import org.lilie.services.eliot.tice.annuaire.PorteurEnt
@@ -43,7 +43,7 @@ class PortailTagLib {
   /**
    * Affiche le lien vers le manuel.
    *
-   * @attr fonctionEnum REQUIRED la fonction pour laquelle on souhaite le manuel
+   * @attr role REQUIRED la fonction pour laquelle on souhaite le manuel
    * @attr libelleLien le libelle à afficher
    * @attr noManuelFonction la fonction javascript à appeler si pas de manuel
    * @attr noManuelAlert le contenu de l'alerte si pas de manuel
@@ -53,9 +53,9 @@ class PortailTagLib {
     def noManuelFonction = attrs.noManuelFonction
     def noManuelAlert = attrs.noManuelAlert ?: g.message(code: "manuels.introuvable")
     def attrClass = attrs.class
-    if (attrs.fonctionEnum) {
-      FonctionEnum fonctionEnum = attrs.fonctionEnum
-      def url = portailTagLibService.findManuelDocumentUrlForFonction(fonctionEnum)
+    if (attrs.role) {
+      RoleApplicatif roleApplicatif = attrs.role
+      def url = portailTagLibService.findManuelDocumentUrlForRole(roleApplicatif)
       if (url?.startsWith("http://")) {
         lnkUrl =  url
       } else if (url) {

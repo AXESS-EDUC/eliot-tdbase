@@ -2,7 +2,7 @@ package org.lilie.services.eliot.tdbase.preferences
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
-import org.lilie.services.eliot.tdbase.RoleApplicatif
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.contract.Contract
 

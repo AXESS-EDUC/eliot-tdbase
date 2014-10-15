@@ -34,7 +34,7 @@ import org.lilie.services.eliot.tdbase.patch.PatchExecution
 import org.lilie.services.eliot.tdbase.patch.PatchTDB40
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
 import org.lilie.services.eliot.tice.utils.BootstrapService
-import org.lilie.services.eliot.tice.utils.PortailTagLibService
+import org.lilie.services.eliot.tdbase.utils.PortailTagLibService
 
 
 class BootStrap {

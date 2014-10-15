@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.securite.SecuriteSessionService; org.lilie.services.eliot.tdbase.RoleApplicatif" %>
+<%@ page import="org.lilie.services.eliot.tdbase.securite.SecuriteSessionService; org.lilie.services.eliot.tdbase.securite.RoleApplicatif" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).

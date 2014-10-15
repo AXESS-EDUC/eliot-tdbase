@@ -2,7 +2,7 @@ import grails.plugins.springsecurity.SecurityConfigType
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
-import org.lilie.services.eliot.tdbase.RoleApplicatif
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
@@ -222,9 +222,9 @@ eliot.pages.container.width = 931
 
 // l'url des fichiers de documentation par fonction
 eliot.manuels.documents.urlMap = [
-    "${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
-    "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"
+    "${RoleApplicatif.ENSEIGNANT.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+    "${RoleApplicatif.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
+    "${RoleApplicatif.PARENT.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"
 ]
 
 // l'url des fichiers de documentation par identifiant (item de question,...)

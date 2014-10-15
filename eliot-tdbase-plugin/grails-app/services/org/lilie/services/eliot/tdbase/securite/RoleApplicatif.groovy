@@ -1,4 +1,4 @@
-package org.lilie.services.eliot.tdbase
+package org.lilie.services.eliot.tdbase.securite
 
 import org.springframework.security.core.GrantedAuthority
 
