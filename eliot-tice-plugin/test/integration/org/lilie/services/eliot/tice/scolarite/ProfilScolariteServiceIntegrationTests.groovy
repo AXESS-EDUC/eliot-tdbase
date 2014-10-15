@@ -51,6 +51,14 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
     assertEquals("pas le bon de nombre de proprietes", 7, props.size())
   }
 
+  void testFindStructuresEnseignementForPersonne() {
+      List<ProprietesScolarite> props = profilScolariteService.findStructuresEnseignementForPersonne(bootstrapService.enseignant1)
+      assertEquals("pas le bon de nombre de proprietes", 4, props.size())
+      props = profilScolariteService.findStructuresEnseignementForPersonne(bootstrapService.enseignant1,fonctionService.fonctionEleve())
+      assertEquals("le filtre sur la fonction est KO", 0, props.size())
+
+  }
+
   void testFindFonctions() {
     List<Fonction> fonctions = profilScolariteService.findFonctionsForPersonne(bootstrapService.enseignant1)
     assertEquals("pas le bon de nombre de fonction", 1, fonctions.size())

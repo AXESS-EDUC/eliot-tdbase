@@ -27,12 +27,12 @@
  */
 
 
-
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tdbase.emaeval.CampagneProxyService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.notes.Evaluation
+import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.textes.Activite
 import org.springframework.transaction.annotation.Transactional
@@ -43,228 +43,231 @@ import org.springframework.transaction.annotation.Transactional
  */
 class ModaliteActiviteService {
 
-  static transactional = false
-  ProfilScolariteService profilScolariteService
-  CopieService copieService
-  CampagneProxyService campagneProxyService
+    static transactional = false
+    ProfilScolariteService profilScolariteService
+    CopieService copieService
+    CampagneProxyService campagneProxyService
+    FonctionService fonctionService
 
-  /**
-   * Créé une séance (modaliteActivite)
-   * @param proprietes les propriétés
-   * @param proprietaire le proprietaire
-   * @return la séance créée
-   */
-  @Transactional
-  ModaliteActivite createModaliteActivite(Map proprietes, Personne proprietaire) {
-    ModaliteActivite modaliteActivite = new ModaliteActivite(enseignant: proprietaire)
-    modaliteActivite.properties = proprietes
-    modaliteActivite.save(flush: true)
+    /**
+     * Créé une séance (modaliteActivite)
+     * @param proprietes les propriétés
+     * @param proprietaire le proprietaire
+     * @return la séance créée
+     */
+    @Transactional
+    ModaliteActivite createModaliteActivite(Map proprietes, Personne proprietaire) {
+        ModaliteActivite modaliteActivite = new ModaliteActivite(enseignant: proprietaire)
+        modaliteActivite.properties = proprietes
+        modaliteActivite.save(flush: true)
 
-    if(modaliteActivite.optionEvaluerCompetences && !modaliteActivite.hasErrors()) {
-      campagneProxyService.promesseCreeCampagne(modaliteActivite)
+        if (modaliteActivite.optionEvaluerCompetences && !modaliteActivite.hasErrors()) {
+            campagneProxyService.promesseCreeCampagne(modaliteActivite)
+        }
+
+        return modaliteActivite
     }
 
-    return modaliteActivite
-  }
+    /**
+     * Modifie les proprietes de la question passée en paramètre
+     * @param modaliteActivite la séance
+     * @param proprietes les nouvelles proprietes
+     * @param proprietaire le proprietaire
+     * @return la séance modifiée
+     */
+    @Transactional
+    ModaliteActivite updateProprietes(ModaliteActivite modaliteActivite,
+                                      Map proprietes,
+                                      Personne proprietaire) {
 
-  /**
-   * Modifie les proprietes de la question passée en paramètre
-   * @param modaliteActivite la séance
-   * @param proprietes les nouvelles proprietes
-   * @param proprietaire le proprietaire
-   * @return la séance modifiée
-   */
-  @Transactional
-  ModaliteActivite updateProprietes(ModaliteActivite modaliteActivite,
-                                    Map proprietes,
-                                    Personne proprietaire) {
+        assert (modaliteActivite.enseignant == proprietaire)
 
-    assert (modaliteActivite.enseignant == proprietaire)
+        Boolean originalOptionEvaluerCompetences = modaliteActivite.optionEvaluerCompetences
 
-    Boolean originalOptionEvaluerCompetences = modaliteActivite.optionEvaluerCompetences
+        modaliteActivite.properties = proprietes
 
-    modaliteActivite.properties = proprietes
+        // Si changement de l'option Evaluer les compétences
+        if ((originalOptionEvaluerCompetences as boolean) != (modaliteActivite.optionEvaluerCompetences as boolean)) {
+            if (modaliteActivite.optionEvaluerCompetences) {
+                campagneProxyService.promesseCreeCampagne(modaliteActivite)
+            } else {
+                campagneProxyService.promesseSupprimeCampagne(modaliteActivite)
+            }
+        }
 
-    // Si changement de l'option Evaluer les compétences
-    if((originalOptionEvaluerCompetences as boolean) != (modaliteActivite.optionEvaluerCompetences as boolean) ) {
-      if(modaliteActivite.optionEvaluerCompetences) {
-        campagneProxyService.promesseCreeCampagne(modaliteActivite)
-      }
-      else {
+        modaliteActivite.save(flush: true)
+        return modaliteActivite
+    }
+
+    /**
+     * Recherche de séance
+     * @param chercheur la personne effectuant la recherche
+     * @param paginationAndSortingSpec les specifications pour l'ordre et
+     * la pagination
+     * @return la liste des séance
+     */
+    List<ModaliteActivite> findModalitesActivitesForEnseignant(Personne chercheur,
+                                                               Map paginationAndSortingSpec = null) {
+
+        assert (chercheur != null)
+
+        if (paginationAndSortingSpec == null) {
+            paginationAndSortingSpec = [:]
+        }
+
+        def criteria = ModaliteActivite.createCriteria()
+        List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
+            eq 'enseignant', chercheur
+
+            if (paginationAndSortingSpec) {
+                def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
+                def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+                if (sortArg) {
+                    order "${sortArg}", orderArg
+                }
+
+            }
+        }
+        return seances
+    }
+
+    /**
+     * Recherche de séances pour profil élève
+     * @param chercheur la personne effectuant la recherche
+     * @param paginationAndSortingSpec les specifications pour l'ordre et
+     * la pagination
+     * @return la liste des séances
+     */
+    List<ModaliteActivite> findModalitesActivitesForApprenant(Personne chercheur,
+                                                              Map paginationAndSortingSpec = null) {
+
+        assert (chercheur != null)
+
+        if (paginationAndSortingSpec == null) {
+            paginationAndSortingSpec = [:]
+        }
+        // TODO : quelle stratégie pour les non élèves qui ont le profil apprenant ?
+        def seances = []
+        def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur, fonctionService.fonctionEleve())
+        if (!structs.isEmpty()) {
+            Date now = new Date()
+            def criteria = ModaliteActivite.createCriteria()
+            seances = criteria.list(paginationAndSortingSpec) {
+                inList 'structureEnseignement', structs
+                le 'dateDebut', now
+                ge 'dateFin', now
+                if (paginationAndSortingSpec) {
+                    def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
+                    def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+                    if (sortArg) {
+                        order "${sortArg}", orderArg
+                    }
+                }
+            }
+        }
+        seances
+    }
+
+    /**
+     * Supprime une modalite activité
+     * @param modaliteActivite la modalite à supprimer
+     * @param personne la personne déclenchant la suppression
+     */
+    @Transactional
+    def supprimeModaliteActivite(ModaliteActivite modaliteActivite, Personne personne) {
+
+        assert (modaliteActivite?.enseignant == personne)
+
+        copieService.supprimeCopiesForModaliteActivite(modaliteActivite, personne)
+
         campagneProxyService.promesseSupprimeCampagne(modaliteActivite)
-      }
+
+        modaliteActivite.delete()
     }
 
-    modaliteActivite.save(flush: true)
-    return modaliteActivite
-  }
-
-  /**
-   * Recherche de séance
-   * @param chercheur la personne effectuant la recherche
-   * @param paginationAndSortingSpec les specifications pour l'ordre et
-   * la pagination
-   * @return la liste des séance
-   */
-  List<ModaliteActivite> findModalitesActivitesForEnseignant(Personne chercheur,
-                                                             Map paginationAndSortingSpec = null) {
-
-    assert (chercheur != null)
-
-    if (paginationAndSortingSpec == null) {
-      paginationAndSortingSpec = [:]
+    /**
+     * Indique si il est possible de créer une activité dans le cahier de texte
+     * @param modaliteActivite la modalite activité
+     * @param personne la personne déclenchant l'opération
+     * @return true si il est possible de creer une activité dans le cahier de textes
+     */
+    boolean canCreateTextesActiviteForModaliteActivite(ModaliteActivite modaliteActivite,
+                                                       Personne personne,
+                                                       Boolean strongCheck = true) {
+        assert (modaliteActivite?.enseignant == personne)
+        !modaliteActiviteHasTextesActivite(modaliteActivite, personne, strongCheck)
     }
 
-    def criteria = ModaliteActivite.createCriteria()
-    List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
-      eq 'enseignant', chercheur
-
-      if (paginationAndSortingSpec) {
-        def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
-        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-        if (sortArg) {
-          order "${sortArg}", orderArg
+    /**
+     * Indique si la modalité activité à une activité du cahier de textes attachée
+     * @param modaliteActivite la modalite activité
+     * @param personne la personne déclenchant l'opération
+     * @return true si la modalité activité a une activité de cahier de textes associée
+     */
+    boolean modaliteActiviteHasTextesActivite(ModaliteActivite modaliteActivite,
+                                              Personne personne,
+                                              Boolean strongCheck = true) {
+        assert (modaliteActivite?.enseignant == personne)
+        Long actId = modaliteActivite.activiteId
+        if (!actId) {
+            return false
         }
-
-      }
-    }
-    return seances
-  }
-
-  /**
-   * Recherche de séances pour profil élève
-   * @param chercheur la personne effectuant la recherche
-   * @param paginationAndSortingSpec les specifications pour l'ordre et
-   * la pagination
-   * @return la liste des séances
-   */
-  List<ModaliteActivite> findModalitesActivitesForApprenant(Personne chercheur,
-                                                            Map paginationAndSortingSpec = null) {
-
-    assert (chercheur != null)
-
-    if (paginationAndSortingSpec == null) {
-      paginationAndSortingSpec = [:]
-    }
-    def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur)
-    Date now = new Date()
-    def criteria = ModaliteActivite.createCriteria()
-    List<ModaliteActivite> seances = criteria.list(paginationAndSortingSpec) {
-      inList 'structureEnseignement', structs
-      le 'dateDebut', now
-      ge 'dateFin', now
-      if (paginationAndSortingSpec) {
-        def sortArg = paginationAndSortingSpec['sort'] ?: 'dateDebut'
-        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-        if (sortArg) {
-          order "${sortArg}", orderArg
+        // note technique
+        // le check de l'existence d'une activité s'effectue sans web services pour des
+        // raisons  de perf
+        if (strongCheck) {
+            Activite act = Activite.get(actId)
+            if (!act) {
+                modaliteActivite.activiteId = null
+                if (modaliteActivite.save()) {
+                    return false
+                }
+            }
         }
-
-      }
+        return true
     }
-    return seances
-  }
 
-  /**
-   * Supprime une modalite activité
-   * @param modaliteActivite la modalite à supprimer
-   * @param personne la personne déclenchant la suppression
-   */
-  @Transactional
-  def supprimeModaliteActivite(ModaliteActivite modaliteActivite, Personne personne) {
-
-    assert (modaliteActivite?.enseignant == personne)
-
-    copieService.supprimeCopiesForModaliteActivite(modaliteActivite, personne)
-
-    campagneProxyService.promesseSupprimeCampagne(modaliteActivite)
-
-    modaliteActivite.delete()
-  }
-
-  /**
-   * Indique si il est possible de créer une activité dans le cahier de texte
-   * @param modaliteActivite la modalite activité
-   * @param personne la personne déclenchant l'opération
-   * @return true si il est possible de creer une activité dans le cahier de textes
-   */
-  boolean canCreateTextesActiviteForModaliteActivite(ModaliteActivite modaliteActivite,
-                                                     Personne personne,
-                                                     Boolean strongCheck = true ) {
-    assert (modaliteActivite?.enseignant == personne)
-    !modaliteActiviteHasTextesActivite(modaliteActivite, personne, strongCheck)
-  }
-
-  /**
-   * Indique si la modalité activité à une activité du cahier de textes attachée
-   * @param modaliteActivite la modalite activité
-   * @param personne la personne déclenchant l'opération
-   * @return true si la modalité activité a une activité de cahier de textes associée
-   */
-  boolean modaliteActiviteHasTextesActivite(ModaliteActivite modaliteActivite,
-                                            Personne personne,
-                                            Boolean strongCheck = true) {
-    assert (modaliteActivite?.enseignant == personne)
-    Long actId = modaliteActivite.activiteId
-    if (!actId) {
-      return false
+    /**
+     * verifie si il est possible de créer un devoir dans Notes
+     * @param modaliteActivite la modalite activité
+     * @param personne la personne déclenchant l'opération
+     * @return true si il est possible de creer un devoir dans Notes
+     */
+    boolean canCreateNotesDevoirForModaliteActivite(ModaliteActivite modaliteActivite,
+                                                    Personne personne,
+                                                    Boolean strongCheck = true) {
+        assert (modaliteActivite?.enseignant == personne)
+        !modaliteActiviteHasNotesDevoir(modaliteActivite, personne, strongCheck)
     }
-    // note technique
-    // le check de l'existence d'une activité s'effectue sans web services pour des
-    // raisons  de perf
-    if (strongCheck) {
-      Activite act = Activite.get(actId)
-      if (!act) {
-        modaliteActivite.activiteId = null
-        if (modaliteActivite.save()) {
-          return false
+
+    /**
+     * Indique si la modalité activité a un devoir de Notes attaché
+     * @param modaliteActivite la modalite activité
+     * @param personne la personne déclenchant l'opération
+     * @return true si la modalité activité a un devoir Notes associé
+     */
+    boolean modaliteActiviteHasNotesDevoir(ModaliteActivite modaliteActivite,
+                                           Personne personne,
+                                           Boolean strongCheck = true) {
+        assert (modaliteActivite?.enseignant == personne)
+        Long evalId = modaliteActivite.evaluationId
+        if (!evalId) {
+            return false
         }
-      }
-    }
-    return true
-  }
-
-  /**
-   * verifie si il est possible de créer un devoir dans Notes
-   * @param modaliteActivite la modalite activité
-   * @param personne la personne déclenchant l'opération
-   * @return true si il est possible de creer un devoir dans Notes
-   */
-  boolean canCreateNotesDevoirForModaliteActivite(ModaliteActivite modaliteActivite,
-                                                  Personne personne,
-                                                  Boolean strongCheck = true) {
-    assert (modaliteActivite?.enseignant == personne)
-    !modaliteActiviteHasNotesDevoir(modaliteActivite, personne, strongCheck)
-  }
-
-  /**
-   * Indique si la modalité activité a un devoir de Notes attaché
-   * @param modaliteActivite la modalite activité
-   * @param personne la personne déclenchant l'opération
-   * @return true si la modalité activité a un devoir Notes associé
-   */
-  boolean modaliteActiviteHasNotesDevoir(ModaliteActivite modaliteActivite,
-                                         Personne personne,
-                                         Boolean strongCheck = true) {
-    assert (modaliteActivite?.enseignant == personne)
-    Long evalId = modaliteActivite.evaluationId
-    if (!evalId) {
-      return false
-    }
-    // note technique
-    // le check de l'existence d'un devoir s'effectue sans web services pour des
-    // raisons  de perf
-    if (strongCheck) {
-      Evaluation eval = Evaluation.get(evalId)
-      if (!eval) {
-        modaliteActivite.evaluationId = null
-        if (modaliteActivite.save()) {
-          return false
+        // note technique
+        // le check de l'existence d'un devoir s'effectue sans web services pour des
+        // raisons  de perf
+        if (strongCheck) {
+            Evaluation eval = Evaluation.get(evalId)
+            if (!eval) {
+                modaliteActivite.evaluationId = null
+                if (modaliteActivite.save()) {
+                    return false
+                }
+            }
         }
-      }
+        return true
     }
-    return true
-  }
 
 }
 
