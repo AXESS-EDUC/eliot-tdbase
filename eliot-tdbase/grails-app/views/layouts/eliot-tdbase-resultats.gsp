@@ -28,7 +28,7 @@
 
 
 
-<%@ page import="org.lilie.services.eliot.tdbase.RoleApplicatif; org.lilie.services.eliot.tdbase.securite.SecuriteSessionService; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tdbase.securite.RoleApplicatif; org.lilie.services.eliot.tdbase.RoleApplicatif; org.lilie.services.eliot.tdbase.securite.SecuriteSessionService; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
 <!doctype html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -62,7 +62,7 @@
       <g:render template="/menuItemEtablissements" model="[securiteSessionServiceProxy:securiteSessionServiceProxy]"></g:render>
     </ul>
   </div>
-  <g:render template="/roleApplicatifSelection" model="[authority: RoleApplicatif.PARENT.authority,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>
+  <g:render template="/roleApplicatifSelection" model="[role: org.lilie.services.eliot.tdbase.securite.RoleApplicatif.PARENT,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>
 
   <g:layoutBody/>
   <r:script>

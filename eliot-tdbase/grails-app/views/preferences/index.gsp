@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.RoleApplicatif; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tice.scolarite.Fonction" %>
+<%@ page import="org.lilie.services.eliot.tdbase.securite.RoleApplicatif; org.lilie.services.eliot.tdbase.securite.RoleApplicatif; org.lilie.services.eliot.tdbase.RoleApplicatif; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tice.scolarite.Fonction" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -56,7 +56,7 @@
 <g:form method="post" controller="preferences" action="enregistre">
     <g:hiddenField name="prefEtabId" value="${preferenceEtablissement.id}"/>
     <%
-        def rolesModifiables = [RoleApplicatif.ENSEIGNANT, RoleApplicatif.ELEVE]
+        def rolesModifiables = [org.lilie.services.eliot.tdbase.securite.RoleApplicatif.ENSEIGNANT, org.lilie.services.eliot.tdbase.securite.RoleApplicatif.ELEVE]
     %>
     <div class="portal-form_container edite" style="width: 69%;">
         <table>

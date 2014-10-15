@@ -26,7 +26,11 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice
+package org.lilie.services.eliot.tdbase
+
+import org.lilie.services.eliot.tice.Attachement
+import org.lilie.services.eliot.tice.AttachementService
+import org.lilie.services.eliot.tice.Dimension
 
 class AttachementTagLib {
 

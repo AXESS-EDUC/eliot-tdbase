@@ -28,9 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.preferences
 
-import org.lilie.services.eliot.tdbase.RoleApplicatif
-import org.lilie.services.eliot.tdbase.preferences.AssociationFonctionRole
-import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.contract.PreConditionException
 import spock.lang.Specification

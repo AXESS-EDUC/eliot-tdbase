@@ -1,6 +1,5 @@
 package org.lilie.services.eliot.tdbase.securite
 
-import org.lilie.services.eliot.tdbase.RoleApplicatif
 import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService

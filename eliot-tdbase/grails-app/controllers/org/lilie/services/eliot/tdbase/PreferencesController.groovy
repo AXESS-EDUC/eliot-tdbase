@@ -30,6 +30,7 @@ package org.lilie.services.eliot.tdbase
 import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement

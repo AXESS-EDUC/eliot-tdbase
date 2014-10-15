@@ -77,10 +77,10 @@
     <resource>org.lilie.services.eliot.tice.utils.EliotApplicationEnum</resource>
     <resource>org.lilie.services.eliot.tice.utils.EliotUrlProvider</resource>
     <resource>org.lilie.services.eliot.tice.utils.InitialisationTestService</resource>
-    <resource>org.lilie.services.eliot.tice.utils.PortailTagLibService</resource>
+    <resource>org.lilie.services.eliot.tdbase.utils.PortailTagLibService</resource>
     <resource>org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum</resource>
-    <resource>org.lilie.services.eliot.tice.AttachementTagLib</resource>
-    <resource>org.lilie.services.eliot.tice.PortailTagLib</resource>
+    <resource>org.lilie.services.eliot.tdbase.AttachementTagLib</resource>
+    <resource>org.lilie.services.eliot.tdbase.PortailTagLib</resource>
     <resource>org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar</resource>
     <resource>org.lilie.services.eliot.tice.utils.NumberUtils</resource>
     <resource>org.lilie.services.eliot.tice.utils.StringUtils</resource>

@@ -26,9 +26,10 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.utils
+package org.lilie.services.eliot.tdbase.utils
 
 import grails.test.mixin.TestFor
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 
 /**
@@ -45,20 +46,18 @@ class ManuelServiceTests {
 
   void testaddManuelDocumentUrls() {
     def urlMap = [
-            "${FonctionEnum.ENS.name()}": URL1,
-            "${FonctionEnum.DOC.name()}": URL1,
-            "${FonctionEnum.CTR.name()}": URL1,
-            "${FonctionEnum.DIR.name()}": URL1,
-            "${FonctionEnum.ELEVE.name()}": URL2,
-            "${FonctionEnum.PERS_REL_ELEVE.name()}": URL3
+            "${RoleApplicatif.ENSEIGNANT.name()}": URL1,
+            "${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}": URL1,
+            "${RoleApplicatif.ELEVE.name()}": URL2,
+            "${RoleApplicatif.PARENT.name()}": URL3
     ]
     portailTagLibService.addManuelDocumentUrls(urlMap)
-    def url1 = portailTagLibService.findManuelDocumentUrlForFonction(FonctionEnum.ENS)
-    def url2 = portailTagLibService.findManuelDocumentUrlForFonction(FonctionEnum.DOC)
+    def url1 = portailTagLibService.findManuelDocumentUrlForRole(RoleApplicatif.ENSEIGNANT)
+    def url2 = portailTagLibService.findManuelDocumentUrlForRole(RoleApplicatif.ELEVE)
     assertEquals "url enseignant non conforme",URL1,url1
-    assertEquals "url doc non conforme",URL1,url2
-    def url3 = portailTagLibService.findManuelDocumentUrlForFonction(FonctionEnum.ELEVE)
-    assertEquals "url eleve non conforme",URL2,url3
-    assertNull portailTagLibService.findManuelDocumentUrlForFonction(FonctionEnum.ADF)
+    assertEquals "url eleve non conforme",URL2,url2
+    def url3 = portailTagLibService.findManuelDocumentUrlForRole(RoleApplicatif.PARENT)
+    assertEquals "url parent non conforme",URL3,url3
+    assertNull portailTagLibService.findManuelDocumentUrlForRole(RoleApplicatif.ADMINISTRATEUR)
   }
 }
