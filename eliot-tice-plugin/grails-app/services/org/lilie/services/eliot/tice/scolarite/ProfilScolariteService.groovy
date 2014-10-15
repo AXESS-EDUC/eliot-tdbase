@@ -177,13 +177,20 @@ public class ProfilScolariteService {
      * @param Personne la personne
      * @return la liste des structures d'enseignements
      */
-    List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne) {
+    List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne, Fonction withFonction = null) {
         List<PersonneProprietesScolarite> profils =
                 PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
         List<StructureEnseignement> structures = []
         profils.each {
+            def keep = true
             StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
-            if (structureEnseignement && !structures.contains(structureEnseignement)) {
+            if (!structureEnseignement) {
+                keep = false
+            }
+            if (keep && withFonction && it.proprietesScolarite.fonction != withFonction) {
+                keep = false
+            }
+            if (keep && !structures.contains(structureEnseignement)) {
                 structures << structureEnseignement
             }
         }

@@ -27,12 +27,11 @@
  */
 
 
-
-
-
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.springframework.transaction.annotation.Transactional
 
@@ -42,255 +41,256 @@ import org.springframework.transaction.annotation.Transactional
  */
 class CopieService {
 
-  static transactional = false
-  ProfilScolariteService profilScolariteService
-  ReponseService reponseService
+    static transactional = false
+    ProfilScolariteService profilScolariteService
+    ReponseService reponseService
+    FonctionService fonctionService
 
-  /**
-   * Récupère la copie de teste d'une personne pour un sujet
-   * @param sujet le sujet
-   * @param personne la personne
-   * @return la copie
-   */
-  @Transactional
-  Copie getCopieTestForSujetAndPersonne(Sujet sujet, Personne personne) {
-    def criteria = Copie.createCriteria()
-    Copie copie = criteria.get {
-      eq 'sujet', sujet
-      eq 'eleve', personne
-      eq 'estJetable', true
-    }
-    if (copie == null) {
-      copie = new Copie(eleve: personne,
-                        sujet: sujet,
-                        estJetable: true)
-      if (!copie.save() || copie.hasErrors()) {
-        return copie
-      }
-    }
-    createReponsesManquantesForCopie(copie)
-    copie.save(flush: true)
-    return copie
-  }
-
-  /**
-   * Supprime la copie jetable d'une personne donnée
-   * @param copie la copie
-   * @param personne la personne
-   */
-  @Transactional
-  def supprimeCopieJetableForPersonne(Copie copie, Personne personne) {
-    assert copie.estJetable
-    assert copie.eleve == personne
-    def reponses = []
-    reponses.addAll(copie.reponses)
-    reponses.each { reponse ->
-      reponseService.supprimeReponse(reponse, null)
-    }
-    copie.delete(flush: true)
-  }
-
-  /**
-   * Récupère la copie d'un élève pour une séance
-   * @param seance la séance
-   * @param eleve l'élève
-   * @return la copie
-   */
-  @Transactional
-  Copie getCopieForModaliteActiviteAndEleve(ModaliteActivite seance, Personne eleve) {
-
-    assert (seance.structureEnseignement in
-            profilScolariteService.findStructuresEnseignementForPersonne(eleve))
-
-    Copie copie = Copie.findByModaliteActiviteAndEleve(seance, eleve)
-    if (copie == null) {
-      copie = new Copie(modaliteActivite: seance,
-                        eleve: eleve,
-                        sujet: seance.sujet,
-                        estJetable: false)
-      if (!copie.save() || copie.hasErrors()) {
-        return copie
-      }
-    }
-    createReponsesManquantesForCopie(copie)
-    copie.save(flush: true)
-    return copie
-  }
-
-  private def createReponsesManquantesForCopie(Copie copie) {
-    def aCreeDesReponses = false
-    def sujet = copie.sujet
-    def reponses = []
-    // pour chaque question du sujet, on crée un obejt de type réponse ;
-    // on test la nécessité de creer la réponse car si le sujet a été modifié
-    // alors que la copie a déjà été créé, il faut créé la réponse adhoc pour
-    // la ou les questions ajoutées
-    sujet.questionsSequences.each {
-      if (it.question.estComposite()) {
-        def reponsesComposite = []
-        it.question.exercice.questionsSequences.each { qs ->
-          Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, qs)
-          if (reponse == null) {
-            reponse = reponseService.createReponse(copie,
-                                                   qs,
-                                                   copie.eleve)
-            aCreeDesReponses = true
-          }
-          reponsesComposite << reponse
+    /**
+     * Récupère la copie de teste d'une personne pour un sujet
+     * @param sujet le sujet
+     * @param personne la personne
+     * @return la copie
+     */
+    @Transactional
+    Copie getCopieTestForSujetAndPersonne(Sujet sujet, Personne personne) {
+        def criteria = Copie.createCriteria()
+        Copie copie = criteria.get {
+            eq 'sujet', sujet
+            eq 'eleve', personne
+            eq 'estJetable', true
         }
-        reponses << reponsesComposite
-      } else {
-        Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
-        if (reponse == null) {
-          reponse = reponseService.createReponse(copie,
-                                                 it,
-                                                 copie.eleve)
-          aCreeDesReponses = true
+        if (copie == null) {
+            copie = new Copie(eleve: personne,
+                    sujet: sujet,
+                    estJetable: true)
+            if (!copie.save() || copie.hasErrors()) {
+                return copie
+            }
         }
-        reponses << reponse
-      }
-    }
-    if (aCreeDesReponses) {
-      if (sujet.ordreQuestionsAleatoire) {
-        // mise en ouvre du shuffle
-        Collections.shuffle(reponses)
-      }
-      reponses = reponses.flatten()
-      reponses.eachWithIndex {Reponse rep, def index ->
-        rep.rang = index
-        rep.save()
-      }
-      copie.refresh()
-    }
-  }
-
-  /**
-   * Met à jour la copie en prenant en compte la liste de réponses soumises
-   *  sans mettre à jour la date de remise ni les évaluations. Permet
-   *  d'enregistrer la copie sans la considérer comme remise par l'élève
-   * @param copie la copie
-   * @param reponsesCopie les réponses soumises
-   * @param eleve l'élève
-   * @return la copie mise à jour
-   */
-  @Transactional
-  Copie updateCopieForListeReponsesCopie(Copie copie,
-                                         List<ReponseCopie> reponsesCopie,
-                                         Personne eleve) {
-
-    assert (copie.eleve == eleve && copie.estModifiable())
-    copie.dateEnregistrement = new Date()
-
-    reponsesCopie.each { ReponseCopie reponseCopie ->
-      Reponse reponse = reponseCopie.reponse
-      reponseService.updateSpecification(reponse,
-                                         reponseCopie.specificationObject,
-                                         eleve)
+        createReponsesManquantesForCopie(copie)
+        copie.save(flush: true)
+        return copie
     }
 
-    copie.save()
-    return copie
-  }
-
-  /**
-   * Met à jour la copie remise en prenant en compte la liste de réponses soumises
-   * et en les évaluant.
-   * @param copie la copie
-   * @param reponsesCopie les réponses soumises
-   * @param eleve l'élève
-   * @return la copie mise à jour
-   */
-  @Transactional
-  Copie updateCopieRemiseForListeReponsesCopie(Copie copie,
-                                               List<ReponseCopie> reponsesCopie,
-                                               Personne eleve) {
-
-    assert (copie.eleve == eleve && copie.estRemisable())
-    copie.dateRemise = new Date()
-    copie.dateEnregistrement = copie.dateRemise
-
-    def noteGlobaleAuto = 0
-    def nbGlobalPointsAuto = 0
-    def nbGlobalPointsCorrecteur = 0
-    reponsesCopie.each { ReponseCopie reponseCopie ->
-      Reponse reponse = reponseCopie.reponse
-      reponseService.updateSpecificationAndEvalue(reponse,
-                                                  reponseCopie.specificationObject,
-                                                  eleve)
-      if (reponse.correctionNoteAutomatique != null) {
-        noteGlobaleAuto += reponse.correctionNoteAutomatique
-        nbGlobalPointsAuto += reponse.sujetQuestion.points
-      } else {
-        nbGlobalPointsCorrecteur += reponse.sujetQuestion.points
-      }
+    /**
+     * Supprime la copie jetable d'une personne donnée
+     * @param copie la copie
+     * @param personne la personne
+     */
+    @Transactional
+    def supprimeCopieJetableForPersonne(Copie copie, Personne personne) {
+        assert copie.estJetable
+        assert copie.eleve == personne
+        def reponses = []
+        reponses.addAll(copie.reponses)
+        reponses.each { reponse ->
+            reponseService.supprimeReponse(reponse, null)
+        }
+        copie.delete(flush: true)
     }
 
-    if (noteGlobaleAuto < 0) {
-      noteGlobaleAuto = 0
+    /**
+     * Récupère la copie d'un élève pour une séance
+     * @param seance la séance
+     * @param eleve l'élève
+     * @return la copie
+     */
+    @Transactional
+    Copie getCopieForModaliteActiviteAndEleve(ModaliteActivite seance, Personne eleve) {
+
+        assert (seance.structureEnseignement in
+                profilScolariteService.findStructuresEnseignementForPersonne(eleve, fonctionService.fonctionEleve()))
+
+        Copie copie = Copie.findByModaliteActiviteAndEleve(seance, eleve)
+        if (copie == null) {
+            copie = new Copie(modaliteActivite: seance,
+                    eleve: eleve,
+                    sujet: seance.sujet,
+                    estJetable: false)
+            if (!copie.save() || copie.hasErrors()) {
+                return copie
+            }
+        }
+        createReponsesManquantesForCopie(copie)
+        copie.save(flush: true)
+        return copie
     }
-    copie.correctionNoteAutomatique = noteGlobaleAuto
 
-    copie.maxPointsAutomatique = nbGlobalPointsAuto
-    copie.maxPointsCorrecteur = nbGlobalPointsCorrecteur
-    copie.maxPoints = nbGlobalPointsAuto + nbGlobalPointsCorrecteur
-    copie.correctionNoteFinale = copie.correctionNoteAutomatique
-    if (nbGlobalPointsCorrecteur > 0) {
-      if (copie.correctionNoteCorrecteur != null) {
-        copie.correctionNoteFinale += copie.correctionNoteCorrecteur
-      }
+    private def createReponsesManquantesForCopie(Copie copie) {
+        def aCreeDesReponses = false
+        def sujet = copie.sujet
+        def reponses = []
+        // pour chaque question du sujet, on crée un obejt de type réponse ;
+        // on test la nécessité de creer la réponse car si le sujet a été modifié
+        // alors que la copie a déjà été créé, il faut créé la réponse adhoc pour
+        // la ou les questions ajoutées
+        sujet.questionsSequences.each {
+            if (it.question.estComposite()) {
+                def reponsesComposite = []
+                it.question.exercice.questionsSequences.each { qs ->
+                    Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, qs)
+                    if (reponse == null) {
+                        reponse = reponseService.createReponse(copie,
+                                qs,
+                                copie.eleve)
+                        aCreeDesReponses = true
+                    }
+                    reponsesComposite << reponse
+                }
+                reponses << reponsesComposite
+            } else {
+                Reponse reponse = Reponse.findByCopieAndSujetQuestion(copie, it)
+                if (reponse == null) {
+                    reponse = reponseService.createReponse(copie,
+                            it,
+                            copie.eleve)
+                    aCreeDesReponses = true
+                }
+                reponses << reponse
+            }
+        }
+        if (aCreeDesReponses) {
+            if (sujet.ordreQuestionsAleatoire) {
+                // mise en ouvre du shuffle
+                Collections.shuffle(reponses)
+            }
+            reponses = reponses.flatten()
+            reponses.eachWithIndex { Reponse rep, def index ->
+                rep.rang = index
+                rep.save()
+            }
+            copie.refresh()
+        }
     }
-    copie.correctionNoteFinale += copie.pointsModulation
-    copie.save()
-    return copie
-  }
 
-  /**
-   * Met à jour la notation de la copie
-   * @param copie la copie
-   * @param enseignant l'enseignant qui corrige
-   * @return la copie mise à jour
-   */
-  @Transactional
-  Copie updateNoteForReponse(Float points,
-                             Reponse reponse,
-                             Personne enseignant) {
-    def copie = reponse.copie
-    assert (copie.modaliteActivite.enseignant == enseignant)
-    def ancienneNote = reponse.correctionNoteCorrecteur
-    reponse.correctionNoteCorrecteur = points
-    if (copie.correctionNoteCorrecteur != null) {
-      if (ancienneNote != null) {
-        copie.correctionNoteCorrecteur -= ancienneNote
-      }
-      copie.correctionNoteCorrecteur += points
-    } else {
-      copie.correctionNoteCorrecteur = points
+    /**
+     * Met à jour la copie en prenant en compte la liste de réponses soumises
+     *  sans mettre à jour la date de remise ni les évaluations. Permet
+     *  d'enregistrer la copie sans la considérer comme remise par l'élève
+     * @param copie la copie
+     * @param reponsesCopie les réponses soumises
+     * @param eleve l'élève
+     * @return la copie mise à jour
+     */
+    @Transactional
+    Copie updateCopieForListeReponsesCopie(Copie copie,
+                                           List<ReponseCopie> reponsesCopie,
+                                           Personne eleve) {
+
+        assert (copie.eleve == eleve && copie.estModifiable())
+        copie.dateEnregistrement = new Date()
+
+        reponsesCopie.each { ReponseCopie reponseCopie ->
+            Reponse reponse = reponseCopie.reponse
+            reponseService.updateSpecification(reponse,
+                    reponseCopie.specificationObject,
+                    eleve)
+        }
+
+        copie.save()
+        return copie
     }
-    copie.correctionNoteFinale = copie.recalculeNoteFinale()
-    copie.save()
-    return copie
-  }
 
-  /**
-   * Met à jour la notation de la copie
-   * @param copie la copie
-   * @param enseignant l'enseignant qui corrige
-   * @return la copie mise à jour
-   */
-  @Transactional
-  Copie updateAnnotationAndModulationForCopie(String annotation,
-                                              Float pointsModulation,
-                                              Copie copie,
-                                              Personne enseignant) {
+    /**
+     * Met à jour la copie remise en prenant en compte la liste de réponses soumises
+     * et en les évaluant.
+     * @param copie la copie
+     * @param reponsesCopie les réponses soumises
+     * @param eleve l'élève
+     * @return la copie mise à jour
+     */
+    @Transactional
+    Copie updateCopieRemiseForListeReponsesCopie(Copie copie,
+                                                 List<ReponseCopie> reponsesCopie,
+                                                 Personne eleve) {
 
-    assert (copie.modaliteActivite.enseignant == enseignant)
+        assert (copie.eleve == eleve && copie.estRemisable())
+        copie.dateRemise = new Date()
+        copie.dateEnregistrement = copie.dateRemise
 
-    copie.correctionAnnotation = annotation
-    copie.pointsModulation = pointsModulation
-    copie.correctionNoteFinale = copie.recalculeNoteFinale()
-    copie.save()
-    return copie
-  }
+        def noteGlobaleAuto = 0
+        def nbGlobalPointsAuto = 0
+        def nbGlobalPointsCorrecteur = 0
+        reponsesCopie.each { ReponseCopie reponseCopie ->
+            Reponse reponse = reponseCopie.reponse
+            reponseService.updateSpecificationAndEvalue(reponse,
+                    reponseCopie.specificationObject,
+                    eleve)
+            if (reponse.correctionNoteAutomatique != null) {
+                noteGlobaleAuto += reponse.correctionNoteAutomatique
+                nbGlobalPointsAuto += reponse.sujetQuestion.points
+            } else {
+                nbGlobalPointsCorrecteur += reponse.sujetQuestion.points
+            }
+        }
+
+        if (noteGlobaleAuto < 0) {
+            noteGlobaleAuto = 0
+        }
+        copie.correctionNoteAutomatique = noteGlobaleAuto
+
+        copie.maxPointsAutomatique = nbGlobalPointsAuto
+        copie.maxPointsCorrecteur = nbGlobalPointsCorrecteur
+        copie.maxPoints = nbGlobalPointsAuto + nbGlobalPointsCorrecteur
+        copie.correctionNoteFinale = copie.correctionNoteAutomatique
+        if (nbGlobalPointsCorrecteur > 0) {
+            if (copie.correctionNoteCorrecteur != null) {
+                copie.correctionNoteFinale += copie.correctionNoteCorrecteur
+            }
+        }
+        copie.correctionNoteFinale += copie.pointsModulation
+        copie.save()
+        return copie
+    }
+
+    /**
+     * Met à jour la notation de la copie
+     * @param copie la copie
+     * @param enseignant l'enseignant qui corrige
+     * @return la copie mise à jour
+     */
+    @Transactional
+    Copie updateNoteForReponse(Float points,
+                               Reponse reponse,
+                               Personne enseignant) {
+        def copie = reponse.copie
+        assert (copie.modaliteActivite.enseignant == enseignant)
+        def ancienneNote = reponse.correctionNoteCorrecteur
+        reponse.correctionNoteCorrecteur = points
+        if (copie.correctionNoteCorrecteur != null) {
+            if (ancienneNote != null) {
+                copie.correctionNoteCorrecteur -= ancienneNote
+            }
+            copie.correctionNoteCorrecteur += points
+        } else {
+            copie.correctionNoteCorrecteur = points
+        }
+        copie.correctionNoteFinale = copie.recalculeNoteFinale()
+        copie.save()
+        return copie
+    }
+
+    /**
+     * Met à jour la notation de la copie
+     * @param copie la copie
+     * @param enseignant l'enseignant qui corrige
+     * @return la copie mise à jour
+     */
+    @Transactional
+    Copie updateAnnotationAndModulationForCopie(String annotation,
+                                                Float pointsModulation,
+                                                Copie copie,
+                                                Personne enseignant) {
+
+        assert (copie.modaliteActivite.enseignant == enseignant)
+
+        copie.correctionAnnotation = annotation
+        copie.pointsModulation = pointsModulation
+        copie.correctionNoteFinale = copie.recalculeNoteFinale()
+        copie.save()
+        return copie
+    }
 
 /**
  * Recherche les copies en visualisation élève  (profil élève)
@@ -299,76 +299,79 @@ class CopieService {
  * la pagination
  * @return la liste des copies
  */
-  List<Copie> findCopiesEnVisualisationForApprenant(Personne chercheur,
-                                                    Map paginationAndSortingSpec = [:]) {
+    List<Copie> findCopiesEnVisualisationForApprenant(Personne chercheur,
+                                                      Map paginationAndSortingSpec = [:]) {
 
-    assert (chercheur != null)
+        assert (chercheur != null)
+        // TODO : quelle stratégie pour les non élèves qui ont le profil apprenant ?
+        def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur, fonctionService.fonctionEleve())
+        def copies = []
+        if (!structs.isEmpty()) {
+            Date now = new Date()
+            def criteria = Copie.createCriteria()
+            copies = criteria.list(paginationAndSortingSpec) {
+                eq 'eleve', chercheur
+                modaliteActivite {
+                    inList 'structureEnseignement', structs
+                    lt 'dateFin', now
+                }
+                if (paginationAndSortingSpec) {
+                    def sortArg = paginationAndSortingSpec['sort'] ?: 'dateRemise'
+                    def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+                    if (sortArg) {
+                        order "${sortArg}", orderArg
+                    }
 
-    def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur)
-    Date now = new Date()
-    def criteria = Copie.createCriteria()
-    List<Copie> copies = criteria.list(paginationAndSortingSpec) {
-      eq 'eleve', chercheur
-      modaliteActivite {
-        inList 'structureEnseignement', structs
-        lt 'dateFin', now
-      }
-      if (paginationAndSortingSpec) {
-        def sortArg = paginationAndSortingSpec['sort'] ?: 'dateRemise'
-        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-        if (sortArg) {
-          order "${sortArg}", orderArg
+                }
+            }
         }
-
-      }
+        copies
     }
-    return copies
-  }
 
-  /**
-   * Recherche les copies en visualisation élève  (profil parent)
-   * @param chercheur le parent effectuant la recherche
-   * @param apprenant l'élève
-   * @param paginationAndSortingSpec les specifications pour l'ordre et
-   * la pagination
-   * @return la liste des copies
-   */
-  List<Copie> findCopiesEnVisualisationForResponsableAndApprenant(Personne chercheur,
-                                                                  Personne apprenant,
-                                                                  Map paginationAndSortingSpec = [:]) {
+    /**
+     * Recherche les copies en visualisation élève  (profil parent)
+     * @param chercheur le parent effectuant la recherche
+     * @param apprenant l'élève
+     * @param paginationAndSortingSpec les specifications pour l'ordre et
+     * la pagination
+     * @return la liste des copies
+     */
+    List<Copie> findCopiesEnVisualisationForResponsableAndApprenant(Personne chercheur,
+                                                                    Personne apprenant,
+                                                                    Map paginationAndSortingSpec = [:]) {
 
-    assert (profilScolariteService.personneEstResponsableEleve(chercheur, apprenant))
+        assert (profilScolariteService.personneEstResponsableEleve(chercheur, apprenant))
 
-    def copies = findCopiesEnVisualisationForApprenant(apprenant, paginationAndSortingSpec)
-    return copies
-  }
-
-  /**
-   *
-   * @param seance la séance
-   * @param chercheur la personne déclenchant la recherche
-   * @param paginationSpec les specifications la pagination
-   * @return les copies remises correspondant à la séance
-   */
-  List<Copie> findCopiesRemisesForModaliteActivite(ModaliteActivite seance,
-                                            Personne chercheur,
-                                            Map paginationSpec = [:]) {
-
-    assert (seance?.enseignant == chercheur)
-
-    def criteria = Copie.createCriteria()
-    List<Copie> copies = criteria.list(paginationSpec) {
-      eq 'modaliteActivite', seance
-      isNotNull 'dateRemise'
-      eleve {
-        order 'nom', 'asc'
-      }
-      join 'eleve'
+        def copies = findCopiesEnVisualisationForApprenant(apprenant, paginationAndSortingSpec)
+        return copies
     }
-    return copies
-  }
 
-  /**
+    /**
+     *
+     * @param seance la séance
+     * @param chercheur la personne déclenchant la recherche
+     * @param paginationSpec les specifications la pagination
+     * @return les copies remises correspondant à la séance
+     */
+    List<Copie> findCopiesRemisesForModaliteActivite(ModaliteActivite seance,
+                                                     Personne chercheur,
+                                                     Map paginationSpec = [:]) {
+
+        assert (seance?.enseignant == chercheur)
+
+        def criteria = Copie.createCriteria()
+        List<Copie> copies = criteria.list(paginationSpec) {
+            eq 'modaliteActivite', seance
+            isNotNull 'dateRemise'
+            eleve {
+                order 'nom', 'asc'
+            }
+            join 'eleve'
+        }
+        return copies
+    }
+
+    /**
      *
      * @param seance la séance
      * @param chercheur la personne déclenchant la recherche
@@ -379,71 +382,71 @@ class CopieService {
                                               Personne chercheur,
                                               Map paginationSpec = [:]) {
 
-      assert (seance?.enseignant == chercheur)
+        assert (seance?.enseignant == chercheur)
 
-      def criteria = Copie.createCriteria()
-      List<Copie> copies = criteria.list(paginationSpec) {
-        eq 'modaliteActivite', seance
-      }
-      return copies
+        def criteria = Copie.createCriteria()
+        List<Copie> copies = criteria.list(paginationSpec) {
+            eq 'modaliteActivite', seance
+        }
+        return copies
     }
 
-  /**
-   *
-   * @param seance la séance
-   * @param lesCopies les copies de la séance en cours
-   * @param chercheur la personne déclenchant la recherche
-   * @return les élèves n'ayant pas encore rendus leur copies
-   */
-  List<Personne> findElevesSansCopieForModaliteActivite(ModaliteActivite seance,
-                                                        List<Copie> lesCopies,
-                                                        Personne chercheur) {
-    assert (seance?.enseignant == chercheur)
+    /**
+     *
+     * @param seance la séance
+     * @param lesCopies les copies de la séance en cours
+     * @param chercheur la personne déclenchant la recherche
+     * @return les élèves n'ayant pas encore rendus leur copies
+     */
+    List<Personne> findElevesSansCopieForModaliteActivite(ModaliteActivite seance,
+                                                          List<Copie> lesCopies,
+                                                          Personne chercheur) {
+        assert (seance?.enseignant == chercheur)
 
-    seance.getPersonnesDevantRendreCopie() - lesCopies*.eleve
-  }
-
-  /**
-   * Supprime les copies pour une seance d'activité donnée
-   * @param seance la modalite activite
-   * @param personne la personne déclenchant la suppression
-   */
-  @Transactional
-  def supprimeCopiesForModaliteActivite(ModaliteActivite seance,
-                                        Personne personne) {
-    assert (seance?.enseignant == personne)
-    def copies = findCopiesForModaliteActivite(seance, personne)
-    copies.each { copie ->
-      def reponses = []
-      reponses.addAll(copie.reponses)
-      reponses.each { reponse ->
-        reponseService.supprimeReponse(reponse, personne)
-      }
-      copie.delete()
+        seance.getPersonnesDevantRendreCopie() - lesCopies*.eleve
     }
-  }
 
-  /**
-   * Supprime les copies jetables pour un sujet
-   * @param sujet le sujet
-   */
-  @Transactional
-  def supprimeCopiesJetablesForSujet(Sujet sujet) {
-    def copies = Copie.findAllBySujetAndEstJetable(sujet, true)
-    copies.each { copie ->
-      def reponses = []
-      reponses.addAll(copie.reponses)
-      reponses.each { reponse ->
-        reponseService.supprimeReponse(reponse, null)
-      }
-      copie.delete(flush: true)
+    /**
+     * Supprime les copies pour une seance d'activité donnée
+     * @param seance la modalite activite
+     * @param personne la personne déclenchant la suppression
+     */
+    @Transactional
+    def supprimeCopiesForModaliteActivite(ModaliteActivite seance,
+                                          Personne personne) {
+        assert (seance?.enseignant == personne)
+        def copies = findCopiesForModaliteActivite(seance, personne)
+        copies.each { copie ->
+            def reponses = []
+            reponses.addAll(copie.reponses)
+            reponses.each { reponse ->
+                reponseService.supprimeReponse(reponse, personne)
+            }
+            copie.delete()
+        }
     }
-  }
+
+    /**
+     * Supprime les copies jetables pour un sujet
+     * @param sujet le sujet
+     */
+    @Transactional
+    def supprimeCopiesJetablesForSujet(Sujet sujet) {
+        def copies = Copie.findAllBySujetAndEstJetable(sujet, true)
+        copies.each { copie ->
+            def reponses = []
+            reponses.addAll(copie.reponses)
+            reponses.each { reponse ->
+                reponseService.supprimeReponse(reponse, null)
+            }
+            copie.delete(flush: true)
+        }
+    }
 
 
 }
 
 class ReponseCopie {
-  Reponse reponse
-  def specificationObject
+    Reponse reponse
+    def specificationObject
 }
