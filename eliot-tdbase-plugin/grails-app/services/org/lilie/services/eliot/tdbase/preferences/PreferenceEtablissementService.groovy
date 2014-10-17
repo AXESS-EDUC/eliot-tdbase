@@ -36,6 +36,16 @@ class PreferenceEtablissementService {
         pref
     }
 
+    /**
+     * Récupère le mapping fonction rôle d'un établissement
+     * @param personne la personne effectuant la demande
+     * @param etablissement l'établissement
+     * @return le mapping fonction role
+     */
+    MappingFonctionRole getMappingFonctionRoleForEtablissement(Personne personne, Etablissement etablissement) {
+        getPreferenceForEtablissement(personne,etablissement).mappingFonctionRoleAsMap()
+    }
+
 
     /**
      * Met à jour en base une préférence établissement
