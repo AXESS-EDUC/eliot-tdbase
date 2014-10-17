@@ -74,7 +74,6 @@ class PreferencesController {
         def mapping = getMappingFromParamsForPreferenceEtablissement(params, prefEtab)
         prefEtab.mappingFonctionRole = mapping.toJsonString()
         preferenceEtablissementService.updatePreferenceEtablissement(authenticatedPersonne, prefEtab)
-        securiteSessionServiceProxy.initialiseRoleApplicatifListForCurrentEtablissement(authenticatedPersonne)
         flash.messageTextesCode = "preferences.save.success"
         redirect(controller: "preferences", action: "index", params: [bcInit: true])
     }

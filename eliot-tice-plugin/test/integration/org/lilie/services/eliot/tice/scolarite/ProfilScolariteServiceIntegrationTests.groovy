@@ -123,4 +123,75 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
                 bootstrapService.leLycee.porteurEnt))
     }
 
+    void testFindFonctionsForPersonneAndEtablissement() {
+        // given: un établissement
+        def etab = bootstrapService.leLycee
+
+        // and: un enseignant
+        def ens1 = bootstrapService.enseignant1
+
+        // when: la recherche de fonction est lancée
+        Set fcts = profilScolariteService.findFonctionsForPersonneAndEtablissement(ens1,etab)
+
+        // then: la fct retournée est enseignant
+        assertEquals(1,fcts.size())
+        assertTrue(fcts.contains(FonctionEnum.ENS))
+
+        }
+
+    void testFindEtablissementsAndFonctionsForPersonne() {
+        // given: un enseignant
+        def ens1 = bootstrapService.enseignant1
+
+        // when: la recherche d'établissements et de fonctions est lancée
+        def res = profilScolariteService.findEtablissementsAndFonctionsForPersonne(ens1)
+
+        // then: le résultats contient les établissements assicié à la fonction enseignant
+        res.size() == 2
+        res.get(bootstrapService.leLycee).size() == 1
+        res.get(bootstrapService.leLycee).contains(FonctionEnum.ENS)
+        res.get(bootstrapService.leCollege).size() == 1
+        res.get(bootstrapService.leCollege).contains(FonctionEnum.ENS)
+
+        // given: un parent
+        def parent1 = bootstrapService.parent1
+
+        // when: la recherche d'établissements et de fonctions est lancée
+        res = profilScolariteService.findEtablissementsAndFonctionsForPersonne(ens1)
+
+        // then: le résultats contient les établissements assicié à la fonction enseignant
+        res.size() == 2
+        res.get(bootstrapService.leLycee).size() == 1
+        res.get(bootstrapService.leLycee).contains(FonctionEnum.PERS_REL_ELEVE)
+        res.get(bootstrapService.leCollege).size() == 1
+        res.get(bootstrapService.leCollege).contains(FonctionEnum.PERS_REL_ELEVE)
+
+        // given: un élève
+        def elv1 = bootstrapService.eleve1
+
+        // when: la recherche d'établissements et de fonctions est lancée
+        res = profilScolariteService.findEtablissementsAndFonctionsForPersonne(ens1)
+
+        // then: le résultats contient les établissements assicié à la fonction enseignant
+        res.size() == 2
+        res.get(bootstrapService.leLycee).size() == 1
+        res.get(bootstrapService.leLycee).contains(FonctionEnum.ELEVE)
+        res.get(bootstrapService.leCollege).size() == 1
+        res.get(bootstrapService.leCollege).contains(FonctionEnum.ELEVE)
+
+        // given: un pers de direction
+        def pers1 = bootstrapService.persDirection1
+
+        // when: la recherche d'établissements et de fonctions est lancée
+        res = profilScolariteService.findEtablissementsAndFonctionsForPersonne(ens1)
+
+        // then: le résultats contient les établissements assicié à la fonction enseignant
+        res.size() == 2
+        res.get(bootstrapService.leLycee).size() == 1
+        res.get(bootstrapService.leLycee).contains(FonctionEnum.DIR)
+        res.get(bootstrapService.leCollege).size() == 1
+        res.get(bootstrapService.leCollege).contains(FonctionEnum.DIR)
+
+    }
+
 }

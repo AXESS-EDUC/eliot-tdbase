@@ -80,15 +80,15 @@ public class ProfilScolariteService {
      * @param Personne la personne
      * @return la liste des fonctions
      */
-    List findFonctionsForPersonneAndEtablissement(Personne personne, Etablissement etablissement, Boolean returnFontionEnum = true) {
+    Set findFonctionsForPersonneAndEtablissement(Personne personne, Etablissement etablissement, Boolean returnFontionEnum = true) {
         List<PersonneProprietesScolarite> profils =
                 PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
-        List<Fonction> fonctions = []
+        Set<Fonction> fonctions = new HashSet<Fonction>()
         profils.each {
             if (it.proprietesScolarite.etablissement == etablissement ||
                     it.proprietesScolarite.structureEnseignement?.etablissement == etablissement) {
                 Fonction fonction = it.proprietesScolarite.fonction
-                if (fonction && !fonctions.contains(fonction)) {
+                if (fonction) {
                     if (returnFontionEnum) {
                         fonctions << FonctionEnum.valueOf(fonction.code)
                     } else {
@@ -169,6 +169,50 @@ public class ProfilScolariteService {
             }
         }
         etablissements as List<Etablissement>
+    }
+
+    /**
+     * Récupère les établissements et fonctions associées d'une personne
+     * @param personne la personne
+     * @return une map contenant pour chaque établissement la liste des fonctions de la personne
+     */
+    Map<Etablissement,Set<FonctionEnum>> findEtablissementsAndFonctionsForPersonne(Personne personne) {
+        def res = [:]
+        // test d'abord si la personne est responsable eleves
+        List<Personne> eleves = findElevesForResponsable(personne)
+        if (eleves) { // si oui, on recupere les etablissements des enfants associés
+            eleves.each {
+                def etabsEleve = findEtablissementsForPersonne(it) // todo : find etablissement for eleves
+                etabsEleve.each { etab ->
+                    HashSet<FonctionEnum> fcts = res.get(etab)
+                    if (!fcts) {
+                        fcts = new HashSet<FonctionEnum>()
+                        res.put(etab,fcts)
+                    }
+                    fcts.add(FonctionEnum.PERS_REL_ELEVE)
+                }
+            }
+        } else { // sinon on parcours les profils
+            List<PersonneProprietesScolarite> profils =
+                    PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+
+            profils.each {
+                def fonction = it.proprietesScolarite.fonction
+                def porteurENT = it.proprietesScolarite.porteurEnt
+                if (fonction && !porteurENT) { // on ne traite que les fcts d'établissement
+                    Etablissement etablissement = it.proprietesScolarite.etablissement
+                    StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
+                    def etab = etablissement ?: structureEnseignement.etablissement
+                    HashSet<FonctionEnum> fcts = res.get(etab)
+                    if (!fcts) {
+                        fcts = new HashSet<FonctionEnum>()
+                        res.put(etab, fcts)
+                    }
+                    fcts.add(FonctionEnum.valueOf(fonction.code))
+                }
+            }
+        }
+        res
     }
 
     /**
