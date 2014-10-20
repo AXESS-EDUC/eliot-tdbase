@@ -25,15 +25,21 @@ class SecuriteSessionService {
     Etablissement currentEtablissement
     PreferenceEtablissement currentPreferenceEtablissement
 
+    Map<Etablissement, Set<FonctionEnum>> etablissementsAndFonctionsByEtablissement
+
     Set<Etablissement> getEtablissementList() {
             rolesApplicatifsAndPerimetreByRoleApplicatif.get(currentRoleApplicatif).etablissementList
     }
-    Map<Etablissement, Set<FonctionEnum>> etablissementsAndFonctionsByEtablissement
+    String getEtablissementListDisplay() {
+        etablissementList.nomAffichage.join(",")
+    }
 
 
     RoleApplicatif currentRoleApplicatif
 
     Map<RoleApplicatif, PerimetreRoleApplicatif> rolesApplicatifsAndPerimetreByRoleApplicatif
+
+
 
     /**
      * Initialise l'objet Securite Session
@@ -106,6 +112,16 @@ class SecuriteSessionService {
             throw new BadRoleApplicatifSecuritySessionException()
         }
         currentRoleApplicatif = newRoleAppliatif
+
+        def etabs = etablissementList
+        if (etabs && !etabs.isEmpty()) {
+            onChangeEtablissement(personne,etabs.first())
+        } else {
+            currentPreferenceEtablissement = null
+            currentEtablissement = null
+        }
+
+
     }
 
 
@@ -121,7 +137,6 @@ class SecuriteSessionService {
         etablissementsAndFonctionsByEtablissement = profilScolariteService.findEtablissementsAndFonctionsForPersonne(personne)
         if (!etablissementsAndFonctionsByEtablissement.isEmpty()) {
             etablissementsAndFonctionsByEtablissement.each { etablissement, fcts ->
-                println ">>>>>> current etab <<<<<<<< : ${etablissement}"
                 MappingFonctionRole mapping = preferenceEtablissementService.getMappingFonctionRoleForEtablissement(personne, etablissement)
                 fcts.each { FonctionEnum fct ->
                     def roles = mapping.getRolesForFonction(fct)
@@ -131,14 +146,12 @@ class SecuriteSessionService {
                             perimetre = new PerimetreRoleApplicatif()
                             rolesApplicatifsAndPerimetreByRoleApplicatif.put(role, perimetre)
                         }
-                        println ">>>>>> add etab for role: ${role} and perimetre ${perimetre}"
                         perimetre.etablissementList.add(etablissement)
-                        println ">>>>>>>> result : $rolesApplicatifsAndPerimetreByRoleApplicatif"
                     }
                 }
             }
             updatePerimetreForEachPerimetreRoleApplicatif(etablissementsAndFonctionsByEtablissement.size())
-            currentRoleApplicatif = rolesApplicatifsAndPerimetreByRoleApplicatif.keySet().first()
+            onChangeRoleApplicatif(personne,rolesApplicatifsAndPerimetreByRoleApplicatif.keySet().first())
         }
     }
 

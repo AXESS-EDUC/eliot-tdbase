@@ -71,7 +71,7 @@ class ActiviteController {
     def modalitesActivites = modaliteActiviteService.findModalitesActivitesForApprenant(personne,
                                                                                         params)
     boolean affichePager = false
-    if (modalitesActivites.totalCount > maxItems) {
+    if (!modalitesActivites.isEmpty() && modalitesActivites.totalCount > maxItems) {
       affichePager = true
     }
     render(view: '/activite/seance/liste', model: [liens: breadcrumpsServiceProxy.liens,

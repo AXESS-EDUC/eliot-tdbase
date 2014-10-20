@@ -171,6 +171,7 @@ class SecuriteSessionServiceSpec extends Specification {
 
         and: "des établissements"
         Etablissement etab1 = Mock(Etablissement)
+        // hack pour mock sur objets "comparable"
         Etablissement etab2 = Mock(Etablissement) {
             compareTo(etab1) >> -1
         }
