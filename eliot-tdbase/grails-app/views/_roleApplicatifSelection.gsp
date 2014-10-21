@@ -10,5 +10,6 @@
                                                                                                                from="${securiteSessionServiceProxy.rolesApplicatifsAndPerimetreByRoleApplicatif.keySet()}"
                                                                                                                optionKey="code" value="${securiteSessionServiceProxy.currentRoleApplicatif.code}"
                                                                                                                valueMessagePrefix="preferences.role" onchange="submit();"
-    /></g:form>
+    />
+    </g:form>
 </sec:ifLoggedIn>

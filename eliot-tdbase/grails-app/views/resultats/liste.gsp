@@ -33,8 +33,8 @@
   <r:script>
     $(document).ready(function () {
       $('#menu-item-resultats').addClass('actif');
-      $("select").change(function () {
-        $("form").submit();
+      $("#eleveId").change(function () {
+        $("#form-eleve-select").submit();
       })
     });
   </r:script>
