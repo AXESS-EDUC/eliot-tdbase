@@ -38,7 +38,7 @@ import org.lilie.services.eliot.tice.annuaire.PorteurEnt
  * @author Franck Silvestre
  */
 @EqualsAndHashCode(includes = 'uai')
-class Etablissement {
+class Etablissement implements Comparable {
 
   Long id
   String nomAffichage
@@ -72,4 +72,9 @@ class Etablissement {
       porteurEnt = PorteurEnt.findByParDefaut(true)
     }
   }
+
+    @Override
+    int compareTo(Object o) {
+        nomAffichage.compareTo(o.nomAffichage)
+    }
 }

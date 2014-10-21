@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.securite.RoleApplicatif; org.lilie.services.eliot.tdbase.securite.SecuriteSessionService; org.lilie.services.eliot.tdbase.RoleApplicatif; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tdbase.securite.RoleApplicatif; org.lilie.services.eliot.tdbase.securite.SecuriteSessionService; org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tdbase.QuestionTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -66,10 +66,9 @@
                 params="[bcInit: true]"
                 title="Liste des résultats">Résultats</g:link>
       </li>
-        <g:render template="/menuItemEtablissements" model="[securiteSessionServiceProxy:securiteSessionServiceProxy]"></g:render>
-    </ul>
+     </ul>
   </div>
-    <g:render template="/roleApplicatifSelection" model="[role: org.lilie.services.eliot.tdbase.securite.RoleApplicatif.ELEVE,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>
+    <g:render template="/roleApplicatifSelection" model="[role: RoleApplicatif.ELEVE,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>
 
     <g:layoutBody/>
   <r:script>

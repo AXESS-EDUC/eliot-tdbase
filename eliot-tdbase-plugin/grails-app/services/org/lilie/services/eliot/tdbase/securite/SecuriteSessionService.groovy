@@ -24,9 +24,22 @@ class SecuriteSessionService {
     Long personneId
     Etablissement currentEtablissement
     PreferenceEtablissement currentPreferenceEtablissement
-    List<Etablissement> etablissementList
+
+    Map<Etablissement, Set<FonctionEnum>> etablissementsAndFonctionsByEtablissement
+
+    Set<Etablissement> getEtablissementList() {
+            rolesApplicatifsAndPerimetreByRoleApplicatif.get(currentRoleApplicatif).etablissementList
+    }
+    String getEtablissementListDisplay() {
+        etablissementList.nomAffichage.join(",")
+    }
+
+
     RoleApplicatif currentRoleApplicatif
-    SortedSet<RoleApplicatif> roleApplicatifList
+
+    Map<RoleApplicatif, PerimetreRoleApplicatif> rolesApplicatifsAndPerimetreByRoleApplicatif
+
+
 
     /**
      * Initialise l'objet Securite Session
@@ -41,12 +54,10 @@ class SecuriteSessionService {
                 personneId = utilisateur.personneId
                 // initialise la lsite d'établissement
                 Personne personne = utilisateur.personne
-                etablissementList = profilScolariteService.findEtablissementsForPersonne(personne) ?: []
-                // initialise currentEtablissement (le premier de la liste) et les autres proprietes
-                if (!etablissementList.isEmpty()) {
-                  onChangeEtablissement(personne, etablissementList.first())
-                } else {
-                    inialiseRoleApplicatifForPersonneWithoutEtablissementForPorteurEnt(personne, porteurEnt)
+                initialiseRolesAvecPerimetreForPersonne(personne)
+                if (rolesApplicatifsAndPerimetreByRoleApplicatif.isEmpty()) {
+                    // on test si c'est un super administrateur
+                    inialiseRoleApplicatifForPersonneWithoutEtablissementForPorteurEnt(personne,porteurEnt)
                 }
             }
         } else if (utilisateur.personneId != personneId) {
@@ -69,15 +80,7 @@ class SecuriteSessionService {
         // mise à jour du current etablissement
         currentEtablissement = newCurrentEtablissement
         // mise à jour du current preference etablissement
-        currentPreferenceEtablissement = preferenceEtablissementService.getPreferenceForEtablissement(personne,currentEtablissement)
-        // mise à jour de la liste des rôles applicatifs
-        initialiseRoleApplicatifListForCurrentEtablissement(personne)
-        // mise à jour du current role
-        if (!roleApplicatifList.isEmpty()) {
-            currentRoleApplicatif = roleApplicatifList.first()
-        } else {
-            currentRoleApplicatif = null
-        }
+        currentPreferenceEtablissement = preferenceEtablissementService.getPreferenceForEtablissement(personne, currentEtablissement)
 
     }
 
@@ -85,11 +88,11 @@ class SecuriteSessionService {
      * Initialise le role applicatif d'une personne sans établissement
      * @param personne
      */
-    def inialiseRoleApplicatifForPersonneWithoutEtablissementForPorteurEnt(Personne personne,PorteurEnt porteurEnt ) {
+    def inialiseRoleApplicatifForPersonneWithoutEtablissementForPorteurEnt(Personne personne, PorteurEnt porteurEnt) {
         if (personne.id != personneId) {
             throw new BadPersonnSecuritySessionException()
         }
-        if (profilScolariteService.personneEstAdministrateurCentralForPorteurEnt(personne,porteurEnt)) {
+        if (profilScolariteService.personneEstAdministrateurCentralForPorteurEnt(personne, porteurEnt)) {
             currentRoleApplicatif = RoleApplicatif.SUPER_ADMINISTRATEUR
         } else {
             currentRoleApplicatif = null
@@ -105,31 +108,78 @@ class SecuriteSessionService {
         if (personne.id != personneId) {
             throw new BadPersonnSecuritySessionException()
         }
-        if (!roleApplicatifList?.contains(newRoleAppliatif)) {
+        if (!rolesApplicatifsAndPerimetreByRoleApplicatif.keySet().contains(newRoleAppliatif)) {
             throw new BadRoleApplicatifSecuritySessionException()
         }
         currentRoleApplicatif = newRoleAppliatif
-    }
 
-    /**
-     * Initialise la liste des rôles applicatifs pour le currentEtablissement
-     * @param personne la personne authentifiée
-     */
-    def initialiseRoleApplicatifListForCurrentEtablissement(Personne personne) {
-        roleApplicatifList = new TreeSet<RoleApplicatif>()
-        // test si la personne est responsable eleve
-        if (profilScolariteService.personneEstResponsableEleve(personne)) {
-            roleApplicatifList.add(RoleApplicatif.PARENT)
-        } else { // sinon cherche en fonction des profils
-            if (currentEtablissement != null) {
-                def fonctions = profilScolariteService.findFonctionsForPersonneAndEtablissement(personne, currentEtablissement)
-                MappingFonctionRole mapping = currentPreferenceEtablissement.mappingFonctionRoleAsMap()
-                fonctions.each { FonctionEnum fct ->
-                    roleApplicatifList.addAll(mapping.getRolesForFonction(fct))
-                }
-            }
+        def etabs = etablissementList
+        if (etabs && !etabs.isEmpty()) {
+            onChangeEtablissement(personne,etabs.first())
+        } else {
+            currentPreferenceEtablissement = null
+            currentEtablissement = null
         }
 
+
     }
 
+
+    /**
+     * Initialise les rôles avec perimetre pour une personne
+     * @param personne la personne
+     */
+    def initialiseRolesAvecPerimetreForPersonne(Personne personne) {
+        rolesApplicatifsAndPerimetreByRoleApplicatif =  new TreeMap<RoleApplicatif,PerimetreRoleApplicatif>()
+        // traitement du rôle de super administrateur en priorité
+
+        // ensuite les rôles issus des établissements
+        etablissementsAndFonctionsByEtablissement = profilScolariteService.findEtablissementsAndFonctionsForPersonne(personne)
+        if (!etablissementsAndFonctionsByEtablissement.isEmpty()) {
+            etablissementsAndFonctionsByEtablissement.each { etablissement, fcts ->
+                MappingFonctionRole mapping = preferenceEtablissementService.getMappingFonctionRoleForEtablissement(personne, etablissement)
+                fcts.each { FonctionEnum fct ->
+                    def roles = mapping.getRolesForFonction(fct)
+                    roles.each { role ->
+                        def perimetre = rolesApplicatifsAndPerimetreByRoleApplicatif.get(role)
+                        if (perimetre == null) {
+                            perimetre = new PerimetreRoleApplicatif()
+                            rolesApplicatifsAndPerimetreByRoleApplicatif.put(role, perimetre)
+                        }
+                        perimetre.etablissementList.add(etablissement)
+                    }
+                }
+            }
+            updatePerimetreForEachPerimetreRoleApplicatif(etablissementsAndFonctionsByEtablissement.size())
+            onChangeRoleApplicatif(personne,rolesApplicatifsAndPerimetreByRoleApplicatif.keySet().first())
+        }
+    }
+
+    private updatePerimetreForEachPerimetreRoleApplicatif(int etablissementCount) {
+        rolesApplicatifsAndPerimetreByRoleApplicatif.values().each { perimetreRoleApplicatif ->
+            if (perimetreRoleApplicatif.etablissementList.size() == etablissementCount) {
+                perimetreRoleApplicatif.perimetre = PerimetreRoleApplicatifEnum.ALL_ETABLISSEMENTS
+            } else if (etablissementCount == 0) {
+                perimetreRoleApplicatif.perimetre = PerimetreRoleApplicatifEnum.ENT
+            } else {
+                perimetreRoleApplicatif.perimetre = PerimetreRoleApplicatifEnum.SEVERAL_ETABLISSEMENTS
+            }
+        }
+    }
+
+}
+
+class PerimetreRoleApplicatif {
+    PerimetreRoleApplicatifEnum perimetre
+    SortedSet<Etablissement> etablissementList = new TreeSet<Etablissement>()
+
+    String toString() {
+        etablissementList.toString()
+    }
+}
+
+enum PerimetreRoleApplicatifEnum {
+    ENT,
+    ALL_ETABLISSEMENTS,
+    SEVERAL_ETABLISSEMENTS
 }
