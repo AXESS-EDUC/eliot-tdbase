@@ -16,6 +16,7 @@ bin
 *.tar
 *.zip
 *.sha1
+/**/jmol/*.jar
 
 # Logs and databases #
 ######################
