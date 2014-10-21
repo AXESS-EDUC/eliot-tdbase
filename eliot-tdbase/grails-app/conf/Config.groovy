@@ -53,31 +53,31 @@ grails.config.locations = ["classpath:${appName}-config.groovy"]
 // Fichier de configuration externe commun à toutes les applications Eliot
 def eliotcommonsConfigLocation = System.properties["eliot-commons.config.location"]
 if (eliotcommonsConfigLocation) {
-  grails.config.locations << ("file:" + eliotcommonsConfigLocation)
+    grails.config.locations << ("file:" + eliotcommonsConfigLocation)
 }
 
 // Fichier de configuration externe propre à l'application
 def appConfigLocation = System.properties["${appName}.config.location"]
 if (appConfigLocation) {
-  grails.config.locations << "file:" + appConfigLocation
+    grails.config.locations << "file:" + appConfigLocation
 }
 
 // config générale
 grails.project.groupId = "org.lilie.services.eliot" // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
-grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
-    xml: ['text/xml', 'application/xml'],
-    text: 'text/plain',
-    js: 'text/javascript',
-    rss: 'application/rss+xml',
-    atom: 'application/atom+xml',
-    css: 'text/css',
-    csv: 'text/csv',
-    all: '*/*',
-    json: ['application/json', 'text/json'],
-    form: 'application/x-www-form-urlencoded',
-    multipartForm: 'multipart/form-data']
+grails.mime.types = [html         : ['text/html', 'application/xhtml+xml'],
+                     xml          : ['text/xml', 'application/xml'],
+                     text         : 'text/plain',
+                     js           : 'text/javascript',
+                     rss          : 'application/rss+xml',
+                     atom         : 'application/atom+xml',
+                     css          : 'text/css',
+                     csv          : 'text/csv',
+                     all          : '*/*',
+                     json         : ['application/json', 'text/json'],
+                     form         : 'application/x-www-form-urlencoded',
+                     multipartForm: 'multipart/form-data']
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
@@ -105,44 +105,44 @@ grails.exceptionresolver.params.exclude = ['password']
 
 // set per-environment serverURL stem for creating absolute links
 environments {
-  development {
-    //grails.serverURL = "http://192.168.0.1:8080/${appName}"
-    grails.serverURL = "http://localhost:8080/${appName}"
-  }
-  test {
-    grails.serverURL = "http://localhost:8080/${appName}"
-  }
-  testlilie {
-    grails.serverURL = "http://localhost:8080/${appName}"
-  }
+    development {
+        //grails.serverURL = "http://192.168.0.1:8080/${appName}"
+        grails.serverURL = "http://localhost:8080/${appName}"
+    }
+    test {
+        grails.serverURL = "http://localhost:8080/${appName}"
+    }
+    testlilie {
+        grails.serverURL = "http://localhost:8080/${appName}"
+    }
 }
 
 // log4j configuration
 log4j = {
-  // Example of changing the log pattern for the default console
-  // appender:
-  //
-  //appenders {
-  //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-  //}
+    // Example of changing the log pattern for the default console
+    // appender:
+    //
+    //appenders {
+    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+    //}
 
-  error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
-      'org.codehaus.groovy.grails.web.pages', //  GSP
-      'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-      'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-      'org.codehaus.groovy.grails.web.mapping', // URL mapping
-      'org.codehaus.groovy.grails.commons', // core / classloading
-      'org.codehaus.groovy.grails.plugins', // plugins
-      'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-      'org.springframework',
-      'org.hibernate',
-      'net.sf.ehcache.hibernate'
+    error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+            'org.codehaus.groovy.grails.web.pages', //  GSP
+            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+            'org.codehaus.groovy.grails.web.mapping', // URL mapping
+            'org.codehaus.groovy.grails.commons', // core / classloading
+            'org.codehaus.groovy.grails.plugins', // plugins
+            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+            'org.springframework',
+            'org.hibernate',
+            'net.sf.ehcache.hibernate'
 
-  warn 'org.mortbay.log'
+    warn 'org.mortbay.log'
 
-  info 'grails.app'
+    info 'grails.app'
 
-  debug 'org.lilie.services.eliot.tice.webservices.rest.client.RestClient'
+    debug 'org.lilie.services.eliot.tice.webservices.rest.client.RestClient'
 
 }
 
@@ -153,45 +153,45 @@ grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 // set security rbac
 //
 grails.plugins.springsecurity.interceptUrlMap = [
-    '/': ['IS_AUTHENTICATED_FULLY'],
-    '/accueil/**':['IS_AUTHENTICATED_FULLY'],
-    '/p/**': ['IS_AUTHENTICATED_FULLY'],
-    '/dashboard/**': [
-        "${RoleApplicatif.ENSEIGNANT.authority}",
-        'IS_AUTHENTICATED_FULLY'
-    ],
-    '/sujet/**': [
-        "${RoleApplicatif.ENSEIGNANT.authority}",
-        'IS_AUTHENTICATED_FULLY'
-    ],
-    '/question/**': [
-        "${RoleApplicatif.ENSEIGNANT.authority}",
-        'IS_AUTHENTICATED_FULLY'
-    ],
-    '/seance/**': [
-        "${RoleApplicatif.ENSEIGNANT.authority}",
-        'IS_AUTHENTICATED_FULLY'
-    ],
-    '/activite/**': [
-        "${RoleApplicatif.ELEVE.authority}",
-        'IS_AUTHENTICATED_FULLY'
-    ],
-    '/resultats/**': [
-        "${RoleApplicatif.PARENT.authority}",
-        'IS_AUTHENTICATED_FULLY'
-    ],
-    '/preferences/**': [
-        "${RoleApplicatif.ADMINISTRATEUR.authority}",
-        'IS_AUTHENTICATED_FULLY'
-    ],
-    '/maintenance/**': [
-        "${RoleApplicatif.SUPER_ADMINISTRATEUR.authority}",
-        'IS_AUTHENTICATED_FULLY'
-    ],
-    '/emaEval/**': [
-        "${RoleApplicatif.SUPER_ADMINISTRATEUR.authority}",
-        'IS_AUTHENTICATED_FULLY'
-    ]
+        '/'              : ['IS_AUTHENTICATED_FULLY'],
+        '/accueil/**'    : ['IS_AUTHENTICATED_FULLY'],
+        '/p/**'          : ['IS_AUTHENTICATED_FULLY'],
+        '/dashboard/**'  : [
+                "${RoleApplicatif.ENSEIGNANT.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/sujet/**'      : [
+                "${RoleApplicatif.ENSEIGNANT.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/question/**'   : [
+                "${RoleApplicatif.ENSEIGNANT.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/seance/**'     : [
+                "${RoleApplicatif.ENSEIGNANT.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/activite/**'   : [
+                "${RoleApplicatif.ELEVE.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/resultats/**'  : [
+                "${RoleApplicatif.PARENT.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/preferences/**': [
+                "${RoleApplicatif.ADMINISTRATEUR.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/maintenance/**': [
+                "${RoleApplicatif.SUPER_ADMINISTRATEUR.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
+        '/emaEval/**'    : [
+                "${RoleApplicatif.SUPER_ADMINISTRATEUR.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ]
 ]
 
 // l'interfacage doit il effectuer des contrôles fort sur les "pseudo
@@ -222,30 +222,30 @@ eliot.pages.container.width = 931
 
 // l'url des fichiers de documentation par fonction
 eliot.manuels.documents.urlMap = [
-    "${RoleApplicatif.ENSEIGNANT.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "${RoleApplicatif.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
-    "${RoleApplicatif.PARENT.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"
+        "${RoleApplicatif.ENSEIGNANT.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "${RoleApplicatif.ELEVE.name()}"     : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
+        "${RoleApplicatif.PARENT.name()}"    : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Parent/content/index.html"
 ]
 
 // l'url des fichiers de documentation par identifiant (item de question,...)
 eliot.help.documents.urlMap = [
-    "eliot.tdbase.item.${QuestionTypeEnum.Associate.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.BooleanMatch.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.Composite.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.Decimal.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.Document.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.ExclusiveChoice.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.FileUpload.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.FillGap.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.FillGraphics.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.GraphicMatch.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.Integer.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.MultipleChoice.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.Open.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.Order.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.Slider.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.item.${QuestionTypeEnum.Statement.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-    "eliot.tdbase.introduction": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html"]
+        "eliot.tdbase.item.${QuestionTypeEnum.Associate.name()}"      : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.BooleanMatch.name()}"   : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Composite.name()}"      : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Decimal.name()}"        : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Document.name()}"       : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.ExclusiveChoice.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.FileUpload.name()}"     : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.FillGap.name()}"        : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.FillGraphics.name()}"   : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.GraphicMatch.name()}"   : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Integer.name()}"        : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.MultipleChoice.name()}" : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Open.name()}"           : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Order.name()}"          : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Slider.name()}"         : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.item.${QuestionTypeEnum.Statement.name()}"      : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "eliot.tdbase.introduction"                                   : "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html"]
 
 // les ressources JS et Applet Java Jmol sont recherchées dans l'URI
 // relative au serveur Grails (l'URI doit commencer par '/'):
@@ -254,169 +254,174 @@ eliot.jmol.resourcesURI = "/js/lib/jmol/"
 eliot.graphicitems.dimension = 750
 
 environments {
-  test {
-    grails.plugins.springsecurity.cas.active = false
-    eliot.fichiers.racine = '/tmp'
-    eliot.tdbase.nomApplication = "eliot-tdbase"
-    eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
-    //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
-    //eliot.tdbase.urlServeur = "http//localhost:8080"
+    test {
+        grails.plugins.springsecurity.cas.active = false
+        eliot.fichiers.racine = '/tmp'
+        eliot.tdbase.nomApplication = "eliot-tdbase"
+        eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
+        //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+        //eliot.tdbase.urlServeur = "http//localhost:8080"
 
-    // application de la migration  définie dans eliot-tice-dbmigration
-    eliot.bootstrap.migration = true
-  }
-  development {
-    eliot.listes.structures.maxrecherche = 3
-    eliot.pages.container.forceDimensions = true
+        // application de la migration  définie dans eliot-tice-dbmigration
+        eliot.bootstrap.migration = true
+    }
+    development {
+        eliot.listes.structures.maxrecherche = 3
+        eliot.pages.container.forceDimensions = true
 
-    grails.plugins.springsecurity.cas.active = false
-    eliot.tdbase.nomApplication = "eliot-tdbase"
-    eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
-    //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
-    //eliot.tdbase.urlServeur = "http//localhost:8080"
-    // autorise l'identification via url get
-    grails.plugins.springsecurity.apf.postOnly = false
-    // application de la migration  définie dans eliot-tice-dbmigration
-    eliot.bootstrap.migration = true
-    // creation d'un jeu de test
-    eliot.bootstrap.jeudetest = true
-    // configuration de la racine de l'espace de fichier
-    eliot.fichiers.racine = '/Users/Shared/eliot-root'
-    eliot.fichiers.maxsize.mega = 10
+        grails.plugins.springsecurity.cas.active = false
+        eliot.tdbase.nomApplication = "eliot-tdbase"
+        eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
+        //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+        //eliot.tdbase.urlServeur = "http//localhost:8080"
+        // autorise l'identification via url get
+        grails.plugins.springsecurity.apf.postOnly = false
+        // application de la migration  définie dans eliot-tice-dbmigration
+        eliot.bootstrap.migration = true
+        // creation d'un jeu de test
+        eliot.bootstrap.jeudetest = true
+        // configuration de la racine de l'espace de fichier
+        eliot.fichiers.racine = '/Users/Shared/eliot-root'
+        eliot.fichiers.maxsize.mega = 10
 
-    // Cette variable permet de définir une taille limite différente pour les fichiers d'import (format natif & Moodle)
-    // Si cette variable n'est pas définie, la variable eliot.fichiers.maxsize.mega sera utilisée
-    eliot.fichiers.importexport.maxsize.mega = 25
+        // Cette variable permet de définir une taille limite différente pour les fichiers d'import (format natif & Moodle)
+        // Si cette variable n'est pas définie, la variable eliot.fichiers.maxsize.mega sera utilisée
+        eliot.fichiers.importexport.maxsize.mega = 25
 
-    // configuration des liens du menu portail et des annonces portail
-    eliot.portail.menu.affichage = true
-    eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
-        libelle: "ticetime"],
-        [url: "https://github.com/ticetime/eliot-tdbase/wiki",
-            libelle: "eliot-tdbase sur Github"]]
-    eliot.portail.news = ["TD Base version ${appVersion} - environnement DEV.",
-        "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
-        "Login / mot de passe enseignant 1 : ens1 / ens1",
-        "Login / mot de passe enseignant 2 : ens2 / ens2",
-        "Login / mot de passe élève 1 : elv1 / elv1",
-        "Login / mot de passe élève 2 : elv2 / elv2",
-        "Login / mot de passe parent 1 : resp1 / resp1",
-        "Login / mot de passe personnel de direction 1 : dir1 / dir1",
-        "Login / mot de passe personnel de super admin 1 : sadm1 / sadm1"]
-  }
-  testlilie {
-    eliot.tdbase.nomApplication = "eliot-tdbase"
-    eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
-    eliot.tdbase.urlServeur = "http//localhost:8080"
-    // determine si eliot-tdbase doit s'executer en mode intégration Lilie
-    eliot.portail.lilie = true
-    eliot.portail.lilieCasActive = true
-    eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
-    // cas is not activated by default
-    grails.plugins.springsecurity.cas.active = false
-    grails.plugins.springsecurity.cas.loginUri = '/login'
-    grails.plugins.springsecurity.cas.serviceUrl = "http://localhost:8080/${appName}/j_spring_cas_security_check"
-    grails.plugins.springsecurity.cas.serverUrlPrefix = 'http://localhost:8181/cas-server-webapp-3.4.11'
-    grails.plugins.springsecurity.cas.proxyCallbackUrl = "http://localhost:8080/${appName}/secure/receptor"
-    grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
+        // configuration des liens du menu portail et des annonces portail
+        eliot.portail.menu.affichage = true
+        eliot.portail.menu.liens = [[url    : "http://www.ticetime.com",
+                                     libelle: "ticetime"],
+                                    [url    : "https://github.com/ticetime/eliot-tdbase/wiki",
+                                     libelle: "eliot-tdbase sur Github"]]
+        eliot.portail.news = ["TD Base version ${appVersion} - environnement DEV.",
+                              "Le projet est disponible sur <a href=\"https://github.com/ticetime/eliot-tdbase/wiki\" target=\"_blank\">Github</a> !",
+                              "Login / mot de passe enseignant 1 : ens1 / ens1",
+                              "Login / mot de passe enseignant 2 : ens2 / ens2",
+                              "Login / mot de passe élève 1 : elv1 / elv1",
+                              "Login / mot de passe élève 2 : elv2 / elv2",
+                              "Login / mot de passe parent 1 : resp1 / resp1",
+                              "Login / mot de passe personnel de direction 1 : dir1 / dir1",
+                              "Login / mot de passe personnel de super admin 1 : sadm1 / sadm1"]
+    }
+    testlilie {
+        eliot.tdbase.nomApplication = "eliot-tdbase"
+        eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+        eliot.tdbase.urlServeur = "http//localhost:8080"
+        // determine si eliot-tdbase doit s'executer en mode intégration Lilie
+        eliot.portail.lilie = true
+        eliot.portail.lilieCasActive = true
+        eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
+        // cas is not activated by default
+        grails.plugins.springsecurity.cas.active = false
+        grails.plugins.springsecurity.cas.loginUri = '/login'
+        grails.plugins.springsecurity.cas.serviceUrl = "http://localhost:8080/${appName}/j_spring_cas_security_check"
+        grails.plugins.springsecurity.cas.serverUrlPrefix = 'http://localhost:8181/cas-server-webapp-3.4.11'
+        grails.plugins.springsecurity.cas.proxyCallbackUrl = "http://localhost:8080/${appName}/secure/receptor"
+        grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
 
-    // application de la migration  définie dans eliot-tice-dbmigration
-    eliot.bootstrap.migration = false
+        // application de la migration  définie dans eliot-tice-dbmigration
+        eliot.bootstrap.migration = false
 
-    // configuration de la racine de l'espace de fichier
-    eliot.fichiers.racine = '/Users/Shared/eliot-root'
-    eliot.fichiers.maxsize.mega = 10
-    // configuration des liens du menu portail et des annonces portail
-    eliot.portail.menu.affichage = true
-    eliot.portail.menu.liens = [[url: "http://www.ticetime.com",
-        libelle: "ticetime"],
-        [url: "https://github.com/ticetime/eliot-tdbase/wiki",
-            libelle: "eliot-tdbase sur Github"]]
-    eliot.portail.news = ["TD Base version ${appVersion} - environnement TESTLILIE ",
-        "Login / mot de passe : voir base de test eliot/lilie",
-        "Pierre Baudet : UT110000000000005027"]
-  }
-  production {
-    // paramètres par defaut de CAS
-    grails.plugins.springsecurity.cas.active = true
-    grails.plugins.springsecurity.cas.useSingleSignout = true
-  }
+        // configuration de la racine de l'espace de fichier
+        eliot.fichiers.racine = '/Users/Shared/eliot-root'
+        eliot.fichiers.maxsize.mega = 10
+        // configuration des liens du menu portail et des annonces portail
+        eliot.portail.menu.affichage = true
+        eliot.portail.menu.liens = [[url    : "http://www.ticetime.com",
+                                     libelle: "ticetime"],
+                                    [url    : "https://github.com/ticetime/eliot-tdbase/wiki",
+                                     libelle: "eliot-tdbase sur Github"]]
+        eliot.portail.news = ["TD Base version ${appVersion} - environnement TESTLILIE ",
+                              "Login / mot de passe : voir base de test eliot/lilie",
+                              "Pierre Baudet : UT110000000000005027"]
+    }
+    production {
+        // paramètres par defaut de CAS
+        grails.plugins.springsecurity.cas.active = true
+        grails.plugins.springsecurity.cas.useSingleSignout = true
+    }
 }
 
 // Configurations des opérations de webservices Rest
 //
 
 environments {
-  development {
-    eliot.interfacage.strongCheck = false
-    // rest client config for textes
-    eliot.webservices.rest.client.textes.user = "api"
-    eliot.webservices.rest.client.textes.password = "api"
-    eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
-    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/echanges/v2"
-    // rest client config for notes
-    eliot.webservices.rest.client.notes.user = "eliot-tdbase"
-    eliot.webservices.rest.client.notes.password = "eliot-tdbase"
-    eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
-    eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
-  }
-  test {
-    eliot.interfacage.strongCheck = false
-    // rest client config for textes
-    eliot.webservices.rest.client.textes.user = "api"
-    eliot.webservices.rest.client.textes.password = "api"
-    eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
-    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/echanges/v2"
-    // rest client config for notes
-    eliot.webservices.rest.client.notes.user = "eliot-tdbase"
-    eliot.webservices.rest.client.notes.password = "eliot-tdbase"
-    eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
-    eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
-  }
-  testlilie {
-    // Spécifie si les objets sensés être créés sont bien créés
-    // à n'activier que si les données tdbase, notes et textes sont stockées dans
-    // la même base
-    eliot.interfacage.strongCheck = false
-    // rest client config for textes
-    eliot.webservices.rest.client.textes.user = "api"
-    eliot.webservices.rest.client.textes.password = "api"
-    eliot.webservices.rest.client.textes.urlServer = "http://fylab02.dns-oid.com:8380"
-    eliot.webservices.rest.client.textes.uriPrefix = "/eliot-textes-2.8.2-A1/echanges/v2"
-    eliot.webservices.rest.client.textes.connexionTimeout = 10000 // ms
-    // rest client config for notes
-    eliot.webservices.rest.client.notes.user = "api"
-    eliot.webservices.rest.client.notes.password = "api"
-    eliot.webservices.rest.client.notes.urlServer = "http://fylab02.dns-oid.com:8380"
-    eliot.webservices.rest.client.notes.uriPrefix = "/eliot-notes-2.8.2-A1/echanges/v2"
-    eliot.webservices.rest.client.notes.connexionTimeout = 10000 // ms
-  }
+    development {
+        //  support de l'interfaçage eliot-notes
+        eliot.interfacage.notes = false
+        //  support de l'interfaçage eliot-textes
+        eliot.interfacage.textes = false
+
+        eliot.interfacage.strongCheck = false
+        // rest client config for textes
+        eliot.webservices.rest.client.textes.user = "api"
+        eliot.webservices.rest.client.textes.password = "api"
+        eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/echanges/v2"
+        // rest client config for notes
+        eliot.webservices.rest.client.notes.user = "eliot-tdbase"
+        eliot.webservices.rest.client.notes.password = "eliot-tdbase"
+        eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+    }
+    test {
+        eliot.interfacage.strongCheck = false
+        // rest client config for textes
+        eliot.webservices.rest.client.textes.user = "api"
+        eliot.webservices.rest.client.textes.password = "api"
+        eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/echanges/v2"
+        // rest client config for notes
+        eliot.webservices.rest.client.notes.user = "eliot-tdbase"
+        eliot.webservices.rest.client.notes.password = "eliot-tdbase"
+        eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+    }
+    testlilie {
+        // Spécifie si les objets sensés être créés sont bien créés
+        // à n'activier que si les données tdbase, notes et textes sont stockées dans
+        // la même base
+        eliot.interfacage.strongCheck = false
+        // rest client config for textes
+        eliot.webservices.rest.client.textes.user = "api"
+        eliot.webservices.rest.client.textes.password = "api"
+        eliot.webservices.rest.client.textes.urlServer = "http://fylab02.dns-oid.com:8380"
+        eliot.webservices.rest.client.textes.uriPrefix = "/eliot-textes-2.8.2-A1/echanges/v2"
+        eliot.webservices.rest.client.textes.connexionTimeout = 10000 // ms
+        // rest client config for notes
+        eliot.webservices.rest.client.notes.user = "api"
+        eliot.webservices.rest.client.notes.password = "api"
+        eliot.webservices.rest.client.notes.urlServer = "http://fylab02.dns-oid.com:8380"
+        eliot.webservices.rest.client.notes.uriPrefix = "/eliot-notes-2.8.2-A1/echanges/v2"
+        eliot.webservices.rest.client.notes.connexionTimeout = 10000 // ms
+    }
 
 }
 
-eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitresForCahierId",
-    description: "Retourne la liste arborescente de chapitres d'un cahier",
-    contentType: ContentType.JSON,
-    method: Method.GET,
-    requestBodyTemplate: null,
-    responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
-    //urlServer: "http://localhost:8090",
-    uriTemplate: '/cahiers/$cahierId/chapitres'],
-    [
-        operationName: "findCahiersByStructureAndEnseignant",
-        description: "Retourne la liste des cahiers pour une structure et un enseignant donné",
-        contentType: ContentType.JSON,
-        method: Method.GET,
-        requestBodyTemplate: null,
-        responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
-        //urlServer: "http://localhost:8090",
-        uriTemplate: '/cahiers-service'],
-    [
-        operationName: "createTextesActivite",
-        description: "Insert une activité dans un cahier de textes",
-        contentType: ContentType.JSON,
-        method: Method.POST,
-        requestBodyTemplate: '''
+eliot.webservices.rest.client.operations = [[operationName           : "getStructureChapitresForCahierId",
+                                             description             : "Retourne la liste arborescente de chapitres d'un cahier",
+                                             contentType             : ContentType.JSON,
+                                             method                  : Method.GET,
+                                             requestBodyTemplate     : null,
+                                             responseContentStructure: "eliot-textes#chapitres#structure-chapitres",
+                                             //urlServer: "http://localhost:8090",
+                                             uriTemplate             : '/cahiers/$cahierId/chapitres'],
+                                            [
+                                                    operationName           : "findCahiersByStructureAndEnseignant",
+                                                    description             : "Retourne la liste des cahiers pour une structure et un enseignant donné",
+                                                    contentType             : ContentType.JSON,
+                                                    method                  : Method.GET,
+                                                    requestBodyTemplate     : null,
+                                                    responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+                                                    //urlServer: "http://localhost:8090",
+                                                    uriTemplate             : '/cahiers-service'],
+                                            [
+                                                    operationName           : "createTextesActivite",
+                                                    description             : "Insert une activité dans un cahier de textes",
+                                                    contentType             : ContentType.JSON,
+                                                    method                  : Method.POST,
+                                                    requestBodyTemplate     : '''
                                             {
                                             "kind" : "eliot-textes#activite-interactive#insert",
                                             "titre" : "$titre",
@@ -428,24 +433,24 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                             "ressource-interactive-url" : "$urlSeance"
                                             }
                                             ''',
-        responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
-        //urlServer: "http://localhost:8090",
-        uriTemplate: '/cahiers/$cahierId/activites-interactives'],
-    [
-        operationName: "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
-        description: "Retourne la liste des services pour une structure, une date et un enseignant donné",
-        contentType: ContentType.JSON,
-        method: Method.GET,
-        requestBodyTemplate: null,
-        responseContentStructure: "List<eliot-notes#evaluation-contextes#standard>",
-        //urlServer: "http://localhost:8090",
-        uriTemplate: '/evaluation-contextes.json'],
-    [
-        operationName: "createDevoir",
-        description: "Insert un devoir dans le module Notes",
-        contentType: ContentType.JSON,
-        method: Method.POST,
-        requestBodyTemplate: '''
+                                                    responseContentStructure: "PaginatedList<eliot-textes#cahiers-service#standard>",
+                                                    //urlServer: "http://localhost:8090",
+                                                    uriTemplate             : '/cahiers/$cahierId/activites-interactives'],
+                                            [
+                                                    operationName           : "findServicesEvaluablesByStrunctureAndDateAndEnseignant",
+                                                    description             : "Retourne la liste des services pour une structure, une date et un enseignant donné",
+                                                    contentType             : ContentType.JSON,
+                                                    method                  : Method.GET,
+                                                    requestBodyTemplate     : null,
+                                                    responseContentStructure: "List<eliot-notes#evaluation-contextes#standard>",
+                                                    //urlServer: "http://localhost:8090",
+                                                    uriTemplate             : '/evaluation-contextes.json'],
+                                            [
+                                                    operationName           : "createDevoir",
+                                                    description             : "Insert un devoir dans le module Notes",
+                                                    contentType             : ContentType.JSON,
+                                                    method                  : Method.POST,
+                                                    requestBodyTemplate     : '''
                                   {
                                   "kind" : "eliot-notes#evaluation#insert",
                                   "titre" : "$titre",
@@ -454,24 +459,24 @@ eliot.webservices.rest.client.operations = [[operationName: "getStructureChapitr
                                   "evaluation-contexte-id" : "$serviceId",
                                    }
                                    ''',
-        responseContentStructure: "eliot-notes#evaluation#id>",
-        //urlServer: "http://localhost:8090",
-        uriTemplate: '/evaluations'],
-    [
-        operationName: "updateNotes",
-        description: "Met à jour les notes d'un devoir dans le module Notes",
-        contentType: ContentType.JSON,
-        method: Method.PUT,
-        requestBodyTemplate: '''
+                                                    responseContentStructure: "eliot-notes#evaluation#id>",
+                                                    //urlServer: "http://localhost:8090",
+                                                    uriTemplate             : '/evaluations'],
+                                            [
+                                                    operationName           : "updateNotes",
+                                                    description             : "Met à jour les notes d'un devoir dans le module Notes",
+                                                    contentType             : ContentType.JSON,
+                                                    method                  : Method.PUT,
+                                                    requestBodyTemplate     : '''
                                  {
                                  "kind" : "eliot-notes#evaluation-notes#standard",
                                  "notes": $notesJson
                                  }
                                  ''',
-        responseContentStructure: "eliot-notes#evaluation#id>",
-        //urlServer: "http://localhost:8090",
-        uriTemplate: '/evaluations/$evaluationId/notes.json'
-    ]
+                                                    responseContentStructure: "eliot-notes#evaluation#id>",
+                                                    //urlServer: "http://localhost:8090",
+                                                    uriTemplate             : '/evaluations/$evaluationId/notes.json'
+                                            ]
 ]
 
 // Support de l'interface EmaEval
@@ -485,29 +490,31 @@ eliot.interfacage.emaeval.methodeEvaluation.nom = "Methode d'évaluation" // Not
 // Trigger définissant la périodicité du job exécutant en tâche de fond
 // la gestion des campagnes EmaEval (via les webservices)
 eliot.interfacage.emaeval.campagne.trigger = {
-  simple name: 'emaEvalCampagneTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
+    simple name: 'emaEvalCampagneTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
 }
 
 // Trigger définissant la périodicité du job exécutant en tâche de fond
 // la transmission des résultats entre une séance TD Base et une campagne EmaEval
 eliot.interfacage.emaeval.score.trigger = {
-  simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
+    simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
 }
 
 environments {
-  production { // Surcharge de la configuration des jobs pour la production
-    // Trigger définissant la périodicité du job exécutant en tâche de fond
-    // la gestion des campagnes EmaEval (via les webservices)
-    eliot.interfacage.emaeval.campagne.trigger = {
-      simple name: 'emaEvalCampagneTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 10 // Toutes les 10 minutes
-    }
+    production { // Surcharge de la configuration des jobs pour la production
+        // Trigger définissant la périodicité du job exécutant en tâche de fond
+        // la gestion des campagnes EmaEval (via les webservices)
+        eliot.interfacage.emaeval.campagne.trigger = {
+            simple name: 'emaEvalCampagneTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 10
+            // Toutes les 10 minutes
+        }
 
-    // Trigger définissant la périodicité du job exécutant en tâche de fond
-    // la transmission des résultats entre une séance TD Base et une campagne EmaEval
-    eliot.interfacage.emaeval.score.trigger = {
-      simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 1000 * 60 * 4 // Toutes les 4h
+        // Trigger définissant la périodicité du job exécutant en tâche de fond
+        // la transmission des résultats entre une séance TD Base et une campagne EmaEval
+        eliot.interfacage.emaeval.score.trigger = {
+            simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 1000 * 60 * 4
+            // Toutes les 4h
+        }
     }
-  }
 }
 
 // Configuration plugin Quartz 2
@@ -518,67 +525,67 @@ eliot.artefact.partage_CC_autorise = true
 
 // parametrage par defaut du mmapping fonction role pour tdbase
 eliot.tdbase.mappingFonctionRole.defaut = [
-        ("${FonctionEnum.DIR.name()}".toString()) : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:true,modifiable:false],
-                ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
+        ("${FonctionEnum.DIR.name()}".toString())           : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: true, modifiable: false],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: true],
+                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
-        ("${FonctionEnum.AL.name()}".toString()) : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:true,modifiable:true],
-                ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
+        ("${FonctionEnum.AL.name()}".toString())            : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: true],
+                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
-        ("${FonctionEnum.ENS.name()}".toString()) : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: false],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
+        ("${FonctionEnum.ENS.name()}".toString())           : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: false],
+                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
-        ("${FonctionEnum.DOC.name()}".toString()) : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
+        ("${FonctionEnum.DOC.name()}".toString())           : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: true],
+                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
-        ("${FonctionEnum.ELEVE.name()}".toString()) : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:false,modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
+        ("${FonctionEnum.ELEVE.name()}".toString())         : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: false],
+                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
+                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
-        ("${FonctionEnum.PERS_REL_ELEVE.name()}".toString()) : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:false,modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:true,modifiable: false]
+        ("${FonctionEnum.PERS_REL_ELEVE.name()}".toString()): [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
+                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: true, modifiable: false]
         ],
-        ("${FonctionEnum.EDU.name()}".toString()) : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:false,modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
+        ("${FonctionEnum.EDU.name()}".toString())           : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
+                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
-        ("${FonctionEnum.CTR.name()}".toString()) : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:true,modifiable: true],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:false,modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
+        ("${FonctionEnum.CTR.name()}".toString())           : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
+                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
-        ("${FonctionEnum.CD.name()}".toString()) : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()):[associe:true,modifiable:false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString()):[associe:false,modifiable:false],
-                ("${RoleApplicatif.ELEVE.name()}".toString()):[associe:false,modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString()):[associe:false,modifiable: false],
-                ("${RoleApplicatif.PARENT.name()}".toString()):[associe:false,modifiable: false]
+        ("${FonctionEnum.CD.name()}".toString())            : [
+                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: true, modifiable: false],
+                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
+                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: false],
+                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ]
 ]

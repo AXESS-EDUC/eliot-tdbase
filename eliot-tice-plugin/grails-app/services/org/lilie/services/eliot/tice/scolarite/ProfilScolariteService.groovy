@@ -31,7 +31,7 @@ package org.lilie.services.eliot.tice.scolarite
 
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.PorteurEnt
-import org.springframework.transaction.annotation.Transactional
+
 
 /**
  *
@@ -145,7 +145,7 @@ public class ProfilScolariteService {
      * @param Personne la personne
      * @return la liste des établissements
      */
-    List<Etablissement> findEtablissementsForPersonne(Personne personne) {
+    Set<Etablissement> findEtablissementsForPersonne(Personne personne) {
         Set<Etablissement> etablissements = new HashSet<Etablissement>()
         // test d'abord si la personne est responsable eleves
         List<Personne> eleves = findElevesForResponsable(personne)
@@ -168,7 +168,7 @@ public class ProfilScolariteService {
                 }
             }
         }
-        etablissements as List<Etablissement>
+        etablissements
     }
 
     /**
@@ -247,17 +247,19 @@ public class ProfilScolariteService {
      * @param personne la personne
      * @return la liste des propriétés de scolarité
      */
-    List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne) {
-        def props = []
+    List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne, Collection<Etablissement> etablissements= null) {
+        def props = new HashSet()
         List<PersonneProprietesScolarite> profils =
                 PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
         profils.each {
             StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
-            if (structureEnseignement && !props.contains(it.proprietesScolarite)) {
-                props << it.proprietesScolarite
+            if (structureEnseignement) {
+                if (!etablissements || etablissements.contains(structureEnseignement.etablissement)) {
+                    props << it.proprietesScolarite
+                }
             }
         }
-        return props
+        props.sort { it.structureEnseignement.nomAffichage }
     }
 
     /**
