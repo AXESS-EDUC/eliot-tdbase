@@ -12,6 +12,7 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
@@ -44,7 +45,7 @@ class SecuriteSessionServiceSpec extends Specification {
             getEtablissementList() >> etabList
         }
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif = new TreeMap<>()
-        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.put(RoleApplicatif.ADMINISTRATEUR,perimetre)
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.put(RoleApplicatif.ADMINISTRATEUR, perimetre)
         securiteSessionService.currentRoleApplicatif = RoleApplicatif.ADMINISTRATEUR
 
         and: " une personne déclenchant le changement d'établissement"
@@ -117,7 +118,7 @@ class SecuriteSessionServiceSpec extends Specification {
 
         then: "l'objet securité session est mis à jour"
         securiteSessionService.personneId == 1
-        securiteSessionService.currentRoleApplicatif == RoleApplicatif.ADMINISTRATEUR
+        securiteSessionService.currentRoleApplicatif == RoleApplicatif.ENSEIGNANT
 
     }
 
@@ -177,7 +178,7 @@ class SecuriteSessionServiceSpec extends Specification {
         }
         etab1.compareTo(etab2) >> 1
         securiteSessionService.preferenceEtablissementService = Mock(PreferenceEtablissementService) {
-            getMappingFonctionRoleForEtablissement(personne,  _) >> mappingFonctionRole
+            getMappingFonctionRoleForEtablissement(personne, _) >> mappingFonctionRole
         }
 
         and: "les fonctions de la personne"
@@ -212,9 +213,41 @@ class SecuriteSessionServiceSpec extends Specification {
 
     }
 
+    @Unroll
+    def "le role par défaut d'un utilisateur avec fonction #fct est #role"() {
+
+        given: "une personne dans un établissement ayant une fonction"
+        def pers = Mock(Personne)
+        def etab = Mock(Etablissement)
+        securiteSessionService.preferenceEtablissementService = Mock(PreferenceEtablissementService) {
+            getMappingFonctionRoleForEtablissement(pers, etab) >> mappingFonctionRole
+        }
+        def fctsByEtab = new HashMap<Etablissement, Set<FonctionEnum>>()
+        fctsByEtab.put(etab, [fct] as Set)
+        securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
+            findEtablissementsAndFonctionsForPersonne(pers) >> fctsByEtab
+        }
+
+        when: "on initialise ses rôles"
+        securiteSessionService.initialiseRolesAvecPerimetreForPersonne(pers)
+
+        then: "le role par défaut est correctement associé"
+        securiteSessionService.currentRoleApplicatif == role
+
+        where:
+        fct                         | role
+        FonctionEnum.ELEVE          | RoleApplicatif.ELEVE
+        FonctionEnum.DIR            | RoleApplicatif.ADMINISTRATEUR
+        FonctionEnum.ENS            | RoleApplicatif.ENSEIGNANT
+        FonctionEnum.PERS_REL_ELEVE | RoleApplicatif.PARENT
+        FonctionEnum.DOC            | RoleApplicatif.ENSEIGNANT
+
+
+    }
+
 
     private MappingFonctionRole getDefaultMappingFonctionRole() {
-        new MappingFonctionRole(["ENS":
+        new MappingFonctionRole(["ENS"           :
                                          ["ENSEIGNANT":
                                                   ["associe"   : true,
                                                    "modifiable": true],
@@ -223,10 +256,38 @@ class SecuriteSessionServiceSpec extends Specification {
                                           "PARENT"    : ["associe"   : false,
                                                          "modifiable": false]
                                          ],
-                                 "AL" :
+                                 "AL"            :
                                          ["ADMINISTRATEUR": ["associe"   : true,
                                                              "modifiable": true],
                                           "ENSEIGNANT"    :
+                                                  ["associe"   : true,
+                                                   "modifiable": true]
+                                         ],
+                                 "ELEVE"         :
+                                         ["ELEVE"     : ["associe"   : true,
+                                                         "modifiable": false],
+                                          "ENSEIGNANT":
+                                                  ["associe"   : true,
+                                                   "modifiable": true]
+                                         ],
+                                 "DIR"           :
+                                         ["ADMINISTRATEUR": ["associe"   : true,
+                                                             "modifiable": true],
+                                          "ENSEIGNANT"    :
+                                                  ["associe"   : true,
+                                                   "modifiable": true]
+                                         ],
+                                 "DOC"           :
+                                         ["ELEVE"     : ["associe"   : true,
+                                                         "modifiable": true],
+                                          "ENSEIGNANT":
+                                                  ["associe"   : true,
+                                                   "modifiable": true]
+                                         ],
+                                 "PERS_REL_ELEVE":
+                                         ["PARENT"    : ["associe"   : true,
+                                                         "modifiable": false],
+                                          "ENSEIGNANT":
                                                   ["associe"   : true,
                                                    "modifiable": true]
                                          ]

@@ -26,6 +26,7 @@ class SecuriteSessionService {
     PreferenceEtablissement currentPreferenceEtablissement
 
     Map<Etablissement, Set<FonctionEnum>> etablissementsAndFonctionsByEtablissement
+    RoleApplicatif defaultRoleApplicatif
 
     Set<Etablissement> getEtablissementList() {
             rolesApplicatifsAndPerimetreByRoleApplicatif.get(currentRoleApplicatif).etablissementList
@@ -131,15 +132,16 @@ class SecuriteSessionService {
      */
     def initialiseRolesAvecPerimetreForPersonne(Personne personne) {
         rolesApplicatifsAndPerimetreByRoleApplicatif =  new TreeMap<RoleApplicatif,PerimetreRoleApplicatif>()
-        // traitement du rôle de super administrateur en priorité
-
-        // ensuite les rôles issus des établissements
         etablissementsAndFonctionsByEtablissement = profilScolariteService.findEtablissementsAndFonctionsForPersonne(personne)
         if (!etablissementsAndFonctionsByEtablissement.isEmpty()) {
+            def allFonctionsHavingRole = new HashSet<FonctionEnum>()
             etablissementsAndFonctionsByEtablissement.each { etablissement, fcts ->
                 MappingFonctionRole mapping = preferenceEtablissementService.getMappingFonctionRoleForEtablissement(personne, etablissement)
                 fcts.each { FonctionEnum fct ->
                     def roles = mapping.getRolesForFonction(fct)
+                    if (roles && !roles.isEmpty()) {
+                        allFonctionsHavingRole.add(fct)
+                    }
                     roles.each { role ->
                         def perimetre = rolesApplicatifsAndPerimetreByRoleApplicatif.get(role)
                         if (perimetre == null) {
@@ -151,7 +153,18 @@ class SecuriteSessionService {
                 }
             }
             updatePerimetreForEachPerimetreRoleApplicatif(etablissementsAndFonctionsByEtablissement.size())
-            onChangeRoleApplicatif(personne,rolesApplicatifsAndPerimetreByRoleApplicatif.keySet().first())
+            if (allFonctionsHavingRole.contains(FonctionEnum.ELEVE)) {
+                defaultRoleApplicatif = RoleApplicatif.ELEVE
+            } else if (allFonctionsHavingRole.contains(FonctionEnum.PERS_REL_ELEVE)) {
+                defaultRoleApplicatif = RoleApplicatif.PARENT
+            } else if (allFonctionsHavingRole.contains(FonctionEnum.DIR)) {
+                defaultRoleApplicatif = RoleApplicatif.ADMINISTRATEUR
+            } else if (allFonctionsHavingRole.contains(FonctionEnum.ENS)) {
+                defaultRoleApplicatif = RoleApplicatif.ENSEIGNANT
+            }else if (!defaultRoleApplicatif) {
+                defaultRoleApplicatif = rolesApplicatifsAndPerimetreByRoleApplicatif.keySet().first()
+            }
+            onChangeRoleApplicatif(personne,defaultRoleApplicatif)
         }
     }
 
