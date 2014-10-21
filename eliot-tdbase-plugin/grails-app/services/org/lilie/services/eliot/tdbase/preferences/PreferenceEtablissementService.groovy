@@ -64,6 +64,18 @@ class PreferenceEtablissementService {
         preferenceEtablissement
     }
 
+    /**
+     * Reset toutes les préférences établissement
+     * @param personne la personne effectuant le reset
+     */
+    int resetAllPreferencesEtablissement(Personne personne) {
+        Contract.requires(profilScolariteService.personneEstAdministrateurCentralForPorteurEnt(personne, null))
+        def query = PreferenceEtablissement.where {
+            etablissement != null
+        }
+        query.deleteAll()
+    }
+
     //TODO : à coder reellement après WS fourni par OMT
     /**
      * Récupère la liste des fonctions administrables pour un établissement donné

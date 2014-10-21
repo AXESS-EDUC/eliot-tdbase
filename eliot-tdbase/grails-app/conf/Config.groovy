@@ -528,28 +528,28 @@ eliot.tdbase.mappingFonctionRole.defaut = [
         ("${FonctionEnum.DIR.name()}".toString())           : [
                 ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: true, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
         ("${FonctionEnum.AL.name()}".toString())            : [
                 ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: true, modifiable: true],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
         ("${FonctionEnum.ENS.name()}".toString())           : [
                 ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: false],
                 ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
         ("${FonctionEnum.DOC.name()}".toString())           : [
                 ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
@@ -563,21 +563,21 @@ eliot.tdbase.mappingFonctionRole.defaut = [
         ("${FonctionEnum.PERS_REL_ELEVE.name()}".toString()): [
                 ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: true, modifiable: false]
         ],
         ("${FonctionEnum.EDU.name()}".toString())           : [
                 ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],
         ("${FonctionEnum.CTR.name()}".toString())           : [
                 ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
                 ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: true],
+                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
                 ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
                 ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
         ],

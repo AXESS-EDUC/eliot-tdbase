@@ -32,6 +32,8 @@ import grails.plugin.spock.IntegrationSpec
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.utils.BootstrapService
+import org.lilie.services.eliot.tice.utils.contract.Contract
+import org.lilie.services.eliot.tice.utils.contract.PreConditionException
 
 /**
  * @author Franck Silvestre
@@ -95,5 +97,36 @@ class PreferenceEtablissementIntegrationSpec extends IntegrationSpec {
         pref == pref3
 
     }
+
+    def "le reset des préférences supprime les préférences existantes"() {
+        given: "un etablissement avec preference etablissement"
+        preferenceEtablissementService.getPreferenceForEtablissement(personne1,
+                etablissement)
+
+        and: "un super administrateur"
+        def sadm = bootstrapService.superAdmin1
+
+        when: "un reset est excuté par un super admin"
+        preferenceEtablissementService.resetAllPreferencesEtablissement(sadm)
+
+        then:"toutes les prefs etablissement sont supprimées"
+        PreferenceEtablissement.count() == 0
+    }
+
+    def "le reset des préférences par un non super admin échoue"() {
+        given: "un etablissement avec preference etablissement"
+        preferenceEtablissementService.getPreferenceForEtablissement(personne1,
+                etablissement)
+
+        and: "un non super administrateur"
+        personne1
+
+        when: "un reset est excuté par un super admin"
+        preferenceEtablissementService.resetAllPreferencesEtablissement(personne1)
+
+        then:"une exception est levée"
+        thrown(PreConditionException)
+    }
+
 
 }
