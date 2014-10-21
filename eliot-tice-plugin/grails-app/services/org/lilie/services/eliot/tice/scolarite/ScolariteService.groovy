@@ -65,7 +65,7 @@ public class ScolariteService {
    * les items du chercheur
    * @return la liste des questions
    */
-  List<StructureEnseignement> findStructuresEnseignement(List<Etablissement> etablissements,
+  List<StructureEnseignement> findStructuresEnseignement(Collection<Etablissement> etablissements,
                                                          String patternCode = null,
                                                          Niveau niveau = null,
                                                          Integer limiteResults = 200,
@@ -116,7 +116,7 @@ public class ScolariteService {
    * @param etablissements
    * @return la liste des niveaux des différents établissements
    */
-  List<Niveau> findNiveauxForEtablissement(List<Etablissement> etablissements) {
+  List<Niveau> findNiveauxForEtablissement(Collection<Etablissement> etablissements) {
     AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true, [cache: true])
     if (!anneeScolaire) {
       throw new IllegalArgumentException("structures.recherche.anneescolaire.null")

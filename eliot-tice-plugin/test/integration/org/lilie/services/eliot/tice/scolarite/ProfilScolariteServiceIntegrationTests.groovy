@@ -37,67 +37,81 @@ import org.lilie.services.eliot.tice.utils.BootstrapService
  */
 class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
-  BootstrapService bootstrapService
-  ProfilScolariteService profilScolariteService
-  FonctionService fonctionService
+    BootstrapService bootstrapService
+    ProfilScolariteService profilScolariteService
+    FonctionService fonctionService
 
 
-  void setUp() {
-      bootstrapService.bootstrapJeuDeTestDevDemo()
-  }
+    void setUp() {
+        bootstrapService.bootstrapJeuDeTestDevDemo()
+    }
 
-  void testFindProprietesScolaritesForPersonne() {
-    List<ProprietesScolarite> props = profilScolariteService.findProprietesScolaritesForPersonne(bootstrapService.enseignant1)
-    assertEquals("pas le bon de nombre de proprietes", 7, props.size())
-  }
+    void testFindProprietesScolaritesForPersonne() {
+        List<ProprietesScolarite> props = profilScolariteService.findProprietesScolaritesForPersonne(bootstrapService.enseignant1)
+        assertEquals("pas le bon de nombre de proprietes", 7, props.size())
+    }
 
-  void testFindStructuresEnseignementForPersonne() {
-      List<ProprietesScolarite> props = profilScolariteService.findStructuresEnseignementForPersonne(bootstrapService.enseignant1)
-      assertEquals("pas le bon de nombre de proprietes", 4, props.size())
-      props = profilScolariteService.findStructuresEnseignementForPersonne(bootstrapService.enseignant1,fonctionService.fonctionEleve())
-      assertEquals("le filtre sur la fonction est KO", 0, props.size())
+    void testFindStructuresEnseignementForPersonne() {
+        List<ProprietesScolarite> props = profilScolariteService.findStructuresEnseignementForPersonne(bootstrapService.enseignant1)
+        assertEquals("pas le bon de nombre de proprietes", 4, props.size())
+        props = profilScolariteService.findStructuresEnseignementForPersonne(bootstrapService.enseignant1, fonctionService.fonctionEleve())
+        assertEquals("le filtre sur la fonction est KO", 0, props.size())
 
-  }
+    }
 
-  void testFindFonctions() {
-    List<Fonction> fonctions = profilScolariteService.findFonctionsForPersonne(bootstrapService.enseignant1)
-    assertEquals("pas le bon de nombre de fonction", 1, fonctions.size())
-    assertEquals("pas la bonne fonction", fonctionService.fonctionEnseignant(), fonctions.last())
-  }
+    void testFindFonctions() {
+        List<Fonction> fonctions = profilScolariteService.findFonctionsForPersonne(bootstrapService.enseignant1)
+        assertEquals("pas le bon de nombre de fonction", 1, fonctions.size())
+        assertEquals("pas la bonne fonction", fonctionService.fonctionEnseignant(), fonctions.last())
+    }
 
-  void testFindProprietesScolaritesWithStructureForPersonne() {
-    List<ProprietesScolarite> props = profilScolariteService.findProprietesScolariteWithStructureForPersonne(bootstrapService.enseignant1)
-    assertEquals("pas le bon de nombre de props", 4, props.size())
-  }
+    void testFindProprietesScolaritesWithStructureForPersonne() {
+        // given: un enseignant dans 4 classes sur deux établissements
+        def ens = bootstrapService.enseignant1
 
-  void testFindNiveauxForPersonne() {
-    def niveaux = profilScolariteService.findNiveauxForPersonne(bootstrapService.enseignant1)
-    assertEquals(3, niveaux.size())
-    assertTrue("Niveau 6ème pas trouvé",niveaux.contains(bootstrapService.nivSixieme))
-    assertTrue("Niveau terminale pas trouvé",niveaux.contains(bootstrapService.nivTerminale))
-    assertTrue("Niveau 1ère pas trouvé",niveaux.contains(bootstrapService.nivPremiere) )
+        // when: la recherche des pps avec struture est lancée sans filtrer sur un étab
+        List<ProprietesScolarite> props = profilScolariteService.findProprietesScolariteWithStructureForPersonne(bootstrapService.enseignant1)
 
-  }
+        //then: toutes les pps concernées sont récupérées
+        assertEquals("pas le bon de nombre de props", 4, props.size())
+
+        //when: la recherche des pps avec struture est lancée uniquement sur le collège
+        def lecollege = bootstrapService.leCollege
+        props = profilScolariteService.findProprietesScolariteWithStructureForPersonne(bootstrapService.enseignant1, [lecollege])
+
+        //then: uniquement les pps du collège sont récupérées
+        assertEquals("pas le bon de nombre de props", 1, props.size())
+
+    }
+
+    void testFindNiveauxForPersonne() {
+        def niveaux = profilScolariteService.findNiveauxForPersonne(bootstrapService.enseignant1)
+        assertEquals(3, niveaux.size())
+        assertTrue("Niveau 6ème pas trouvé", niveaux.contains(bootstrapService.nivSixieme))
+        assertTrue("Niveau terminale pas trouvé", niveaux.contains(bootstrapService.nivTerminale))
+        assertTrue("Niveau 1ère pas trouvé", niveaux.contains(bootstrapService.nivPremiere))
+
+    }
 
 
-  void testFindEtablissementsForPersonne() {
-      // test pour un enseignant
-      def etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.enseignant1)
-      assertEquals(2, etabs.size())
-      assertTrue("college pas trouvé",etabs.contains(bootstrapService.leCollege))
-      assertTrue("lycee pas trouvé",etabs.contains(bootstrapService.leLycee))
+    void testFindEtablissementsForPersonne() {
+        // test pour un enseignant
+        def etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.enseignant1)
+        assertEquals(2, etabs.size())
+        assertTrue("college pas trouvé", etabs.contains(bootstrapService.leCollege))
+        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.leLycee))
 
-      // test sur un eleve
-      etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.eleve1)
-      assertEquals(2, etabs.size())
-      assertTrue("college pas trouvé",etabs.contains(bootstrapService.leCollege))
-      assertTrue("lycee pas trouvé",etabs.contains(bootstrapService.leLycee))
+        // test sur un eleve
+        etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.eleve1)
+        assertEquals(2, etabs.size())
+        assertTrue("college pas trouvé", etabs.contains(bootstrapService.leCollege))
+        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.leLycee))
 
-      // test sur un parent
-      etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.parent1)
-      assertEquals(2, etabs.size())
-      assertTrue("college pas trouvé",etabs.contains(bootstrapService.leCollege))
-      assertTrue("lycee pas trouvé",etabs.contains(bootstrapService.leLycee))
+        // test sur un parent
+        etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.parent1)
+        assertEquals(2, etabs.size())
+        assertTrue("college pas trouvé", etabs.contains(bootstrapService.leCollege))
+        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.leLycee))
     }
 
     void testPersonneEstResponsableEleve() {
@@ -131,13 +145,13 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         def ens1 = bootstrapService.enseignant1
 
         // when: la recherche de fonction est lancée
-        Set fcts = profilScolariteService.findFonctionsForPersonneAndEtablissement(ens1,etab)
+        Set fcts = profilScolariteService.findFonctionsForPersonneAndEtablissement(ens1, etab)
 
         // then: la fct retournée est enseignant
-        assertEquals(1,fcts.size())
+        assertEquals(1, fcts.size())
         assertTrue(fcts.contains(FonctionEnum.ENS))
 
-        }
+    }
 
     void testFindEtablissementsAndFonctionsForPersonne() {
         // given: un enseignant
