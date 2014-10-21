@@ -146,7 +146,7 @@ class BootstrapService {
             initialiseProfilsScolaritesEnseignant2EnvDevelopment()
 
             initialisePersDirection1()
-
+            initialiseSuperAdmin1()
         }
 
     }
