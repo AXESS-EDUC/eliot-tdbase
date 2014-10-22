@@ -50,7 +50,7 @@
 
     <p>
         <g:link action="resetPreferencesEtablissement"
-                controller="maintenance">Reset des préférences établissement</g:link>
+                controller="maintenance" onclick='return confirm("Reset de toutes les préférences établissement ?")'>Reset des préférences établissement</g:link>
     </p>
     <hr class="separator"/>
 
