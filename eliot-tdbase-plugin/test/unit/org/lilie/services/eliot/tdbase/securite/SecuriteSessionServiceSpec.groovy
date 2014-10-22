@@ -1,6 +1,5 @@
 package org.lilie.services.eliot.tdbase.securite
 
-import grails.test.mixin.Mock
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
 import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
@@ -11,6 +10,7 @@ import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.utils.contract.PreConditionException
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -42,7 +42,7 @@ class SecuriteSessionServiceSpec extends Specification {
         def etabList = new TreeSet<Etablissement>()
         etabList.add(etab)
         PerimetreRoleApplicatif perimetre = Mock(PerimetreRoleApplicatif) {
-            getEtablissementList() >> etabList
+            getEtablissements() >> etabList
         }
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif = new TreeMap<>()
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.put(RoleApplicatif.ADMINISTRATEUR, perimetre)
@@ -112,7 +112,6 @@ class SecuriteSessionServiceSpec extends Specification {
             callable.call(null)
         }
 
-
         when: "l'initialisation est déclenchée pour l'utilisateur donné"
         securiteSessionService.initialiseSecuriteSessionForUtilisateur(utilisateur)
 
@@ -141,8 +140,7 @@ class SecuriteSessionServiceSpec extends Specification {
         securiteSessionService.initialiseSecuriteSessionForUtilisateur(utilisateur)
 
         then: "aucune interaction n'est provoquee car l'objet est laissé inchangé"
-        0 * profilScolariteService.findEtablissementsForPersonne()
-        0 * profilScolariteService.findFonctionsForPersonneAndEtablissement(_, _)
+        0 * profilScolariteService.findEtablissementsAndFonctionsForPersonne()
     }
 
     def "test de l'initialisation d'un objet securite session deja initialisé par un utilisateur different"() {
@@ -200,18 +198,98 @@ class SecuriteSessionServiceSpec extends Specification {
         rolesPerimetres.containsKey(RoleApplicatif.ELEVE)
 
         and: "le role ENSEIGNANT a pour  perimetre tous les établissements"
-        rolesPerimetres.get(RoleApplicatif.ENSEIGNANT).etablissementList.size() == 2
+        rolesPerimetres.get(RoleApplicatif.ENSEIGNANT).etablissements.size() == 2
         rolesPerimetres.get(RoleApplicatif.ENSEIGNANT).perimetre == PerimetreRoleApplicatifEnum.ALL_ETABLISSEMENTS
 
         and: "le role ADMINISTRATEUR ne concerne que l'établissement 1"
-        rolesPerimetres.get(RoleApplicatif.ADMINISTRATEUR).etablissementList == [etab1] as Set
+        rolesPerimetres.get(RoleApplicatif.ADMINISTRATEUR).etablissements == [etab1] as Set
         rolesPerimetres.get(RoleApplicatif.ADMINISTRATEUR).perimetre == PerimetreRoleApplicatifEnum.SEVERAL_ETABLISSEMENTS
 
         and: "le role ELEVE ne concerne que l'établissement 1"
-        rolesPerimetres.get(RoleApplicatif.ELEVE).etablissementList == [etab1, etab2] as Set
+        rolesPerimetres.get(RoleApplicatif.ELEVE).etablissements == [etab1, etab2] as Set
         rolesPerimetres.get(RoleApplicatif.ELEVE).perimetre == PerimetreRoleApplicatifEnum.ALL_ETABLISSEMENTS
 
     }
+
+    def "test de l'initialisation des rôles avec périmètre lorsque le rôle super-admin est imposé"() {
+
+        given:"une personne"
+        def personne = Mock(Personne)
+
+        and:"un rôle applicatif imposé"
+        def roleApplicatif = RoleApplicatif.SUPER_ADMINISTRATEUR
+
+        when:"l'initialisation des rôles est délenchées avec le rôle imposé"
+        securiteSessionService.initialiseRolesAvecPerimetreForPersonne(personne, roleApplicatif)
+
+        then:"le current role applicatif est le role applicatif imposé"
+        securiteSessionService.currentRoleApplicatif == roleApplicatif
+
+        and:"le default role applicatif est le role applicatif imposé"
+        securiteSessionService.defaultRoleApplicatif == roleApplicatif
+
+        and:"la liste des établissements est vide"
+        securiteSessionService.etablissementList.isEmpty()
+
+        and:"la liste des rôles avec parametre contient une seule entrée avec le rôle imposé"
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(roleApplicatif)
+
+    }
+
+    def "test de l'initialisation des rôles avec périmètre lorsque le rôle administrateur est imposé"() {
+
+        given:"une personne administrant deux établissement"
+        def personne = Mock(Personne)
+        Etablissement etab1 = Mock(Etablissement)
+        // hack pour mock sur objets "comparable"
+        Etablissement etab2 = Mock(Etablissement) {
+            compareTo(etab1) >> -1
+        }
+        etab1.compareTo(etab2) >> 1
+        securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
+            findEtablissementsAdministresForPersonne(personne) >> [etab1, etab2]
+        }
+
+        and:"un rôle applicatif imposé"
+        def roleApplicatif = RoleApplicatif.ADMINISTRATEUR
+
+        when:"l'initialisation des rôles est délenchées avec le rôle imposé"
+        securiteSessionService.initialiseRolesAvecPerimetreForPersonne(personne, roleApplicatif)
+
+        then:"le current role applicatif est le role applicatif imposé"
+        securiteSessionService.currentRoleApplicatif == roleApplicatif
+
+        and:"le default role applicatif est le role applicatif imposé"
+        securiteSessionService.defaultRoleApplicatif == roleApplicatif
+
+        and:"la liste des rôles avec parametre contient une seule entrée avec le rôle imposé"
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(roleApplicatif)
+
+        and:"la liste des établissements est vide"
+        securiteSessionService.etablissementList.size() == 2
+        securiteSessionService.etablissementList.contains(etab1)
+        securiteSessionService.etablissementList.contains(etab2)
+
+    }
+
+    def "test de l'initialisation des rôles avec périmètre lorsque un rôle non autorisé est imposé"() {
+
+        given:"une personne administrant deux établissement"
+        def personne = Mock(Personne)
+
+        and:"un rôle applicatif imposé"
+        def roleApplicatif = RoleApplicatif.ENSEIGNANT
+
+        when:"l'initialisation des rôles est délenchées avec le rôle imposé"
+        securiteSessionService.initialiseRolesAvecPerimetreForPersonne(personne, roleApplicatif)
+
+        then:"une exception est levée"
+        thrown(PreConditionException)
+
+    }
+
 
     @Unroll
     def "le role par défaut d'un utilisateur avec fonction #fct est #role"() {

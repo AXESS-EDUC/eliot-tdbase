@@ -100,7 +100,6 @@ public class ProfilScolariteService {
         return fonctions
     }
 
-
     /**
      * Récupère les matières caractérisant la personne passée en paramètre, tout
      * établissement confondu
@@ -176,7 +175,7 @@ public class ProfilScolariteService {
      * @param personne la personne
      * @return une map contenant pour chaque établissement la liste des fonctions de la personne
      */
-    Map<Etablissement,Set<FonctionEnum>> findEtablissementsAndFonctionsForPersonne(Personne personne) {
+    Map<Etablissement, Set<FonctionEnum>> findEtablissementsAndFonctionsForPersonne(Personne personne) {
         def res = [:]
         // test d'abord si la personne est responsable eleves
         List<Personne> eleves = findElevesForResponsable(personne)
@@ -187,7 +186,7 @@ public class ProfilScolariteService {
                     HashSet<FonctionEnum> fcts = res.get(etab)
                     if (!fcts) {
                         fcts = new HashSet<FonctionEnum>()
-                        res.put(etab,fcts)
+                        res.put(etab, fcts)
                     }
                     fcts.add(FonctionEnum.PERS_REL_ELEVE)
                 }
@@ -247,7 +246,7 @@ public class ProfilScolariteService {
      * @param personne la personne
      * @return la liste des propriétés de scolarité
      */
-    List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne, Collection<Etablissement> etablissements= null) {
+    List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne, Collection<Etablissement> etablissements = null) {
         def props = new HashSet()
         List<PersonneProprietesScolarite> profils =
                 PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
@@ -376,13 +375,36 @@ public class ProfilScolariteService {
                 // TODO prendre en compte porteur ENT
                 //eq 'porteurEnt', porteurEnt
                 or {
-                eq 'fonction', FonctionEnum.CD.fonction
-                eq 'fonction', FonctionEnum.AC.fonction
+                    eq 'fonction', FonctionEnum.CD.fonction
+                    eq 'fonction', FonctionEnum.AC.fonction
                 }
 
             }
             eq 'estActive', true
         }
         return countPPS > 0
+    }
+
+    /**
+     * Récupère les établissements administrés par la personne passée en paramètre
+     * @param personne
+     * @return
+     */
+    Set<Etablissement> findEtablissementsAdministresForPersonne(Personne personne) {
+        def criteria = PersonneProprietesScolarite.createCriteria()
+        def pps = criteria.list {
+            eq 'personne', personne
+            proprietesScolarite {
+                or {
+                    eq 'fonction', FonctionEnum.AL.fonction
+                    eq 'fonction', FonctionEnum.DIR.fonction
+                }
+            }
+            eq 'estActive', true
+            join 'proprietesScolarite'
+            join 'proprietesScolarite.etablissement'
+        }
+        def etabs = pps.collect { it.proprietesScolarite.etablissement }
+        etabs
     }
 }

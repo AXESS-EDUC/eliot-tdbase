@@ -40,7 +40,7 @@
 
 <div style="margin-left: 30px;">
 <h2>
-  Préférénces établissement remise à null
+  Préférénces établissement remises à null
 </h2>
 <p>
   Nombre de préférences supprimées : ${nombrePreferencesSupprimees}

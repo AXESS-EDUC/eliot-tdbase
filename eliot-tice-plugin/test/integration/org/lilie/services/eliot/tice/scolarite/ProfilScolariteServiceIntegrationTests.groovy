@@ -205,6 +205,28 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         res.get(bootstrapService.leLycee).contains(FonctionEnum.DIR)
         res.get(bootstrapService.leCollege).size() == 1
         res.get(bootstrapService.leCollege).contains(FonctionEnum.DIR)
+    }
+
+    void testFindEtablissementsAdministresForPersonne() {
+        given: "un administrateur d'établissements"
+        def admin = bootstrapService.persDirection1
+
+        when: "la récupération des établissements qu'il administre est demandé"
+        def res = profilScolariteService.findEtablissementsAdministresForPersonne(admin)
+
+        then:"Les établissements récupérés sont les administrés par la personne"
+        assertEquals("pas le bon nombre d'établissements",2,res.size())
+        assertTrue(res.contains(bootstrapService.leLycee))
+        assertTrue(res.contains(bootstrapService.leCollege))
+
+        given: "un non administrateur d'établissements"
+        def ens = bootstrapService.enseignant1
+
+        when: "la récupération des établissements qu'il administre est demandé"
+        res = profilScolariteService.findEtablissementsAdministresForPersonne(ens)
+
+        then:"aucun établissement n'est récupéré"
+        assertEquals("pas le bon nombre d'établissements",0,res.size())
 
     }
 

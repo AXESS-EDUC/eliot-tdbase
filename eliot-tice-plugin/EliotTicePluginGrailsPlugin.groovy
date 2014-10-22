@@ -72,29 +72,6 @@ class EliotTicePluginGrailsPlugin {
 
     def conf = ConfigurationHolder.config
 
-    // configure la gestion de l'annuaire
-    //
-//    if (conf.eliot.portail.lilie) {
-//
-//      utilisateurService(LilieUtilisateurService) {
-//        springSecurityService = ref("springSecurityService")
-//      }
-//
-//      roleUtilisateurService(LilieRoleUtilisateurService) {
-//        profilScolariteService = ref("profilScolariteService")
-//      }
-//
-//    } else {
-//
-//      utilisateurService(DefaultUtilisateurService) {
-//        springSecurityService = ref("springSecurityService")
-//      }
-//
-//      roleUtilisateurService(DefaultRoleUtilisateurService) {
-//        profilScolariteService = ref("profilScolariteService")
-//      }
-//    }
-
     // configure le filtre pour la gestion du CAS Lilie
     //
     if (conf.eliot.portail.lilieCasActive) {
