@@ -10,7 +10,8 @@ public enum RoleApplicatif implements GrantedAuthority{
     ADMINISTRATEUR,
     ENSEIGNANT,
     ELEVE,
-    PARENT
+    PARENT,
+    NO_ROLE
 
     @Override
     String getAuthority() {
@@ -24,5 +25,28 @@ public enum RoleApplicatif implements GrantedAuthority{
     String getCode() {
         name()
     }
+
+    /**
+     * Récupère le rôle applicatif à partir du préfixe de login transmis en paramètre
+     * @param prefix le prefix du login
+     * @return le role applicatif correspondant ou null
+     */
+    static RoleApplicatif getRoleApplicatifForLoginPrefix(String prefix) {
+        // le CAS retourne UTnnnnnnn ALnnnnnnnn ...
+        // Extrait code CAS de Lilie
+        //  public static final String TYPE_UTILISATEUR_NORMAL = "UT";
+        //      /** Type de l'utilisateur connecté : administrateur local */
+        //      public static final String TYPE_UTILISATEUR_ADMIN_LOCAL = "AL";
+        //      /** Type de l'utilisateur connecté : administrateur de la console d'admin */
+        //      public static final String TYPE_UTILISATEUR_ADMIN_CONSOLE_ADMIN = "SA";
+        //      /** Type de l'utilisateur connecté : administrateur de la console d'admin */
+        //      public static final String TYPE_UTILISATEUR_CORRESPONDANT = "CD";
+        mappingPrefixRoleApplicatif.get(prefix)
+    }
+
+    static private mappingPrefixRoleApplicatif = [
+            "AL":RoleApplicatif.ADMINISTRATEUR,
+            "CD":RoleApplicatif.SUPER_ADMINISTRATEUR
+    ]
 
 }

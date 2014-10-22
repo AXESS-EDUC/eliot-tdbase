@@ -86,6 +86,12 @@ class BootstrapService {
     private static final String SUPER_ADMIN_1_NOM = "Super"
     private static final String SUPER_ADMIN_1_PRENOM = "Admin"
 
+    private static final String SUPER_ADMIN_2_LOGIN = "CDsadm2"
+    private static final String SUPER_ADMIN_2_PASSWORD = "sadm2"
+    private static final String SUPER_ADMIN_2_NOM = "Super"
+    private static final String SUPER_ADMIN_2_PRENOM = "Admin2"
+
+
     private static final String UAI_LYCEE = 'TEST_L'
     private static final String UAI_COLLEGE = 'TEST_C'
     private static final String UAI_PREFIXE = 'TEST_'
@@ -122,6 +128,7 @@ class BootstrapService {
         initialiseRespEleve1EnvDevelopment()
         initialisePersDirection1()
         initialiseSuperAdmin1()
+        initialiseSuperAdmin2()
     }
 
     /**
@@ -147,6 +154,7 @@ class BootstrapService {
 
             initialisePersDirection1()
             initialiseSuperAdmin1()
+            initialiseSuperAdmin2()
         }
 
     }
@@ -654,6 +662,33 @@ class BootstrapService {
         }
 
         superAdmin1 = utilisateurDir.personne
+    }
+
+    Personne superAdmin2
+
+    private def initialiseSuperAdmin2() {
+        def utilisateurDir = utilisateurService.findUtilisateur(SUPER_ADMIN_2_LOGIN)
+        if (!utilisateurDir) {
+            utilisateurDir = utilisateurService.createUtilisateur(SUPER_ADMIN_2_LOGIN,
+                    SUPER_ADMIN_2_PASSWORD,
+                    SUPER_ADMIN_2_NOM,
+                    SUPER_ADMIN_2_PRENOM)
+            Fonction fonctionDir = fonctionService.fonctionAdministrateurCentral()
+            def ps = ProprietesScolarite.findAllByPorteurEntAndFonctionAndAnneeScolaire(
+                    leLycee.porteurEnt,
+                    fonctionDir,
+                    anneeScolaire
+            )
+            if (!ps) {
+                ps = new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                        fonction: fonctionDir,
+                        porteurEnt: leLycee.porteurEnt).save(failOnError: true)
+            }
+
+            addProprietesScolariteToPersonne([ps], utilisateurDir.personne)
+        }
+
+        superAdmin2 = utilisateurDir.personne
     }
 
     // methode utilitaires

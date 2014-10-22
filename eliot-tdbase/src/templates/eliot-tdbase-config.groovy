@@ -49,7 +49,7 @@ grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
 
 // determine si eliot-tdbase doit s'executer en mode intégration Lilie
 //
-eliot.portail.lilie = false
+
 eliot.portail.lilieCasActive = false
 eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
 
