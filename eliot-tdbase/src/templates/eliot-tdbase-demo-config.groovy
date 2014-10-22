@@ -42,7 +42,7 @@ eliot.tdbase.urlServeur = "http://demo.ticetime.com/"
 
 // determine si eliot-tdbase doit s'executer en mode intégration Lilie
 //
-
+eliot.portail.lilie = false
 eliot.portail.lilieCasActive = false
 eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
 

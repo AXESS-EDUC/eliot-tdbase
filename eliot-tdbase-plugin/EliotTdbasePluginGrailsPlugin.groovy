@@ -70,8 +70,14 @@ class EliotTdbasePluginGrailsPlugin {
 
         // configure la gestion de l'annuaire
         //
-        utilisateurService(DefaultUtilisateurService) {
-            springSecurityService = ref("springSecurityService")
+        if (conf.eliot.portail.lilie) {
+            utilisateurService(LilieUtilisateurService) {
+                springSecurityService = ref("springSecurityService")
+            }
+        } else {
+            utilisateurService(DefaultUtilisateurService) {
+                springSecurityService = ref("springSecurityService")
+            }
         }
 
         roleUtilisateurService(DefaultTDBaseRoleUtilisateurService) {

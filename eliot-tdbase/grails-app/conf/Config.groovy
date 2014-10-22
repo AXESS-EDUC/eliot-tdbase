@@ -309,7 +309,7 @@ environments {
         eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
         eliot.tdbase.urlServeur = "http//localhost:8080"
         // determine si eliot-tdbase doit s'executer en mode intégration Lilie
-
+        eliot.portail.lilie = true
         eliot.portail.lilieCasActive = true
         eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
         // cas is not activated by default
