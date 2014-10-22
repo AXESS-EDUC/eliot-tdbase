@@ -40,78 +40,65 @@ import org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar
  */
 
 class EliotTdbasePluginGrailsPlugin {
-  // the group id
-  def groupId = "org.lilie.services.eliot"
-  // the plugin version
-  def version = "2.4.0-SNAPSHOT"
-  // the version or versions of Grails the plugin is designed for
-  def grailsVersion = "2.0.1 > *"
-  // the other plugins this plugin depends on
-  def dependsOn = [:]
-  // resources that are excluded from plugin packaging
-  def pluginExcludes = [
-      "grails-app/views/error.gsp"
-  ]
+    // the group id
+    def groupId = "org.lilie.services.eliot"
+    // the plugin version
+    def version = "2.4.0-SNAPSHOT"
+    // the version or versions of Grails the plugin is designed for
+    def grailsVersion = "2.0.1 > *"
+    // the other plugins this plugin depends on
+    def dependsOn = [:]
+    // resources that are excluded from plugin packaging
+    def pluginExcludes = [
+            "grails-app/views/error.gsp"
+    ]
 
-  def title = "Eliot TD Base  Plugin" // Headline display name of the plugin
-  def author = "Franck Silvestre - Ticetime"
-  def authorEmail = ""
-  def description = '''\
+    def title = "Eliot TD Base  Plugin" // Headline display name of the plugin
+    def author = "Franck Silvestre - Ticetime"
+    def authorEmail = ""
+    def description = '''\
   Plugin contenant les services métiers relatifs à la gestion des TD"
   '''
 
-  def doWithSpring = {
-    userDetailsService(EliotTiceUserDetailsService) {
-      utilisateurService = ref("utilisateurService")
-      roleUtilisateurService = ref("roleUtilisateurService")
+    def doWithSpring = {
+        userDetailsService(EliotTiceUserDetailsService) {
+            utilisateurService = ref("utilisateurService")
+            roleUtilisateurService = ref("roleUtilisateurService")
+        }
+
+        def conf = ConfigurationHolder.config
+
+        // configure la gestion de l'annuaire
+        //
+        utilisateurService(DefaultUtilisateurService) {
+            springSecurityService = ref("springSecurityService")
+        }
+
+        roleUtilisateurService(DefaultTDBaseRoleUtilisateurService) {
+            securiteSessionServiceProxy = ref("securiteSessionServiceProxy")
+        }
+
+        // bean orientés sécurité
+
+        //bean orientés gestion des formulaires
+        customPropertyEditorRegistrar(EliotEditeurRegistrar)
+
+        // beans pour la migration des données
+        liquibase(LiquibaseWrapper) {
+            dataSource = ref("dataSource")
+            changeLog = "classpath:migrations/changelog-tice-dbmigration-all.xml"
+        }
+
+        // bean pour l'import moodle xml
+        xmlTransformationHelper(MoodleQuizTransformationHelper) {
+            dataStore = ref("dataStore")
+        }
+
+        moodleQuizTransformer(MoodleQuizTransformer) {
+            xmlTransformationHelper = ref("xmlTransformationHelper")
+        }
+
+        // bean pour convertir les référentiels EmaEval en référentiels Eliot
+        emaEvalReferentielMarshaller(ReferentielMarshaller)
     }
-
-      def conf = ConfigurationHolder.config
-
-      // configure la gestion de l'annuaire
-      //
-      if (conf.eliot.portail.lilie) {
-
-          utilisateurService(LilieUtilisateurService) {
-              springSecurityService = ref("springSecurityService")
-          }
-
-          roleUtilisateurService(LilieRoleUtilisateurService) {
-              profilScolariteService = ref("profilScolariteService")
-          }
-
-      } else {
-
-          utilisateurService(DefaultUtilisateurService) {
-              springSecurityService = ref("springSecurityService")
-          }
-
-          roleUtilisateurService(DefaultTDBaseRoleUtilisateurService) {
-              securiteSessionServiceProxy = ref("securiteSessionServiceProxy")
-          }
-      }
-
-    // bean orientés sécurité
-
-    //bean orientés gestion des formulaires
-    customPropertyEditorRegistrar(EliotEditeurRegistrar)
-
-    // beans pour la migration des données
-    liquibase(LiquibaseWrapper) {
-      dataSource = ref("dataSource")
-      changeLog = "classpath:migrations/changelog-tice-dbmigration-all.xml"
-    }
-
-    // bean pour l'import moodle xml
-    xmlTransformationHelper(MoodleQuizTransformationHelper) {
-      dataStore = ref("dataStore")
-    }
-
-    moodleQuizTransformer(MoodleQuizTransformer) {
-      xmlTransformationHelper = ref("xmlTransformationHelper")
-    }
-
-    // bean pour convertir les référentiels EmaEval en référentiels Eliot
-    emaEvalReferentielMarshaller(ReferentielMarshaller)
-  }
 }

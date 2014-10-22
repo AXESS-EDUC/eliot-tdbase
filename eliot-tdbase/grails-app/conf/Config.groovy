@@ -302,14 +302,14 @@ environments {
                               "Login / mot de passe élève 2 : elv2 / elv2",
                               "Login / mot de passe parent 1 : resp1 / resp1",
                               "Login / mot de passe personnel de direction 1 : dir1 / dir1",
-                              "Login / mot de passe personnel de super admin 1 : sadm1 / sadm1"]
+                              "Login / mot de passe personnel de super admin : CDsadm2 / sadm2"]
     }
     testlilie {
         eliot.tdbase.nomApplication = "eliot-tdbase"
         eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
         eliot.tdbase.urlServeur = "http//localhost:8080"
         // determine si eliot-tdbase doit s'executer en mode intégration Lilie
-        eliot.portail.lilie = true
+
         eliot.portail.lilieCasActive = true
         eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
         // cas is not activated by default

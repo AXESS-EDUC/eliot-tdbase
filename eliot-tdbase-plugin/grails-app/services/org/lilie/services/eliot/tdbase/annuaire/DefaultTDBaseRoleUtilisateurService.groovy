@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.annuaire
 
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
@@ -46,7 +47,13 @@ class DefaultTDBaseRoleUtilisateurService implements RoleUtilisateurService {
      * @see org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
      */
     List<GrantedAuthority> findRolesForUtilisateur(Utilisateur utilisateur) {
-        securiteSessionServiceProxy.initialiseSecuriteSessionForUtilisateur(utilisateur)
+        // si il ny' a pas de personne attachée, aucun rôle fournit
+        if (utilisateur.personneId == null) {
+            return []
+        }
+        String loginPrefix = utilisateur.login.substring(0, 2)
+        def roleFromPrefix = RoleApplicatif.getRoleApplicatifForLoginPrefix(loginPrefix)
+        securiteSessionServiceProxy.initialiseSecuriteSessionForUtilisateur(utilisateur, roleFromPrefix)
         [securiteSessionServiceProxy.currentRoleApplicatif]
     }
 
