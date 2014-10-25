@@ -72,10 +72,11 @@ class PreferencesController {
     def enregistre() {
         def personne = authenticatedPersonne
         PreferenceEtablissement prefEtab = securiteSessionServiceProxy.currentPreferenceEtablissement
+        prefEtab.refresh()
         def mapping = getMappingFromParamsForPreferenceEtablissement(params, prefEtab)
         prefEtab.mappingFonctionRole = mapping.toJsonString()
         preferenceEtablissementService.updatePreferenceEtablissement(personne, prefEtab)
-        securiteSessionServiceProxy.initialiseRolesAvecPerimetreForPersonne(personne)
+        securiteSessionServiceProxy.initialiseRolesAvecPerimetreForPersonne(personne, false)
         flash.messageTextesCode = "preferences.save.success"
         redirect(controller: "preferences", action: "index", params: [bcInit: true])
     }
@@ -85,7 +86,7 @@ class PreferencesController {
         // start with the current mapping
         MappingFonctionRole mapping = prefEtab.mappingFonctionRoleAsMap()
         // apply changes
-        mapping.reset()
+        mapping.resetOnRoleEnseignantAndEleve()
         params.each { String key, value ->
             if (key.startsWith("fonction_")) {
                 def keyParts = key.split("__")

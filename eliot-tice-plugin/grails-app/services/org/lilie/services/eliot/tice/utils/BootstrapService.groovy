@@ -464,6 +464,15 @@ class BootstrapService {
                     etablissement: leLycee,
                     matiere: matiereMaths).save(failOnError: true)
         }
+        if (!ProprietesScolarite.findAllByEtablissementAndFonctionAndAnneeScolaire(
+                leLycee,
+                fonctionService.fonctionAdministrateurLocal(),
+                anneeScolaire
+        )) {
+            new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                    fonction: fonctionService.fonctionAdministrateurLocal(),
+                    etablissement: leLycee).save(failOnError: true)
+        }
 
     }
 
@@ -475,6 +484,10 @@ class BootstrapService {
         enseignant1 = Personne.get(ens1.personneId)
         if (!profilScolariteService.findProprietesScolaritesForPersonne(enseignant1)) {
             def props = ProprietesScolarite.findAllByFonction(fonctionService.fonctionEnseignant())
+            addProprietesScolariteToPersonne(props, enseignant1)
+        }
+        if (profilScolariteService.findEtablissementsAdministresForPersonne(enseignant1).isEmpty()) {
+            def props =  ProprietesScolarite.findAllByFonction(fonctionService.fonctionAdministrateurLocal())
             addProprietesScolariteToPersonne(props, enseignant1)
         }
     }

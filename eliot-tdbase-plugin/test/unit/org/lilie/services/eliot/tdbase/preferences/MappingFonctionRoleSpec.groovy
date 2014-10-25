@@ -307,7 +307,7 @@ class MappingFonctionRoleSpec extends Specification {
         MappingFonctionRole mapping = new MappingFonctionRole(aMap)
 
         when: "un reset est execute sur le mapping"
-        mapping.reset()
+        mapping.resetOnRoleEnseignantAndEleve()
 
         then: "toutes les correspondances non modifiable sont laissées intactes, les autres sont positionnées à non assiciées"
         mapping.getRolesForFonction(FonctionEnum.ENS).size() == 1

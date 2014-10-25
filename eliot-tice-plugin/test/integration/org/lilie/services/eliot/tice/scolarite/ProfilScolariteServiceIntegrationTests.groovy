@@ -48,7 +48,7 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
     void testFindProprietesScolaritesForPersonne() {
         List<ProprietesScolarite> props = profilScolariteService.findProprietesScolaritesForPersonne(bootstrapService.enseignant1)
-        assertEquals("pas le bon de nombre de proprietes", 7, props.size())
+        assertEquals("pas le bon de nombre de proprietes", 8, props.size())
     }
 
     void testFindStructuresEnseignementForPersonne() {
@@ -61,8 +61,9 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
     void testFindFonctions() {
         List<Fonction> fonctions = profilScolariteService.findFonctionsForPersonne(bootstrapService.enseignant1)
-        assertEquals("pas le bon de nombre de fonction", 1, fonctions.size())
-        assertEquals("pas la bonne fonction", fonctionService.fonctionEnseignant(), fonctions.last())
+        assertEquals("pas le bon de nombre de fonction", 2, fonctions.size())
+        assertTrue("pas la  fonction enseignant", fonctions.contains(fonctionService.fonctionEnseignant()))
+        assertTrue("pas la  fonction administrateur local", fonctions.contains(fonctionService.fonctionAdministrateurLocal()))
     }
 
     void testFindProprietesScolaritesWithStructureForPersonne() {
@@ -133,7 +134,7 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
     }
 
     void testPersonneEstAdministrateurCentral() {
-        assertTrue(profilScolariteService.personneEstAdministrateurCentralForPorteurEnt(bootstrapService.superAdmin1,
+        assertTrue(profilScolariteService.personneEstAdministrateurCentral(bootstrapService.superAdmin1,
                 bootstrapService.leLycee.porteurEnt))
     }
 
@@ -148,8 +149,9 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         Set fcts = profilScolariteService.findFonctionsForPersonneAndEtablissement(ens1, etab)
 
         // then: la fct retournée est enseignant
-        assertEquals(1, fcts.size())
+        assertEquals(2, fcts.size())
         assertTrue(fcts.contains(FonctionEnum.ENS))
+        assertTrue(fcts.contains(FonctionEnum.AL))
 
     }
 
@@ -219,13 +221,22 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         assertTrue(res.contains(bootstrapService.leLycee))
         assertTrue(res.contains(bootstrapService.leCollege))
 
-        given: "un non administrateur d'établissements"
+        given: "un administrateur d'un seul établissement"
         def ens = bootstrapService.enseignant1
 
         when: "la récupération des établissements qu'il administre est demandé"
         res = profilScolariteService.findEtablissementsAdministresForPersonne(ens)
 
-        then:"aucun établissement n'est récupéré"
+        then:"un établissement n'est récupéré"
+        assertEquals("pas le bon nombre d'établissements",1,res.size())
+
+        given: "un administrateur d'aucun établissement"
+        ens = bootstrapService.enseignant2
+
+        when: "la récupération des établissements qu'il administre est demandé"
+        res = profilScolariteService.findEtablissementsAdministresForPersonne(ens)
+
+        then:"un établissement n'est récupéré"
         assertEquals("pas le bon nombre d'établissements",0,res.size())
 
     }
