@@ -367,13 +367,14 @@ public class ProfilScolariteService {
      * @param porteurEnt le porteur ENT
      * @return true si la personne est admin central
      */
-    boolean personneEstAdministrateurCentralForPorteurEnt(Personne personne, PorteurEnt porteurEnt) {
+    boolean personneEstAdministrateurCentral(Personne personne, PorteurEnt porteurEnt = null) {
         def criteria = PersonneProprietesScolarite.createCriteria()
         def countPPS = criteria.count {
             eq 'personne', personne
             proprietesScolarite {
-                // TODO prendre en compte porteur ENT
-                //eq 'porteurEnt', porteurEnt
+                if (porteurEnt) {
+                    eq 'porteurEnt', porteurEnt
+                }
                 or {
                     eq 'fonction', FonctionEnum.CD.fonction
                     eq 'fonction', FonctionEnum.AC.fonction

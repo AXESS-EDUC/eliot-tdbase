@@ -205,7 +205,7 @@ class SecuriteSessionServiceSpec extends Specification {
         rolesPerimetres.get(RoleApplicatif.ADMINISTRATEUR).etablissements == [etab1] as Set
         rolesPerimetres.get(RoleApplicatif.ADMINISTRATEUR).perimetre == PerimetreRoleApplicatifEnum.SEVERAL_ETABLISSEMENTS
 
-        and: "le role ELEVE ne concerne que l'établissement 1"
+        and: "le role ELEVE  concerne tous les établissements "
         rolesPerimetres.get(RoleApplicatif.ELEVE).etablissements == [etab1, etab2] as Set
         rolesPerimetres.get(RoleApplicatif.ELEVE).perimetre == PerimetreRoleApplicatifEnum.ALL_ETABLISSEMENTS
 
@@ -213,8 +213,11 @@ class SecuriteSessionServiceSpec extends Specification {
 
     def "test de l'initialisation des rôles avec périmètre lorsque le rôle super-admin est imposé"() {
 
-        given:"une personne"
+        given:"une personne qui est effectivement un super-admin"
         def personne = Mock(Personne)
+        securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
+            personneEstAdministrateurCentral(personne) >> true
+        }
 
         and:"un rôle applicatif imposé"
         def roleApplicatif = RoleApplicatif.SUPER_ADMINISTRATEUR
@@ -234,6 +237,35 @@ class SecuriteSessionServiceSpec extends Specification {
         and:"la liste des rôles avec parametre contient une seule entrée avec le rôle imposé"
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(roleApplicatif)
+
+    }
+
+    def "test de l'initialisation des rôles avec périmètre lorsque le rôle super-admin est imposé sur une personne non super admin"() {
+
+        given:"une personne qui n'est pas un super-admin"
+        def personne = Mock(Personne)
+        securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
+            personneEstAdministrateurCentral(personne) >> false
+        }
+
+        and:"un rôle applicatif imposé"
+        def roleApplicatif = RoleApplicatif.SUPER_ADMINISTRATEUR
+
+        when:"l'initialisation des rôles est délenchées avec le rôle imposé"
+        securiteSessionService.initialiseRolesAvecPerimetreForPersonne(personne, roleApplicatif)
+
+        then:"le current role applicatif est le role NO_ROLE"
+        securiteSessionService.currentRoleApplicatif == RoleApplicatif.NO_ROLE
+
+        and:"le default role applicatif est le role NO_ROLE"
+        securiteSessionService.defaultRoleApplicatif == RoleApplicatif.NO_ROLE
+
+        and:"la liste des établissements est vide"
+        securiteSessionService.etablissementList.isEmpty()
+
+        and:"la liste des rôles avec parametre contient une seule entrée avec le rôle NO_ROLE"
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(RoleApplicatif.NO_ROLE)
 
     }
 
@@ -267,10 +299,39 @@ class SecuriteSessionServiceSpec extends Specification {
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(roleApplicatif)
 
-        and:"la liste des établissements est vide"
+        and:"la liste des établissements est non vide"
         securiteSessionService.etablissementList.size() == 2
         securiteSessionService.etablissementList.contains(etab1)
         securiteSessionService.etablissementList.contains(etab2)
+
+    }
+
+    def "test de l'initialisation des rôles avec périmètre lorsque le rôle administrateur est imposé sur une personne non administrateur"() {
+
+        given:"une personne n'administrant aucun établissement"
+        def personne = Mock(Personne)
+        securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
+            findEtablissementsAdministresForPersonne(personne) >> []
+        }
+
+        and:"un rôle applicatif imposé"
+        def roleApplicatif = RoleApplicatif.ADMINISTRATEUR
+
+        when:"l'initialisation des rôles est délenchées avec le rôle imposé"
+        securiteSessionService.initialiseRolesAvecPerimetreForPersonne(personne, roleApplicatif)
+
+        then:"le current role applicatif est le role NO_ROLE"
+        securiteSessionService.currentRoleApplicatif == RoleApplicatif.NO_ROLE
+
+        and:"le default role applicatif est le role NO_ROLE"
+        securiteSessionService.defaultRoleApplicatif == RoleApplicatif.NO_ROLE
+
+        and:"la liste des rôles avec parametre contient une seule entrée avec le rôle NO_ROLE"
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(RoleApplicatif.NO_ROLE)
+
+        and:"la liste des établissements est vide"
+        securiteSessionService.etablissementList.size() == 0
 
     }
 

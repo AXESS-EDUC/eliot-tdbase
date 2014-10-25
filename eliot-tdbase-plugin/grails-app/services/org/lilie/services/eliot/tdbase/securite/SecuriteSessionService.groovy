@@ -115,7 +115,7 @@ class SecuriteSessionService {
      * Initialise les rôles avec perimetre pour une personne
      * @param personne la personne
      */
-    def initialiseRolesAvecPerimetreForPersonne(Personne personne) {
+    def initialiseRolesAvecPerimetreForPersonne(Personne personne, boolean updateCurrentRole = true) {
         rolesApplicatifsAndPerimetreByRoleApplicatif = new TreeMap<RoleApplicatif, PerimetreRoleApplicatif>()
         etablissementsAndFonctionsByEtablissement = profilScolariteService.findEtablissementsAndFonctionsForPersonne(personne)
         if (!etablissementsAndFonctionsByEtablissement.isEmpty()) {
@@ -144,7 +144,9 @@ class SecuriteSessionService {
                     new PerimetreRoleApplicatif(perimetre: PerimetreRoleApplicatifEnum.NO_PERIMETRE))
             defaultRoleApplicatif = RoleApplicatif.NO_ROLE
         }
-        onChangeRoleApplicatif(personne, defaultRoleApplicatif)
+        if (updateCurrentRole) {
+            onChangeRoleApplicatif(personne, defaultRoleApplicatif)
+        }
     }
 
     /**
@@ -157,23 +159,35 @@ class SecuriteSessionService {
         Contract.requires(roleApplicatif && (roleApplicatif == RoleApplicatif.ADMINISTRATEUR ||
                 roleApplicatif == RoleApplicatif.SUPER_ADMINISTRATEUR))
 
-        currentRoleApplicatif = roleApplicatif
-        defaultRoleApplicatif = roleApplicatif
         rolesApplicatifsAndPerimetreByRoleApplicatif = new TreeMap<RoleApplicatif, PerimetreRoleApplicatif>()
 
         if (roleApplicatif == RoleApplicatif.SUPER_ADMINISTRATEUR) {
-            rolesApplicatifsAndPerimetreByRoleApplicatif.put(roleApplicatif,
-                    new PerimetreRoleApplicatif(perimetre: PerimetreRoleApplicatifEnum.ENT))
+            if (profilScolariteService.personneEstAdministrateurCentral(personne)) {
+                rolesApplicatifsAndPerimetreByRoleApplicatif.put(roleApplicatif,
+                        new PerimetreRoleApplicatif(perimetre: PerimetreRoleApplicatifEnum.ENT))
+            }
         } else if (roleApplicatif == RoleApplicatif.ADMINISTRATEUR) {
-            def perimetre = new PerimetreRoleApplicatif(perimetre: PerimetreRoleApplicatifEnum.ALL_ETABLISSEMENTS)
-            // todo : verifier comment trouver la liste des étab pour un AL ?
-            perimetre.etablissements.addAll(profilScolariteService.findEtablissementsAdministresForPersonne(personne))
-            rolesApplicatifsAndPerimetreByRoleApplicatif.put(roleApplicatif,perimetre)
+            def etabs = profilScolariteService.findEtablissementsAdministresForPersonne(personne)
+            if (!etabs.isEmpty()) {
+                def perimetre = new PerimetreRoleApplicatif(perimetre: PerimetreRoleApplicatifEnum.ALL_ETABLISSEMENTS)
+                perimetre.etablissements.addAll(etabs)
+                rolesApplicatifsAndPerimetreByRoleApplicatif.put(roleApplicatif,perimetre)
+            }
+        }
+        if (rolesApplicatifsAndPerimetreByRoleApplicatif.isEmpty()) {
+            rolesApplicatifsAndPerimetreByRoleApplicatif.put(RoleApplicatif.NO_ROLE,
+                    new PerimetreRoleApplicatif(perimetre: PerimetreRoleApplicatifEnum.NO_PERIMETRE))
+            defaultRoleApplicatif = RoleApplicatif.NO_ROLE
+            currentRoleApplicatif = RoleApplicatif.NO_ROLE
+        } else {
+            currentRoleApplicatif = roleApplicatif
+            defaultRoleApplicatif = roleApplicatif
         }
     }
 
 
-    private RoleApplicatif updateDefaultRoleApplicatif(HashSet<FonctionEnum> allFonctionsHavingRole, TreeMap<RoleApplicatif, PerimetreRoleApplicatif> rolesApplicatifsAndPerimetreByRoleApplicatif) {
+    private RoleApplicatif updateDefaultRoleApplicatif(HashSet<FonctionEnum> allFonctionsHavingRole,
+                                                       TreeMap<RoleApplicatif, PerimetreRoleApplicatif> rolesApplicatifsAndPerimetreByRoleApplicatif) {
         def defaultRoleApplicatif
         if (allFonctionsHavingRole.contains(FonctionEnum.ELEVE)) {
             defaultRoleApplicatif = RoleApplicatif.ELEVE

@@ -69,7 +69,7 @@ class PreferenceEtablissementService {
      * @param personne la personne effectuant le reset
      */
     int resetAllPreferencesEtablissement(Personne personne) {
-        Contract.requires(profilScolariteService.personneEstAdministrateurCentralForPorteurEnt(personne, null))
+        Contract.requires(profilScolariteService.personneEstAdministrateurCentral(personne))
         def query = PreferenceEtablissement.where {
             etablissement != null
         }

@@ -138,11 +138,13 @@ class MappingFonctionRole {
     /**
      * Conserve les valeurs non modifiables et remet les autres valeurs à "non associe"
      */
-    def reset() {
+    def resetOnRoleEnseignantAndEleve() {
         this.mapping.each { key, value ->
             value.each { innerKey, innerValue ->
-                if (innerValue.get(KEY_MODIFIABLE) == true) {
-                    innerValue.put(KEY_ASSOCIE, false)
+                if(innerKey == RoleApplicatif.ELEVE.name() || innerKey == RoleApplicatif.ENSEIGNANT.name()) {
+                    if (innerValue.get(KEY_MODIFIABLE) == true) {
+                        innerValue.put(KEY_ASSOCIE, false)
+                    }
                 }
             }
         }
