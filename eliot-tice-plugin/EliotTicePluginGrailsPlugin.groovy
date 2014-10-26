@@ -148,6 +148,22 @@ class EliotTicePluginGrailsPlugin {
       }
     }
 
+      def userScolarite = conf.eliot.webservices.rest.client.scolarite.user
+      def passwordScolarite = conf.eliot.webservices.rest.client.scolarite.password
+      def urlScolarite = conf.eliot.webservices.rest.client.scolarite.urlServer
+      def prefixUriScolarite = conf.eliot.webservices.rest.client.scolarite.uriPrefix
+      def conTimeoutScolarite = conf.eliot.webservices.rest.client.scolarite.connexionTimeout ?: 15000
+
+      restClientForScolarite(RestClient) {
+          authBasicUser = userScolarite
+          authBasicPassword = passwordScolarite
+          urlServer = urlScolarite
+          uriPrefix = prefixUriScolarite
+          connexionTimeout = conTimeoutScolarite
+          restOperationDirectory = ref("restOperationDirectory")
+          println "Auth Basic user for Scolarite Web services client REST : ${userNotes}"
+      }
+
     // configure la gestion d'EliotUrlProvider
     //
 

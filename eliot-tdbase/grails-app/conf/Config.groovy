@@ -312,13 +312,6 @@ environments {
         eliot.portail.lilie = true
         eliot.portail.lilieCasActive = true
         eliot.portail.continueAfterUnsuccessfullCasLilieAuthentication = true
-        // cas is not activated by default
-        grails.plugins.springsecurity.cas.active = false
-        grails.plugins.springsecurity.cas.loginUri = '/login'
-        grails.plugins.springsecurity.cas.serviceUrl = "http://localhost:8080/${appName}/j_spring_cas_security_check"
-        grails.plugins.springsecurity.cas.serverUrlPrefix = 'http://localhost:8181/cas-server-webapp-3.4.11'
-        grails.plugins.springsecurity.cas.proxyCallbackUrl = "http://localhost:8080/${appName}/secure/receptor"
-        grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
 
         // application de la migration  définie dans eliot-tice-dbmigration
         eliot.bootstrap.migration = false
@@ -364,6 +357,13 @@ environments {
         eliot.webservices.rest.client.notes.password = "eliot-tdbase"
         eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
         eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+        // rest client config for scolarite
+        eliot.webservices.rest.client.scolarite.user = "api"
+        eliot.webservices.rest.client.scolarite.password = "api"
+        eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+        eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
+
     }
     test {
         eliot.interfacage.strongCheck = false
@@ -377,6 +377,12 @@ environments {
         eliot.webservices.rest.client.notes.password = "eliot-tdbase"
         eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
         eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+        // rest client config for scolarite
+        eliot.webservices.rest.client.scolarite.user = "api"
+        eliot.webservices.rest.client.scolarite.password = "api"
+        eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+        eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
     }
     testlilie {
         // Spécifie si les objets sensés être créés sont bien créés
@@ -395,9 +401,19 @@ environments {
         eliot.webservices.rest.client.notes.urlServer = "http://fylab02.dns-oid.com:8380"
         eliot.webservices.rest.client.notes.uriPrefix = "/eliot-notes-2.8.2-A1/echanges/v2"
         eliot.webservices.rest.client.notes.connexionTimeout = 10000 // ms
+        // rest client config for scolarite
+        eliot.webservices.rest.client.scolarite.user = "api"
+        eliot.webservices.rest.client.scolarite.password = "api"
+        eliot.webservices.rest.client.scolarite.urlServer = "http://fylab02.dns-oid.com:8380"
+        eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-scolarite-2.8.2-A1/echanges/v2"
+        eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
     }
 
 }
+
+
+
+
 
 eliot.webservices.rest.client.operations = [[operationName           : "getStructureChapitresForCahierId",
                                              description             : "Retourne la liste arborescente de chapitres d'un cahier",
@@ -476,7 +492,16 @@ eliot.webservices.rest.client.operations = [[operationName           : "getStruc
                                                     responseContentStructure: "eliot-notes#evaluation#id>",
                                                     //urlServer: "http://localhost:8090",
                                                     uriTemplate             : '/evaluations/$evaluationId/notes.json'
-                                            ]
+                                            ],
+                                            [
+                                                    operationName           : "findFonctionsForEtablissement",
+                                                    description             : "Retourne la liste des fonctions administrables pour un établissement donné",
+                                                    contentType             : ContentType.JSON,
+                                                    method                  : Method.GET,
+                                                    requestBodyTemplate     : null,
+                                                    responseContentStructure: "List<eliot-scolarite#fonction#standard>",
+                                                    //urlServer: "http://localhost:8090",
+                                                    uriTemplate             : 'wsprofilsetab?etablissementId=${etablissementId}']
 ]
 
 // Support de l'interface EmaEval
