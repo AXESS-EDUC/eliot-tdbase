@@ -1,5 +1,6 @@
 package org.lilie.services.eliot.tdbase.preferences
 
+import org.lilie.services.eliot.tdbase.webservices.rest.client.ScolariteRestService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Fonction
@@ -15,6 +16,7 @@ import org.lilie.services.eliot.tice.utils.contract.Contract
 class PreferenceEtablissementService {
 
     ProfilScolariteService profilScolariteService
+    ScolariteRestService scolariteRestService
 
     /**
      * Récupère l'objet correspondant aux préférences d'un établissement
@@ -57,7 +59,8 @@ class PreferenceEtablissementService {
     PreferenceEtablissement updatePreferenceEtablissement(Personne personne,
                                       PreferenceEtablissement preferenceEtablissement) {
         Contract.requires(profilScolariteService.personneEstPersonnelDirectionForEtablissement(personne, preferenceEtablissement.etablissement)
-        || profilScolariteService.personneEstAdministrateurLocalForEtablissement(personne, preferenceEtablissement.etablissement))
+        || profilScolariteService.personneEstAdministrateurLocalForEtablissement(personne, preferenceEtablissement.etablissement),
+        "requires_personne_est_administrateur_local_ou_personne_de_direction_pour_etablissement")
         preferenceEtablissement.lastUpdateAuteur = personne
         preferenceEtablissement.lastUpdated = new Date()
         preferenceEtablissement.save(failOnError: true)
@@ -69,30 +72,40 @@ class PreferenceEtablissementService {
      * @param personne la personne effectuant le reset
      */
     int resetAllPreferencesEtablissement(Personne personne) {
-        Contract.requires(profilScolariteService.personneEstAdministrateurCentral(personne))
+        Contract.requires(profilScolariteService.personneEstAdministrateurCentral(personne),"requires_personne_est_administrateur_central")
         def query = PreferenceEtablissement.where {
             etablissement != null
         }
         query.deleteAll()
     }
 
-    //TODO : à coder reellement après WS fourni par OMT
     /**
      * Récupère la liste des fonctions administrables pour un établissement donné
      * @param etablissement l'établissement
      * @return la liste des fonctions
      */
     List<Fonction> getFonctionsForEtablissement(Etablissement etablissement) {
-        [
-                FonctionEnum.DIR.fonction,
-                FonctionEnum.AL.fonction,
-                FonctionEnum.ENS.fonction,
-                FonctionEnum.DOC.fonction,
-                FonctionEnum.ELEVE.fonction,
-                FonctionEnum.PERS_REL_ELEVE.fonction,
-                FonctionEnum.EDU.fonction,
-                FonctionEnum.CTR.fonction
-        ]
+        def res = null
+        try {
+            res = scolariteRestService.findFonctionsForEtablissement(etablissement.id).collect {
+                FonctionEnum.valueOf(it.code).fonction
+            }
+        } catch (Exception e) {
+            log.error(e.message)
+        }
+        if (!res) {
+            res = [
+                    FonctionEnum.DIR.fonction,
+                    FonctionEnum.AL.fonction,
+                    FonctionEnum.ENS.fonction,
+                    FonctionEnum.DOC.fonction,
+                    FonctionEnum.ELEVE.fonction,
+                    FonctionEnum.PERS_REL_ELEVE.fonction,
+                    FonctionEnum.EDU.fonction,
+                    FonctionEnum.CTR.fonction
+            ]
+        }
+        res
     }
 }
 
