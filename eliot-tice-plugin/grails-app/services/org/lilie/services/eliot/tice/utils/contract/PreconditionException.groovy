@@ -5,4 +5,7 @@ package org.lilie.services.eliot.tice.utils.contract
  */
 class PreConditionException extends RuntimeException {
 
+    PreConditionException(String s) {
+        super(s)
+    }
 }

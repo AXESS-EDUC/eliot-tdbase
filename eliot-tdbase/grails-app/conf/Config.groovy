@@ -501,7 +501,7 @@ eliot.webservices.rest.client.operations = [[operationName           : "getStruc
                                                     requestBodyTemplate     : null,
                                                     responseContentStructure: "List<eliot-scolarite#fonction#standard>",
                                                     //urlServer: "http://localhost:8090",
-                                                    uriTemplate             : 'wsprofilsetab?etablissementId=${etablissementId}']
+                                                    uriTemplate             : '/wsprofilsetab']
 ]
 
 // Support de l'interface EmaEval
@@ -549,68 +549,32 @@ grails.plugin.quartz2.autoStartup = true
 eliot.artefact.partage_CC_autorise = true
 
 // parametrage par defaut du mmapping fonction role pour tdbase
-eliot.tdbase.mappingFonctionRole.defaut = [
-        ("${FonctionEnum.DIR.name()}".toString())           : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: true, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
-        ],
-        ("${FonctionEnum.AL.name()}".toString())            : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: true, modifiable: true],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
-        ],
-        ("${FonctionEnum.ENS.name()}".toString())           : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: false],
-                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
-        ],
-        ("${FonctionEnum.DOC.name()}".toString())           : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: true, modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
-        ],
-        ("${FonctionEnum.ELEVE.name()}".toString())         : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: true, modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
-        ],
-        ("${FonctionEnum.PERS_REL_ELEVE.name()}".toString()): [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: true, modifiable: false]
-        ],
-        ("${FonctionEnum.EDU.name()}".toString())           : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
-        ],
-        ("${FonctionEnum.CTR.name()}".toString())           : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: false, modifiable: false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: true],
-                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
-        ],
-        ("${FonctionEnum.CD.name()}".toString())            : [
-                ("${RoleApplicatif.SUPER_ADMINISTRATEUR.name()}".toString()): [associe: true, modifiable: false],
-                ("${RoleApplicatif.ADMINISTRATEUR.name()}".toString())      : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ELEVE.name()}".toString())               : [associe: false, modifiable: false],
-                ("${RoleApplicatif.ENSEIGNANT.name()}".toString())          : [associe: false, modifiable: false],
-                ("${RoleApplicatif.PARENT.name()}".toString())              : [associe: false, modifiable: false]
-        ]
-]
+def mappingFonctionRole = [:]
+FonctionEnum.values().each { FonctionEnum fctEn ->
+    def roles = RoleApplicatif.values()
+    def rolesAssoc = [:]
+    roles.each { RoleApplicatif roleApp ->
+        if(fctEn == FonctionEnum.ENS && roleApp == RoleApplicatif.ENSEIGNANT) {
+            rolesAssoc.put(roleApp.name(),[associe: true, modifiable: false])
+        } else if(fctEn == FonctionEnum.DOC && roleApp == RoleApplicatif.ENSEIGNANT) {
+            rolesAssoc.put(roleApp.name(),[associe: true, modifiable: false])
+        } else if(fctEn == FonctionEnum.ELEVE && roleApp == RoleApplicatif.ELEVE) {
+            rolesAssoc.put(roleApp.name(),[associe: true, modifiable: false])
+        } else if(fctEn == FonctionEnum.PERS_REL_ELEVE && roleApp == RoleApplicatif.PARENT) {
+            rolesAssoc.put(roleApp.name(),[associe: true, modifiable: false])
+        } else if(fctEn == FonctionEnum.DIR && roleApp == RoleApplicatif.ADMINISTRATEUR) {
+            rolesAssoc.put(roleApp.name(),[associe: true, modifiable: false])
+        } else if(fctEn == FonctionEnum.AL && roleApp == RoleApplicatif.ADMINISTRATEUR) {
+            rolesAssoc.put(roleApp.name(), [associe: true, modifiable: false])
+        } else if(fctEn == FonctionEnum.CD && roleApp == RoleApplicatif.SUPER_ADMINISTRATEUR) {
+            rolesAssoc.put(roleApp.name(), [associe: true, modifiable: false])
+        } else if (roleApp == RoleApplicatif.ENSEIGNANT) {
+            rolesAssoc.put(roleApp.name(), [associe: false, modifiable: true])
+        } else {
+            rolesAssoc.put(roleApp.name(), [associe: false, modifiable: false])
+        }
+    }
+    mappingFonctionRole.put(fctEn.name(),rolesAssoc)
+}
+
+eliot.tdbase.mappingFonctionRole.defaut =  mappingFonctionRole

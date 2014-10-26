@@ -10,9 +10,9 @@ class Contract {
      * Check a precondition
      * @param precondition
      */
-    static def requires(Boolean precondition) {
+    static def requires(Boolean precondition,String message = "") {
         if (!precondition) {
-            throw new PreConditionException();
+            throw new PreConditionException(message);
         }
     }
 
@@ -20,9 +20,9 @@ class Contract {
      * Check a postcondition
      * @param postcondition
      */
-    static def ensures(Boolean postcondition) {
+    static def ensures(Boolean postcondition,String message = "") {
         if (!postcondition) {
-            throw new PostConditionException();
+            throw new PostConditionException(message);
         }
     }
 

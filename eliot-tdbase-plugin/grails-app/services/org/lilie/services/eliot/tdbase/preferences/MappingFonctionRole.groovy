@@ -29,7 +29,7 @@ class MappingFonctionRole {
      */
     MappingFonctionRole(Map aMapping) {
         if (aMapping) {
-            Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
+            Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping),"requires_mapping_fonction_role_map_est_valide")
             this.mapping = aMapping
         }
     }
@@ -43,7 +43,7 @@ class MappingFonctionRole {
             def slurper = new JsonSlurper()
             def aMapping = slurper.parseText(jsonString)
             if (aMapping) {
-                Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping))
+                Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping),"requires_mapping_fonction_role_map_est_valide")
                 this.mapping = aMapping
             }
         }
@@ -99,7 +99,7 @@ class MappingFonctionRole {
         }
         Map roleAsMap = rolesAsMap.get(role.name())
         if (roleAsMap) {
-            Contract.requires(roleAsMap.get(KEY_MODIFIABLE) == true)
+            Contract.requires(roleAsMap.get(KEY_MODIFIABLE) == true,"requires_role_associe_est_modifiable")
             roleAsMap.put(KEY_ASSOCIE, true)
         } else {
             rolesAsMap.put(role.name(), [("$KEY_ASSOCIE".toString()):true,("$KEY_MODIFIABLE".toString()):true])
@@ -116,7 +116,7 @@ class MappingFonctionRole {
         if (rolesAsMap) {
             Map roleAsMap = rolesAsMap.get(role.name())
             if (roleAsMap) {
-                Contract.requires(roleAsMap.get(KEY_MODIFIABLE) == true)
+                Contract.requires(roleAsMap.get(KEY_MODIFIABLE) == true, "requires_role_associe_est_modifiable")
                 roleAsMap.put(KEY_ASSOCIE,false)
             }
         }
