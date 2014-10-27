@@ -157,7 +157,7 @@ class SecuriteSessionService {
     def initialiseRolesAvecPerimetreForPersonne(Personne personne, RoleApplicatif roleApplicatif) {
 
         Contract.requires(roleApplicatif && (roleApplicatif == RoleApplicatif.ADMINISTRATEUR ||
-                roleApplicatif == RoleApplicatif.SUPER_ADMINISTRATEUR))
+                roleApplicatif == RoleApplicatif.SUPER_ADMINISTRATEUR),"requires_roleApplicatif_role_administrateur_or_role_super_administrateur")
 
         rolesApplicatifsAndPerimetreByRoleApplicatif = new TreeMap<RoleApplicatif, PerimetreRoleApplicatif>()
 

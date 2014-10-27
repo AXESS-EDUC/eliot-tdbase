@@ -41,6 +41,7 @@ class UrlMappings {
     "/api-rest/v2/evaluation-contextes" (controller: 'notes',action: 'getServicesEvaluables')
     "/api-rest/v2/evaluations" (controller: 'notes',action: 'createDevoir')
     "/api-rest/v2/evaluations/$evaluationId/notes" (controller: 'notes',action: 'updateNotes')
+    "/api-rest/v2/wsprofilsetab" (controller: 'scolarite',action: 'getFonctionsForEtablissement')
     "/"(view: "/index")
     "500"(view: '/error')
   }

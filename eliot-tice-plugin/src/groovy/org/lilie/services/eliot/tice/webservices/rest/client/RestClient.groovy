@@ -124,7 +124,7 @@ class RestClient {
       def strB = new StringBuilder()
       strB << '?'
       httpParameters.each { key, val ->
-        strB << key << '=' << val.encodeAsURL() << '&'
+        strB << key << '=' << val.toString().encodeAsURL() << '&'
       }
       strB.deleteCharAt(strB.length() - 1)
       urlPath += strB.toString()
