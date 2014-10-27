@@ -49,7 +49,6 @@ class SecuriteSessionService {
      * @param porteurEnt porteur ENT à prendre en compte si nécessaire
      */
     def initialiseSecuriteSessionForUtilisateur(Utilisateur utilisateur, RoleApplicatif roleApplicatif = null, PorteurEnt porteurEnt = null) {
-        // todo : comment injecter le porteur ENt dans l'objet securitesession ???
         if (!personneId) {
             Personne.withTransaction {
                 login = utilisateur.login
