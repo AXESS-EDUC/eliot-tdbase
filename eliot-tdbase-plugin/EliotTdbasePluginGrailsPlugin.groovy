@@ -1,6 +1,7 @@
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.lilie.services.eliot.tdbase.annuaire.DefaultTDBaseRoleUtilisateurService
 import org.lilie.services.eliot.tdbase.emaeval.emawsconnector.ReferentielMarshaller
+import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformationHelper
 import org.lilie.services.eliot.tdbase.xml.transformation.MoodleQuizTransformer
 import org.lilie.services.eliot.tice.annuaire.impl.DefaultRoleUtilisateurService
@@ -80,9 +81,11 @@ class EliotTdbasePluginGrailsPlugin {
             }
         }
 
+
         roleUtilisateurService(DefaultTDBaseRoleUtilisateurService) {
             securiteSessionServiceProxy = ref("securiteSessionServiceProxy")
         }
+
 
         // bean orientés sécurité
 
