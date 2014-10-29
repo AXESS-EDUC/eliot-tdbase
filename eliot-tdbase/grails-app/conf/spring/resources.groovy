@@ -1,3 +1,4 @@
+import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 
 /*
@@ -33,4 +34,5 @@ beans = {
     utilisateurService = ref("utilisateurService")
     roleUtilisateurService = ref("roleUtilisateurService")
   }
+
 }

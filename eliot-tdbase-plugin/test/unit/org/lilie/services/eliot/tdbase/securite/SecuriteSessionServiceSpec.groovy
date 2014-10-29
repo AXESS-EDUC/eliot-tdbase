@@ -10,6 +10,8 @@ import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.securite.CorrespondantDeploimentConfig
+import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.utils.contract.PreConditionException
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -351,6 +353,44 @@ class SecuriteSessionServiceSpec extends Specification {
 
     }
 
+    def "test de l'initialisation du role CD par config pour un user qui est effectivement un CD"() {
+        given:"un user en registré comme CD dans la configuration"
+        def autorite = Mock(DomainAutorite) {
+            getIdentifiant() >> "idexterne1"
+        }
+        def utilisateur = Mock(Utilisateur) {
+            getAutorite() >> autorite
+        }
+        CorrespondantDeploimentConfig.externalIds = ["idexterne1"]
+
+        when:"l'initialisation de correspondant déploiement est déclenchée sur ce user"
+        securiteSessionService.initialiseSecuriteSessionForCorrespondantDeploiment(utilisateur)
+
+        then:"la session est correctement initialisée"
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
+        securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(RoleApplicatif.SUPER_ADMINISTRATEUR)
+        securiteSessionService.currentRoleApplicatif == RoleApplicatif.SUPER_ADMINISTRATEUR
+        securiteSessionService.defaultRoleApplicatif == RoleApplicatif.SUPER_ADMINISTRATEUR
+
+    }
+
+    def "test de l'initialisation du role CD par config pour un user qui n'est pas un CD"() {
+        given:"un user en registré comme CD dans la configuration"
+        def autorite = Mock(DomainAutorite) {
+            getIdentifiant() >> "idexterne1"
+        }
+        def utilisateur = Mock(Utilisateur) {
+            getAutorite() >> autorite
+        }
+        CorrespondantDeploimentConfig.externalIds = ["idexterne2"]
+
+        when:"l'initialisation de correspondant déploiement est déclenchée sur ce user"
+        securiteSessionService.initialiseSecuriteSessionForCorrespondantDeploiment(utilisateur)
+
+        then:"une exception est levée"
+        thrown(PreConditionException)
+
+    }
 
     @Unroll
     def "le role par défaut d'un utilisateur avec fonction #fct est #role"() {
