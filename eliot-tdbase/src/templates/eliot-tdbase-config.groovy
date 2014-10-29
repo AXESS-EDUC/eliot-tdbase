@@ -1,5 +1,5 @@
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
-import org.lilie.services.eliot.tice.scolarite.FonctionEnum
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 
 /*
@@ -97,14 +97,9 @@ eliot.portail.news = [
 ]
 
 // set url documentation
-eliot.manuels.documents.urlMap = [
-        "${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.DOC.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.CTR.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.DIR.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
-        "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Paren/content/index.html"
-]
+eliot.manuels.documents.urlMap = ["${RoleApplicatif.ENSEIGNANT.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+                                  "${RoleApplicatif.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
+                                  "${RoleApplicatif.PARENT.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Paren/content/index.html"]
 
 // l'url des fichiers de documentation par identifiant (item de question,...)
 eliot.help.documents.urlMap = [
@@ -125,6 +120,21 @@ eliot.help.documents.urlMap = [
         "eliot.tdbase.item.${QuestionTypeEnum.Slider.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
         "eliot.tdbase.item.${QuestionTypeEnum.Statement.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
         "eliot.tdbase.introduction": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html"]
+
+//  support de l'interfaçage eliot-notes
+//
+eliot.interfacage.notes = false
+
+//  support de l'interfaçage eliot-textes
+//
+eliot.interfacage.textes = false
+
+// rest client config for scolarite
+eliot.webservices.rest.client.scolarite.user = "api"
+eliot.webservices.rest.client.scolarite.password = "api"
+eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
+eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
 
 // Support de l'interface EmaEval
 eliot.interfacage.emaeval.actif = false
@@ -162,3 +172,4 @@ dataSource {
   logSql = false
 }
 
+eliot.correspondant.force.allIdExterne = ["ent.personne.sadm1"]
