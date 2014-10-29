@@ -302,7 +302,7 @@ environments {
                               "Login / mot de passe élève 2 : elv2 / elv2",
                               "Login / mot de passe parent 1 : resp1 / resp1",
                               "Login / mot de passe personnel de direction 1 : dir1 / dir1",
-                              "Login / mot de passe personnel de super admin : CDsadm2 / sadm2"]
+                              "Login / mot de passe personnel de super admin : sadm1 / sadm1"]
     }
     testlilie {
         eliot.tdbase.nomApplication = "eliot-tdbase"
@@ -578,3 +578,12 @@ FonctionEnum.values().each { FonctionEnum fctEn ->
 }
 
 eliot.tdbase.mappingFonctionRole.defaut =  mappingFonctionRole
+
+// les CD (backdoor)
+eliot.correspondant.force.allIdExterne = []
+
+environments {
+    development {
+        eliot.correspondant.force.allIdExterne = ["ent.personne.sadm1"]
+    }
+}

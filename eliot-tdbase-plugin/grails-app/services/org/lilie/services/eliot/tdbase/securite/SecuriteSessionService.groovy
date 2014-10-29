@@ -4,11 +4,11 @@ import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.securite.CorrespondantDeploimentConfig
 import org.lilie.services.eliot.tice.utils.contract.Contract
 
 
@@ -48,7 +48,7 @@ class SecuriteSessionService {
      * @param roleApplicatif un role applicatif devant être utilisé si non null (provient du préfixe de login par exemple)
      * @param porteurEnt porteur ENT à prendre en compte si nécessaire
      */
-    def initialiseSecuriteSessionForUtilisateur(Utilisateur utilisateur, RoleApplicatif roleApplicatif = null, PorteurEnt porteurEnt = null) {
+    def initialiseSecuriteSessionForUtilisateur(Utilisateur utilisateur, RoleApplicatif roleApplicatif = null) {
         if (!personneId) {
             Personne.withTransaction {
                 login = utilisateur.login
@@ -184,6 +184,19 @@ class SecuriteSessionService {
         }
     }
 
+    /**
+     * Initilaise la securité session pour l'utilisateur comme correspondant déploiement
+     * @param utilisateur l'utilisateur reconnu comme correspondant déploiement
+     */
+    def initialiseSecuriteSessionForCorrespondantDeploiment(Utilisateur utilisateur) {
+        Contract.requires(CorrespondantDeploimentConfig.externalIds.contains(utilisateur.autorite.identifiant),"utilisateur_non_CD")
+        rolesApplicatifsAndPerimetreByRoleApplicatif = new TreeMap<RoleApplicatif, PerimetreRoleApplicatif>()
+        rolesApplicatifsAndPerimetreByRoleApplicatif.put(RoleApplicatif.SUPER_ADMINISTRATEUR,
+                new PerimetreRoleApplicatif(perimetre: PerimetreRoleApplicatifEnum.ENT))
+        currentRoleApplicatif = RoleApplicatif.SUPER_ADMINISTRATEUR
+        defaultRoleApplicatif = RoleApplicatif.SUPER_ADMINISTRATEUR
+
+    }
 
     private RoleApplicatif updateDefaultRoleApplicatif(HashSet<FonctionEnum> allFonctionsHavingRole,
                                                        TreeMap<RoleApplicatif, PerimetreRoleApplicatif> rolesApplicatifsAndPerimetreByRoleApplicatif) {
@@ -213,6 +226,7 @@ class SecuriteSessionService {
             }
         }
     }
+
 
 }
 

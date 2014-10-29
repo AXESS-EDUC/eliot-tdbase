@@ -32,6 +32,8 @@ import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.RoleUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.securite.CorrespondantDeploimentConfig
+import org.lilie.services.eliot.tice.securite.acl.Autorite
 import org.springframework.security.core.GrantedAuthority
 
 /**
@@ -51,9 +53,15 @@ class DefaultTDBaseRoleUtilisateurService implements RoleUtilisateurService {
         if (utilisateur.personneId == null) {
             return []
         }
-        String loginPrefix = utilisateur.login.substring(0, 2)
-        def roleFromPrefix = RoleApplicatif.getRoleApplicatifForLoginPrefix(loginPrefix)
-        securiteSessionServiceProxy.initialiseSecuriteSessionForUtilisateur(utilisateur, roleFromPrefix)
+        Autorite autorite = utilisateur.autorite
+        if (CorrespondantDeploimentConfig.externalIds.contains(autorite.identifiant)) {
+            securiteSessionServiceProxy.initialiseSecuriteSessionForCorrespondantDeploiment(utilisateur)
+        } else {
+            String loginPrefix = utilisateur.login.substring(0, 2)
+            def roleFromPrefix = RoleApplicatif.getRoleApplicatifForLoginPrefix(loginPrefix)
+            securiteSessionServiceProxy.initialiseSecuriteSessionForUtilisateur(utilisateur, roleFromPrefix)
+        }
+
         [securiteSessionServiceProxy.currentRoleApplicatif]
     }
 

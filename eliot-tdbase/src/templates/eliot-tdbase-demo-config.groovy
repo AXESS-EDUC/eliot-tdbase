@@ -1,5 +1,5 @@
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
-import org.lilie.services.eliot.tice.scolarite.FonctionEnum
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 
 /*
@@ -90,14 +90,17 @@ eliot.interfacage.notes = false
 //
 eliot.interfacage.textes = false
 
+// rest client config for scolarite
+eliot.webservices.rest.client.scolarite.user = "api"
+eliot.webservices.rest.client.scolarite.password = "api"
+eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
+eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
 
 // set url documentation
-eliot.manuels.documents.urlMap = ["${FonctionEnum.ENS.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.DOC.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.CTR.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.DIR.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
-        "${FonctionEnum.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
-        "${FonctionEnum.PERS_REL_ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Paren/content/index.html"]
+eliot.manuels.documents.urlMap = ["${RoleApplicatif.ENSEIGNANT.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",
+        "${RoleApplicatif.ELEVE.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Eleve/content/index.html",
+        "${RoleApplicatif.PARENT.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Paren/content/index.html"]
 
 // l'url des fichiers de documentation par identifiant (item de question,...)
 eliot.help.documents.urlMap = [
@@ -169,3 +172,4 @@ eliot.interfacage.emaeval.actif = false
 // Activation/desactivation du partage en CC par les enseignants d'un artefact (i.e. d'un sujet ou d'une question)
 eliot.artefact.partage_CC_autorise = false
 
+eliot.correspondant.force.allIdExterne = ["ent.personne.sadm1"]

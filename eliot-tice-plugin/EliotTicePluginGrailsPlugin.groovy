@@ -8,6 +8,7 @@ import org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.impl.LilieRoleUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.impl.LilieUtilisateurService
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
+import org.lilie.services.eliot.tice.securite.CorrespondantDeploimentConfig
 import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.securite.rbac.CasContainerLilieAuthenticationFilter
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
@@ -99,6 +100,14 @@ class EliotTicePluginGrailsPlugin {
       println '... finished Configuring Spring Security Filter for CAS Lilie'
 
     }
+
+    // configure la gestion des id externes des CD
+    //
+    def ids = conf.eliot.correspondant.force.allIdExterne
+    if (ids) {
+        CorrespondantDeploimentConfig.externalIds = ids
+    }
+
 
     // Configure la gestion du datastore
     //
