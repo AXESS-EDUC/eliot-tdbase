@@ -12,14 +12,14 @@ class PreferencePersonne {
 
     Personne personne
 
-    String notifications
+    Boolean notificationOnCreationSeance = true
+    Boolean notificationOnPublicationResultats = true
+
     Date lastUpdated
 
     static constraints = {
 
     }
-
-
 
     static mapping = {
         table('td.preference_personne')
