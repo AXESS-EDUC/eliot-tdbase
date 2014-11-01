@@ -64,5 +64,13 @@
                 referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="2" author="fsil">
+        <dropColumn tableName="preference_personne" columnName="notifications"  schemaName="td"/>
+        <addColumn tableName="preference_personne" schemaName="td">
+            <column name="notification_on_creation_seance" type="boolean" defaultValue="true"/>
+            <column name="notification_on_publication_resultats" type="boolean" defaultValue="true"/>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>
