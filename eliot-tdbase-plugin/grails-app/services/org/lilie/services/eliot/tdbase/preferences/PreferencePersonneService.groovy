@@ -12,7 +12,7 @@ class PreferencePersonneService {
      * @return la préférence personne mise à jour ou avec des erreurs
      */
     PreferencePersonne updatePreferencePersonne(PreferencePersonne preferencePersonne, Personne personne) {
-        Contract.requires(preferencePersonne && preferencePersonne.personne == personne)
+        Contract.requires(preferencePersonne && preferencePersonne.personne == personne,"bad_personne_ : ${personne} for_preference_personne : ${preferencePersonne.personne}")
         preferencePersonne.save()
         preferencePersonne
     }
