@@ -56,7 +56,7 @@ class AccueilController {
         } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.ENSEIGNANT.authority)){
             redirect(controller: 'dashboard', action: 'index', params: [bcInit: true])
         } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.ADMINISTRATEUR.authority)) {
-            redirect(controller: 'preferences', action: 'index',params: [bcInit: true])
+            redirect(controller: 'etablissement', action: 'preference',params: [bcInit: true])
         } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.SUPER_ADMINISTRATEUR.authority)) {
             redirect(controller: 'maintenance', action: 'index', params: [bcInit: true])
         } else {
