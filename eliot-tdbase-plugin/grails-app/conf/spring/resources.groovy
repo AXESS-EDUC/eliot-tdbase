@@ -1,4 +1,5 @@
 import grails.util.Environment
+import groovy.sql.Sql
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 
 /*
@@ -33,6 +34,7 @@ beans = {
     switch(Environment.current) {
         case Environment.TEST:
             securiteSessionServiceProxy(SecuriteSessionService)
+            groovySql(Sql,ref('dataSource'))
             break
     }
 
