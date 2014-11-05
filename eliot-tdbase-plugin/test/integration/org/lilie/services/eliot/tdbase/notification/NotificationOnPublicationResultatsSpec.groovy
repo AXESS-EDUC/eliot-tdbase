@@ -3,6 +3,7 @@ package org.lilie.services.eliot.tdbase.notification
 import grails.plugin.spock.IntegrationSpec
 import groovy.sql.GroovyRowResult
 import org.lilie.services.eliot.tdbase.preferences.PreferencePersonne
+import org.lilie.services.eliot.tdbase.preferences.PreferencePersonneService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.utils.BootstrapService
 
@@ -12,6 +13,7 @@ import org.lilie.services.eliot.tice.utils.BootstrapService
 class NotificationOnPublicationResultatsSpec extends IntegrationSpec {
 
     BootstrapService bootstrapService
+    PreferencePersonneService preferencePersonneService
     NotificationOnPublicationResultats notificationOnPublicationResultats
     def groovySql
 
@@ -19,6 +21,9 @@ class NotificationOnPublicationResultatsSpec extends IntegrationSpec {
         bootstrapService
         bootstrapService.bootstrapJeuDeTestDevDemo()
         notificationOnPublicationResultats = new NotificationOnPublicationResultats(groovySql: groovySql)
+        PreferencePersonne preferencePersonne = preferencePersonneService.getPreferenceForPersonne(bootstrapService.eleve1)
+        preferencePersonne.notificationOnPublicationResultats = true
+        preferencePersonne.save(flush: true)
     }
 
     def "la recupération des personnes à notifier pour une structure enseignement"() {

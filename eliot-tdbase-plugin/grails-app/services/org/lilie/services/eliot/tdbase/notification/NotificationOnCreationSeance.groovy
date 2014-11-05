@@ -27,11 +27,13 @@ class NotificationOnCreationSeance extends AbstractNotification {
 
     private def queryForStructureEnseignement(StructureEnseignement structureEnseignement) {
         """select profil.personne_id as personne_id from ent.personne_propriete_scolarite as profil
-    left outer join td.preference_personne as preference on (profil.personne_id = preference.personne_id and preference.notification_on_creation_seance = true)
+    join td.preference_personne as preference on (profil.personne_id = preference.personne_id)
     join ent.propriete_scolarite as propScol on (profil.propriete_scolarite_id = propScol.id)
   where
     propScol.structure_enseignement_id = ${structureEnseignement.id} and
     propScol.fonction_id = ${FonctionEnum.ELEVE.id} and
-    profil.est_active = true"""
+    profil.est_active = true and
+    preference.notification_on_creation_seance = true"""
+
     }
 }
