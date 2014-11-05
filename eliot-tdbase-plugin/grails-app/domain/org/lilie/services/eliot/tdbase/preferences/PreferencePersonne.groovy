@@ -12,8 +12,8 @@ class PreferencePersonne {
 
     Personne personne
 
-    Boolean notificationOnCreationSeance = true
-    Boolean notificationOnPublicationResultats = true
+    Boolean notificationOnCreationSeance = false
+    Boolean notificationOnPublicationResultats = false
 
     Date lastUpdated
 

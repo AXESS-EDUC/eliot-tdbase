@@ -23,9 +23,9 @@ class PreferencePersonneSpec extends Specification {
         when:"une nouvelle préférence personne est crée"
         preferencePersonne = new PreferencePersonne(personne: Mock(Personne))
 
-        then:"les abonnements aux notifications sont activés"
-        preferencePersonne.notificationOnCreationSeance
-        preferencePersonne.notificationOnPublicationResultats
+        then:"les abonnements aux notifications ne pas sont activés"
+        !preferencePersonne.notificationOnCreationSeance
+        !preferencePersonne.notificationOnPublicationResultats
 
     }
 }
