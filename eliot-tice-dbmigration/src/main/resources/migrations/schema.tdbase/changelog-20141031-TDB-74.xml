@@ -72,5 +72,12 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="3" author="fsil">
+        <sql>
+            alter table td.preference_personne
+            alter column notification_on_creation_seance set default false,
+            alter column notification_on_publication_resultats set default false
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>
