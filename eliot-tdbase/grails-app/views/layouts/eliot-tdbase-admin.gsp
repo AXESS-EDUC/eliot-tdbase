@@ -55,7 +55,7 @@
   <div class="portal-menu">
     <ul id="portal-hz-menu">
       <li>
-          <g:link title="Préférences" controller="preferences" params="[bcInit: true]">Préférences</g:link>
+          <g:link title="Préférences" controller="etablissement" params="[bcInit: true]" action="preference">Préférences</g:link>
       </li>
       <g:render template="/menuItemEtablissements" model="[securiteSessionServiceProxy:securiteSessionServiceProxy]"></g:render>
     </ul>

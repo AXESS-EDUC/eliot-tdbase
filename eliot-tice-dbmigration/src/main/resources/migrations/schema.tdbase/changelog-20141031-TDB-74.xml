@@ -64,5 +64,20 @@
                 referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="2" author="fsil">
+        <dropColumn tableName="preference_personne" columnName="notifications"  schemaName="td"/>
+        <addColumn tableName="preference_personne" schemaName="td">
+            <column name="notification_on_creation_seance" type="boolean" defaultValue="true"/>
+            <column name="notification_on_publication_resultats" type="boolean" defaultValue="true"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="3" author="fsil">
+        <sql>
+            alter table td.preference_personne
+            alter column notification_on_creation_seance set default false,
+            alter column notification_on_publication_resultats set default false
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

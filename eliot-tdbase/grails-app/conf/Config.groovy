@@ -176,11 +176,15 @@ grails.plugins.springsecurity.interceptUrlMap = [
                 "${RoleApplicatif.ELEVE.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
+        '/utilisateur/**'   : [
+                "${RoleApplicatif.ELEVE.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
         '/resultats/**'  : [
                 "${RoleApplicatif.PARENT.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
-        '/preferences/**': [
+        '/etablissement/**': [
                 "${RoleApplicatif.ADMINISTRATEUR.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
