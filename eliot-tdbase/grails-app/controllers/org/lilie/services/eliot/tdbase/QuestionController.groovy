@@ -278,7 +278,8 @@ class QuestionController {
           model: [
               liens: breadcrumpsServiceProxy.liens,
               question: question,
-              matieres: profilScolariteService.findMatieresForPersonne(personne),
+              matieresForPersonne: profilScolariteService.findMatieresForPersonne(personne),
+              etablissements: securiteSessionServiceProxy.etablissementList,
               niveaux: profilScolariteService.findNiveauxForPersonne(personne),
               sujet: sujet,
               questionEnEdition: questionEnEdition,

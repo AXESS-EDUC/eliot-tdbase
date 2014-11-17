@@ -187,6 +187,7 @@ class SujetController {
                                                 typesSujet: sujetService.getAllSujetTypes(),
                                                 matieresForPersonne  : profilScolariteService.findMatieresForPersonne(proprietaire),
                                                 etablissements: securiteSessionServiceProxy.etablissementList,
+                                                artefactHelper: artefactAutorisationService,
                                                 niveaux   : profilScolariteService.findNiveauxForPersonne(proprietaire)])
     }
 
