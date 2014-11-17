@@ -27,130 +27,178 @@
  */
 
 
-
 package org.lilie.services.eliot.tice.scolarite
+
+import org.lilie.services.eliot.tice.utils.contract.Contract
+
 /**
  *
  * @author franck Silvestre
  */
 public class ScolariteService {
 
-  static transactional = false
+    static transactional = false
 
-  /**
-   * Récupère les niveaux pour une structure d'enseignement
-   * @param struct la structure d'enseignement
-   * @return la liste des niveaux
-   */
-  List<Niveau> findNiveauxForStructureEnseignement(StructureEnseignement struct) {
-    def niveaux = []
-    if (struct.isClasse()) {
-      niveaux.add(struct.niveau)
-    } else if (struct.isGroupe()) {
-      niveaux = struct.classes*.niveau
-    }
-    niveaux
-  }
-
-
-
-  /**
-   * Recherche de structures d'enseignements de l'année en cours
-   * @param etablissement l'établissement
-   * @param patternCode le pattern de code
-   * @param niveau le niveau general
-   * @param paginationAndSortingSpec les specifications pour l'ordre et
-   * la pagination
-   * @param uniquementQuestionsChercheur flag indiquant si on recherche que
-   * les items du chercheur
-   * @return la liste des questions
-   */
-  List<StructureEnseignement> findStructuresEnseignement(Collection<Etablissement> etablissements,
-                                                         String patternCode = null,
-                                                         Niveau niveau = null,
-                                                         Integer limiteResults = 200,
-                                                         Map paginationAndSortingSpec = [:]) {
-
-    AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true, [cache: true])
-    if (!anneeScolaire) {
-      throw new IllegalArgumentException("structures.recherche.anneescolaire.null")
-    }
-    if (!etablissements) {
-      throw new IllegalArgumentException("structures.recherche.etablissements.vide")
-    }
-
-    def criteria = StructureEnseignement.createCriteria()
-    List<StructureEnseignement> structures = criteria.list(paginationAndSortingSpec) {
-      eq "anneeScolaire", anneeScolaire
-      eq "actif", true
-      or {
-        etablissements.each {
-          eq "etablissement", it
+    /**
+     * Récupère les niveaux pour une structure d'enseignement
+     * @param struct la structure d'enseignement
+     * @return la liste des niveaux
+     */
+    List<Niveau> findNiveauxForStructureEnseignement(StructureEnseignement struct) {
+        def niveaux = []
+        if (struct.isClasse()) {
+            niveaux.add(struct.niveau)
+        } else if (struct.isGroupe()) {
+            niveaux = struct.classes*.niveau
         }
-      }
-      if (patternCode) {
-        def patternCodeX = "%${patternCode}%"
-        ilike "code", patternCodeX
-      }
-      if (niveau) {
-        or {
-          eq "niveau", niveau
-          classes {
-            eq "niveau", niveau
-          }
+        niveaux
+    }
+
+    /**
+     * Recherche de structures d'enseignements de l'année en cours
+     * @param etablissement l'établissement
+     * @param patternCode le pattern de code
+     * @param niveau le niveau general
+     * @param paginationAndSortingSpec les specifications pour l'ordre et
+     * la pagination
+     * @param uniquementQuestionsChercheur flag indiquant si on recherche que
+     * les items du chercheur
+     * @return la liste des questions
+     */
+    List<StructureEnseignement> findStructuresEnseignement(Collection<Etablissement> etablissements,
+                                                           String patternCode = null,
+                                                           Niveau niveau = null,
+                                                           Integer limiteResults = 200,
+                                                           Map paginationAndSortingSpec = [:]) {
+
+        AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true, [cache: true])
+        if (!anneeScolaire) {
+            throw new IllegalArgumentException("structures.recherche.anneescolaire.null")
         }
-      }
-      maxResults(limiteResults)
-      def sortArg = paginationAndSortingSpec['sort'] ?: 'code'
-      def orderArg = paginationAndSortingSpec['order'] ?: 'asc'
-      if (sortArg) {
-        order "${sortArg}", orderArg
-      }
-
-    }
-    return structures
-  }
-
-  /**
-   * Récupère les niveaux de différents établissements
-   * @param etablissements
-   * @return la liste des niveaux des différents établissements
-   */
-  List<Niveau> findNiveauxForEtablissement(Collection<Etablissement> etablissements) {
-    AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true, [cache: true])
-    if (!anneeScolaire) {
-      throw new IllegalArgumentException("structures.recherche.anneescolaire.null")
-    }
-    if (!etablissements) {
-      throw new IllegalArgumentException("structures.recherche.etablissements.vide")
-    }
-    def criteria = StructureEnseignement.createCriteria()
-    def niveaux = criteria.list() {
-      eq "anneeScolaire", anneeScolaire
-      eq "actif", true
-      eq "type", StructureEnseignement.TYPE_CLASSE
-      or {
-        etablissements.each {
-          eq "etablissement", it
+        if (!etablissements) {
+            throw new IllegalArgumentException("structures.recherche.etablissements.vide")
         }
-      }
-      niveau {
-        order 'libelleLong', 'asc'
-      }
-      projections {
-        niveau {
-          groupProperty("libelleLong")
+
+        def criteria = StructureEnseignement.createCriteria()
+        List<StructureEnseignement> structures = criteria.list(paginationAndSortingSpec) {
+            eq "anneeScolaire", anneeScolaire
+            eq "actif", true
+            or {
+                etablissements.each {
+                    eq "etablissement", it
+                }
+            }
+            if (patternCode) {
+                def patternCodeX = "%${patternCode}%"
+                ilike "code", patternCodeX
+            }
+            if (niveau) {
+                or {
+                    eq "niveau", niveau
+                    classes {
+                        eq "niveau", niveau
+                    }
+                }
+            }
+            maxResults(limiteResults)
+            def sortArg = paginationAndSortingSpec['sort'] ?: 'code'
+            def orderArg = paginationAndSortingSpec['order'] ?: 'asc'
+            if (sortArg) {
+                order "${sortArg}", orderArg
+            }
+
         }
-        groupProperty "niveau"
+        return structures
+    }
 
-      }
+    /**
+     * Récupère les niveaux de différents établissements
+     * @param etablissements
+     * @return la liste des niveaux des différents établissements
+     */
+    List<Niveau> findNiveauxForEtablissement(Collection<Etablissement> etablissements) {
+        AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true, [cache: true])
+        if (!anneeScolaire) {
+            throw new IllegalArgumentException("structures.recherche.anneescolaire.null")
+        }
+        if (!etablissements) {
+            throw new IllegalArgumentException("structures.recherche.etablissements.vide")
+        }
+        def criteria = StructureEnseignement.createCriteria()
+        def niveaux = criteria.list() {
+            eq "anneeScolaire", anneeScolaire
+            eq "actif", true
+            eq "type", StructureEnseignement.TYPE_CLASSE
+            or {
+                etablissements.each {
+                    eq "etablissement", it
+                }
+            }
+            niveau {
+                order 'libelleLong', 'asc'
+            }
+            projections {
+                niveau {
+                    groupProperty("libelleLong")
+                }
+                groupProperty "niveau"
 
+            }
+
+
+        }
+        def niveauxRes = niveaux.collect {
+            ((List) it)[1]
+        }
+        niveauxRes
+    }
+
+    /**
+     * Moteur de Recherche pour les  matières
+     * @param etablissements liste d'établissements
+     * @param patternCode le pattern sur un des libellés de la matière
+     * @param limiteResults le nombre max de résultats remontés
+     * @param paginationAndSortingSpec l'ordre de tri et la pagination
+     * @return la liste des matières
+     */
+    List<Matiere> findMatieres(Collection<Etablissement> etablissements,
+                               String patternCode = null,
+                               Integer limiteResults = 200,
+                               Map paginationAndSortingSpec = [:]) {
+
+        Contract.requires(etablissements?.size() > 0, "matieres.recherche.etablissements.vide")
+        AnneeScolaire anneeScolaire = AnneeScolaire.findByAnneeEnCours(true, [cache: true])
+        Contract.requires(anneeScolaire != null, "matieres.recherche.anneescolaire.null")
+
+        def criteria = Matiere.createCriteria()
+        List<Matiere> matieres = criteria.list(paginationAndSortingSpec) {
+            eq "anneeScolaire", anneeScolaire
+            or {
+                etablissements.each {
+                    eq "etablissement", it
+                }
+            }
+            if (patternCode) {
+                def patternCodeX = "%${patternCode}%"
+                or {
+                    ilike "libelleCourt", patternCodeX
+                    ilike "libelleEdition", patternCodeX
+                    ilike "libelleLong", patternCodeX
+                    ilike "codeGestion", patternCodeX
+                    ilike "codeSts", patternCodeX
+                }
+            }
+
+            maxResults(limiteResults)
+            def sortArg = paginationAndSortingSpec['sort'] ?: 'libelleEdition'
+            def orderArg = paginationAndSortingSpec['order'] ?: 'asc'
+            if (sortArg) {
+                order "${sortArg}", orderArg
+            }
+
+        }
+        return matieres
 
     }
-    def niveauxRes = niveaux.collect {
-      ((List) it)[1]
-    }
-    niveauxRes
-  }
 
 }
