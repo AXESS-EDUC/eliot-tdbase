@@ -122,12 +122,13 @@ class SujetController {
     def nouveau() {
         breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
         Personne proprietaire = authenticatedPersonne
-        render(view: "editeProprietes", model: [liens         : breadcrumpsServiceProxy.liens,
-                                                sujet         : new Sujet(),
-                                                typesSujet    : sujetService.getAllSujetTypes(),
-                                                artefactHelper: artefactAutorisationService,
-                                                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
-                                                niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
+        render(view: "editeProprietes", model: [liens              : breadcrumpsServiceProxy.liens,
+                                                sujet              : new Sujet(),
+                                                typesSujet         : sujetService.getAllSujetTypes(),
+                                                artefactHelper     : artefactAutorisationService,
+                                                matieresForPersonne: profilScolariteService.findMatieresForPersonne(proprietaire),
+                                                etablissements     : securiteSessionServiceProxy.etablissementList,
+                                                niveaux            : profilScolariteService.findNiveauxForPersonne(proprietaire)])
     }
 
     /**
@@ -184,7 +185,8 @@ class SujetController {
         render(view: "editeProprietes", model: [liens     : breadcrumpsServiceProxy.liens,
                                                 sujet     : sujet,
                                                 typesSujet: sujetService.getAllSujetTypes(),
-                                                matieres  : profilScolariteService.findMatieresForPersonne(proprietaire),
+                                                matieresForPersonne  : profilScolariteService.findMatieresForPersonne(proprietaire),
+                                                etablissements: securiteSessionServiceProxy.etablissementList,
                                                 niveaux   : profilScolariteService.findNiveauxForPersonne(proprietaire)])
     }
 
