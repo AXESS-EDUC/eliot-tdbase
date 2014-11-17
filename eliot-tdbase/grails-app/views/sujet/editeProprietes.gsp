@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.SujetType" %>
+<%@ page import="org.lilie.services.eliot.tdbase.RechercheMatieresCommand; org.lilie.services.eliot.tdbase.SujetType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -30,11 +30,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="jquery"/>
+  <r:require modules="eliot-tdbase-ui"/>
   <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
-      $('input[name="titre"]').focus();
+      $('input[name="titre"]').focus()
+
+      $("#search-matiere-form").dialog({
+        autoOpen: false,
+        title: "Rechercher une matière",
+        height: 600,
+        width: 420,
+        modal: true
+      });
+
+      $("#select-other-matiere")
+              .click(function () {
+                $("#search-matiere-form").dialog("open");
+              });
     });
   </r:script>
   <title><g:message code="sujet.editeProprietes.head.title"/></title>
@@ -76,14 +89,25 @@
                     optionValue="nom" tabindex="2"/>
         </td>
       </tr>
+      <g:set var="currentMatiereId" value="${sujet.matiereId}"/>
+      <g:set var="currentMatiere" value="${sujet.matiere}"/>
       <tr>
         <td class="label">Mati&egrave;re&nbsp;:</td>
         <td>
-          <g:select name="matiere.id" value="${sujet.matiere?.id}"
-                    noSelection="${['null': g.message(code:"default.select.null")]}"
-                    from="${matieres}"
-                    optionKey="id"
-                    optionValue="libelleLong" tabindex="3"/>
+          <span id="matiere-selection">
+            <g:if test="${matieresForPersonne && (!currentMatiere || matieresForPersonne.contains(currentMatiere)) }">
+              <g:select name="matiere.id" value="${currentMatiereId}"
+                        noSelection="${['null': g.message(code: "default.select.null")]}"
+                        from="${matieresForPersonne}"
+                        optionKey="id"
+                        optionValue="libelleLong" tabindex="3"/>
+            </g:if>
+            <g:elseif test="${currentMatiereId}">
+              <strong>${currentMatiere.libelleLong}</strong>
+              <input type="hidden" name="matiere.id" value="${currentMatiereId}"/>
+            </g:elseif>
+          </span>
+          <a id="select-other-matiere">Choisir une matiere...</a>
         </td>
       </tr>
       <tr>
@@ -146,6 +170,11 @@
                     title="Enregistrer" tabindex="7"/>
   </div>
 </form>
+
+<div id="search-matiere-form" style="background-color: #ffffff">
+  <g:render template="/item/selectMatiere" model="[etablissements          : etablissements,
+                                                   rechercheMatieresCommand: new RechercheMatieresCommand()]"/>
+</div>
 
 </body>
 </html>

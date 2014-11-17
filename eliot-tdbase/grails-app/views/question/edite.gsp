@@ -235,10 +235,10 @@
                                   noSelection="${['null': g.message(code: "default.select.null")]}"
                                   from="${matieresForPersonne}"
                                   optionKey="id"
-                                  optionValue="libelleEdition"/>
+                                  optionValue="libelleLong"/>
                         </g:if>
                         <g:elseif test="${currentMatiereId}">
-                            <strong>${currentMatiere.libelleEdition}</strong>
+                            <strong>${currentMatiere.libelleLong}</strong>
                             <input type="hidden" name="matiere.id" value="${currentMatiereId}"/>
                         </g:elseif>
                         </span>

@@ -72,7 +72,7 @@
 
     <g:each in="${matieres}" status="i" var="matiereInstance">
       <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0;text-align: left">
-          <a onclick="selectMatiere(${matiereInstance.id},'${matiereInstance.libelleEdition}')">${matiereInstance.libelleEdition}</a>
+          <a onclick="selectMatiere(${matiereInstance.id},'${matiereInstance.libelleLong}')">${matiereInstance.libelleEdition}</a>
       </div>
     </g:each>
   </div>

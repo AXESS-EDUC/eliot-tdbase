@@ -138,12 +138,13 @@ class SujetController {
         breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.editeproprietes.titre"))
         Sujet sujet = Sujet.get(params.id)
         Personne proprietaire = authenticatedPersonne
-        render(view: "editeProprietes", model: [liens         : breadcrumpsServiceProxy.liens,
-                                                sujet         : sujet,
-                                                artefactHelper: artefactAutorisationService,
-                                                typesSujet    : sujetService.getAllSujetTypes(),
-                                                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
-                                                niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
+        render(view: "editeProprietes", model: [liens              : breadcrumpsServiceProxy.liens,
+                                                sujet              : sujet,
+                                                artefactHelper     : artefactAutorisationService,
+                                                typesSujet         : sujetService.getAllSujetTypes(),
+                                                matieresForPersonne: profilScolariteService.findMatieresForPersonne(proprietaire),
+                                                etablissements     : securiteSessionServiceProxy.etablissementList,
+                                                niveaux            : profilScolariteService.findNiveauxForPersonne(proprietaire)])
     }
 
     /**
