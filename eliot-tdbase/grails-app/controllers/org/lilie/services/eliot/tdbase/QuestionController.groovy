@@ -38,6 +38,7 @@ import org.lilie.services.eliot.tdbase.importexport.QuestionExporterService
 import org.lilie.services.eliot.tdbase.importexport.QuestionImporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
+import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.AttachementUploadException
@@ -60,6 +61,7 @@ class QuestionController {
   private static final String QUESTION_EST_DEJA_INSEREE = "questionEstDejaInseree"
 
   BreadcrumpsService breadcrumpsServiceProxy
+  SecuriteSessionService securiteSessionServiceProxy
   ProfilScolariteService profilScolariteService
   QuestionService questionService
   SujetService sujetService
@@ -115,13 +117,17 @@ class QuestionController {
         message(code: "question.edite.titre"),
         [QUESTION_EST_DEJA_INSEREE: questionEstDejaInseree]
     )
-
+    def matieresForPersonne = profilScolariteService.findMatieresForPersonne(personne)
+    if (question.matiere && !matieresForPersonne.contains(question.matiere)) {
+        matieresForPersonne.add(question.matiere)
+    }
     render(
         view: '/question/edite',
         model: [
             liens: breadcrumpsServiceProxy.liens,
             question: question,
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            matieresForPersonne: matieresForPersonne,
+            etablissements: securiteSessionServiceProxy.etablissementList,
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,
             artefactHelper: artefactAutorisationService,

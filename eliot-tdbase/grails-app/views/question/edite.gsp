@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.importexport.Format; org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.CopyrightsTypeEnum" %>
+<%@ page import="org.lilie.services.eliot.tdbase.RechercheMatieresCommand; org.lilie.services.eliot.tdbase.importexport.Format; org.lilie.services.eliot.tice.CopyrightsType; org.lilie.services.eliot.tice.CopyrightsTypeEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -29,39 +29,52 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="question_editeJS"/>
-  <g:external dir="js/eliot/tiny_mce/tiny_mce.js" plugin="eliot-tice-plugin"/>
-  <script type="text/javascript">
-    tinyMCE.init({
-      // General options
-      language: 'fr',
-      mode: "none",
-      theme: "advanced",
-      plugins: "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+    <meta name="layout" content="eliot-tdbase"/>
+    <r:require modules="question_editeJS"/>
+    <g:external dir="js/eliot/tiny_mce/tiny_mce.js" plugin="eliot-tice-plugin"/>
+    <script type="text/javascript">
+        tinyMCE.init({
+            // General options
+            language: 'fr',
+            mode: "none",
+            theme: "advanced",
+            plugins: "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
-      // Theme options
-      theme_advanced_buttons1: "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect",
-      theme_advanced_buttons2: "forecolor,backcolor,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,cleanup,code",
-      theme_advanced_buttons3: "tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap",
+            // Theme options
+            theme_advanced_buttons1: "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect",
+            theme_advanced_buttons2: "forecolor,backcolor,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,cleanup,code",
+            theme_advanced_buttons3: "tablecontrols,|,hr,removeformat,|,sub,sup,|,charmap",
 
-      theme_advanced_toolbar_location: "top",
-      theme_advanced_toolbar_align: "left",
-      theme_advanced_statusbar_location: "bottom",
-      theme_advanced_resizing: false,
+            theme_advanced_toolbar_location: "top",
+            theme_advanced_toolbar_align: "left",
+            theme_advanced_statusbar_location: "bottom",
+            theme_advanced_resizing: false,
 
-      entity_encoding: "raw"
-    });
-  </script>
-  <r:script>
-    $(document).ready(function () {
-      $('#menu-item-contributions').addClass('actif');
-      $('#question\\.titre').focus();
-      $("form").attr('enctype', 'multipart/form-data');
-      initButtons()
-    });
-  </r:script>
-  <title><g:message code="question.edite.head.title"/></title>
+            entity_encoding: "raw"
+        });
+    </script>
+    <r:script>
+        $(document).ready(function () {
+            $('#menu-item-contributions').addClass('actif');
+            $('#question\\.titre').focus();
+            $("form").attr('enctype', 'multipart/form-data');
+            initButtons()
+
+            $("#search-matiere-form").dialog({
+                autoOpen: false,
+                title: "Rechercher une matière",
+                height: 600,
+                width: 420,
+                modal: true
+            });
+
+            $("#select-other-matiere")
+                    .click(function () {
+                        $("#search-matiere-form").dialog("open");
+                    });
+        });
+    </r:script>
+    <title><g:message code="question.edite.head.title"/></title>
 </head>
 
 <body>
@@ -69,244 +82,242 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <g:if test="${questionEnEdition}">
-  <div class="portal-tabs">
+    <div class="portal-tabs">
 
+      <span class="portal-tabs-famille-liens">
+    <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
+        <%
+            def docLoc = g.createLink(action: 'partage', controller: "question${question.type.code}", id: question.id)
+            def message = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
+        %>
+        <g:link action="partage" class="share"
+                id="${question.id}"
+                onclick="afficheDialogue('${message}','${docLoc}');return false;">Partager l'item</g:link>&nbsp; |
+    </g:if>
+    <g:else>
+        <span class="share">Partager l'item</span>&nbsp;| &nbsp;
+    </g:else>
+    </span>
+    </span>
     <span class="portal-tabs-famille-liens">
-  <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, question)}">
-    <%
-      def docLoc = g.createLink(action: 'partage', controller: "question${question.type.code}", id: question.id)
-      def message = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
-    %>
-    <g:link action="partage" class="share"
-            id="${question.id}"
-            onclick="afficheDialogue('${message}','${docLoc}');return false;">Partager l'item</g:link>&nbsp; |
-  </g:if>
-  <g:else>
-    <span class="share">Partager l'item</span>&nbsp;| &nbsp;
-  </g:else>
-  </span>
-  </span>
-  <span class="portal-tabs-famille-liens">
-    <button id="${question.id}">Actions</button>
-    <ul id="menu_actions_${question.id}"
-        class="tdbase-menu-actions">
-      <li><g:link action="detail" controller="question${question.type.code}"
-                  id="${question.id}">Aperçu</g:link></li>
-      <li><hr/></li>
-      <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, question)}">
-        <li><g:link action="duplique"
-                    controller="question${question.type.code}"
-                    id="${question.id}">Dupliquer</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Dupliquer</li>
-      </g:else>
-      <li><hr/></li>
+        <button id="${question.id}">Actions</button>
+        <ul id="menu_actions_${question.id}"
+            class="tdbase-menu-actions">
+            <li><g:link action="detail" controller="question${question.type.code}"
+                        id="${question.id}">Aperçu</g:link></li>
+            <li><hr/></li>
+            <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, question)}">
+                <li><g:link action="duplique"
+                            controller="question${question.type.code}"
+                            id="${question.id}">Dupliquer</g:link></li>
+            </g:if>
+            <g:else>
+                <li>Dupliquer</li>
+            </g:else>
+            <li><hr/></li>
 
-      <g:set var="peutExporterNatifJson"
-             value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question, Format.NATIF_JSON)}"/>
-      <g:set var="peutExporterMoodleXml"
-             value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question, Format.MOODLE_XML)}"/>
+            <g:set var="peutExporterNatifJson"
+                   value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question, Format.NATIF_JSON)}"/>
+            <g:set var="peutExporterMoodleXml"
+                   value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, question, Format.MOODLE_XML)}"/>
 
-      <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
-        <li>
-          <g:set var="urlFormatNatifJson" value="${createLink(action: 'exporter', id: question.id, params: [format: Format.NATIF_JSON.name()])}"/>
-          <g:set var="urlFormatMoodleXml" value="${createLink(action: 'exporter', id: question.id, params: [format: Format.MOODLE_XML.name()])}"/>
-          <a href="#" onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
-        </li>
-      </g:if>
-      <g:else>
-        Exporter
-      </g:else>
+            <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
+                <li>
+                    <g:set var="urlFormatNatifJson"
+                           value="${createLink(action: 'exporter', id: question.id, params: [format: Format.NATIF_JSON.name()])}"/>
+                    <g:set var="urlFormatMoodleXml"
+                           value="${createLink(action: 'exporter', id: question.id, params: [format: Format.MOODLE_XML.name()])}"/>
+                    <a href="#"
+                       onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
+                </li>
+            </g:if>
+            <g:else>
+                Exporter
+            </g:else>
 
-      <li><hr/></li>
-      <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, question)}">
-        <li><g:link action="supprime"
-                    controller="question${question.type.code}"
-                    id="${question.id}">Supprimer</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Supprimer</li>
-      </g:else>
-    </ul>
-  </span>
+            <li><hr/></li>
+            <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, question)}">
+                <li><g:link action="supprime"
+                            controller="question${question.type.code}"
+                            id="${question.id}">Supprimer</g:link></li>
+            </g:if>
+            <g:else>
+                <li>Supprimer</li>
+            </g:else>
+        </ul>
+    </span>
 
-  </div>
+    </div>
 </g:if>
 <g:else>
-  <div class="portal-tabs">
-    <span class="portal-tabs-famille-liens">
-                <span class="share">Partager l'item</span>&nbsp;| &nbsp;
-            </span>
-            </span>
-            <span class="portal-tabs-famille-liens">
-              <button id="${question.id}">Actions</button>
-  <ul id="menu_actions_${question.id}"
-      class="tdbase-menu-actions">
-    <li>Aperçu</li>
-    <li><hr/></li>
-    <li>Dupliquer</li>
-    <li>Exporter</li>
-    <li><hr/></li>
-    <li>Supprimer</li>
-  </ul>
-  </span>
-  </div>
+    <div class="portal-tabs">
+      <span class="portal-tabs-famille-liens">
+                  <span class="share">Partager l'item</span>&nbsp;| &nbsp;
+              </span>
+              </span>
+              <span class="portal-tabs-famille-liens">
+                <button id="${question.id}">Actions</button>
+    <ul id="menu_actions_${question.id}"
+        class="tdbase-menu-actions">
+        <li>Aperçu</li>
+        <li><hr/></li>
+        <li>Dupliquer</li>
+        <li>Exporter</li>
+        <li><hr/></li>
+        <li>Supprimer</li>
+    </ul>
+    </span>
+    </div>
 </g:else>
 <g:hasErrors bean="${question}">
-  <div class="portal-messages">
-    <g:eachError>
-      <li class="error"><g:message error="${it}"/></li>
-    </g:eachError>
-  </div>
+    <div class="portal-messages">
+        <g:eachError>
+            <li class="error"><g:message error="${it}"/></li>
+        </g:eachError>
+    </div>
 </g:hasErrors>
 <g:if test="${flash.errorMessage}">
-  <div class="portal-messages">
-    <li class="error"><g:message code="${flash.errorMessage}"/></li>
-  </div>
+    <div class="portal-messages">
+        <li class="error"><g:message code="${flash.errorMessage}"/></li>
+    </div>
 </g:if>
 <g:if test="${flash.messageCode}">
-  <div class="portal-messages">
-    <li class="success"><g:message code="${flash.messageCode}"
-                                   args="${flash.messageArgs}"
-                                   class="portal-messages success"/></li>
-  </div>
+    <div class="portal-messages">
+        <li class="success"><g:message code="${flash.messageCode}"
+                                       args="${flash.messageArgs}"
+                                       class="portal-messages success"/></li>
+    </div>
 </g:if>
 
 <g:if test="${sujet}">
-  <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
+    <g:render template="/sujet/listeElements" model="[sujet: sujet]"/>
 </g:if>
 
 <g:form method="post" controller="question${question.type.code}"
         class="question">
-  <div class="portal-form_container edite" style="width: 69%;">
-    <p style="font-style: italic; margin-bottom: 2em"><span
-        class="obligatoire">*</span> indique une information obligatoire</p>
-    <table>
-      <tr>
-        <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:
-        </td>
-        <td>
-          <input size="75" type="text" value="${question.titre}"
-                 name="titre" id="question.titre"/><br/><br/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Type :</td>
-        <td>
-          <strong>${question.type.nom}</strong> <et:helpLink selector="eliot.tdbase.item.${question.type.code}"
-                                                             class="portal-help"><g:message
-              code="manuels.libellelien"/></et:helpLink>
-        </td>
-      </tr>
-      <g:if test="${!question.id && sujet}">
-        <tr>
-          <td class="label">Mati&egrave;re :</td>
-          <td>
-            <g:select name="matiere.id" value="${sujet.matiereId}"
-                      noSelection="${['null': g.message(code: "default.select.null")]}"
-                      from="${matieres}"
-                      optionKey="id"
-                      optionValue="libelleLong"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Niveau :</td>
-          <td>
-            <g:select name="niveau.id" value="${sujet.niveauId}"
-                      noSelection="${['null': g.message(code: "default.select.null")]}"
-                      from="${niveaux}"
-                      optionKey="id"
-                      optionValue="libelleLong"/>
-          </td>
-        </tr>
-      </g:if>
-      <g:else>
-        <tr>
-          <td class="label">Mati&egrave;re :</td>
-          <td>
-            <g:select name="matiere.id" value="${question.matiereId}"
-                      noSelection="${['null': g.message(code: "default.select.null")]}"
-                      from="${matieres}"
-                      optionKey="id"
-                      optionValue="libelleLong"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">Niveau :</td>
-          <td>
-            <g:select name="niveau.id" value="${question.niveauId}"
-                      noSelection="${['null': g.message(code: "default.select.null")]}"
-                      from="${niveaux}"
-                      optionKey="id"
-                      optionValue="libelleLong"/>
-          </td>
-        </tr>
-      </g:else>
-      <tr>
-        <td class="label"><g:message
-            code="question.propriete.principalAttachement"/>&nbsp;:</td>
-        <td id="question_fichier">
-          <g:render template="/question/QuestionEditionFichier"
-                    model="[question: question, attachementsSujet: attachementsSujets]"/>
-
-        </td>
-      </tr>
-      <g:render
-          template="/question/${question.type.code}/${question.type.code}Edition"
-          model="[question: question]"/>
-    <g:if test="${artefactHelper.partageArtefactCCActive}">
-      <tr>
-        <td class="label">Partage :</td>
-        <td>
-          <g:if test="${question.estPartage()}">
-            <a href="${question.copyrightsType.lien}"
-               target="_blank"><img src="${question.copyrightsType.logo}" style="float: left;margin-right: 10px;"
-                                    title="${question.copyrightsType.code}"/> ${question.copyrightsType.presentation}
-            </a>
-          </g:if>
-          <g:else>
-            cet item n'est pas partagé
-          </g:else>
-        </td>
-      </tr>
-      <g:if test="${question.paternite}">
-        <g:render template="/artefact/paternite"
-                  model="[paternite: question.paternite]"/>
-      </g:if>
-    </g:if>
-      <g:if test="${isAssociableACompetence && referentielCompetence}">
-      <g:render
-          template="/question/edite_competences"
-          model="[referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList]" />
-      </g:if>
+    <div class="portal-form_container edite" style="width: 69%;">
+        <p style="font-style: italic; margin-bottom: 2em"><span
+                class="obligatoire">*</span> indique une information obligatoire</p>
+        <table>
+            <tr>
+                <td class="label title">Titre<span class="obligatoire">*</span>&nbsp;:
+                </td>
+                <td>
+                    <input size="75" type="text" value="${question.titre}"
+                           name="titre" id="question.titre"/><br/><br/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Type :</td>
+                <td>
+                    <strong>${question.type.nom}</strong> <et:helpLink
+                        selector="eliot.tdbase.item.${question.type.code}"
+                        class="portal-help"><g:message
+                            code="manuels.libellelien"/></et:helpLink>
+                </td>
+            </tr>
+            <g:if test="${!question.id && sujet}">
+                <g:set var="currentMatiereId" value="${sujet.matiereId}"/>
+                <g:set var="currentNiveauId" value="${sujet.matiereId}"/>
+            </g:if>
+            <g:else>
+                <g:set var="currentMatiereId" value="${question.matiereId}"/>
+                <g:set var="currentNiveauId" value="${question.matiereId}"/>
+            </g:else>
+                <tr>
+                    <td class="label">Mati&egrave;re :</td>
+                    <td>
+                        <span id="matiere-selection">
+                        <g:select name="matiere.id" value="${currentMatiereId}"
+                                  noSelection="${['null': g.message(code: "default.select.null")]}"
+                                  from="${matieresForPersonne}"
+                                  optionKey="id"
+                                  optionValue="libelleLong"/>
+                        </span>
+                        <a id="select-other-matiere">Choisir une autre matiere ...</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Niveau :</td>
+                    <td>
+                        <g:select name="niveau.id" value="${currentNiveauId}"
+                                  noSelection="${['null': g.message(code: "default.select.null")]}"
+                                  from="${niveaux}"
+                                  optionKey="id"
+                                  optionValue="libelleLong"/>
+                    </td>
+                </tr>
 
 
-    </table>
-  </div>
-  <g:hiddenField name="id" value="${question.id}"/>
-  <g:hiddenField name="type.id" value="${question.typeId}"/>
+            <tr>
+                <td class="label"><g:message
+                        code="question.propriete.principalAttachement"/>&nbsp;:</td>
+                <td id="question_fichier">
+                    <g:render template="/question/QuestionEditionFichier"
+                              model="[question: question, attachementsSujet: attachementsSujets]"/>
 
-  <div class="form_actions">
-    <g:hiddenField name="sujetId" value="${sujet?.id}"/>
-    <g:if test="${sujet && !question.id}">
+                </td>
+            </tr>
+            <g:render
+                    template="/question/${question.type.code}/${question.type.code}Edition"
+                    model="[question: question]"/>
+            <g:if test="${artefactHelper.partageArtefactCCActive}">
+                <tr>
+                    <td class="label">Partage :</td>
+                    <td>
+                        <g:if test="${question.estPartage()}">
+                            <a href="${question.copyrightsType.lien}"
+                               target="_blank"><img src="${question.copyrightsType.logo}"
+                                                    style="float: left;margin-right: 10px;"
+                                                    title="${question.copyrightsType.code}"/> ${question.copyrightsType.presentation}
+                            </a>
+                        </g:if>
+                        <g:else>
+                            cet item n'est pas partagé
+                        </g:else>
+                    </td>
+                </tr>
+                <g:if test="${question.paternite}">
+                    <g:render template="/artefact/paternite"
+                              model="[paternite: question.paternite]"/>
+                </g:if>
+            </g:if>
+            <g:if test="${isAssociableACompetence && referentielCompetence}">
+                <g:render
+                        template="/question/edite_competences"
+                        model="[referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList]"/>
+            </g:if>
 
-      <g:actionSubmit value="Enregistrer et insérer dans le sujet"
-                      action="enregistreInsertNouvelItem"
-                      title="Enregistrer et insérer dans le sujet"
-                      class="button"/>
-    </g:if>
-    <g:else>
-      <g:actionSubmit value="Enregistrer"
-                      action="enregistre"
-                      title="Enregistrer"
-                      class="button"/>
+        </table>
+    </div>
+    <g:hiddenField name="id" value="${question.id}"/>
+    <g:hiddenField name="type.id" value="${question.typeId}"/>
 
-    </g:else>
-  </div>
+    <div class="form_actions">
+        <g:hiddenField name="sujetId" value="${sujet?.id}"/>
+        <g:if test="${sujet && !question.id}">
+
+            <g:actionSubmit value="Enregistrer et insérer dans le sujet"
+                            action="enregistreInsertNouvelItem"
+                            title="Enregistrer et insérer dans le sujet"
+                            class="button"/>
+        </g:if>
+        <g:else>
+            <g:actionSubmit value="Enregistrer"
+                            action="enregistre"
+                            title="Enregistrer"
+                            class="button"/>
+
+        </g:else>
+    </div>
 </g:form>
 
 <g:render template="../importexport/export_dialog"/>
+
+<div id="search-matiere-form" style="background-color: #ffffff">
+    <g:render template="/item/selectMatiere" model="[etablissements          : etablissements,
+                                                     rechercheMatieresCommand: new RechercheMatieresCommand()]"/>
+</div>
 
 </body>
 </html>
