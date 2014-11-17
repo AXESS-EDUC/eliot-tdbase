@@ -1,9 +1,7 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
-import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ScolariteService
 
 class ItemController {

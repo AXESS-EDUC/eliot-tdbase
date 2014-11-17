@@ -218,23 +218,31 @@
             </tr>
             <g:if test="${!question.id && sujet}">
                 <g:set var="currentMatiereId" value="${sujet.matiereId}"/>
+                <g:set var="currentMatiere" value="${sujet.matiere}"/>
                 <g:set var="currentNiveauId" value="${sujet.matiereId}"/>
             </g:if>
             <g:else>
                 <g:set var="currentMatiereId" value="${question.matiereId}"/>
+                <g:set var="currentMatiere" value="${question.matiere}"/>
                 <g:set var="currentNiveauId" value="${question.matiereId}"/>
             </g:else>
                 <tr>
                     <td class="label">Mati&egrave;re :</td>
                     <td>
                         <span id="matiere-selection">
+                        <g:if test="${matieresForPersonne && (!currentMatiere || matieresForPersonne.contains(currentMatiere)) }">
                         <g:select name="matiere.id" value="${currentMatiereId}"
                                   noSelection="${['null': g.message(code: "default.select.null")]}"
                                   from="${matieresForPersonne}"
                                   optionKey="id"
-                                  optionValue="libelleLong"/>
+                                  optionValue="libelleEdition"/>
+                        </g:if>
+                        <g:elseif test="${currentMatiereId}">
+                            <strong>${currentMatiere.libelleEdition}</strong>
+                            <input type="hidden" name="matiere.id" value="${currentMatiereId}"/>
+                        </g:elseif>
                         </span>
-                        <a id="select-other-matiere">Choisir une autre matiere ...</a>
+                        <a id="select-other-matiere">Choisir une matiere...</a>
                     </td>
                 </tr>
                 <tr>

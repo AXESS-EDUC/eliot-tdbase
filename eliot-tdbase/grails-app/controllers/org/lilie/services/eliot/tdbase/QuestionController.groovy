@@ -117,16 +117,12 @@ class QuestionController {
         message(code: "question.edite.titre"),
         [QUESTION_EST_DEJA_INSEREE: questionEstDejaInseree]
     )
-    def matieresForPersonne = profilScolariteService.findMatieresForPersonne(personne)
-    if (question.matiere && !matieresForPersonne.contains(question.matiere)) {
-        matieresForPersonne.add(question.matiere)
-    }
     render(
         view: '/question/edite',
         model: [
             liens: breadcrumpsServiceProxy.liens,
             question: question,
-            matieresForPersonne: matieresForPersonne,
+            matieresForPersonne: profilScolariteService.findMatieresForPersonne(personne),
             etablissements: securiteSessionServiceProxy.etablissementList,
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,

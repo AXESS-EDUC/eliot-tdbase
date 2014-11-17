@@ -28,6 +28,9 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
+import groovy.transform.EqualsAndHashCode
+
+@EqualsAndHashCode(includes = "codeGestion")
 class Matiere {
   Long id
   String libelleLong
