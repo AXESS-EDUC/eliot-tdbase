@@ -1,11 +1,13 @@
 package org.lilie.services.eliot.tice.scolarite
 
+import groovy.transform.EqualsAndHashCode
 import org.springframework.security.core.GrantedAuthority
 
 /**
  * Table fonction
  * @author othe
  */
+@EqualsAndHashCode(includes = 'code')
 class Fonction implements GrantedAuthority {
   Long id
   String code
@@ -57,6 +59,10 @@ class Fonction implements GrantedAuthority {
  *  <li>MDS - Personnel medico-social</li>
  *  <li>OUV - Personnel ouviriers et de service</li>
  *  <li>SUR - Surveillance</li>
+ *  <li>ORI - Personnel orientation</li>
+ *  <li>AED - Assistant d'éducation</li>
+ *  <li>AVS - Auxilière de vie scolaire</li>
+ *  <li>APP - Apprentissage</li>
  * </ul>
  */
 enum FonctionEnum {
@@ -78,11 +84,11 @@ enum FonctionEnum {
   LAB(16),
   MDS(17),
   OUV(18),
-  SUR(19)
-  //ORI(20),
-  //AED(21),
-  //AVS(22),
-  //APP(23)
+  SUR(19),
+  ORI(20),
+  AED(21),
+  AVS(22),
+  APP(23)
 
 
   private Long id

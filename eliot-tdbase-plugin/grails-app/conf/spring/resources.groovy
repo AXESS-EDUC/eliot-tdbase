@@ -1,4 +1,5 @@
-import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
+import grails.util.Environment
+import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 
 /*
 * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -29,5 +30,10 @@ import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 */
 
 beans = {
+    switch(Environment.current) {
+        case Environment.TEST:
+            securiteSessionServiceProxy(SecuriteSessionService)
+            break
+    }
 
 }

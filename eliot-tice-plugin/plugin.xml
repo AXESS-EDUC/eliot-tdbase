@@ -1,4 +1,4 @@
-<plugin name='eliot-tice-plugin' version='2.4.0-eliot-2.9.6.1-RC1' grailsVersion='2.1.1 &gt; *'>
+<plugin name='eliot-tice-plugin' version='2.4.0-RC1-eliot-3.0.0-RC3' grailsVersion='2.1.1 &gt; *'>
   <author>Franck Silvestre</author>
   <title>Eliot Tice Plugin</title>
   <description>      Plugin pour la création d'applications Eliot
@@ -6,6 +6,7 @@
   <type>EliotTicePluginGrailsPlugin</type>
   <resources>
     <resource>EliotTiceResources</resource>
+    <resource>spring.resources</resource>
     <resource>LoginController</resource>
     <resource>LogoutController</resource>
     <resource>org.lilie.services.eliot.tice.AttachementController</resource>
@@ -66,21 +67,22 @@
     <resource>org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.impl.LilieRoleUtilisateurService</resource>
     <resource>org.lilie.services.eliot.tice.annuaire.impl.LilieUtilisateurService</resource>
+    <resource>org.lilie.services.eliot.tice.annuaire.impl.RoleFromLoginPrefix</resource>
     <resource>org.lilie.services.eliot.tice.migrations.DbMigrationService</resource>
     <resource>org.lilie.services.eliot.tice.migrations.LiquibaseWrapper</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.FonctionService</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.ProfilScolariteService</resource>
     <resource>org.lilie.services.eliot.tice.scolarite.ScolariteService</resource>
+    <resource>org.lilie.services.eliot.tice.securite.CorrespondantDeploimentConfig</resource>
     <resource>org.lilie.services.eliot.tice.utils.BootstrapService</resource>
     <resource>org.lilie.services.eliot.tice.utils.BreadcrumpsLien</resource>
     <resource>org.lilie.services.eliot.tice.utils.BreadcrumpsService</resource>
     <resource>org.lilie.services.eliot.tice.utils.EliotApplicationEnum</resource>
     <resource>org.lilie.services.eliot.tice.utils.EliotUrlProvider</resource>
-    <resource>org.lilie.services.eliot.tice.utils.InitialisationTestService</resource>
-    <resource>org.lilie.services.eliot.tice.utils.PortailTagLibService</resource>
     <resource>org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum</resource>
-    <resource>org.lilie.services.eliot.tice.AttachementTagLib</resource>
-    <resource>org.lilie.services.eliot.tice.PortailTagLib</resource>
+    <resource>org.lilie.services.eliot.tice.utils.contract.Contract</resource>
+    <resource>org.lilie.services.eliot.tice.utils.contract.PostConditionException</resource>
+    <resource>org.lilie.services.eliot.tice.utils.contract.PreconditionException</resource>
     <resource>org.lilie.services.eliot.tice.utils.EliotEditeurRegistrar</resource>
     <resource>org.lilie.services.eliot.tice.utils.NumberUtils</resource>
     <resource>org.lilie.services.eliot.tice.utils.StringUtils</resource>
@@ -95,16 +97,16 @@
   </repositories>
   <dependencies>
     <compile>
+      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
       <dependency group='org.apache.maven.wagon' name='wagon-webdav' version='1.0-beta-2' />
       <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.2' />
-      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
     </compile>
     <runtime>
       <dependency group='postgresql' name='postgresql' version='9.1-901.jdbc4' />
     </runtime>
     <build>
-      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
       <dependency group='net.sf.saxon' name='saxon-dom' version='8.7' />
+      <dependency group='net.sourceforge.saxon' name='saxon' version='9.1.0.8' />
     </build>
   </dependencies>
   <plugins>
@@ -113,23 +115,23 @@
       <plugin group='org.grails.plugins' name='code-coverage' version='1.2.5' />
     </test>
     <compile>
+      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
+      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
       <plugin group='org.grails.plugins' name='jquery' version='1.7.1' />
-      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
       <plugin group='org.grails.plugins' name='scoped-proxy' version='0.2' />
       <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
-      <plugin group='org.grails.plugins' name='jquery-ui' version='1.8.15' />
-      <plugin group='org.grails.plugins' name='hibernate' version='2.1.1' />
-      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
       <plugin group='org.grails.plugins' name='mail' version='1.0' />
+      <plugin group='org.grails.plugins' name='gmetrics' version='0.3.1' />
+      <plugin group='org.grails.plugins' name='codenarc' version='0.15' />
     </compile>
     <runtime>
-      <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
       <plugin group='org.grails.plugins' name='svn' version='1.0.1' />
+      <plugin group='org.grails.plugins' name='modernizr' version='2.0.6' />
       <plugin group='org.grails.plugins' name='quartz2' version='2.1.6.2' />
     </runtime>
     <build>
-      <plugin group='org.grails.plugins' name='release' version='2.0.2' />
       <plugin group='org.grails.plugins' name='tomcat' version='2.1.1' />
+      <plugin group='org.grails.plugins' name='release' version='2.0.2' />
       <plugin group='org.grails.plugins' name='rest-client-builder' version='1.0.2' />
     </build>
   </plugins>

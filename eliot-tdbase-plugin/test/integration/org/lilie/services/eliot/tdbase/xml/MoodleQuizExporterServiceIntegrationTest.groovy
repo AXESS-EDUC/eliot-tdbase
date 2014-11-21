@@ -2,13 +2,11 @@ package org.lilie.services.eliot.tdbase.xml
 
 import org.lilie.services.eliot.tdbase.ReferentielEliot
 import org.lilie.services.eliot.tdbase.Sujet
-
+import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.springframework.context.ApplicationContext
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 
-import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tdbase.SujetService
 import org.springframework.context.ApplicationContextAware
 
@@ -21,25 +19,22 @@ class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase implements
 
 
   ApplicationContext applicationContext
-  Utilisateur utilisateur1
   Personne personne1
-  Utilisateur utilisateur2
   Personne personne2
   StructureEnseignement struct1ere
 
 
-  TdBaseInitialisationTestService tdBaseInitialisationTestService
+  BootstrapService bootstrapService
   SujetService sujetService
   MoodleQuizImporterService moodleQuizImporterService
   MoodleQuizExporterService moodleQuizExporterService
 
   protected void setUp() {
     super.setUp()
-    utilisateur1 = tdBaseInitialisationTestService.getUtilisateur1()
-    personne1 = utilisateur1.personne
-    utilisateur2 = tdBaseInitialisationTestService.getUtilisateur2()
-    personne2 = utilisateur2.personne
-    struct1ere = tdBaseInitialisationTestService.findStructure1ere()
+    bootstrapService.bootstrapForIntegrationTest()
+    personne1 = bootstrapService.enseignant1
+    personne2 = bootstrapService.enseignant2
+    struct1ere = bootstrapService.classe1ere
   }
 
   protected void tearDown() {

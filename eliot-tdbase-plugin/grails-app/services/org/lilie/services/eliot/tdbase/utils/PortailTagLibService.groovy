@@ -26,8 +26,9 @@
  *  <http://www.cecill.info/licences.fr.html>.
  */
 
-package org.lilie.services.eliot.tice.utils
+package org.lilie.services.eliot.tdbase.utils
 
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 
 class PortailTagLibService {
@@ -46,8 +47,8 @@ class PortailTagLibService {
    * @param url l'url du document
    * @param fonctionEnum la fonction de l'utilisateur
    */
-  def addManuelDocumentUrlForFonction(String url, FonctionEnum fonctionEnum) {
-    manuelDocumentsUrl.put(fonctionEnum, url)
+  def addManuelDocumentUrlForRole(String url, RoleApplicatif roleApplicatif) {
+    manuelDocumentsUrl.put(roleApplicatif, url)
   }
 
   /**
@@ -55,8 +56,8 @@ class PortailTagLibService {
    * @param fonctionEnum la fonction utilisateur
    * @return l'Url du manuel correspondant ou null
    */
-  String findManuelDocumentUrlForFonction(FonctionEnum fonctionEnum) {
-    return manuelDocumentsUrl[fonctionEnum]
+  String findManuelDocumentUrlForRole(RoleApplicatif roleApplicatif) {
+    return manuelDocumentsUrl[roleApplicatif]
   }
 
   /**
@@ -66,8 +67,8 @@ class PortailTagLibService {
    */
   def addManuelDocumentUrls(Map urlMap) {
     urlMap.keySet().each {
-      def fonctionEnum = FonctionEnum.valueOf(it)
-      addManuelDocumentUrlForFonction(urlMap.get(it), fonctionEnum)
+      def role = RoleApplicatif.valueOf(it)
+      addManuelDocumentUrlForRole(urlMap.get(it), role)
     }
   }
 

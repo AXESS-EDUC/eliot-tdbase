@@ -1,11 +1,10 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
-import org.lilie.services.eliot.tdbase.utils.TdBaseInitialisationTestService
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
+import org.lilie.services.eliot.tice.utils.BootstrapService
 
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
@@ -44,13 +43,11 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
   private static final String SUJET_1_TITRE = "Sujet test 1"
   private static final String SUJET_2_TITRE = "Sujet test 2"
 
-  Utilisateur utilisateur1
   Personne personne1
-  Utilisateur utilisateur2
   Personne personne2
   StructureEnseignement struct1ere
 
-  TdBaseInitialisationTestService tdBaseInitialisationTestService
+  BootstrapService bootstrapService
   SujetService sujetService
   ModaliteActiviteService modaliteActiviteService
   QuestionService questionService
@@ -59,11 +56,10 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
 
   protected void setUp() {
     super.setUp()
-    utilisateur1 = tdBaseInitialisationTestService.getUtilisateur1()
-    personne1 = utilisateur1.personne
-    utilisateur2 = tdBaseInitialisationTestService.getUtilisateur2()
-    personne2 = utilisateur2.personne
-    struct1ere = tdBaseInitialisationTestService.findStructure1ere()
+    bootstrapService.bootstrapForIntegrationTest()
+    personne1 = bootstrapService.enseignant1
+    personne2 = bootstrapService.enseignant2
+    struct1ere = bootstrapService.classe1ere
   }
 
   protected void tearDown() {
@@ -202,6 +198,9 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
         props,
         personne1
     )
+    if (seance1.hasErrors()) {
+        println seance1.errors
+    }
     assertTrue(sujet1.estDistribue())
     modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
     assertFalse(sujet1.estDistribue())

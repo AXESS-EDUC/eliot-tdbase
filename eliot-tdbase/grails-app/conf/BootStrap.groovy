@@ -29,11 +29,12 @@
 
 import org.codehaus.groovy.grails.commons.ApplicationAttributes
 import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
+import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
 import org.lilie.services.eliot.tdbase.patch.PatchExecution
 import org.lilie.services.eliot.tdbase.patch.PatchTDB40
 import org.lilie.services.eliot.tice.migrations.DbMigrationService
 import org.lilie.services.eliot.tice.utils.BootstrapService
-import org.lilie.services.eliot.tice.utils.PortailTagLibService
+import org.lilie.services.eliot.tdbase.utils.PortailTagLibService
 
 
 class BootStrap {
@@ -73,6 +74,13 @@ class BootStrap {
     portailTagLibService.divWidth = config.eliot.pages.container.width
 
     artefactAutorisationService.partageArtefactCCActive = config.eliot.artefact.partage_CC_autorise
+
+    Map aMap = config.eliot.tdbase.mappingFonctionRole.defaut
+    if (!aMap) {
+        throw Exception("Parametre obligatoire eliot.tdbase.mappingFonctionRole.defaut n'est pas configure !")
+    }
+
+    MappingFonctionRole.defaultMappingFonctionRole = new MappingFonctionRole(aMap)
 
     executeAllPatch(servletContext)
   }

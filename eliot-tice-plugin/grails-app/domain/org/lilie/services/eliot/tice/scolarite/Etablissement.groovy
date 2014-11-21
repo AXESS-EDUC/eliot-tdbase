@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
+import groovy.transform.EqualsAndHashCode
 import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 
 /**
@@ -36,7 +37,8 @@ import org.lilie.services.eliot.tice.annuaire.PorteurEnt
  * @author jtra
  * @author Franck Silvestre
  */
-class Etablissement {
+@EqualsAndHashCode(includes = 'uai')
+class Etablissement implements Comparable {
 
   Long id
   String nomAffichage
@@ -70,4 +72,9 @@ class Etablissement {
       porteurEnt = PorteurEnt.findByParDefaut(true)
     }
   }
+
+    @Override
+    int compareTo(Object o) {
+        nomAffichage.compareTo(o.nomAffichage)
+    }
 }

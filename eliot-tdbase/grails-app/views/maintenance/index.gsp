@@ -48,6 +48,12 @@
   </p>
   <hr class="separator"/>
 
+    <p>
+        <g:link action="resetPreferencesEtablissement"
+                controller="maintenance" onclick='return confirm("Reset de toutes les préférences établissement ?")'>Reset des préférences établissement</g:link>
+    </p>
+    <hr class="separator"/>
+
   <div>
     <g:link action="garbageCollectAttachementDataStore"
             controller="maintenance">Garbage collection des fichiers du datastore</g:link>

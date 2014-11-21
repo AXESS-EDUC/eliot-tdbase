@@ -8,6 +8,7 @@ import org.lilie.services.eliot.tice.annuaire.impl.DefaultUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.impl.LilieRoleUtilisateurService
 import org.lilie.services.eliot.tice.annuaire.impl.LilieUtilisateurService
 import org.lilie.services.eliot.tice.securite.CompteUtilisateur
+import org.lilie.services.eliot.tice.securite.CorrespondantDeploimentConfig
 import org.lilie.services.eliot.tice.securite.DomainAutorite
 import org.lilie.services.eliot.tice.securite.rbac.CasContainerLilieAuthenticationFilter
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
@@ -53,7 +54,7 @@ class EliotTicePluginGrailsPlugin {
   // the group id
   def groupId = "org.lilie.services.eliot"
   // the plugin version
-  def version = "2.4.0-eliot-2.9.6.1-RC1"
+  def version = "2.4.0-RC1-eliot-3.0.0-RC3"
   // the version or versions of Grails the plugin is designed for
   def grailsVersion = "2.0.1 > *"
   // the other plugins this plugin depends on
@@ -71,29 +72,6 @@ class EliotTicePluginGrailsPlugin {
   def doWithSpring = {
 
     def conf = ConfigurationHolder.config
-
-    // configure la gestion de l'annuaire
-    //
-    if (conf.eliot.portail.lilie) {
-
-      utilisateurService(LilieUtilisateurService) {
-        springSecurityService = ref("springSecurityService")
-      }
-
-      roleUtilisateurService(LilieRoleUtilisateurService) {
-        profilScolariteService = ref("profilScolariteService")
-      }
-
-    } else {
-
-      utilisateurService(DefaultUtilisateurService) {
-        springSecurityService = ref("springSecurityService")
-      }
-
-      roleUtilisateurService(DefaultRoleUtilisateurService) {
-        profilScolariteService = ref("profilScolariteService")
-      }
-    }
 
     // configure le filtre pour la gestion du CAS Lilie
     //
@@ -122,6 +100,14 @@ class EliotTicePluginGrailsPlugin {
       println '... finished Configuring Spring Security Filter for CAS Lilie'
 
     }
+
+    // configure la gestion des id externes des CD
+    //
+    def ids = conf.eliot.correspondant.force.allIdExterne
+    if (ids) {
+        CorrespondantDeploimentConfig.externalIds = ids
+    }
+
 
     // Configure la gestion du datastore
     //
@@ -170,6 +156,22 @@ class EliotTicePluginGrailsPlugin {
         println "Auth Basic user for Notes Web services client REST : ${userNotes}"
       }
     }
+
+      def userScolarite = conf.eliot.webservices.rest.client.scolarite.user
+      def passwordScolarite = conf.eliot.webservices.rest.client.scolarite.password
+      def urlScolarite = conf.eliot.webservices.rest.client.scolarite.urlServer
+      def prefixUriScolarite = conf.eliot.webservices.rest.client.scolarite.uriPrefix
+      def conTimeoutScolarite = conf.eliot.webservices.rest.client.scolarite.connexionTimeout ?: 15000
+
+      restClientForScolarite(RestClient) {
+          authBasicUser = userScolarite
+          authBasicPassword = passwordScolarite
+          urlServer = urlScolarite
+          uriPrefix = prefixUriScolarite
+          connexionTimeout = conTimeoutScolarite
+          restOperationDirectory = ref("restOperationDirectory")
+          println "Auth Basic user for Scolarite Web services client REST : ${userNotes}"
+      }
 
     // configure la gestion d'EliotUrlProvider
     //

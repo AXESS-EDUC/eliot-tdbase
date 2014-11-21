@@ -36,6 +36,7 @@ import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 /**
  *
  * @author franck Silvestre
+ * @deprecated
  */
 class DefaultRoleUtilisateurService implements RoleUtilisateurService {
 

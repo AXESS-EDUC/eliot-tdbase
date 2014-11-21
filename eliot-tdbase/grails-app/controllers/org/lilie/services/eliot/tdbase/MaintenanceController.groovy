@@ -27,53 +27,64 @@
  */
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.AttachementJobService
 import org.lilie.services.eliot.tice.GarbageCollectionDataStoreRapport
 
 class MaintenanceController {
 
-  static scope = "singleton"
+    static scope = "singleton"
 
-  CopieJobService copieJobService
-  BreadcrumpsService breadcrumpsServiceProxy
-  AttachementJobService attachementJobService
+    CopieJobService copieJobService
+    BreadcrumpsService breadcrumpsServiceProxy
+    AttachementJobService attachementJobService
+    PreferenceEtablissementService preferenceEtablissementService
 
-  /**
-   * Accueil maintenance
-   * @return
-   */
-  def index() {
-    breadcrumpsServiceProxy.manageBreadcrumps(params,
-                                         message(code: message(code: message(code: "maintenance.index.title"))))
-    [liens: breadcrumpsServiceProxy.liens]
-  }
+    /**
+     * Accueil maintenance
+     * @return
+     */
+    def index() {
+        breadcrumpsServiceProxy.manageBreadcrumps(params,
+                message(code: message(code: message(code: "maintenance.index.title"))))
+        [liens: breadcrumpsServiceProxy.liens]
+    }
 
-  /**
-   * Action de suppression des copie jetables dont le dernier enregistrement date
-   * de plus de 10 jours
-   */
-  def supprimeCopiesJetables() {
-    breadcrumpsServiceProxy.manageBreadcrumps(params,
-                                         message(code: message(code: "maintenance.supprimecopiesjetables.title")))
-    def nbJ = params?.nbJ as Integer
-    SupprimeCopiesJetablesRapport rapport = copieJobService.supprimeCopiesJetablesForNombreJoursPasses(nbJ)
-    render(view: '/maintenance/rapportSupprimeCopieJetable',
-           model: [liens: breadcrumpsServiceProxy.liens, rapport: rapport])
-  }
+    /**
+     * Action de suppression des copie jetables dont le dernier enregistrement date
+     * de plus de 10 jours
+     */
+    def supprimeCopiesJetables() {
+        breadcrumpsServiceProxy.manageBreadcrumps(params,
+                message(code: message(code: "maintenance.supprimecopiesjetables.title")))
+        def nbJ = params?.nbJ as Integer
+        SupprimeCopiesJetablesRapport rapport = copieJobService.supprimeCopiesJetablesForNombreJoursPasses(nbJ)
+        render(view: '/maintenance/rapportSupprimeCopieJetable',
+                model: [liens: breadcrumpsServiceProxy.liens, rapport: rapport])
+    }
 
-  /**
-   * Action de garbage collection des fichiers du datastore
-   */
-  def garbageCollectAttachementDataStore() {
-    breadcrumpsServiceProxy.manageBreadcrumps(params,
-                                         message(code: message(code: message(code:"maintenance.garbagecollectiondatastore.title"))))
-    GarbageCollectionDataStoreRapport rapport = attachementJobService.garbageCollectDataStore()
-    render(view: '/maintenance/rapportGarbageCollectionAttachementDataStore',
-           model: [liens: breadcrumpsServiceProxy.liens, rapport: rapport])
-  }
+    /**
+     * Action de garbage collection des fichiers du datastore
+     */
+    def garbageCollectAttachementDataStore() {
+        breadcrumpsServiceProxy.manageBreadcrumps(params,
+                message(code: message(code: message(code: "maintenance.garbagecollectiondatastore.title"))))
+        GarbageCollectionDataStoreRapport rapport = attachementJobService.garbageCollectDataStore()
+        render(view: '/maintenance/rapportGarbageCollectionAttachementDataStore',
+                model: [liens: breadcrumpsServiceProxy.liens, rapport: rapport])
+    }
 
-
+    /**
+     * Action de suppression de toutes les préférences établissement
+     */
+    def resetPreferencesEtablissement() {
+        breadcrumpsServiceProxy.manageBreadcrumps(params,
+                message(code: message(code: message(code: "maintenance.resetpreferencesetablissement.title"))))
+        int totalSupprimees = preferenceEtablissementService.resetAllPreferencesEtablissement(authenticatedPersonne)
+        render(view: '/maintenance/rapportResetPreferencesEtablissement',
+                model: [liens: breadcrumpsServiceProxy.liens,nombrePreferencesSupprimees : totalSupprimees])
+    }
 }
 
 
