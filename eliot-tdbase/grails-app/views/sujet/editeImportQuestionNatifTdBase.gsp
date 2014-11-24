@@ -26,16 +26,29 @@
   -  <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<%@ page import="org.lilie.services.eliot.tdbase.SujetType" %>
+<%@ page import="org.lilie.services.eliot.tdbase.RechercheMatieresCommand; org.lilie.services.eliot.tdbase.SujetType" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="jquery"/>
+  <r:require modules="eliot-tdbase-ui"/>
   <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
       $("form").attr('enctype', 'multipart/form-data');
+
+      $("#search-matiere-form").dialog({
+        autoOpen: false,
+        title: "Rechercher une matière",
+        height: 600,
+        width: 420,
+        modal: true
+      });
+
+      $("#select-other-matiere")
+              .click(function () {
+                $("#search-matiere-form").dialog("open");
+              });
     });
   </r:script>
   <title><g:message code="sujet.editeImportQuestionNatifTdBase.head.title"/></title>
@@ -59,14 +72,25 @@
         <td>&nbsp;</td>
         <td><b><g:message code="importexport.NATIF_JSON.explication.format"/></b></td>
       </tr>
+      <g:set var="currentMatiereId" value="${sujet.matiereId}"/>
+      <g:set var="currentMatiere" value="${sujet.matiere}"/>
       <tr>
         <td class="label">Mati&egrave;re&nbsp;:</td>
         <td>
-          <g:select name="matiereId" value="${sujet.matiere?.id}"
-                    noSelection="${['null': g.message(code: "default.select.null")]}"
-                    from="${matieres}"
-                    optionKey="id"
-                    optionValue="libelleLong"/>
+          <span id="matiere-selection">
+          <g:if test="${matieresForPersonne && (!currentMatiere || matieresForPersonne.contains(currentMatiere)) }">
+            <g:select name="matiereId" value="${currentMatiereId}"
+                      noSelection="${['null': g.message(code: "default.select.null")]}"
+                      from="${matieresForPersonne}"
+                      optionKey="id"
+                      optionValue="libelleLong" tabindex="3"/>
+          </g:if>
+          <g:elseif test="${currentMatiereId}">
+            <strong>${currentMatiere.libelleLong}</strong>
+            <input type="hidden" name="matiereId" value="${currentMatiereId}"/>
+          </g:elseif>
+        </span>
+          <a id="select-other-matiere">Choisir une matiere...</a>
         </td>
       </tr>
       <tr>
@@ -94,6 +118,11 @@
                     title="Importer"/>
   </div>
 </form>
+
+<div id="search-matiere-form" style="background-color: #ffffff">
+  <g:render template="/item/selectMatiere" model="[etablissements          : etablissements,
+                                                   rechercheMatieresCommand: new RechercheMatieresCommand()]"/>
+</div>
 
 </body>
 </html>

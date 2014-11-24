@@ -541,7 +541,8 @@ class SujetController {
         [
                 liens         : breadcrumpsServiceProxy.liens,
                 sujet         : sujet,
-                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                matieresForPersonne      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                etablissements     : securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
                         grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
@@ -615,7 +616,8 @@ class SujetController {
         [
                 liens         : breadcrumpsServiceProxy.liens,
                 sujet         : sujet,
-                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                matieresForPersonne      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                etablissements     : securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
                         grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
@@ -685,7 +687,8 @@ class SujetController {
         Personne proprietaire = authenticatedPersonne
         [
                 liens         : breadcrumpsServiceProxy.liens,
-                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                matieresForPersonne      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                etablissements     : securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
                         grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
