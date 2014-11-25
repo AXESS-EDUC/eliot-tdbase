@@ -16,11 +16,10 @@ repositories {
 
   //mavenLocal()
   maven {
-    url "http://repository-ticetime.forge.cloudbees.com"
-    artifactUrls "http://repository-ticetime.forge.cloudbees.com/release"
+    url "http://demo.ticetime.com:8081/nexus/content/groups/public/"
   }
   maven {
-    url "http://repository-ticetime.forge.cloudbees.com/snapshot/"
+    url "http://demo.ticetime.com:8081/nexus/content/repositories/Local_Cloudbees_Releases/"
   }
 
   mavenCentral()
@@ -45,8 +44,6 @@ dependencies {
 
   compile group:'org.lilie.services.eliot', name:'eliot-competence-dbmigration', version:"${versionSchemaCompetence}"
 
-  //deploiementArtefact 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
-  deploiementArtefact "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
 }
 
 /**
