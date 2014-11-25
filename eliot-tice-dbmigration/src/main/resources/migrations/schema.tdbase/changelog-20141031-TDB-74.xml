@@ -80,4 +80,10 @@
         </sql>
     </changeSet>
 
+    <changeSet id="4" author="fsil">
+        <addColumn tableName="preference_personne" schemaName="td">
+            <column name="code_support_notification" type="integer" />
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
