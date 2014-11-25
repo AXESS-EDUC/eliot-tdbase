@@ -69,6 +69,17 @@
                 <g:checkBox name="notificationOnPublicationResultats"
                             value="${preferencePersonne.notificationOnPublicationResultats}"/></td>
             </tr>
+            <tr>
+                <td class="label"><g:message code="utilisateur.preference.supportNotifications" />&nbsp;
+                </td>
+                <td>
+                    <g:checkBox name="e_mail"
+                                value="${preferencePersonne.codeSupportNotification & 1}"/> e-mail <br/>
+                    <g:checkBox name="sms"
+                                value="${preferencePersonne.codeSupportNotification & 2}"/> e-mail
+
+                </td>
+            </tr>
         </table>
     </div>
 
