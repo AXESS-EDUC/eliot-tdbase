@@ -18,9 +18,6 @@ repositories {
   maven {
     url "http://demo.ticetime.com:8081/nexus/content/groups/public/"
   }
-  maven {
-    url "http://demo.ticetime.com:8081/nexus/content/repositories/Local_Cloudbees_Releases/"
-  }
 
   mavenCentral()
 }
