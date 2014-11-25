@@ -86,4 +86,11 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="5" author="fsil">
+        <sql>
+            alter table td.preference_personne
+            alter column code_support_notification set default 0
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
