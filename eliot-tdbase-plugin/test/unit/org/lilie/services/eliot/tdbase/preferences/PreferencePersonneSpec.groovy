@@ -27,7 +27,7 @@ class PreferencePersonneSpec extends Specification {
         then: "les abonnements aux notifications ne pas sont activés"
         !preferencePersonne.notificationOnCreationSeance
         !preferencePersonne.notificationOnPublicationResultats
-        preferencePersonne.codeSupportNotification == null
+        preferencePersonne.codeSupportNotification == 0
 
     }
 
@@ -45,11 +45,12 @@ class PreferencePersonneSpec extends Specification {
         preferencePersonne.validate() == prefIsValide
 
         where:
-        notifPubliRes | notifCreatSean | codeSupp                        | prefIsValide
-        false         | false          | null                            | true
-        true          | false          | null                            | false
-        true          | false          | 0                               | false // 0 n'est pas un code valide
-        true          | false          | SupportNotification.E_MAIL.code | true
+        notifPubliRes | notifCreatSean | codeSupp                             | prefIsValide
+        false         | false          | 0                                    | true
+        false         | false          | null                                 | false
+        true          | false          | 0                                    | false
+        true          | false          | 0                                    | false // 0 n'est pas un code valide
+        true          | false          | SupportNotification.E_MAIL.ordinal() | true
 
     }
 

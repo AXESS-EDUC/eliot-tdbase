@@ -14,14 +14,14 @@ class PreferencePersonne {
 
     Boolean notificationOnCreationSeance = false
     Boolean notificationOnPublicationResultats = false
-    Integer codeSupportNotification
+    Integer codeSupportNotification = SupportNotification.NO_SUPPORT.ordinal()
 
     Date lastUpdated
 
     static constraints = {
-        codeSupportNotification nullable: true, inList: SupportNotification.values()*.code, validator: { val, obj ->
-            return (val != null && (obj.notificationOnCreationSeance || obj.notificationOnPublicationResultats) ||
-                    (val == null && !obj.notificationOnCreationSeance && !obj.notificationOnPublicationResultats))
+        codeSupportNotification inList: SupportNotification.values()*.ordinal(), validator: { val, obj ->
+            return (val != 0 && (obj.notificationOnCreationSeance || obj.notificationOnPublicationResultats) ||
+                    (val == 0 && !obj.notificationOnCreationSeance && !obj.notificationOnPublicationResultats))
         }
     }
 
@@ -34,15 +34,9 @@ class PreferencePersonne {
 }
 
 enum SupportNotification {
-    E_MAIL(1),
-    SMS(2),
-    E_MAIL_AND_SMS(3)
-
-    int code
-
-    SupportNotification(int code) {
-        this.code = code
-    }
-
+    NO_SUPPORT,
+    E_MAIL,
+    SMS,
+    E_MAIL_AND_SMS
 }
 
