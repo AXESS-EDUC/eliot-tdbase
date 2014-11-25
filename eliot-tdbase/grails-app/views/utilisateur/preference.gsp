@@ -74,9 +74,9 @@
                 </td>
                 <td>
                     <g:checkBox name="e_mail"
-                                value="${preferencePersonne.codeSupportNotification & 1}"/> e-mail <br/>
+                                value="${preferencePersonne.codeSupportNotification & 1}"/> e-mail
                     <g:checkBox name="sms"
-                                value="${preferencePersonne.codeSupportNotification & 2}"/> e-mail
+                                value="${preferencePersonne.codeSupportNotification & 2}"/> SMS
 
                 </td>
             </tr>
