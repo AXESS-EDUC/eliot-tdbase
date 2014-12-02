@@ -1,3 +1,10 @@
+=== Eliot tdbase 2.4.1-eliot-3.0.1-RC2 =
+
+Liste des dépendances :
+
+ * Compatible avec les bases de données Eliot 3.0.0-RC3
+
+
 === Eliot tdbase 2.4.0-eliot-2.9.6-RC1 =
 
 Liste des dépendances :
@@ -6,7 +13,7 @@ Liste des dépendances :
 
 Liste des évolutions :
 
- *0039009: [EVOL] Fonction de partage en Config pour être désactivée
+ * 0039009: [EVOL] Fonction de partage en Config pour être désactivée
 
 
 === Eliot tdbase 2.3.0-eliot-2.9.5.2-RC1 =
