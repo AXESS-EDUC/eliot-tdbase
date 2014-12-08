@@ -377,9 +377,9 @@ class QuestionController {
           etablissements: securiteSessionServiceProxy.etablissementList,
           niveaux: profilScolariteService.findNiveauxForPersonne(personne),
           sujet: sujet,
-          peutSupprimer: false,
+          artefactHelper: artefactAutorisationService,
           questionEnEdition: questionEnEdition,
-          peutPartagerQuestion: false])
+          utilisateur: personne])
     } else {
       flash.messageCode = "question.enregistre.succes"
       breadcrumpsServiceProxy.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
