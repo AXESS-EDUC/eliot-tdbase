@@ -57,25 +57,26 @@
     <div class="portal-form_container edite" style="width: 69%;">
         <table>
             <tr>
-                <td class="label"><g:message code="utilisateur.preference.notificationOnCreationSeance" />&nbsp;
+                <td class="label"><g:message code="utilisateur.preference.notificationOnCreationSeance"/>&nbsp;
                 </td>
                 <td>
-                <g:checkBox name="notificationOnCreationSeance" value="${preferencePersonne.notificationOnCreationSeance}"/></td>
+                    <g:checkBox id="notificationOnCreationSeance" name="notificationOnCreationSeance"
+                                value="${preferencePersonne.notificationOnCreationSeance}"/></td>
             </tr>
             <tr>
-                <td class="label"><g:message code="utilisateur.preference.notificationOnPubicationResultats" />&nbsp;
+                <td class="label"><g:message code="utilisateur.preference.notificationOnPubicationResultats"/>&nbsp;
                 </td>
                 <td>
-                <g:checkBox name="notificationOnPublicationResultats"
-                            value="${preferencePersonne.notificationOnPublicationResultats}"/></td>
+                    <g:checkBox id="notificationOnPublicationResultats" name="notificationOnPublicationResultats"
+                                value="${preferencePersonne.notificationOnPublicationResultats}"/></td>
             </tr>
             <tr>
-                <td class="label"><g:message code="utilisateur.preference.supportNotifications" />&nbsp;
+                <td class="label"><g:message code="utilisateur.preference.supportNotifications"/>&nbsp;
                 </td>
                 <td>
-                    <g:checkBox name="e_mail"
+                    <g:checkBox id="e_mail" name="e_mail"
                                 value="${preferencePersonne.codeSupportNotification & 1}"/> e-mail
-                    <g:checkBox name="sms"
+                    <g:checkBox id="sms" name="sms"
                                 value="${preferencePersonne.codeSupportNotification & 2}"/> SMS
 
                 </td>
@@ -90,6 +91,33 @@
     </div>
 
 </g:form>
+
+<r:script>
+    $(document).ready(function () {
+        updateCheckboxesState();
+
+        $('#notificationOnCreationSeance').change(function () {
+            updateCheckboxesState();
+        })
+        $('#notificationOnPublicationResultats').change(function () {
+            updateCheckboxesState();
+        })
+
+        function updateCheckboxesState() {
+            if ($('#notificationOnCreationSeance').is(':checked') ||
+                    $('#notificationOnPublicationResultats').is(':checked')) {
+                $('#e_mail').prop('disabled', false);
+                $('#sms').prop('disabled', false);
+            } else {
+                $('#e_mail').prop('checked', false);
+                $('#sms').prop('checked', false);
+                $('#e_mail').prop('disabled', true);
+                $('#sms').prop('disabled', true);
+            }
+        }
+    });
+
+</r:script>
 
 </body>
 </html>
