@@ -45,6 +45,13 @@
         </span>
     </div>
 </div>
+<g:hasErrors bean="${preferencePersonne}">
+    <div class="portal-messages">
+        <g:eachError>
+            <li class="error"><g:message error="${it}"/></li>
+        </g:eachError>
+    </div>
+</g:hasErrors>
 <g:if test="${flash.messageTextesCode}">
     <div class="portal-messages">
         <li class="success"><g:message code="${flash.messageTextesCode}"

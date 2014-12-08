@@ -32,9 +32,14 @@ class UtilisateurController {
         preferencePersonne.notificationOnCreationSeance = params.notificationOnCreationSeance ? true : false
         preferencePersonne.notificationOnPublicationResultats = params.notificationOnPublicationResultats ? true : false
         preferencePersonne.codeSupportNotification = (params.e_mail ? SupportNotification.E_MAIL.ordinal() : 0) + (params.sms ? SupportNotification.SMS.ordinal() : 0)
-        preferencePersonneService.updatePreferencePersonne(preferencePersonne, authenticatedPersonne)
-        flash.messageTextesCode = "utilisateur.preference.save.success"
-        redirect(controller: "utilisateur", action: "preference", params: [bcInit: true])
+        preferencePersonne = preferencePersonneService.updatePreferencePersonne(preferencePersonne, authenticatedPersonne)
+        if (preferencePersonne.hasErrors()) {
+            render(view: 'preference',model: [liens             : breadcrumpsServiceProxy.liens,
+                                              preferencePersonne: preferencePersonne])
+        } else {
+            flash.messageTextesCode = "utilisateur.preference.save.success"
+            redirect(controller: "utilisateur", action: "preference", params: [bcInit: true])
+        }
     }
 
 }
