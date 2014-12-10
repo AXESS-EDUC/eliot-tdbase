@@ -42,7 +42,7 @@ class UrlMappings {
     "/api-rest/v2/evaluations" (controller: 'notes',action: 'createDevoir')
     "/api-rest/v2/evaluations/$evaluationId/notes" (controller: 'notes',action: 'updateNotes')
     "/api-rest/v2/wsprofilsetab" (controller: 'scolarite',action: 'getFonctionsForEtablissement')
-    "/echanges/v2/wsnotification/creer" (controller: 'notification', action: 'creerNotification')
+    "/echanges/v2/notifications" (controller: 'notification', action: 'creerNotification')
     "/"(view: "/index")
     "500"(view: '/error')
   }
