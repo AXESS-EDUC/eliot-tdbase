@@ -50,6 +50,15 @@ class NotificationSeanceDaoServiceSpec extends IntegrationSpec {
             personne.autorite.identifiant == row.get('personne_id_externe')
         }
 
+        when:"on récupère les personnes id externe à notifier par sms pour la publication de resultats"
+        def persIds = notification.findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(struct,
+                NotificationSupport.SMS,NotificationSeanceDaoService.PUBLICATION_RESULTATS)
+
+        then:"on récupère les 2 id externes des personnes"
+        persIds.size() == 2
+        persIds.contains(bootstrapService.eleve1.autorite.identifiant)
+        persIds.contains(bootstrapService.eleve2.autorite.identifiant)
+
         when:"on récupère les personnes à notifier par sms pour la publication de resultats"
         pers = notification.findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(struct,
                 NotificationSupport.EMAIL,NotificationSeanceDaoService.CREATION_SEANCE)

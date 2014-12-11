@@ -1,5 +1,6 @@
 package org.lilie.services.eliot.tdbase.notification
 
+import groovy.sql.GroovyRowResult
 import org.lilie.services.eliot.tdbase.ModaliteActivite
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
@@ -12,33 +13,38 @@ class NotificationSeanceDaoService {
     static final String PUBLICATION_RESULTATS = "publication_resultats"
     static final String CREATION_SEANCE = "creation_seance"
 
-    ModaliteActivite modaliteActivite
     def groovySql
 
-    Set findAllEmailDestinatairesForPublicationResultats() {
-        findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.EMAIL,PUBLICATION_RESULTATS)
+    List<String> findAllEmailDestinatairesForPublicationResultats(ModaliteActivite modaliteActivite) {
+        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.EMAIL,PUBLICATION_RESULTATS)
     }
 
-    Set findAllSmsDestinatairesForPublicationResultats() {
-        findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.SMS, PUBLICATION_RESULTATS)
+    List<String> findAllSmsDestinatairesForPublicationResultats(ModaliteActivite modaliteActivite) {
+        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.SMS, PUBLICATION_RESULTATS)
     }
 
-    Set findAllEmailDestinatairesForCreationSeance() {
-        findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.EMAIL,CREATION_SEANCE)
+    List<String> findAllEmailDestinatairesForCreationSeance(ModaliteActivite modaliteActivite) {
+        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.EMAIL,CREATION_SEANCE)
     }
 
-    Set findAllSmsDestinatairesForCreationSeance() {
-        findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.SMS, CREATION_SEANCE)
+    List<String> findAllSmsDestinatairesForCreationSeance(ModaliteActivite modaliteActivite) {
+        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.SMS, CREATION_SEANCE)
     }
 
-    Set findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(StructureEnseignement structureEnseignement, NotificationSupport supportNotification, String evenement) {
-        def results
+    List<String> findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(StructureEnseignement structureEnseignement, NotificationSupport supportNotification, String evenement) {
+        def rows = findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(structureEnseignement,supportNotification,evenement)
+        def res = rows.collect { row -> row.get("personne_id_externe")}
+        res
+    }
+
+    List<GroovyRowResult> findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(StructureEnseignement structureEnseignement, NotificationSupport supportNotification, String evenement) {
+        def rows
         if (evenement == CREATION_SEANCE) {
-            results = groovySql.rows(queryForCreationSeance(structureEnseignement, supportNotification))
+            rows = groovySql.rows(queryForCreationSeance(structureEnseignement, supportNotification))
         } else if (evenement == PUBLICATION_RESULTATS) {
-            results = groovySql.rows(queryForPublicationResultats(structureEnseignement, supportNotification))
+            rows = groovySql.rows(queryForPublicationResultats(structureEnseignement, supportNotification))
         }
-        results
+        rows
     }
 
     private def queryForPublicationResultats(StructureEnseignement structureEnseignement, NotificationSupport supportNotification) {
