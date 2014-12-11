@@ -15,11 +15,12 @@ class NotificationSeanceService {
      * @param modaliteActivite la séance
      * @return la notification créée
      */
-    Notification getEmailNotificationOnPublicationResultatsForSeance(Personne demandeur, String titre, String message, ModaliteActivite modaliteActivite) {
+    Notification getEmailNotificationOnPublicationResultatsForSeance(Personne demandeur, String titre, String message,
+                                                                     ModaliteActivite modaliteActivite) {
         def destinatairesIdExt = notificationSeanceDaoService.findAllEmailDestinatairesForPublicationResultats(modaliteActivite)
         def support = NotificationSupport.EMAIL
         def etabIdExt = modaliteActivite.etablissement.idExterne
-        def demandIdExt = demandeur.autorite.identifiant
+        def demandIdExt = demandeur.idExterne
         Notification notification = new Notification(
                 etablissementIdExerne: etabIdExt,
                 demandeurIdexterne: demandIdExt,
@@ -39,11 +40,12 @@ class NotificationSeanceService {
      * @param modaliteActivite la séance
      * @return la notification créée
      */
-    Notification getSmsNotificationOnPublicationResultatsForSeance(Personne demandeur, String titre, String message, ModaliteActivite modaliteActivite) {
+    Notification getSmsNotificationOnPublicationResultatsForSeance(Personne demandeur, String titre, String message,
+                                                                   ModaliteActivite modaliteActivite) {
         def destinatairesIdExt = notificationSeanceDaoService.findAllSmsDestinatairesForPublicationResultats(modaliteActivite)
         def support = NotificationSupport.SMS
         def etabIdExt = modaliteActivite.etablissement.idExterne
-        def demandIdExt = demandeur.autorite.identifiant
+        def demandIdExt = demandeur.idExterne
         Notification notification = new Notification(
                 etablissementIdExerne: etabIdExt,
                 demandeurIdexterne: demandIdExt,
@@ -63,11 +65,12 @@ class NotificationSeanceService {
      * @param modaliteActivite la séance
      * @return la notification créée
      */
-    Notification getEmailNotificationOnCreationSeanceForSeance(Personne demandeur, String titre, String message, ModaliteActivite modaliteActivite) {
+    Notification getEmailNotificationOnCreationSeanceForSeance(Personne demandeur, String titre, String message,
+                                                               ModaliteActivite modaliteActivite) {
         def destinatairesIdExt = notificationSeanceDaoService.findAllEmailDestinatairesForCreationSeance(modaliteActivite)
         def support = NotificationSupport.EMAIL
         def etabIdExt = modaliteActivite.etablissement.idExterne
-        def demandIdExt = demandeur.autorite.identifiant
+        def demandIdExt = demandeur.idExterne
         Notification notification = new Notification(
                 etablissementIdExerne: etabIdExt,
                 demandeurIdexterne: demandIdExt,
@@ -87,11 +90,12 @@ class NotificationSeanceService {
      * @param modaliteActivite la séance
      * @return la notification créée
      */
-    Notification getSmsNotificationOnCreationSeanceForSeance(Personne demandeur, String titre, String message, ModaliteActivite modaliteActivite) {
+    Notification getSmsNotificationOnCreationSeanceForSeance(Personne demandeur, String titre, String message,
+                                                             ModaliteActivite modaliteActivite) {
         def destinatairesIdExt = notificationSeanceDaoService.findAllSmsDestinatairesForCreationSeance(modaliteActivite)
         def support = NotificationSupport.SMS
         def etabIdExt = modaliteActivite.etablissement.idExterne
-        def demandIdExt = demandeur.autorite.identifiant
+        def demandIdExt = demandeur.idExterne
         Notification notification = new Notification(
                 etablissementIdExerne: etabIdExt,
                 demandeurIdexterne: demandIdExt,
