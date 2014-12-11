@@ -35,7 +35,7 @@ class NotificationRestServiceSpec extends Specification {
         }.listen(port)
         RestOperation restOperation = new GenericRestOperation(contentType: ContentType.JSON,
                 description: "cree notification",
-                operationName: "creeNotification",
+                operationName: "postNotification",
                 method: Method.POST,
                 requestBodyTemplate: '''
                                                     {
@@ -71,7 +71,7 @@ class NotificationRestServiceSpec extends Specification {
         )
 
         when:"on déclenche la création de la notification"
-        Map res = notificationRestService.creeNotification(notification)
+        Map res = notificationRestService.postNotification(notification)
 
         then: "on verifie que la requête a été envoyé avec le json ad-hoc"
         res.size() == 6

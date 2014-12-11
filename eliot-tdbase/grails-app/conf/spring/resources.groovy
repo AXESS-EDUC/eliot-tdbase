@@ -34,5 +34,5 @@ beans = {
         utilisateurService = ref("utilisateurService")
         roleUtilisateurService = ref("roleUtilisateurService")
     }
-    groovySql(Sql, ref(dataSource))
+    groovySql(Sql, ref('dataSource'))
 }

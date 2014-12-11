@@ -16,8 +16,8 @@ class NotificationRestService {
      * Récupère les fonctions admnistrables d'un établissement
      * @param etablissementId
      */
-    def creeNotification(Notification notification) {
-        restClientForNotification.invokeOperation('creeNotification',
+    def postNotification(Notification notification) {
+        restClientForNotification.invokeOperation('postNotification',
                 null,
                 null,
                 [

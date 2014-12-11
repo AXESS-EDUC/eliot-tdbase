@@ -29,7 +29,10 @@
 package org.lilie.services.eliot.tdbase
 
 import groovy.json.JsonBuilder
+import org.lilie.services.eliot.tdbase.notification.Notification
+import org.lilie.services.eliot.tdbase.notification.NotificationSeanceService
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
+import org.lilie.services.eliot.tdbase.webservices.rest.client.NotificationRestService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Niveau
@@ -53,6 +56,8 @@ class SeanceController {
     CahierTextesService cahierTextesService
     NotesService notesService
     SecuriteSessionService securiteSessionServiceProxy
+    NotificationSeanceService notificationSeanceService
+    NotificationRestService notificationRestService
 
 /**
  *
@@ -251,6 +256,9 @@ class SeanceController {
         }
 
         if (!modaliteActivite.hasErrors()) {
+
+            onCreationSeance(personne, modaliteActivite)
+
             flash.messageCode = "seance.enregistre.succes"
 
             if (grailsApplication.config.eliot.interfacage.textes) {
@@ -277,10 +285,10 @@ class SeanceController {
         }
     }
 
-    /**
-     *
-     * Action "recherche"
-     */
+/**
+ *
+ * Action "recherche"
+ */
     def liste() {
         def maxItems = grailsApplication.config.eliot.listes.max
         params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
@@ -506,6 +514,48 @@ class SeanceController {
             }
             if (!evalId) {
                 flash.messageNotesCode = "seance.enregistre.liennotes.erreur"
+            }
+        }
+    }
+
+    /**
+     * Méthode déclenchée
+     * @param personne la personne ayant créé la séance
+     * @param modaliteActivite la séance
+     */
+    private def onCreationSeance(Personne personne, ModaliteActivite modaliteActivite) {
+        def titre = g.message(code: "notification.seance.creation.titre")
+        def message = g.message(code: "notification.seance.creation.message")
+        Notification notificationSms = notificationSeanceService.getSmsNotificationOnCreationSeanceForSeance(
+                personne,
+                titre,
+                message,
+                modaliteActivite
+        )
+        Notification notificationEmail = notificationSeanceService.getEmailNotificationOnCreationSeanceForSeance(
+                personne,
+                titre,
+                message,
+                modaliteActivite
+        )
+        if (!notificationEmail.destinatairesIdExterne.isEmpty()) {
+            try {
+                def rep = notificationRestService.postNotification(notificationEmail)
+                if (rep.success == false) {
+                    log.error(rep.message)
+                }
+            } catch (Exception e) {
+                log.error(e.message)
+            }
+        }
+        if (!notificationSms.destinatairesIdExterne.isEmpty()) {
+            try {
+                def rep = notificationRestService.postNotification(notificationSms)
+                if (rep.success == false) {
+                    log.error(rep.message)
+                }
+            } catch (Exception e) {
+                log.error(e.message)
             }
         }
     }

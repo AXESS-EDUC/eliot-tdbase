@@ -5,6 +5,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 
 class NotificationSeanceService {
 
+    public static final String UNKNOWN = "__INCONNU__"
     NotificationSeanceDaoService notificationSeanceDaoService
 
     /**
@@ -69,7 +70,7 @@ class NotificationSeanceService {
                                                                ModaliteActivite modaliteActivite) {
         def destinatairesIdExt = notificationSeanceDaoService.findAllEmailDestinatairesForCreationSeance(modaliteActivite)
         def support = NotificationSupport.EMAIL
-        def etabIdExt = modaliteActivite.etablissement.idExterne
+        def etabIdExt = modaliteActivite.structureEnseignement.etablissement.idExterne ?: UNKNOWN
         def demandIdExt = demandeur.idExterne
         Notification notification = new Notification(
                 etablissementIdExerne: etabIdExt,
@@ -94,7 +95,7 @@ class NotificationSeanceService {
                                                              ModaliteActivite modaliteActivite) {
         def destinatairesIdExt = notificationSeanceDaoService.findAllSmsDestinatairesForCreationSeance(modaliteActivite)
         def support = NotificationSupport.SMS
-        def etabIdExt = modaliteActivite.etablissement.idExterne
+        def etabIdExt = modaliteActivite.structureEnseignement.etablissement.idExterne ?: UNKNOWN
         def demandIdExt = demandeur.idExterne
         Notification notification = new Notification(
                 etablissementIdExerne: etabIdExt,

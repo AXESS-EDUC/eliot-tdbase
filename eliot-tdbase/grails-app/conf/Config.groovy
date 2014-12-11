@@ -525,7 +525,7 @@ eliot.webservices.rest.client.operations = [[operationName           : "getStruc
                                                     //urlServer: "http://localhost:8090",
                                                     uriTemplate             : '/wsprofilsetab'],
                                             [
-                                                    operationName           : "creeNotification",
+                                                    operationName           : "postNotification",
                                                     description             : "Cree une notification",
                                                     contentType             : ContentType.JSON,
                                                     method                  : Method.POST,
