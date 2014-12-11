@@ -7,9 +7,16 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
  * Created by franck on 04/11/2014.
  */
 public class Notification {
-    Etablissement etablissement
-    Personne demandeur
+    String etablissementIdExerne
+    String demandeurIdexterne
     String titre
     String message
+    List<String> destinatairesIdExterne
+    List<NotificationSupport> supports
 
+}
+
+enum NotificationSupport {
+    EMAIL,
+    SMS
 }

@@ -8,7 +8,7 @@ import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 /**
  * Created by franck on 04/11/2014.
  */
-class NotificationSeance extends Notification {
+class NotificationSeanceService {
 
     static final String PUBLICATION_RESULTATS = "publication_resultats"
     static final String CREATION_SEANCE = "creation_seance"

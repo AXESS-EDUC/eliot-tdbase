@@ -367,6 +367,12 @@ environments {
         eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
         eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
         eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
+        // rest client config for notification
+        eliot.webservices.rest.client.notification.user = "api"
+        eliot.webservices.rest.client.notification.password = "api"
+        eliot.webservices.rest.client.notification.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.notification.uriPrefix = "/eliot-test-webservices/echanges/v2"
+        eliot.webservices.rest.client.notification.connexionTimeout = 10000
 
     }
     test {
@@ -387,6 +393,12 @@ environments {
         eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
         eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
         eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
+        // rest client config for notification
+        eliot.webservices.rest.client.notification.user = "api"
+        eliot.webservices.rest.client.notification.password = "api"
+        eliot.webservices.rest.client.notification.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.notification.uriPrefix = "/eliot-test-webservices/echanges/v2"
+        eliot.webservices.rest.client.notification.connexionTimeout = 10000
     }
     testlilie {
         // Spécifie si les objets sensés être créés sont bien créés
@@ -411,6 +423,12 @@ environments {
         eliot.webservices.rest.client.scolarite.urlServer = "http://fylab02.dns-oid.com:8380"
         eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-scolarite-2.8.2-A1/echanges/v2"
         eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
+        // rest client config for notification
+        eliot.webservices.rest.client.notification.user = "api"
+        eliot.webservices.rest.client.notification.password = "api"
+        eliot.webservices.rest.client.notification.urlServer = "http://fylab02.dns-oid.com:8380"
+        eliot.webservices.rest.client.notification.uriPrefix = "/eliot-scolarite-2.8.2-A1/echanges/v2"
+        eliot.webservices.rest.client.notification.connexionTimeout = 10000
     }
 
 }
@@ -505,7 +523,25 @@ eliot.webservices.rest.client.operations = [[operationName           : "getStruc
                                                     requestBodyTemplate     : null,
                                                     responseContentStructure: "List<eliot-scolarite#fonction#standard>",
                                                     //urlServer: "http://localhost:8090",
-                                                    uriTemplate             : '/wsprofilsetab']
+                                                    uriTemplate             : '/wsprofilsetab'],
+                                            [
+                                                    operationName           : "creeNotification",
+                                                    description             : "Cree une notification",
+                                                    contentType             : ContentType.JSON,
+                                                    method                  : Method.POST,
+                                                    requestBodyTemplate     : '''
+                                                    {
+                                                        "etablissementIdExterne": "$etablissementIdExterne",
+                                                        "demandeurIdExterne": "$demandeurIdExterne",
+                                                        "titre": "$titre",
+                                                        "message": "$message",
+                                                        "destinatairesIdExterne": $destinatairesIdExterne,
+                                                        "supports": $supports
+                                                    }
+                                                    ''',
+                                                    responseContentStructure: "[success:true/false, message:message]",
+                                                    //urlServer: "http://localhost:8090",
+                                                    uriTemplate             : '/notifications']
 ]
 
 // Support de l'interface EmaEval
