@@ -2,6 +2,7 @@ package org.lilie.services.eliot.tdbase.preferences
 
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
+import org.lilie.services.eliot.tdbase.notification.NotificationSupport
 import org.lilie.services.eliot.tice.annuaire.Personne
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -50,7 +51,7 @@ class PreferencePersonneSpec extends Specification {
         false         | false          | null                                 | false
         true          | false          | 0                                    | false
         true          | false          | 0                                    | false // 0 n'est pas un code valide
-        true          | false          | SupportNotification.E_MAIL.ordinal() | true
+        true          | false          | NotificationSupport.EMAIL.ordinal() | true
 
     }
 

@@ -51,6 +51,10 @@ class GenericRestOperation implements RestOperation {
   String requestBodyTemplate
   Method method
 
+  void setRequestBodyTemplate(String value) {
+    requestBodyTemplate = value?.trim()
+  }
+
   ContentType contentType
   String responseContentStructure
 

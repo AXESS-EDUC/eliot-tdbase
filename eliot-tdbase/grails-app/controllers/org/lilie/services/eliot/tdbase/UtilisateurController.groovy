@@ -2,7 +2,7 @@ package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tdbase.preferences.PreferencePersonne
 import org.lilie.services.eliot.tdbase.preferences.PreferencePersonneService
-import org.lilie.services.eliot.tdbase.preferences.SupportNotification
+import org.lilie.services.eliot.tdbase.notification.NotificationSupport
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
@@ -31,7 +31,7 @@ class UtilisateurController {
         PreferencePersonne preferencePersonne = PreferencePersonne.get(params.id)
         preferencePersonne.notificationOnCreationSeance = params.notificationOnCreationSeance ? true : false
         preferencePersonne.notificationOnPublicationResultats = params.notificationOnPublicationResultats ? true : false
-        preferencePersonne.codeSupportNotification = (params.e_mail ? SupportNotification.E_MAIL.ordinal() : 0) + (params.sms ? SupportNotification.SMS.ordinal() : 0)
+        preferencePersonne.codeSupportNotification = (params.e_mail ? NotificationSupport.EMAIL.ordinal() : 0) + (params.sms ? NotificationSupport.SMS.ordinal() : 0)
         preferencePersonne = preferencePersonneService.updatePreferencePersonne(preferencePersonne, authenticatedPersonne)
         if (preferencePersonne.hasErrors()) {
             render(view: 'preference',model: [liens             : breadcrumpsServiceProxy.liens,

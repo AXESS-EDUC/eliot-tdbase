@@ -16,7 +16,3 @@ public class Notification {
 
 }
 
-enum NotificationSupport {
-    EMAIL,
-    SMS
-}

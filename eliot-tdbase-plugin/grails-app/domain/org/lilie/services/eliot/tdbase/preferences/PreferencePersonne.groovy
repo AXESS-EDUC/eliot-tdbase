@@ -1,8 +1,7 @@
 package org.lilie.services.eliot.tdbase.preferences
 
+import org.lilie.services.eliot.tdbase.notification.NotificationSupport
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Etablissement
-
 
 /**
  * Classe qui représente les préférences d'un établissement : concerne
@@ -14,12 +13,12 @@ class PreferencePersonne {
 
     Boolean notificationOnCreationSeance = false
     Boolean notificationOnPublicationResultats = false
-    Integer codeSupportNotification = SupportNotification.NO_SUPPORT.ordinal()
+    Integer codeSupportNotification = NotificationSupport.NO_SUPPORT.ordinal()
 
     Date lastUpdated
 
     static constraints = {
-        codeSupportNotification inList: SupportNotification.values()*.ordinal(), validator: { val, obj ->
+        codeSupportNotification inList: NotificationSupport.values()*.ordinal(), validator: { val, obj ->
             if ((val != 0 && (!obj.notificationOnCreationSeance && !obj.notificationOnPublicationResultats) ||
                     (val == 0 && (obj.notificationOnCreationSeance || obj.notificationOnPublicationResultats)))) {
                 return ['invalid.supportNonSelectionne']
@@ -35,10 +34,4 @@ class PreferencePersonne {
 
 }
 
-enum SupportNotification {
-    NO_SUPPORT,
-    E_MAIL,
-    SMS,
-    E_MAIL_AND_SMS
-}
 

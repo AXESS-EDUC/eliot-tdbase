@@ -30,7 +30,7 @@ class NotificationRestServiceSpec extends Specification {
         httpserver.requestHandler { HttpServerRequest req ->
             def rep = req.response
             req.bodyHandler { body ->
-                rep.putHeader("Content-Type", "application/json").end(body.toString().trim())
+                rep.putHeader("Content-Type", "application/json").end(body)
             }
         }.listen(port)
         RestOperation restOperation = new GenericRestOperation(contentType: ContentType.JSON,
