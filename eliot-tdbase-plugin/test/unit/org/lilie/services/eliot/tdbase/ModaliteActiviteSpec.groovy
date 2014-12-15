@@ -36,6 +36,7 @@ class ModaliteActiviteSpec extends Specification {
 
         and:"initialisée correctement"
         modaliteActivite.notifierMaintenant
+        modaliteActivite.notifierAvantOuverture
         modaliteActivite.notifierNJoursAvant == 1
         modaliteActivite.datePublicationResultats.after(modaliteActivite.dateFin)
         modaliteActivite.dateFin.after(modaliteActivite.dateDebut)

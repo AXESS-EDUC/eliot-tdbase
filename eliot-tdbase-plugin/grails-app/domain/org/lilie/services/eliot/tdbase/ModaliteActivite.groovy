@@ -67,6 +67,7 @@ class ModaliteActivite {
   Date dateNotificationPublicationResultats
   Date dateNotificationOuvertureSeance
   Boolean notifierMaintenant = true
+  Boolean notifierAvantOuverture = true
   Integer notifierNJoursAvant = 1
 
 
@@ -97,6 +98,7 @@ class ModaliteActivite {
     table('td.modalite_activite')
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.modalite_activite_id_seq'])
+    notifierNJoursAvant(column: 'notifier_n_jours_avant')
     cache(true)
   }
 
