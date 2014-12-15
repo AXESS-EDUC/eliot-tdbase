@@ -257,8 +257,6 @@ class SeanceController {
 
         if (!modaliteActivite.hasErrors()) {
 
-            onCreationSeance(personne, modaliteActivite)
-
             flash.messageCode = "seance.enregistre.succes"
 
             if (grailsApplication.config.eliot.interfacage.textes) {
