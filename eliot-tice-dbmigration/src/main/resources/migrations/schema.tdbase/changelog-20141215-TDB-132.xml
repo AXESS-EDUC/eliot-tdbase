@@ -46,5 +46,9 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="2" author="fsil">
+        <renameColumn tableName="modalite_activite" schemaName="td" oldColumnName="date_publication_resutats" newColumnName="date_publication_resultats"/>
+    </changeSet>
+
 
 </databaseChangeLog>
