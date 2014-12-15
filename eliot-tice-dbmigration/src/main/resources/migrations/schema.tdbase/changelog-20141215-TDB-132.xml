@@ -49,6 +49,12 @@
     <changeSet id="2" author="fsil">
         <renameColumn tableName="modalite_activite" schemaName="td" oldColumnName="date_publication_resutats" newColumnName="date_publication_resultats"/>
     </changeSet>
+    
+    <changeSet id="3" author="fsil">
+        <addColumn tableName="modalite_activite" schemaName="td">
+            <column name="notifier_avant_ouverture" type="boolean" defaultValue="true"/>
+        </addColumn>
+    </changeSet>
 
 
 </databaseChangeLog>
