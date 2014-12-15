@@ -63,17 +63,31 @@ class ModaliteActivite {
   Boolean copieAmeliorable = true
   Boolean optionEvaluerCompetences
 
+  Date datePublicationResultats = new Date() + 2
+  Date dateNotificationPublicationResultats
+  Date dateNotificationOuvertureSeance
+  Boolean notifierMaintenant = true
+  Integer notifierNJoursAvant = 1
+
+
   static constraints = {
     responsable(nullable: true)
     etablissement(nullable: true)
     activiteId(nullable: true)
     evaluationId(nullable: true)
-    structureEnseignement(nullable: false)
     dateFin(validator: { val, obj ->
       if (!val.after(obj.dateDebut)) {
         return ['invalid.dateFinAvantDateDebut']
       }
     })
+    datePublicationResultats(validator: { val, obj ->
+      if (!val.after(obj.dateFin)) {
+        return ['invalid.datePublicationAvantDateFin']
+      }
+    })
+    dateNotificationPublicationResultats nullable: true
+    dateNotificationOuvertureSeance nullable: true
+
     matiere(nullable: true)
 
     optionEvaluerCompetences(nullable: true)
