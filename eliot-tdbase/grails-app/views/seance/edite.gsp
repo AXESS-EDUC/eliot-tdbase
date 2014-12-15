@@ -185,6 +185,14 @@
                        class="datepicker short"/>
         </td>
       </tr>
+        <tr>
+            <td class="label">Publication des résultats&nbsp;:</td>
+            <td>
+                <g:textField name="datePublicationResultats"
+                             value="${modaliteActivite.datePublicationResultats.format('dd/MM/yyyy HH:mm')}"
+                             class="datepicker short"/>
+            </td>
+        </tr>
       <tr>
         <td class="label"></td>
         <td>
@@ -193,6 +201,22 @@
             class="label">Copie&nbsp;améliorable</span>
         </td>
       </tr>
+        <tr>
+            <td class="label"></td>
+            <td>
+                <g:checkBox name="notifierMaintenant" title="Notifier maintenant les participants à la séance"
+                            checked="${modaliteActivite.notifierMaintenant}"/> <span
+                    class="label">Notifier maintenant les participants à la séance</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td>
+                <g:checkBox name="notifierAvantOuverture" title="Notifier les participants avant l'ouverture de la séance"
+                            checked="${modaliteActivite.notifierAvantOuverture}"/> <span
+                    class="label">Notifier les participants <g:textField name="notifierNJoursAvant" value="${modaliteActivite.notifierNJoursAvant}" style="width: 20px"></g:textField> jour(s) avant</span>
+            </td>
+        </tr>
       <g:if test="${lienBookmarkable}">
         <tr>
           <td class="label">Permalien&nbsp;:</td>
