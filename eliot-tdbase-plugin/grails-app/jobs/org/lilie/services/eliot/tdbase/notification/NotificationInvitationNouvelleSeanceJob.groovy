@@ -65,7 +65,7 @@ class NotificationInvitationNouvelleSeanceJob {
 
     private onOuvertureSeance(ModaliteActivite seance) {
         def titre = messageSource.getMessage("notification.seance.invitation.titre",null, frLocale)
-        def message = messageSource.getMessage("notification.seance.invitation.message", getStringsForInvitation(), frLocale)
+        def message = messageSource.getMessage("notification.seance.invitation.message", getStringsForInvitation(seance), frLocale)
         Notification notificationSms = notificationSeanceService.getSmsNotificationOnCreationSeanceForSeance(
                 seance.enseignant,
                 titre,
@@ -88,7 +88,7 @@ class NotificationInvitationNouvelleSeanceJob {
             return
         }
         try {
-            log.debug("try envoi notification : ${notification}")
+            log.error("try envoi notification : ${notification}")
             def rep = notificationRestService.postNotification(notification)
             if (rep.success == false) {
                 log.error(rep.message)

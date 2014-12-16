@@ -21,7 +21,7 @@ import org.vertx.groovy.core.http.HttpServerRequest
 /**
  * Created by franck on 04/11/2014.
  */
-class NotificationPublicationResultatsSeanceJobSpec extends IntegrationSpec {
+class NotificationRappelInvitationNouvelleSeanceJobSpec extends IntegrationSpec {
 
     BootstrapService bootstrapService
     PreferencePersonneService preferencePersonneService
@@ -35,7 +35,7 @@ class NotificationPublicationResultatsSeanceJobSpec extends IntegrationSpec {
     ModaliteActiviteService modaliteActiviteService
     def messageSource
 
-    NotificationPublicationResultatsSeanceJob notificationPublicationResultatsSeanceJob
+    NotificationRappelInvitationNouvelleSeanceJob notificationRappelInvitationNouvelleSeanceJob
     Sujet sujet
 
     def setup() {
@@ -43,11 +43,11 @@ class NotificationPublicationResultatsSeanceJobSpec extends IntegrationSpec {
         bootstrapService.bootstrapJeuDeTestDevDemo()
         // preference personne eleve 1
         PreferencePersonne preferencePersonne = preferencePersonneService.getPreferenceForPersonne(bootstrapService.eleve1)
-        preferencePersonne.notificationOnPublicationResultats = true
+        preferencePersonne.notificationOnCreationSeance = true
         preferencePersonne.codeSupportNotification = NotificationSupport.EMAIL.ordinal()
         preferencePersonne.save(flush: true, failOnError: true)
         // le job
-        notificationPublicationResultatsSeanceJob = new NotificationPublicationResultatsSeanceJob(
+        notificationRappelInvitationNouvelleSeanceJob = new NotificationRappelInvitationNouvelleSeanceJob(
                 notificationSeanceService: notificationSeanceService,
                 notificationRestService: notificationRestService,
                 notificationSeanceDaoService: notificationSeanceDaoService,
@@ -66,41 +66,52 @@ class NotificationPublicationResultatsSeanceJobSpec extends IntegrationSpec {
 
 
 
-    def "l'execution du job de publication"() {
-        given:"une séance dont la date de publication n'est pas encore passée"
+    def "l'execution du job de rappel d'invitation"() {
+        given:"une séance dont la date de debut est passee"
         Date now = new Date()
         ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
                 [sujet: sujet,
                  structureEnseignement: bootstrapService.classe1ere,
-                        dateDebut: now-10,
-                        dateFin: now-8,
-                        datePublicationResultats: now+1
+                        dateDebut: now-1,
+                        dateFin: now+3,
+                        datePublicationResultats: now+4,
+                        notifierNJoursAvant: 1
                 ],
                 sujet.proprietaire
         )
 
         when: "le job est exécuté"
-        notificationPublicationResultatsSeanceJob.execute()
+        notificationRappelInvitationNouvelleSeanceJob.execute()
 
         then:"il ne se passe rien"
-        seance1.dateNotificationPublicationResultats == null
+        seance1.dateRappelNotificationOuvertureSeance == null
 
-        when:"la publication des résultat est passée"
-        seance1.datePublicationResultats = now - 1
-        seance1.save()
+        when:"la seance n'est pas encore ouverte mais c'est trop tot pour la notif"
+        seance1.dateDebut = now+2
+        seance1.save(flush: true)
 
         and: "le job est exécuté de nouveau"
-        notificationPublicationResultatsSeanceJob.execute()
+        notificationRappelInvitationNouvelleSeanceJob.execute()
 
-        then: "la notification est envoyée"
-        def dateNotif = seance1.dateNotificationPublicationResultats
+        then: "la notification n'est pas envoyée"
+        seance1.dateRappelNotificationOuvertureSeance == null
+
+        when:"la seance n'est pas encore ouverte et c'est l'heure de la notif"
+        seance1.notifierNJoursAvant = 5
+        seance1.save(flush: true)
+
+        and: "le job est exécuté de nouveau"
+        notificationRappelInvitationNouvelleSeanceJob.execute()
+
+        then: "la notification est  envoyée"
+        def dateNotif = seance1.dateRappelNotificationOuvertureSeance
         dateNotif != null
 
         when: " le job est executé à nouveau"
-        notificationPublicationResultatsSeanceJob.execute()
+        notificationRappelInvitationNouvelleSeanceJob.execute()
 
         then: " la notification ne repart pas"
-        seance1.dateNotificationPublicationResultats == dateNotif
+        seance1.dateRappelNotificationOuvertureSeance == dateNotif
 
     }
 

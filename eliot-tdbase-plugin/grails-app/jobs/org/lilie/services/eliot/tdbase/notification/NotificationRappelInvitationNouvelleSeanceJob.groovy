@@ -57,8 +57,9 @@ class NotificationRappelInvitationNouvelleSeanceJob {
     def execute() {
         log.info "Exécution du NotificationRappelInvitationNouvelleSeanceJob"
 
-        def seances = notificationSeanceDaoService.findAllSeancesWithInvitationToNotifie(BATCH_SIZE)
+        def seances = notificationSeanceDaoService.findAllSeancesWithRappelInvitationToNotifie(BATCH_SIZE)
         Date now = new Date()
+
         seances.each {
             if (it.dateDebut - now < it.notifierNJoursAvant) {
                 onOuvertureSeance(it)
@@ -68,7 +69,7 @@ class NotificationRappelInvitationNouvelleSeanceJob {
 
     private onOuvertureSeance(ModaliteActivite seance) {
         def titre = messageSource.getMessage("notification.seance.invitation.titre",null, frLocale)
-        def message = messageSource.getMessage("notification.seance.invitation.message", getStringsForInvitation(), frLocale)
+        def message = messageSource.getMessage("notification.seance.invitation.message", getStringsForInvitation(seance), frLocale)
         Notification notificationSms = notificationSeanceService.getSmsNotificationOnCreationSeanceForSeance(
                 seance.enseignant,
                 titre,
@@ -91,7 +92,7 @@ class NotificationRappelInvitationNouvelleSeanceJob {
             return
         }
         try {
-            log.debug("try envoi notification : ${notification}")
+            log.error("try envoi notification : ${notification}")
             def rep = notificationRestService.postNotification(notification)
             if (rep.success == false) {
                 log.error(rep.message)
