@@ -56,5 +56,11 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="4" author="fsil">
+        <addColumn tableName="modalite_activite" schemaName="td">
+            <column name="date_rappel_notification_ouverture_seance" type="timestamp without time zone"/>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>
