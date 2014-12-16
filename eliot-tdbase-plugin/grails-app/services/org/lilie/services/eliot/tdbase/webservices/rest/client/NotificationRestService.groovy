@@ -23,8 +23,8 @@ class NotificationRestService {
                 [
                         etablissementIdExterne: notification.etablissementIdExerne,
                         demandeurIdExterne    : notification.demandeurIdexterne,
-                        titre: notification.titre,
-                        message: notification.message,
+                        titre: JsonOutput.toJson(notification.titre),
+                        message: JsonOutput.toJson(notification.message),
                         destinatairesIdExterne:JsonOutput.toJson(notification.destinatairesIdExterne),
                         supports:JsonOutput.toJson(notification.supports)
                 ])

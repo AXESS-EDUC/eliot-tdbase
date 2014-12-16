@@ -64,7 +64,7 @@ class NotificationPublicationResultatsSeanceJob {
     }
 
     private onPublicationResultats(ModaliteActivite seance) {
-        def titre = messageSource.getMessage("notification.seance.publicationResultats.titre", frLocale)
+        def titre = messageSource.getMessage("notification.seance.publicationResultats.titre",null, frLocale)
         def message = messageSource.getMessage("notification.seance.publicationResultats.message",
                 getStringsForPublicationresultats(seance),
                 frLocale)
@@ -90,6 +90,7 @@ class NotificationPublicationResultatsSeanceJob {
             return
         }
         try {
+            log.error("try envoi notification : ${notification}")
             def rep = notificationRestService.postNotification(notification)
             if (rep.success == false) {
                 log.error(rep.message)
@@ -106,7 +107,7 @@ class NotificationPublicationResultatsSeanceJob {
         [
                 seance.sujet.titre,
                 seance.datePublicationResultats.format("dd/MM/YYYY"),
-                seance.datePublicationResultats.format("hh:mm")
+                seance.datePublicationResultats.format("HH:mm")
         ].toArray()
     }
 }

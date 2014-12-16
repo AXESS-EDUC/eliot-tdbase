@@ -14,5 +14,10 @@ public class Notification {
     List<String> destinatairesIdExterne
     List<NotificationSupport> supports
 
+    String toString() {
+        """$titre
+            $message
+        """
+    }
 }
 

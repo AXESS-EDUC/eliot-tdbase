@@ -533,8 +533,8 @@ eliot.webservices.rest.client.operations = [[operationName           : "getStruc
                                                     {
                                                         "etablissementIdExterne": "$etablissementIdExterne",
                                                         "demandeurIdExterne": "$demandeurIdExterne",
-                                                        "titre": "$titre",
-                                                        "message": "$message",
+                                                        "titre": $titre,
+                                                        "message": $message,
                                                         "destinatairesIdExterne": $destinatairesIdExterne,
                                                         "supports": $supports
                                                     }
