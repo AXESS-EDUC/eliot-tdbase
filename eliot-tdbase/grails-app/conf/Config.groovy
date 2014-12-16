@@ -544,6 +544,38 @@ eliot.webservices.rest.client.operations = [[operationName           : "getStruc
                                                     uriTemplate             : '/notifications']
 ]
 
+// Notifications email et sms
+//
+// Trigger définissant la périodicité du job exécutant en tâche de fond
+// les notifications d'invitation à une nouvelle séance (via les webservices)
+eliot.tdbase.notifications.seance.invitation.trigger = {
+    simple name: 'invitationSeanceTDBaseTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
+}
+
+// Trigger définissant la périodicité du job exécutant en tâche de fond
+// les notifications de publications de résultats d'une séance TD Base
+eliot.tdbase.notifications.seance.publicationResultats.trigger = {
+    simple name: 'publicationResultatsSeanceTDBaseTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
+}
+
+environments {
+    production { // Surcharge de la configuration des jobs pour la production
+        // Trigger définissant la périodicité du job exécutant en tâche de fond
+        // les notifications d'invitation à une nouvelle séance (via les webservices)
+        eliot.tdbase.notifications.seance.invitation.trigger = {
+            simple name: 'invitationSeanceTDBaseTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 10
+            // Toutes les 10 minutes
+        }
+
+        // Trigger définissant la périodicité du job exécutant en tâche de fond
+        // lles notifications de publications de résultats d'une séance TD Base
+        eliot.tdbase.notifications.seance.publicationResultats.trigger = {
+            simple name: 'publicationResultatsSeanceTDBaseTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 60 * 1
+            // Toutes les 1h
+        }
+    }
+}
+
 // Support de l'interface EmaEval
 eliot.interfacage.emaeval.actif = false
 eliot.interfacage.emaeval.url = "https://emaeval.pentila.com/EvalComp/webservices/"
@@ -576,7 +608,7 @@ environments {
         // Trigger définissant la périodicité du job exécutant en tâche de fond
         // la transmission des résultats entre une séance TD Base et une campagne EmaEval
         eliot.interfacage.emaeval.score.trigger = {
-            simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 1000 * 60 * 4
+            simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 60 * 4
             // Toutes les 4h
         }
     }
@@ -584,6 +616,11 @@ environments {
 
 // Configuration plugin Quartz 2
 grails.plugin.quartz2.autoStartup = true
+environments {
+    test {
+        grails.plugin.quartz2.autoStartup = false
+    }
+}
 
 // Activation/desactivation du partage en CC par les enseignants d'un artefact (i.e. d'un sujet ou d'une question)
 eliot.artefact.partage_CC_autorise = true
