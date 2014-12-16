@@ -66,21 +66,25 @@ class NotificationSeanceDaoService {
         res
     }
 
-    List<ModaliteActivite> findAllSeancesWithInvitationToNotifie(int maxResult = 20, int nbJoursAvantOuverture = 1) {
+    List<ModaliteActivite> findAllSeancesWithInvitationToNotifie(int maxResult = 20) {
         def criteria = ModaliteActivite.createCriteria()
         Date now = new Date()
         def res = criteria.list {
             gt('dateDebut', now)
-            or {
-                and {
-                    isNull('dateNotificationOuvertureSeance')
-                    eq('notifierMaintenant', true)
-                }
-                and {
-                    eq('notifierAvantOuverture',true)
-                    between('dateDebut', now-nbJoursAvantOuverture, now)
-                }
-            }
+            eq('notifierMaintenant', true)
+            isNull('dateNotificationOuvertureSeance')
+            maxResults(maxResult)
+        }
+        res
+    }
+
+    List<ModaliteActivite> findAllSeancesWithRappelInvitationToNotifie(int maxResult = 20) {
+        def criteria = ModaliteActivite.createCriteria()
+        Date now = new Date()
+        def res = criteria.list {
+            gt('dateDebut', now)
+            eq('notifierAvantOuverture',true)
+            isNull('dateRappelNotificationOuvertureSeance')
             maxResults(maxResult)
         }
         res

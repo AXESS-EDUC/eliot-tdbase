@@ -553,9 +553,15 @@ eliot.tdbase.notifications.seance.invitation.trigger = {
 }
 
 // Trigger définissant la périodicité du job exécutant en tâche de fond
+// les notifications de rappel d'invitation à une nouvelle séance (via les webservices)
+eliot.tdbase.notifications.seance.rappelInvitation.trigger = {
+    simple name: 'rappelInvitationSeanceTDBaseTrigger', startDelay: 1000 * 75, repeatInterval: 1000 * 15 // Toutes les 15s
+}
+
+// Trigger définissant la périodicité du job exécutant en tâche de fond
 // les notifications de publications de résultats d'une séance TD Base
 eliot.tdbase.notifications.seance.publicationResultats.trigger = {
-    simple name: 'publicationResultatsSeanceTDBaseTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 15 // Toutes les 15s
+    simple name: 'publicationResultatsSeanceTDBaseTrigger', startDelay: 1000 * 90, repeatInterval: 1000 * 15 // Toutes les 15s
 }
 
 environments {
@@ -568,9 +574,16 @@ environments {
         }
 
         // Trigger définissant la périodicité du job exécutant en tâche de fond
+        // les notifications de rappel d'invitation à une nouvelle séance (via les webservices)
+        eliot.tdbase.notifications.seance.rappelInvitation.trigger = {
+            simple name: 'rappelInvitationSeanceTDBaseTrigger', startDelay: 1000 * 60 * 15, repeatInterval: 1000 * 60 * 60 * 1
+            // Toutes les 1h
+        }
+
+        // Trigger définissant la périodicité du job exécutant en tâche de fond
         // lles notifications de publications de résultats d'une séance TD Base
         eliot.tdbase.notifications.seance.publicationResultats.trigger = {
-            simple name: 'publicationResultatsSeanceTDBaseTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 60 * 1
+            simple name: 'publicationResultatsSeanceTDBaseTrigger', startDelay: 1000 * 60 * 30, repeatInterval: 1000 * 60 * 60 * 1
             // Toutes les 1h
         }
     }
