@@ -66,6 +66,7 @@ class ModaliteActivite {
   Date datePublicationResultats = new Date() + 2
   Date dateNotificationPublicationResultats
   Date dateNotificationOuvertureSeance
+  Date dateRappelNotificationOuvertureSeance
   Boolean notifierMaintenant = true
   Boolean notifierAvantOuverture = true
   Integer notifierNJoursAvant = 1
@@ -94,6 +95,7 @@ class ModaliteActivite {
     })
     dateNotificationPublicationResultats nullable: true
     dateNotificationOuvertureSeance nullable: true
+    dateRappelNotificationOuvertureSeance nullable: true
 
     matiere(nullable: true)
 
