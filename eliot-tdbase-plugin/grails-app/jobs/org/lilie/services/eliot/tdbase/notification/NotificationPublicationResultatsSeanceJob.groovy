@@ -90,7 +90,7 @@ class NotificationPublicationResultatsSeanceJob {
             return
         }
         try {
-            log.error("try envoi notification : ${notification}")
+            log.debug("try envoi notification : ${notification}")
             def rep = notificationRestService.postNotification(notification)
             if (rep.success == false) {
                 log.error(rep.message)
