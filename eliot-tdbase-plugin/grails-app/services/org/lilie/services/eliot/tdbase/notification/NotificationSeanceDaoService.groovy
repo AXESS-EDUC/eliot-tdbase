@@ -16,28 +16,35 @@ class NotificationSeanceDaoService {
     def groovySql
 
     List<String> findAllEmailDestinatairesForPublicationResultats(ModaliteActivite modaliteActivite) {
-        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.EMAIL,PUBLICATION_RESULTATS)
+        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(
+                modaliteActivite.structureEnseignement,NotificationSupport.EMAIL,PUBLICATION_RESULTATS)
     }
 
     List<String> findAllSmsDestinatairesForPublicationResultats(ModaliteActivite modaliteActivite) {
-        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.SMS, PUBLICATION_RESULTATS)
+        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(
+                modaliteActivite.structureEnseignement,NotificationSupport.SMS, PUBLICATION_RESULTATS)
     }
 
     List<String> findAllEmailDestinatairesForCreationSeance(ModaliteActivite modaliteActivite) {
-        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.EMAIL,CREATION_SEANCE)
+        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(
+                modaliteActivite.structureEnseignement,NotificationSupport.EMAIL,CREATION_SEANCE)
     }
 
     List<String> findAllSmsDestinatairesForCreationSeance(ModaliteActivite modaliteActivite) {
-        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(modaliteActivite.structureEnseignement,NotificationSupport.SMS, CREATION_SEANCE)
+        findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(
+                modaliteActivite.structureEnseignement,NotificationSupport.SMS, CREATION_SEANCE)
     }
 
-    List<String> findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(StructureEnseignement structureEnseignement, NotificationSupport supportNotification, String evenement) {
-        def rows = findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(structureEnseignement,supportNotification,evenement)
+    List<String> findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(
+            StructureEnseignement structureEnseignement, NotificationSupport supportNotification, String evenement) {
+        def rows = findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(
+                structureEnseignement,supportNotification,evenement)
         def res = rows.collect { row -> row.get("personne_id_externe")}
         res
     }
 
-    List<GroovyRowResult> findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(StructureEnseignement structureEnseignement, NotificationSupport supportNotification, String evenement) {
+    List<GroovyRowResult> findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(
+            StructureEnseignement structureEnseignement, NotificationSupport supportNotification, String evenement) {
         def rows
         if (evenement == CREATION_SEANCE) {
             rows = groovySql.rows(queryForCreationSeance(structureEnseignement, supportNotification))
@@ -45,6 +52,38 @@ class NotificationSeanceDaoService {
             rows = groovySql.rows(queryForPublicationResultats(structureEnseignement, supportNotification))
         }
         rows
+    }
+
+    List<ModaliteActivite> findAllSeancesWithPublicationResultatsToNotifie(int maxResult = 20) {
+        def criteria = ModaliteActivite.createCriteria()
+        Date now = new Date()
+        int nbJoursPassesAutorisePourNotification = 5
+        def res = criteria.list {
+            isNull('dateNotificationPublicationResultats')
+            between('datePublicationResultats',now-nbJoursPassesAutorisePourNotification, now)
+            maxResults(maxResult)
+        }
+        res
+    }
+
+    List<ModaliteActivite> findAllSeancesWithInvitationToNotifie(int maxResult = 20, int nbJoursAvantOuverture = 1) {
+        def criteria = ModaliteActivite.createCriteria()
+        Date now = new Date()
+        def res = criteria.list {
+            gt('dateDebut', now)
+            or {
+                and {
+                    isNull('dateNotificationOuvertureSeance')
+                    eq('notifierMaintenant', true)
+                }
+                and {
+                    eq('notifierAvantOuverture',true)
+                    between('dateDebut', now-nbJoursAvantOuverture, now)
+                }
+            }
+            maxResults(maxResult)
+        }
+        res
     }
 
     private def queryForPublicationResultats(StructureEnseignement structureEnseignement, NotificationSupport supportNotification) {

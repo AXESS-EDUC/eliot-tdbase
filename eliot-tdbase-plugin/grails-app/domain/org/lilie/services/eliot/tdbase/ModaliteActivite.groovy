@@ -70,6 +70,12 @@ class ModaliteActivite {
   Boolean notifierAvantOuverture = true
   Integer notifierNJoursAvant = 1
 
+  Etablissement findEtablissement() {
+    if (etablissement != null) {
+      return etablissement
+    }
+    structureEnseignement.etablissement
+  }
 
   static constraints = {
     responsable(nullable: true)

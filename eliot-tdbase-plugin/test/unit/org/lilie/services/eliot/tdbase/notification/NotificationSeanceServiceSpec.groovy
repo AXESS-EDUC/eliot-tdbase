@@ -21,7 +21,7 @@ class NotificationSeanceServiceSpec extends Specification {
 	def setup() {
 
 		modaliteActivite = Mock(ModaliteActivite) {
-			getEtablissement() >> Mock(Etablissement) {
+			findEtablissement() >> Mock(Etablissement) {
 				getIdExterne() >> "etabIdExt"
 			}
 		}
