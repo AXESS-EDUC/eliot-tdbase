@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase.notification
 
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.lilie.services.eliot.tdbase.ModaliteActivite
 import org.lilie.services.eliot.tdbase.webservices.rest.client.NotificationRestService
 
@@ -47,6 +48,7 @@ class NotificationPublicationResultatsSeanceJob {
     NotificationRestService notificationRestService
     NotificationSeanceService notificationSeanceService
     def messageSource
+    LinkGenerator grailsLinkGenerator
 
     Locale frLocale = new Locale("fr")
 
@@ -107,7 +109,11 @@ class NotificationPublicationResultatsSeanceJob {
         [
                 seance.sujet.titre,
                 seance.datePublicationResultats.format("dd/MM/YYYY"),
-                seance.datePublicationResultats.format("HH:mm")
+                seance.datePublicationResultats.format("HH:mm"),
+                grailsLinkGenerator.link(controller: "accueil", action: "activite",
+                        id: seance.id,
+                        absolute: true,
+                        params: [sujetId: seance.sujetId])
         ].toArray()
     }
 }

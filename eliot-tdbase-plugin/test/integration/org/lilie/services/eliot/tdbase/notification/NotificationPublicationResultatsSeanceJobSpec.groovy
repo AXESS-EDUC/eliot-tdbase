@@ -3,6 +3,7 @@ package org.lilie.services.eliot.tdbase.notification
 import grails.plugin.spock.IntegrationSpec
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.lilie.services.eliot.tdbase.ModaliteActivite
 import org.lilie.services.eliot.tdbase.ModaliteActiviteService
 import org.lilie.services.eliot.tdbase.Sujet
@@ -34,6 +35,7 @@ class NotificationPublicationResultatsSeanceJobSpec extends IntegrationSpec {
     SujetService sujetService
     ModaliteActiviteService modaliteActiviteService
     def messageSource
+    LinkGenerator grailsLinkGenerator
 
     NotificationPublicationResultatsSeanceJob notificationPublicationResultatsSeanceJob
     Sujet sujet
@@ -51,7 +53,8 @@ class NotificationPublicationResultatsSeanceJobSpec extends IntegrationSpec {
                 notificationSeanceService: notificationSeanceService,
                 notificationRestService: notificationRestService,
                 notificationSeanceDaoService: notificationSeanceDaoService,
-                messageSource: messageSource
+                messageSource: messageSource,
+                grailsLinkGenerator: grailsLinkGenerator
         )
         // le sujet
         sujet = sujetService.createSujet(bootstrapService.enseignant1,"un sujet")
