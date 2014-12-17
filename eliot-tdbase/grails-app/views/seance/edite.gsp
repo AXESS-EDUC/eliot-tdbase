@@ -57,11 +57,6 @@
         return false;
       });
 
-      $('#dateFin').change(function() {
-            if (!$('#datePublicationResultats').val()) {
-                $('#datePublicationResultats').val($(this).val())
-            }
-      })
 
      $("#search-structure-form").dialog({
            autoOpen: false,
