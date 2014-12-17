@@ -32,7 +32,6 @@ import grails.plugin.spock.IntegrationSpec
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.utils.BootstrapService
-import org.lilie.services.eliot.tice.utils.contract.Contract
 import org.lilie.services.eliot.tice.utils.contract.PreConditionException
 
 /**

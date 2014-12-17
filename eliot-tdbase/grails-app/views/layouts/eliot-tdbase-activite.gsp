@@ -66,6 +66,9 @@
                 params="[bcInit: true]"
                 title="Liste des résultats">Résultats</g:link>
       </li>
+        <li>
+            <g:link title="Préférences" controller="utilisateur" params="[bcInit: true]" action="preference">Mes préférences</g:link>
+        </li>
      </ul>
   </div>
     <g:render template="/roleApplicatifSelection" model="[role: RoleApplicatif.ELEVE,securiteSessionServiceProxy:securiteSessionServiceProxy]"/>

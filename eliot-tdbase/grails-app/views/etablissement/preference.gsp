@@ -53,7 +53,7 @@
     </div>
 </g:if>
 
-<g:form method="post" controller="preferences" action="enregistre">
+<g:form method="post" controller="etablissement" action="enregistre">
     <g:hiddenField name="prefEtabId" value="${preferenceEtablissement.id}"/>
     <%
         def rolesModifiables = [org.lilie.services.eliot.tdbase.securite.RoleApplicatif.ENSEIGNANT, org.lilie.services.eliot.tdbase.securite.RoleApplicatif.ELEVE]
@@ -90,7 +90,7 @@
 
     <div class="form_actions edite">
         <g:actionSubmit value="Enregistrer" class="button"
-                        action="enregistre" controller="preferences"
+                        action="enregistre" controller="etablissement"
                         title="Enregistrer"/>
     </div>
 

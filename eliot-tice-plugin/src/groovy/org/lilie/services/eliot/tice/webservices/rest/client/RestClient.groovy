@@ -109,7 +109,10 @@ class RestClient {
         }
       }
     } catch (Exception e) {
-      log.error(e.message, e)
+      log.error(e.message)
+      if (e.cause) {
+        log.error(e.cause.message)
+      }
     }
     result
   }

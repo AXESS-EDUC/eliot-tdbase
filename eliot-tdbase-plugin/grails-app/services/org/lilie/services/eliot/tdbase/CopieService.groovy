@@ -313,7 +313,17 @@ class CopieService {
                 eq 'eleve', chercheur
                 modaliteActivite {
                     inList 'structureEnseignement', structs
-                    lt 'dateFin', now
+                    or {
+                        and {
+                            isNull 'datePublicationResultats'
+                            lt 'dateFin', now
+                        }
+                        and {
+                            isNotNull 'datePublicationResultats'
+                            lt 'datePublicationResultats', now
+                        }
+                    }
+
                 }
                 if (paginationAndSortingSpec) {
                     def sortArg = paginationAndSortingSpec['sort'] ?: 'dateRemise'

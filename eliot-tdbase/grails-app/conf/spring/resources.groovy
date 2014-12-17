@@ -1,4 +1,4 @@
-import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
+import groovy.sql.Sql
 import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 
 /*
@@ -30,9 +30,9 @@ import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 */
 
 beans = {
-  userDetailsService(EliotTiceUserDetailsService) {
-    utilisateurService = ref("utilisateurService")
-    roleUtilisateurService = ref("roleUtilisateurService")
-  }
-
+    userDetailsService(EliotTiceUserDetailsService) {
+        utilisateurService = ref("utilisateurService")
+        roleUtilisateurService = ref("roleUtilisateurService")
+    }
+    groovySql(Sql, ref('dataSource'))
 }

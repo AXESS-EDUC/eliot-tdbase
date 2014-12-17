@@ -61,4 +61,9 @@
     <include file="migrations/schema.tdbase/changelog-20131126-TDB-62.xml"/>
 
     <include file="migrations/schema.tdbase/changelog-20140908-TDB-87.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20141031-TDB-74.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20141215-TDB-132.xml"/>
+
 </databaseChangeLog>

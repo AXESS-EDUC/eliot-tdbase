@@ -54,6 +54,7 @@ class SeanceController {
     NotesService notesService
     SecuriteSessionService securiteSessionServiceProxy
 
+
 /**
  *
  * Action "edite"
@@ -251,6 +252,7 @@ class SeanceController {
         }
 
         if (!modaliteActivite.hasErrors()) {
+
             flash.messageCode = "seance.enregistre.succes"
 
             if (grailsApplication.config.eliot.interfacage.textes) {
@@ -277,10 +279,10 @@ class SeanceController {
         }
     }
 
-    /**
-     *
-     * Action "recherche"
-     */
+/**
+ *
+ * Action "recherche"
+ */
     def liste() {
         def maxItems = grailsApplication.config.eliot.listes.max
         params.max = Math.min(params.max ? params.int('max') : maxItems, 100)

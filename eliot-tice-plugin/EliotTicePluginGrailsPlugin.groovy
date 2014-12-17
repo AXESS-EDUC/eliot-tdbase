@@ -54,7 +54,7 @@ class EliotTicePluginGrailsPlugin {
   // the group id
   def groupId = "org.lilie.services.eliot"
   // the plugin version
-  def version = "2.4.1-SNAPSHOT"
+  def version = "2.4.2-SNAPSHOT"
   // the version or versions of Grails the plugin is designed for
   def grailsVersion = "2.0.1 > *"
   // the other plugins this plugin depends on
@@ -170,8 +170,24 @@ class EliotTicePluginGrailsPlugin {
           uriPrefix = prefixUriScolarite
           connexionTimeout = conTimeoutScolarite
           restOperationDirectory = ref("restOperationDirectory")
-          println "Auth Basic user for Scolarite Web services client REST : ${userNotes}"
+          println "Auth Basic user for Scolarite Web services client REST : ${userScolarite}"
       }
+
+    def userWsNotification = conf.eliot.webservices.rest.client.notification.user
+    def passwordWsNotification = conf.eliot.webservices.rest.client.notification.password
+    def urlWsNotification = conf.eliot.webservices.rest.client.notification.urlServer
+    def prefixUriWsNotification = conf.eliot.webservices.rest.client.notification.uriPrefix
+    def conTimeoutWsNotification = conf.eliot.webservices.rest.client.notification.connexionTimeout ?: 15000
+
+    restClientForNotification(RestClient) {
+      authBasicUser = userWsNotification
+      authBasicPassword = passwordWsNotification
+      urlServer = urlWsNotification
+      uriPrefix = prefixUriWsNotification
+      connexionTimeout = conTimeoutWsNotification
+      restOperationDirectory = ref("restOperationDirectory")
+      println "Auth Basic user for Notification Web services client REST : ${userWsNotification}"
+    }
 
     // configure la gestion d'EliotUrlProvider
     //

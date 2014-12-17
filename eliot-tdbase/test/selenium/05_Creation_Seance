@@ -157,44 +157,9 @@
 	<td>label=TEST__1ereA_G1 (groupe ENT)</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=dateDebut</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//button[@type='button']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//dd[@id='ui_tpicker_hour_dateDebut']/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>xpath=(//button[@type='button'])[2]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=dateFin</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//button[@type='button']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//dd[@id='ui_tpicker_hour_dateFin']/a</td>
-	<td></td>
-</tr>
-<tr>
 	<td>type</td>
-	<td>id=dateFin</td>
-	<td>23/02/2015 23:59</td>
+	<td>id=datePublicationResultats</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

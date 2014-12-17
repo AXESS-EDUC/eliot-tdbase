@@ -63,17 +63,43 @@ class ModaliteActivite {
   Boolean copieAmeliorable = true
   Boolean optionEvaluerCompetences
 
+  Date datePublicationResultats = dateFin
+  Date dateNotificationPublicationResultats
+  Date dateNotificationOuvertureSeance
+  Date dateRappelNotificationOuvertureSeance
+  Boolean notifierMaintenant = true
+  Boolean notifierAvantOuverture = true
+  Integer notifierNJoursAvant = 1
+
+  Etablissement findEtablissement() {
+    if (etablissement != null) {
+      return etablissement
+    }
+    structureEnseignement.etablissement
+  }
+
   static constraints = {
     responsable(nullable: true)
     etablissement(nullable: true)
     activiteId(nullable: true)
     evaluationId(nullable: true)
-    structureEnseignement(nullable: false)
     dateFin(validator: { val, obj ->
       if (!val.after(obj.dateDebut)) {
         return ['invalid.dateFinAvantDateDebut']
       }
     })
+    datePublicationResultats(nullable: true, validator: { val, obj ->
+      if (val == null || val == obj.dateFin) {
+        return true
+      }
+      if (val &&  obj.dateFin.after(val)) {
+        return ['invalid.datePublicationAvantDateFin']
+      }
+    })
+    dateNotificationPublicationResultats nullable: true
+    dateNotificationOuvertureSeance nullable: true
+    dateRappelNotificationOuvertureSeance nullable: true
+
     matiere(nullable: true)
 
     optionEvaluerCompetences(nullable: true)
@@ -83,6 +109,7 @@ class ModaliteActivite {
     table('td.modalite_activite')
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.modalite_activite_id_seq'])
+    notifierNJoursAvant(column: 'notifier_n_jours_avant')
     cache(true)
   }
 
@@ -126,5 +153,14 @@ class ModaliteActivite {
   boolean estPerimee() {
     Date now = new Date()
     now.after(dateFin)
+  }
+
+  boolean hasResultatsPublies() {
+    Date now = new Date()
+    if (datePublicationResultats == null) {
+      now.after(dateFin)
+    } else {
+      now.after(datePublicationResultats)
+    }
   }
 }
