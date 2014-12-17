@@ -63,7 +63,7 @@ class ModaliteActivite {
   Boolean copieAmeliorable = true
   Boolean optionEvaluerCompetences
 
-  Date datePublicationResultats = new Date() + 2
+  Date datePublicationResultats
   Date dateNotificationPublicationResultats
   Date dateNotificationOuvertureSeance
   Date dateRappelNotificationOuvertureSeance
@@ -88,8 +88,11 @@ class ModaliteActivite {
         return ['invalid.dateFinAvantDateDebut']
       }
     })
-    datePublicationResultats(validator: { val, obj ->
-      if (!val.after(obj.dateFin)) {
+    datePublicationResultats(nullable: true, validator: { val, obj ->
+      if (val == null || val == obj.dateFin) {
+        return true
+      }
+      if (val &&  obj.dateFin.after(val)) {
         return ['invalid.datePublicationAvantDateFin']
       }
     })
@@ -150,5 +153,14 @@ class ModaliteActivite {
   boolean estPerimee() {
     Date now = new Date()
     now.after(dateFin)
+  }
+
+  boolean hasResultatsPublies() {
+    Date now = new Date()
+    if (datePublicationResultats == null) {
+      now.after(dateFin)
+    } else {
+      now.after(datePublicationResultats)
+    }
   }
 }
