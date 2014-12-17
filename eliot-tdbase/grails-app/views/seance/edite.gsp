@@ -57,6 +57,12 @@
         return false;
       });
 
+      $('#dateFin').change(function() {
+            if (!$('#datePublicationResultats').val()) {
+                $('#datePublicationResultats').val($(this).val())
+            }
+      })
+
      $("#search-structure-form").dialog({
            autoOpen: false,
            title: "Rechercher une classe ou un groupe d'élèves",
@@ -180,7 +186,7 @@
       <tr>
         <td class="label">Fin&nbsp;:</td>
         <td>
-          <g:textField name="dateFin"
+          <g:textField name="dateFin" id="dateFin"
                        value="${modaliteActivite.dateFin.format('dd/MM/yyyy HH:mm')}"
                        class="datepicker short"/>
         </td>
@@ -188,8 +194,8 @@
         <tr>
             <td class="label">Publication des résultats&nbsp;:</td>
             <td>
-                <g:textField name="datePublicationResultats"
-                             value="${modaliteActivite.datePublicationResultats.format('dd/MM/yyyy HH:mm')}"
+                <g:textField name="datePublicationResultats" id="datePublicationResultats"
+                             value="${modaliteActivite.datePublicationResultats?.format('dd/MM/yyyy HH:mm')}"
                              class="datepicker short"/>
             </td>
         </tr>

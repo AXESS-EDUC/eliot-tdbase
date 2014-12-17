@@ -63,7 +63,7 @@ class ModaliteActivite {
   Boolean copieAmeliorable = true
   Boolean optionEvaluerCompetences
 
-  Date datePublicationResultats
+  Date datePublicationResultats = dateFin
   Date dateNotificationPublicationResultats
   Date dateNotificationOuvertureSeance
   Date dateRappelNotificationOuvertureSeance

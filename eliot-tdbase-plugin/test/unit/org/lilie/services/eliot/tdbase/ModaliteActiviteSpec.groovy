@@ -26,7 +26,8 @@ class ModaliteActiviteSpec extends Specification {
         given: "une nouvelle seance avec sujet et structure enseignement"
         modaliteActivite = new ModaliteActivite(sujet: Mock(Sujet),
                 structureEnseignement: Mock(StructureEnseignement),
-                enseignant: Mock(Personne)
+                enseignant: Mock(Personne),
+                datePublicationResultats: null
         )
 
         when: "on valide la séance"
