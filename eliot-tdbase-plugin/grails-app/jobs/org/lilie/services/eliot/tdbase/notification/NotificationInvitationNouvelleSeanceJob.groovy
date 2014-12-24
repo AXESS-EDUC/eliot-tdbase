@@ -106,9 +106,9 @@ class NotificationInvitationNouvelleSeanceJob {
     private def getStringsForInvitation(ModaliteActivite seance) {
         [
                 seance.sujet.titre,
-                seance.dateDebut.format("dd/MM/YYYY"),
+                seance.dateDebut.format("dd/MM/yyyy"),
                 seance.dateDebut.format("HH:mm"),
-                seance.dateFin.format("dd/MM/YYYY"),
+                seance.dateFin.format("dd/MM/yyyy"),
                 seance.dateFin.format("HH:mm"),
                 grailsLinkGenerator.link(controller: "accueil", action: "activite",
                         id: seance.id,

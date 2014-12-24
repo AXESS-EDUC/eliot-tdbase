@@ -108,7 +108,7 @@ class NotificationPublicationResultatsSeanceJob {
     private def getStringsForPublicationresultats(ModaliteActivite seance) {
         [
                 seance.sujet.titre,
-                seance.datePublicationResultats.format("dd/MM/YYYY"),
+                seance.datePublicationResultats.format("dd/MM/yyyy"),
                 seance.datePublicationResultats.format("HH:mm"),
                 grailsLinkGenerator.link(controller: "accueil", action: "activite",
                         id: seance.id,
