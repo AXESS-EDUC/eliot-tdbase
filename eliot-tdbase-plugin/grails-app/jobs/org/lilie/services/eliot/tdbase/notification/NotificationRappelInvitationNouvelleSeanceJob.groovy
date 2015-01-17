@@ -70,18 +70,19 @@ class NotificationRappelInvitationNouvelleSeanceJob {
     }
 
     private onOuvertureSeance(ModaliteActivite seance) {
-        def titre = messageSource.getMessage("notification.seance.invitation.titre",null, frLocale)
-        def message = messageSource.getMessage("notification.seance.invitation.message", getStringsForInvitation(seance), frLocale)
+        def titre = messageSource.getMessage("notification.seance.invitation.titre",getStringsForTitre(seance), frLocale)
+        def messageSms = messageSource.getMessage("notification.seance.invitation.message.sms", getStringsForInvitation(seance), frLocale)
         Notification notificationSms = notificationSeanceService.getSmsNotificationOnCreationSeanceForSeance(
                 seance.enseignant,
                 titre,
-                message,
+                messageSms,
                 seance
         )
+        def messageEmail = messageSource.getMessage("notification.seance.invitation.message.email", getStringsForInvitation(seance), frLocale)
         Notification notificationEmail = notificationSeanceService.getEmailNotificationOnCreationSeanceForSeance(
                 seance.enseignant,
                 titre,
-                message,
+                messageEmail,
                 seance
         )
         postNotification(notificationEmail, seance)
@@ -117,7 +118,15 @@ class NotificationRappelInvitationNouvelleSeanceJob {
                 grailsLinkGenerator.link(controller: "accueil", action: "activite",
                         id: seance.id,
                         absolute: true,
-                        params: [sujetId: seance.sujetId])
+                        params: [sujetId: seance.sujetId]),
+                seance.enseignant.nomAffichageSansPrenom,
+                seance.findEtablissement().nomAffichage
+        ].toArray()
+    }
+
+    private def getStringsForTitre(ModaliteActivite seance) {
+        [
+                seance.findEtablissement().nomAffichage
         ].toArray()
     }
 }

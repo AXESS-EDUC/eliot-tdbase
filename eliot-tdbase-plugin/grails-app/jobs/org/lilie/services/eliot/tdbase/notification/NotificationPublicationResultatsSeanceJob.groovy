@@ -66,20 +66,23 @@ class NotificationPublicationResultatsSeanceJob {
     }
 
     private onPublicationResultats(ModaliteActivite seance) {
-        def titre = messageSource.getMessage("notification.seance.publicationResultats.titre",null, frLocale)
-        def message = messageSource.getMessage("notification.seance.publicationResultats.message",
+        def titre = messageSource.getMessage("notification.seance.publicationResultats.titre",getStringsForTitre(seance), frLocale)
+        def messageSms = messageSource.getMessage("notification.seance.publicationResultats.message.sms",
                 getStringsForPublicationresultats(seance),
                 frLocale)
         Notification notificationSms = notificationSeanceService.getSmsNotificationOnPublicationResultatsForSeance(
                 seance.enseignant,
                 titre,
-                message,
+                messageSms,
                 seance
         )
+        def messageEmail = messageSource.getMessage("notification.seance.publicationResultats.message.email",
+                getStringsForPublicationresultats(seance),
+                frLocale)
         Notification notificationEmail = notificationSeanceService.getEmailNotificationOnPublicationResultatsForSeance(
                 seance.enseignant,
                 titre,
-                message,
+                messageEmail,
                 seance
         )
         postNotification(notificationEmail, seance)
@@ -113,7 +116,14 @@ class NotificationPublicationResultatsSeanceJob {
                 grailsLinkGenerator.link(controller: "accueil", action: "activite",
                         id: seance.id,
                         absolute: true,
-                        params: [sujetId: seance.sujetId])
+                        params: [sujetId: seance.sujetId]),
+                seance.findEtablissement().nomAffichage
+        ].toArray()
+    }
+
+    private def getStringsForTitre(ModaliteActivite seance) {
+        [
+                seance.findEtablissement().nomAffichage
         ].toArray()
     }
 }
