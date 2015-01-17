@@ -115,7 +115,8 @@ class NotificationInvitationNouvelleSeanceJob {
                         id: seance.id,
                         absolute: true,
                         params: [sujetId: seance.sujetId]),
-                seance.enseignant.nomAffichageSansPrenom
+                seance.enseignant.nomAffichageSansPrenom,
+                seance.findEtablissement().nomAffichage
         ].toArray()
     }
 

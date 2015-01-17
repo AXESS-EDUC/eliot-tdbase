@@ -116,7 +116,8 @@ class NotificationPublicationResultatsSeanceJob {
                 grailsLinkGenerator.link(controller: "accueil", action: "activite",
                         id: seance.id,
                         absolute: true,
-                        params: [sujetId: seance.sujetId])
+                        params: [sujetId: seance.sujetId]),
+                seance.findEtablissement().nomAffichage
         ].toArray()
     }
 
