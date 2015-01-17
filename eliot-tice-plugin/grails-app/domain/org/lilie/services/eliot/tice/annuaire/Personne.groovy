@@ -70,7 +70,7 @@ public class Personne {
     autorite fetch: 'join'
   }
 
-  static transients = ['nomAffichage','idExterne']
+  static transients = ['nomAffichage','idExterne','nomAffichageSansPrenom']
 
   static constraints = {
     civilite(nullable: true)
@@ -99,6 +99,14 @@ public class Personne {
    */
   String getNomAffichage() {
     "$nom $prenom"
+  }
+
+  /**
+   *
+   * @return le nom d'affichage
+   */
+  String getNomAffichageSansPrenom() {
+    "${prenom[0]}. $nom"
   }
 
   /**
