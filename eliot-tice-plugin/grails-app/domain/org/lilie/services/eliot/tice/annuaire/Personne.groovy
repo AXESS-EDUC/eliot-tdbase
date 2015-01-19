@@ -106,7 +106,7 @@ public class Personne {
    * @return le nom d'affichage
    */
   String getNomAffichageSansPrenom() {
-    "${prenom[0]}. $nom"
+    "${nom}.${prenom[0]}"
   }
 
   /**
