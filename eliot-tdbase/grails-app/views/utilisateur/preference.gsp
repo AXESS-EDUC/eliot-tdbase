@@ -61,32 +61,39 @@
 
 <g:form method="post" controller="utilisateur" action="enregistrePreference">
     <g:hiddenField name="id" value="${preferencePersonne.id}"/>
-    <div class="portal-form_container edite" style="width: 69%;">
+    <div class="portal-form_container edite preferences_utilisateurs" style="width: 69%;">
         <table>
             <tr>
-                <td class="label"><g:message code="utilisateur.preference.notificationOnCreationSeance"/>&nbsp;
+                <td><g:message code="utilisateur.preference.supportNotifications"/>&nbsp;
+                </td>
+                <td>
+                    EMAIL <g:checkBox id="e_mail" name="e_mail"
+                                value="${preferencePersonne.codeSupportNotification & 1}"/>
+                    SMS <g:checkBox id="sms" name="sms"
+                                value="${preferencePersonne.codeSupportNotification & 2}"/>
+
+                </td>
+            </tr>
+            <tr style="background-color: #d0d4df">
+                <td class="label"><g:message code="utilisateur.preference.notification"/>&nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td><g:message code="utilisateur.preference.notificationOnCreationSeance"/>&nbsp;
                 </td>
                 <td>
                     <g:checkBox id="notificationOnCreationSeance" name="notificationOnCreationSeance"
                                 value="${preferencePersonne.notificationOnCreationSeance}"/></td>
             </tr>
             <tr>
-                <td class="label"><g:message code="utilisateur.preference.notificationOnPubicationResultats"/>&nbsp;
+                <td><g:message code="utilisateur.preference.notificationOnPubicationResultats"/>&nbsp;
                 </td>
                 <td>
                     <g:checkBox id="notificationOnPublicationResultats" name="notificationOnPublicationResultats"
                                 value="${preferencePersonne.notificationOnPublicationResultats}"/></td>
-            </tr>
-            <tr>
-                <td class="label"><g:message code="utilisateur.preference.supportNotifications"/>&nbsp;
-                </td>
-                <td>
-                    <g:checkBox id="e_mail" name="e_mail"
-                                value="${preferencePersonne.codeSupportNotification & 1}"/> e-mail
-                    <g:checkBox id="sms" name="sms"
-                                value="${preferencePersonne.codeSupportNotification & 2}"/> SMS
-
-                </td>
             </tr>
         </table>
     </div>
@@ -99,32 +106,7 @@
 
 </g:form>
 
-<r:script>
-    $(document).ready(function () {
-        updateCheckboxesState();
 
-        $('#notificationOnCreationSeance').change(function () {
-            updateCheckboxesState();
-        })
-        $('#notificationOnPublicationResultats').change(function () {
-            updateCheckboxesState();
-        })
-
-        function updateCheckboxesState() {
-            if ($('#notificationOnCreationSeance').is(':checked') ||
-                    $('#notificationOnPublicationResultats').is(':checked')) {
-                $('#e_mail').prop('disabled', false);
-                $('#sms').prop('disabled', false);
-            } else {
-                $('#e_mail').prop('checked', false);
-                $('#sms').prop('checked', false);
-                $('#e_mail').prop('disabled', true);
-                $('#sms').prop('disabled', true);
-            }
-        }
-    });
-
-</r:script>
 
 </body>
 </html>

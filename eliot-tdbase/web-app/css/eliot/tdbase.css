@@ -1327,4 +1327,18 @@ div.portal-default_results-list.sceance.resultats em{
 }
 
 
+/*******************************************************************************
 
+ Préférences utilisateurs
+
+********************************************************************************/
+
+.preferences_utilisateurs table {
+    width: 80%;
+    color: #000000;
+}
+
+.preferences_utilisateurs td {
+    border:1px solid whitesmoke;
+    border-collapse: collapse;
+}

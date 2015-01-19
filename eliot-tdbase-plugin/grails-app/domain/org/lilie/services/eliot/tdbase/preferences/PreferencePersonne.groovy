@@ -19,8 +19,10 @@ class PreferencePersonne {
 
     static constraints = {
         codeSupportNotification inList: NotificationSupport.values()*.ordinal(), validator: { val, obj ->
-            if ((val != 0 && (!obj.notificationOnCreationSeance && !obj.notificationOnPublicationResultats) ||
-                    (val == 0 && (obj.notificationOnCreationSeance || obj.notificationOnPublicationResultats)))) {
+            if (val != 0 && (!obj.notificationOnCreationSeance && !obj.notificationOnPublicationResultats)) {
+                return ['invalid.notificationNonSelectionnee']
+            }
+            if (val == 0 && (obj.notificationOnCreationSeance || obj.notificationOnPublicationResultats)) {
                 return ['invalid.supportNonSelectionne']
             }
         }
