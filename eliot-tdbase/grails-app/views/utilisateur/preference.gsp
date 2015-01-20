@@ -66,32 +66,34 @@
             <tr>
                 <td><g:message code="utilisateur.preference.supportNotifications"/>&nbsp;
                 </td>
-                <td>
+                <td style="text-align: center">
                     EMAIL <g:checkBox id="e_mail" name="e_mail"
                                 value="${preferencePersonne.codeSupportNotification & 1}"/>
+                </td>
+                <td style="text-align: center">
                     SMS <g:checkBox id="sms" name="sms"
-                                value="${preferencePersonne.codeSupportNotification & 2}"/>
+                                    value="${preferencePersonne.codeSupportNotification & 2}"/>
 
                 </td>
             </tr>
             <tr style="background-color: #d0d4df">
                 <td class="label"><g:message code="utilisateur.preference.notification"/>&nbsp;
                 </td>
-                <td>
+                <td colspan="2">
                     &nbsp;
                 </td>
             </tr>
             <tr>
                 <td><g:message code="utilisateur.preference.notificationOnCreationSeance"/>&nbsp;
                 </td>
-                <td>
+                <td style="text-align: center" colspan="2">
                     <g:checkBox id="notificationOnCreationSeance" name="notificationOnCreationSeance"
                                 value="${preferencePersonne.notificationOnCreationSeance}"/></td>
             </tr>
             <tr>
                 <td><g:message code="utilisateur.preference.notificationOnPubicationResultats"/>&nbsp;
                 </td>
-                <td>
+                <td style="text-align: center" colspan="2">
                     <g:checkBox id="notificationOnPublicationResultats" name="notificationOnPublicationResultats"
                                 value="${preferencePersonne.notificationOnPublicationResultats}"/></td>
             </tr>
