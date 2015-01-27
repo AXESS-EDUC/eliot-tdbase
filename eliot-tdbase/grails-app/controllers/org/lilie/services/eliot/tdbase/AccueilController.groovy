@@ -34,13 +34,11 @@ import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.FonctionService
 
 class AccueilController {
 
     static scope = "singleton"
 
-    FonctionService fonctionService
     CopieService copieService
     SecuriteSessionService securiteSessionServiceProxy
     SpringSecurityService springSecurityService
@@ -56,7 +54,7 @@ class AccueilController {
         } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.ENSEIGNANT.authority)){
             redirect(controller: 'dashboard', action: 'index', params: [bcInit: true])
         } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.ADMINISTRATEUR.authority)) {
-            redirect(controller: 'preferences', action: 'index',params: [bcInit: true])
+            redirect(controller: 'etablissement', action: 'preference',params: [bcInit: true])
         } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.SUPER_ADMINISTRATEUR.authority)) {
             redirect(controller: 'maintenance', action: 'index', params: [bcInit: true])
         } else {
@@ -93,15 +91,18 @@ class AccueilController {
                 redirect(controller: 'activite', action: 'listeSeances', params: params)
             } else if (seance.estOuverte()) {
                 redirect(controller: 'activite', action: 'travailleCopie', params: params)
-            } else {
+            } else if (seance.hasResultatsPublies()) {
                 Personne personne = authenticatedPersonne
                 Copie copie = copieService.getCopieForModaliteActiviteAndEleve(seance, personne)
                 redirect(controller: 'activite', action: 'visualiseCopie', id: copie.id, params: [bcInit: true])
+            } else {
+                flash.messageCode = "seance.resultats.nondisponible"
+                redirect(controller: 'activite', action: 'listeSeances', params: params)
             }
         } else if (SpringSecurityUtils.ifAllGranted(RoleApplicatif.PARENT.authority)) {
             if (!seance) {
                 flash.messageCode = "seance.nondisponible"
-            } else if (seance.estOuverte()) {
+            } else if (!seance.hasResultatsPublies()) {
                 flash.messageCode = "seance.resultats.nondisponible"
             }
             redirect(controller: 'resultats', action: 'liste', params: [bcInit: true])

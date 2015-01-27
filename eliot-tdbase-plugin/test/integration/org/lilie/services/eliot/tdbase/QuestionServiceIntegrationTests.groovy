@@ -94,6 +94,7 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
     def props = [
             dateDebut: dateDebut,
             dateFin: dateFin,
+            datePublicationResultats:dateFin+2,
             sujet: sujet1,
             structureEnseignement: struct1ere
     ]

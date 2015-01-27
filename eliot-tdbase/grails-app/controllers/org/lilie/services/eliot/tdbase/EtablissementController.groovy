@@ -37,7 +37,7 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
-class PreferencesController {
+class EtablissementController {
 
     static scope = "singleton"
 
@@ -49,7 +49,7 @@ class PreferencesController {
      * Accueil preferences
      * @return
      */
-    def index() {
+    def preference() {
         Personne user = authenticatedPersonne
         breadcrumpsServiceProxy.manageBreadcrumps(params,
                 message(code: "preferences.index.title"))
@@ -78,7 +78,7 @@ class PreferencesController {
         preferenceEtablissementService.updatePreferenceEtablissement(personne, prefEtab)
         securiteSessionServiceProxy.initialiseRolesAvecPerimetreForPersonne(personne, false)
         flash.messageTextesCode = "preferences.save.success"
-        redirect(controller: "preferences", action: "index", params: [bcInit: true])
+        redirect(controller: "etablissement", action: "preference", params: [bcInit: true])
     }
 
     private MappingFonctionRole getMappingFromParamsForPreferenceEtablissement(

@@ -176,11 +176,15 @@ grails.plugins.springsecurity.interceptUrlMap = [
                 "${RoleApplicatif.ELEVE.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
+        '/utilisateur/**'   : [
+                "${RoleApplicatif.ELEVE.authority}",
+                'IS_AUTHENTICATED_FULLY'
+        ],
         '/resultats/**'  : [
                 "${RoleApplicatif.PARENT.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
-        '/preferences/**': [
+        '/etablissement/**': [
                 "${RoleApplicatif.ADMINISTRATEUR.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
@@ -363,6 +367,12 @@ environments {
         eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
         eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
         eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
+        // rest client config for notification
+        eliot.webservices.rest.client.notification.user = "api"
+        eliot.webservices.rest.client.notification.password = "api"
+        eliot.webservices.rest.client.notification.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.notification.uriPrefix = "/eliot-test-webservices/echanges/v2"
+        eliot.webservices.rest.client.notification.connexionTimeout = 10000
 
     }
     test {
@@ -383,6 +393,12 @@ environments {
         eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
         eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
         eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
+        // rest client config for notification
+        eliot.webservices.rest.client.notification.user = "api"
+        eliot.webservices.rest.client.notification.password = "api"
+        eliot.webservices.rest.client.notification.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.notification.uriPrefix = "/eliot-test-webservices/echanges/v2"
+        eliot.webservices.rest.client.notification.connexionTimeout = 10000
     }
     testlilie {
         // Spécifie si les objets sensés être créés sont bien créés
@@ -407,6 +423,12 @@ environments {
         eliot.webservices.rest.client.scolarite.urlServer = "http://fylab02.dns-oid.com:8380"
         eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-scolarite-2.8.2-A1/echanges/v2"
         eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
+        // rest client config for notification
+        eliot.webservices.rest.client.notification.user = "api"
+        eliot.webservices.rest.client.notification.password = "api"
+        eliot.webservices.rest.client.notification.urlServer = "http://fylab02.dns-oid.com:8380"
+        eliot.webservices.rest.client.notification.uriPrefix = "/eliot-scolarite-2.8.2-A1/echanges/v2"
+        eliot.webservices.rest.client.notification.connexionTimeout = 10000
     }
 
 }
@@ -501,8 +523,71 @@ eliot.webservices.rest.client.operations = [[operationName           : "getStruc
                                                     requestBodyTemplate     : null,
                                                     responseContentStructure: "List<eliot-scolarite#fonction#standard>",
                                                     //urlServer: "http://localhost:8090",
-                                                    uriTemplate             : '/wsprofilsetab']
+                                                    uriTemplate             : '/wsprofilsetab'],
+                                            [
+                                                    operationName           : "postNotification",
+                                                    description             : "Cree une notification",
+                                                    contentType             : ContentType.JSON,
+                                                    method                  : Method.POST,
+                                                    requestBodyTemplate     : '''
+                                                    {
+                                                        "etablissementIdExterne": "$etablissementIdExterne",
+                                                        "demandeurIdExterne": "$demandeurIdExterne",
+                                                        "titre": $titre,
+                                                        "message": $message,
+                                                        "destinatairesIdExterne": $destinatairesIdExterne,
+                                                        "supports": $supports
+                                                    }
+                                                    ''',
+                                                    responseContentStructure: "[success:true/false, message:message]",
+                                                    //urlServer: "http://localhost:8090",
+                                                    uriTemplate             : '/notifications']
 ]
+
+// Notifications email et sms
+//
+// Trigger définissant la périodicité du job exécutant en tâche de fond
+// les notifications d'invitation à une nouvelle séance (via les webservices)
+eliot.tdbase.notifications.seance.invitation.trigger = {
+    simple name: 'invitationSeanceTDBaseTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 5 // Toutes les 5m
+}
+
+// Trigger définissant la périodicité du job exécutant en tâche de fond
+// les notifications de rappel d'invitation à une nouvelle séance (via les webservices)
+eliot.tdbase.notifications.seance.rappelInvitation.trigger = {
+    simple name: 'rappelInvitationSeanceTDBaseTrigger', startDelay: 1000 * 75, repeatInterval: 1000 * 60 * 5 // Toutes les 5m
+}
+
+// Trigger définissant la périodicité du job exécutant en tâche de fond
+// les notifications de publications de résultats d'une séance TD Base
+eliot.tdbase.notifications.seance.publicationResultats.trigger = {
+    simple name: 'publicationResultatsSeanceTDBaseTrigger', startDelay: 1000 * 90, repeatInterval: 1000 * 60 * 5 // Toutes les m
+}
+
+environments {
+    production { // Surcharge de la configuration des jobs pour la production
+        // Trigger définissant la périodicité du job exécutant en tâche de fond
+        // les notifications d'invitation à une nouvelle séance (via les webservices)
+        eliot.tdbase.notifications.seance.invitation.trigger = {
+            simple name: 'invitationSeanceTDBaseTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 10
+            // Toutes les 10 minutes
+        }
+
+        // Trigger définissant la périodicité du job exécutant en tâche de fond
+        // les notifications de rappel d'invitation à une nouvelle séance (via les webservices)
+        eliot.tdbase.notifications.seance.rappelInvitation.trigger = {
+            simple name: 'rappelInvitationSeanceTDBaseTrigger', startDelay: 1000 * 60 * 15, repeatInterval: 1000 * 60 * 60 * 1
+            // Toutes les 1h
+        }
+
+        // Trigger définissant la périodicité du job exécutant en tâche de fond
+        // lles notifications de publications de résultats d'une séance TD Base
+        eliot.tdbase.notifications.seance.publicationResultats.trigger = {
+            simple name: 'publicationResultatsSeanceTDBaseTrigger', startDelay: 1000 * 60 * 30, repeatInterval: 1000 * 60 * 60 * 1
+            // Toutes les 1h
+        }
+    }
+}
 
 // Support de l'interface EmaEval
 eliot.interfacage.emaeval.actif = false
@@ -536,7 +621,7 @@ environments {
         // Trigger définissant la périodicité du job exécutant en tâche de fond
         // la transmission des résultats entre une séance TD Base et une campagne EmaEval
         eliot.interfacage.emaeval.score.trigger = {
-            simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 1000 * 60 * 4
+            simple name: 'emaEvalScoreTrigger', startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 60 * 4
             // Toutes les 4h
         }
     }
@@ -544,6 +629,11 @@ environments {
 
 // Configuration plugin Quartz 2
 grails.plugin.quartz2.autoStartup = true
+environments {
+    test {
+        grails.plugin.quartz2.autoStartup = false
+    }
+}
 
 // Activation/desactivation du partage en CC par les enseignants d'un artefact (i.e. d'un sujet ou d'une question)
 eliot.artefact.partage_CC_autorise = true

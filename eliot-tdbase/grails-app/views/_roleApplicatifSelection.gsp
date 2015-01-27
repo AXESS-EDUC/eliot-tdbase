@@ -6,7 +6,7 @@
             code="manuels.libellelien"/></et:manuelLink>
 </g:if>
 <sec:ifLoggedIn>
-    <g:form method="get" controller="accueil" action="changeRoleApplicatif" style="float:right" title="${securiteSessionServiceProxy.etablissementListDisplay}">Rôle <g:select name="roleApplicatif"
+    <g:form method="get" controller="accueil" action="changeRoleApplicatif" style="float:right" title="${securiteSessionServiceProxy.etablissementListDisplay}">Accès <g:select name="roleApplicatif"
                                                                                                                from="${securiteSessionServiceProxy.rolesApplicatifsAndPerimetreByRoleApplicatif.keySet()}"
                                                                                                                optionKey="code" value="${securiteSessionServiceProxy.currentRoleApplicatif.code}"
                                                                                                                valueMessagePrefix="preferences.role" onchange="submit();"

@@ -73,6 +73,12 @@ environments {
         eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
         eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
         eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
+        // rest client config for notification
+        eliot.webservices.rest.client.notification.user = "api"
+        eliot.webservices.rest.client.notification.password = "api"
+        eliot.webservices.rest.client.notification.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.notification.uriPrefix = "/eliot-test-webservices/echanges/v2"
+        eliot.webservices.rest.client.notification.connexionTimeout = 10000
     }
     test {
         eliot.eliotApplicationEnum = EliotApplicationEnum.NOT_AN_APPLICATION
@@ -100,5 +106,11 @@ environments {
         eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
         eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
         eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
+        // rest client config for notification
+        eliot.webservices.rest.client.notification.user = "api"
+        eliot.webservices.rest.client.notification.password = "api"
+        eliot.webservices.rest.client.notification.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.notification.uriPrefix = "/eliot-test-webservices/echanges/v2"
+        eliot.webservices.rest.client.notification.connexionTimeout = 10000
     }
 }

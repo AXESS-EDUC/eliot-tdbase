@@ -38,6 +38,7 @@ import org.lilie.services.eliot.tdbase.importexport.QuestionExporterService
 import org.lilie.services.eliot.tdbase.importexport.QuestionImporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
+import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.AttachementUploadException
@@ -60,6 +61,7 @@ class QuestionController {
   private static final String QUESTION_EST_DEJA_INSEREE = "questionEstDejaInseree"
 
   BreadcrumpsService breadcrumpsServiceProxy
+  SecuriteSessionService securiteSessionServiceProxy
   ProfilScolariteService profilScolariteService
   QuestionService questionService
   SujetService sujetService
@@ -122,6 +124,7 @@ class QuestionController {
             liens: breadcrumpsServiceProxy.liens,
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
+            etablissements: securiteSessionServiceProxy.etablissementList,
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,
             artefactHelper: artefactAutorisationService,
@@ -277,6 +280,7 @@ class QuestionController {
               liens: breadcrumpsServiceProxy.liens,
               question: question,
               matieres: profilScolariteService.findMatieresForPersonne(personne),
+              etablissements: securiteSessionServiceProxy.etablissementList,
               niveaux: profilScolariteService.findNiveauxForPersonne(personne),
               sujet: sujet,
               questionEnEdition: questionEnEdition,
@@ -334,6 +338,7 @@ class QuestionController {
             liens: breadcrumpsServiceProxy.liens,
             question: question,
             matieres: profilScolariteService.findMatieresForPersonne(personne),
+            etablissements: securiteSessionServiceProxy.etablissementList,
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,
             questionEnEdition: questionEnEdition,
@@ -369,11 +374,12 @@ class QuestionController {
           question: question,
           sujet: sujet,
           matieres: profilScolariteService.findMatieresForPersonne(personne),
+          etablissements: securiteSessionServiceProxy.etablissementList,
           niveaux: profilScolariteService.findNiveauxForPersonne(personne),
           sujet: sujet,
-          peutSupprimer: false,
+          artefactHelper: artefactAutorisationService,
           questionEnEdition: questionEnEdition,
-          peutPartagerQuestion: false])
+          utilisateur: personne])
     } else {
       flash.messageCode = "question.enregistre.succes"
       breadcrumpsServiceProxy.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
@@ -544,6 +550,7 @@ class QuestionController {
     [
         liens: breadcrumpsServiceProxy.liens,
         matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
+        etablissements     : securiteSessionServiceProxy.etablissementList,
         niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
           grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10

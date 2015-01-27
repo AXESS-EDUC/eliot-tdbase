@@ -51,7 +51,6 @@ class Activite {
   Date datePublication
   String titre
   String objectif
-  String enonce
   String description
   String annotationPrivee
   Long ordre
@@ -69,7 +68,6 @@ class Activite {
   private static proprieteAExporter = [
           'titre',
           'objectif',
-          'enonce',
           'description',
           'annotationPrivee',
           'codeMatiere',

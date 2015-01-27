@@ -33,7 +33,7 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 
-versionTDBase = "2.4.0-RC1-eliot-3.0.0-RC3"
+versionTDBase = "2.4.2-RC3-eliot-3.2.0-RC2"
 
 grails.plugin.location.'eliot-competence-plugin' = "../eliot-competence-plugin"
 
@@ -51,8 +51,7 @@ grails.project.dependency.resolution = {
   repositories {
     grailsCentral()
     mavenLocal()
-    mavenRepo "http://repository-ticetime.forge.cloudbees.com/release"
-    mavenRepo "http://repository-ticetime.forge.cloudbees.com/snapshot"
+    mavenRepo "http://demo.ticetime.com:8081/nexus/content/groups/public/"
   }
 
   dependencies {

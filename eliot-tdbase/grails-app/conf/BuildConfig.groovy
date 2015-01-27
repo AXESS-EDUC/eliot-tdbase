@@ -61,8 +61,7 @@ grails.project.dependency.resolution = {
     grailsPlugins()
     grailsHome()
     grailsCentral()
-    mavenRepo "http://repository-ticetime.forge.cloudbees.com/release"
-    mavenRepo "http://repository-ticetime.forge.cloudbees.com/snapshot"
+    mavenRepo "http://demo.ticetime.com:8081/nexus/content/groups/public/"
   }
 
   /**
