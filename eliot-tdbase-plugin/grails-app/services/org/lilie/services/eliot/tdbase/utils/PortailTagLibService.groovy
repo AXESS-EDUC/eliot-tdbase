@@ -67,8 +67,16 @@ class PortailTagLibService {
    */
   def addManuelDocumentUrls(Map urlMap) {
     urlMap.keySet().each {
-      def role = RoleApplicatif.valueOf(it)
-      addManuelDocumentUrlForRole(urlMap.get(it), role)
+      def role
+      try {
+        role = RoleApplicatif.valueOf(it)
+      } catch (IllegalArgumentException e) {
+        log.error("manuels.urls.update.echec", e)
+      }
+
+      if(role){
+        addManuelDocumentUrlForRole(urlMap.get(it), role)
+      }
     }
   }
 
