@@ -22,7 +22,6 @@ class MatiereMarshaller {
     return [
         class: ExportClass.MATIERE.name(),
         identifiant: matiere.id,
-        codeSts: matiere.codeSts,
         codeGestion: matiere.codeGestion,
         libelleLong: matiere.libelleLong,
         libelleCourt: matiere.libelleCourt,
@@ -34,7 +33,6 @@ class MatiereMarshaller {
     MarshallerHelper.checkClass(ExportClass.MATIERE, jsonElement)
     return new MatiereDto(
         identifiant: MarshallerHelper.jsonObjectToObject(jsonElement.identifiant),
-        codeSts: MarshallerHelper.jsonObjectToString(jsonElement.codeSts),
         codeGestion: MarshallerHelper.jsonObjectToString(jsonElement.codeGestion),
         libelleLong: MarshallerHelper.jsonObjectToString(jsonElement.libelleLong),
         libelleCourt: MarshallerHelper.jsonObjectToString(jsonElement.libelleCourt),
