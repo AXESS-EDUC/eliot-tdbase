@@ -61,6 +61,7 @@ grails.project.dependency.resolution = {
     grailsPlugins()
     grailsHome()
     grailsCentral()
+    mavenRepo("http://repo.grails.org/grails/plugins/")
     mavenRepo "http://demo.ticetime.com:8081/nexus/content/groups/public/"
   }
 
