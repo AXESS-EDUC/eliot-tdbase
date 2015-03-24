@@ -22,7 +22,7 @@ class MatiereMarshallerSpec extends Specification {
     Map representation = matiereMarshaller.marshall(matiere)
 
     expect:
-    representation.size() == 7
+    representation.size() == 6
     representation.class == ExportClass.MATIERE.name()
     representation.identifiant == matiere.id
     representation.codeGestion == matiere.codeGestion
