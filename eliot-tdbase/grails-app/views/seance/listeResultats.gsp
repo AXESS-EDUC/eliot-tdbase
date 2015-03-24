@@ -102,7 +102,8 @@
   </li>
 </div>
 <br/>
-<g:if test="${copies}">
+
+
   <div class="portal-default_table">
     <table>
       <thead>
@@ -172,13 +173,6 @@
       </tbody>
     </table>
   </div>
-</g:if>
-<g:else>
-  <!--
-     <div class="portal_pagination">
-      <p class="nb_result">Aucun élève n'a rendu sa copie</p>
-    </div>
-   -->
-</g:else>
+
 </body>
 </html>
