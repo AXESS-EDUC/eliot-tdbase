@@ -135,4 +135,29 @@ class GroupeService {
                 groupeScolarite.fonction == fonctionService.fonctionEleve() &&
                 !groupeScolarite.responsableStructureEnseignement
     }
+
+    /**
+     * Recherche de groupe de scolarité
+     * @param personne
+     * @param critere
+     * @return
+     */
+    RechercheGroupeResultat rechercheGroupeScolarite(Personne personne,
+                                                     RechercheGroupeCritere critere) {
+        // TODO Implémentation provisoire en attendant de recevoir les infos d'Axess
+        List<ProprietesScolarite> groupeScolariteList = ProprietesScolarite.withCriteria {
+            or {
+                eq('etablissement', critere.etablissement)
+                'structureEnseignement' {
+                    eq('etablissement', critere.etablissement)
+                }
+            }
+            eq('fonction', critere.fonction)
+        }
+
+        return new RechercheGroupeResultat(
+                groupes: groupeScolariteList,
+                nombreTotal: groupeScolariteList.size()
+        )
+    }
 }

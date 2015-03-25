@@ -29,6 +29,8 @@
 package org.lilie.services.eliot.tice.annuaire.groupe
 
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.Etablissement
+import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
@@ -39,36 +41,36 @@ import org.lilie.services.eliot.tice.utils.BootstrapService
  */
 class GroupeServiceIntegrationTests extends GroovyTestCase {
 
-  GroupeService groupeService
-  BootstrapService bootstrapService
-  FonctionService fonctionService
+    GroupeService groupeService
+    BootstrapService bootstrapService
+    FonctionService fonctionService
 
-  void setUp() {
-    bootstrapService.bootstrapJeuDeTestDevDemo()
-  }
+    void setUp() {
+        bootstrapService.bootstrapJeuDeTestDevDemo()
+    }
 
 
-  void testFindAllPersonneInGroupeScolarite() {
-    given: "Une classe"
-    StructureEnseignement classe = bootstrapService.classe1ere
+    void testFindAllPersonneInGroupeScolarite() {
+        given: "Une classe"
+        StructureEnseignement classe = bootstrapService.classe1ere
 
-    and: "Le groupe scolarité des élèves de la classe"
-    ProprietesScolarite groupeScolarite =
-        ProprietesScolarite.withCriteria(uniqueResult: true) {
-          eq('structureEnseignement', classe)
-          eq('fonction', fonctionService.fonctionEleve())
-          isNull('responsableStructureEnseignement')
-        }
+        and: "Le groupe scolarité des élèves de la classe"
+        ProprietesScolarite groupeScolarite =
+                ProprietesScolarite.withCriteria(uniqueResult: true) {
+                    eq('structureEnseignement', classe)
+                    eq('fonction', fonctionService.fonctionEleve())
+                    isNull('responsableStructureEnseignement')
+                }
 
-    expect:
-    assertEquals(
-        "Le nombre d'élèves dans la classe est incorrect",
-        2,
-        groupeService.findAllPersonneInGroupeScolarite(
-            groupeScolarite
-        ).size()
-    )
-  }
+        expect:
+        assertEquals(
+                "Le nombre d'élèves dans la classe est incorrect",
+                2,
+                groupeService.findAllPersonneInGroupeScolarite(
+                        groupeScolarite
+                ).size()
+        )
+    }
 
     void testFindAllGroupeScolariteForPersonne() {
         given:
@@ -113,6 +115,45 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
                 "Le nombre de groupes est incorrect",
                 2,
                 groupeScolariteList.size()
+        )
+    }
+
+    void testRechercheGroupeScolarite() {
+        given:
+        Personne enseignant = bootstrapService.enseignant1
+        Etablissement etablissement = bootstrapService.leLycee
+        Fonction fonction = fonctionService.fonctionEleve()
+
+        expect:
+        RechercheGroupeResultat resultat =
+                groupeService.rechercheGroupeScolarite(
+                enseignant,
+                new RechercheGroupeCritere(
+                        etablissement: etablissement,
+                        fonction: fonction
+                )
+        )
+
+        assertEquals(
+                3,
+                resultat.nombreTotal
+        )
+
+        given:
+        fonction = fonctionService.fonctionEnseignant()
+
+        expect:
+        resultat = groupeService.rechercheGroupeScolarite(
+                        enseignant,
+                        new RechercheGroupeCritere(
+                                etablissement: etablissement,
+                                fonction: fonction
+                        )
+                )
+
+        assertEquals(
+                3,
+                resultat.nombreTotal
         )
     }
 }
