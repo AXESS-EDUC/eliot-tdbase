@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tice.annuaire.groupe
 
+import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
@@ -68,4 +69,50 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
         ).size()
     )
   }
+
+    void testFindAllGroupeScolariteForPersonne() {
+        given:
+        Personne personne = bootstrapService.eleve1
+
+        expect:
+        List<ProprietesScolarite> groupeScolariteList = groupeService.findAllGroupeScolariteForPersonne(personne)
+        assertEquals(
+                "Le nombre de groupes est incorrect",
+                4,
+                groupeScolariteList.size()
+        )
+
+        given:
+        personne = bootstrapService.enseignant1
+
+        expect:
+        groupeScolariteList = groupeService.findAllGroupeScolariteForPersonne(personne)
+        assertEquals(
+                "Le nombre de groupes est incorrect",
+                8,
+                groupeScolariteList.size()
+        )
+
+        given:
+        personne = bootstrapService.parent1
+
+        expect:
+        groupeScolariteList = groupeService.findAllGroupeScolariteForPersonne(personne)
+        assertEquals(
+                "Le nombre de groupes est incorrect",
+                5,
+                groupeScolariteList.size()
+        )
+
+        given:
+        personne = bootstrapService.persDirection1
+
+        expect:
+        groupeScolariteList = groupeService.findAllGroupeScolariteForPersonne(personne)
+        assertEquals(
+                "Le nombre de groupes est incorrect",
+                2,
+                groupeScolariteList.size()
+        )
+    }
 }

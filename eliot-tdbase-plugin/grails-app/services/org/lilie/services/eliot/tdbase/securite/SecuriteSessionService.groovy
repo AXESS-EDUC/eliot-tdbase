@@ -5,8 +5,10 @@ import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeScolariteProxy
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.securite.CorrespondantDeploimentConfig
 import org.lilie.services.eliot.tice.utils.contract.Contract
@@ -21,6 +23,7 @@ class SecuriteSessionService {
     String login
     ProfilScolariteService profilScolariteService
     PreferenceEtablissementService preferenceEtablissementService
+    GroupeService groupeService
 
     Long personneId
     Etablissement currentEtablissement
@@ -42,13 +45,16 @@ class SecuriteSessionService {
 
     Map<RoleApplicatif, PerimetreRoleApplicatif> rolesApplicatifsAndPerimetreByRoleApplicatif
 
+  List<GroupeScolariteProxy> groupeScolariteProxyList = []
+
     /**
      * Initialise l'objet Securite Session
      * @param personne
      * @param roleApplicatif un role applicatif devant être utilisé si non null (provient du préfixe de login par exemple)
      * @param porteurEnt porteur ENT à prendre en compte si nécessaire
      */
-    def initialiseSecuriteSessionForUtilisateur(Utilisateur utilisateur, RoleApplicatif roleApplicatif = null) {
+    def initialiseSecuriteSessionForUtilisateur(Utilisateur utilisateur,
+                                                RoleApplicatif roleApplicatif = null) {
         if (!personneId) {
             Personne.withTransaction {
                 login = utilisateur.login
@@ -61,6 +67,10 @@ class SecuriteSessionService {
                 } else {
                     initialiseRolesAvecPerimetreForPersonne(personne)
                 }
+
+              groupeScolariteProxyList = groupeService.findAllGroupeScolariteForPersonne(
+                  personne
+              ).collect { new GroupeScolariteProxy(it) }
             }
         } else if (utilisateur.personneId != personneId) {
             throw new BadPersonnSecuritySessionException()

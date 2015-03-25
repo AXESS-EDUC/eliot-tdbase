@@ -28,6 +28,9 @@
 
 package org.lilie.services.eliot.tice.annuaire.groupe
 
+import org.hibernate.SQLQuery
+import org.hibernate.Session
+import org.hibernate.SessionFactory
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.PersonneProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
@@ -38,21 +41,70 @@ import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
  */
 class GroupeService {
 
-  static transactional = false
+    static transactional = false
 
-  /**
-   * Liste toutes les personnes d'un groupe de scolarité (représenté par la propriété de scolarité associée)
-   * @param proprietesScolarite
-   * @return
-   */
-  List<Personne> findAllPersonneInGroupeScolarite(ProprietesScolarite proprietesScolarite) {
-    assert proprietesScolarite
-    List<PersonneProprietesScolarite> ppsList =
-        PersonneProprietesScolarite.findAllByProprietesScolariteAndEstActive(
-            proprietesScolarite,
-            true
+    SessionFactory sessionFactory
+
+    private final static String FIND_ALL_GROUPE_SCOLARITE_FOR_PERSONNE = """
+        SELECT {ps.*}
+        FROM ent.personne_propriete_scolarite pps
+        INNER JOIN ent.propriete_scolarite ps ON pps.propriete_scolarite_id = ps.id
+        WHERE pps.personne_id = :personneId
+        AND pps.est_active = true
+
+        UNION
+
+        SELECT {ps.*}
+        FROM ent.propriete_scolarite ps
+        INNER JOIN ent.fonction f_parent
+        ON ps.fonction_id = f_parent.id AND f_parent.code = 'PERS_REL_ELEVE'
+        WHERE EXISTS (
+        SELECT *
+          FROM ent.personne_propriete_scolarite pps_eleve
+          INNER JOIN ent.personne p_eleve ON pps_eleve.personne_id = p_eleve.id
+          INNER JOIN ent.propriete_scolarite ps_eleve ON pps_eleve.propriete_scolarite_id = ps_eleve.id
+          INNER JOIN ent.structure_enseignement se ON ps_eleve.structure_enseignement_id = se.id
+          INNER JOIN ent.fonction f_eleve ON ps_eleve.fonction_id = f_eleve.id
+          INNER JOIN ent.responsable_eleve AS resp ON pps_eleve.personne_id = resp.eleve_id
+          WHERE resp.personne_id = :personneId
+          AND resp.est_active = true
+          AND f_eleve.code = 'ELEVE'
+          AND pps_eleve.est_active = true
+          AND se.id = ps.structure_enseignement_id
+)
+    """
+
+    /**
+     * Liste toutes les personnes d'un groupe de scolarité (représenté par la propriété de scolarité associée)
+     * @param proprietesScolarite
+     * @return
+     */
+    List<Personne> findAllPersonneInGroupeScolarite(ProprietesScolarite proprietesScolarite) {
+        assert proprietesScolarite
+        List<PersonneProprietesScolarite> ppsList =
+                PersonneProprietesScolarite.findAllByProprietesScolariteAndEstActive(
+                        proprietesScolarite,
+                        true
+                )
+
+        return (ppsList*.personne as Set).toList()
+    }
+
+    /**
+     * Liste tous les groupes de scolarité (représentés par des ProprietesScolarite)
+     * d'une personne (dans tous ses établissements) qui peuvent être affectés à une séance
+     * @param personne
+     * @return
+     */
+    List<ProprietesScolarite> findAllGroupeScolariteForPersonne(Personne personne) {
+        Session session = sessionFactory.getCurrentSession()
+
+        SQLQuery sqlQuery = session.createSQLQuery(
+                FIND_ALL_GROUPE_SCOLARITE_FOR_PERSONNE
         )
+        sqlQuery.setParameterList('personneId', personne.id)
+        sqlQuery.addEntity('ps', ProprietesScolarite)
 
-    return (ppsList*.personne as Set).toList()
-  }
+        return sqlQuery.list()
+    }
 }
