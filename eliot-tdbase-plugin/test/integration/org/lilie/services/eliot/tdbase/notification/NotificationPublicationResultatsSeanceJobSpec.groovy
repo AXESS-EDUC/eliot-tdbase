@@ -11,6 +11,7 @@ import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.preferences.PreferencePersonne
 import org.lilie.services.eliot.tdbase.preferences.PreferencePersonneService
 import org.lilie.services.eliot.tdbase.webservices.rest.client.NotificationRestService
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.lilie.services.eliot.tice.webservices.rest.client.GenericRestOperation
 import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
@@ -36,6 +37,7 @@ class NotificationPublicationResultatsSeanceJobSpec extends IntegrationSpec {
     ModaliteActiviteService modaliteActiviteService
     def messageSource
     LinkGenerator grailsLinkGenerator
+    GroupeService groupeService
 
     NotificationPublicationResultatsSeanceJob notificationPublicationResultatsSeanceJob
     Sujet sujet
@@ -57,7 +59,7 @@ class NotificationPublicationResultatsSeanceJobSpec extends IntegrationSpec {
                 grailsLinkGenerator: grailsLinkGenerator
         )
         // le sujet
-        sujet = sujetService.createSujet(bootstrapService.enseignant1,"un sujet")
+        sujet = sujetService.createSujet(bootstrapService.enseignant1, "un sujet")
         // la mise en place de la doublure du web service
         setupWebService()
 
@@ -68,16 +70,19 @@ class NotificationPublicationResultatsSeanceJobSpec extends IntegrationSpec {
     }
 
 
-
     def "l'execution du job de publication"() {
-        given:"une séance dont la date de publication n'est pas encore passée"
+        given: "une séance dont la date de publication n'est pas encore passée"
         Date now = new Date()
         ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
-                [sujet: sujet,
-                 structureEnseignement: bootstrapService.classe1ere,
-                        dateDebut: now-10,
-                        dateFin: now-8,
-                        datePublicationResultats: now+1
+                [
+                        sujet                   : sujet,
+                        groupeScolarite         :
+                                groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                        bootstrapService.classe1ere
+                                ),
+                        dateDebut               : now - 10,
+                        dateFin                 : now - 8,
+                        datePublicationResultats: now + 1
                 ],
                 sujet.proprietaire
         )
@@ -85,10 +90,10 @@ class NotificationPublicationResultatsSeanceJobSpec extends IntegrationSpec {
         when: "le job est exécuté"
         notificationPublicationResultatsSeanceJob.execute()
 
-        then:"il ne se passe rien"
+        then: "il ne se passe rien"
         seance1.dateNotificationPublicationResultats == null
 
-        when:"la publication des résultat est passée"
+        when: "la publication des résultat est passée"
         seance1.datePublicationResultats = now - 1
         seance1.save()
 

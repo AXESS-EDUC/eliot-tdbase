@@ -3,6 +3,7 @@ package org.lilie.services.eliot.tdbase
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 import org.lilie.services.eliot.tice.utils.BootstrapService
 
@@ -40,249 +41,253 @@ import org.lilie.services.eliot.tice.utils.BootstrapService
  */
 class SujetServiceIntegrationTests extends GroovyTestCase {
 
-  private static final String SUJET_1_TITRE = "Sujet test 1"
-  private static final String SUJET_2_TITRE = "Sujet test 2"
+    private static final String SUJET_1_TITRE = "Sujet test 1"
+    private static final String SUJET_2_TITRE = "Sujet test 2"
 
-  Personne personne1
-  Personne personne2
-  StructureEnseignement struct1ere
+    Personne personne1
+    Personne personne2
+    StructureEnseignement struct1ere
 
-  BootstrapService bootstrapService
-  SujetService sujetService
-  ModaliteActiviteService modaliteActiviteService
-  QuestionService questionService
-  ArtefactAutorisationService artefactAutorisationService
+    BootstrapService bootstrapService
+    SujetService sujetService
+    ModaliteActiviteService modaliteActiviteService
+    QuestionService questionService
+    ArtefactAutorisationService artefactAutorisationService
+    GroupeService groupeService
 
 
-  protected void setUp() {
-    super.setUp()
-    bootstrapService.bootstrapForIntegrationTest()
-    personne1 = bootstrapService.enseignant1
-    personne2 = bootstrapService.enseignant2
-    struct1ere = bootstrapService.classe1ere
-  }
-
-  protected void tearDown() {
-    super.tearDown()
-  }
-
-  void testCreateSujet() {
-
-    Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertNotNull(sujet)
-    if (sujet.hasErrors()) {
-      log.error(sujet.errors.allErrors.toListString())
+    protected void setUp() {
+        super.setUp()
+        bootstrapService.bootstrapForIntegrationTest()
+        personne1 = bootstrapService.enseignant1
+        personne2 = bootstrapService.enseignant2
+        struct1ere = bootstrapService.classe1ere
     }
-    assertFalse(sujet.hasErrors())
 
-    assertEquals(personne1, sujet.proprietaire)
-    assertFalse(sujet.accesPublic)
-    assertFalse(sujet.accesSequentiel)
-    assertFalse(sujet.ordreQuestionsAleatoire)
-    assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
-  }
-
-  void testCreateSujetWithCreateOrUpdateSujet() {
-
-    Sujet sujet = sujetService.updateProprietes(new Sujet(), [titre: SUJET_2_TITRE], personne1)
-    assertNotNull(sujet)
-    if (sujet.hasErrors()) {
-      log.error(sujet.errors.allErrors.toListString())
+    protected void tearDown() {
+        super.tearDown()
     }
-    assertFalse(sujet.hasErrors())
 
-    assertEquals(personne1, sujet.proprietaire)
-    assertFalse(sujet.accesPublic)
-    assertFalse(sujet.accesSequentiel)
-    assertFalse(sujet.ordreQuestionsAleatoire)
-    assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
-  }
+    void testCreateSujet() {
 
-  void testFindSujetsForProprietaire() {
-    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertFalse(sujet1.hasErrors())
-    Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertFalse(sujet2.hasErrors())
-    assertEquals(2, Sujet.count())
-    def sujets1 = sujetService.findSujetsForProprietaire(personne1)
-    assertEquals(2, sujets1.size())
+        Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertNotNull(sujet)
+        if (sujet.hasErrors()) {
+            log.error(sujet.errors.allErrors.toListString())
+        }
+        assertFalse(sujet.hasErrors())
 
-    def sujets2 = sujetService.findSujetsForProprietaire(personne2)
-    assertEquals(0, sujets2.size())
-
-  }
-
-  void testFindSujets() {
-    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertFalse(sujet1.hasErrors())
-
-    // tests pour vérifier que la propriété ou le caractère publié
-    // conditionne les résultats de recherche
-
-
-    def res = sujetService.findSujets(personne2, null, null,
-        null, null, null, null)
-
-    assertEquals(0, res.size())
-
-    res = sujetService.findSujets(personne1, null, null,
-        null, null, null, null)
-
-    assertEquals(1, res.size())
-
-    sujetService.updateProprietes(sujet1, [publie: true], personne1)
-    res = sujetService.findSujets(personne2, null, null,
-        null, null, null, null)
-
-    assertEquals(1, res.size())
-
-    // verification du fonctionnement du flag "uniquementSujetChercheurs")
-    res = sujetService.findSujets(
-        personne2,
-        null,
-        null,
-        null,
-        null,
-        null,
-        true
-    )
-
-    assertEquals(0, res.size())
-
-    res = sujetService.findSujets(personne1, null, null,
-        null, null, null, null)
-
-    assertEquals(1, res.size())
-
-    // tests sur le titre et la presentation avec prise en compte des accents
-    //
-
-    def propsSujet1 = [
-        titre: "titre : Un sujet avé des accents àgravê",
-        'sujetType.id': 1
-    ]
-    sujetService.updateProprietes(sujet1, propsSujet1, personne1)
-
-    res = sujetService.findSujets(personne1, "avê", null,
-        null, null, null, null)
-
-    assertEquals(1, res.size())
-
-    propsSujet1 = [
-        titre: SUJET_1_TITRE,
-        presentation: "pres : Un sujet avé des accents àgravê",
-        'sujetType.id': 1
-    ]
-    sujetService.updateProprietes(sujet1, propsSujet1, personne1)
-
-    res = sujetService.findSujets(personne1, null, null,
-        "avê", null, null, null)
-
-    assertEquals(1, res.size())
-
-  }
-
-  void testSujetEstDistribue() {
-    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertFalse(sujet1.hasErrors())
-    def now = new Date()
-    def dateDebut = now - 10
-    def dateFin = now + 10
-    def props = [
-        dateDebut: dateDebut,
-        dateFin: dateFin,
-        datePublicationResultats:dateFin+2,
-        sujet: sujet1,
-        structureEnseignement: struct1ere
-    ]
-    ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
-        props,
-        personne1
-    )
-    if (seance1.hasErrors()) {
-        println seance1.errors
+        assertEquals(personne1, sujet.proprietaire)
+        assertFalse(sujet.accesPublic)
+        assertFalse(sujet.accesSequentiel)
+        assertFalse(sujet.ordreQuestionsAleatoire)
+        assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
     }
-    assertTrue(sujet1.estDistribue())
-    modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
-    assertFalse(sujet1.estDistribue())
-  }
 
-  void testSupprimeSujet() {
-    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    Question quest1 = questionService.createQuestion(
-        [
-            titre: "Question 1",
-            type: QuestionTypeEnum.Decimal.questionType,
-            estAutonome: true
-        ],
-        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
-        personne1,
-    )
-    assertFalse(quest1.hasErrors())
-    sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+    void testCreateSujetWithCreateOrUpdateSujet() {
 
-    assertEquals(1, sujet1.questionsSequences.size())
+        Sujet sujet = sujetService.updateProprietes(new Sujet(), [titre: SUJET_2_TITRE], personne1)
+        assertNotNull(sujet)
+        if (sujet.hasErrors()) {
+            log.error(sujet.errors.allErrors.toListString())
+        }
+        assertFalse(sujet.hasErrors())
 
-    sujetService.supprimeSujet(sujet1, personne1)
+        assertEquals(personne1, sujet.proprietaire)
+        assertFalse(sujet.accesPublic)
+        assertFalse(sujet.accesSequentiel)
+        assertFalse(sujet.ordreQuestionsAleatoire)
+        assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
+    }
 
-    def sujetQuests = SujetSequenceQuestions.findAllByQuestion(quest1)
-    assertEquals(0, sujetQuests.size())
-    assertNull(Sujet.get(sujet1.id))
-  }
+    void testFindSujetsForProprietaire() {
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertFalse(sujet1.hasErrors())
+        Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertFalse(sujet2.hasErrors())
+        assertEquals(2, Sujet.count())
+        def sujets1 = sujetService.findSujetsForProprietaire(personne1)
+        assertEquals(2, sujets1.size())
 
-  void testPartageSujet() {
-    artefactAutorisationService.partageArtefactCCActive = true
-    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    Question quest1 = questionService.createQuestion(
-        [
-            titre: "Question 1",
-            type: QuestionTypeEnum.Decimal.questionType,
-            estAutonome: true
-        ],
-        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
-        personne1,
-    )
-    assertFalse(quest1.hasErrors())
-    sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+        def sujets2 = sujetService.findSujetsForProprietaire(personne2)
+        assertEquals(0, sujets2.size())
 
-    assertEquals(1, sujet1.questionsSequences.size())
+    }
 
-    assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet1.copyrightsType)
-    assertNull(sujet1.publication)
+    void testFindSujets() {
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertFalse(sujet1.hasErrors())
 
-    sujetService.partageSujet(sujet1, personne1)
+        // tests pour vérifier que la propriété ou le caractère publié
+        // conditionne les résultats de recherche
 
-    assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.copyrightsType)
-    assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.publication.copyrightsType)
-    assertNotNull(quest1.publication)
 
-    assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, sujet1.copyrightsType)
-    assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, sujet1.publication.copyrightsType)
-    assertNotNull(sujet1.publication)
+        def res = sujetService.findSujets(personne2, null, null,
+                null, null, null, null)
 
-  }
+        assertEquals(0, res.size())
 
-  void testDesactivationPartageSurPartageSujet() {
-      artefactAutorisationService.partageArtefactCCActive = false
-      Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-      Question quest1 = questionService.createQuestion(
-              [
-                      titre: "Question 1",
-                      type: QuestionTypeEnum.Decimal.questionType,
-                      estAutonome: true
-              ],
-              new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
-              personne1,
-      )
-      assertFalse(quest1.hasErrors())
-      sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+        res = sujetService.findSujets(personne1, null, null,
+                null, null, null, null)
 
-      assertEquals(1, sujet1.questionsSequences.size())
+        assertEquals(1, res.size())
 
-      assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet1.copyrightsType)
-      assertNull(sujet1.publication)
+        sujetService.updateProprietes(sujet1, [publie: true], personne1)
+        res = sujetService.findSujets(personne2, null, null,
+                null, null, null, null)
 
-      assertFalse(artefactAutorisationService.utilisateurPeutPartageArtefact(personne1, sujet1))
-  }
+        assertEquals(1, res.size())
+
+        // verification du fonctionnement du flag "uniquementSujetChercheurs")
+        res = sujetService.findSujets(
+                personne2,
+                null,
+                null,
+                null,
+                null,
+                null,
+                true
+        )
+
+        assertEquals(0, res.size())
+
+        res = sujetService.findSujets(personne1, null, null,
+                null, null, null, null)
+
+        assertEquals(1, res.size())
+
+        // tests sur le titre et la presentation avec prise en compte des accents
+        //
+
+        def propsSujet1 = [
+                titre         : "titre : Un sujet avé des accents àgravê",
+                'sujetType.id': 1
+        ]
+        sujetService.updateProprietes(sujet1, propsSujet1, personne1)
+
+        res = sujetService.findSujets(personne1, "avê", null,
+                null, null, null, null)
+
+        assertEquals(1, res.size())
+
+        propsSujet1 = [
+                titre         : SUJET_1_TITRE,
+                presentation  : "pres : Un sujet avé des accents àgravê",
+                'sujetType.id': 1
+        ]
+        sujetService.updateProprietes(sujet1, propsSujet1, personne1)
+
+        res = sujetService.findSujets(personne1, null, null,
+                "avê", null, null, null)
+
+        assertEquals(1, res.size())
+
+    }
+
+    void testSujetEstDistribue() {
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertFalse(sujet1.hasErrors())
+        def now = new Date()
+        def dateDebut = now - 10
+        def dateFin = now + 10
+        def props = [
+                dateDebut               : dateDebut,
+                dateFin                 : dateFin,
+                datePublicationResultats: dateFin + 2,
+                sujet                   : sujet1,
+                groupeScolarite         :
+                        groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                struct1ere
+                        )
+        ]
+        ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
+                props,
+                personne1
+        )
+        if (seance1.hasErrors()) {
+            println seance1.errors
+        }
+        assertTrue(sujet1.estDistribue())
+        modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
+        assertFalse(sujet1.estDistribue())
+    }
+
+    void testSupprimeSujet() {
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        Question quest1 = questionService.createQuestion(
+                [
+                        titre      : "Question 1",
+                        type       : QuestionTypeEnum.Decimal.questionType,
+                        estAutonome: true
+                ],
+                new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+                personne1,
+        )
+        assertFalse(quest1.hasErrors())
+        sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+
+        assertEquals(1, sujet1.questionsSequences.size())
+
+        sujetService.supprimeSujet(sujet1, personne1)
+
+        def sujetQuests = SujetSequenceQuestions.findAllByQuestion(quest1)
+        assertEquals(0, sujetQuests.size())
+        assertNull(Sujet.get(sujet1.id))
+    }
+
+    void testPartageSujet() {
+        artefactAutorisationService.partageArtefactCCActive = true
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        Question quest1 = questionService.createQuestion(
+                [
+                        titre      : "Question 1",
+                        type       : QuestionTypeEnum.Decimal.questionType,
+                        estAutonome: true
+                ],
+                new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+                personne1,
+        )
+        assertFalse(quest1.hasErrors())
+        sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+
+        assertEquals(1, sujet1.questionsSequences.size())
+
+        assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet1.copyrightsType)
+        assertNull(sujet1.publication)
+
+        sujetService.partageSujet(sujet1, personne1)
+
+        assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.copyrightsType)
+        assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.publication.copyrightsType)
+        assertNotNull(quest1.publication)
+
+        assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, sujet1.copyrightsType)
+        assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, sujet1.publication.copyrightsType)
+        assertNotNull(sujet1.publication)
+
+    }
+
+    void testDesactivationPartageSurPartageSujet() {
+        artefactAutorisationService.partageArtefactCCActive = false
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        Question quest1 = questionService.createQuestion(
+                [
+                        titre      : "Question 1",
+                        type       : QuestionTypeEnum.Decimal.questionType,
+                        estAutonome: true
+                ],
+                new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+                personne1,
+        )
+        assertFalse(quest1.hasErrors())
+        sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+
+        assertEquals(1, sujet1.questionsSequences.size())
+
+        assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet1.copyrightsType)
+        assertNull(sujet1.publication)
+
+        assertFalse(artefactAutorisationService.utilisateurPeutPartageArtefact(personne1, sujet1))
+    }
 
 }

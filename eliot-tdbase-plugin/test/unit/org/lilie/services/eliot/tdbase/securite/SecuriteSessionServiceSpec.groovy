@@ -7,6 +7,7 @@ import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
@@ -24,10 +25,14 @@ class SecuriteSessionServiceSpec extends Specification {
 
     MappingFonctionRole mappingFonctionRole
     SecuriteSessionService securiteSessionService
+    GroupeService groupeService
 
     def setup() {
         mappingFonctionRole = getDefaultMappingFonctionRole()
-        securiteSessionService = new SecuriteSessionService()
+        groupeService = Mock(GroupeService)
+        securiteSessionService = new SecuriteSessionService(
+                groupeService: groupeService
+        )
     }
 
 

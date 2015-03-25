@@ -31,11 +31,13 @@ package org.lilie.services.eliot.tdbase
 import groovy.json.JsonBuilder
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.ScolariteService
+import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 
@@ -53,7 +55,7 @@ class SeanceController {
     CahierTextesService cahierTextesService
     NotesService notesService
     SecuriteSessionService securiteSessionServiceProxy
-
+    GroupeService groupeService
 
 /**
  *
@@ -83,14 +85,17 @@ class SeanceController {
             )
 
             def strongCheck = grailsApplication.config.eliot.interfacage.strongCheck as Boolean
-            afficheLienCreationDevoir =
-                    modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(
-                            modaliteActivite,
-                            personne,
-                            strongCheck
-                    )
 
-            if (grailsApplication.config.eliot.interfacage.notes) {
+            if (modaliteActiviteService.canBindModaliteActiviteToDevoir(modaliteActivite, personne)) {
+
+                afficheLienCreationDevoir =
+                        modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(
+                                modaliteActivite,
+                                personne,
+                                strongCheck
+                        )
+
+
                 if (!afficheLienCreationDevoir) {
                     afficheDevoirCree = modaliteActiviteService.modaliteActiviteHasNotesDevoir(modaliteActivite,
                             personne,
@@ -104,7 +109,7 @@ class SeanceController {
                 }
             }
 
-            if (grailsApplication.config.eliot.interfacage.textes) {
+            if (modaliteActiviteService.canBindModaliteActiviteToTextesActivite(modaliteActivite, personne)) {
                 afficheLienCreationActivite =
                         modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(
                                 modaliteActivite,
@@ -135,8 +140,11 @@ class SeanceController {
         )
 
         def etablissements = securiteSessionServiceProxy.etablissementList
-        def proprietesScolarite =
-                profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne, etablissements)
+        def structureEnseignementList =
+                profilScolariteService.findProprietesScolariteWithStructureForPersonne(
+                        personne,
+                        etablissements
+                )*.structureEnseignement
 
         def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
 
@@ -152,7 +160,7 @@ class SeanceController {
                         afficheActiviteCreee       : afficheActiviteCreee,
                         afficheDevoirCree          : afficheDevoirCree,
                         modaliteActivite           : modaliteActivite,
-                        proprietesScolarite        : proprietesScolarite,
+                        structureEnseignementList  : structureEnseignementList,
                         cahiers                    : cahiers,
                         chapitres                  : chapitres,
                         services                   : services,
@@ -163,9 +171,9 @@ class SeanceController {
 
     /**
      *
-     * Action recherche structure
+     * Action recherche autre groupe
      */
-    def rechercheStructures(RechercheStructuresCommand command) {
+    def rechercheAutreGroupe(RechercheStructuresCommand command) {
         Personne personne = authenticatedPersonne
         def allEtabs = securiteSessionServiceProxy.etablissementList
         def etabs = allEtabs
@@ -180,14 +188,27 @@ class SeanceController {
         if (command.niveauId) {
             niveau = Niveau.get(command.niveauId)
         }
-        def limit = grailsApplication.config.eliot.listes.structures.maxrecherche
-        def structures = scolariteService.findStructuresEnseignement(etabs, codePattern, niveau, limit)
-        render(view: "/seance/_selectStructureEnseignement", model: [
-                rechercheStructuresCommand: command,
-                etablissements            : allEtabs,
-                niveaux                   : scolariteService.findNiveauxForEtablissement(etabs),
-                structures                : structures
-        ])
+        def limit = grailsApplication.config.eliot.listes.groupes.maxrecherche
+        def structures = scolariteService.findStructuresEnseignement(
+                etabs,
+                codePattern,
+                niveau,
+                limit
+        )
+
+        List<ProprietesScolarite> groupeScolariteList = structures.collect {
+            groupeService.findGroupeScolariteEleveForStructureEnseignement(it)
+        }
+
+        render(view: "/seance/_selectAutreGroupe",
+                model: [
+                        rechercheGroupeCommand: command,
+                        etablissements        : allEtabs,
+                        niveaux               : scolariteService.findNiveauxForEtablissement(etabs),
+                        groupeScolariteList   : groupeScolariteList,
+                        totalCount            : structures?.totalCount
+                ]
+        )
     }
 
     /**
@@ -233,22 +254,40 @@ class SeanceController {
         ModaliteActivite modaliteActivite
         Personne personne = authenticatedPersonne
 
-        def propsId = params.proprietesScolariteSelectionId
+        def propsId
+        def structureEnseignementId = params.structureEnseignementId
+
+        // Si une structure d'enseignement est fournie, on récupère le groupe scolarité élève correspondant
+        if (structureEnseignementId && structureEnseignementId != 'null') {
+            StructureEnseignement structureEnseignement =
+                    StructureEnseignement.load(structureEnseignementId)
+
+            propsId = groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                    structureEnseignement
+            ).id
+        } else {
+            propsId = params.groupeScolariteId
+        }
+
         if (propsId && propsId != 'null') {
             ProprietesScolarite props = ProprietesScolarite.get(
-                    params.proprietesScolariteSelectionId
+                    propsId
             )
-            params.'structureEnseignement.id' = props.structureEnseignement.id
+            params.'groupeScolarite.id' = propsId
 
             if (props.matiere) {
                 params.'matiere.id' = props.matiere.id
             }
         }
+
         if (params.id) {
             modaliteActivite = ModaliteActivite.get(params.id)
             modaliteActiviteService.updateProprietes(modaliteActivite, params, personne)
         } else {
-            modaliteActivite = modaliteActiviteService.createModaliteActivite(params, personne)
+            modaliteActivite = modaliteActiviteService.createModaliteActivite(
+                    params,
+                    personne
+            )
         }
 
         if (!modaliteActivite.hasErrors()) {

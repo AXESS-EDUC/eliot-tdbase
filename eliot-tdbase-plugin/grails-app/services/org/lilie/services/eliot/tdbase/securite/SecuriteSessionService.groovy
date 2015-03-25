@@ -33,7 +33,9 @@ class SecuriteSessionService {
     RoleApplicatif defaultRoleApplicatif
 
     Set<Etablissement> getEtablissementList() {
-        rolesApplicatifsAndPerimetreByRoleApplicatif.get(currentRoleApplicatif).etablissements
+        rolesApplicatifsAndPerimetreByRoleApplicatif.get(
+                currentRoleApplicatif
+        ).etablissements
     }
 
     String getEtablissementListDisplay() {

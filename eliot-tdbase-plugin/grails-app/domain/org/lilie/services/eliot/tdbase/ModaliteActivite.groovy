@@ -29,10 +29,10 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 
 /**
  * Classe représentant les modalités de l'activité d'un groupe d'élèves pour traiter
@@ -41,135 +41,156 @@ import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
  */
 class ModaliteActivite {
 
-  ProfilScolariteService profilScolariteService
+    GroupeService groupeService
 
-  Date dateRemiseReponses = new Date()
+    Date dateRemiseReponses = new Date()
 
-  Date dateDebut = new Date()
-  Date dateFin = new Date() + 1
+    Date dateDebut = new Date()
+    Date dateFin = new Date() + 1
 
-  Sujet sujet
+    Sujet sujet
 
-  Personne responsable
-  Etablissement etablissement
+    Personne responsable
+    Etablissement etablissement
 
-  Personne enseignant
-  StructureEnseignement structureEnseignement
-  MatiereBcn matiereBcn
+    Personne enseignant
+    ProprietesScolarite groupeScolarite
+    MatiereBcn matiereBcn
 
-  Long activiteId
-  Long evaluationId
+    Long activiteId
+    Long evaluationId
 
-  Boolean copieAmeliorable = true
-  Boolean optionEvaluerCompetences
+    Boolean copieAmeliorable = true
+    Boolean optionEvaluerCompetences
 
-  Date datePublicationResultats = dateFin
-  Date dateNotificationPublicationResultats
-  Date dateNotificationOuvertureSeance
-  Date dateRappelNotificationOuvertureSeance
-  Boolean notifierMaintenant = true
-  Boolean notifierAvantOuverture = true
-  Integer notifierNJoursAvant = 1
+    Date datePublicationResultats = dateFin
+    Date dateNotificationPublicationResultats
+    Date dateNotificationOuvertureSeance
+    Date dateRappelNotificationOuvertureSeance
+    Boolean notifierMaintenant = true
+    Boolean notifierAvantOuverture = true
+    Integer notifierNJoursAvant = 1
 
-  Boolean decompteTemps = false
-  Integer dureeMinutes
+    Boolean decompteTemps = false
+    Integer dureeMinutes
+  
+    static constraints = {
+        responsable(nullable: true)
+        etablissement(nullable: true)
+        activiteId(nullable: true)
+        evaluationId(nullable: true)
+        dateFin(validator: { val, obj ->
+            if (!val.after(obj.dateDebut)) {
+                return ['invalid.dateFinAvantDateDebut']
+            }
+        })
+        datePublicationResultats(nullable: true, validator: { val, obj ->
+            if (val == null || val == obj.dateFin) {
+                return true
+            }
+            if (val && obj.dateFin.after(val)) {
+                return ['invalid.datePublicationAvantDateFin']
+            }
+        })
+        dateNotificationPublicationResultats nullable: true
+        dateNotificationOuvertureSeance nullable: true
+        dateRappelNotificationOuvertureSeance nullable: true
+  
+        matiereBcn(nullable: true)
 
-  Etablissement findEtablissement() {
-    if (etablissement != null) {
-      return etablissement
-    }
-    structureEnseignement.etablissement
-  }
+        optionEvaluerCompetences(nullable: true)
 
-  static constraints = {
-    responsable(nullable: true)
-    etablissement(nullable: true)
-    activiteId(nullable: true)
-    evaluationId(nullable: true)
-    dateFin(validator: { val, obj ->
-      if (!val.after(obj.dateDebut)) {
-        return ['invalid.dateFinAvantDateDebut']
-      }
-    })
-    datePublicationResultats(nullable: true, validator: { val, obj ->
-      if (val == null || val == obj.dateFin) {
-        return true
-      }
-      if (val &&  obj.dateFin.after(val)) {
-        return ['invalid.datePublicationAvantDateFin']
-      }
-    })
-    dateNotificationPublicationResultats nullable: true
-    dateNotificationOuvertureSeance nullable: true
-    dateRappelNotificationOuvertureSeance nullable: true
-
-    matiereBcn(nullable: true)
-
-    optionEvaluerCompetences(nullable: true)
-    dureeMinutes(nullable: true, validator: { val, obj ->
-      if (obj.decompteTemps && val == null) {
-        return ['invalid.dureeMinuteObligatoire']
-      }
-      return true
-    })
-  }
-
-  static mapping = {
-    table('td.modalite_activite')
-    version(false)
-    id(column: 'id', generator: 'sequence', params: [sequence: 'td.modalite_activite_id_seq'])
-    notifierNJoursAvant(column: 'notifier_n_jours_avant')
-    cache(true)
-  }
-
-  static transients = ['groupeLibelle', 'estOuverte', 'estPerimee','profilScolariteService']
-
-  /**
-   *
-   * @return la liste des personnes devant rendre une copie pour cette séance
-   */
-  List<Personne> getPersonnesDevantRendreCopie() {
-    if (structureEnseignement) {
-      return profilScolariteService.findElevesForStructureEnseignement(structureEnseignement)
-    } else {
-      // groupes non implémentés
-      return []
+        dureeMinutes(nullable: true, validator: { val, obj ->
+          if (obj.decompteTemps && val == null) {
+            return ['invalid.dureeMinuteObligatoire']
+          }
+          return true
+        })
     }
 
-  }
-
-  /**
-   *
-   * @return le libelle de la structure d'enseignement concernée
-   */
-  String getGroupeLibelle() {
-    return structureEnseignement.nomAffichage
-  }
-
-  /**
-   *
-   * @return true si la séance est ouverte
-   */
-  boolean estOuverte() {
-    Date now = new Date()
-    now.before(dateFin) && now.after(dateDebut)
-  }
-
-  /**
-   *
-   * @return true si la séance est terminée
-   */
-  boolean estPerimee() {
-    Date now = new Date()
-    now.after(dateFin)
-  }
-
-  boolean hasResultatsPublies() {
-    Date now = new Date()
-    if (datePublicationResultats == null) {
-      now.after(dateFin)
-    } else {
-      now.after(datePublicationResultats)
+    static mapping = {
+        table('td.modalite_activite')
+        version(false)
+        id(column: 'id', generator: 'sequence', params: [sequence: 'td.modalite_activite_id_seq'])
+        notifierNJoursAvant(column: 'notifier_n_jours_avant')
+        groupeScolarite(column: 'propriete_scolarite_id')
+        cache(true)
     }
-  }
+
+    static transients = [
+            'groupeLibelle',
+            'estOuverte',
+            'estPerimee',
+            'groupeService',
+            'structureEnseignementId'
+    ]
+
+    Etablissement findEtablissement() {
+        if (etablissement != null) {
+            return etablissement
+        }
+        groupeScolarite.etablissement ?: groupeScolarite.structureEnseignement?.etablissement
+    }
+
+    /**
+     * @return l'identifiant de la structure d'enseignement UNIQUEMENT Si
+     * la séance est associée à groupe scolarité élève, null sinon
+     */
+    Long getStructureEnseignementId() {
+        if(!groupeService.isGroupeScolariteEleve(groupeScolarite)) {
+            return null
+        }
+
+        groupeScolarite.structureEnseignementId
+    }
+
+    /**
+     *
+     * @return la liste des personnes devant rendre une copie pour cette séance
+     */
+    List<Personne> getPersonnesDevantRendreCopie() {
+        if (groupeScolarite) {
+            // TODO Il faudrait vérifier que la fonction du groupeScolarite correspond toujours à un rôle d'apprenant
+            return groupeService.findAllPersonneInGroupeScolarite(groupeScolarite)
+        } else {
+            // groupes non implémentés
+            return []
+        }
+
+    }
+
+    /**
+     *
+     * @return le libelle de la structure d'enseignement concernée
+     */
+    String getGroupeLibelle() {
+        return groupeScolarite.nomAffichage
+    }
+
+    /**
+     *
+     * @return true si la séance est ouverte
+     */
+    boolean estOuverte() {
+        Date now = new Date()
+        now.before(dateFin) && now.after(dateDebut)
+    }
+
+    /**
+     *
+     * @return true si la séance est terminée
+     */
+    boolean estPerimee() {
+        Date now = new Date()
+        now.after(dateFin)
+    }
+
+    boolean hasResultatsPublies() {
+        Date now = new Date()
+        if (datePublicationResultats == null) {
+            now.after(dateFin)
+        } else {
+            now.after(datePublicationResultats)
+        }
+    }
 }

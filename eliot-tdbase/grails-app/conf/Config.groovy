@@ -215,7 +215,7 @@ eliot.listes.maxrecherche = 5
 eliot.listes.max = 7
 
 // le nombre d'éléments max à affichier dans une liste de structure
-eliot.listes.structures.maxrecherche = 200
+eliot.listes.groupes.maxrecherche = 200
 
 // les dimensions de div continer à prendre en compte si nécessaire
 eliot.pages.container.forceDimensions = false
@@ -270,7 +270,7 @@ environments {
         eliot.bootstrap.migration = true
     }
     development {
-        eliot.listes.structures.maxrecherche = 3
+        eliot.listes.groupes.maxrecherche = 3
         eliot.pages.container.forceDimensions = true
 
         grails.plugins.springsecurity.cas.active = false

@@ -32,8 +32,10 @@ import org.hibernate.SQLQuery
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.scolarite.PersonneProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
+import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 
 /**
  * Service d'interrogation des groupes (scolarité & ENT)
@@ -44,6 +46,7 @@ class GroupeService {
     static transactional = false
 
     SessionFactory sessionFactory
+    FonctionService fonctionService
 
     private final static String FIND_ALL_GROUPE_SCOLARITE_FOR_PERSONNE = """
         SELECT {ps.*}
@@ -106,5 +109,30 @@ class GroupeService {
         sqlQuery.addEntity('ps', ProprietesScolarite)
 
         return sqlQuery.list()
+    }
+
+    /**
+     *
+     * @param structureEnseignement
+     * @return le groupe de scolarité correspondant au groupe
+     * des élèves d'une structure d'enseignement
+     */
+    ProprietesScolarite findGroupeScolariteEleveForStructureEnseignement(StructureEnseignement structureEnseignement) {
+        return ProprietesScolarite.withCriteria(uniqueResult: true) {
+            eq('structureEnseignement', structureEnseignement)
+            eq('fonction', fonctionService.fonctionEleve())
+            isNull('responsableStructureEnseignement')
+        }
+    }
+
+    /**
+     * Teste si un groupe de scolarité correspond à un groupe scolarité élève
+     * @param groupeScolarite
+     * @return
+     */
+    boolean isGroupeScolariteEleve(ProprietesScolarite groupeScolarite) {
+        return groupeScolarite.structureEnseignement &&
+                groupeScolarite.fonction == fonctionService.fonctionEleve() &&
+                !groupeScolarite.responsableStructureEnseignement
     }
 }

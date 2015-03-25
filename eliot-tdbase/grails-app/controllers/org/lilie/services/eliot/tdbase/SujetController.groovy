@@ -207,7 +207,7 @@ class SujetController {
                                                 typesSujet: sujetService.getAllSujetTypes(),
                                                 etablissements: securiteSessionServiceProxy.etablissementList,
                                                 artefactHelper: artefactAutorisationService,
-                                                niveaux   : profilScolariteService.findNiveauxForPersonne(proprietaire)])
+                                                niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
     }
 
     /**
@@ -458,7 +458,11 @@ class SujetController {
         def modaliteActivite = new ModaliteActivite(enseignant: personne,
                 sujet: sujet)
         def etablissements = securiteSessionServiceProxy.etablissementList
-        def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne, etablissements)
+        def structureEnseignementList =
+                profilScolariteService.findProprietesScolariteWithStructureForPersonne(
+                        personne,
+                        etablissements
+                )*.structureEnseignement
         def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
 
         render(
@@ -472,7 +476,7 @@ class SujetController {
                         afficheActiviteCreee       : false,
                         afficheDevoirCree          : false,
                         modaliteActivite           : modaliteActivite,
-                        proprietesScolarite        : proprietesScolarite,
+                        structureEnseignementList  : structureEnseignementList,
                         competencesEvaluables      : modaliteActivite.sujet.hasCompetence()
                 ]
         )
@@ -561,7 +565,7 @@ class SujetController {
                 liens         : breadcrumpsServiceProxy.liens,
                 sujet         : sujet,
                 matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
-                etablissements     : securiteSessionServiceProxy.etablissementList,
+                etablissements: securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
                         grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
@@ -636,7 +640,7 @@ class SujetController {
                 liens         : breadcrumpsServiceProxy.liens,
                 sujet         : sujet,
                 matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
-                etablissements     : securiteSessionServiceProxy.etablissementList,
+                etablissements: securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
                         grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
