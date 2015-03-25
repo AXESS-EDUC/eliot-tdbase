@@ -28,14 +28,14 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
-import org.lilie.services.eliot.tice.annuaire.SourceImport
 import org.lilie.services.eliot.tice.annuaire.PorteurEnt
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeAnnuaire
 
 /**
  * Table des propriétés des groupes virtuels
  * @author othe
  */
-class ProprietesScolarite {
+class ProprietesScolarite implements GroupeAnnuaire {
 
   Etablissement etablissement
   StructureEnseignement structureEnseignement
@@ -44,7 +44,9 @@ class ProprietesScolarite {
   Fonction fonction
   Boolean responsableStructureEnseignement
   PorteurEnt porteurEnt
+  // DomainAutorite autorite TODO A ajouter quand on branchera le nouveau schéma Eliot
 
+  static transients = ['structureEnseignementNomAffichage']
 
   static constraints = {
     etablissement(nullable: true)
@@ -56,9 +58,83 @@ class ProprietesScolarite {
     responsableStructureEnseignement(nullable: true)
   }
 
-  static transients = ['structureEnseignementNomAffichage']
+  static mapping = {
+    table('ent.propriete_scolarite')
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.propriete_scolarite_id_seq']
+    version false
+  }
 
   /**
+   * Méthode copiée & adaptée du socle Eliot
+   * @return
+   */
+  @Override
+  String getNomAffichage() {
+    String nom
+
+    if (etablissementId) {
+      switch (fonction.code) {
+        case FonctionEnum.ELEVE.name():
+          nom = "Elèves de l'établissement"
+          break
+        case FonctionEnum.PERS_REL_ELEVE.name():
+          nom = "Parents de l'établissement"
+          break
+        case FonctionEnum.ENS.name():
+          if (matiereId) {
+            nom = "Enseignants de l'établissement (${matiere.codeGestion})"
+          } else {
+            nom = "Enseignants de l'établissement"
+          }
+          break
+        case FonctionEnum.AL.name():
+          nom = "Administrateur local de l'établissement"
+          break
+        default:
+          nom = "Personnel d'établissement (${fonction.libelle})"
+      }
+    } else if (structureEnseignementId) {
+      switch (fonction.code) {
+        case FonctionEnum.ELEVE.name():
+          if (responsableStructureEnseignement) {
+            nom = "Elèves délégués ($structureEnseignement.code)"
+          } else {
+            nom = "Elèves ($structureEnseignement.code)"
+          }
+          break
+        case FonctionEnum.PERS_REL_ELEVE.name():
+          nom = "Parents ($structureEnseignement.code)"
+          break
+        case FonctionEnum.ENS.name():
+          if (responsableStructureEnseignement) {
+            nom = "Enseignants principaux ($structureEnseignement.code)"
+          }
+          else {
+            nom = "Enseignants ($structureEnseignement.code)"
+          }
+          break
+        default:
+          throw new IllegalStateException(
+              "Les groupes de fonction ${fonction.code} ne sont pas gérés pour " +
+                  "la portée \"structure d'enseignement\". Groupe illégal: $this")
+      }
+    } else {
+      switch (fonction.code) {
+        case FonctionEnum.PERS_REL_ELEVE.name():
+          nom = "Parents de l'ENT"
+          break
+        case FonctionEnum.CD.name():
+          nom = "Correspondants de déploiment"
+          break
+        default:
+          throw new IllegalStateException(
+              "Les groupes de fonction ${fonction.code} ne sont pas gérés pour " +
+                  "la portée \"porteur ENT\". Groupe illégal: $this")
+      }
+    }
+    return nom
+  }
+/**
    *
    * @return le nom de la structure avec matière associée si il y a
    */
@@ -72,12 +148,6 @@ class ProprietesScolarite {
       suffixe = " (${matLib})"
     }
     structureEnseignement?.nomAffichage + suffixe
-  }
-
-  static mapping = {
-    table('ent.propriete_scolarite')
-    id column: 'id', generator: 'sequence', params: [sequence: 'ent.propriete_scolarite_id_seq']
-    version false
   }
 
 }
