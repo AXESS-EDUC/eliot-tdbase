@@ -194,6 +194,18 @@
                              class="datepicker short"/>
             </td>
         </tr>
+
+        <g:if test="${modaliteActivite.sujet.dureeMinutes != null}">
+            <tr>
+                <td class="label"></td>
+                <td>
+                    <g:checkBox name="decompteTemps" title="décompte du temps"
+                                checked="${modaliteActivite.decompteTemps}"/> <span
+                        class="label">Décompte&nbsp;du&nbsp;temps</span>
+                </td>
+            </tr>
+        </g:if>
+
       <tr>
         <td class="label"></td>
         <td>

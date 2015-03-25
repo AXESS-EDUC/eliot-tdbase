@@ -71,6 +71,8 @@ class ModaliteActivite {
   Boolean notifierAvantOuverture = true
   Integer notifierNJoursAvant = 1
 
+  Boolean decompteTemps = false
+
   Etablissement findEtablissement() {
     if (etablissement != null) {
       return etablissement

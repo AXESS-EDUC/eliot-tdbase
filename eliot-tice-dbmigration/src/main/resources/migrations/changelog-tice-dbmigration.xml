@@ -69,4 +69,6 @@
     <include file="migrations/schema.nomenclature/changelog-20150330-TDB-147.xml"/>
     <include file="migrations/schema.tdbase/changelog-20150419-TDB-149.xml"/>
 
+    <include file="migrations/schema.tdbase/changelog-20150323-TDB-183.xml"/>
+
 </databaseChangeLog>
