@@ -33,6 +33,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase-activite"/>
+  <r:require module="momentjs"/>
   <g:if test="${copie.estModifiable()}">
     <r:require module="copieEdite_CopieModifiable"/>
   </g:if>
@@ -47,6 +48,35 @@
 
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
+
+<g:if test="copie.modaliteActivite.decompteTemps">
+  <div id="datetime"></div>
+  <script>
+    moment.locale('fr');
+    var datetime = null;
+    var date = moment(new Date());
+
+    var update = function () {
+      var ms = date.diff(moment(new Date())) + ${copie.sujet.dureeMinutes} * 60 * 1000;
+
+      if (ms > 0) {
+        datetime.html(moment.utc(ms).format('HH:mm:ss'));
+      }
+      else {
+        datetime.html('Terminé');
+      }
+    };
+
+    $(document).ready(function(){
+      datetime = $('#datetime');
+      datetime.css('position', 'fixed');
+      datetime.css('top', '10px');
+      datetime.css('left', '450px');
+      update();
+      setInterval(update, 1000);
+    });
+  </script>
+</g:if>
 
 <g:hasErrors bean="${copie}">
   <div class="portal-messages">
