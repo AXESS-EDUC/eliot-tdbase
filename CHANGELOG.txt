@@ -1,3 +1,10 @@
+=== Eliot tdbase 2.4.4-eliot-3.3.0-RC4 =
+
+Liste des dépendances :
+
+ * Compatible avec les bases de données Eliot 3.3.0-RC4
+
+
 === Eliot tdbase 2.4.2-eliot-3.2.0-RC2 =
 
 Liste des dépendances :
