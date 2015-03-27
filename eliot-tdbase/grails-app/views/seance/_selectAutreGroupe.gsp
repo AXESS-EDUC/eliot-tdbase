@@ -42,19 +42,19 @@
                 <td class="label">dans&nbsp;
                 </td>
                 <td>
-                    <g:select name="etablissementId" value="${rechercheGroupeCommand.etablissementId}"
-                              noSelection="${['null': 'Tous les établissements']}"
+                    <g:select name="etablissementId"
+                              value="${rechercheGroupeCommand.etablissementId}"
                               from="${etablissements}"
                               optionKey="id"
                               optionValue="nomAffichage"/>
                 </td>
             </tr>
             <tr>
-                <td class="label">Niveau&nbsp;
+                <td class="label">Profil&nbsp;
                 </td>
-                <td id="selectNiveaux">
-                    <g:render template="/seance/selectNiveaux"
-                              model="[niveauId: rechercheGroupeCommand.niveauId, niveaux: niveaux]"/>
+                <td id="selectFonctionList">
+                    <g:render template="/seance/selectFonction"
+                              model="[fonctionId: rechercheGroupeCommand.fonctionId, fonctionList: fonctionList]"/>
                 </td>
             </tr>
 
@@ -67,7 +67,7 @@
                           controller="seance"
                           title="Lancer la recherche"
                           class="button"
-                          update="search-structure-form"/>
+                          update="search-group-form"/>
     </div>
 </g:form>
 
@@ -116,14 +116,14 @@
                 '<input type="hidden" name="groupeScolariteId" value="' + structId + '"/>' +
                 '</div>'
         );
-        $("#search-structure-form").dialog("close");
+        $("#search-group-form").dialog("close");
     }
 
     $("#etablissementId").change(function () {
-        $.get("${createLink(action: 'updateNiveaux', controller: 'seance')}",
+        $.get("${createLink(action: 'updateFonctionList', controller: 'seance')}",
                 {etablissementId: $(this).val()},
                 function (data) {
-                    $('#selectNiveaux').html(data)
+                    $('#selectFonctionList').html(data)
                 })
     })
 

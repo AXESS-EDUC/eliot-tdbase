@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.RechercheStructuresCommand; org.lilie.services.eliot.tdbase.ContexteActivite" %>
+<%@ page import="org.lilie.services.eliot.tdbase.RechercheGroupeCommand; org.lilie.services.eliot.tdbase.RechercheStructuresCommand; org.lilie.services.eliot.tdbase.ContexteActivite" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -58,9 +58,9 @@
       });
 
 
-     $("#search-structure-form").dialog({
+     $("#search-group-form").dialog({
            autoOpen: false,
-           title: "Rechercher une classe ou un groupe d'élèves",
+           title: "Rechercher groupe d'apprenant",
            height: 600,
            width: 420,
            modal: true
@@ -68,7 +68,7 @@
 
      $( "#select-other-group" )
            .click(function() {
-             $( "#search-structure-form" ).dialog( "open" );
+             $( "#search-group-form" ).dialog( "open" );
            });
 
     $('#gestionEvaluation').click(function() {
@@ -340,10 +340,10 @@
   <br/><br/><br/><br/><br/>
 </g:form>
 
-<div id="search-structure-form" style="background-color: #ffffff">
+<div id="search-group-form" style="background-color: #ffffff">
   <g:render template="/seance/selectAutreGroupe" model="[etablissements: etablissements,
-      niveaux: niveaux,
-      rechercheGroupeCommand: new RechercheStructuresCommand()]"/>
+          fonctionList: fonctionList,
+      rechercheGroupeCommand: new org.lilie.services.eliot.tdbase.RechercheGroupeCommand(etablissementId: currentEtablissement.id)]"/>
 </div>
 
 </body>

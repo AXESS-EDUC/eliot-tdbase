@@ -70,7 +70,8 @@ class SecuriteSessionService {
                     initialiseRolesAvecPerimetreForPersonne(personne)
                 }
 
-              groupeScolariteProxyList = groupeService.findAllGroupeScolariteForPersonne(
+              groupeScolariteProxyList =
+                      groupeService.findAllGroupeScolariteForPersonne(
                   personne
               ).collect { new GroupeScolariteProxy(it) }
             }
@@ -91,10 +92,16 @@ class SecuriteSessionService {
         if (newCurrentEtablissement == null || !etablissementList.contains(newCurrentEtablissement)) {
             throw new BadEtablissementSecuritySessionException()
         }
+
         // mise à jour du current etablissement
         currentEtablissement = newCurrentEtablissement
+
         // mise à jour du current preference etablissement
-        currentPreferenceEtablissement = preferenceEtablissementService.getPreferenceForEtablissement(personne, currentEtablissement)
+        currentPreferenceEtablissement =
+                preferenceEtablissementService.getPreferenceForEtablissement(
+                        personne,
+                        currentEtablissement
+                )
 
     }
 
@@ -128,11 +135,18 @@ class SecuriteSessionService {
      */
     def initialiseRolesAvecPerimetreForPersonne(Personne personne, boolean updateCurrentRole = true) {
         rolesApplicatifsAndPerimetreByRoleApplicatif = new TreeMap<RoleApplicatif, PerimetreRoleApplicatif>()
-        etablissementsAndFonctionsByEtablissement = profilScolariteService.findEtablissementsAndFonctionsForPersonne(personne)
+        etablissementsAndFonctionsByEtablissement =
+                profilScolariteService.findEtablissementsAndFonctionsForPersonne(personne)
+
         if (!etablissementsAndFonctionsByEtablissement.isEmpty()) {
             def allFonctionsHavingRole = new HashSet<FonctionEnum>()
             etablissementsAndFonctionsByEtablissement.each { etablissement, fcts ->
-                MappingFonctionRole mapping = preferenceEtablissementService.getMappingFonctionRoleForEtablissement(personne, etablissement)
+                MappingFonctionRole mapping =
+                        preferenceEtablissementService.
+                                getMappingFonctionRoleForEtablissement(
+                                        personne,
+                                        etablissement
+                                )
                 fcts.each { FonctionEnum fct ->
                     def roles = mapping.getRolesForFonction(fct)
                     if (roles && !roles.isEmpty()) {

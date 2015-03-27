@@ -29,11 +29,15 @@
 package org.lilie.services.eliot.tdbase
 
 import groovy.json.JsonBuilder
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
+import org.lilie.services.eliot.tice.annuaire.groupe.RechercheGroupeCritere
+import org.lilie.services.eliot.tice.annuaire.groupe.RechercheGroupeResultat
 import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.ScolariteService
@@ -56,7 +60,7 @@ class SeanceController {
     NotesService notesService
     SecuriteSessionService securiteSessionServiceProxy
     GroupeService groupeService
-
+    FonctionService fonctionService
 /**
  *
  * Action "edite"
@@ -146,14 +150,13 @@ class SeanceController {
                         etablissements
                 )*.structureEnseignement
 
-        def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
-
         render(
                 view: '/seance/edite',
                 model: [
                         liens                      : breadcrumpsServiceProxy.liens,
+                        currentEtablissement       : securiteSessionServiceProxy.currentEtablissement,
                         etablissements             : etablissements,
-                        niveaux                    : niveaux,
+                        fonctionList               : getFonctionListForRoleApprenant(),
                         lienBookmarkable           : lienBookmarkable,
                         afficheLienCreationDevoir  : afficheLienCreationDevoir,
                         afficheLienCreationActivite: afficheLienCreationActivite,
@@ -173,47 +176,48 @@ class SeanceController {
      *
      * Action recherche autre groupe
      */
-    def rechercheAutreGroupe(RechercheStructuresCommand command) {
+    def rechercheAutreGroupe(RechercheGroupeCommand command) {
         Personne personne = authenticatedPersonne
-        def allEtabs = securiteSessionServiceProxy.etablissementList
-        def etabs = allEtabs
+        Etablissement etablissement
         if (command.etablissementId) {
-            etabs = [Etablissement.get(command.etablissementId)]
+            etablissement = Etablissement.get(command.etablissementId)
+        } else {
+            etablissement = securiteSessionServiceProxy.currentEtablissement
         }
+
+        List<Fonction> fonctionList = getFonctionListForRoleApprenant()
+
+        assert command.fonctionId
+        Fonction fonction = Fonction.get(command.fonctionId)
+        assert fonction
+
         def codePattern = null
         if (command.patternCode) {
             codePattern = command.patternCode
         }
-        def niveau = null
-        if (command.niveauId) {
-            niveau = Niveau.get(command.niveauId)
-        }
         def limit = grailsApplication.config.eliot.listes.groupes.maxrecherche
-        def structures = scolariteService.findStructuresEnseignement(
-                etabs,
-                codePattern,
-                niveau,
-                limit
+        RechercheGroupeResultat rechercheGroupeResultat = groupeService.rechercheGroupeScolarite(
+                personne,
+                new RechercheGroupeCritere(
+                        etablissement: etablissement,
+                        fonction: fonction,
+                        motCle: codePattern,
+                        limit: limit
+                )
         )
-
-        List<ProprietesScolarite> groupeScolariteList = structures.collect {
-            groupeService.findGroupeScolariteEleveForStructureEnseignement(it)
-        }
 
         render(view: "/seance/_selectAutreGroupe",
                 model: [
                         rechercheGroupeCommand: command,
-                        etablissements        : allEtabs,
-                        niveaux               : scolariteService.findNiveauxForEtablissement(etabs),
-                        groupeScolariteList   : groupeScolariteList,
-                        totalCount            : structures?.totalCount
+                        etablissements        : securiteSessionServiceProxy.etablissementList,
+                        fonctionId            : fonction.id,
+                        fonctionList          : fonctionList,
+                        groupeScolariteList   : rechercheGroupeResultat.groupes,
+                        totalCount            : rechercheGroupeResultat.nombreTotal
                 ]
         )
     }
 
-    /**
-     * Action updateChapitres
-     */
     def updateNiveaux() {
         Personne personne = authenticatedPersonne
         def etabId = params.etablissementId
@@ -225,6 +229,25 @@ class SeanceController {
         }
         def niveaux = scolariteService.findNiveauxForEtablissement(etabs)
         render(view: "/seance/_selectNiveaux", model: [niveaux: niveaux])
+    }
+
+    /**
+     * Action updateFonctionList
+     */
+    def updateFonctionList() {
+        List<Fonction> fonctionList = getFonctionListForRoleApprenant()
+
+        Fonction fonction = fonctionList.contains(fonctionService.fonctionEleve()) ?
+                fonctionService.fonctionEleve() :
+                fonctionList.first()
+
+        render(
+                view: "/seance/_selectFonction",
+                model: [
+                        fonctionList: fonctionList,
+                        fonctionId  : fonction.id
+                ]
+        )
     }
 
     /**
@@ -550,6 +573,18 @@ class SeanceController {
             }
         }
     }
+
+    /*
+     * @return la liste des fonctions associées au rôle apprenant sur l'établissement courant
+     */
+    private List<Fonction> getFonctionListForRoleApprenant() {
+                return securiteSessionServiceProxy.currentPreferenceEtablissement.
+                        mappingFonctionRoleAsMap().getFonctionEnumListForRole(
+                        RoleApplicatif.ELEVE
+                ).collect {
+                    fonctionService.fonctionForFonctionLibelle(it)
+                }.sort { Fonction f -> f.libelle }
+    }
 }
 
 
@@ -565,8 +600,8 @@ class UpdateReponseNoteCommand {
     Float update_value
 }
 
-class RechercheStructuresCommand {
+class RechercheGroupeCommand {
     String patternCode
     Long etablissementId
-    Long niveauId
+    Long fonctionId
 }

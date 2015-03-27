@@ -77,6 +77,23 @@ class MappingFonctionRole {
         roles
     }
 
+    /**
+     * Retourne la liste des fonctions qui sont associées à un rôle
+     * @param role
+     * @return
+     */
+    List<FonctionEnum> getFonctionEnumListForRole(RoleApplicatif role) {
+        List<FonctionEnum> fonctionEnumList = []
+
+        mapping.each { String fonctionCode, Map fonctionRole ->
+            if(fonctionRole[role.name()]?.associe) {
+                fonctionEnumList << FonctionEnum.valueOf(fonctionCode)
+            }
+        }
+
+        return fonctionEnumList
+    }
+
     AssociationFonctionRole hasRoleForFonction(RoleApplicatif role, FonctionEnum fonction) {
         def res = new AssociationFonctionRole()
         def roleAsMap = mapping.get(fonction.name())?.get(role.name())

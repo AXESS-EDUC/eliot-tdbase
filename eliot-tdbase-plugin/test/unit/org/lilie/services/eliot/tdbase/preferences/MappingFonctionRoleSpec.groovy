@@ -313,6 +313,25 @@ class MappingFonctionRoleSpec extends Specification {
         mapping.getRolesForFonction(FonctionEnum.ENS).size() == 1
         mapping.getRolesForFonction(FonctionEnum.ELEVE).size() == 0
         mapping.getRolesForFonction(FonctionEnum.PERS_REL_ELEVE).size() == 1
+    }
 
+    def "Récupérer toutes les fonctions associées à un rôle applicatif"() {
+        given:"un mapping initialise"
+        MappingFonctionRole mapping = new MappingFonctionRole(aMap)
+
+        expect:
+        mapping.getFonctionEnumListForRole(
+                RoleApplicatif.ENSEIGNANT
+        ) as Set ==
+                [FonctionEnum.ENS] as Set
+
+        and:
+        mapping.getFonctionEnumListForRole(
+                RoleApplicatif.ELEVE
+        ) as Set ==
+                [
+                        FonctionEnum.ENS,
+                        FonctionEnum.ELEVE
+                ] as Set
     }
 }

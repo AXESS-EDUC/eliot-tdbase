@@ -28,9 +28,12 @@ class PreferenceEtablissementService {
     PreferenceEtablissement getPreferenceForEtablissement(Personne personne,
                                                           Etablissement etablissement) {
 
-        PreferenceEtablissement pref = PreferenceEtablissement.findByEtablissement(etablissement)
+        PreferenceEtablissement pref =
+                PreferenceEtablissement.findByEtablissement(etablissement)
+
         if (!pref) {
-            pref = new PreferenceEtablissement(etablissement: etablissement,
+            pref = new PreferenceEtablissement(
+                    etablissement: etablissement,
                     lastUpdateAuteur: personne,
                     mappingFonctionRole: MappingFonctionRole.defaultMappingFonctionRole.toJsonString())
             pref.save(failOnError: true)
@@ -44,7 +47,8 @@ class PreferenceEtablissementService {
      * @param etablissement l'établissement
      * @return le mapping fonction role
      */
-    MappingFonctionRole getMappingFonctionRoleForEtablissement(Personne personne, Etablissement etablissement) {
+    MappingFonctionRole getMappingFonctionRoleForEtablissement(Personne personne,
+                                                               Etablissement etablissement) {
         getPreferenceForEtablissement(personne,etablissement).mappingFonctionRoleAsMap()
     }
 
