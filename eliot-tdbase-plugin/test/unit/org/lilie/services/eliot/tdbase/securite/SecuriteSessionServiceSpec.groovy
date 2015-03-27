@@ -220,28 +220,28 @@ class SecuriteSessionServiceSpec extends Specification {
 
     def "test de l'initialisation des rôles avec périmètre lorsque le rôle super-admin est imposé"() {
 
-        given:"une personne qui est effectivement un super-admin"
+        given: "une personne qui est effectivement un super-admin"
         def personne = Mock(Personne)
         securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
             personneEstAdministrateurCentral(personne) >> true
         }
 
-        and:"un rôle applicatif imposé"
+        and: "un rôle applicatif imposé"
         def roleApplicatif = RoleApplicatif.SUPER_ADMINISTRATEUR
 
-        when:"l'initialisation des rôles est délenchées avec le rôle imposé"
+        when: "l'initialisation des rôles est délenchées avec le rôle imposé"
         securiteSessionService.initialiseRolesAvecPerimetreForPersonne(personne, roleApplicatif)
 
-        then:"le current role applicatif est le role applicatif imposé"
+        then: "le current role applicatif est le role applicatif imposé"
         securiteSessionService.currentRoleApplicatif == roleApplicatif
 
-        and:"le default role applicatif est le role applicatif imposé"
+        and: "le default role applicatif est le role applicatif imposé"
         securiteSessionService.defaultRoleApplicatif == roleApplicatif
 
-        and:"la liste des établissements est vide"
+        and: "la liste des établissements est vide"
         securiteSessionService.etablissementList.isEmpty()
 
-        and:"la liste des rôles avec parametre contient une seule entrée avec le rôle imposé"
+        and: "la liste des rôles avec parametre contient une seule entrée avec le rôle imposé"
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(roleApplicatif)
 
@@ -249,28 +249,28 @@ class SecuriteSessionServiceSpec extends Specification {
 
     def "test de l'initialisation des rôles avec périmètre lorsque le rôle super-admin est imposé sur une personne non super admin"() {
 
-        given:"une personne qui n'est pas un super-admin"
+        given: "une personne qui n'est pas un super-admin"
         def personne = Mock(Personne)
         securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
             personneEstAdministrateurCentral(personne) >> false
         }
 
-        and:"un rôle applicatif imposé"
+        and: "un rôle applicatif imposé"
         def roleApplicatif = RoleApplicatif.SUPER_ADMINISTRATEUR
 
-        when:"l'initialisation des rôles est délenchées avec le rôle imposé"
+        when: "l'initialisation des rôles est délenchées avec le rôle imposé"
         securiteSessionService.initialiseRolesAvecPerimetreForPersonne(personne, roleApplicatif)
 
-        then:"le current role applicatif est le role NO_ROLE"
+        then: "le current role applicatif est le role NO_ROLE"
         securiteSessionService.currentRoleApplicatif == RoleApplicatif.NO_ROLE
 
-        and:"le default role applicatif est le role NO_ROLE"
+        and: "le default role applicatif est le role NO_ROLE"
         securiteSessionService.defaultRoleApplicatif == RoleApplicatif.NO_ROLE
 
-        and:"la liste des établissements est vide"
+        and: "la liste des établissements est vide"
         securiteSessionService.etablissementList.isEmpty()
 
-        and:"la liste des rôles avec parametre contient une seule entrée avec le rôle NO_ROLE"
+        and: "la liste des rôles avec parametre contient une seule entrée avec le rôle NO_ROLE"
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(RoleApplicatif.NO_ROLE)
 
@@ -278,7 +278,7 @@ class SecuriteSessionServiceSpec extends Specification {
 
     def "test de l'initialisation des rôles avec périmètre lorsque le rôle administrateur est imposé"() {
 
-        given:"une personne administrant deux établissement"
+        given: "une personne administrant deux établissement"
         def personne = Mock(Personne)
         Etablissement etab1 = Mock(Etablissement)
         // hack pour mock sur objets "comparable"
@@ -290,23 +290,23 @@ class SecuriteSessionServiceSpec extends Specification {
             findEtablissementsAdministresForPersonne(personne) >> [etab1, etab2]
         }
 
-        and:"un rôle applicatif imposé"
+        and: "un rôle applicatif imposé"
         def roleApplicatif = RoleApplicatif.ADMINISTRATEUR
 
-        when:"l'initialisation des rôles est délenchées avec le rôle imposé"
+        when: "l'initialisation des rôles est délenchées avec le rôle imposé"
         securiteSessionService.initialiseRolesAvecPerimetreForPersonne(personne, roleApplicatif)
 
-        then:"le current role applicatif est le role applicatif imposé"
+        then: "le current role applicatif est le role applicatif imposé"
         securiteSessionService.currentRoleApplicatif == roleApplicatif
 
-        and:"le default role applicatif est le role applicatif imposé"
+        and: "le default role applicatif est le role applicatif imposé"
         securiteSessionService.defaultRoleApplicatif == roleApplicatif
 
-        and:"la liste des rôles avec parametre contient une seule entrée avec le rôle imposé"
+        and: "la liste des rôles avec parametre contient une seule entrée avec le rôle imposé"
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(roleApplicatif)
 
-        and:"la liste des établissements est non vide"
+        and: "la liste des établissements est non vide"
         securiteSessionService.etablissementList.size() == 2
         securiteSessionService.etablissementList.contains(etab1)
         securiteSessionService.etablissementList.contains(etab2)
@@ -315,51 +315,51 @@ class SecuriteSessionServiceSpec extends Specification {
 
     def "test de l'initialisation des rôles avec périmètre lorsque le rôle administrateur est imposé sur une personne non administrateur"() {
 
-        given:"une personne n'administrant aucun établissement"
+        given: "une personne n'administrant aucun établissement"
         def personne = Mock(Personne)
         securiteSessionService.profilScolariteService = Mock(ProfilScolariteService) {
             findEtablissementsAdministresForPersonne(personne) >> []
         }
 
-        and:"un rôle applicatif imposé"
+        and: "un rôle applicatif imposé"
         def roleApplicatif = RoleApplicatif.ADMINISTRATEUR
 
-        when:"l'initialisation des rôles est délenchées avec le rôle imposé"
+        when: "l'initialisation des rôles est délenchées avec le rôle imposé"
         securiteSessionService.initialiseRolesAvecPerimetreForPersonne(personne, roleApplicatif)
 
-        then:"le current role applicatif est le role NO_ROLE"
+        then: "le current role applicatif est le role NO_ROLE"
         securiteSessionService.currentRoleApplicatif == RoleApplicatif.NO_ROLE
 
-        and:"le default role applicatif est le role NO_ROLE"
+        and: "le default role applicatif est le role NO_ROLE"
         securiteSessionService.defaultRoleApplicatif == RoleApplicatif.NO_ROLE
 
-        and:"la liste des rôles avec parametre contient une seule entrée avec le rôle NO_ROLE"
+        and: "la liste des rôles avec parametre contient une seule entrée avec le rôle NO_ROLE"
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(RoleApplicatif.NO_ROLE)
 
-        and:"la liste des établissements est vide"
+        and: "la liste des établissements est vide"
         securiteSessionService.etablissementList.size() == 0
 
     }
 
     def "test de l'initialisation des rôles avec périmètre lorsque un rôle non autorisé est imposé"() {
 
-        given:"une personne administrant deux établissement"
+        given: "une personne administrant deux établissement"
         def personne = Mock(Personne)
 
-        and:"un rôle applicatif imposé"
+        and: "un rôle applicatif imposé"
         def roleApplicatif = RoleApplicatif.ENSEIGNANT
 
-        when:"l'initialisation des rôles est délenchées avec le rôle imposé"
+        when: "l'initialisation des rôles est délenchées avec le rôle imposé"
         securiteSessionService.initialiseRolesAvecPerimetreForPersonne(personne, roleApplicatif)
 
-        then:"une exception est levée"
+        then: "une exception est levée"
         thrown(PreConditionException)
 
     }
 
     def "test de l'initialisation du role CD par config pour un user qui est effectivement un CD"() {
-        given:"un user en registré comme CD dans la configuration"
+        given: "un user en registré comme CD dans la configuration"
         def autorite = Mock(DomainAutorite) {
             getIdentifiant() >> "idexterne1"
         }
@@ -368,10 +368,10 @@ class SecuriteSessionServiceSpec extends Specification {
         }
         CorrespondantDeploimentConfig.externalIds = ["idexterne1"]
 
-        when:"l'initialisation de correspondant déploiement est déclenchée sur ce user"
+        when: "l'initialisation de correspondant déploiement est déclenchée sur ce user"
         securiteSessionService.initialiseSecuriteSessionForCorrespondantDeploiment(utilisateur)
 
-        then:"la session est correctement initialisée"
+        then: "la session est correctement initialisée"
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.size() == 1
         securiteSessionService.rolesApplicatifsAndPerimetreByRoleApplicatif.get(RoleApplicatif.SUPER_ADMINISTRATEUR)
         securiteSessionService.currentRoleApplicatif == RoleApplicatif.SUPER_ADMINISTRATEUR
@@ -380,7 +380,7 @@ class SecuriteSessionServiceSpec extends Specification {
     }
 
     def "test de l'initialisation du role CD par config pour un user qui n'est pas un CD"() {
-        given:"un user en registré comme CD dans la configuration"
+        given: "un user en registré comme CD dans la configuration"
         def autorite = Mock(DomainAutorite) {
             getIdentifiant() >> "idexterne1"
         }
@@ -389,10 +389,10 @@ class SecuriteSessionServiceSpec extends Specification {
         }
         CorrespondantDeploimentConfig.externalIds = ["idexterne2"]
 
-        when:"l'initialisation de correspondant déploiement est déclenchée sur ce user"
+        when: "l'initialisation de correspondant déploiement est déclenchée sur ce user"
         securiteSessionService.initialiseSecuriteSessionForCorrespondantDeploiment(utilisateur)
 
-        then:"une exception est levée"
+        then: "une exception est levée"
         thrown(PreConditionException)
 
     }
@@ -431,50 +431,11 @@ class SecuriteSessionServiceSpec extends Specification {
 
 
     private MappingFonctionRole getDefaultMappingFonctionRole() {
-        new MappingFonctionRole(["ENS"           :
-                                         ["ENSEIGNANT":
-                                                  ["associe"   : true,
-                                                   "modifiable": true],
-                                          "ELEVE"     : ["associe"   : true,
-                                                         "modifiable": true],
-                                          "PARENT"    : ["associe"   : false,
-                                                         "modifiable": false]
-                                         ],
-                                 "AL"            :
-                                         ["ADMINISTRATEUR": ["associe"   : true,
-                                                             "modifiable": true],
-                                          "ENSEIGNANT"    :
-                                                  ["associe"   : true,
-                                                   "modifiable": true]
-                                         ],
-                                 "ELEVE"         :
-                                         ["ELEVE"     : ["associe"   : true,
-                                                         "modifiable": false],
-                                          "ENSEIGNANT":
-                                                  ["associe"   : true,
-                                                   "modifiable": true]
-                                         ],
-                                 "DIR"           :
-                                         ["ADMINISTRATEUR": ["associe"   : true,
-                                                             "modifiable": true],
-                                          "ENSEIGNANT"    :
-                                                  ["associe"   : true,
-                                                   "modifiable": true]
-                                         ],
-                                 "DOC"           :
-                                         ["ELEVE"     : ["associe"   : true,
-                                                         "modifiable": true],
-                                          "ENSEIGNANT":
-                                                  ["associe"   : true,
-                                                   "modifiable": true]
-                                         ],
-                                 "PERS_REL_ELEVE":
-                                         ["PARENT"    : ["associe"   : true,
-                                                         "modifiable": false],
-                                          "ENSEIGNANT":
-                                                  ["associe"   : true,
-                                                   "modifiable": true]
-                                         ]
+        new MappingFonctionRole().parseMapRepresentation([
+                "ENSEIGNANT": ["ENS", "AL", "ELEVE", "DIR", "DOC", "PERS_REL_ELEVE"],
+                "ELEVE": ["ENS", "ELEVE", "DOC"],
+                "PARENT": ["PERS_REL_ELEVE"],
+                "ADMINISTRATEUR": ["AL", "DIR"]
         ])
     }
 

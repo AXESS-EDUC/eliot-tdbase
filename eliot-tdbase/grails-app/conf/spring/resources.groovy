@@ -1,4 +1,5 @@
 import groovy.sql.Sql
+import org.lilie.services.eliot.tdbase.preferences.GestionnaireModificationLiaisonFonctionRole
 import org.lilie.services.eliot.tice.securite.rbac.EliotTiceUserDetailsService
 
 /*
@@ -35,4 +36,8 @@ beans = {
         roleUtilisateurService = ref("roleUtilisateurService")
     }
     groovySql(Sql, ref('dataSource'))
+
+    gestionnaireModificationLiaisonFonctionRole(GestionnaireModificationLiaisonFonctionRole) {
+        grailsApplication = ref('grailsApplication')
+    }
 }

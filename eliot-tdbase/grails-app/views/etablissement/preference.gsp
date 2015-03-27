@@ -78,8 +78,8 @@
                     <g:each in="${rolesModifiables}" var="role">
                         <td class="label">
                             <g:checkBox name="fonction__${fonction.code}__role__${role.name()}"
-                                        checked="${mappingFonctionRole.hasRoleForFonction(role,FonctionEnum.valueOf(fonction.code)).associe}"
-                                        disabled="${!mappingFonctionRole.hasRoleForFonction(role,FonctionEnum.valueOf(fonction.code)).modifiable}"
+                                        checked="${mappingFonctionRole.getAssociationFonctionRole(role,FonctionEnum.valueOf(fonction.code)).associe}"
+                                        disabled="${!gestionnaireModificationLiaisonFonctionRole.isLiaisonModifiable(role,FonctionEnum.valueOf(fonction.code))}"
                             />
                         </td>
                     </g:each>

@@ -29,6 +29,7 @@
 package org.lilie.services.eliot.tdbase
 
 import groovy.json.JsonBuilder
+import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
@@ -61,6 +62,7 @@ class SeanceController {
     SecuriteSessionService securiteSessionServiceProxy
     GroupeService groupeService
     FonctionService fonctionService
+    PreferenceEtablissementService preferenceEtablissementService
 /**
  *
  * Action "edite"
@@ -156,7 +158,10 @@ class SeanceController {
                         liens                      : breadcrumpsServiceProxy.liens,
                         currentEtablissement       : securiteSessionServiceProxy.currentEtablissement,
                         etablissements             : etablissements,
-                        fonctionList               : getFonctionListForRoleApprenant(),
+                        fonctionList               : preferenceEtablissementService.getFonctionListForRoleApprenant(
+                                personne,
+                                securiteSessionServiceProxy.currentEtablissement
+                        ),
                         lienBookmarkable           : lienBookmarkable,
                         afficheLienCreationDevoir  : afficheLienCreationDevoir,
                         afficheLienCreationActivite: afficheLienCreationActivite,
@@ -185,7 +190,11 @@ class SeanceController {
             etablissement = securiteSessionServiceProxy.currentEtablissement
         }
 
-        List<Fonction> fonctionList = getFonctionListForRoleApprenant()
+        List<Fonction> fonctionList =
+                preferenceEtablissementService.getFonctionListForRoleApprenant(
+                personne,
+                etablissement
+        )
 
         assert command.fonctionId
         Fonction fonction = Fonction.get(command.fonctionId)
@@ -235,7 +244,14 @@ class SeanceController {
      * Action updateFonctionList
      */
     def updateFonctionList() {
-        List<Fonction> fonctionList = getFonctionListForRoleApprenant()
+        Personne personne = authenticatedPersonne
+
+        Etablissement etablissement = Etablissement.load(params.etablissementId)
+        List<Fonction> fonctionList =
+                preferenceEtablissementService.getFonctionListForRoleApprenant(
+                personne,
+                etablissement
+        )
 
         Fonction fonction = fonctionList.contains(fonctionService.fonctionEleve()) ?
                 fonctionService.fonctionEleve() :
@@ -572,18 +588,6 @@ class SeanceController {
                 flash.messageNotesCode = "seance.enregistre.liennotes.erreur"
             }
         }
-    }
-
-    /*
-     * @return la liste des fonctions associées au rôle apprenant sur l'établissement courant
-     */
-    private List<Fonction> getFonctionListForRoleApprenant() {
-                return securiteSessionServiceProxy.currentPreferenceEtablissement.
-                        mappingFonctionRoleAsMap().getFonctionEnumListForRole(
-                        RoleApplicatif.ELEVE
-                ).collect {
-                    fonctionService.fonctionForFonctionLibelle(it)
-                }.sort { Fonction f -> f.libelle }
     }
 }
 

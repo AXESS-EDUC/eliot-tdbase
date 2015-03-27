@@ -153,34 +153,34 @@ grails.plugins.springsecurity.errors.login.fail = "errors.login.fail"
 // set security rbac
 //
 grails.plugins.springsecurity.interceptUrlMap = [
-        '/'              : ['IS_AUTHENTICATED_FULLY'],
-        '/accueil/**'    : ['IS_AUTHENTICATED_FULLY'],
-        '/p/**'          : ['IS_AUTHENTICATED_FULLY'],
-        '/dashboard/**'  : [
+        '/'                : ['IS_AUTHENTICATED_FULLY'],
+        '/accueil/**'      : ['IS_AUTHENTICATED_FULLY'],
+        '/p/**'            : ['IS_AUTHENTICATED_FULLY'],
+        '/dashboard/**'    : [
                 "${RoleApplicatif.ENSEIGNANT.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
-        '/sujet/**'      : [
+        '/sujet/**'        : [
                 "${RoleApplicatif.ENSEIGNANT.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
-        '/question/**'   : [
+        '/question/**'     : [
                 "${RoleApplicatif.ENSEIGNANT.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
-        '/seance/**'     : [
+        '/seance/**'       : [
                 "${RoleApplicatif.ENSEIGNANT.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
-        '/activite/**'   : [
+        '/activite/**'     : [
                 "${RoleApplicatif.ELEVE.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
-        '/utilisateur/**'   : [
+        '/utilisateur/**'  : [
                 "${RoleApplicatif.ELEVE.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
-        '/resultats/**'  : [
+        '/resultats/**'    : [
                 "${RoleApplicatif.PARENT.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
@@ -188,11 +188,11 @@ grails.plugins.springsecurity.interceptUrlMap = [
                 "${RoleApplicatif.ADMINISTRATEUR.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
-        '/maintenance/**': [
+        '/maintenance/**'  : [
                 "${RoleApplicatif.SUPER_ADMINISTRATEUR.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ],
-        '/emaEval/**'    : [
+        '/emaEval/**'      : [
                 "${RoleApplicatif.SUPER_ADMINISTRATEUR.authority}",
                 'IS_AUTHENTICATED_FULLY'
         ]
@@ -555,13 +555,15 @@ eliot.tdbase.notifications.seance.invitation.trigger = {
 // Trigger définissant la périodicité du job exécutant en tâche de fond
 // les notifications de rappel d'invitation à une nouvelle séance (via les webservices)
 eliot.tdbase.notifications.seance.rappelInvitation.trigger = {
-    simple name: 'rappelInvitationSeanceTDBaseTrigger', startDelay: 1000 * 75, repeatInterval: 1000 * 60 * 5 // Toutes les 5m
+    simple name: 'rappelInvitationSeanceTDBaseTrigger', startDelay: 1000 * 75, repeatInterval: 1000 * 60 * 5
+    // Toutes les 5m
 }
 
 // Trigger définissant la périodicité du job exécutant en tâche de fond
 // les notifications de publications de résultats d'une séance TD Base
 eliot.tdbase.notifications.seance.publicationResultats.trigger = {
-    simple name: 'publicationResultatsSeanceTDBaseTrigger', startDelay: 1000 * 90, repeatInterval: 1000 * 60 * 5 // Toutes les m
+    simple name: 'publicationResultatsSeanceTDBaseTrigger', startDelay: 1000 * 90, repeatInterval: 1000 * 60 * 5
+    // Toutes les m
 }
 
 environments {
@@ -638,36 +640,46 @@ environments {
 // Activation/desactivation du partage en CC par les enseignants d'un artefact (i.e. d'un sujet ou d'une question)
 eliot.artefact.partage_CC_autorise = true
 
-// parametrage par defaut du mmapping fonction role pour tdbase
-def mappingFonctionRole = [:]
-FonctionEnum.values().each { FonctionEnum fctEn ->
-    def roles = RoleApplicatif.values()
-    def rolesAssoc = [:]
-    roles.each { RoleApplicatif roleApp ->
-        if(fctEn == FonctionEnum.ENS && roleApp == RoleApplicatif.ENSEIGNANT) {
-            rolesAssoc.put(roleApp.name(),[associe: true, modifiable: false])
-        } else if(fctEn == FonctionEnum.DOC && roleApp == RoleApplicatif.ENSEIGNANT) {
-            rolesAssoc.put(roleApp.name(),[associe: true, modifiable: false])
-        } else if(fctEn == FonctionEnum.ELEVE && roleApp == RoleApplicatif.ELEVE) {
-            rolesAssoc.put(roleApp.name(),[associe: true, modifiable: false])
-        } else if(fctEn == FonctionEnum.PERS_REL_ELEVE && roleApp == RoleApplicatif.PARENT) {
-            rolesAssoc.put(roleApp.name(),[associe: true, modifiable: false])
-        } else if(fctEn == FonctionEnum.DIR && roleApp == RoleApplicatif.ADMINISTRATEUR) {
-            rolesAssoc.put(roleApp.name(),[associe: true, modifiable: false])
-        } else if(fctEn == FonctionEnum.AL && roleApp == RoleApplicatif.ADMINISTRATEUR) {
-            rolesAssoc.put(roleApp.name(), [associe: true, modifiable: false])
-        } else if(fctEn == FonctionEnum.CD && roleApp == RoleApplicatif.SUPER_ADMINISTRATEUR) {
-            rolesAssoc.put(roleApp.name(), [associe: true, modifiable: false])
-        } else if (roleApp == RoleApplicatif.ENSEIGNANT) {
-            rolesAssoc.put(roleApp.name(), [associe: false, modifiable: true])
-        } else {
-            rolesAssoc.put(roleApp.name(), [associe: false, modifiable: false])
-        }
-    }
-    mappingFonctionRole.put(fctEn.name(),rolesAssoc)
-}
+/**
+ * Définit les couples <RoleApplicatif, FonctionEnum> qui sont associés par défaut
+ * Cette configuration est utilisée pour généré le paramétrage initial de TD Base pour
+ * un établissement qui pourra ensuite être modifié par les utilisateurs disposant du
+ * rôle applicatif ADMINISTRATEUR
+ */
+def mappingFonctionRoleDefaut = [
+        "ENSEIGNANT"          : ["ENS", "CD"],
+        "ELEVE"               : ["ELEVE"],
+        "PARENT"              : ["PERS_REL_ELEVE"],
+        "ADMINISTRATEUR"      : ["DIR", "AL"],
+        "SUPER_ADMINISTRATEUR": ["CD"]
+]
 
-eliot.tdbase.mappingFonctionRole.defaut =  mappingFonctionRole
+/**
+ * Définit les couples <RoleApplicatif, FonctionEnum> qui sont modifiables par les
+ * administrateurs
+ *
+ * La clé 'défault' peut être utilisée pour définir une règle par défaut qui
+ * s'applique lorsque la règle n'a pas été explicitement définie pour un RoleApplicatif
+ * ou un FonctionEnum
+ */
+def liaisonFonctionRoleModifiable = [
+        "ENSEIGNANT": [
+                "ENS"   : false,
+                "DOC"   : false,
+                "default": true
+        ],
+        "ELEVE"     : [
+                "ELEVE"  : false,
+                "default": true
+        ],
+        "default"   : [
+                "default": false
+        ]
+]
+
+
+eliot.tdbase.mappingFonctionRole.defaut = mappingFonctionRoleDefaut
+eliot.tdbase.mappingFonctionRole.modifiable = liaisonFonctionRoleModifiable
 
 // les CD (backdoor)
 eliot.correspondant.force.allIdExterne = []

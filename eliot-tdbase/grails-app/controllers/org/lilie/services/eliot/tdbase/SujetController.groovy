@@ -8,6 +8,7 @@ import org.lilie.services.eliot.tdbase.importexport.SujetExporterService
 import org.lilie.services.eliot.tdbase.importexport.SujetImporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
+import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
@@ -51,6 +52,7 @@ class SujetController {
     AttachementService attachementService
     SecuriteSessionService securiteSessionServiceProxy
     FonctionService fonctionService
+    PreferenceEtablissementService preferenceEtablissementService
 
     /**
      *
@@ -471,12 +473,10 @@ class SujetController {
                 )*.structureEnseignement
 
         List<Fonction> fonctionList =
-                securiteSessionServiceProxy.currentPreferenceEtablissement.
-                        mappingFonctionRoleAsMap().getFonctionEnumListForRole(
-                        RoleApplicatif.ELEVE
-                ).collect {
-                    fonctionService.fonctionForFonctionLibelle(it)
-                }.sort { Fonction f -> f.libelle }
+                preferenceEtablissementService.getFonctionListForRoleApprenant(
+                        personne,
+                        securiteSessionServiceProxy.currentEtablissement
+                )
 
         render(
                 view: '/seance/edite',
