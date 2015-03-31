@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
+  ~  This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
+  ~
+  ~  Lilie is free software. You can redistribute it and/or modify since
+  ~  you respect the terms of either (at least one of the both license) :
+  ~  - under the terms of the GNU Affero General Public License as
+  ~  published by the Free Software Foundation, either version 3 of the
+  ~  License, or (at your option) any later version.
+  ~  - the CeCILL-C as published by CeCILL-C; either version 1 of the
+  ~  License, or any later version
+  ~
+  ~  There are special exceptions to the terms and conditions of the
+  ~  licenses as they are applied to this software. View the full text of
+  ~  the exception in file LICENSE.txt in the directory of this software
+  ~  distribution.
+  ~
+  ~  Lilie is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  Licenses for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  and the CeCILL-C along with Lilie. If not, see :
+  ~   <http://www.gnu.org/licenses/> and
+  ~   <http://www.cecill.info/licences.fr.html>.
+  -->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+
+
+    <changeSet author="onic" id="1">
+        <sql>create schema nomenclature;</sql>
+
+        <createTable tableName="matiere" schemaName="nomenclature">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="libelle_court" type="varchar(50)"></column>
+            <column name="libelle_long" type="varchar(255)"></column>
+            <column name="libelle_edition" type="varchar(255)"></column>
+            <column name="bcn_id" type="bigint"/>
+        </createTable>
+
+        <createSequence sequenceName="matiere_id_seq" schemaName="nomenclature" startValue="1"/>
+
+        <loadData file="data/matiere.csv" schemaName="nomenclature" tableName="matiere" quotchar="'" separator=",">
+            <column header="LIBELLE_COURT_MATIERE_ENSEIGNE" name="libelle_court" type="STRING"/>
+            <column header="LIBELLE_LONG_MATIERE_ENSEIGNE" name="libelle_long" type="STRING"/>
+            <column header="LIBELLE_EDITION" name="libelle_edition" type="STRING"/>
+            <column header="ID" name="id" type="NUMERIC"/>
+        </loadData>
+
+        <sql>select setval('nomenclature.matiere_id_seq', (select max(id) from nomenclature.matiere));</sql>
+        <sql>update nomenclature.matiere set bcn_id = id;</sql>
+    </changeSet>
+
+</databaseChangeLog>
