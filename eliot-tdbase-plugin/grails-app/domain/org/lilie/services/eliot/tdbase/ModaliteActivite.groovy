@@ -29,6 +29,7 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
@@ -56,6 +57,7 @@ class ModaliteActivite {
   Personne enseignant
   StructureEnseignement structureEnseignement
   Matiere matiere
+  MatiereBcn matiereBcn
 
   Long activiteId
   Long evaluationId
@@ -101,6 +103,7 @@ class ModaliteActivite {
     dateRappelNotificationOuvertureSeance nullable: true
 
     matiere(nullable: true)
+    matiereBcn(nullable: true)
 
     optionEvaluerCompetences(nullable: true)
   }
