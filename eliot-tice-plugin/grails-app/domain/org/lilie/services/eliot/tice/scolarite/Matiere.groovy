@@ -34,7 +34,6 @@ class Matiere {
   String libelleCourt
   String codeGestion
   String libelleEdition
-  String codeSts
   AnneeScolaire anneeScolaire
   Etablissement etablissement
   OrigineEnum origine = OrigineEnum.AUTO
@@ -44,7 +43,6 @@ class Matiere {
   ]
 
   static constraints = {
-    codeSts nullable: true
     codeGestion(nullable: false, blank: false)
     origine(nullable: true)
     libelleEdition(nullable: false, blank: false)

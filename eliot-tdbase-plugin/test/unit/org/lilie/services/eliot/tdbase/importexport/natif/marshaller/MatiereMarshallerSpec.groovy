@@ -22,10 +22,9 @@ class MatiereMarshallerSpec extends Specification {
     Map representation = matiereMarshaller.marshall(matiere)
 
     expect:
-    representation.size() == 7
+    representation.size() == 6
     representation.class == ExportClass.MATIERE.name()
     representation.identifiant == matiere.id
-    representation.codeSts == matiere.codeSts
     representation.codeGestion == matiere.codeGestion
     representation.libelleLong == matiere.libelleLong
     representation.libelleCourt == matiere.libelleCourt
@@ -34,7 +33,6 @@ class MatiereMarshallerSpec extends Specification {
     where:
     matiere = new Matiere(
         id: 123,
-        codeSts: "codeSts",
         codeGestion: "codeGestion",
         libelleLong: "libelleLong",
         libelleCourt: "libelleCourt",
@@ -48,7 +46,6 @@ class MatiereMarshallerSpec extends Specification {
   }
 
   def "testParse - cas général"(Long identifiant,
-                                String codeSts,
                                 String codeGestion,
                                 String libelleLong,
                                 String libelleCourt,
@@ -58,7 +55,6 @@ class MatiereMarshallerSpec extends Specification {
       {
         class: '${ExportClass.MATIERE}',
         identifiant: $identifiant,
-        codeSts: ${MarshallerHelper.asJsonString(codeSts)},
         codeGestion: ${MarshallerHelper.asJsonString(codeGestion)},
         libelleLong: ${MarshallerHelper.asJsonString(libelleLong)},
         libelleCourt: ${MarshallerHelper.asJsonString(libelleCourt)},
@@ -72,7 +68,6 @@ class MatiereMarshallerSpec extends Specification {
 
     expect:
     matiereDto.identifiant == identifiant
-    matiereDto.codeSts == codeSts
     matiereDto.codeGestion == codeGestion
     matiereDto.libelleLong == libelleLong
     matiereDto.libelleCourt == libelleCourt
@@ -80,7 +75,6 @@ class MatiereMarshallerSpec extends Specification {
 
     where:
     identifiant << [null, 123]
-    codeSts << [null, 'codeSts']
     codeGestion << [null, 'codeGestion']
     libelleLong << [null, 'libelleLong']
     libelleCourt << [null, 'libelleCourt']

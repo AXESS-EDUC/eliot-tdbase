@@ -37,57 +37,58 @@ grails.plugin.location.'eliot-notes-plugin' = "../eliot-notes-plugin"
 grails.plugin.location.'eliot-competence-plugin' = "../eliot-competence-plugin"
 
 grails.project.dependency.resolution = {
-    // inherit Grails' default dependencies
-    inherits("global") {
-        // uncomment to disable ehcache
-        // excludes 'ehcache'
-        excludes "xml-apis"
-    }
-    log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
-    repositories {
-        grailsCentral()
-    }
-    dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-        test('org.vert-x:vertx-lang-groovy:1.3.1.final') {
-            excludes "junit"
-        }
-
-        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') {
-            excludes "commons-logging", "xml-apis", "groovy"
-        }
-
-        runtime "postgresql:postgresql:9.1-901.jdbc4"
-        build group: 'net.sourceforge.saxon', name: 'saxon', version: '9.1.0.8'
-        build 'net.sf.saxon:saxon-dom:8.7'
+  // inherit Grails' default dependencies
+  inherits("global") {
+    // uncomment to disable ehcache
+    // excludes 'ehcache'
+    excludes "xml-apis"
+  }
+  log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+  repositories {
+    grailsCentral()
+    mavenRepo("http://repo.grails.org/grails/plugins/")
+  }
+  dependencies {
+    // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
+    test('org.vert-x:vertx-lang-groovy:1.3.1.final') {
+      excludes "junit"
     }
 
-    plugins {
-        build(":tomcat:$grailsVersion",
-                ":rest-client-builder:1.0.2",
-                ":release:2.0.2",
-                ":hibernate:$grailsVersion") {
-            export = false
-        }
-
-        compile ":spring-security-core:1.2.7.2"
-
-        compile(":codenarc:0.15") {
-            export = false
-        }
-
-
-        compile(":gmetrics:0.3.1") {
-            excludes "groovy-all"
-            export = false
-        }
-
-        test(":spock:0.7") {
-            export = false
-        }
-
-        test(":code-coverage:1.2.5") {
-            export = false
-        }
+    compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') {
+      excludes "commons-logging", "xml-apis", "groovy"
     }
+
+    runtime "postgresql:postgresql:9.1-901.jdbc4"
+    build group: 'net.sourceforge.saxon', name: 'saxon', version: '9.1.0.8'
+    build 'net.sf.saxon:saxon-dom:8.7'
+  }
+
+  plugins {
+    build(":tomcat:$grailsVersion",
+        ":rest-client-builder:1.0.2",
+        ":release:2.0.2",
+        ":hibernate:$grailsVersion") {
+      export = false
+    }
+
+    compile ":spring-security-core:1.2.7.2"
+
+    compile(":codenarc:0.15") {
+      export = false
+    }
+
+
+    compile(":gmetrics:0.3.1") {
+      excludes "groovy-all"
+      export = false
+    }
+
+    test(":spock:0.7") {
+      export = false
+    }
+
+    test(":code-coverage:1.2.5") {
+      export = false
+    }
+  }
 }

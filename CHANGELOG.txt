@@ -1,11 +1,8 @@
-=== Eliot tdbase 2.4.3-eliot-3.2.1-RC2 =
+=== Eliot tdbase 2.4.4-eliot-3.3.0-RC4 =
 
 Liste des dépendances :
 
- * Compatible avec les bases de données Eliot 3.2.1-RC1
-
-Liste des anomalies corrigées :
- * 0042604: Manuel d'utilisation manquant via l'aide "?"
+ * Compatible avec les bases de données Eliot 3.3.0-RC4
 
 
 === Eliot tdbase 2.4.2-eliot-3.2.0-RC2 =
