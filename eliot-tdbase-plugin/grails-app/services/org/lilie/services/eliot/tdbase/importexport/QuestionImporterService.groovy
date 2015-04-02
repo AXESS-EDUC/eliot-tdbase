@@ -137,7 +137,7 @@ class QuestionImporterService implements ApplicationContextAware {
 
       def specification = question.specificationObject.actualiseAllQuestionAttachementId(tableCorrespondanceId)
       questionService.updateQuestionSpecificationForObject(question, specification)
-      question.save()
+      question.save(flush: true, failOnError: true)
     }
 
     return question
