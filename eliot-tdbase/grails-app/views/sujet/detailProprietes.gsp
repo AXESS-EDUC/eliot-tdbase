@@ -146,7 +146,7 @@
     <tr>
       <td class="label">Mati&egrave;re&nbsp;:</td>
       <td>
-        ${sujet.matiere?.libelleLong}
+        ${sujet.matiereBcn?.libelleEdition}
       </td>
     </tr>
     <tr>

@@ -12,6 +12,7 @@ class MatiereBcn {
     table 'nomenclature.matiere'
     id column: 'id', generator: 'sequence', params: [sequence: 'nomenclature.matiere_id_seq']
     cache usage: 'read-write'
+    version false
   }
 
   static constraints = {

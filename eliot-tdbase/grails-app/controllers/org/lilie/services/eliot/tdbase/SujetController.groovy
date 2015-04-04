@@ -14,6 +14,7 @@ import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
@@ -127,8 +128,15 @@ class SujetController {
                                                 typesSujet    : sujetService.getAllSujetTypes(),
                                                 artefactHelper: artefactAutorisationService,
                                                 matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                                                matiereBcns   : [],
                                                 etablissements     : securiteSessionServiceProxy.etablissementList,
                                                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
+    }
+
+    def matiereBcns() {
+      String recherche = '%' + params.recherche + '%'
+      def matiereBcns = MatiereBcn.findAllByLibelleEditionLike(recherche)
+      render matiereBcns as JSON
     }
 
     /**
@@ -144,6 +152,7 @@ class SujetController {
                                                 artefactHelper: artefactAutorisationService,
                                                 typesSujet    : sujetService.getAllSujetTypes(),
                                                 matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                                                matiereBcns   : sujet.matiereBcn != null ? [sujet.matiereBcn] : [],
                                                 etablissements     : securiteSessionServiceProxy.etablissementList,
                                                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
     }
