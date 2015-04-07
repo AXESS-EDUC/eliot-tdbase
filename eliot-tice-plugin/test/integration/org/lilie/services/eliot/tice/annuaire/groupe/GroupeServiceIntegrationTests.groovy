@@ -124,26 +124,36 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
         Etablissement etablissement = bootstrapService.leLycee
         Fonction fonction = fonctionService.fonctionEleve()
 
+        and:
+        Map mockRestResult = [
+                groupes: [
+                        [
+                                id: 1,
+                                'nom-affichage': 'groupe 1'
+                        ],
+                        [
+                                id:2,
+                                'nom-affichage': 'groupe 2'
+                        ]
+                ],
+                'nombre-total': 2
+        ]
+
+        and:
+        RechercheGroupeRestService rechercheGroupeRestService = [
+                rechercheGroupeScolariteList: {
+                    Personne personne,
+                    RechercheGroupeCritere critere,
+                    String codePorteur ->
+
+                        return mockRestResult
+                }
+        ] as RechercheGroupeRestService
+        groupeService.rechercheGroupeRestService = rechercheGroupeRestService
+
         expect:
         RechercheGroupeResultat resultat =
                 groupeService.rechercheGroupeScolarite(
-                enseignant,
-                new RechercheGroupeCritere(
-                        etablissement: etablissement,
-                        fonction: fonction
-                )
-        )
-
-        assertEquals(
-                3,
-                resultat.nombreTotal
-        )
-
-        given:
-        fonction = fonctionService.fonctionEnseignant()
-
-        expect:
-        resultat = groupeService.rechercheGroupeScolarite(
                         enseignant,
                         new RechercheGroupeCritere(
                                 etablissement: etablissement,
@@ -152,8 +162,12 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
                 )
 
         assertEquals(
-                3,
+                2,
                 resultat.nombreTotal
+        )
+        assertEquals(
+                2,
+                resultat.groupes.size()
         )
     }
 }

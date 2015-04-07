@@ -212,7 +212,8 @@ class SeanceController {
                         fonction: fonction,
                         motCle: codePattern,
                         limit: limit
-                )
+                ),
+                codePorteur
         )
 
         render(view: "/seance/_selectAutreGroupe",

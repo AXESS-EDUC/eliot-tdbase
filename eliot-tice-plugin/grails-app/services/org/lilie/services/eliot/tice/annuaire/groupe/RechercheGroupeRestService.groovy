@@ -28,24 +28,40 @@
 
 package org.lilie.services.eliot.tice.annuaire.groupe
 
-import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
-
+import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.Etablissement
+import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
 
 /**
- * Représente une référence sur un groupe de scolarité
- *
  * @author John Tranier
  */
-class GroupeScolariteProxy implements GroupeAnnuaire {
+class RechercheGroupeRestService {
 
-  // Id de la ProprietesScolarite
-  Long id
-  String nomAffichage
+    static transactional = false
+    RestClient restClientForNotification
+    GrailsApplication grailsApplication
 
-  GroupeScolariteProxy() {}
+    // TODO Type + Doc
+    def rechercheGroupeScolariteList(Personne personne,
+                                     RechercheGroupeCritere critere,
+                                     String codePorteur = null) {
+        Map httpParameters = [
+                utilisateurPersonneId: personne.id,
+                codePorteur          : codePorteur,
+                type                 : GroupeType.SCOLARITE,
+                fonctionId           : critere.fonction.id,
+                etablissementId      : critere.etablissement.id,
+                motCle               : critere.motCle,
+                offset               : 0,
+                max                  : grailsApplication.config.eliot.listes.groupes.maxrecherche
+        ]
 
-  GroupeScolariteProxy(ProprietesScolarite proprietesScolarite) {
-    this.id = proprietesScolarite.id
-    nomAffichage = proprietesScolarite.nomAffichage
-  }
+        restClientForNotification.invokeOperation(
+                'rechercheGroupeScolariteList',
+                null,
+                httpParameters
+        )
+    }
 }

@@ -3,7 +3,6 @@ import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import org.lilie.services.eliot.tdbase.QuestionTypeEnum
 import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
-import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
 import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 
@@ -541,7 +540,18 @@ eliot.webservices.rest.client.operations = [[operationName           : "getStruc
                                                     ''',
                                                     responseContentStructure: "[success:true/false, message:message]",
                                                     //urlServer: "http://localhost:8090",
-                                                    uriTemplate             : '/notifications']
+                                                    uriTemplate             : '/notifications'
+                                            ],
+                                            [
+
+                                                    operationName           : 'rechercheGroupeScolariteList',
+                                                    description             : "Recherche une liste de groupes scolarité pour un utilisateur",
+                                                    contentType             : ContentType.JSON,
+                                                    method                  : Method.GET,
+                                                    requestBodyTemplate     : null,
+                                                    responseContentStructure: 'eliot-scolarite#groupes#paginable',
+                                                    uriTemplate             : '/groupes/paginable'
+                                            ]
 ]
 
 // Notifications email et sms
@@ -664,8 +674,8 @@ def mappingFonctionRoleDefaut = [
  */
 def liaisonFonctionRoleModifiable = [
         "ENSEIGNANT": [
-                "ENS"   : false,
-                "DOC"   : false,
+                "ENS"    : false,
+                "DOC"    : false,
                 "default": true
         ],
         "ELEVE"     : [

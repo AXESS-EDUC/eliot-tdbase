@@ -28,24 +28,10 @@
 
 package org.lilie.services.eliot.tice.annuaire.groupe
 
-import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
-
-
 /**
- * Représente une référence sur un groupe de scolarité
- *
  * @author John Tranier
  */
-class GroupeScolariteProxy implements GroupeAnnuaire {
-
-  // Id de la ProprietesScolarite
-  Long id
-  String nomAffichage
-
-  GroupeScolariteProxy() {}
-
-  GroupeScolariteProxy(ProprietesScolarite proprietesScolarite) {
-    this.id = proprietesScolarite.id
-    nomAffichage = proprietesScolarite.nomAffichage
-  }
+enum GroupeType {
+    SCOLARITE,
+    ENT
 }

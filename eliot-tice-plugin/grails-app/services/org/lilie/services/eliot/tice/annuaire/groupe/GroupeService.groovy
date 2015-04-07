@@ -47,6 +47,7 @@ class GroupeService {
 
     SessionFactory sessionFactory
     FonctionService fonctionService
+    RechercheGroupeRestService rechercheGroupeRestService
 
     private final static String FIND_ALL_GROUPE_SCOLARITE_FOR_PERSONNE = """
         SELECT {ps.*}
@@ -143,21 +144,28 @@ class GroupeService {
      * @return
      */
     RechercheGroupeResultat rechercheGroupeScolarite(Personne personne,
-                                                     RechercheGroupeCritere critere) {
-        // TODO Implémentation provisoire en attendant de recevoir les infos d'Axess
-        List<ProprietesScolarite> groupeScolariteList = ProprietesScolarite.withCriteria {
-            or {
-                eq('etablissement', critere.etablissement)
-                'structureEnseignement' {
-                    eq('etablissement', critere.etablissement)
-                }
-            }
-            eq('fonction', critere.fonction)
+                                                     RechercheGroupeCritere critere,
+                                                     String codePorteur = null) {
+
+        def resultat = rechercheGroupeRestService.rechercheGroupeScolariteList(
+                personne,
+                critere,
+                codePorteur
+        )
+
+        if(!resultat) {
+            return new RechercheGroupeResultat()
         }
 
         return new RechercheGroupeResultat(
-                groupes: groupeScolariteList,
-                nombreTotal: groupeScolariteList.size()
+                groupes: resultat.groupes.collect {
+                    return new GroupeScolariteProxy(
+                            id: it.id,
+                            nomAffichage: it."nom-affichage"
+                    )
+                },
+                nombreTotal: resultat."nombre-total"
         )
+
     }
 }
