@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.RechercheGroupeCommand; org.lilie.services.eliot.tdbase.RechercheStructuresCommand; org.lilie.services.eliot.tdbase.ContexteActivite" %>
+<%@ page import="org.lilie.services.eliot.tdbase.RechercheGroupeCommand; org.lilie.services.eliot.tdbase.ContexteActivite" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -343,7 +343,7 @@
 <div id="search-group-form" style="background-color: #ffffff">
   <g:render template="/seance/selectAutreGroupe" model="[etablissements: etablissements,
           fonctionList: fonctionList,
-      rechercheGroupeCommand: new org.lilie.services.eliot.tdbase.RechercheGroupeCommand(etablissementId: currentEtablissement.id)]"/>
+      rechercheGroupeCommand: new RechercheGroupeCommand(etablissementId: currentEtablissement.id)]"/>
 </div>
 
 </body>

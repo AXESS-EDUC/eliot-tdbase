@@ -192,9 +192,9 @@ class SeanceController {
 
         List<Fonction> fonctionList =
                 preferenceEtablissementService.getFonctionListForRoleApprenant(
-                personne,
-                etablissement
-        )
+                        personne,
+                        etablissement
+                )
 
         assert command.fonctionId
         Fonction fonction = Fonction.get(command.fonctionId)
@@ -249,9 +249,9 @@ class SeanceController {
         Etablissement etablissement = Etablissement.load(params.etablissementId)
         List<Fonction> fonctionList =
                 preferenceEtablissementService.getFonctionListForRoleApprenant(
-                personne,
-                etablissement
-        )
+                        personne,
+                        etablissement
+                )
 
         Fonction fonction = fonctionList.contains(fonctionService.fonctionEleve()) ?
                 fonctionService.fonctionEleve() :
@@ -342,16 +342,25 @@ class SeanceController {
             redirect(action: "edite", id: modaliteActivite.id, params: [bcInit: true])
         } else {
             def etablissements = securiteSessionServiceProxy.etablissementList
-            def proprietesScolarite =
-                    profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne, etablissements)
+            def structureEnseignementList =
+                    profilScolariteService.findProprietesScolariteWithStructureForPersonne(
+                            personne,
+                            etablissements
+                    )*.structureEnseignement
 
             render(
                     view: '/seance/edite',
                     model: [
-                            liens                : breadcrumpsServiceProxy.liens,
-                            modaliteActivite     : modaliteActivite,
-                            proprietesScolarite  : proprietesScolarite,
-                            competencesEvaluables: modaliteActivite.sujet.hasCompetence()
+                            liens                    : breadcrumpsServiceProxy.liens,
+                            currentEtablissement     : securiteSessionServiceProxy.currentEtablissement,
+                            etablissements           : etablissements,
+                            fonctionList             : preferenceEtablissementService.getFonctionListForRoleApprenant(
+                                    personne,
+                                    securiteSessionServiceProxy.currentEtablissement
+                            ),
+                            modaliteActivite         : modaliteActivite,
+                            structureEnseignementList: structureEnseignementList,
+                            competencesEvaluables    : modaliteActivite.sujet.hasCompetence()
                     ]
             )
         }

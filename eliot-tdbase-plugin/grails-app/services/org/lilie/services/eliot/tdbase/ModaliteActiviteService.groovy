@@ -34,8 +34,6 @@ import org.lilie.services.eliot.tdbase.emaeval.CampagneProxyService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.notes.Evaluation
-import org.lilie.services.eliot.tice.scolarite.FonctionService
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.textes.Activite
 import org.springframework.transaction.annotation.Transactional
 
@@ -48,11 +46,9 @@ class ModaliteActiviteService {
     static transactional = false
 
     GrailsApplication grailsApplication
-    ProfilScolariteService profilScolariteService
     GroupeService groupeService
     CopieService copieService
     CampagneProxyService campagneProxyService
-    FonctionService fonctionService
 
     /**
      * Créé une séance (modaliteActivite)

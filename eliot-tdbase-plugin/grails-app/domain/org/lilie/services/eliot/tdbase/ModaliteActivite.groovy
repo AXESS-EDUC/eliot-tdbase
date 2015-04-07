@@ -28,10 +28,12 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Etablissement
+import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 
 /**
@@ -42,6 +44,7 @@ import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 class ModaliteActivite {
 
     GroupeService groupeService
+    PreferenceEtablissementService preferenceEtablissementService
 
     Date dateRemiseReponses = new Date()
 
@@ -122,6 +125,7 @@ class ModaliteActivite {
             'estOuverte',
             'estPerimee',
             'groupeService',
+            'preferenceEtablissementService',
             'structureEnseignementId'
     ]
 
@@ -137,7 +141,7 @@ class ModaliteActivite {
      * la séance est associée à groupe scolarité élève, null sinon
      */
     Long getStructureEnseignementId() {
-        if(!groupeService.isGroupeScolariteEleve(groupeScolarite)) {
+        if (!groupeService.isGroupeScolariteEleve(groupeScolarite)) {
             return null
         }
 
@@ -150,10 +154,18 @@ class ModaliteActivite {
      */
     List<Personne> getPersonnesDevantRendreCopie() {
         if (groupeScolarite) {
-            // TODO Il faudrait vérifier que la fonction du groupeScolarite correspond toujours à un rôle d'apprenant
+            // Vérifie que le groupe est associé à une fonction disposant du rôle apprenant dans l'établissement
+            List<Fonction> fonctionListForRoleApprenant =
+                    preferenceEtablissementService.getFonctionListForRoleApprenant(
+                            null,
+                            groupeScolarite.etablissement()
+                    )
+            if(!fonctionListForRoleApprenant.contains(groupeScolarite.fonction)) {
+                return [] // La fonction du groupe ne correspond pas au rôle apprenant
+            }
+
             return groupeService.findAllPersonneInGroupeScolarite(groupeScolarite)
         } else {
-            // groupes non implémentés
             return []
         }
 

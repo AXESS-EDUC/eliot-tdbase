@@ -150,4 +150,11 @@ class ProprietesScolarite implements GroupeAnnuaire {
     structureEnseignement?.nomAffichage + suffixe
   }
 
+  /**
+   * @return l'établissement auquel ce groupe est attaché (soit directement, soit par une structure d'enseignement)
+   */
+  Etablissement etablissement() {
+    return etablissement ?: structureEnseignement?.etablissement
+  }
+
 }
