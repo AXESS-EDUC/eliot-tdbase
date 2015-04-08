@@ -147,7 +147,7 @@ class ModaliteActiviteService {
         if (paginationAndSortingSpec == null) {
             paginationAndSortingSpec = [:]
         }
-        // TODO : quelle stratégie pour les non élèves qui ont le profil apprenant ?
+
         def seances = []
         def groupeScolariteList = groupeService.findAllGroupeScolariteForPersonne(chercheur)
         if (!groupeScolariteList.isEmpty()) {

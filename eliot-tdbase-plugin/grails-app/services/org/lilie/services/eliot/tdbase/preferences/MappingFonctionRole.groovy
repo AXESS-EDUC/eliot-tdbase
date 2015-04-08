@@ -108,7 +108,6 @@ class MappingFonctionRole {
         return this
     }
 
-    // TODO Doc (<RoleApplicatif, List<FonctionEnum>>)
     /**
      * Initialise ce mapping à partir d'une représentation Map de la forme RoleApplicatif => List<FonctionEnum>)
      * Les clés & valeurs de la Map peuvent être typées par RoleApplicatif et FonctionEnum, ou par des String correspondant

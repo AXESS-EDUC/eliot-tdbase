@@ -116,7 +116,6 @@ class NotificationSeanceDaoService {
         res
     }
 
-    // TODO A vérifier
     private def queryForPublicationResultats(ProprietesScolarite groupeScolarite,
                                              NotificationSupport supportNotification) {
         """select autorite.id_externe as personne_id_externe, personne.id as personne_id from ent.personne_propriete_scolarite as profil
@@ -132,7 +131,6 @@ class NotificationSeanceDaoService {
     """
     }
 
-    // TODO A vérifier
     private def queryForCreationSeance(ProprietesScolarite groupeScolarite,
                                        NotificationSupport supportNotification) {
         """select autorite.id_externe as personne_id_externe, personne.id as personne_id from ent.personne_propriete_scolarite as profil
