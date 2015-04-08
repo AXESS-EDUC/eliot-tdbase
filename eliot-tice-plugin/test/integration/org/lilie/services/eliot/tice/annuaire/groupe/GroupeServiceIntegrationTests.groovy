@@ -31,6 +31,7 @@ package org.lilie.services.eliot.tice.annuaire.groupe
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
@@ -118,22 +119,148 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
         )
     }
 
+    void testFindAllGroupeEntForPersonne() {
+        expect:
+        assertEquals(
+                [],
+                groupeService.findAllGroupeEntForPersonne(bootstrapService.parent1)
+        )
+        assertEquals(
+                [bootstrapService.groupeEntLycee]*.nom,
+                groupeService.findAllGroupeEntForPersonne(bootstrapService.eleve1)*.nom
+        )
+        assertEquals(
+                [bootstrapService.groupeEntLycee]*.nom,
+                groupeService.findAllGroupeEntForPersonne(bootstrapService.eleve2)*.nom
+        )
+        assertEquals(
+                [
+                        bootstrapService.groupeEntLycee,
+                        bootstrapService.groupeEntCollege
+                ]*.nom.sort(),
+                groupeService.findAllGroupeEntForPersonne(
+                        bootstrapService.enseignant1
+                )*.nom.sort()
+        )
+        assertEquals(
+                [bootstrapService.groupeEntCollege]*.nom,
+                groupeService.findAllGroupeEntForPersonne(bootstrapService.enseignant2)*.nom
+        )
+        assertEquals(
+                [bootstrapService.groupeEntCollege]*.nom,
+                groupeService.findAllGroupeEntForPersonne(bootstrapService.persDirection1)*.nom
+        )
+
+    }
+
+    void testFindAllPersonneForGroupeEntAndFonctionIn() {
+        given:
+        GroupeEnt groupeEnt = bootstrapService.groupeEntLycee
+        List<Fonction> fonctionList = [
+                FonctionEnum.ELEVE.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.eleve1,
+                        bootstrapService.eleve2
+                ]*.id as Set,
+                groupeService.findAllPersonneForGroupeEntAndFonctionIn(
+                        groupeEnt,
+                        fonctionList
+                )*.id as Set
+        )
+
+        given:
+        groupeEnt = bootstrapService.groupeEntLycee
+        fonctionList = [
+                FonctionEnum.ELEVE.fonction,
+                FonctionEnum.ENS.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.eleve1,
+                        bootstrapService.eleve2,
+                        bootstrapService.enseignant1
+                ]*.id as Set,
+                groupeService.findAllPersonneForGroupeEntAndFonctionIn(
+                        groupeEnt,
+                        fonctionList
+                )*.id as Set
+        )
+
+        given:
+        groupeEnt = bootstrapService.groupeEntLycee
+        fonctionList = [
+                FonctionEnum.ENS.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.enseignant1
+                ]*.id as Set,
+                groupeService.findAllPersonneForGroupeEntAndFonctionIn(
+                        groupeEnt,
+                        fonctionList
+                )*.id as Set
+        )
+
+        given:
+        groupeEnt = bootstrapService.groupeEntCollege
+        fonctionList = [
+                FonctionEnum.ELEVE.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [],
+                groupeService.findAllPersonneForGroupeEntAndFonctionIn(
+                        groupeEnt,
+                        fonctionList
+                )
+        )
+
+        given:
+        groupeEnt = bootstrapService.groupeEntCollege
+        fonctionList = [
+                FonctionEnum.ENS.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.enseignant1,
+                        bootstrapService.enseignant2
+                ]*.id as Set,
+                groupeService.findAllPersonneForGroupeEntAndFonctionIn(
+                        groupeEnt,
+                        fonctionList
+                )*.id as Set
+        )
+    }
+
     void testRechercheGroupeScolarite() {
         given:
         Personne enseignant = bootstrapService.enseignant1
-        Etablissement etablissement = bootstrapService.leLycee
+        Etablissement etablissement = bootstrapService.etablissementLycee
         Fonction fonction = fonctionService.fonctionEleve()
 
         and:
         Map mockRestResult = [
-                groupes: [
+                groupes       : [
                         [
-                                id: 1,
-                                'nom-affichage': 'groupe 1'
+                                id             : 1,
+                                'nom-affichage': 'groupe 1',
+                                'type': 'SCOLARITE'
                         ],
                         [
-                                id:2,
-                                'nom-affichage': 'groupe 2'
+                                id             : 2,
+                                'nom-affichage': 'groupe 2',
+                                'type': 'SCOLARITE'
                         ]
                 ],
                 'nombre-total': 2
@@ -141,9 +268,10 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
 
         and:
         RechercheGroupeRestService rechercheGroupeRestService = [
-                rechercheGroupeScolariteList: {
+                rechercheGroupeList: {
                     Personne personne,
                     RechercheGroupeCritere critere,
+                    GroupeType groupeType,
                     String codePorteur ->
 
                         return mockRestResult
@@ -154,6 +282,62 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
         expect:
         RechercheGroupeResultat resultat =
                 groupeService.rechercheGroupeScolarite(
+                        enseignant,
+                        new RechercheGroupeCritere(
+                                etablissement: etablissement,
+                                fonction: fonction
+                        )
+                )
+
+        assertEquals(
+                2,
+                resultat.nombreTotal
+        )
+        assertEquals(
+                2,
+                resultat.groupes.size()
+        )
+    }
+
+    void testRechercheGroupeEnt() {
+        given:
+        Personne enseignant = bootstrapService.enseignant1
+        Etablissement etablissement = bootstrapService.etablissementLycee
+        Fonction fonction = fonctionService.fonctionEleve()
+
+        and:
+        Map mockRestResult = [
+                groupes       : [
+                        [
+                                id             : 1,
+                                'nom-affichage': 'groupe 1',
+                                'type'         : 'ENT'
+                        ],
+                        [
+                                id             : 2,
+                                'nom-affichage': 'groupe 2',
+                                'type'         : 'ENT'
+                        ]
+                ],
+                'nombre-total': 2
+        ]
+
+        and:
+        RechercheGroupeRestService rechercheGroupeRestService = [
+                rechercheGroupeList: {
+                    Personne personne,
+                    RechercheGroupeCritere critere,
+                    GroupeType groupeType,
+                    String codePorteur ->
+
+                        return mockRestResult
+                }
+        ] as RechercheGroupeRestService
+        groupeService.rechercheGroupeRestService = rechercheGroupeRestService
+
+        expect:
+        RechercheGroupeResultat resultat =
+                groupeService.rechercheGroupeEnt(
                         enseignant,
                         new RechercheGroupeCritere(
                                 etablissement: etablissement,

@@ -43,14 +43,22 @@ class RechercheGroupeRestService {
     RestClient restClientForNotification
     GrailsApplication grailsApplication
 
-    // TODO Type + Doc
-    def rechercheGroupeScolariteList(Personne personne,
-                                     RechercheGroupeCritere critere,
-                                     String codePorteur = null) {
+    /**
+     * Recherche de groupe (scolarité ou ENT) via le WS de recherche de groupe
+     * @param personne
+     * @param critere
+     * @param groupeType
+     * @param codePorteur
+     * @return
+     */
+    def rechercheGroupeList(Personne personne,
+                            RechercheGroupeCritere critere,
+                            GroupeType groupeType,
+                            String codePorteur = null) {
         Map httpParameters = [
                 utilisateurPersonneId: personne.id,
                 codePorteur          : codePorteur,
-                type                 : GroupeType.SCOLARITE,
+                type                 : groupeType.name(),
                 fonctionId           : critere.fonction.id,
                 etablissementId      : critere.etablissement.id,
                 motCle               : critere.motCle,
@@ -59,7 +67,7 @@ class RechercheGroupeRestService {
         ]
 
         restClientForNotification.invokeOperation(
-                'rechercheGroupeScolariteList',
+                'rechercheGroupeList',
                 null,
                 httpParameters
         )

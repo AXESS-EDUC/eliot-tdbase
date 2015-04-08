@@ -47,9 +47,11 @@ class GroupeEnt implements GroupeAnnuaire {
 
   static transients = ['nomAffichage']
 
-  static hasMany = [
-      personnes: Personne
-  ]
+  static mapping = {
+    table 'ent.groupe_ent'
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.groupe_ent_id_seq']
+    version false
+  }
 
   static constraints = {
     etablissement nullable: false

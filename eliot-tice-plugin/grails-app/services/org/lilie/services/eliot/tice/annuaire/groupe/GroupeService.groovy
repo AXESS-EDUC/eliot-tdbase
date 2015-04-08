@@ -32,6 +32,7 @@ import org.hibernate.SQLQuery
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.scolarite.PersonneProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
@@ -113,6 +114,40 @@ class GroupeService {
     }
 
     /**
+     * Liste tous les groupes ENT auquel un utilisateur est rattaché
+     * @param personne
+     * @return
+     */
+    List<GroupeEnt> findAllGroupeEntForPersonne(Personne personne) {
+        // TODO *** Check N+1 SELECT
+        RelGroupeEntPersonne.findAllByPersonne(personne)*.groupeEnt
+    }
+
+    List<Personne> findAllPersonneForGroupeEntAndFonctionIn(GroupeEnt groupeEnt,
+                                                            List<Fonction> fonctionList) {
+        Session session = sessionFactory.getCurrentSession()
+
+        // TODO : Faut-il également gérer les administrateurs locaux ? J'ai peur que ça ralentisse encore la requête ...
+        String sql = """
+            SELECT DISTINCT p.*
+            FROM ent.groupe_ent g
+            INNER JOIN ent.rel_groupe_ent_personne rgp ON rgp.groupe_ent_id = g.id
+            INNER JOIN ent.personne p ON rgp.personne_id = p.id
+            INNER JOIN ent.personne_propriete_scolarite pps ON (pps.personne_id = p.id AND pps.est_active IS TRUE)
+            INNER JOIN ent.propriete_scolarite ps ON (pps.propriete_scolarite_id = ps.id)
+            LEFT JOIN ent.structure_enseignement se ON ps.structure_enseignement_id = se.id
+            INNER JOIN ent.fonction f ON ps.fonction_id = f.id
+            WHERE g.id = :groupeEntId AND f.id IN (:fonctionIdList) AND (se.etablissement_id = g.etablissement_id OR ps.etablissement_id = g.etablissement_id)
+        """
+
+        SQLQuery sqlQuery = session.createSQLQuery(sql)
+        sqlQuery.setLong('groupeEntId', groupeEnt.id)
+        sqlQuery.setParameterList('fonctionIdList', fonctionList*.id)
+        sqlQuery.addEntity(Personne)
+        return sqlQuery.list()
+    }
+
+    /**
      *
      * @param structureEnseignement
      * @return le groupe de scolarité correspondant au groupe
@@ -138,7 +173,7 @@ class GroupeService {
     }
 
     /**
-     * Recherche de groupe de scolarité
+     * Recherche de groupes de scolarité
      * @param personne
      * @param critere
      * @return
@@ -147,9 +182,10 @@ class GroupeService {
                                                      RechercheGroupeCritere critere,
                                                      String codePorteur = null) {
 
-        def resultat = rechercheGroupeRestService.rechercheGroupeScolariteList(
+        def resultat = rechercheGroupeRestService.rechercheGroupeList(
                 personne,
                 critere,
+                GroupeType.SCOLARITE,
                 codePorteur
         )
 
@@ -159,6 +195,12 @@ class GroupeService {
 
         return new RechercheGroupeResultat(
                 groupes: resultat.groupes.collect {
+                    if(it.type != GroupeType.SCOLARITE.name()) {
+                        throw new IllegalStateException(
+                                "Le groupe n'est pas un groupe scolarité: ${it}"
+                        )
+                    }
+
                     return new GroupeScolariteProxy(
                             id: it.id,
                             nomAffichage: it."nom-affichage"
@@ -166,6 +208,40 @@ class GroupeService {
                 },
                 nombreTotal: resultat."nombre-total"
         )
+    }
 
+    /**
+     * Recherche de groupes ENT
+     * @param personne
+     * @param critere
+     * @param codePorteur
+     * @return
+     */
+    RechercheGroupeResultat rechercheGroupeEnt(Personne personne,
+                                               RechercheGroupeCritere critere,
+                                               String codePorteur = null) {
+        def resultat = rechercheGroupeRestService.rechercheGroupeList(
+                personne,
+                critere,
+                GroupeType.ENT,
+                codePorteur
+        )
+
+        if(!resultat) {
+            return new RechercheGroupeResultat()
+        }
+
+        return new RechercheGroupeResultat(
+                groupes: resultat.groupes.collect {
+                    if(it.type != GroupeType.ENT.name()) {
+                        throw new IllegalStateException(
+                                "Le groupe n'est pas un groupe ENT: ${it}"
+                        )
+                    }
+
+                    return GroupeEnt.load(it.id)
+                },
+                nombreTotal: resultat."nombre-total"
+        )
     }
 }

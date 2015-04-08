@@ -544,7 +544,7 @@ eliot.webservices.rest.client.operations = [[operationName           : "getStruc
                                             ],
                                             [
 
-                                                    operationName           : 'rechercheGroupeScolariteList',
+                                                    operationName           : 'rechercheGroupeList',
                                                     description             : "Recherche une liste de groupes scolarité pour un utilisateur",
                                                     contentType             : ContentType.JSON,
                                                     method                  : Method.GET,

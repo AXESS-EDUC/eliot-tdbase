@@ -1,6 +1,6 @@
 /*
  * Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
- * This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
+ *  This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
  *
  *  Lilie is free software. You can redistribute it and/or modify since
  *  you respect the terms of either (at least one of the both license) :
@@ -22,35 +22,31 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  and the CeCILL-C along with Lilie. If not, see :
- *  <http://www.gnu.org/licenses/> and
- *  <http://www.cecill.info/licences.fr.html>.
+ *   <http://www.gnu.org/licenses/> and
+ *   <http://www.cecill.info/licences.fr.html>.
  */
 
+package org.lilie.services.eliot.tice.annuaire.groupe
 
-package org.lilie.services.eliot.tice.utils
-
-import org.lilie.services.eliot.tice.annuaire.PorteurEnt
+import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
- *  Test la classe ProfilScolariteService
- * @author franck silvestre
+ * @author John Tranier
  */
-class EliotUrlProviderIntegrationTests extends GroovyTestCase {
+class RelGroupeEntPersonne implements Serializable  {
 
-  BootstrapService bootstrapService
+    GroupeEnt groupeEnt
+    Personne personne
 
-  EliotUrlProvider eliotUrlProvider
+    static mapping = {
+        table 'ent.rel_groupe_ent_personne'
+        id composite: ['personne', 'groupeEnt']
+        groupeEnt fetch: 'join'
+        version false
+    }
 
-  void setUp() {
-    bootstrapService.bootstrapJeuDeTestDevDemo()
-  }
-
-  void testEliotUrlServiceState() {
-    assertNotNull(eliotUrlProvider.nomApplication)
-    assertNotNull(eliotUrlProvider.urlServeurResolutionEnum)
-    assertNull(eliotUrlProvider.urlServeurFromConfiguration)
-    assertNotNull(eliotUrlProvider.getUrlServeur(PorteurEnt.findByCode(BootstrapService.DEFAULT_CODE_PORTEUR_ENT)))
-  }
-
-
+    static belongsTo = [
+            groupeEnt: GroupeEnt,
+            personne: Personne
+    ]
 }
