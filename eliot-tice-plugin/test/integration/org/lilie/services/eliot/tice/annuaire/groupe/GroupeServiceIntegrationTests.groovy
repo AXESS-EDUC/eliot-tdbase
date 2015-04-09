@@ -71,6 +71,23 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
                         groupeScolarite
                 ).size()
         )
+
+        given: "Le groupe scolarité des parents de la classe"
+        groupeScolarite =
+        ProprietesScolarite.withCriteria(uniqueResult: true) {
+            eq('structureEnseignement', classe)
+            eq('fonction', fonctionService.fonctionResponsableEleve())
+            isNull('responsableStructureEnseignement')
+        }
+
+        expect:
+        assertEquals(
+                "Le nombre de parents dans la classe est incorrect",
+                1,
+                groupeService.findAllPersonneInGroupeScolarite(
+                        groupeScolarite
+                ).size()
+        )
     }
 
     void testFindAllGroupeScolariteForPersonne() {
@@ -123,7 +140,7 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
         expect:
         assertEquals(
                 [],
-                groupeService.findAllGroupeEntForPersonne(bootstrapService.parent1)
+                groupeService.findAllGroupeEntForPersonne(bootstrapService.superAdmin1)
         )
         assertEquals(
                 [bootstrapService.groupeEntLycee]*.nom,
@@ -143,12 +160,21 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
                 )*.nom.sort()
         )
         assertEquals(
-                [bootstrapService.groupeEntCollege]*.nom,
-                groupeService.findAllGroupeEntForPersonne(bootstrapService.enseignant2)*.nom
+                [
+                        bootstrapService.groupeEntCollege
+                ]*.nom as Set,
+                groupeService.findAllGroupeEntForPersonne(
+                        bootstrapService.enseignant2
+                )*.nom as Set
         )
         assertEquals(
-                [bootstrapService.groupeEntCollege]*.nom,
-                groupeService.findAllGroupeEntForPersonne(bootstrapService.persDirection1)*.nom
+                [
+                        bootstrapService.groupeEntCollege,
+                        bootstrapService.groupeEntWithParent
+                ]*.nom as Set,
+                groupeService.findAllGroupeEntForPersonne(
+                        bootstrapService.persDirection1
+                )*.nom as Set
         )
 
     }
@@ -235,6 +261,42 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
                 [
                         bootstrapService.enseignant1,
                         bootstrapService.enseignant2
+                ]*.id as Set,
+                groupeService.findAllPersonneForGroupeEntAndFonctionIn(
+                        groupeEnt,
+                        fonctionList
+                )*.id as Set
+        )
+
+        given:
+        groupeEnt = bootstrapService.groupeEntWithParent
+        fonctionList = [
+                FonctionEnum.DIR.fonction,
+                FonctionEnum.PERS_REL_ELEVE.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.persDirection1,
+                        bootstrapService.parent1
+                ]*.id as Set,
+                groupeService.findAllPersonneForGroupeEntAndFonctionIn(
+                        groupeEnt,
+                        fonctionList
+                )*.id as Set
+        )
+
+        given:
+        groupeEnt = bootstrapService.groupeEntWithParent
+        fonctionList = [
+                FonctionEnum.PERS_REL_ELEVE.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.parent1
                 ]*.id as Set,
                 groupeService.findAllPersonneForGroupeEntAndFonctionIn(
                         groupeEnt,

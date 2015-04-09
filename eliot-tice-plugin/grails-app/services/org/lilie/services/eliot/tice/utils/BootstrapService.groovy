@@ -107,6 +107,7 @@ class BootstrapService {
 
     private static final String GROUPE_ENT_NOM_LYCEE = 'Groupe ENT Lycée'
     private static final String GROUPE_ENT_NOM_COLLEGE = 'Groupe ENT Collège'
+    private static final String GROUPE_ENT_NOM_WITH_PARENT = 'Groupe ENT contenant un parent'
 
     /**
      * Initialise l'application au lancement avec un jeu de test
@@ -138,6 +139,7 @@ class BootstrapService {
 
         initialiseGroupeEntLycee()
         initialiseGroupeEntCollege()
+        initialiseGroupeEntWithParent()
     }
 
     /**
@@ -604,18 +606,22 @@ class BootstrapService {
     Personne parent1
 
     private def initialiseRespEleve1EnvDevelopment() {
-        if (!utilisateurService.findUtilisateur(RESP_1_LOGIN)) {
+        Utilisateur resp1 = utilisateurService.findUtilisateur(RESP_1_LOGIN)
+        if (!resp1) {
             utilisateurService.createUtilisateur(
                     RESP_1_LOGIN,
                     RESP_1_PASSWORD,
                     RESP_1_NOM,
                     RESP_1_PRENOM
             )
-            Utilisateur resp1 = utilisateurService.findUtilisateur(RESP_1_LOGIN)
+            resp1 = utilisateurService.findUtilisateur(RESP_1_LOGIN)
             parent1 = Personne.get(resp1.personneId)
             createResponsableEleve(parent1, eleve1)
             createResponsableEleve(parent1, eleve2)
 
+        }
+        else {
+            parent1 = Personne.get(resp1.personneId)
         }
     }
 
@@ -735,7 +741,6 @@ class BootstrapService {
         ).save(failOnError: true)
         // groupes auxquels appartient l'élève
         def groupes = profilScolariteService.findProprietesScolaritesForPersonne(eleve)
-        def groupesDeRespEleve = []
 
         Fonction fonctionResp = fonctionService.fonctionResponsableEleve()
         Fonction fonctionEleve = fonctionService.fonctionEleve()
@@ -757,7 +762,7 @@ class BootstrapService {
 
                 if (!psForStructure) {
                     // créer un groupe de responsables élèves
-                    groupesDeRespEleve << new ProprietesScolarite(
+                     new ProprietesScolarite(
                             anneeScolaire: anneeScolaire,
                             structureEnseignement: groupe.structureEnseignement,
                             fonction: fonctionResp
@@ -772,15 +777,15 @@ class BootstrapService {
 
                 if (!psForPorteur) {
                     // créer un groupe de responsables élèves
-                    groupesDeRespEleve << new ProprietesScolarite(
+                    ProprietesScolarite groupeRespPorteur = new ProprietesScolarite(
                             anneeScolaire: anneeScolaire,
                             fonction: fonctionResp,
                             porteurEnt: porteurEnt
                     ).save(flush: true, failOnError: true)
+                    addProprietesScolariteToPersonne([groupeRespPorteur], resp)
                 }
             }
         }
-        addProprietesScolariteToPersonne(groupesDeRespEleve, resp)
         return responsableEleve
     }
 
@@ -851,5 +856,31 @@ class BootstrapService {
                 ).save(failOnError: true, flush: true)
             }
         }
+    }
+
+    GroupeEnt groupeEntWithParent
+    private void initialiseGroupeEntWithParent() {
+        boolean groupExist = GroupeEnt.findByNom(
+                GROUPE_ENT_NOM_WITH_PARENT
+        ) as boolean
+        if(!groupExist) {
+            groupeEntWithParent = new GroupeEnt(
+                    nom: GROUPE_ENT_NOM_WITH_PARENT,
+                    etablissement: etablissementCollege,
+                    autorite: new DomainAutorite(
+                            type: 'groupe',
+                            estActive: true,
+                            localisation: 'LOCALE'
+                    ).save(failOnError: true)
+            ).save(failOnError: true)
+
+            [persDirection1, parent1].each {
+                new RelGroupeEntPersonne(
+                        groupeEnt: groupeEntWithParent,
+                        personne: it
+                ).save(failOnError: true, flush: true)
+            }
+        }
+
     }
 }

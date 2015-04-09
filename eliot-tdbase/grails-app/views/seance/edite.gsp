@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.RechercheGroupeCommand; org.lilie.services.eliot.tdbase.ContexteActivite" %>
+<%@ page import="org.lilie.services.eliot.tice.annuaire.groupe.GroupeType; org.lilie.services.eliot.tdbase.RechercheGroupeCommand; org.lilie.services.eliot.tdbase.ContexteActivite; org.lilie.services.eliot.tice.annuaire.groupe.GroupeType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -31,9 +31,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="layout" content="eliot-tdbase"/>
-  <r:require module="eliot-tdbase-ui"/>
-  <r:script>
+    <meta name="layout" content="eliot-tdbase"/>
+    <r:require module="eliot-tdbase-ui"/>
+    <r:script>
     $(document).ready(function () {
       $('#menu-item-seances').addClass('actif');
       $('select[name="structureEnseignementId"]').focus();
@@ -166,184 +166,216 @@
     <div class="portal-form_container edite" style="width: 69%;">
         <table>
 
-      <tr>
-        <td class="label">Classe/groupe<span class="obligatoire">*</span>&nbsp;:
-        </td>
-        <td>
-          <g:if test="${modaliteActivite.groupeScolarite}">
-            <strong>${modaliteActivite.groupeScolarite.nomAffichage}</strong>
-            <input type="hidden" name="groupeScolarite.id" value="${modaliteActivite.groupeScolarite.id}"/>
-          </g:if>
-          <g:else>
-            <div id="structure-selection" style="float: left; margin-right: 10px;">
-              <g:select name="structureEnseignementId"
-                        noSelection="${['null': g.message(code: "default.select.null")]}"
-                        from="${structureEnseignementList}"
-                        optionKey="id"
-                        optionValue="nomAffichage"/>
-            </div>
-            <a id="select-other-group">Choisir un autre groupe ...</a>
-          </g:else>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Sujet&nbsp;:</td>
-        <td>
-          <strong>${modaliteActivite.sujet.titre}</strong> <br/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Début&nbsp;:</td>
-        <td>
-          <g:textField name="dateDebut"
-                       value="${modaliteActivite.dateDebut.format('dd/MM/yyyy HH:mm')}"
-                       class="datepicker short"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">Fin&nbsp;:</td>
-        <td>
-          <g:textField name="dateFin" id="dateFin"
-                       value="${modaliteActivite.dateFin.format('dd/MM/yyyy HH:mm')}"
-                       class="datepicker short"/>
-        </td>
-      </tr>
-        <tr>
-            <td class="label">Publication des résultats&nbsp;:</td>
-            <td>
-                <g:textField name="datePublicationResultats" id="datePublicationResultats"
-                             value="${modaliteActivite.datePublicationResultats?.format('dd/MM/yyyy HH:mm')}"
-                             class="datepicker short"/>
-            </td>
-        </tr>
+            <tr>
+                <td class="label">Classe/groupe<span class="obligatoire">*</span>&nbsp;:
+                </td>
+                <td>
+                    <g:if test="${modaliteActivite.groupeScolarite}">
+                        <strong>${modaliteActivite.groupeScolarite.nomAffichage}</strong>
+                        <input type="hidden" name="groupeScolarite.id" value="${modaliteActivite.groupeScolarite.id}"/>
+                    </g:if>
+                    <g:else>
+                        <div id="structure-selection" style="float: left; margin-right: 10px;">
+                            <g:select name="structureEnseignementId"
+                                      noSelection="${['null': g.message(code: "default.select.null")]}"
+                                      from="${structureEnseignementList}"
+                                      optionKey="id"
+                                      optionValue="nomAffichage"/>
+                        </div>
+                        <a id="select-other-group">Choisir un autre groupe ...</a>
+                    </g:else>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Sujet&nbsp;:</td>
+                <td>
+                    <strong>${modaliteActivite.sujet.titre}</strong> <br/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Début&nbsp;:</td>
+                <td>
+                    <g:textField name="dateDebut"
+                                 value="${modaliteActivite.dateDebut.format('dd/MM/yyyy HH:mm')}"
+                                 class="datepicker short"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Fin&nbsp;:</td>
+                <td>
+                    <g:textField name="dateFin" id="dateFin"
+                                 value="${modaliteActivite.dateFin.format('dd/MM/yyyy HH:mm')}"
+                                 class="datepicker short"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Publication des résultats&nbsp;:</td>
+                <td>
+                    <g:textField name="datePublicationResultats" id="datePublicationResultats"
+                                 value="${modaliteActivite.datePublicationResultats?.format('dd/MM/yyyy HH:mm')}"
+                                 class="datepicker short"/>
+                </td>
+            </tr>
 
-        <tr>
-            <td class="label"></td>
-            <td>
-                <g:checkBox name="decompteTemps" title="décompte du temps"
-                            checked="${modaliteActivite.decompteTemps}"/> <span
-                    class="label">Décompte&nbsp;du&nbsp;temps</span>
-            </td>
-        </tr>
-
-        <tr id="dureeMinutesTr">
-            <td class="label">Dur&eacute;e&nbsp;:</td>
-            <td>
-                <input id="dureeMinutes" type="text" name="dureeMinutes"
-                       value="${modaliteActivite.dureeMinutes}" class="micro"
-                       tabindex="5"/>
-                (en minutes)
-            </td>
-        </tr>
-            
-      <tr>
-        <td class="label"></td>
-        <td>
-          <g:checkBox name="copieAmeliorable" title="améliorable"
-                      checked="${modaliteActivite.copieAmeliorable}"/> <span
-            class="label">Copie&nbsp;améliorable</span>
-        </td>
-      </tr>
-        <tr>
-            <td class="label"></td>
-            <td>
-                <g:checkBox name="notifierMaintenant" title="Notifier maintenant les participants à la séance"
-                            checked="${modaliteActivite.notifierMaintenant}"/> <span
-                    class="label">Notifier maintenant les participants à la séance</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="label"></td>
-            <td>
-                <g:checkBox name="notifierAvantOuverture" title="Notifier les participants avant l'ouverture de la séance"
-                            checked="${modaliteActivite.notifierAvantOuverture}"/> <span
-                    class="label">Notifier les participants <g:textField name="notifierNJoursAvant" value="${modaliteActivite.notifierNJoursAvant}" style="width: 20px"></g:textField> jour(s) avant</span>
-            </td>
-        </tr>
-      <g:if test="${lienBookmarkable}">
-        <tr>
-          <td class="label">Permalien&nbsp;:</td>
-          <td>
-            ${lienBookmarkable}
-          </td>
-        </tr>
-      </g:if>
-      <g:if test="${grailsApplication.config.eliot.interfacage.notes}">
-        <tr>
-          <td class="label"></td>
-          <td>
-            <g:if test="${afficheLienCreationDevoir}">
-              <a id="gestionEvaluation" class="button inform"
-                 title="Créer un devoir dans Notes">Créer un devoir dans Notes</a>
-
-              <a id="gestionActivite" class="button inform"
-                 title="Créer une activité dans le cahier de textes">
-                Créer une activité dans le Cahier de textes</a>
-              <table id="edition_activite"
-                     style="display: ${modaliteActivite.activiteId ? 'table' : 'none'}">
+            <tr>
+                <td class="label"></td>
+                <td>
+                    <g:checkBox name="decompteTemps" title="décompte du temps"
+                                checked="${modaliteActivite.decompteTemps}"/> <span
+                        class="label">Décompte&nbsp;du&nbsp;temps</span>
+                </td>
+            </tr>
+        
+            <tr id="dureeMinutesTr">
+                <td class="label">Dur&eacute;e&nbsp;:</td>
+                <td>
+                    <input id="dureeMinutes" type="text" name="dureeMinutes"
+                           value="${modaliteActivite.dureeMinutes}" class="micro"
+                           tabindex="5"/>
+                    (en minutes)
+                </td>
+            </tr>
+    
+            <tr>
+                <td class="label"></td>
+                <td>
+                    <g:checkBox name="copieAmeliorable" title="améliorable"
+                                checked="${modaliteActivite.copieAmeliorable}"/> <span
+                        class="label">Copie&nbsp;améliorable</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label"></td>
+                <td>
+                    <g:checkBox name="notifierMaintenant" title="Notifier maintenant les participants à la séance"
+                                checked="${modaliteActivite.notifierMaintenant}"/> <span
+                        class="label">Notifier maintenant les participants à la séance</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label"></td>
+                <td>
+                    <g:checkBox name="notifierAvantOuverture"
+                                title="Notifier les participants avant l'ouverture de la séance"
+                                checked="${modaliteActivite.notifierAvantOuverture}"/> <span
+                        class="label">Notifier les participants <g:textField name="notifierNJoursAvant"
+                                                                             value="${modaliteActivite.notifierNJoursAvant}"
+                                                                             style="width: 20px"></g:textField> jour(s) avant</span>
+                </td>
+            </tr>
+            <g:if test="${lienBookmarkable}">
                 <tr>
-                  <td class="label"
-                      style="width: 110px;">Cahier&nbsp;de&nbsp;textes<span
-                      class="obligatoire">*</span>&nbsp;:</td>
-                  <td><g:select name="cahierId"
-                                noSelection="${['null': 'Faites votre choix...']}"
-                                from="${cahiers}"
-                                optionKey="id"
-                                optionValue="nom"/>
-                    <span id="spinner" class="spinner" style="display:none;">
-                      <g:message code="spinner.alt"
-                                 default="Loading&hellip;"/></span>
-                  </td>
+                    <td class="label">Permalien&nbsp;:</td>
+                    <td>
+                        ${lienBookmarkable}
+                    </td>
                 </tr>
-                <tr>
-                  <td class="label" style="width: 110px;">Chapitre&nbsp;:</td>
-                  <td id="selectChapitres">
-                    <g:render template="selectChapitres"
-                              model="[chapitres: chapitres]"/>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="label" style="width: 110px;">Contexte&nbsp;:</td>
-                  <td><g:select name="activiteContexteId"
-                                from="${ContexteActivite.values()}"
-                                valueMessagePrefix="textes.activite.contexte"/></td>
-                </tr>
-              </table>
             </g:if>
-            <g:if test="${afficheActiviteCreee}">
-              <span class="label"><g:message code="seance.label.activitetextesliee"/></span>
-            </g:if>
-          </td>
-        </tr>
-      </g:if>
+            <g:if test="${grailsApplication.config.eliot.interfacage.notes}">
+                <tr>
+                    <td class="label"></td>
+                    <td>
+                        <g:if test="${afficheLienCreationDevoir}">
+                            <a id="gestionEvaluation" class="button inform"
+                               title="Créer un devoir dans Notes">Créer un devoir dans Notes</a>
 
-      <g:if test="${competencesEvaluables}">
-        <tr>
-          <td class="label"></td>
-          <td>
-            <g:checkBox name="optionEvaluerCompetences" title="Evaluer les competences"
-                        checked="${modaliteActivite.optionEvaluerCompetences}"/> <span
-              class="label">Evaluer les compétences</span>
-          </td>
-        </tr>
-      </g:if>
-    </table>
-  </div>
-  <g:hiddenField name="id" value="${modaliteActivite.id}"/>
-  <g:hiddenField id="sujetId" name="sujet.id"
-                 value="${modaliteActivite.sujet?.id}"/>
-  <div class="form_actions edite">
-    <g:actionSubmit value="Enregistrer" class="button"
-                    action="enregistre"
-                    title="Enregistrer"/>
-  </div>
-  <br/><br/><br/><br/><br/>
+                            <table id="edition_devoir"
+                                   style="display: ${modaliteActivite.evaluationId ? 'table' : 'none'}">
+                                <tr>
+                                    <td class="label"
+                                        style="width: 110px;">Classe/groupe&nbsp;-&nbsp;Matière&nbsp;:</td>
+                                    <td><g:select name="serviceId"
+                                                  noSelection="${['null': 'Faites votre choix...']}"
+                                                  from="${services}"
+                                                  optionKey="id"
+                                                  optionValue="libelle"/></td>
+                                </tr>
+
+                            </table>
+                        </g:if>
+                        <g:if test="${afficheDevoirCree}">
+                            <span class="label"><g:message code="seance.label.devoirlie"/></span>
+                        </g:if>
+                    </td>
+                </tr>
+            </g:if>
+            <g:if test="${grailsApplication.config.eliot.interfacage.textes}">
+                <tr>
+                    <td class="label"></td>
+                    <td>
+                        <g:if test="${afficheLienCreationActivite}">
+
+                            <a id="gestionActivite" class="button inform"
+                               title="Créer une activité dans le cahier de textes">
+                                Créer une activité dans le Cahier de textes</a>
+                            <table id="edition_activite"
+                                   style="display: ${modaliteActivite.activiteId ? 'table' : 'none'}">
+                                <tr>
+                                    <td class="label"
+                                        style="width: 110px;">Cahier&nbsp;de&nbsp;textes<span
+                                            class="obligatoire">*</span>&nbsp;:</td>
+                                    <td><g:select name="cahierId"
+                                                  noSelection="${['null': 'Faites votre choix...']}"
+                                                  from="${cahiers}"
+                                                  optionKey="id"
+                                                  optionValue="nom"/>
+                                        <span id="spinner" class="spinner" style="display:none;">
+                                            <g:message code="spinner.alt"
+                                                       default="Loading&hellip;"/></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label" style="width: 110px;">Chapitre&nbsp;:</td>
+                                    <td id="selectChapitres">
+                                        <g:render template="selectChapitres"
+                                                  model="[chapitres: chapitres]"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label" style="width: 110px;">Contexte&nbsp;:</td>
+                                    <td><g:select name="activiteContexteId"
+                                                  from="${ContexteActivite.values()}"
+                                                  valueMessagePrefix="textes.activite.contexte"/></td>
+                                </tr>
+                            </table>
+                        </g:if>
+                        <g:if test="${afficheActiviteCreee}">
+                            <span class="label"><g:message code="seance.label.activitetextesliee"/></span>
+                        </g:if>
+                    </td>
+                </tr>
+            </g:if>
+
+            <g:if test="${competencesEvaluables}">
+                <tr>
+                    <td class="label"></td>
+                    <td>
+                        <g:checkBox name="optionEvaluerCompetences" title="Evaluer les competences"
+                                    checked="${modaliteActivite.optionEvaluerCompetences}"/> <span
+                            class="label">Evaluer les compétences</span>
+                    </td>
+                </tr>
+            </g:if>
+        </table>
+    </div>
+    <g:hiddenField name="id" value="${modaliteActivite.id}"/>
+    <g:hiddenField id="sujetId" name="sujet.id"
+                   value="${modaliteActivite.sujet?.id}"/>
+    <div class="form_actions edite">
+        <g:actionSubmit value="Enregistrer" class="button"
+                        action="enregistre"
+                        title="Enregistrer"/>
+    </div>
+    <br/><br/><br/><br/><br/>
 </g:form>
 
 <div id="search-group-form" style="background-color: #ffffff">
-  <g:render template="/seance/selectAutreGroupe" model="[etablissements: etablissements,
-          fonctionList: fonctionList,
-      rechercheGroupeCommand: new RechercheGroupeCommand(etablissementId: currentEtablissement.id)]"/>
+    <g:render template="/seance/selectAutreGroupe" model="[
+            etablissements        : etablissements,
+            fonctionList          : fonctionList,
+            groupeTypeList        : groupeTypeList,
+            rechercheGroupeCommand: new RechercheGroupeCommand(etablissementId: currentEtablissement.id, groupeType: GroupeType.SCOLARITE)
+    ]"/>
 </div>
 
 </body>

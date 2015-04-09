@@ -32,6 +32,16 @@ package org.lilie.services.eliot.tice.annuaire.groupe
  * @author John Tranier
  */
 enum GroupeType {
-    SCOLARITE,
-    ENT
+    SCOLARITE('Scolarité'),
+    ENT('ENT')
+
+    String label
+
+    GroupeType(String label) {
+        this.label = label
+    }
+
+    String getCode() {
+        this.name()
+    }
 }

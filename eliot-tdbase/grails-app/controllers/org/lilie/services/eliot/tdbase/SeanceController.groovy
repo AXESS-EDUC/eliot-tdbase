@@ -34,6 +34,7 @@ import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeType
 import org.lilie.services.eliot.tice.annuaire.groupe.RechercheGroupeCritere
 import org.lilie.services.eliot.tice.annuaire.groupe.RechercheGroupeResultat
 import org.lilie.services.eliot.tice.scolarite.Etablissement
@@ -152,6 +153,11 @@ class SeanceController {
                         etablissements
                 )*.structureEnseignement
 
+        List<GroupeType> groupeTypeList =
+                groupeService.hasGroupeEnt(securiteSessionServiceProxy.currentEtablissement) ?
+                        [GroupeType.SCOLARITE, GroupeType.ENT] :
+                        [GroupeType.SCOLARITE]
+
         render(
                 view: '/seance/edite',
                 model: [
@@ -162,6 +168,7 @@ class SeanceController {
                                 personne,
                                 securiteSessionServiceProxy.currentEtablissement
                         ),
+                        groupeTypeList             : groupeTypeList,
                         lienBookmarkable           : lienBookmarkable,
                         afficheLienCreationDevoir  : afficheLienCreationDevoir,
                         afficheLienCreationActivite: afficheLienCreationActivite,
@@ -188,6 +195,7 @@ class SeanceController {
             etablissement = Etablissement.get(command.etablissementId)
         } else {
             etablissement = securiteSessionServiceProxy.currentEtablissement
+            command.etablissementId = etablissement.id
         }
 
         List<Fonction> fonctionList =
@@ -205,16 +213,23 @@ class SeanceController {
             codePattern = command.patternCode
         }
         def limit = grailsApplication.config.eliot.listes.groupes.maxrecherche
-        RechercheGroupeResultat rechercheGroupeResultat = groupeService.rechercheGroupeScolarite(
-                personne,
-                new RechercheGroupeCritere(
-                        etablissement: etablissement,
-                        fonction: fonction,
-                        motCle: codePattern,
-                        limit: limit
-                ),
-                codePorteur
-        )
+        RechercheGroupeResultat rechercheGroupeResultat =
+                groupeService.rechercheGroupe(
+                        personne,
+                        new RechercheGroupeCritere(
+                                etablissement: etablissement,
+                                fonction: fonction,
+                                motCle: codePattern,
+                                limit: limit
+                        ),
+                        command.groupeType,
+                        codePorteur
+                )
+
+        List<GroupeType> groupeTypeList =
+                groupeService.hasGroupeEnt(etablissement) ?
+                        [GroupeType.SCOLARITE, GroupeType.ENT] :
+                        [GroupeType.SCOLARITE]
 
         render(view: "/seance/_selectAutreGroupe",
                 model: [
@@ -222,6 +237,7 @@ class SeanceController {
                         etablissements        : securiteSessionServiceProxy.etablissementList,
                         fonctionId            : fonction.id,
                         fonctionList          : fonctionList,
+                        groupeTypeList        : groupeTypeList,
                         groupeScolariteList   : rechercheGroupeResultat.groupes,
                         totalCount            : rechercheGroupeResultat.nombreTotal
                 ]
@@ -263,6 +279,34 @@ class SeanceController {
                 model: [
                         fonctionList: fonctionList,
                         fonctionId  : fonction.id
+                ]
+        )
+    }
+
+    /**
+     * Action updateGroupeTypeList
+     */
+    def updateGroupeTypeList() {
+        GroupeType groupeType = params.groupeType ?
+                GroupeType.valueOf(params.groupeType) :
+                null
+
+        Etablissement etablissement = Etablissement.load(params.etablissementId)
+
+        List<GroupeType> groupeTypeList =
+                groupeService.hasGroupeEnt(etablissement) ?
+                        [GroupeType.SCOLARITE, GroupeType.ENT] :
+                        [GroupeType.SCOLARITE]
+
+        if(!groupeType || !groupeTypeList.contains(groupeType)) {
+            groupeType = groupeTypeList.first()
+        }
+
+        render(
+                view: "/seance/_selectGroupeType",
+                model: [
+                        groupeTypeList: groupeTypeList,
+                        groupeType    : groupeType
                 ]
         )
     }
@@ -349,6 +393,11 @@ class SeanceController {
                             etablissements
                     )*.structureEnseignement
 
+            List<GroupeType> groupeTypeList =
+                    groupeService.hasGroupeEnt(securiteSessionServiceProxy.currentEtablissement) ?
+                            [GroupeType.SCOLARITE, GroupeType.ENT] :
+                            [GroupeType.SCOLARITE]
+
             render(
                     view: '/seance/edite',
                     model: [
@@ -359,6 +408,7 @@ class SeanceController {
                                     personne,
                                     securiteSessionServiceProxy.currentEtablissement
                             ),
+                            groupeTypeList           : groupeTypeList,
                             modaliteActivite         : modaliteActivite,
                             structureEnseignementList: structureEnseignementList,
                             competencesEvaluables    : modaliteActivite.sujet.hasCompetence()
@@ -618,4 +668,7 @@ class RechercheGroupeCommand {
     String patternCode
     Long etablissementId
     Long fonctionId
+    GroupeType groupeType
+
+
 }

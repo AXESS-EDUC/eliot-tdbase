@@ -16,6 +16,8 @@ import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeType
 import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
@@ -53,6 +55,7 @@ class SujetController {
     SecuriteSessionService securiteSessionServiceProxy
     FonctionService fonctionService
     PreferenceEtablissementService preferenceEtablissementService
+    GroupeService groupeService
 
     /**
      *
@@ -478,6 +481,11 @@ class SujetController {
                         securiteSessionServiceProxy.currentEtablissement
                 )
 
+        List<GroupeType> groupeTypeList =
+                groupeService.hasGroupeEnt(securiteSessionServiceProxy.currentEtablissement) ?
+                        [GroupeType.SCOLARITE, GroupeType.ENT] :
+                        [GroupeType.SCOLARITE]
+
         render(
                 view: '/seance/edite',
                 model: [
@@ -485,6 +493,7 @@ class SujetController {
                         currentEtablissement       : securiteSessionServiceProxy.currentEtablissement,
                         etablissements             : etablissements,
                         fonctionList               : fonctionList,
+                        groupeTypeList             : groupeTypeList,
                         afficheLienCreationDevoir  : false,
                         afficheLienCreationActivite: false,
                         afficheActiviteCreee       : false,

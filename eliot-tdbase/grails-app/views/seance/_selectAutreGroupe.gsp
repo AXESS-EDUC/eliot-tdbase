@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.annuaire.groupe.GroupeType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -47,6 +48,16 @@
                               from="${etablissements}"
                               optionKey="id"
                               optionValue="nomAffichage"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">type&nbsp;</td>
+                <td id="selectGroupeTypeList">
+                    <g:select name="groupeType"
+                              from="${groupeTypeList}"
+                              value="${rechercheGroupeCommand.groupeType.code ?: GroupeType.SCOLARITE.code}"
+                              optionKey="code"
+                              optionValue="label"/>
                 </td>
             </tr>
             <tr>
@@ -124,7 +135,12 @@
                 {etablissementId: $(this).val()},
                 function (data) {
                     $('#selectFonctionList').html(data)
-                })
+                });
+        $.get("${createLink(action: 'updateGroupeTypeList', controller: 'seance')}",
+                {etablissementId: $(this).val(), groupeType: $('#groupeType').val()},
+                function (data) {
+                    $('#selectGroupeTypeList').html(data)
+                });
     })
 
 </script>
