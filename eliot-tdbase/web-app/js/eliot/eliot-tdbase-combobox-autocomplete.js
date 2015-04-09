@@ -36,6 +36,7 @@ function initComboboxAutoComplete(config) {
 
             this.element.hide();
             this._createAutocomplete();
+            this._createShowAllButton();
         },
 
         _createAutocomplete: function() {
@@ -60,6 +61,37 @@ function initComboboxAutoComplete(config) {
                 });
             this.input = input;
 
+        },
+
+        _createShowAllButton: function() {
+            var input = this.input,
+                wasOpen = false;
+
+            $( "<a>" )
+                .attr( "tabIndex", -1 )
+                .appendTo( this.wrapper )
+                .button({
+                    icons: {
+                        primary: "ui-icon-triangle-1-s"
+                    },
+                    text: false
+                })
+                .removeClass( "ui-corner-all" )
+                .addClass( "custom-combobox-toggle ui-corner-right" )
+                .mousedown(function() {
+                    wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+                })
+                .click(function() {
+                    input.focus();
+
+                    // Close if already visible
+                    if ( wasOpen ) {
+                        return;
+                    }
+
+                    // Pass empty string as value to search for, displaying all results
+                    input.autocomplete( "search", $(input).val() );
+                });
         },
 
         _source: function( request, response ) {
