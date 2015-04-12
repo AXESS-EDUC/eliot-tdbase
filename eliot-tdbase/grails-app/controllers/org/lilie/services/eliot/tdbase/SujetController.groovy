@@ -65,12 +65,15 @@ class SujetController {
             rechercheUniquementSujetsChercheur = true
             patternAuteur = null
         }
+
+        MatiereBcn matiereBcn = MatiereBcn.get(rechCmd.matiereId)
+
         def sujets = sujetService.findSujets(personne,
                 rechCmd.patternTitre,
                 patternAuteur,
                 rechCmd.patternPresentation,
                 new ReferentielEliot(
-                        matiere: Matiere.get(rechCmd.matiereId),
+                        matiereBcn: matiereBcn,
                         niveau: Niveau.get(rechCmd.niveauId)
                 ),
                 SujetType.get(rechCmd.typeId),
@@ -85,7 +88,7 @@ class SujetController {
          afficheFormulaire: true,
          affichePager     : affichePager,
          typesSujet       : sujetService.getAllSujetTypes(),
-         matieres         : profilScolariteService.findMatieresForPersonne(personne),
+         matiereBcns      : matiereBcn != null ? [matiereBcn] : [],
          niveaux          : profilScolariteService.findNiveauxForPersonne(personne),
          sujets           : sujets,
          rechercheCommand : rechCmd,
@@ -135,7 +138,7 @@ class SujetController {
 
     def matiereBcns() {
       String recherche = '%' + params.recherche + '%'
-      def matiereBcns = MatiereBcn.findAllByLibelleEditionLike(recherche)
+      def matiereBcns = MatiereBcn.findAllByLibelleEditionIlike(recherche)
       render matiereBcns as JSON
     }
 
@@ -696,7 +699,6 @@ class SujetController {
         Personne proprietaire = authenticatedPersonne
         [
                 liens         : breadcrumpsServiceProxy.liens,
-                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
                 etablissements     : securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
@@ -739,7 +741,7 @@ class SujetController {
                         ).sujet,
                         proprietaire,
                         new ReferentielEliot(
-                                matiere: Matiere.load(matiereId),
+                                matiereBcn: MatiereBcn.load(matiereId),
                                 niveau: Niveau.load(niveauId)
                         )
                 )

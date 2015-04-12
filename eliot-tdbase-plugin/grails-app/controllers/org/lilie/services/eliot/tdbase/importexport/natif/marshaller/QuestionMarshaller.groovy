@@ -16,7 +16,7 @@ public class QuestionMarshaller {
 
   PersonneMarshaller personneMarshaller
   EtablissementMarshaller etablissementMarshaller
-  MatiereMarshaller matiereMarshaller
+  MatiereBcnMarshaller matiereBcnMarshaller
   NiveauMarshaller niveauMarshaller
   CopyrightsTypeMarshaller copyrightsTypeMarshaller
   AttachementMarchaller attachementMarchaller
@@ -46,7 +46,7 @@ public class QuestionMarshaller {
             copyrightsType: copyrightsTypeMarshaller.marshall(question.copyrightsType),
             referentielEliot: [
                 etablissement: etablissementMarshaller.marshall(question.etablissement),
-                matiere: matiereMarshaller.marshall(question.matiere),
+                matiereBcn: matiereBcnMarshaller.marshall(question.matiereBcn),
                 niveau: niveauMarshaller.marshall(question.niveau)
             ]
         ],
@@ -101,8 +101,8 @@ public class QuestionMarshaller {
         etablissement: jsonElement.metadonnees.referentielEliot ?
           EtablissementMarshaller.parse(jsonElement.metadonnees.referentielEliot.etablissement) :
           null,
-        matiere: jsonElement.metadonnees.referentielEliot ?
-          MatiereMarshaller.parse(jsonElement.metadonnees.referentielEliot.matiere) :
+        matiereBcn: jsonElement.metadonnees.referentielEliot ?
+          MatiereBcnMarshaller.parse(jsonElement.metadonnees.referentielEliot.matiereBcn) :
           null,
         niveau: jsonElement.metadonnees.referentielEliot ?
           NiveauMarshaller.parse(jsonElement.metadonnees.referentielEliot.niveau) :

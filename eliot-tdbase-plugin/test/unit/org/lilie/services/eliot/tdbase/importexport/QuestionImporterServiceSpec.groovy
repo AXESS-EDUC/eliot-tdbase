@@ -26,7 +26,7 @@ import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.springframework.context.ApplicationContext
 import spock.lang.Specification
@@ -282,7 +282,7 @@ class QuestionImporterServiceSpec extends Specification {
         {
           assert it.titre == questionAtomiqueDto.titre
           assert it.type.code == QuestionTypeEnum.MultipleChoice.name()
-          assert it.matiere == referentielEliot?.matiere
+          assert it.matiereBcn == referentielEliot?.matiereBcn
           assert it.niveau == referentielEliot?.niveau
           assert it.estAutonome == questionAtomiqueDto.estAutonome
           assert it.paternite == questionAtomiqueDto.paternite
@@ -324,7 +324,7 @@ class QuestionImporterServiceSpec extends Specification {
         null,
         null,
         new ReferentielEliot(
-            matiere: new Matiere(),
+            matiereBcn: new MatiereBcn(),
             niveau: new Niveau()
         )
     ]
@@ -411,7 +411,7 @@ class QuestionImporterServiceSpec extends Specification {
     referentielEliot << [
         null,
         new ReferentielEliot(
-            matiere: new Matiere(),
+            matiereBcn: new MatiereBcn(),
             niveau: new Niveau()
         )
     ]

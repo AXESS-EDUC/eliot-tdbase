@@ -29,11 +29,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="eliot-tdbase-ui"/>
+  <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
   <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
       initButtons();
+
+      initComboboxAutoComplete({
+        combobox: '#matiereId',
+
+        recherche: function(recherche, callback) {
+          if (recherche == null || recherche.length < 3) {
+            callback([]);
+          }
+          else {
+            $.ajax({
+              url: '${g.createLink(absolute:true, uri:"/sujet/matiereBcns")}',
+
+              data: {
+                recherche: recherche
+              },
+
+              success: function(matiereBcns) {
+                var options = [];
+
+                for(var i = 0; i < matiereBcns.length; i++) {
+                  options.push({
+                    id: matiereBcns[i].id,
+                    value: matiereBcns[i].libelleEdition
+                  });
+                }
+
+                callback(options);
+              }
+            });
+          }
+        }
+
+      });
     });
   </r:script>
   <title>
@@ -85,10 +118,9 @@
           </td>
           <td>
             <g:select name="matiereId" value="${rechercheCommand.matiereId}"
-                      noSelection="${['null': 'Toutes']}"
-                      from="${matieres}"
+                      from="${matiereBcns}"
                       optionKey="id"
-                      optionValue="libelleLong"/>
+                      optionValue="libelleEdition"/>
           </td>
         </tr>
         <tr>
@@ -219,7 +251,7 @@
           <g:if
               test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${sujetInstance.niveau?.libelleLong}</g:if>
           <g:if
-              test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${sujetInstance.matiere?.libelleLong}</g:if>
+              test="${sujetInstance.matiereBcn?.libelleEdition}"><strong>» Matière :</strong> ${sujetInstance.matiereBcn?.libelleEdition}</g:if>
           <g:if
               test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</g:if>
           <g:if test="${artefactHelper.partageArtefactCCActive && afficheFormulaire}">

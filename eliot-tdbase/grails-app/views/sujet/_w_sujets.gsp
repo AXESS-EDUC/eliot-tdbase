@@ -40,7 +40,7 @@
 	    <g:each in="${sujets}" status="i" var="sujetInstance">
 	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}"><g:link controller="sujet" title="${sujetInstance.titre}" action="teste" id="${sujetInstance.id}">${sujetInstance.titre}</g:link><br/>
 	        <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>
-	        <g:if test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière : </strong>${sujetInstance.matiere?.libelleLong} </g:if>
+	        <g:if test="${sujetInstance.matiereBcn?.libelleEdition}"><strong>» Matière : </strong>${sujetInstance.matiereBcn?.libelleEdition} </g:if>
 	      </li>
 	    </g:each>
 	  </ul>

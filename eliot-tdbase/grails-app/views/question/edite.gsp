@@ -30,7 +30,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="question_editeJS"/>
+  <r:require modules="question_editeJS, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
   <g:external dir="js/eliot/tiny_mce/tiny_mce.js" plugin="eliot-tice-plugin"/>
   <script type="text/javascript">
     tinyMCE.init({
@@ -58,7 +58,40 @@
       $('#menu-item-contributions').addClass('actif');
       $('#question\\.titre').focus();
       $("form").attr('enctype', 'multipart/form-data');
-      initButtons()
+      initButtons();
+
+      initComboboxAutoComplete({
+        combobox: '#matiereBcn\\.id',
+
+        recherche: function(recherche, callback) {
+          if (recherche == null || recherche.length < 3) {
+            callback([]);
+          }
+          else {
+            $.ajax({
+              url: '${g.createLink(absolute:true, uri:"/sujet/matiereBcns")}',
+
+              data: {
+                recherche: recherche
+              },
+
+              success: function(matiereBcns) {
+                var options = [];
+
+                for(var i = 0; i < matiereBcns.length; i++) {
+                  options.push({
+                    id: matiereBcns[i].id,
+                    value: matiereBcns[i].libelleEdition
+                  });
+                }
+
+                callback(options);
+              }
+            });
+          }
+        }
+
+      });
     });
   </r:script>
   <title><g:message code="question.edite.head.title"/></title>
@@ -203,11 +236,10 @@
         <tr>
           <td class="label">Mati&egrave;re :</td>
           <td>
-            <g:select name="matiere.id" value="${sujet.matiereId}"
-                      noSelection="${['null': g.message(code: "default.select.null")]}"
-                      from="${matieres}"
+            <g:select name="matiereBcn.id" value="${sujet.matiereBcn?.id}"
+                      from="${matiereBcns}"
                       optionKey="id"
-                      optionValue="libelleLong"/>
+                      optionValue="libelleEdition"/>
           </td>
         </tr>
         <tr>
@@ -225,11 +257,10 @@
         <tr>
           <td class="label">Mati&egrave;re :</td>
           <td>
-            <g:select name="matiere.id" value="${question.matiereId}"
-                      noSelection="${['null': g.message(code: "default.select.null")]}"
-                      from="${matieres}"
+            <g:select name="matiereBcn.id" value="${question.matiereBcn?.id}"
+                      from="${matiereBcns}"
                       optionKey="id"
-                      optionValue="libelleLong"/>
+                      optionValue="libelleEdition"/>
           </td>
         </tr>
         <tr>

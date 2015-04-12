@@ -41,11 +41,11 @@
 	    <g:each in="${copies}" status="i" var="copie">
 	      <g:set var="seance" value="${copie.modaliteActivite}"/>
 	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}"><g:link controller="activite" action="visualiseCopie" id="${copie.id}">
-	      	<g:if test="{seance.matiere?.libelleLong} == ''">
+	      	<g:if test="{seance.matiereBcn?.libelleEdition} == ''">
 	      		 
 	      	</g:if>
 	      	<g:else>
-	      	     ${seance.matiere?.libelleLong} -
+	      	     ${seance.matiereBcn?.libelleEdition} -
 	      	</g:else>
 	      	${seance.sujet.titre}</g:link><br/>
 	        <strong> » Note : </strong><b><g:formatNumber number="${copie.correctionNoteFinale}" format="##0.00" /></b>

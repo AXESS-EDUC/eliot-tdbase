@@ -122,7 +122,7 @@ class MoodleQuizImporterService {
               [
                       titre: item.titre,
                       type: questionTypeEnum.questionType,
-                      matiere: referentielEliot?.matiere,
+                      matiereBcn: referentielEliot?.matiereBcn,
                       niveau: referentielEliot?.niveau
               ],
               objSpec,

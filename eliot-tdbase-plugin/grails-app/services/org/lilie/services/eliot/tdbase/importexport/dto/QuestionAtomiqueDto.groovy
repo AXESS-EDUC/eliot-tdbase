@@ -14,7 +14,7 @@ public class QuestionAtomiqueDto implements QuestionDto {
   String paternite
   CopyrightsTypeDto copyrightsType
   EtablissementDto etablissement
-  MatiereDto matiere
+  MatiereBcnDto matiereBcn
   NiveauDto niveau
   String specification
   PrincipalAttachementDto principalAttachement

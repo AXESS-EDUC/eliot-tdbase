@@ -43,7 +43,7 @@ import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.AttachementUploadException
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
@@ -123,7 +123,7 @@ class QuestionController {
         model: [
             liens: breadcrumpsServiceProxy.liens,
             question: question,
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            matiereBcns   : question.matiereBcn != null ? [question.matiereBcn] : [],
             etablissements: securiteSessionServiceProxy.etablissementList,
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,
@@ -279,7 +279,7 @@ class QuestionController {
           model: [
               liens: breadcrumpsServiceProxy.liens,
               question: question,
-              matieres: profilScolariteService.findMatieresForPersonne(personne),
+              matiereBcns   : question.matiereBcn != null ? [question.matiereBcn] : [],
               etablissements: securiteSessionServiceProxy.etablissementList,
               niveaux: profilScolariteService.findNiveauxForPersonne(personne),
               sujet: sujet,
@@ -337,7 +337,7 @@ class QuestionController {
         model: [
             liens: breadcrumpsServiceProxy.liens,
             question: question,
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
+            matiereBcns   : question.matiereBcn != null ? [question.matiereBcn] : [],
             etablissements: securiteSessionServiceProxy.etablissementList,
             niveaux: profilScolariteService.findNiveauxForPersonne(personne),
             sujet: sujet,
@@ -373,7 +373,7 @@ class QuestionController {
       render(view: '/question/edite', model: [liens: breadcrumpsServiceProxy.liens,
           question: question,
           sujet: sujet,
-          matieres: profilScolariteService.findMatieresForPersonne(personne),
+          matiereBcns   : question.matiereBcn != null ? [question.matiereBcn] : [],
           etablissements: securiteSessionServiceProxy.etablissementList,
           niveaux: profilScolariteService.findNiveauxForPersonne(personne),
           sujet: sujet,
@@ -451,12 +451,15 @@ class QuestionController {
       }
     }
     boolean affichePager = false
+
+    MatiereBcn matiereBcn = MatiereBcn.get(rechCmd.matiereId)
+
     def questions = questionService.findQuestions(personne,
         rechCmd.patternTitre,
         patternAuteur,
         rechCmd.patternSpecification,
         new ReferentielEliot(
-            matiere: Matiere.get(rechCmd.matiereId),
+            matiereBcn: matiereBcn,
             niveau: Niveau.get(rechCmd.niveauId)
         ),
         QuestionType.get(rechCmd.typeId),
@@ -470,7 +473,7 @@ class QuestionController {
     [liens: breadcrumpsServiceProxy.liens,
         afficheFormulaire: true,
         typesQuestion: typesQuestions,
-        matieres: profilScolariteService.findMatieresForPersonne(personne),
+        matiereBcns   : matiereBcn != null ? [matiereBcn] : [],
         niveaux: profilScolariteService.findNiveauxForPersonne(personne),
         questions: questions,
         rechercheCommand: rechCmd,
@@ -549,7 +552,6 @@ class QuestionController {
     Personne proprietaire = authenticatedPersonne
     [
         liens: breadcrumpsServiceProxy.liens,
-        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
         etablissements     : securiteSessionServiceProxy.etablissementList,
         niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
@@ -593,7 +595,7 @@ class QuestionController {
             null,
             proprietaire,
             new ReferentielEliot(
-                matiere: Matiere.load(matiereId),
+                matiereBcn: MatiereBcn.load(matiereId),
                 niveau: Niveau.load(niveauId)
             )
         )

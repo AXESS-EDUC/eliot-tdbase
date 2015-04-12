@@ -16,7 +16,7 @@ import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.Exp
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.lilie.services.eliot.tice.scolarite.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.BootstrapService
 
@@ -36,7 +36,7 @@ class SujetImporterServiceIntegrationSpec extends IntegrationSpec {
   def setup() {
     bootstrapService.bootstrapForIntegrationTest()
     personne = bootstrapService.enseignant1
-    assert Matiere.first()
+    assert MatiereBcn.first()
     assert Niveau.first()
   }
 
@@ -97,7 +97,7 @@ class SujetImporterServiceIntegrationSpec extends IntegrationSpec {
         null,
         null,
         new ReferentielEliot(
-            matiere: Matiere.first(),
+            matiereBcn: MatiereBcn.first(),
             niveau: Niveau.first()
         )
     ]
@@ -120,7 +120,7 @@ class SujetImporterServiceIntegrationSpec extends IntegrationSpec {
             accesSequentiel: true,
             ordreQuestionAleatoire: false,
             copyrightsType: CopyrightsTypeEnum.CC_BY_NC.copyrightsType,
-            matiere: referentielEliot?.matiere,
+            matiereBcn: referentielEliot?.matiereBcn,
             niveau: referentielEliot?.niveau
         ],
         personne

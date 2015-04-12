@@ -311,7 +311,7 @@ class SujetService {
  * @param patternTitre le pattern saisi pour le titre
  * @param patternAuteur le pattern saisi pour l'auteur
  * @param patternPresentation le pattern saisi pour la presentation
- * @param matiere la matiere
+ * @param matiereBcn la matiere
  * @param niveau le niveau
  * @param paginationAndSortingSpec les specifications pour l'ordre et
  * la pagination
@@ -336,8 +336,8 @@ class SujetService {
 
     def criteria = Sujet.createCriteria()
     List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
-      if (referentielEliot?.matiere) {
-        eq "matiere", referentielEliot?.matiere
+      if (referentielEliot?.matiereBcn) {
+        eq "matiereBcn", referentielEliot?.matiereBcn
       }
       if (referentielEliot?.niveau) {
         eq "niveau", referentielEliot?.niveau

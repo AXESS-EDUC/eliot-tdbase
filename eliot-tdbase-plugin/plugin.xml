@@ -21,6 +21,7 @@
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerException</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerHelper</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereBcnMarshaller</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionCompositeMarshaller</resource>
@@ -122,6 +123,7 @@
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.EtablissementDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.ExportDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.MatiereDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.MatiereBcnDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.NiveauDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.PersonneDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto</resource>
