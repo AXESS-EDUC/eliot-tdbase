@@ -183,8 +183,12 @@ class ActiviteController {
 
   def commenceSession() {
     Copie copie = Copie.get(params.id)
-    copie.dateDebut = new Date()
-    copie.save()
+
+    if (copie.dateDebut == null) {
+      copie.dateDebut = new Date()
+      copie.save()
+    }
+    
     render copie as JSON
   }
 
