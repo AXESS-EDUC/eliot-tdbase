@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import grails.converters.JSON
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
@@ -179,6 +180,13 @@ class ActiviteController {
             copie: copie])
   }
 
+
+  def commenceSession() {
+    Copie copie = Copie.get(params.id)
+    copie.dateDebut = new Date()
+    copie.save()
+    render copie as JSON
+  }
 
 }
 

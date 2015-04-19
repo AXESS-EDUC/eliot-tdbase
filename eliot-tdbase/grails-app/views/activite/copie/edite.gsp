@@ -54,7 +54,7 @@
   <script>
     moment.locale('fr');
     var datetime = null;
-    var date = moment(new Date());
+    var date = ${copie.dateDebut != null ? "moment('" + copie.dateDebut + "')" : "null"};
 
     var update = function () {
       var ms = date.diff(moment(new Date())) + ${copie.sujet.dureeMinutes} * 60 * 1000;
@@ -72,8 +72,25 @@
       datetime.css('position', 'fixed');
       datetime.css('top', '10px');
       datetime.css('left', '450px');
-      update();
-      setInterval(update, 1000);
+
+      if (date != null) {
+        setInterval(update, 1000);
+      }
+      else {
+        if (confirm('Voulez-vous commencer la session ?')) {
+          $.ajax({
+            url: '${g.createLink(controller: 'activite', action: 'commenceSession')}',
+            data: {
+              id: ${copie.id}
+            },
+            success: function(copie) {
+              date = moment(copie.dateDebut);
+              setInterval(update, 1000);
+            }
+          });
+        }
+      }
+
     });
   </script>
 </g:if>
