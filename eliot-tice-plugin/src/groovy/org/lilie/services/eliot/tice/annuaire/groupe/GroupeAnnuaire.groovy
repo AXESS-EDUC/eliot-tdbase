@@ -36,8 +36,17 @@ package org.lilie.services.eliot.tice.annuaire.groupe
  *
  * @author John Tranier
  */
-interface GroupeAnnuaire {
+abstract class GroupeAnnuaire {
 
-  Long getId()
-  String getNomAffichage()
+  abstract Long getId()
+  abstract String getNomAffichage()
+  abstract GroupeType getGroupeType()
+
+  Map toMap() {
+    return [
+            id: id,
+            nomAffichage: nomAffichage,
+            groupeType: groupeType.name()
+    ]
+  }
 }

@@ -79,7 +79,7 @@ class BootStrap {
 
     Map mappingFonctionRoleDefaut = config.eliot.tdbase.mappingFonctionRole.defaut
     if (!mappingFonctionRoleDefaut) {
-        throw Exception("Parametre obligatoire eliot.tdbase.mappingFonctionRole.defaut n'est pas configure !")
+        throw new Exception("Parametre obligatoire eliot.tdbase.mappingFonctionRole.defaut n'est pas configure !")
     }
 
     MappingFonctionRole.defaultMappingFonctionRole = new MappingFonctionRole(

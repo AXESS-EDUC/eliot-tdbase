@@ -170,9 +170,10 @@
                 <td class="label">Classe/groupe<span class="obligatoire">*</span>&nbsp;:
                 </td>
                 <td>
-                    <g:if test="${modaliteActivite.groupeScolarite}">
-                        <strong>${modaliteActivite.groupeScolarite.nomAffichage}</strong>
-                        <input type="hidden" name="groupeScolarite.id" value="${modaliteActivite.groupeScolarite.id}"/>
+                    <g:if test="${modaliteActivite.groupe}">
+                        <strong>${modaliteActivite.groupe.nomAffichage}</strong>
+                        <input type="hidden" name="groupeId" value="${modaliteActivite.groupe.id}"/>
+                        <input type="hidden" name="groupeType" value="${modaliteActivite.groupe.groupeType.name()}"/>
                     </g:if>
                     <g:else>
                         <div id="structure-selection" style="float: left; margin-right: 10px;">

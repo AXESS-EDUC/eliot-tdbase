@@ -36,7 +36,7 @@ import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
  *
  * @author John Tranier
  */
-class GroupeScolariteProxy implements GroupeAnnuaire {
+class GroupeScolariteProxy extends GroupeAnnuaire {
 
   // Id de la ProprietesScolarite
   Long id
@@ -47,5 +47,10 @@ class GroupeScolariteProxy implements GroupeAnnuaire {
   GroupeScolariteProxy(ProprietesScolarite proprietesScolarite) {
     this.id = proprietesScolarite.id
     nomAffichage = proprietesScolarite.nomAffichage
+  }
+
+  @Override
+  GroupeType getGroupeType() {
+    return GroupeType.SCOLARITE
   }
 }

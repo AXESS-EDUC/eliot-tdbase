@@ -238,7 +238,7 @@ class SeanceController {
                         fonctionId            : fonction.id,
                         fonctionList          : fonctionList,
                         groupeTypeList        : groupeTypeList,
-                        groupeScolariteList   : rechercheGroupeResultat.groupes,
+                        groupeList            : rechercheGroupeResultat.groupes,
                         totalCount            : rechercheGroupeResultat.nombreTotal
                 ]
         )
@@ -298,7 +298,7 @@ class SeanceController {
                         [GroupeType.SCOLARITE, GroupeType.ENT] :
                         [GroupeType.SCOLARITE]
 
-        if(!groupeType || !groupeTypeList.contains(groupeType)) {
+        if (!groupeType || !groupeTypeList.contains(groupeType)) {
             groupeType = groupeTypeList.first()
         }
 
@@ -338,7 +338,8 @@ class SeanceController {
         ModaliteActivite modaliteActivite
         Personne personne = authenticatedPersonne
 
-        def propsId
+        def groupeId
+        GroupeType groupeType = null
         def structureEnseignementId = params.structureEnseignementId
 
         // Si une structure d'enseignement est fournie, on récupère le groupe scolarité élève correspondant
@@ -346,22 +347,31 @@ class SeanceController {
             StructureEnseignement structureEnseignement =
                     StructureEnseignement.load(structureEnseignementId)
 
-            propsId = groupeService.findGroupeScolariteEleveForStructureEnseignement(
+            groupeId = groupeService.findGroupeScolariteEleveForStructureEnseignement(
                     structureEnseignement
             ).id
-        } else {
-            propsId = params.groupeScolariteId
+            groupeType = GroupeType.SCOLARITE
+        } else if(params.groupeType && params.groupeType != 'null') {
+            groupeType = GroupeType.valueOf(params.groupeType)
+            groupeId = params.groupeId
         }
 
-        if (propsId && propsId != 'null') {
-            ProprietesScolarite props = ProprietesScolarite.get(
-                    propsId
-            )
-            params.'groupeScolarite.id' = propsId
+        switch (groupeType) {
+            case GroupeType.SCOLARITE:
+                ProprietesScolarite props = ProprietesScolarite.get(
+                        groupeId
+                )
+                params.'groupeScolarite.id' = groupeId
 
-            if (props.matiere) {
-                params.'matiere.id' = props.matiere.id
-            }
+                if (props.matiere) {
+                    params.'matiere.id' = props.matiere.id
+                }
+
+                break
+
+            case GroupeType.ENT:
+                params.'groupeEnt.id' = groupeId
+                break
         }
 
         if (params.id) {

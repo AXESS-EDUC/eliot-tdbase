@@ -85,5 +85,46 @@ environments {
         eliot.interfacage.emaeval.scenario.nom = "Evaluation directe"
         eliot.interfacage.emaeval.methodeEvaluation.nom = "Methode d'évaluation"
         // Note : je ne comprends pas pourquoi la méthode n'a pas pour nom "Méthode d'évaluation booléenne" ...
+
+        /**
+         * Définit les couples <RoleApplicatif, FonctionEnum> qui sont associés par défaut
+         * Cette configuration est utilisée pour généré le paramétrage initial de TD Base pour
+         * un établissement qui pourra ensuite être modifié par les utilisateurs disposant du
+         * rôle applicatif ADMINISTRATEUR
+         */
+        def mappingFonctionRoleDefaut = [
+                "ENSEIGNANT"          : ["ENS", "CD"],
+                "ELEVE"               : ["ELEVE"],
+                "PARENT"              : ["PERS_REL_ELEVE"],
+                "ADMINISTRATEUR"      : ["DIR", "AL"],
+                "SUPER_ADMINISTRATEUR": ["CD"]
+        ]
+
+/**
+ * Définit les couples <RoleApplicatif, FonctionEnum> qui sont modifiables par les
+ * administrateurs
+ *
+ * La clé 'défault' peut être utilisée pour définir une règle par défaut qui
+ * s'applique lorsque la règle n'a pas été explicitement définie pour un RoleApplicatif
+ * ou un FonctionEnum
+ */
+        def liaisonFonctionRoleModifiable = [
+                "ENSEIGNANT": [
+                        "ENS"    : false,
+                        "DOC"    : false,
+                        "default": true
+                ],
+                "ELEVE"     : [
+                        "ELEVE"  : false,
+                        "default": true
+                ],
+                "default"   : [
+                        "default": false
+                ]
+        ]
+
+
+        eliot.tdbase.mappingFonctionRole.defaut = mappingFonctionRoleDefaut
+        eliot.tdbase.mappingFonctionRole.modifiable = liaisonFonctionRoleModifiable
     }
 }

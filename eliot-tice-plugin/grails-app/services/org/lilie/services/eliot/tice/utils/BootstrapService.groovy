@@ -73,6 +73,14 @@ class BootstrapService {
     private static final String ELEVE_2_PASSWORD = "elv2"
     private static final String ELEVE_2_NOM = "Durandine"
     private static final String ELEVE_2_PRENOM = "Pauline"
+    private static final String ELEVE_3_LOGIN = "elv3" // élève uniquement sur le lycée
+    private static final String ELEVE_3_PASSWORD = "elv3"
+    private static final String ELEVE_3_NOM = "Doe"
+    private static final String ELEVE_3_PRENOM = "John"
+    private static final String ELEVE_4_LOGIN = "elv4" // élève uniquement sur le collège
+    private static final String ELEVE_4_PASSWORD = "elv4"
+    private static final String ELEVE_4_NOM = "Dulac"
+    private static final String ELEVE_4_PRENOM = "Julie"
 
     private static final String RESP_1_LOGIN = "resp1"
     private static final String RESP_1_PASSWORD = "resp1"
@@ -132,6 +140,8 @@ class BootstrapService {
         changeLoginAliasMotdePassePourEnseignant1()
         changeLoginAliasMotdePassePourEnseignant2()
         initialiseEleve2EnvDevelopment()
+        initialiseEleve3EnvDevelopment()
+        initialiseEleve4EnvDevelopment()
         initialiseRespEleve1EnvDevelopment()
         initialisePersDirection1()
         initialiseSuperAdmin1()
@@ -570,6 +580,8 @@ class BootstrapService {
 
     Personne eleve1
     Personne eleve2
+    Personne eleve3
+    Personne eleve4
 
     private def initialiseProfilsScolaritesEleve1EnvDevelopment() {
         Utilisateur elv1 = utilisateurService.findUtilisateur(ELEVE_1_LOGIN)
@@ -600,6 +612,54 @@ class BootstrapService {
         }
         else {
             eleve2 = Personne.get(elv2.personneId)
+        }
+    }
+
+    private def initialiseEleve3EnvDevelopment() {
+        Utilisateur elv3 = utilisateurService.findUtilisateur(ELEVE_3_LOGIN)
+        if(!elv3) {
+            utilisateurService.createUtilisateur(
+                    ELEVE_3_LOGIN,
+                    ELEVE_3_PASSWORD,
+                    ELEVE_3_NOM,
+                    ELEVE_3_PRENOM,
+            )
+            elv3 = utilisateurService.findUtilisateur(ELEVE_3_LOGIN)
+            eleve3 = Personne.get(elv3.personneId)
+
+            // Ajout de la PS liant l'élève à 1 classe du lycée
+            def props = ProprietesScolarite.findAllByFonctionAndStructureEnseignement(
+                    fonctionService.fonctionEleve(),
+                    classeTerminale
+            )
+            addProprietesScolariteToPersonne(props, eleve3)
+        }
+        else {
+            eleve3 = Personne.get(elv3.personneId)
+        }
+    }
+
+    private def initialiseEleve4EnvDevelopment() {
+        Utilisateur elv4 = utilisateurService.findUtilisateur(ELEVE_4_LOGIN)
+        if(!elv4) {
+            utilisateurService.createUtilisateur(
+                    ELEVE_4_LOGIN,
+                    ELEVE_4_PASSWORD,
+                    ELEVE_4_NOM,
+                    ELEVE_4_PRENOM,
+            )
+            elv4 = utilisateurService.findUtilisateur(ELEVE_4_LOGIN)
+            eleve4 = Personne.get(elv4.personneId)
+
+            // Ajout de la PS liant l'élève à 1 classe du collège
+            def props = ProprietesScolarite.findAllByFonctionAndStructureEnseignement(
+                    fonctionService.fonctionEleve(),
+                    classe6eme
+            )
+            addProprietesScolariteToPersonne(props, eleve4)
+        }
+        else {
+            eleve4 = Personne.get(elv4.personneId)
         }
     }
 
@@ -825,7 +885,7 @@ class BootstrapService {
                     ).save(failOnError: true)
             ).save(failOnError: true)
 
-            [eleve1, eleve2, enseignant1].each {
+            [eleve1, eleve2, enseignant1, eleve3, eleve4].each {
                 new RelGroupeEntPersonne(
                         groupeEnt: groupeEntLycee,
                         personne: it

@@ -179,6 +179,62 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
 
     }
 
+    void testFindAllGroupeEntInEtablissementForPersonne() {
+        expect:
+        assertEquals(
+                [],
+                groupeService.findAllGroupeEntInEtablissementListForPersonne(
+                        bootstrapService.superAdmin1,
+                        [bootstrapService.etablissementCollege]
+                )
+        )
+        assertEquals(
+                [bootstrapService.groupeEntLycee]*.nom,
+                groupeService.findAllGroupeEntInEtablissementListForPersonne(
+                        bootstrapService.eleve1,
+                        [bootstrapService.etablissementLycee]
+                )*.nom
+        )
+        assertEquals(
+                [],
+                groupeService.findAllGroupeEntInEtablissementListForPersonne(
+                        bootstrapService.eleve1,
+                        [bootstrapService.etablissementCollege]
+                )
+        )
+        assertEquals(
+                [bootstrapService.groupeEntLycee]*.nom,
+                groupeService.findAllGroupeEntInEtablissementListForPersonne(
+                        bootstrapService.eleve2,
+                        [bootstrapService.etablissementLycee]
+                )*.nom
+        )
+        assertEquals(
+                [
+                        bootstrapService.groupeEntLycee,
+                        bootstrapService.groupeEntCollege
+                ]*.nom.sort(),
+                groupeService.findAllGroupeEntInEtablissementListForPersonne(
+                        bootstrapService.enseignant1,
+                        [
+                                bootstrapService.etablissementLycee,
+                                bootstrapService.etablissementCollege
+                        ]
+                )*.nom.sort()
+        )
+        assertEquals(
+                [
+                        bootstrapService.groupeEntLycee
+                ]*.nom.sort(),
+                groupeService.findAllGroupeEntInEtablissementListForPersonne(
+                        bootstrapService.enseignant1,
+                        [
+                                bootstrapService.etablissementLycee
+                        ]
+                )*.nom.sort()
+        )
+    }
+
     void testFindAllPersonneForGroupeEntAndFonctionIn() {
         given:
         GroupeEnt groupeEnt = bootstrapService.groupeEntLycee
@@ -190,12 +246,13 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
         assertEquals(
                 [
                         bootstrapService.eleve1,
-                        bootstrapService.eleve2
-                ]*.id as Set,
+                        bootstrapService.eleve2,
+                        bootstrapService.eleve3
+                ]*.nomAffichage as Set,
                 groupeService.findAllPersonneForGroupeEntAndFonctionIn(
                         groupeEnt,
                         fonctionList
-                )*.id as Set
+                )*.nomAffichage as Set
         )
 
         given:
@@ -210,12 +267,13 @@ class GroupeServiceIntegrationTests extends GroovyTestCase {
                 [
                         bootstrapService.eleve1,
                         bootstrapService.eleve2,
+                        bootstrapService.eleve3,
                         bootstrapService.enseignant1
-                ]*.id as Set,
+                ]*.nomAffichage as Set,
                 groupeService.findAllPersonneForGroupeEntAndFonctionIn(
                         groupeEnt,
                         fonctionList
-                )*.id as Set
+                )*.nomAffichage as Set
         )
 
         given:

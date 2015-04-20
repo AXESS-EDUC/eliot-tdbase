@@ -25,7 +25,7 @@ class ModaliteActiviteSpec extends Specification {
     void "une seance nouvelle cree avec un groupe scolarité, enseignant et  sujet est initialisée de manière  valide"() {
         given: "une nouvelle seance avec sujet et structure enseignement"
         modaliteActivite = new ModaliteActivite(sujet: Mock(Sujet),
-                groupeScolarite: Mock(ProprietesScolarite),
+                groupeScolarite: new ProprietesScolarite(),
                 enseignant: Mock(Personne),
                 datePublicationResultats: null
         )

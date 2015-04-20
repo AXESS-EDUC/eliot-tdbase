@@ -160,6 +160,31 @@ class GroupeService {
         RelGroupeEntPersonne.findAllByPersonne(personne)*.groupeEnt
     }
 
+    /**
+     * Liste tous les groupes ENT auquel un utilisateur est rattaché, et qui sont
+     * associés à un des établissements de la liste fournie
+     * @param personne
+     * @param etablissementList
+     * @return
+     */
+    List<GroupeEnt> findAllGroupeEntInEtablissementListForPersonne(Personne personne,
+                                                                   List<Etablissement> etablissementList) {
+        String sql = """
+          SELECT g.*
+          FROM ent.rel_groupe_ent_personne rgp
+          INNER JOIN ent.groupe_ent g ON rgp.groupe_ent_id = g.id
+          WHERE g.etablissement_id IN (:etablissementIdList)
+          AND rgp.personne_id = :personneId
+        """
+
+        Session session = sessionFactory.getCurrentSession()
+        SQLQuery sqlQuery = session.createSQLQuery(sql)
+        sqlQuery.setParameterList('etablissementIdList', etablissementList*.id)
+        sqlQuery.setLong('personneId', personne.id)
+        sqlQuery.addEntity(GroupeEnt)
+        return sqlQuery.list()
+    }
+
     List<Personne> findAllPersonneForGroupeEntAndFonctionIn(GroupeEnt groupeEnt,
                                                             List<Fonction> fonctionList) {
         Session session = sessionFactory.getCurrentSession()
@@ -233,7 +258,7 @@ class GroupeService {
         SQLQuery sqlQuery = session.createSQLQuery(sql)
         sqlQuery.setLong('groupeEntId', groupeEnt.id)
         sqlQuery.setParameterList('fonctionIdList', fonctionList*.id)
-        if(fonctionList.contains(FonctionEnum.AL.fonction)) {
+        if (fonctionList.contains(FonctionEnum.AL.fonction)) {
             sqlQuery.setLong('porteur_ent_id', groupeEnt.etablissement.porteurEntId)
         }
         sqlQuery.addEntity(Personne)
