@@ -138,7 +138,15 @@ class SujetController {
 
     def matiereBcns() {
       String recherche = '%' + params.recherche + '%'
-      def matiereBcns = MatiereBcn.findAllByLibelleEditionIlike(recherche)
+
+        def matiereBcns = MatiereBcn.withCriteria {
+            or {
+                ilike('libelleCourt', recherche)
+                ilike('libelleEdition', recherche)
+            }
+            order('libelleLong', 'asc')
+        }
+
       render matiereBcns as JSON
     }
 

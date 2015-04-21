@@ -36,6 +36,7 @@
       $('#menu-item-sujets').addClass('actif');
       $('input[name="titre"]').focus();
 
+
       initComboboxAutoComplete({
         combobox: '#matiereBcn\\.id',
 
@@ -57,7 +58,7 @@
                 for(var i = 0; i < matiereBcns.length; i++) {
                   options.push({
                     id: matiereBcns[i].id,
-                    value: matiereBcns[i].libelleEdition
+                    value:  matiereBcns[i].libelleEdition + ' [' + matiereBcns[i].libelleCourt + ']'
                   });
                 }
 
@@ -113,7 +114,8 @@
       <tr>
         <td class="label">Mati&egrave;re&nbsp;:</td>
         <td>
-          <g:select name="matiereBcn.id" value="${sujet.matiereBcn?.id}"
+          <g:select name="matiereBcn.id"
+                    value="${sujet.matiereBcn?.id}"
                     from="${matiereBcns}"
                     optionKey="id"
                     optionValue="libelleEdition" tabindex="3"/>

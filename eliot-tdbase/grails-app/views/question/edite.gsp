@@ -81,7 +81,7 @@
                 for(var i = 0; i < matiereBcns.length; i++) {
                   options.push({
                     id: matiereBcns[i].id,
-                    value: matiereBcns[i].libelleEdition
+                    value: matiereBcns[i].libelleEdition + ' [' + matiereBcns[i].libelleCourt + ']'
                   });
                 }
 

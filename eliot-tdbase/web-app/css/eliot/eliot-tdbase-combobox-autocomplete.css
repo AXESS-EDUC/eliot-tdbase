@@ -11,7 +11,10 @@
 }
 .custom-combobox-input {
     margin: 0;
-    padding: 5px 10px;
+    padding: 2px 4px;
+    width: 30em;
+    color: black;
+    font-weight: normal;
 }
 
 .custom-combobox li.ui-menu-item {
@@ -21,5 +24,15 @@
 
 .custom-combobox .ui-button-icon-only .ui-icon {
     left: 50%;
-    margin-left: 0px;
+    margin-left: 0;
+}
+
+.ui-autocomplete .ui-menu-item {
+    list-style: none;
+    line-height: 1;
+}
+
+.ui-autocomplete .ui-menu-item a {
+    line-height: 1;
+    text-align: left;
 }
