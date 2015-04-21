@@ -23,7 +23,7 @@ import org.lilie.services.eliot.tice.AttachementDto
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.MatiereBcn
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.BootstrapService
 
