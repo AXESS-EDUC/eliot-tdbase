@@ -72,6 +72,7 @@ class ModaliteActivite {
   Integer notifierNJoursAvant = 1
 
   Boolean decompteTemps = false
+  Integer dureeMinutes
 
   Etablissement findEtablissement() {
     if (etablissement != null) {
@@ -105,6 +106,12 @@ class ModaliteActivite {
     matiereBcn(nullable: true)
 
     optionEvaluerCompetences(nullable: true)
+    dureeMinutes(nullable: true, validator: { val, obj ->
+      if (obj.decompteTemps && val == null) {
+        return ['invalid.dureeMinuteObligatoire']
+      }
+      return true
+    })
   }
 
   static mapping = {

@@ -42,4 +42,13 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="2" author="onic">
+        <comment>
+            Durée de la session
+        </comment>
+        <addColumn tableName="modalite_activite" schemaName="td">
+            <column name="duree_minutes" type="int"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

@@ -84,6 +84,28 @@
                     $('#selectChapitres').html(data)
                 })
     })
+
+    function showHideDureeMinutes() {
+        var checked = $("#decompteTemps").prop('checked');
+        if (checked) {
+            var dureeMinutes = $("#dureeMinutes").val();
+
+            if (dureeMinutes == '') {
+                $("#dureeMinutes").val(${modaliteActivite.sujet?.dureeMinutes});
+            }
+
+            $("#dureeMinutesTr").show();
+        }
+        else {
+            $("#dureeMinutes").val('');
+            $("#dureeMinutesTr").hide();
+        }
+    }
+
+    showHideDureeMinutes();
+
+    $("#decompteTemps").change(showHideDureeMinutes);
+
     });
   </r:script>
   <style type='text/css' media='screen'>
@@ -204,6 +226,15 @@
                         class="label">Décompte&nbsp;du&nbsp;temps</span>
                 </td>
             </tr>
+
+            <tr id="dureeMinutesTr">
+              <td class="label">Dur&eacute;e&nbsp;:</td>
+              <td>
+                <input id="dureeMinutes" type="text" name="dureeMinutes" value="${modaliteActivite.dureeMinutes}" class="micro" tabindex="5"/>
+                (en minutes)
+              </td>
+            </tr>
+
         </g:if>
 
       <tr>

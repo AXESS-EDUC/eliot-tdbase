@@ -69,7 +69,7 @@
     var date = ${copie.dateDebut != null ? "moment('" + copie.dateDebut + "')" : "null"};
 
     var update = function () {
-      var ms = date.diff(moment(new Date())) + ${copie.sujet.dureeMinutes} * 60 * 1000;
+      var ms = date.diff(moment(new Date())) + ${copie.modaliteActivite.dureeMinutes} * 60 * 1000;
 
       if (ms > 0) {
         datetime.html(moment.utc(ms).format('HH:mm:ss'));
