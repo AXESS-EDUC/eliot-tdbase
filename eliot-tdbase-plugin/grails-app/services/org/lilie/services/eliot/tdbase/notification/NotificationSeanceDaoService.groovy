@@ -15,6 +15,10 @@ class NotificationSeanceDaoService {
     def groovySql
 
     List<String> findAllEmailDestinatairesForPublicationResultats(ModaliteActivite modaliteActivite) {
+        if(!modaliteActivite.groupeScolarite) {
+            return []
+        }
+
         findAllPersonnesIdExterneToNotifierForGroupeScolariteAndSupportAndEvenement(
                 modaliteActivite.groupeScolarite,
                 NotificationSupport.EMAIL,
@@ -23,6 +27,10 @@ class NotificationSeanceDaoService {
     }
 
     List<String> findAllSmsDestinatairesForPublicationResultats(ModaliteActivite modaliteActivite) {
+        if(!modaliteActivite.groupeScolarite) {
+            return []
+        }
+
         findAllPersonnesIdExterneToNotifierForGroupeScolariteAndSupportAndEvenement(
                 modaliteActivite.groupeScolarite,
                 NotificationSupport.SMS,
@@ -31,6 +39,10 @@ class NotificationSeanceDaoService {
     }
 
     List<String> findAllEmailDestinatairesForCreationSeance(ModaliteActivite modaliteActivite) {
+        if(!modaliteActivite.groupeScolarite) {
+            return []
+        }
+
         findAllPersonnesIdExterneToNotifierForGroupeScolariteAndSupportAndEvenement(
                 modaliteActivite.groupeScolarite,
                 NotificationSupport.EMAIL,
@@ -39,6 +51,10 @@ class NotificationSeanceDaoService {
     }
 
     List<String> findAllSmsDestinatairesForCreationSeance(ModaliteActivite modaliteActivite) {
+        if(!modaliteActivite.groupeScolarite) {
+            return []
+        }
+
         findAllPersonnesIdExterneToNotifierForGroupeScolariteAndSupportAndEvenement(
                 modaliteActivite.groupeScolarite,
                 NotificationSupport.SMS,
