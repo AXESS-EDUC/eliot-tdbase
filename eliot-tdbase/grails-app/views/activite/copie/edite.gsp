@@ -42,6 +42,17 @@
   </g:else>
 
   <title><g:message code="activite.copie.edite.head.title"/></title>
+  <style>
+    .chronometre {
+      z-index: 10000;
+      background-color: lightcoral;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      padding-left: 12px;
+      padding-right: 12px;
+      border-radius: 3px;
+    }
+  </style>
 </head>
 
 <body>
@@ -68,12 +79,14 @@
     };
 
     $(document).ready(function(){
-      datetime = $('#datetime');
-      datetime.css('position', 'fixed');
-      datetime.css('top', '10px');
-      datetime.css('left', '450px');
 
       if (date != null) {
+        datetime = $('#datetime');
+        datetime.css('position', 'fixed');
+        datetime.css('top', '6px');
+        datetime.css('left', '440px');
+        datetime.addClass('chronometre');
+        update();
         setInterval(update, 1000);
       }
       else {
