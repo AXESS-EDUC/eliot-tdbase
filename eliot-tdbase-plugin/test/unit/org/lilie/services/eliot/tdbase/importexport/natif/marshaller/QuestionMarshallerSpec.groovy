@@ -10,7 +10,7 @@ import org.lilie.services.eliot.tdbase.Sujet
 import org.lilie.services.eliot.tdbase.importexport.dto.AttachementDto
 import org.lilie.services.eliot.tdbase.importexport.dto.CopyrightsTypeDto
 import org.lilie.services.eliot.tdbase.importexport.dto.EtablissementDto
-import org.lilie.services.eliot.tdbase.importexport.dto.MatiereDto
+import org.lilie.services.eliot.tdbase.importexport.dto.MatiereBcnDto
 import org.lilie.services.eliot.tdbase.importexport.dto.NiveauDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PersonneDto
 import org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto
@@ -27,7 +27,7 @@ class QuestionMarshallerSpec extends Specification {
 
   PersonneMarshaller personneMarshaller
   EtablissementMarshaller etablissementMarshaller
-  MatiereMarshaller matiereMarshaller
+  MatiereBcnMarshaller matiereBcnMarshaller
   NiveauMarshaller niveauMarshaller
   CopyrightsTypeMarshaller copyrightsTypeMarshaller
   AttachementMarchaller attachementMarchaller
@@ -38,7 +38,7 @@ class QuestionMarshallerSpec extends Specification {
   def setup() {
     personneMarshaller = Mock(PersonneMarshaller)
     etablissementMarshaller = Mock(EtablissementMarshaller)
-    matiereMarshaller = Mock(MatiereMarshaller)
+    matiereBcnMarshaller = Mock(MatiereBcnMarshaller)
     niveauMarshaller = Mock(NiveauMarshaller)
     copyrightsTypeMarshaller = Mock(CopyrightsTypeMarshaller)
     attachementMarchaller = Mock(AttachementMarchaller)
@@ -47,7 +47,7 @@ class QuestionMarshallerSpec extends Specification {
     questionMarshaller = new QuestionMarshaller(
         personneMarshaller: personneMarshaller,
         etablissementMarshaller: etablissementMarshaller,
-        matiereMarshaller: matiereMarshaller,
+        matiereBcnMarshaller: matiereBcnMarshaller,
         niveauMarshaller: niveauMarshaller,
         copyrightsTypeMarshaller: copyrightsTypeMarshaller,
         attachementMarchaller: attachementMarchaller,
@@ -72,7 +72,7 @@ class QuestionMarshallerSpec extends Specification {
 
     Map personneRepresentation = [map: 'personne']
     Map etablissementRepresentation = [map: 'etablissement']
-    Map matiereRepresentation = [map: 'matiere']
+    Map matiereBcnRepresentation = [map: 'matiereBcn']
     Map niveauRepresentation = [map: 'niveau']
     Map copyrightsTypeRepresentation = [map: 'copyrightsType']
     Map principalAttachementRepresentation = [map: 'principalAttachement']
@@ -80,7 +80,7 @@ class QuestionMarshallerSpec extends Specification {
 
     personneMarshaller.marshall(_) >> personneRepresentation
     etablissementMarshaller.marshall(_) >> etablissementRepresentation
-    matiereMarshaller.marshall(_) >> matiereRepresentation
+    matiereBcnMarshaller.marshall(_) >> matiereBcnRepresentation
     niveauMarshaller.marshall(_) >> niveauRepresentation
     copyrightsTypeMarshaller.marshall(_) >> copyrightsTypeRepresentation
     attachementMarchaller.marshallPrincipalAttachement(_, _, attachementDataStore) >> principalAttachementRepresentation
@@ -106,7 +106,7 @@ class QuestionMarshallerSpec extends Specification {
       questionRepresentation.metadonnees.paternite == null
 
     questionRepresentation.metadonnees.referentielEliot.etablissement == etablissementRepresentation
-    questionRepresentation.metadonnees.referentielEliot.matiere == matiereRepresentation
+    questionRepresentation.metadonnees.referentielEliot.matiereBcn == matiereBcnRepresentation
     questionRepresentation.metadonnees.referentielEliot.niveau == niveauRepresentation
 
     question.specification ?
@@ -160,7 +160,7 @@ class QuestionMarshallerSpec extends Specification {
                                          String paternite,
                                          CopyrightsTypeDto copyrightsType,
                                          EtablissementDto etablissement,
-                                         MatiereDto matiere,
+                                         MatiereBcnDto matiereBcn,
                                          NiveauDto niveau,
                                          PrincipalAttachementDto principalAttachement,
                                          List<QuestionAttachementDto> questionAttachements) {
@@ -184,8 +184,8 @@ class QuestionMarshallerSpec extends Specification {
       return etablissement
     }
 
-    MatiereMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
-      return matiere
+    MatiereBcnMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
+      return matiereBcn
     }
 
     NiveauMarshaller.metaClass.static.parse = { JSONElement jsonElement ->
@@ -216,7 +216,7 @@ class QuestionMarshallerSpec extends Specification {
           copyrightsType: {mock: 'copyrightsType'},
           referentielEliot: {
             etablissement: {mock: 'etablissement'},
-            matiere: {mock: 'matiere'},
+            matiereBcn: {mock: 'matiereBcn'},
             niveau: {mock: 'niveau'}
           }
         },
@@ -242,7 +242,7 @@ class QuestionMarshallerSpec extends Specification {
     questionDto.paternite == paternite
     questionDto.copyrightsType == copyrightsType
     questionDto.etablissement == etablissement
-    questionDto.matiere == matiere
+    questionDto.matiereBcn == matiereBcn
     questionDto.niveau == niveau
     questionDto.specification == specification
     questionDto.principalAttachement == principalAttachement
@@ -252,7 +252,7 @@ class QuestionMarshallerSpec extends Specification {
     PersonneMarshaller.metaClass = null
     CopyrightsTypeMarshaller.metaClass = null
     EtablissementMarshaller.metaClass = null
-    MatiereMarshaller.metaClass = null
+    MatiereBcnMarshaller.metaClass = null
     NiveauMarshaller.metaClass = null
     AttachementMarchaller.metaClass = null
 
@@ -263,7 +263,7 @@ class QuestionMarshallerSpec extends Specification {
     paternite << [null, "{json: paternite}"]
     copyrightsType = new CopyrightsTypeDto()
     etablissement << [null, new EtablissementDto()]
-    matiere << [null, new MatiereDto()]
+    matiereBcn << [null, new MatiereBcnDto()]
     niveau << [null, new NiveauDto()]
     principalAttachement << [null, new PrincipalAttachementDto()]
     questionAttachements << [

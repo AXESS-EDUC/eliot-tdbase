@@ -72,9 +72,19 @@
 	<td>QCM 1</td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>id=matiere.id</td>
-	<td>label=Histoire</td>
+	<td>type</td>
+	<td>css=input.custom-combobox-input</td>
+	<td>Histoire</td>
+</tr>
+<tr>
+	<td>fireEvent</td>
+	<td>css=input.custom-combobox-input</td>
+	<td>keydown</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=li.ui-menu-item a.ui-corner-all</td>
+	<td></td>
 </tr>
 <tr>
 	<td>select</td>

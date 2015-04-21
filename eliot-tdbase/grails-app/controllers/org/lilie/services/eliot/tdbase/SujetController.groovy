@@ -14,6 +14,7 @@ import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
@@ -64,12 +65,15 @@ class SujetController {
             rechercheUniquementSujetsChercheur = true
             patternAuteur = null
         }
+
+        MatiereBcn matiereBcn = MatiereBcn.get(rechCmd.matiereId)
+
         def sujets = sujetService.findSujets(personne,
                 rechCmd.patternTitre,
                 patternAuteur,
                 rechCmd.patternPresentation,
                 new ReferentielEliot(
-                        matiere: Matiere.get(rechCmd.matiereId),
+                        matiereBcn: matiereBcn,
                         niveau: Niveau.get(rechCmd.niveauId)
                 ),
                 SujetType.get(rechCmd.typeId),
@@ -84,7 +88,7 @@ class SujetController {
          afficheFormulaire: true,
          affichePager     : affichePager,
          typesSujet       : sujetService.getAllSujetTypes(),
-         matieres         : profilScolariteService.findMatieresForPersonne(personne),
+         matiereBcns      : matiereBcn != null ? [matiereBcn] : [],
          niveaux          : profilScolariteService.findNiveauxForPersonne(personne),
          sujets           : sujets,
          rechercheCommand : rechCmd,
@@ -127,8 +131,23 @@ class SujetController {
                                                 typesSujet    : sujetService.getAllSujetTypes(),
                                                 artefactHelper: artefactAutorisationService,
                                                 matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                                                matiereBcns   : [],
                                                 etablissements     : securiteSessionServiceProxy.etablissementList,
                                                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
+    }
+
+    def matiereBcns() {
+      String recherche = '%' + params.recherche + '%'
+
+        def matiereBcns = MatiereBcn.withCriteria {
+            or {
+                ilike('libelleCourt', recherche)
+                ilike('libelleEdition', recherche)
+            }
+            order('libelleLong', 'asc')
+        }
+
+      render matiereBcns as JSON
     }
 
     /**
@@ -144,6 +163,7 @@ class SujetController {
                                                 artefactHelper: artefactAutorisationService,
                                                 typesSujet    : sujetService.getAllSujetTypes(),
                                                 matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                                                matiereBcns   : sujet.matiereBcn != null ? [sujet.matiereBcn] : [],
                                                 etablissements     : securiteSessionServiceProxy.etablissementList,
                                                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
     }
@@ -687,7 +707,6 @@ class SujetController {
         Personne proprietaire = authenticatedPersonne
         [
                 liens         : breadcrumpsServiceProxy.liens,
-                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
                 etablissements     : securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
@@ -730,7 +749,7 @@ class SujetController {
                         ).sujet,
                         proprietaire,
                         new ReferentielEliot(
-                                matiere: Matiere.load(matiereId),
+                                matiereBcn: MatiereBcn.load(matiereId),
                                 niveau: Niveau.load(niveauId)
                         )
                 )

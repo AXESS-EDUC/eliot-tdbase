@@ -101,7 +101,7 @@ class QuestionImporterService implements ApplicationContextAware {
         [
             titre: questionDto.titre,
             type: questionType,
-            matiere: referentielEliot?.matiere,
+            matiereBcn: referentielEliot?.matiereBcn,
             niveau: referentielEliot?.niveau,
             estAutonome: questionDto.estAutonome,
             paternite: questionDto.paternite,

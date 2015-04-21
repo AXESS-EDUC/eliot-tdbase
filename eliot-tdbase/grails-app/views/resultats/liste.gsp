@@ -76,7 +76,7 @@
     <g:each in="${copies}" status="i" var="copie">
       <div class="${(i % 2) == 0 ? 'even' : 'odd'}">
         <g:set var="seance" value="${copie.modaliteActivite}"/>
-        <h1>${seance.matiere?.libelleLong}</h1>
+        <h1>${seance.matiereBcn?.libelleEdition}</h1>
 
         <g:link action="visualiseCopie" controller="resultats"
                 class="button voir"

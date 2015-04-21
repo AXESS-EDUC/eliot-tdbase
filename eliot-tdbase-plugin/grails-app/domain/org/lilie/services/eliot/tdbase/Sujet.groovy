@@ -32,8 +32,8 @@ import org.lilie.services.eliot.competence.Competence
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 
 
@@ -71,7 +71,7 @@ class Sujet implements Artefact {
 
   SujetType sujetType
   Etablissement etablissement
-  Matiere matiere
+  MatiereBcn matiereBcn
   Niveau niveau
   Publication publication
   CopyrightsType copyrightsType
@@ -96,7 +96,7 @@ class Sujet implements Artefact {
       }
     })
     etablissement(nullable: true)
-    matiere(nullable: true)
+    matiereBcn(nullable: true)
     niveau(nullable: true)
     publication(nullable: true)
     presentation(nullable: true)

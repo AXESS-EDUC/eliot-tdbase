@@ -3,7 +3,7 @@ package org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.AttachementMarchaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.CopyrightsTypeMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.EtablissementMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMarshaller
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereBcnMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionMarshaller
@@ -23,7 +23,7 @@ class QuestionMarshallerFactorySpec extends Specification {
     expect:
     questionMarshaller.personneMarshaller instanceof PersonneMarshaller
     questionMarshaller.etablissementMarshaller instanceof EtablissementMarshaller
-    questionMarshaller.matiereMarshaller instanceof MatiereMarshaller
+    questionMarshaller.matiereBcnMarshaller instanceof MatiereBcnMarshaller
     questionMarshaller.niveauMarshaller instanceof  NiveauMarshaller
     questionMarshaller.copyrightsTypeMarshaller instanceof CopyrightsTypeMarshaller
     questionMarshaller.attachementMarchaller instanceof AttachementMarchaller

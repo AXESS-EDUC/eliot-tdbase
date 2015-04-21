@@ -42,7 +42,7 @@
 	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}"><g:link controller="question" title="${item.titre}" action="detail" id="${item.id}">${item.titre}</g:link><br/>
 	      	<em>(${item.type.nom})</em><br/>
 	        <g:if test="${item.niveau?.libelleLong}"><strong>» Niveau : </strong>${item.niveau?.libelleLong} </g:if>
-	        <g:if test="${item.matiere?.libelleLong}"><strong>» Matière : </strong>${item.matiere?.libelleLong} </g:if>
+	        <g:if test="${item.matiereBcn?.libelleEdition}"><strong>» Matière : </strong>${item.matiereBcn?.libelleEdition} </g:if>
 	      </li>
 	    </g:each>
 	  </ul>

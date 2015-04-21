@@ -77,7 +77,7 @@
         <p><strong>» Groupe :</strong><b>${seance.groupeLibelle}</b></p>
 
         <p>
-          <g:if test="${seance.matiere?.libelleLong}"><strong>» Matière :</strong>${seance.matiere?.libelleLong}</g:if>
+          <g:if test="${seance.matiereBcn?.libelleEdition}"><strong>» Matière :</strong>${seance.matiereBcn?.libelleEdition}</g:if>
           <strong>» Début de la séance :</strong>${seance.dateDebut.format('dd/MM/yy HH:mm')}
           <strong>» Fin :</strong>${seance.dateFin.format('dd/MM/yy HH:mm')}
         </p>

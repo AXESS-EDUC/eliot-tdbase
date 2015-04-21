@@ -31,12 +31,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="eliot-tdbase-ui"/>
+  <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
   <r:script>
 
     $(document).ready(function () {
       $('#menu-item-contributions').addClass('actif');
       initButtons();
+
+      initComboboxAutoComplete({
+        combobox: '#matiereId',
+
+        recherche: function(recherche, callback) {
+          if (recherche == null || recherche.length < 3) {
+            callback([]);
+          }
+          else {
+            $.ajax({
+              url: '${g.createLink(absolute:true, uri:"/sujet/matiereBcns")}',
+
+              data: {
+                recherche: recherche
+              },
+
+              success: function(matiereBcns) {
+                var options = [];
+
+                for(var i = 0; i < matiereBcns.length; i++) {
+                  options.push({
+                    id: matiereBcns[i].id,
+                    value: matiereBcns[i].libelleEdition + ' [' + matiereBcns[i].libelleCourt + ']'
+                  });
+                }
+
+                callback(options);
+              }
+            });
+          }
+        }
+
+      });
     });
   </r:script>
 
@@ -94,10 +127,9 @@
           </td>
           <td>
             <g:select name="matiereId" value="${rechercheCommand.matiereId}"
-                      noSelection="${['null': 'Toutes']}"
-                      from="${matieres}"
+                      from="${matiereBcns}"
                       optionKey="id"
-                      optionValue="libelleLong"/>
+                      optionValue="libelleEdition"/>
           </td>
         </tr>
         <tr>
@@ -247,7 +279,7 @@
           <g:if
               test="${questionInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${questionInstance.niveau?.libelleLong}</g:if>
           <g:if
-              test="${questionInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${questionInstance.matiere?.libelleLong}</g:if>
+              test="${questionInstance.matiereBcn?.libelleEdition}"><strong>» Matière :</strong> ${questionInstance.matiereBcn?.libelleEdition}</g:if>
           <strong>» Type :</strong>  ${questionInstance.type.nom}
          <g:if test="${artefactHelper.partageArtefactCCActive}">
           <strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}

@@ -2,7 +2,7 @@ package org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory
 
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.CopyrightsTypeMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.EtablissementMarshaller
-import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMarshaller
+import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereBcnMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.SujetMarshaller
@@ -24,7 +24,7 @@ class SujetMarshallerFactorySpec extends Specification {
     sujetMarshaller.personneMarshaller instanceof PersonneMarshaller
     sujetMarshaller.copyrightsTypeMarshaller instanceof CopyrightsTypeMarshaller
     sujetMarshaller.etablissementMarshaller instanceof EtablissementMarshaller
-    sujetMarshaller.matiereMarshaller instanceof MatiereMarshaller
+    sujetMarshaller.matiereBcnMarshaller instanceof MatiereBcnMarshaller
     sujetMarshaller.niveauMarshaller instanceof NiveauMarshaller
     sujetMarshaller.sujetSequenceQuestionsMarshaller instanceof SujetSequenceQuestionsMarshaller
   }

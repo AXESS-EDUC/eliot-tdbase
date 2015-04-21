@@ -32,8 +32,8 @@ import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.springframework.validation.Errors
 import org.springframework.validation.ObjectError
@@ -66,7 +66,7 @@ class Question implements Artefact {
   Sujet exercice
 
   Etablissement etablissement
-  Matiere matiere
+  MatiereBcn matiereBcn
   Niveau niveau
   CopyrightsType copyrightsType
   Publication publication
@@ -88,7 +88,7 @@ class Question implements Artefact {
     titre(blank: false)
     specificationNormalise(nullable: true)
     etablissement(nullable: true)
-    matiere(nullable: true)
+    matiereBcn(nullable: true)
     niveau(nullable: true)
     publication(nullable: true)
     paternite(nullable: true)

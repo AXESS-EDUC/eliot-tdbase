@@ -160,7 +160,7 @@ class QuestionService implements ApplicationContextAware {
         copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
         estAutonome: question.estAutonome,
         type: question.type,
-        matiere: question.matiere,
+        matiereBcn: question.matiereBcn,
         niveau: question.niveau,
         principalAttachement: question.principalAttachement,
         paternite: question.paternite
@@ -417,7 +417,7 @@ class QuestionService implements ApplicationContextAware {
    * @param patternTitre le pattern saisi pour le titre
    * @param patternAuteur le pattern saisi pour l'auteur
    * @param patternPresentation le pattern saisi pour la presentation
-   * @param matiere la matiere
+   * @param matiereBcn la matiere
    * @param niveau le niveau
    * @param paginationAndSortingSpec les specifications pour l'ordre et
    * la pagination
@@ -443,8 +443,8 @@ class QuestionService implements ApplicationContextAware {
 
     def criteria = Question.createCriteria()
     List<Question> questions = criteria.list(paginationAndSortingSpec) {
-      if (referentielEliot?.matiere) {
-        eq "matiere", referentielEliot?.matiere
+      if (referentielEliot?.matiereBcn) {
+        eq "matiereBcn", referentielEliot?.matiereBcn
       }
       if (referentielEliot?.niveau) {
         eq "niveau", referentielEliot?.niveau

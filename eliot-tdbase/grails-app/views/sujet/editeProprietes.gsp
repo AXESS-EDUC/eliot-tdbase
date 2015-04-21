@@ -30,11 +30,46 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="jquery"/>
+  <r:require modules="jquery, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
   <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
       $('input[name="titre"]').focus();
+
+
+      initComboboxAutoComplete({
+        combobox: '#matiereBcn\\.id',
+
+        recherche: function(recherche, callback) {
+          if (recherche == null || recherche.length < 3) {
+            callback([]);
+          }
+          else {
+            $.ajax({
+              url: '${g.createLink(absolute:true, uri:"/sujet/matiereBcns")}',
+
+              data: {
+                recherche: recherche
+              },
+
+              success: function(matiereBcns) {
+                var options = [];
+
+                for(var i = 0; i < matiereBcns.length; i++) {
+                  options.push({
+                    id: matiereBcns[i].id,
+                    value:  matiereBcns[i].libelleEdition + ' [' + matiereBcns[i].libelleCourt + ']'
+                  });
+                }
+
+                callback(options);
+              }
+            });
+          }
+        }
+
+      });
+
     });
   </r:script>
   <title><g:message code="sujet.editeProprietes.head.title"/></title>
@@ -79,11 +114,11 @@
       <tr>
         <td class="label">Mati&egrave;re&nbsp;:</td>
         <td>
-          <g:select name="matiere.id" value="${sujet.matiere?.id}"
-                    noSelection="${['null': g.message(code:"default.select.null")]}"
-                    from="${matieres}"
+          <g:select name="matiereBcn.id"
+                    value="${sujet.matiereBcn?.id}"
+                    from="${matiereBcns}"
                     optionKey="id"
-                    optionValue="libelleLong" tabindex="3"/>
+                    optionValue="libelleEdition" tabindex="3"/>
         </td>
       </tr>
       <tr>

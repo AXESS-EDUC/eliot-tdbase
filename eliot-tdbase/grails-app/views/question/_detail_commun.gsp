@@ -82,7 +82,7 @@
       <tr>
         <td class="label">Mati&egrave;re&nbsp;:</td>
         <td>
-          ${question.matiere?.libelleLong}
+          ${question.matiereBcn?.libelleEdition}
         </td>
       </tr>
       <tr>
