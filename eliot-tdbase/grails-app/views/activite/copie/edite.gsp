@@ -60,6 +60,7 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 
+<div id="page">
 <g:if test="copie.modaliteActivite.decompteTemps">
   <div id="datetime"></div>
   <script>
@@ -90,6 +91,7 @@
         setInterval(update, 1000);
       }
       else {
+        $('#page').hide();
         if (confirm('Voulez-vous commencer la session ?')) {
           $.ajax({
             url: '${g.createLink(controller: 'activite', action: 'commenceSession')}',
@@ -97,10 +99,12 @@
               id: ${copie.id}
             },
             success: function(copie) {
-              date = moment(copie.dateDebut);
-              setInterval(update, 1000);
+              window.location.reload();
             }
           });
+        }
+        else {
+          window.history.back();
         }
       }
 
@@ -183,5 +187,6 @@
 <g:render template="/copie/edite"
           model="[copie: copie, afficheCorrection: copie.modaliteActivite.estPerimee()]"/>
 
+</div>
 </body>
 </html>
