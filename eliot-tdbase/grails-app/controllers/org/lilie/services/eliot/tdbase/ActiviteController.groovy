@@ -34,168 +34,190 @@ import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 
 class ActiviteController {
 
-  static scope = "singleton"
+    static scope = "singleton"
 
-  static defaultAction = "listeSeances"
+    static defaultAction = "listeSeances"
 
-  BreadcrumpsService breadcrumpsServiceProxy
-  ModaliteActiviteService modaliteActiviteService
-  CopieService copieService
-  ReponseService reponseService
+    BreadcrumpsService breadcrumpsServiceProxy
+    ModaliteActiviteService modaliteActiviteService
+    CopieService copieService
+    ReponseService reponseService
 
-  /**
-   *
-   * Action correspondant à la page d'accueil
-   */
-  def index() {
-    params.max = Math.min(params.max ? params.int('max') : 5, 100)
-    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "accueil.titre"))
-    Personne personne = authenticatedPersonne
-    def modalitesActivites = modaliteActiviteService.findModalitesActivitesForApprenant(personne,
-                                                                                        params)
-    def copies = copieService.findCopiesEnVisualisationForApprenant(personne,
-                                                                    params)
-    [liens: breadcrumpsServiceProxy.liens,
-            seances: modalitesActivites,
-            copies: copies]
-  }
-
-  /**
-   *
-   * Action "liste des séances"
-   */
-  def listeSeances() {
-    def maxItems = grailsApplication.config.eliot.listes.max
-    params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
-    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "seance.liste.titre"))
-    Personne personne = authenticatedPersonne
-    def modalitesActivites = modaliteActiviteService.findModalitesActivitesForApprenant(personne,
-                                                                                        params)
-    boolean affichePager = false
-    if (!modalitesActivites.isEmpty() && modalitesActivites.totalCount > maxItems) {
-      affichePager = true
+    /**
+     *
+     * Action correspondant à la page d'accueil
+     */
+    def index() {
+        params.max = Math.min(params.max ? params.int('max') : 5, 100)
+        breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "accueil.titre"))
+        Personne personne = authenticatedPersonne
+        def modalitesActivites = modaliteActiviteService.findModalitesActivitesForApprenant(personne,
+                params)
+        def copies = copieService.findCopiesEnVisualisationForApprenant(personne,
+                params)
+        [liens  : breadcrumpsServiceProxy.liens,
+         seances: modalitesActivites,
+         copies : copies]
     }
-    render(view: '/activite/seance/liste', model: [liens: breadcrumpsServiceProxy.liens,
-            seances: modalitesActivites,
-            affichePager: affichePager])
-  }
 
-  /**
-   *
-   * Action "Faire sujet"
-   */
-  def travailleCopie() {
-    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "copie.edition.titre"))
-    Personne eleve = authenticatedPersonne
-    ModaliteActivite seance = ModaliteActivite.get(params.id)
-    Copie copie = copieService.getCopieForModaliteActiviteAndEleve(seance, eleve)
-    render(view: '/activite/copie/edite', model: [liens: breadcrumpsServiceProxy.liens,
-            copie: copie])
-  }
-
-  /**
-   *
-   * Action rend la copie
-   */
-  def rendLaCopie() {
-    Copie copie = Copie.get(params.copie.id)
-    def nombreReponses = params.nombreReponsesNonVides as Integer
-    ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
-    nombreReponses.times {
-      reponsesCopie.listeReponses << new ReponseCopie()
+    /**
+     *
+     * Action "liste des séances"
+     */
+    def listeSeances() {
+        def maxItems = grailsApplication.config.eliot.listes.max
+        params.max = Math.min(params.max ? params.int('max') : maxItems, 100)
+        breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "seance.liste.titre"))
+        Personne personne = authenticatedPersonne
+        def modalitesActivites = modaliteActiviteService.findModalitesActivitesForApprenant(personne,
+                params)
+        boolean affichePager = false
+        if (!modalitesActivites.isEmpty() && modalitesActivites.totalCount > maxItems) {
+            affichePager = true
+        }
+        render(view: '/activite/seance/liste', model: [liens       : breadcrumpsServiceProxy.liens,
+                                                       seances     : modalitesActivites,
+                                                       affichePager: affichePager])
     }
-    bindData(reponsesCopie, params, "reponsesCopie")
 
-    reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
-      def reponse = Reponse.get(reponseCopie.reponse.id)
-      reponseCopie.reponse = reponse
-      reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
+    /**
+     *
+     * Action "Faire sujet"
+     */
+    def travailleCopie() {
+        Personne eleve = authenticatedPersonne
+        ModaliteActivite seance = ModaliteActivite.get(params.id)
+        Copie copie = copieService.getCopieForModaliteActiviteAndEleve(seance, eleve)
+
+        if (seance.decompteTemps && !copie.dateDebut) {
+            render(
+                    view: '/activite/copie/demarre',
+                    model: [
+                            liens: breadcrumpsServiceProxy.liens,
+                            copie: copie
+                    ]
+            )
+            return
+        } else {
+            breadcrumpsServiceProxy.manageBreadcrumps(
+                    params,
+                    message(code: "copie.edition.titre")
+            )
+
+            render(
+                    view: '/activite/copie/edite',
+                    model: [
+                            liens: breadcrumpsServiceProxy.liens,
+                            copie: copie
+                    ]
+            )
+            return
+        }
     }
-    bindData(reponsesCopie, params, "reponsesCopie")
-    Personne eleve = authenticatedPersonne
-    copieService.updateCopieRemiseForListeReponsesCopie(copie,
-                                                        reponsesCopie.listeReponses,
-                                                        eleve)
-    request.messageCode = "copie.enregistre.succes"
 
-    render(view: '/activite/copie/edite', model: [liens: breadcrumpsServiceProxy.liens,
-            copie: copie])
-  }
+    /**
+     *
+     * Action rend la copie
+     */
+    def rendLaCopie() {
+        Copie copie = Copie.get(params.copie.id)
+        def nombreReponses = params.nombreReponsesNonVides as Integer
+        ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
+        nombreReponses.times {
+            reponsesCopie.listeReponses << new ReponseCopie()
+        }
+        bindData(reponsesCopie, params, "reponsesCopie")
 
-  /**
-   *
-   * Action enregistre  la copie
-   */
-  def enregistreLaCopie() {
-    Copie copie = Copie.get(params.copie.id)
-    def nombreReponses = params.nombreReponsesNonVides as Integer
-    ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
-    nombreReponses.times {
-      reponsesCopie.listeReponses << new ReponseCopie()
+        reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
+            def reponse = Reponse.get(reponseCopie.reponse.id)
+            reponseCopie.reponse = reponse
+            reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
+        }
+        bindData(reponsesCopie, params, "reponsesCopie")
+        Personne eleve = authenticatedPersonne
+        copieService.updateCopieRemiseForListeReponsesCopie(copie,
+                reponsesCopie.listeReponses,
+                eleve)
+        request.messageCode = "copie.enregistre.succes"
+
+        render(view: '/activite/copie/edite', model: [liens: breadcrumpsServiceProxy.liens,
+                                                      copie: copie])
     }
-    bindData(reponsesCopie, params, "reponsesCopie")
 
-    reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
-      def reponse = Reponse.get(reponseCopie.reponse.id)
-      reponseCopie.reponse = reponse
-      reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
+    /**
+     *
+     * Action enregistre  la copie
+     */
+    def enregistreLaCopie() {
+        Copie copie = Copie.get(params.copie.id)
+        def nombreReponses = params.nombreReponsesNonVides as Integer
+        ListeReponsesCopie reponsesCopie = new ListeReponsesCopie()
+        nombreReponses.times {
+            reponsesCopie.listeReponses << new ReponseCopie()
+        }
+        bindData(reponsesCopie, params, "reponsesCopie")
+
+        reponsesCopie.listeReponses.each { ReponseCopie reponseCopie ->
+            def reponse = Reponse.get(reponseCopie.reponse.id)
+            reponseCopie.reponse = reponse
+            reponseCopie.specificationObject = reponseService.getSpecificationReponseInitialisee(reponse)
+        }
+        bindData(reponsesCopie, params, "reponsesCopie")
+        Personne eleve = authenticatedPersonne
+        copieService.updateCopieForListeReponsesCopie(copie,
+                reponsesCopie.listeReponses,
+                eleve)
+        if (request.xhr) {
+            render copie.dateEnregistrement?.format(message(code: 'default.date.format'))
+        } else {
+            request.messageCode = "copie.enregistre.succes"
+
+            render(view: '/activite/copie/edite', model: [liens: breadcrumpsServiceProxy.liens,
+                                                          copie: copie])
+        }
     }
-    bindData(reponsesCopie, params, "reponsesCopie")
-    Personne eleve = authenticatedPersonne
-    copieService.updateCopieForListeReponsesCopie(copie,
-                                                  reponsesCopie.listeReponses,
-                                                  eleve)
-    if (request.xhr) {
-      render copie.dateEnregistrement?.format(message(code: 'default.date.format'))
-    } else {
-      request.messageCode = "copie.enregistre.succes"
 
-      render(view: '/activite/copie/edite', model: [liens: breadcrumpsServiceProxy.liens,
-              copie: copie])
+    /**
+     * Action liste résulats
+     *
+     */
+    def listeResultats() {
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "seance.resultats.titre"))
+        Personne personne = authenticatedPersonne
+        def copies = copieService.findCopiesEnVisualisationForApprenant(personne,
+                params)
+        render(view: '/activite/seance/resultats', model: [liens : breadcrumpsServiceProxy.liens,
+                                                           copies: copies])
     }
-  }
 
-  /**
-   * Action liste résulats
-   *
-   */
-  def listeResultats() {
-    params.max = Math.min(params.max ? params.int('max') : 10, 100)
-    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "seance.resultats.titre"))
-    Personne personne = authenticatedPersonne
-    def copies = copieService.findCopiesEnVisualisationForApprenant(personne,
-                                                                    params)
-    render(view: '/activite/seance/resultats', model: [liens: breadcrumpsServiceProxy.liens,
-            copies: copies])
-  }
-
-  /**
-   *
-   * Action visualise copie
-   */
-  def visualiseCopie() {
-    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
-    Copie copie = Copie.get(params.id)
-    render(view: '/activite/copie/visualise', model: [liens: breadcrumpsServiceProxy.liens,
-            copie: copie])
-  }
-
-
-  def commenceSession() {
-    Copie copie = Copie.get(params.id)
-
-    if (copie.dateDebut == null) {
-      copie.dateDebut = new Date()
-      copie.save()
+    /**
+     *
+     * Action visualise copie
+     */
+    def visualiseCopie() {
+        breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "copie.visualisation.titre"))
+        Copie copie = Copie.get(params.id)
+        render(view: '/activite/copie/visualise', model: [liens: breadcrumpsServiceProxy.liens,
+                                                          copie: copie])
     }
-    
-    render copie as JSON
-  }
+
+
+    def commenceSession() {
+        Copie copie = Copie.get(params.id)
+
+        if (copie.dateDebut == null) {
+            copie.dateDebut = new Date()
+            copie.save()
+        }
+
+        redirect(action: 'travailleCopie', id: copie.modaliteActivite.id)
+    }
 
 }
 
 class ListeReponsesCopie {
-  List<ReponseCopie> listeReponses = []
+    List<ReponseCopie> listeReponses = []
 }
 
 

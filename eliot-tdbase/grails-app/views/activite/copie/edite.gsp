@@ -90,24 +90,6 @@
         update();
         setInterval(update, 1000);
       }
-      else {
-        $('#page').hide();
-        if (confirm('Voulez-vous commencer la session ?')) {
-          $.ajax({
-            url: '${g.createLink(controller: 'activite', action: 'commenceSession')}',
-            data: {
-              id: ${copie.id}
-            },
-            success: function(copie) {
-              window.location.reload();
-            }
-          });
-        }
-        else {
-          window.history.back();
-        }
-      }
-
     });
   </script>
 </g:if>
