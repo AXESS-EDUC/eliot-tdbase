@@ -351,7 +351,7 @@ class SeanceController {
                     structureEnseignement
             ).id
             groupeType = GroupeType.SCOLARITE
-        } else if(params.groupeType && params.groupeType != 'null') {
+        } else if (params.groupeType && params.groupeType != 'null') {
             groupeType = GroupeType.valueOf(params.groupeType)
             groupeId = params.groupeId
         }
@@ -484,11 +484,16 @@ class SeanceController {
         def elevesSansCopies = copieService.findElevesSansCopieForModaliteActivite(seance,
                 copies,
                 personne)
-        render(view: '/seance/listeResultats', model: [liens                   : breadcrumpsServiceProxy.liens,
-                                                       seance                  : seance,
-                                                       afficheLienMiseAjourNote: afficheLienMiseAjourNote,
-                                                       copies                  : copies,
-                                                       elevesSansCopies        : elevesSansCopies])
+        render(
+                view: '/seance/listeResultats',
+                model: [
+                        liens                   : breadcrumpsServiceProxy.liens,
+                        seance                  : seance,
+                        afficheLienMiseAjourNote: afficheLienMiseAjourNote,
+                        copies                  : copies,
+                        elevesSansCopies        : elevesSansCopies
+                ]
+        )
     }
 
     /**
