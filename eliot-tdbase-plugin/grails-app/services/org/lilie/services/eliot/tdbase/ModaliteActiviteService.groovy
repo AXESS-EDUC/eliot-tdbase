@@ -161,7 +161,7 @@ class ModaliteActiviteService {
         List<Etablissement> etablissementList =
                 securiteSessionServiceProxy.rolesApplicatifsAndPerimetreByRoleApplicatif.get(
                         RoleApplicatif.ELEVE
-                ).etablissements
+                ).etablissements as List
         def groupeEntList = groupeService.findAllGroupeEntInEtablissementListForPersonne(
                 chercheur,
                 etablissementList
