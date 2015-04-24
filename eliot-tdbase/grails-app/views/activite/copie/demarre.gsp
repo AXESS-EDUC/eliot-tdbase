@@ -42,7 +42,7 @@
           model="[liens: liens]"/>
 
 <g:form method="post" class="edite">
-    <g:hiddenField name="id" value="${copie.id}" />
+    <g:hiddenField name="id" value="${copie.id}"/>
 
     <div class="portal-form_container edite" width="69%">
 
@@ -67,12 +67,14 @@
     </div>
 
     <div class="bottom">
-        <div class="form_actions">
-            <g:actionSubmit value="Démarrer le travail"
-                            action="commenceSession"
-                            class="button"
-                            title="Démarrer le travail"/>
-        </div>
+        <g:if test="${copie.estModifiable()}">
+            <div class="form_actions">
+                <g:actionSubmit value="Démarrer le travail"
+                                action="commenceSession"
+                                class="button"
+                                title="Démarrer le travail"/>
+            </div>
+        </g:if>
     </div>
 </g:form>
 </body>
