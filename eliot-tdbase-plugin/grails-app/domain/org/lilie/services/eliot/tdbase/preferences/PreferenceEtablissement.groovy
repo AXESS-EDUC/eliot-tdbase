@@ -10,6 +10,8 @@ import org.lilie.services.eliot.tice.scolarite.Etablissement
  */
 class PreferenceEtablissement {
 
+    GestionnaireModificationLiaisonFonctionRole gestionnaireModificationLiaisonFonctionRole
+
     Etablissement etablissement
     Personne lastUpdateAuteur
 
@@ -20,8 +22,14 @@ class PreferenceEtablissement {
         lastUpdateAuteur nullable: true
     }
 
+    static transients = ['gestionnaireModificationLiaisonFonctionRole']
+
     MappingFonctionRole mappingFonctionRoleAsMap() {
-        new MappingFonctionRole(mappingFonctionRole)
+        MappingFonctionRole mapping = new MappingFonctionRole(
+                gestionnaireModificationLiaisonFonctionRole: gestionnaireModificationLiaisonFonctionRole
+        )
+        mapping.parseJsonRepresentation(mappingFonctionRole)
+
     }
 
 

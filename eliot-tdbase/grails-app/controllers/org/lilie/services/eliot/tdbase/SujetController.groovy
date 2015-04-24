@@ -8,12 +8,16 @@ import org.lilie.services.eliot.tdbase.importexport.SujetExporterService
 import org.lilie.services.eliot.tdbase.importexport.SujetImporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
+import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
@@ -42,12 +46,13 @@ class SujetController {
     MoodleQuizImporterService moodleQuizImporterService
     ArtefactAutorisationService artefactAutorisationService
     MoodleQuizExporterService moodleQuizExporterService
-    ScolariteService scolariteService
     QuestionImporterService questionImporterService
     SujetImporterService sujetImporterService
     SujetExporterService sujetExporterService
     AttachementService attachementService
     SecuriteSessionService securiteSessionServiceProxy
+    FonctionService fonctionService
+    PreferenceEtablissementService preferenceEtablissementService
 
     /**
      *
@@ -207,7 +212,7 @@ class SujetController {
                                                 typesSujet: sujetService.getAllSujetTypes(),
                                                 etablissements: securiteSessionServiceProxy.etablissementList,
                                                 artefactHelper: artefactAutorisationService,
-                                                niveaux   : profilScolariteService.findNiveauxForPersonne(proprietaire)])
+                                                niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
     }
 
     /**
@@ -447,6 +452,7 @@ class SujetController {
     /**
      * Action ajoute séance
      */
+    // TODO Cette action duplique une partie de la logique de construction du modèle de l'action SeanceController.edite ; il faut voir s'il est possible de passer par un chain
     def ajouteSeance() {
         breadcrumpsServiceProxy.manageBreadcrumps(
                 params,
@@ -455,24 +461,36 @@ class SujetController {
 
         Personne personne = authenticatedPersonne
         Sujet sujet = Sujet.get(params.id)
-        def modaliteActivite = new ModaliteActivite(enseignant: personne,
-                sujet: sujet)
+        def modaliteActivite = new ModaliteActivite(
+                enseignant: personne,
+                sujet: sujet
+        )
         def etablissements = securiteSessionServiceProxy.etablissementList
-        def proprietesScolarite = profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne, etablissements)
-        def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
+        def structureEnseignementList =
+                profilScolariteService.findProprietesScolariteWithStructureForPersonne(
+                        personne,
+                        etablissements
+                )*.structureEnseignement
+
+        List<Fonction> fonctionList =
+                preferenceEtablissementService.getFonctionListForRoleApprenant(
+                        personne,
+                        securiteSessionServiceProxy.currentEtablissement
+                )
 
         render(
                 view: '/seance/edite',
                 model: [
                         liens                      : breadcrumpsServiceProxy.liens,
+                        currentEtablissement       : securiteSessionServiceProxy.currentEtablissement,
                         etablissements             : etablissements,
-                        niveaux                    : niveaux,
+                        fonctionList               : fonctionList,
                         afficheLienCreationDevoir  : false,
                         afficheLienCreationActivite: false,
                         afficheActiviteCreee       : false,
                         afficheDevoirCree          : false,
                         modaliteActivite           : modaliteActivite,
-                        proprietesScolarite        : proprietesScolarite,
+                        structureEnseignementList  : structureEnseignementList,
                         competencesEvaluables      : modaliteActivite.sujet.hasCompetence()
                 ]
         )
@@ -561,7 +579,7 @@ class SujetController {
                 liens         : breadcrumpsServiceProxy.liens,
                 sujet         : sujet,
                 matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
-                etablissements     : securiteSessionServiceProxy.etablissementList,
+                etablissements: securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
                         grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
@@ -636,7 +654,7 @@ class SujetController {
                 liens         : breadcrumpsServiceProxy.liens,
                 sujet         : sujet,
                 matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
-                etablissements     : securiteSessionServiceProxy.etablissementList,
+                etablissements: securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
                         grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10

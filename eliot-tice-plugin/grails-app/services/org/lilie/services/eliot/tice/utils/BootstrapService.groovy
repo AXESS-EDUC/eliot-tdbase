@@ -589,10 +589,12 @@ class BootstrapService {
 
     private def initialiseRespEleve1EnvDevelopment() {
         if (!utilisateurService.findUtilisateur(RESP_1_LOGIN)) {
-            utilisateurService.createUtilisateur(RESP_1_LOGIN,
+            utilisateurService.createUtilisateur(
+                    RESP_1_LOGIN,
                     RESP_1_PASSWORD,
                     RESP_1_NOM,
-                    RESP_1_PRENOM)
+                    RESP_1_PRENOM
+            )
             Utilisateur resp1 = utilisateurService.findUtilisateur(RESP_1_LOGIN)
             parent1 = Personne.get(resp1.personneId)
             createResponsableEleve(parent1, eleve1)
@@ -707,10 +709,12 @@ class BootstrapService {
     // methode utilitaires
 
     private ResponsableEleve createResponsableEleve(Personne resp, Personne eleve) {
-        ResponsableEleve responsableEleve = new ResponsableEleve(personne: resp,
+        ResponsableEleve responsableEleve = new ResponsableEleve(
+                personne: resp,
                 eleve: eleve,
                 estActive: true,
-                responsableLegal: 1).save(failOnError: true)
+                responsableLegal: 1
+        ).save(failOnError: true)
         // groupes auxquels appartient l'élève
         def groupes = profilScolariteService.findProprietesScolaritesForPersonne(eleve)
         def groupesDeRespEleve = []
@@ -727,17 +731,34 @@ class BootstrapService {
 
                 AnneeScolaire anneeScolaire = groupe.anneeScolaire
 
-                ProprietesScolarite ps = ProprietesScolarite.createCriteria().get {
+                ProprietesScolarite psForStructure = ProprietesScolarite.createCriteria().get {
+                    eq 'anneeScolaire', anneeScolaire
+                    eq 'structureEnseignement', groupe.structureEnseignement
+                    eq 'fonction', fonctionResp
+                }
+
+                if (!psForStructure) {
+                    // créer un groupe de responsables élèves
+                    groupesDeRespEleve << new ProprietesScolarite(
+                            anneeScolaire: anneeScolaire,
+                            structureEnseignement: groupe.structureEnseignement,
+                            fonction: fonctionResp
+                    ).save(flush: true, failOnError: true)
+                }
+
+                ProprietesScolarite psForPorteur = ProprietesScolarite.createCriteria().get {
                     eq 'anneeScolaire', anneeScolaire
                     eq 'fonction', fonctionResp
                     eq 'porteurEnt', porteurEnt
                 }
 
-                if (!ps) {
+                if (!psForPorteur) {
                     // créer un groupe de responsables élèves
-                    groupesDeRespEleve << new ProprietesScolarite(anneeScolaire: anneeScolaire,
+                    groupesDeRespEleve << new ProprietesScolarite(
+                            anneeScolaire: anneeScolaire,
                             fonction: fonctionResp,
-                            porteurEnt: porteurEnt).save(flush: true, failOnError: true)
+                            porteurEnt: porteurEnt
+                    ).save(flush: true, failOnError: true)
                 }
             }
         }

@@ -30,7 +30,7 @@
 package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.springframework.transaction.annotation.Transactional
@@ -43,6 +43,7 @@ class CopieService {
 
     static transactional = false
     ProfilScolariteService profilScolariteService
+    GroupeService groupeService
     ReponseService reponseService
     FonctionService fonctionService
 
@@ -99,8 +100,10 @@ class CopieService {
     @Transactional
     Copie getCopieForModaliteActiviteAndEleve(ModaliteActivite seance, Personne eleve) {
 
-        assert (seance.structureEnseignement in
-                profilScolariteService.findStructuresEnseignementForPersonne(eleve, fonctionService.fonctionEleve()))
+        assert (
+                seance.groupeScolarite.id in
+                        groupeService.findAllGroupeScolariteForPersonne(eleve)*.id
+        )
 
         Copie copie = Copie.findByModaliteActiviteAndEleve(seance, eleve)
         if (copie == null) {
@@ -303,36 +306,31 @@ class CopieService {
                                                       Map paginationAndSortingSpec = [:]) {
 
         assert (chercheur != null)
-        // TODO : quelle stratégie pour les non élèves qui ont le profil apprenant ?
-        def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur, fonctionService.fonctionEleve())
-        def copies = []
-        if (!structs.isEmpty()) {
-            Date now = new Date()
-            def criteria = Copie.createCriteria()
-            copies = criteria.list(paginationAndSortingSpec) {
-                eq 'eleve', chercheur
-                modaliteActivite {
-                    inList 'structureEnseignement', structs
-                    or {
-                        and {
-                            isNull 'datePublicationResultats'
-                            lt 'dateFin', now
-                        }
-                        and {
-                            isNotNull 'datePublicationResultats'
-                            lt 'datePublicationResultats', now
-                        }
-                    }
 
-                }
-                if (paginationAndSortingSpec) {
-                    def sortArg = paginationAndSortingSpec['sort'] ?: 'dateRemise'
-                    def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-                    if (sortArg) {
-                        order "${sortArg}", orderArg
+        Date now = new Date()
+        def criteria = Copie.createCriteria()
+        def copies = criteria.list(paginationAndSortingSpec) {
+            eq 'eleve', chercheur
+            modaliteActivite {
+                or {
+                    and {
+                        isNull 'datePublicationResultats'
+                        lt 'dateFin', now
                     }
-
+                    and {
+                        isNotNull 'datePublicationResultats'
+                        lt 'datePublicationResultats', now
+                    }
                 }
+
+            }
+            if (paginationAndSortingSpec) {
+                def sortArg = paginationAndSortingSpec['sort'] ?: 'dateRemise'
+                def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+                if (sortArg) {
+                    order "${sortArg}", orderArg
+                }
+
             }
         }
         copies

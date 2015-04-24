@@ -1,5 +1,6 @@
 package org.lilie.services.eliot.tdbase.preferences
 
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.webservices.rest.client.ScolariteRestService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.scolarite.Etablissement
@@ -28,9 +29,12 @@ class PreferenceEtablissementService {
     PreferenceEtablissement getPreferenceForEtablissement(Personne personne,
                                                           Etablissement etablissement) {
 
-        PreferenceEtablissement pref = PreferenceEtablissement.findByEtablissement(etablissement)
+        PreferenceEtablissement pref =
+                PreferenceEtablissement.findByEtablissement(etablissement)
+
         if (!pref) {
-            pref = new PreferenceEtablissement(etablissement: etablissement,
+            pref = new PreferenceEtablissement(
+                    etablissement: etablissement,
                     lastUpdateAuteur: personne,
                     mappingFonctionRole: MappingFonctionRole.defaultMappingFonctionRole.toJsonString())
             pref.save(failOnError: true)
@@ -44,10 +48,10 @@ class PreferenceEtablissementService {
      * @param etablissement l'établissement
      * @return le mapping fonction role
      */
-    MappingFonctionRole getMappingFonctionRoleForEtablissement(Personne personne, Etablissement etablissement) {
-        getPreferenceForEtablissement(personne,etablissement).mappingFonctionRoleAsMap()
+    MappingFonctionRole getMappingFonctionRoleForEtablissement(Personne personne,
+                                                               Etablissement etablissement) {
+        getPreferenceForEtablissement(personne, etablissement).mappingFonctionRoleAsMap()
     }
-
 
     /**
      * Met à jour en base une préférence établissement
@@ -57,10 +61,10 @@ class PreferenceEtablissementService {
      * @return la préférence établissement mise à jour
      */
     PreferenceEtablissement updatePreferenceEtablissement(Personne personne,
-                                      PreferenceEtablissement preferenceEtablissement) {
+                                                          PreferenceEtablissement preferenceEtablissement) {
         Contract.requires(profilScolariteService.personneEstPersonnelDirectionForEtablissement(personne, preferenceEtablissement.etablissement)
-        || profilScolariteService.personneEstAdministrateurLocalForEtablissement(personne, preferenceEtablissement.etablissement),
-        "requires_personne_est_administrateur_local_ou_personne_de_direction_pour_etablissement")
+                || profilScolariteService.personneEstAdministrateurLocalForEtablissement(personne, preferenceEtablissement.etablissement),
+                "requires_personne_est_administrateur_local_ou_personne_de_direction_pour_etablissement")
         preferenceEtablissement.lastUpdateAuteur = personne
         preferenceEtablissement.lastUpdated = new Date()
         preferenceEtablissement.save(failOnError: true)
@@ -72,7 +76,7 @@ class PreferenceEtablissementService {
      * @param personne la personne effectuant le reset
      */
     int resetAllPreferencesEtablissement(Personne personne) {
-        Contract.requires(profilScolariteService.personneEstAdministrateurCentral(personne),"requires_personne_est_administrateur_central")
+        Contract.requires(profilScolariteService.personneEstAdministrateurCentral(personne), "requires_personne_est_administrateur_central")
         def query = PreferenceEtablissement.where {
             etablissement != null
         }
@@ -106,6 +110,21 @@ class PreferenceEtablissementService {
             ]
         }
         res
+    }
+
+    /*
+     * @return la liste des fonctions associées au rôle apprenant sur l'établissement courant
+     */
+    List<Fonction> getFonctionListForRoleApprenant(Personne personne,
+                                                   Etablissement etablissement) {
+        return getPreferenceForEtablissement(
+                personne,
+                etablissement
+        ).mappingFonctionRoleAsMap().getFonctionEnumListForRole(
+                RoleApplicatif.ELEVE
+        ).collect {
+            it.fonction
+        }.sort { Fonction f -> f.libelle }
     }
 }
 

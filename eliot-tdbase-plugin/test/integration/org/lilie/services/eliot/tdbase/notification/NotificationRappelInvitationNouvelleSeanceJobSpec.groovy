@@ -11,6 +11,7 @@ import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.preferences.PreferencePersonne
 import org.lilie.services.eliot.tdbase.preferences.PreferencePersonneService
 import org.lilie.services.eliot.tdbase.webservices.rest.client.NotificationRestService
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.utils.BootstrapService
 import org.lilie.services.eliot.tice.webservices.rest.client.GenericRestOperation
 import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
@@ -36,6 +37,7 @@ class NotificationRappelInvitationNouvelleSeanceJobSpec extends IntegrationSpec 
     ModaliteActiviteService modaliteActiviteService
     def messageSource
     LinkGenerator grailsLinkGenerator
+    GroupeService groupeService
 
     NotificationRappelInvitationNouvelleSeanceJob notificationRappelInvitationNouvelleSeanceJob
     Sujet sujet
@@ -57,7 +59,7 @@ class NotificationRappelInvitationNouvelleSeanceJobSpec extends IntegrationSpec 
                 grailsLinkGenerator: grailsLinkGenerator
         )
         // le sujet
-        sujet = sujetService.createSujet(bootstrapService.enseignant1,"un sujet")
+        sujet = sujetService.createSujet(bootstrapService.enseignant1, "un sujet")
         // la mise en place de la doublure du web service
         setupWebService()
 
@@ -68,17 +70,20 @@ class NotificationRappelInvitationNouvelleSeanceJobSpec extends IntegrationSpec 
     }
 
 
-
     def "l'execution du job de rappel d'invitation"() {
-        given:"une séance dont la date de debut est passee"
+        given: "une séance dont la date de debut est passee"
         Date now = new Date()
         ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
-                [sujet: sujet,
-                 structureEnseignement: bootstrapService.classe1ere,
-                        dateDebut: now-1,
-                        dateFin: now+3,
-                        datePublicationResultats: now+4,
-                        notifierNJoursAvant: 1
+                [
+                        sujet                   : sujet,
+                        groupeScolarite         :
+                                groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                        bootstrapService.classe1ere
+                                ),
+                        dateDebut               : now - 1,
+                        dateFin                 : now + 3,
+                        datePublicationResultats: now + 4,
+                        notifierNJoursAvant     : 1
                 ],
                 sujet.proprietaire
         )
@@ -86,11 +91,11 @@ class NotificationRappelInvitationNouvelleSeanceJobSpec extends IntegrationSpec 
         when: "le job est exécuté"
         notificationRappelInvitationNouvelleSeanceJob.execute()
 
-        then:"il ne se passe rien"
+        then: "il ne se passe rien"
         seance1.dateRappelNotificationOuvertureSeance == null
 
-        when:"la seance n'est pas encore ouverte mais c'est trop tot pour la notif"
-        seance1.dateDebut = now+2
+        when: "la seance n'est pas encore ouverte mais c'est trop tot pour la notif"
+        seance1.dateDebut = now + 2
         seance1.save(flush: true)
 
         and: "le job est exécuté de nouveau"
@@ -99,7 +104,7 @@ class NotificationRappelInvitationNouvelleSeanceJobSpec extends IntegrationSpec 
         then: "la notification n'est pas envoyée"
         seance1.dateRappelNotificationOuvertureSeance == null
 
-        when:"la seance n'est pas encore ouverte et c'est l'heure de la notif"
+        when: "la seance n'est pas encore ouverte et c'est l'heure de la notif"
         seance1.notifierNJoursAvant = 5
         seance1.save(flush: true)
 
