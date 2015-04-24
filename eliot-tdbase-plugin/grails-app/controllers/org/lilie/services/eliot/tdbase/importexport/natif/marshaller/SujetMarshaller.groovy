@@ -16,7 +16,6 @@ class SujetMarshaller {
   PersonneMarshaller personneMarshaller
   CopyrightsTypeMarshaller copyrightsTypeMarshaller
   EtablissementMarshaller etablissementMarshaller
-  MatiereMarshaller matiereMarshaller
   MatiereBcnMarshaller matiereBcnMarshaller
   NiveauMarshaller niveauMarshaller
   SujetSequenceQuestionsMarshaller sujetSequenceQuestionsMarshaller
