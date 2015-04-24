@@ -32,6 +32,7 @@ import grails.converters.JSON
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeEnt
 
 /**
  * @author John Tranier
@@ -42,6 +43,21 @@ class RechercheGroupeController {
 
     def rechercheGroupeList() {
 
+        switch (params.type) {
+            case 'SCOLARITE':
+                return rechercheGroupeScolariteList()
+
+            case 'ENT':
+                return rechercheGroupeEntList()
+
+            default:
+                throw new IllegalStateException(
+                        "Type de groupe inconnu : ${params.type}"
+                )
+        }
+    }
+
+    private rechercheGroupeScolariteList() {
         Etablissement etablissement = Etablissement.load(params.etablissementId)
         Fonction fonction = Fonction.load(params.fonctionId)
 
@@ -56,24 +72,47 @@ class RechercheGroupeController {
         }
 
 
-        render(
-                [
-                        kind          : "eliot-scolarite#groupes#paginable",
-                        groupes       : groupeScolariteList.collect {
-                            convertGroupe(it)
-                        },
-                        'nombre-total': groupeScolariteList.size()
-                ] as JSON
-        )
+        render([
+                kind          : "eliot-scolarite#groupes#paginable",
+                groupes       : groupeScolariteList.collect {
+                    convertGroupeScolarite(it)
+                },
+                'nombre-total': groupeScolariteList.size()
+        ] as JSON)
     }
 
-    private Map convertGroupe(ProprietesScolarite proprietesScolarite) {
+    private rechercheGroupeEntList() {
+        Etablissement etablissement = Etablissement.load(params.etablissementId)
+
+        List<GroupeEnt> groupeEntList = GroupeEnt.findAllByEtablissement(etablissement)
+
+        render([
+                kind          : "eliot-scolarite#groupes#paginable",
+                groupes       : groupeEntList.collect {
+                    convertGroupeEnt(it)
+                },
+                'nombre-total': groupeEntList.size()
+        ] as JSON)
+    }
+
+    private Map convertGroupeScolarite(ProprietesScolarite proprietesScolarite) {
         return [
                 kind           : "eliot-scolarite#groupes#standard",
                 id             : proprietesScolarite.id,
                 "nom-affichage": proprietesScolarite.nomAffichage,
                 'autorite-id'  : null,
                 type           : 'SCOLARITE'
+        ]
+    }
+
+    private Map convertGroupeEnt(GroupeEnt groupeEnt) {
+        return [
+                kind           : "eliot-scolarite#groupes#standard",
+                id             : groupeEnt.id,
+                "nom-affichage": groupeEnt.nomAffichage,
+                'autorite-id'  : null,
+                type           : 'ENT'
+
         ]
     }
 }

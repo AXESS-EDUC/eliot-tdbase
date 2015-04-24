@@ -30,13 +30,15 @@ package org.lilie.services.eliot.tice.scolarite
 
 import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 import org.lilie.services.eliot.tice.annuaire.groupe.GroupeAnnuaire
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeType
 
 /**
  * Table des propriétés des groupes virtuels
  * @author othe
  */
-class ProprietesScolarite implements GroupeAnnuaire {
+class ProprietesScolarite extends GroupeAnnuaire {
 
+  Long id
   Etablissement etablissement
   StructureEnseignement structureEnseignement
   AnneeScolaire anneeScolaire
@@ -46,7 +48,7 @@ class ProprietesScolarite implements GroupeAnnuaire {
   PorteurEnt porteurEnt
   // DomainAutorite autorite TODO A ajouter quand on branchera le nouveau schéma Eliot
 
-  static transients = ['structureEnseignementNomAffichage']
+  static transients = ['structureEnseignementNomAffichage', 'groupeType']
 
   static constraints = {
     etablissement(nullable: true)
@@ -157,4 +159,8 @@ class ProprietesScolarite implements GroupeAnnuaire {
     return etablissement ?: structureEnseignement?.etablissement
   }
 
+  @Override
+  GroupeType getGroupeType() {
+    return GroupeType.SCOLARITE
+  }
 }

@@ -42,7 +42,7 @@ class EliotUrlProviderIntegrationTests extends GroovyTestCase {
   EliotUrlProvider eliotUrlProvider
 
   void setUp() {
-    bootstrapService.bootstrapForIntegrationTest()
+    bootstrapService.bootstrapJeuDeTestDevDemo()
   }
 
   void testEliotUrlServiceState() {

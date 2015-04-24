@@ -28,29 +28,25 @@
 
 package org.lilie.services.eliot.tice.annuaire.groupe
 
-import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
-
+import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
- * Représente une référence sur un groupe de scolarité
- *
  * @author John Tranier
  */
-class GroupeScolariteProxy extends GroupeAnnuaire {
+class RelGroupeEntPersonne implements Serializable  {
 
-  // Id de la ProprietesScolarite
-  Long id
-  String nomAffichage
+    GroupeEnt groupeEnt
+    Personne personne
 
-  GroupeScolariteProxy() {}
+    static mapping = {
+        table 'ent.rel_groupe_ent_personne'
+        id composite: ['personne', 'groupeEnt']
+        groupeEnt fetch: 'join'
+        version false
+    }
 
-  GroupeScolariteProxy(ProprietesScolarite proprietesScolarite) {
-    this.id = proprietesScolarite.id
-    nomAffichage = proprietesScolarite.nomAffichage
-  }
-
-  @Override
-  GroupeType getGroupeType() {
-    return GroupeType.SCOLARITE
-  }
+    static belongsTo = [
+            groupeEnt: GroupeEnt,
+            personne: Personne
+    ]
 }

@@ -31,9 +31,12 @@ package org.lilie.services.eliot.tdbase
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.tdbase.emaeval.CampagneProxyService
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
+import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.notes.Evaluation
+import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.textes.Activite
 import org.springframework.transaction.annotation.Transactional
 
@@ -49,6 +52,7 @@ class ModaliteActiviteService {
     GroupeService groupeService
     CopieService copieService
     CampagneProxyService campagneProxyService
+    SecuriteSessionService securiteSessionServiceProxy
 
     /**
      * Créé une séance (modaliteActivite)
@@ -133,7 +137,7 @@ class ModaliteActiviteService {
     }
 
     /**
-     * Recherche de séances pour profil élève
+     * Recherche de séances pour profil apprenant
      * @param chercheur la personne effectuant la recherche
      * @param paginationAndSortingSpec les specifications pour l'ordre et
      * la pagination
@@ -149,12 +153,28 @@ class ModaliteActiviteService {
         }
 
         def seances = []
-        def groupeScolariteList = groupeService.findAllGroupeScolariteForPersonne(chercheur)
-        if (!groupeScolariteList.isEmpty()) {
+
+        def groupeScolariteList =
+                groupeService.findAllGroupeScolariteForPersonne(chercheur)
+
+        // Liste des établissements pour lesquels l'utilisateur est apprenant
+        List<Etablissement> etablissementList =
+                securiteSessionServiceProxy.rolesApplicatifsAndPerimetreByRoleApplicatif.get(
+                        RoleApplicatif.ELEVE
+                ).etablissements as List
+        def groupeEntList = groupeService.findAllGroupeEntInEtablissementListForPersonne(
+                chercheur,
+                etablissementList
+        )
+
+        if (!groupeScolariteList.isEmpty() || !groupeEntList.isEmpty()) {
             Date now = new Date()
             def criteria = ModaliteActivite.createCriteria()
             seances = criteria.list(paginationAndSortingSpec) {
-                inList 'groupeScolarite', groupeScolariteList
+                or {
+                    inList 'groupeScolarite', groupeScolariteList
+                    inList 'groupeEnt', groupeEntList
+                }
                 le 'dateDebut', now
                 ge 'dateFin', now
                 if (paginationAndSortingSpec) {
@@ -166,6 +186,7 @@ class ModaliteActiviteService {
                 }
             }
         }
+
         seances
     }
 

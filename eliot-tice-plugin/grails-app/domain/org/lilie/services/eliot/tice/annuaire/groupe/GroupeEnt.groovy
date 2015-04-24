@@ -39,17 +39,20 @@ import org.lilie.services.eliot.tice.securite.DomainAutorite
  *
  * @author John Tranier
  */
-class GroupeEnt implements GroupeAnnuaire {
+class GroupeEnt extends GroupeAnnuaire {
 
+  Long id
   Etablissement etablissement
   DomainAutorite autorite
   String nom
 
-  static transients = ['nomAffichage']
+  static transients = ['nomAffichage', 'groupeType']
 
-  static hasMany = [
-      personnes: Personne
-  ]
+  static mapping = {
+    table 'ent.groupe_ent'
+    id column: 'id', generator: 'sequence', params: [sequence: 'ent.groupe_ent_id_seq']
+    version false
+  }
 
   static constraints = {
     etablissement nullable: false
@@ -59,6 +62,11 @@ class GroupeEnt implements GroupeAnnuaire {
 
   String getNomAffichage() {
     return nom
+  }
+
+  @Override
+  GroupeType getGroupeType() {
+    return GroupeType.ENT
   }
 
   String toString() {

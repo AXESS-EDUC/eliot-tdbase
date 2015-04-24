@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.annuaire.groupe.GroupeType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -50,6 +51,16 @@
                 </td>
             </tr>
             <tr>
+                <td class="label">type&nbsp;</td>
+                <td id="selectGroupeTypeList">
+                    <g:select name="groupeType"
+                              from="${groupeTypeList}"
+                              value="${rechercheGroupeCommand.groupeType.code ?: GroupeType.SCOLARITE.code}"
+                              optionKey="code"
+                              optionValue="label"/>
+                </td>
+            </tr>
+            <tr>
                 <td class="label">Profil&nbsp;
                 </td>
                 <td id="selectFonctionList">
@@ -72,7 +83,7 @@
 </g:form>
 
 
-<g:if test="${groupeScolariteList && totalCount <= grailsApplication.config.eliot.listes.groupes.maxrecherche}">
+<g:if test="${groupeList && totalCount <= grailsApplication.config.eliot.listes.groupes.maxrecherche}">
 
     <div class="portal_pagination">
         <p style="float: right">Cliquez sur la classe ou le groupe à sélectionner</p>
@@ -83,15 +94,15 @@
 
     <div class="portal-default_results-list">
 
-        <g:each in="${groupeScolariteList}" status="i" var="groupeScolariteInstance">
+        <g:each in="${groupeList}" status="i" var="groupeInstance">
             <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0;text-align: left">
-                <a onclick="selectStructure(${groupeScolariteInstance.id}, '${groupeScolariteInstance.nomAffichage}')">${groupeScolariteInstance.nomAffichage}</a>
+                <a onclick="selectGroupe(${(groupeInstance.toMap() as grails.converters.JSON).encodeAsHTML()});">${groupeInstance.nomAffichage}</a>
             </div>
         </g:each>
     </div>
 
 </g:if>
-<g:elseif test="${groupeScolariteList && totalCount > grailsApplication.config.eliot.listes.groupes.maxrecherche}">
+<g:elseif test="${groupeList && totalCount > grailsApplication.config.eliot.listes.groupes.maxrecherche}">
     <div class="portal_pagination">
         <p class="nb_result">Plus de ${grailsApplication.config.eliot.listes.groupes.maxrecherche} résultats ont été trouvés. Vous pouvez préciser votre recherche en renseignant des critères de recherche supplémentaires.</p>
     </div>
@@ -109,11 +120,13 @@
         }
     });
 
-    function selectStructure(structId, structAffichage) {
+    function selectGroupe(groupe) {
+        console.info(groupe);
         $("#structure-selection").html(
                 '<div id="structure-selection" style="float: left; margin-right: 10px;">' +
-                '<strong>' + structAffichage + '</strong>' +
-                '<input type="hidden" name="groupeScolariteId" value="' + structId + '"/>' +
+                '<strong>' + groupe.nomAffichage + '</strong>' +
+                '<input type="hidden" name="groupeId" value="' + groupe.id + '"/>' +
+                '<input type="hidden" name="groupeType" value="' + groupe.groupeType + '"/>' +
                 '</div>'
         );
         $("#search-group-form").dialog("close");
@@ -124,7 +137,12 @@
                 {etablissementId: $(this).val()},
                 function (data) {
                     $('#selectFonctionList').html(data)
-                })
+                });
+        $.get("${createLink(action: 'updateGroupeTypeList', controller: 'seance')}",
+                {etablissementId: $(this).val(), groupeType: $('#groupeType').val()},
+                function (data) {
+                    $('#selectGroupeTypeList').html(data)
+                });
     })
 
 </script>

@@ -100,14 +100,23 @@ class CopieService {
     @Transactional
     Copie getCopieForModaliteActiviteAndEleve(ModaliteActivite seance, Personne eleve) {
 
-        assert (
-                seance.groupeScolarite.id in
-                        groupeService.findAllGroupeScolariteForPersonne(eleve)*.id
-        )
+        if(seance.groupeScolarite) {
+            assert (
+                    seance.groupeScolarite.id in
+                            groupeService.findAllGroupeScolariteForPersonne(eleve)*.id
+            )
+        }
+        else if(seance.groupeEnt) {
+            assert (
+                    seance.groupeEnt.id in
+                            groupeService.findAllGroupeEntForPersonne(eleve)*.id
+            )
+        }
 
         Copie copie = Copie.findByModaliteActiviteAndEleve(seance, eleve)
         if (copie == null) {
-            copie = new Copie(modaliteActivite: seance,
+            copie = new Copie(
+                    modaliteActivite: seance,
                     eleve: eleve,
                     sujet: seance.sujet,
                     estJetable: false)

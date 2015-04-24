@@ -43,7 +43,7 @@ class ScolariteServiceIntegrationTests extends GroovyTestCase {
 
 
   void setUp() {
-    bootstrapService.bootstrapForIntegrationTest()
+    bootstrapService.bootstrapJeuDeTestDevDemo()
   }
 
   void testFindNiveauxForStructureEnseignement() {
@@ -61,14 +61,14 @@ class ScolariteServiceIntegrationTests extends GroovyTestCase {
 
 
   void testFindStructuresEnseignement() {
-    def lycee = bootstrapService.leLycee
+    def lycee = bootstrapService.etablissementLycee
     def structs = scolariteService.findStructuresEnseignement([lycee])
     assertEquals(3, structs.size())
     assertTrue("Terminale pas trouvée", structs.contains(bootstrapService.classeTerminale))
     assertTrue("premiere pas trouvée", structs.contains(bootstrapService.classe1ere))
     assertTrue("groupe pas trouvé", structs.contains(bootstrapService.grpe1ere))
 
-    def college = bootstrapService.leCollege
+    def college = bootstrapService.etablissementCollege
     structs = scolariteService.findStructuresEnseignement([lycee, college])
     assertEquals(4, structs.size())
 
@@ -98,13 +98,13 @@ class ScolariteServiceIntegrationTests extends GroovyTestCase {
   }
 
   void testFindNiveauxForEtablissement() {
-    def lycee = bootstrapService.leLycee
+    def lycee = bootstrapService.etablissementLycee
     def niveaux = scolariteService.findNiveauxForEtablissement([lycee])
     assertEquals(2, niveaux.size())
     assertTrue("pas de premiere", niveaux.contains(bootstrapService.nivPremiere))
     assertTrue("pas de terminal", niveaux.contains(bootstrapService.nivTerminale))
 
-    def college = bootstrapService.leCollege
+    def college = bootstrapService.etablissementCollege
     niveaux = scolariteService.findNiveauxForEtablissement([college])
     assertEquals(1, niveaux.size())
     assertTrue("pas de sixieme", niveaux.contains(bootstrapService.nivSixieme))

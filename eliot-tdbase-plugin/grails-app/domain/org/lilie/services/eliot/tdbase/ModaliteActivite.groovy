@@ -30,6 +30,8 @@ package org.lilie.services.eliot.tdbase
 
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeAnnuaire
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeEnt
 import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Etablissement
@@ -57,7 +59,11 @@ class ModaliteActivite {
     Etablissement etablissement
 
     Personne enseignant
+
+    // Une séance doit être associé à un groupeScolarite ou (exclusif) un groupeEnt
     ProprietesScolarite groupeScolarite
+    GroupeEnt groupeEnt
+
     MatiereBcn matiereBcn
 
     Long activiteId
@@ -109,6 +115,19 @@ class ModaliteActivite {
           }
           return true
         })
+
+        groupeScolarite(nullable: true, validator: { val, obj ->
+            if(!obj.groupeScolarite &&! obj.groupeEnt) {
+                return ['modaliteActivite.groupeScolarite.nullable']
+            }
+
+            if(obj.groupeScolarite && obj.groupeEnt) {
+                return ['modaliteActivite.groupe.scolariteAndEnt']
+            }
+
+            return true
+        })
+        groupeEnt(nullable: true)
     }
 
     static mapping = {
@@ -126,8 +145,13 @@ class ModaliteActivite {
             'estPerimee',
             'groupeService',
             'preferenceEtablissementService',
-            'structureEnseignementId'
+            'structureEnseignementId',
+            'groupe'
     ]
+
+    GroupeAnnuaire getGroupe() {
+        return groupeScolarite ?: groupeEnt
+    }
 
     Etablissement findEtablissement() {
         if (etablissement != null) {
@@ -141,7 +165,7 @@ class ModaliteActivite {
      * la séance est associée à groupe scolarité élève, null sinon
      */
     Long getStructureEnseignementId() {
-        if (!groupeService.isGroupeScolariteEleve(groupeScolarite)) {
+        if (!groupeScolarite || !groupeService.isGroupeScolariteEleve(groupeScolarite)) {
             return null
         }
 
@@ -166,7 +190,13 @@ class ModaliteActivite {
 
             return groupeService.findAllPersonneInGroupeScolarite(groupeScolarite)
         } else {
-            return []
+            return groupeService.findAllPersonneForGroupeEntAndFonctionIn(
+                    groupeEnt,
+                    preferenceEtablissementService.getFonctionListForRoleApprenant(
+                            null,
+                            groupeEnt.etablissement
+                    )
+            )
         }
 
     }
@@ -176,7 +206,7 @@ class ModaliteActivite {
      * @return le libelle de la structure d'enseignement concernée
      */
     String getGroupeLibelle() {
-        return groupeScolarite.nomAffichage
+        return groupe.nomAffichage
     }
 
     /**
