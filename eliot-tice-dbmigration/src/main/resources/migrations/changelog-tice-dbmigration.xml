@@ -72,4 +72,7 @@
     <include file="migrations/schema.tdbase/changelog-20150323-TDB-183.xml"/>
     <include file="migrations/schema.tdbase/changelog-20150419-TDB-184.xml"/>
 
+    <include file="migrations/schema.tdbase/changelog-20150325-TDB-203.xml"/>
+    <include file="migrations/schema.tdbase/changelog-20150420-TDB-191.xml"/>
+
 </databaseChangeLog>

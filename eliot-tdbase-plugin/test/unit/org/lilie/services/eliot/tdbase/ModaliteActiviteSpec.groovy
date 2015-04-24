@@ -3,7 +3,7 @@ package org.lilie.services.eliot.tdbase
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
+import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import spock.lang.Specification
 
 /**
@@ -22,10 +22,10 @@ class ModaliteActiviteSpec extends Specification {
     def cleanup() {
     }
 
-    void "une seance nouvelle cree avec structure d'enseignement, enseignant et  sujet est initialisée de manière  valide"() {
+    void "une seance nouvelle cree avec un groupe scolarité, enseignant et  sujet est initialisée de manière  valide"() {
         given: "une nouvelle seance avec sujet et structure enseignement"
         modaliteActivite = new ModaliteActivite(sujet: Mock(Sujet),
-                structureEnseignement: Mock(StructureEnseignement),
+                groupeScolarite: new ProprietesScolarite(),
                 enseignant: Mock(Personne),
                 datePublicationResultats: null
         )
@@ -51,7 +51,7 @@ class ModaliteActiviteSpec extends Specification {
         isValide = modaliteActivite.validate()
 
         then: "la séance reste valide"
-        isValide == true
+        isValide
 
         when:"une date de publication est specifiee égale à la date de fin"
         modaliteActivite.datePublicationResultats = modaliteActivite.dateFin
@@ -61,13 +61,13 @@ class ModaliteActiviteSpec extends Specification {
         isValide = modaliteActivite.validate()
 
         then: "la séance reste valide"
-        isValide == true
+        isValide
     }
 
     void "une seance crée avec une date de publication avant la date de fin n'est pas valide"() {
         given: "une nouvelle seance avec sujet et structure enseignement"
         modaliteActivite = new ModaliteActivite(sujet: Mock(Sujet),
-                structureEnseignement: Mock(StructureEnseignement),
+                groupeScolarite: Mock(ProprietesScolarite),
                 enseignant: Mock(Personne)
         )
         and: "une date publication positionnée avant la date de fin"
@@ -87,7 +87,7 @@ class ModaliteActiviteSpec extends Specification {
     void "une seance finie sans date de publication de resultats a ses resultats publies"(){
         given: "une  seance terminee sans date de publication"
         modaliteActivite = new ModaliteActivite(sujet: Mock(Sujet),
-                structureEnseignement: Mock(StructureEnseignement),
+                groupeScolarite: Mock(ProprietesScolarite),
                 enseignant: Mock(Personne),
                 dateDebut: now -2,
                 dateFin: now-1,
@@ -101,7 +101,7 @@ class ModaliteActiviteSpec extends Specification {
     void "une seance finie avec date de publication de resultats passée a ses resultats publies"(){
         given: "une  seance terminee sans date de publication"
         modaliteActivite = new ModaliteActivite(sujet: Mock(Sujet),
-                structureEnseignement: Mock(StructureEnseignement),
+                groupeScolarite: Mock(ProprietesScolarite),
                 enseignant: Mock(Personne),
                 dateDebut: now -2,
                 dateFin: now-1,
@@ -115,7 +115,7 @@ class ModaliteActiviteSpec extends Specification {
     void "une seance non finie avec ou sans date de publication de resultats a ses resultats non publies"(){
         given: "une  seance terminee sans date de publication"
         modaliteActivite = new ModaliteActivite(sujet: Mock(Sujet),
-                structureEnseignement: Mock(StructureEnseignement),
+                groupeScolarite: Mock(ProprietesScolarite),
                 enseignant: Mock(Personne),
                 dateDebut: now -2,
                 dateFin: now+1,

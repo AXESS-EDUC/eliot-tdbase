@@ -117,4 +117,18 @@ public class Personne {
     autorite.identifiant
   }
 
+  boolean equals(o) {
+    if (this.is(o)) return true
+    if (getClass() != o.class) return false
+
+    Personne personne = (Personne) o
+
+    if (id != personne.id) return false
+
+    return true
+  }
+
+  int hashCode() {
+    return id.hashCode()
+  }
 }

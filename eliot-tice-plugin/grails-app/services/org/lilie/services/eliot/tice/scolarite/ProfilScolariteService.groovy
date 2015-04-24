@@ -126,8 +126,10 @@ public class ProfilScolariteService {
      * @return la liste des niveaux
      */
     List<Niveau> findNiveauxForPersonne(Personne personne) {
-        List<StructureEnseignement> structs = findStructuresEnseignementForPersonne(personne)
+        List<StructureEnseignement> structs =
+                findStructuresEnseignementForPersonne(personne)
         List<Niveau> niveaux = []
+
         structs.each { struct ->
             def niveauxByStruct = scolariteService.findNiveauxForStructureEnseignement(struct)
             niveauxByStruct.each { niveau ->
@@ -220,13 +222,21 @@ public class ProfilScolariteService {
      * @param Personne la personne
      * @return la liste des structures d'enseignements
      */
-    List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne, Fonction withFonction = null) {
+    List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne,
+                                                                      Fonction withFonction = null) {
         List<PersonneProprietesScolarite> profils =
-                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(
+                        personne,
+                        true,
+                        [cache: true]
+                )
+
         List<StructureEnseignement> structures = []
         profils.each {
             def keep = true
-            StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
+            StructureEnseignement structureEnseignement =
+                    it.proprietesScolarite.structureEnseignement
+
             if (!structureEnseignement) {
                 keep = false
             }
@@ -246,12 +256,20 @@ public class ProfilScolariteService {
      * @param personne la personne
      * @return la liste des propriétés de scolarité
      */
-    List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne, Collection<Etablissement> etablissements = null) {
+    List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne,
+                                                                              Collection<Etablissement> etablissements = null) {
         def props = new HashSet()
         List<PersonneProprietesScolarite> profils =
-                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(
+                        personne,
+                        true,
+                        [cache: true]
+                )
+
         profils.each {
-            StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
+            StructureEnseignement structureEnseignement =
+                    it.proprietesScolarite.structureEnseignement
+
             if (structureEnseignement) {
                 if (!etablissements || etablissements.contains(structureEnseignement.etablissement)) {
                     props << it.proprietesScolarite

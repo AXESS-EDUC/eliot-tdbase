@@ -1,17 +1,20 @@
-// locations to search for config files that get merged into the main config
-// config files can either be Java properties files or ConfigSlurper scripts
+import org.lilie.services.eliot.tice.utils.EliotApplicationEnum
+import org.lilie.services.eliot.tice.utils.UrlServeurResolutionEnum
 
-// grails.config.locations = [ "classpath:${appName}-config.properties",
-//                             "classpath:${appName}-config.groovy",
-//                             "file:${userHome}/.grails/${appName}-config.properties",
-//                             "file:${userHome}/.grails/${appName}-config.groovy"]
+// Fichier charge si present dans le classpath : utile pour déploiement
+// d'une application de démonstration après téléchargement
+grails.config.locations = ["classpath:${appName}-config.groovy"]
 
-// if (System.properties["${appName}.config.location"]) {
-//    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
-// }
+
+// Fichier de configuration externe propre à l'application
+def appConfigLocation = System.properties["${appName}.config.location"]
+if (appConfigLocation) {
+    grails.config.locations << "file:" + appConfigLocation
+}
 
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
+//    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
 grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
@@ -27,6 +30,39 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
                       form: 'application/x-www-form-urlencoded',
                       multipartForm: 'multipart/form-data'
                     ]
+
+// Paramétrage requis par eliot-tice-plugin
+        eliot.eliotApplicationEnum = EliotApplicationEnum.NOT_AN_APPLICATION
+        eliot.requestHeaderPorteur = "ENT_PORTEUR"
+        eliot.not_an_application.nomApplication = "TicePlugin"
+        eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
+        //eliot.urlResolution.mode = UrlServeurResolutionEnum.CONFIGURATION.name()
+        //eliot.not_an_application.urlServeur = "http//localhost:8080"
+        eliot.fichiers.racine = "/tmp"
+
+        eliot.interfacage.strongCheck = false
+        // rest client config for textes
+        eliot.webservices.rest.client.textes.user = "api"
+        eliot.webservices.rest.client.textes.password = "api"
+        eliot.webservices.rest.client.textes.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.textes.uriPrefix = "/eliot-test-webservices/echanges/v2"
+        // rest client config for notes
+        eliot.webservices.rest.client.notes.user = "eliot-tdbase"
+        eliot.webservices.rest.client.notes.password = "eliot-tdbase"
+        eliot.webservices.rest.client.notes.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.notes.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+        // rest client config for scolarite
+        eliot.webservices.rest.client.scolarite.user = "api"
+        eliot.webservices.rest.client.scolarite.password = "api"
+        eliot.webservices.rest.client.scolarite.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.scolarite.uriPrefix = "/eliot-test-webservices/api-rest/v2"
+        eliot.webservices.rest.client.scolarite.connexionTimeout = 10000
+        // rest client config for notification
+        eliot.webservices.rest.client.notification.user = "api"
+        eliot.webservices.rest.client.notification.password = "api"
+        eliot.webservices.rest.client.notification.urlServer = "http://localhost:8090"
+        eliot.webservices.rest.client.notification.uriPrefix = "/eliot-test-webservices/echanges/v2"
+        eliot.webservices.rest.client.notification.connexionTimeout = 10000
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000

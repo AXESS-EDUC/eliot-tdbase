@@ -32,6 +32,8 @@ grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
+grails.plugin.location.'eliot-tice-plugin' = "../eliot-tice-plugin"
+
 grails.project.dependency.resolution = {
   // inherit Grails' default dependencies
   inherits("global") {
@@ -61,6 +63,7 @@ grails.project.dependency.resolution = {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
     // runtime 'mysql:mysql-connector-java:5.1.16'
+    runtime "postgresql:postgresql:9.1-901.jdbc4"
   }
 
   plugins {

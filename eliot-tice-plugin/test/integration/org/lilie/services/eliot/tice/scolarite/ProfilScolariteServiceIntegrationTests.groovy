@@ -77,7 +77,7 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         assertEquals("pas le bon de nombre de props", 4, props.size())
 
         //when: la recherche des pps avec struture est lancée uniquement sur le collège
-        def lecollege = bootstrapService.leCollege
+        def lecollege = bootstrapService.etablissementCollege
         props = profilScolariteService.findProprietesScolariteWithStructureForPersonne(bootstrapService.enseignant1, [lecollege])
 
         //then: uniquement les pps du collège sont récupérées
@@ -99,20 +99,20 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         // test pour un enseignant
         def etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.enseignant1)
         assertEquals(2, etabs.size())
-        assertTrue("college pas trouvé", etabs.contains(bootstrapService.leCollege))
-        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.leLycee))
+        assertTrue("college pas trouvé", etabs.contains(bootstrapService.etablissementCollege))
+        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.etablissementLycee))
 
         // test sur un eleve
         etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.eleve1)
         assertEquals(2, etabs.size())
-        assertTrue("college pas trouvé", etabs.contains(bootstrapService.leCollege))
-        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.leLycee))
+        assertTrue("college pas trouvé", etabs.contains(bootstrapService.etablissementCollege))
+        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.etablissementLycee))
 
         // test sur un parent
         etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.parent1)
         assertEquals(2, etabs.size())
-        assertTrue("college pas trouvé", etabs.contains(bootstrapService.leCollege))
-        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.leLycee))
+        assertTrue("college pas trouvé", etabs.contains(bootstrapService.etablissementCollege))
+        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.etablissementLycee))
     }
 
     void testPersonneEstResponsableEleve() {
@@ -128,19 +128,19 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
     void testPersonneEstPersonnelDirection() {
         assertTrue(profilScolariteService.personneEstPersonnelDirectionForEtablissement(bootstrapService.persDirection1,
-                bootstrapService.leCollege))
+                bootstrapService.etablissementCollege))
         assertTrue(profilScolariteService.personneEstPersonnelDirectionForEtablissement(bootstrapService.persDirection1,
-                bootstrapService.leLycee))
+                bootstrapService.etablissementLycee))
     }
 
     void testPersonneEstAdministrateurCentral() {
         assertTrue(profilScolariteService.personneEstAdministrateurCentral(bootstrapService.superAdmin1,
-                bootstrapService.leLycee.porteurEnt))
+                bootstrapService.etablissementLycee.porteurEnt))
     }
 
     void testFindFonctionsForPersonneAndEtablissement() {
         // given: un établissement
-        def etab = bootstrapService.leLycee
+        def etab = bootstrapService.etablissementLycee
 
         // and: un enseignant
         def ens1 = bootstrapService.enseignant1
@@ -164,10 +164,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
         // then: le résultats contient les établissements assicié à la fonction enseignant
         res.size() == 2
-        res.get(bootstrapService.leLycee).size() == 1
-        res.get(bootstrapService.leLycee).contains(FonctionEnum.ENS)
-        res.get(bootstrapService.leCollege).size() == 1
-        res.get(bootstrapService.leCollege).contains(FonctionEnum.ENS)
+        res.get(bootstrapService.etablissementLycee).size() == 1
+        res.get(bootstrapService.etablissementLycee).contains(FonctionEnum.ENS)
+        res.get(bootstrapService.etablissementCollege).size() == 1
+        res.get(bootstrapService.etablissementCollege).contains(FonctionEnum.ENS)
 
         // given: un parent
         def parent1 = bootstrapService.parent1
@@ -177,10 +177,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
         // then: le résultats contient les établissements assicié à la fonction enseignant
         res.size() == 2
-        res.get(bootstrapService.leLycee).size() == 1
-        res.get(bootstrapService.leLycee).contains(FonctionEnum.PERS_REL_ELEVE)
-        res.get(bootstrapService.leCollege).size() == 1
-        res.get(bootstrapService.leCollege).contains(FonctionEnum.PERS_REL_ELEVE)
+        res.get(bootstrapService.etablissementLycee).size() == 1
+        res.get(bootstrapService.etablissementLycee).contains(FonctionEnum.PERS_REL_ELEVE)
+        res.get(bootstrapService.etablissementCollege).size() == 1
+        res.get(bootstrapService.etablissementCollege).contains(FonctionEnum.PERS_REL_ELEVE)
 
         // given: un élève
         def elv1 = bootstrapService.eleve1
@@ -190,10 +190,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
         // then: le résultats contient les établissements assicié à la fonction enseignant
         res.size() == 2
-        res.get(bootstrapService.leLycee).size() == 1
-        res.get(bootstrapService.leLycee).contains(FonctionEnum.ELEVE)
-        res.get(bootstrapService.leCollege).size() == 1
-        res.get(bootstrapService.leCollege).contains(FonctionEnum.ELEVE)
+        res.get(bootstrapService.etablissementLycee).size() == 1
+        res.get(bootstrapService.etablissementLycee).contains(FonctionEnum.ELEVE)
+        res.get(bootstrapService.etablissementCollege).size() == 1
+        res.get(bootstrapService.etablissementCollege).contains(FonctionEnum.ELEVE)
 
         // given: un pers de direction
         def pers1 = bootstrapService.persDirection1
@@ -203,10 +203,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
         // then: le résultats contient les établissements assicié à la fonction enseignant
         res.size() == 2
-        res.get(bootstrapService.leLycee).size() == 1
-        res.get(bootstrapService.leLycee).contains(FonctionEnum.DIR)
-        res.get(bootstrapService.leCollege).size() == 1
-        res.get(bootstrapService.leCollege).contains(FonctionEnum.DIR)
+        res.get(bootstrapService.etablissementLycee).size() == 1
+        res.get(bootstrapService.etablissementLycee).contains(FonctionEnum.DIR)
+        res.get(bootstrapService.etablissementCollege).size() == 1
+        res.get(bootstrapService.etablissementCollege).contains(FonctionEnum.DIR)
     }
 
     void testFindEtablissementsAdministresForPersonne() {
@@ -218,8 +218,8 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
         then:"Les établissements récupérés sont les administrés par la personne"
         assertEquals("pas le bon nombre d'établissements",2,res.size())
-        assertTrue(res.contains(bootstrapService.leLycee))
-        assertTrue(res.contains(bootstrapService.leCollege))
+        assertTrue(res.contains(bootstrapService.etablissementLycee))
+        assertTrue(res.contains(bootstrapService.etablissementCollege))
 
         given: "un administrateur d'un seul établissement"
         def ens = bootstrapService.enseignant1

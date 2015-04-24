@@ -39,109 +39,111 @@ import org.springframework.transaction.annotation.Transactional
  */
 class CahierTextesService {
 
-  static transactional = false
-  CahierTextesRestService cahierTextesRestService
+    static transactional = false
+    CahierTextesRestService cahierTextesRestService
 
-  /**
-   * Récupère la liste des cahiers de textes infos
-   * @param seance la modalité activité pour laquelle on récupère les cahiers
-   * @param personne la personne qui déclenche l'opération
-   * @return la liste des cahiers de textes
-   */
-  List<CahierTextesInfo> findCahiersTextesInfoByModaliteActivite(ModaliteActivite seance,
-                                                                 Personne personne,
-                                                                 String codePorteur = null) {
-    assert (seance.enseignant == personne)
-    def structId = seance.structureEnseignementId
-    def personneId = personne.id
-    def restRes = cahierTextesRestService.findCahiersByStructureAndEnseignant(structId,
-                                                                                     personneId,
-                                                                                     codePorteur)
-    def res = []
-    if (restRes) {
-      restRes.items.each {
-        res << new CahierTextesInfo(id: it.id, nom: it.nom)
-      }
+    /**
+     * Récupère la liste des cahiers de textes infos
+     * @param seance la modalité activité pour laquelle on récupère les cahiers
+     * @param personne la personne qui déclenche l'opération
+     * @return la liste des cahiers de textes
+     */
+    List<CahierTextesInfo> findCahiersTextesInfoByModaliteActivite(ModaliteActivite seance,
+                                                                   Personne personne,
+                                                                   String codePorteur = null) {
+        assert (seance.enseignant == personne)
+        def structId = seance.structureEnseignementId
+        def personneId = personne.id
+        def restRes = cahierTextesRestService.findCahiersByStructureAndEnseignant(
+                structId,
+                personneId,
+                codePorteur
+        )
+        def res = []
+        if (restRes) {
+            restRes.items.each {
+                res << new CahierTextesInfo(id: it.id, nom: it.nom)
+            }
+        }
+        res
     }
-    res
-  }
 
-  /**
-   * Récupère la liste des chapitres d'un cahier de textes
-   * @param cahierId l'id du cahier
-   * @param peronne la personne déclenchant l'opération
-   * @return la liste des chapitres
-   */
-  List<ChapitreInfo> getChapitreInfosForCahierId(Long cahierId,
-                                                 Personne peronne,
-                                                 String codePorteur = null) {
-    def restRes = cahierTextesRestService.getStructureChapitresForCahierId(cahierId,
-                                                                           peronne.id,
-                                                                           codePorteur)
-    def res = []
-    def rang = 0
-    if (restRes) {
-      setupChapitreInfos(restRes["racine"], rang, res)
+    /**
+     * Récupère la liste des chapitres d'un cahier de textes
+     * @param cahierId l'id du cahier
+     * @param peronne la personne déclenchant l'opération
+     * @return la liste des chapitres
+     */
+    List<ChapitreInfo> getChapitreInfosForCahierId(Long cahierId,
+                                                   Personne peronne,
+                                                   String codePorteur = null) {
+        def restRes = cahierTextesRestService.getStructureChapitresForCahierId(cahierId,
+                peronne.id,
+                codePorteur)
+        def res = []
+        def rang = 0
+        if (restRes) {
+            setupChapitreInfos(restRes["racine"], rang, res)
+        }
+        res
     }
-    res
-  }
 
-  /**
-   * Creer une activite dans le cahier de textes pour une séance tdbase
-   * @param cahierId l'id du cahier dans lequel on crée l'activité
-   * @param chapitreId l'id du chapitre dans lequel on créé l'activité
-   * @param activiteContext le contexte de l'activité
-   * @param seance la séance pour laquelle con créé l'activité
-   * @param description la description de la séance
-   * @param urlSeance l'url de la séance
-   * @param personne la personne déclenchant l'opération
-   * @return l'id de l'activité du cahier de textes qui a été créée
-   */
-  @Transactional
-  Long createTextesActivite(Long cahierId,
-                            Long chapitreId,
-                            ContexteActivite activiteContext,
-                            ModaliteActivite seance,
-                            String description,
-                            String urlSeance,
-                            Personne personne,
-                            String codePorteur = null) {
-    assert (personne == seance.enseignant)
-    def res = cahierTextesRestService.createTextesActivite(cahierId,
-                                                           chapitreId,
-                                                           activiteContext.name(),
-                                                           personne.id,
-                                                           seance.sujet.titre,
-                                                           description,
-                                                           seance.dateDebut,
-                                                           seance.dateFin,
-                                                           urlSeance,
-                                                           codePorteur)
-    def activiteId = null
-    if (res) {
-      activiteId = res.id as Long
-      seance.activiteId = activiteId
-      try {
-        seance.save(failOnError: true)
-      } catch (Exception e) {
-        log.error(e.message)
-        activiteId = null
-      }
+    /**
+     * Creer une activite dans le cahier de textes pour une séance tdbase
+     * @param cahierId l'id du cahier dans lequel on crée l'activité
+     * @param chapitreId l'id du chapitre dans lequel on créé l'activité
+     * @param activiteContext le contexte de l'activité
+     * @param seance la séance pour laquelle con créé l'activité
+     * @param description la description de la séance
+     * @param urlSeance l'url de la séance
+     * @param personne la personne déclenchant l'opération
+     * @return l'id de l'activité du cahier de textes qui a été créée
+     */
+    @Transactional
+    Long createTextesActivite(Long cahierId,
+                              Long chapitreId,
+                              ContexteActivite activiteContext,
+                              ModaliteActivite seance,
+                              String description,
+                              String urlSeance,
+                              Personne personne,
+                              String codePorteur = null) {
+        assert (personne == seance.enseignant)
+        def res = cahierTextesRestService.createTextesActivite(cahierId,
+                chapitreId,
+                activiteContext.name(),
+                personne.id,
+                seance.sujet.titre,
+                description,
+                seance.dateDebut,
+                seance.dateFin,
+                urlSeance,
+                codePorteur)
+        def activiteId = null
+        if (res) {
+            activiteId = res.id as Long
+            seance.activiteId = activiteId
+            try {
+                seance.save(failOnError: true)
+            } catch (Exception e) {
+                log.error(e.message)
+                activiteId = null
+            }
+        }
+        activiteId
     }
-    activiteId
-  }
 
-  private def setupChapitreInfos(List listeIn, Integer rang, List listeOut) {
-    listeIn.each {
-      def nom = new StringBuilder()
-      rang.times() {
-        nom << ". "
-      }
-      nom << it.nom
-      listeOut << new ChapitreInfo(id: it.id, nomAvecIndentation: nom.toString())
-      setupChapitreInfos(it["chapitres-fils"], rang + 2, listeOut)
+    private def setupChapitreInfos(List listeIn, Integer rang, List listeOut) {
+        listeIn.each {
+            def nom = new StringBuilder()
+            rang.times() {
+                nom << ". "
+            }
+            nom << it.nom
+            listeOut << new ChapitreInfo(id: it.id, nomAvecIndentation: nom.toString())
+            setupChapitreInfos(it["chapitres-fils"], rang + 2, listeOut)
+        }
     }
-  }
 
 }
 
@@ -150,8 +152,8 @@ class CahierTextesService {
  */
 @ToString
 class CahierTextesInfo {
-  Long id
-  String nom
+    Long id
+    String nom
 }
 
 /**
@@ -159,25 +161,24 @@ class CahierTextesInfo {
  */
 @ToString
 class ChapitreInfo {
-  Long id
+    Long id
 
-  /**
-   * le nom avec indentation correspondant à la profondeur du chapitre
-   */
-  String nomAvecIndentation
+    /**
+     * le nom avec indentation correspondant à la profondeur du chapitre
+     */
+    String nomAvecIndentation
 
-  /**
-   *
-   * @return le nom sans indentation
-   */
-  String getNom() {
-    nomAvecIndentation?.trim()
-  }
+    /**
+     *
+     * @return le nom sans indentation
+     */
+    String getNom() {
+        nomAvecIndentation?.trim()
+    }
 }
 
 
-
 enum ContexteActivite {
-  CLA, // en classe
-  MAI  // à la maison
+    CLA, // en classe
+    MAI  // à la maison
 }

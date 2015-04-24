@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.RechercheStructuresCommand; org.lilie.services.eliot.tdbase.ContexteActivite" %>
+<%@ page import="org.lilie.services.eliot.tice.annuaire.groupe.GroupeType; org.lilie.services.eliot.tdbase.RechercheGroupeCommand; org.lilie.services.eliot.tdbase.ContexteActivite; org.lilie.services.eliot.tice.annuaire.groupe.GroupeType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -36,7 +36,7 @@
     <r:script>
     $(document).ready(function () {
       $('#menu-item-seances').addClass('actif');
-      $('select[name="proprietesScolariteSelectionId"]').focus();
+      $('select[name="structureEnseignementId"]').focus();
       $(".datepicker").datetimepicker();
       var $confirmDialog = $("<div></div>")
       							.html('Êtes vous sur de vouloir supprimer la séance avec toutes les copies associées ?')
@@ -58,17 +58,17 @@
       });
 
 
-     $("#search-structure-form").dialog({
+     $("#search-group-form").dialog({
            autoOpen: false,
-           title: "Rechercher une classe ou un groupe d'élèves",
+           title: "Rechercher groupe d'apprenant",
            height: 600,
            width: 420,
            modal: true
       });
 
-     $( "#select-other-structure" )
+     $( "#select-other-group" )
            .click(function() {
-             $( "#search-structure-form" ).dialog( "open" );
+             $( "#search-group-form" ).dialog( "open" );
            });
 
     $('#gestionEvaluation').click(function() {
@@ -170,20 +170,20 @@
                 <td class="label">Classe/groupe<span class="obligatoire">*</span>&nbsp;:
                 </td>
                 <td>
-                    <g:if test="${modaliteActivite.structureEnseignement}">
-                        <strong>${modaliteActivite.structureEnseignement.nomAffichage}</strong>
-                        <input type="hidden" name="structureEnseignement.id"
-                               value="${modaliteActivite.structureEnseignement.id}"/>
+                    <g:if test="${modaliteActivite.groupe}">
+                        <strong>${modaliteActivite.groupe.nomAffichage}</strong>
+                        <input type="hidden" name="groupeId" value="${modaliteActivite.groupe.id}"/>
+                        <input type="hidden" name="groupeType" value="${modaliteActivite.groupe.groupeType.name()}"/>
                     </g:if>
                     <g:else>
                         <div id="structure-selection" style="float: left; margin-right: 10px;">
-                            <g:select name="proprietesScolariteSelectionId"
+                            <g:select name="structureEnseignementId"
                                       noSelection="${['null': g.message(code: "default.select.null")]}"
-                                      from="${proprietesScolarite}"
+                                      from="${structureEnseignementList}"
                                       optionKey="id"
-                                      optionValue="structureEnseignementNomAffichage"/>
+                                      optionValue="nomAffichage"/>
                         </div>
-                        <a id="select-other-structure">Choisir une autre classe ou un autre groupe ...</a>
+                        <a id="select-other-group">Choisir un autre groupe ...</a>
                     </g:else>
                 </td>
             </tr>
@@ -226,7 +226,7 @@
                         class="label">Décompte&nbsp;du&nbsp;temps</span>
                 </td>
             </tr>
-
+        
             <tr id="dureeMinutesTr">
                 <td class="label">Dur&eacute;e&nbsp;:</td>
                 <td>
@@ -236,8 +236,7 @@
                     (en minutes)
                 </td>
             </tr>
-
-
+    
             <tr>
                 <td class="label"></td>
                 <td>
@@ -371,10 +370,13 @@
     <br/><br/><br/><br/><br/>
 </g:form>
 
-<div id="search-structure-form" style="background-color: #ffffff">
-    <g:render template="/seance/selectStructureEnseignement" model="[etablissements            : etablissements,
-                                                                     niveaux                   : niveaux,
-                                                                     rechercheStructuresCommand: new RechercheStructuresCommand()]"/>
+<div id="search-group-form" style="background-color: #ffffff">
+    <g:render template="/seance/selectAutreGroupe" model="[
+            etablissements        : etablissements,
+            fonctionList          : fonctionList,
+            groupeTypeList        : groupeTypeList,
+            rechercheGroupeCommand: new RechercheGroupeCommand(etablissementId: currentEtablissement.id, groupeType: GroupeType.SCOLARITE)
+    ]"/>
 </div>
 
 </body>
