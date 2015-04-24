@@ -33,6 +33,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase-activite"/>
+  <r:require module="momentjs"/>
   <g:if test="${copie.estModifiable()}">
     <r:require module="copieEdite_CopieModifiable"/>
   </g:if>
@@ -41,12 +42,57 @@
   </g:else>
 
   <title><g:message code="activite.copie.edite.head.title"/></title>
+  <style>
+    .chronometre {
+      z-index: 10000;
+      background-color: lightcoral;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      padding-left: 12px;
+      padding-right: 12px;
+      border-radius: 3px;
+    }
+  </style>
 </head>
 
 <body>
 
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
+
+<div id="page">
+<g:if test="copie.modaliteActivite.decompteTemps">
+  <div id="datetime"></div>
+  <script>
+    moment.locale('fr');
+    var datetime = null;
+    var date = ${copie.dateDebut != null ? "moment('" + copie.dateDebut + "')" : "null"};
+
+    var update = function () {
+      var ms = date.diff(moment(new Date())) + ${copie.modaliteActivite.dureeMinutes} * 60 * 1000;
+
+      if (ms > 0) {
+        datetime.html(moment.utc(ms).format('HH:mm:ss'));
+      }
+      else {
+        datetime.html('Terminé');
+      }
+    };
+
+    $(document).ready(function(){
+
+      if (date != null) {
+        datetime = $('#datetime');
+        datetime.css('position', 'fixed');
+        datetime.css('top', '6px');
+        datetime.css('left', '440px');
+        datetime.addClass('chronometre');
+        update();
+        setInterval(update, 1000);
+      }
+    });
+  </script>
+</g:if>
 
 <g:hasErrors bean="${copie}">
   <div class="portal-messages">
@@ -123,5 +169,6 @@
 <g:render template="/copie/edite"
           model="[copie: copie, afficheCorrection: copie.modaliteActivite.estPerimee()]"/>
 
+</div>
 </body>
 </html>

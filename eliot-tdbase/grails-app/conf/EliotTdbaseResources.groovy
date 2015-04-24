@@ -41,6 +41,11 @@ modules = {
     resource url: [dir: 'css/eliot', file: 'tdbase-ui.css']
   }
 
+  momentjs {
+      resource url: [dir: 'js/lib', file: 'moment-with-locales.js'], disposition: 'head'
+  }
+
+
   'eliot-tdbase-combobox-autocomplete' {
     resource url: [dir: 'css/eliot', file: 'eliot-tdbase-combobox-autocomplete.css']
     resource url: [dir: 'js/eliot', file: 'eliot-tdbase-combobox-autocomplete.js']

@@ -56,6 +56,8 @@ class Copie {
   Personne correcteur
   ModaliteActivite modaliteActivite
 
+  Date dateDebut
+
   SortedSet<Reponse> reponses
   static hasMany = [reponses: Reponse]
 
@@ -78,6 +80,7 @@ class Copie {
     eleve(nullable: true)
     correcteur(nullable: true)
     modaliteActivite(nullable: true)
+    dateDebut(nullable: true)
   }
 
   static mapping = {
