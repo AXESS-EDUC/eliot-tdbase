@@ -78,9 +78,14 @@ class Question implements Artefact {
 
   private def specificationObject
 
+  Boolean collaboratif = false
+  Boolean termine
+  Sujet sujetLie
+
   static hasMany = [
       questionAttachements: QuestionAttachement,
-      allQuestionCompetence: QuestionCompetence
+      allQuestionCompetence: QuestionCompetence,
+      contributeurs: Personne
   ]
 
 
@@ -123,6 +128,22 @@ class Question implements Artefact {
       }
 
     })
+    collaboratif(nullable: false)
+    termine(nullable: true)
+    contributeurs(validator: { val, obj ->
+      if (!obj.collaboratif && val?.size() > 0) {
+        return ['invalid.contributeurpourquestionnoncollaboratif']
+      }
+    })
+    sujetLie(nullable: true, validator: { val, obj ->
+      if (!obj.collaboratif && val != null) {
+        return ['invalid.sujetliepourquestionnoncollaboratif']
+      }
+
+      if (obj.collaboratif && (val == null || !val.collaboratif)) {
+        return ['invalid.passujetliepourquestioncollaboratif']
+      }
+    })
   }
 
   static mapping = {
@@ -133,6 +154,7 @@ class Question implements Artefact {
     principalAttachement(column: 'attachement_id', fetch: 'join')
     questionAttachements(lazy: false, indexColumn: [name: 'rang', type: Integer])
     allQuestionCompetence(lazy: false, cascade: 'all-delete-orphan')
+    contributeurs(joinTable: [name: 'td.question_contributeur', key: 'question_id', column: 'personne_id'])
   }
 
   static transients = [
