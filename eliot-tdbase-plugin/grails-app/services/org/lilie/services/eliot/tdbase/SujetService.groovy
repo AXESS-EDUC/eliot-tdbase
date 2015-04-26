@@ -198,29 +198,29 @@ class SujetService {
    * @param supprimeur la personne tentant la suppression
    */
   @Transactional
-  def supprimeSujet(Sujet leSujet, Personne supprimeur) {
-    assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(supprimeur, leSujet))
+  def supprimeSujet(Sujet sujet, Personne supprimeur) {
+    assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(supprimeur, sujet))
 
     // si le sujet est un exercice, suppression de la question associée
-    def question = leSujet.questionComposite
+    def question = sujet.questionComposite
     if (question) {
       supprimeQuestionComposite(question, supprimeur)
     }
     // suppression des copies jetables attachees au sujet
-    copieService.supprimeCopiesJetablesForSujet(leSujet)
+    copieService.supprimeCopiesJetablesForSujet(sujet)
 
     // suppression des sujetQuestions
     def sujetQuests = SujetSequenceQuestions.where {
-      sujet == leSujet
+      sujet == sujet
     }
     sujetQuests.deleteAll()
 
     // suppression de la publication si necessaire
-    if (leSujet.estPartage()) {
-      leSujet.publication.delete()
+    if (sujet.estPartage()) {
+      sujet.publication.delete()
     }
     // on supprime enfin le sujet
-    leSujet.delete()
+    sujet.delete()
   }
 
 /**
