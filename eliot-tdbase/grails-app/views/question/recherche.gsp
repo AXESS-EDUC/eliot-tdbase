@@ -72,7 +72,11 @@
       });
     });
   </r:script>
-
+  <style>
+    .custom-combobox-input {
+      width: 15em;
+    }
+  </style>
   <title>
     <g:if test="${afficheFormulaire}">
       <g:message code="question.recherche.head.title"/>
