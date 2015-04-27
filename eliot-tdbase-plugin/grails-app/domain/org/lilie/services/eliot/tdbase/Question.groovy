@@ -274,7 +274,11 @@ class Question implements Artefact {
     return publication != null
   }
 
-  /**
+  @Override
+  boolean estCollaboratif() {
+    return collaboratif
+  }
+/**
    *
    * @return true si la question est invariante
    * @see Artefact

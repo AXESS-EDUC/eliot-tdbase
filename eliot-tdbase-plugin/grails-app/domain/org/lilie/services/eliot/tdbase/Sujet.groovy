@@ -219,6 +219,11 @@ class Sujet implements Artefact {
   }
 
   @Override
+  boolean estCollaboratif() {
+    return collaboratif
+  }
+
+  @Override
   boolean estInvariant() {
     false
   }
