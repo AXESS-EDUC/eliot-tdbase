@@ -77,9 +77,18 @@ class Sujet implements Artefact {
   CopyrightsType copyrightsType
 
   List<SujetSequenceQuestions> questionsSequences
-  static hasMany = [questionsSequences: SujetSequenceQuestions]
+
+  Boolean collaboratif = false
+  Boolean termine
+  //List<Personne> contributeurs
+
+  static hasMany = [
+      questionsSequences: SujetSequenceQuestions,
+      contributeurs: Personne
+  ]
 
   Integer rangInsertion
+
 
   static transients = [
       'rangInsertion',
@@ -109,6 +118,13 @@ class Sujet implements Artefact {
     noteAutoMax(nullable: true)
     noteEnseignantMax(nullable: true)
     paternite(nullable: true)
+    collaboratif(nullable: false)
+    termine(nullable: true)
+    contributeurs(validator: { val, obj ->
+      if (!obj.collaboratif && val?.size() > 0) {
+        return ['invalid.contributeurpoursujetnoncollaboratif']
+      }
+    })
   }
 
   static mapping = {
@@ -116,6 +132,7 @@ class Sujet implements Artefact {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
     questionsSequences(cascade: 'refresh')
+    contributeurs(joinTable: [name: 'td.sujet_contributeur', key: 'sujet_id', column: 'personne_id'])
     sujetType(fetch: 'join')
     cache(true)
   }
@@ -199,6 +216,11 @@ class Sujet implements Artefact {
   @Override
   boolean estPartage() {
     publicationId != null
+  }
+
+  @Override
+  boolean estCollaboratif() {
+    return collaboratif
   }
 
   @Override

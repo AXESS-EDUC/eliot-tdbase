@@ -55,7 +55,7 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutSupprimerArtefact(Personne utilisateur, Artefact artefact) {
-    if (artefact.estInvariant()) {
+    if (artefact.estInvariant() || artefact.estCollaboratif()) {
       return false
     }
     return utilisateurPeutModifierArtefact(utilisateur, artefact) &&
@@ -98,7 +98,7 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutDupliquerArtefact(Personne utilisateur, Artefact artefact) {
-    if (artefact.estInvariant()) {
+    if (artefact.estInvariant() || artefact.estCollaboratif()) {
       return false
     }
     return utilisateurPeutReutiliserArtefact(utilisateur, artefact)
@@ -114,7 +114,7 @@ class ArtefactAutorisationService {
     if (!partageArtefactCCActive) {
         return false
     }
-    if (artefact.estInvariant()) {
+    if (artefact.estInvariant() || artefact.estCollaboratif()) {
       return false
     }
     if (artefact.estPartage()) {
@@ -131,6 +131,9 @@ class ArtefactAutorisationService {
    */
   boolean utilisateurPeutReutiliserArtefact(Personne utilisateur,
                                             Artefact artefact) {
+    if(artefact.estCollaboratif()) {
+      return false
+    }
     if (utilisateur == artefact.proprietaire) {
       return true
     }
@@ -146,6 +149,9 @@ class ArtefactAutorisationService {
   boolean utilisateurPeutExporterArtefact(Personne utilisateur,
                                           Artefact artefact,
                                           Format format) {
+    if(artefact.estCollaboratif()) {
+      return false
+    }
     if(format == Format.MOODLE_XML && !artefact.estPresentableEnMoodleXML()) {
       return false
     }
@@ -153,7 +159,36 @@ class ArtefactAutorisationService {
     return utilisateurPeutReutiliserArtefact(utilisateur, artefact)
   }
 
+  /**
+   * Vérifie qu'un utilisateur peut créer une séance à partir d'un sujet
+   * @param utilisateur
+   * @param artefact
+   * @return
+   */
+  boolean utilisateurPeutCreerSeance(Personne utilisateur,
+                                     Sujet sujet) {
+    return !sujet.estCollaboratif()
+  }
 
+  /**
+   * Vérifie qu'un utilisateur peut ajouter un item dans un sujet
+   * @param personne
+   * @param sujet
+   * @return
+   */
+  boolean utilisateurPeutAjouterItem(Personne personne, Sujet sujet) {
+    return !sujet.estCollaboratif() && personne == sujet.proprietaire
+  }
+
+  /**
+   * Vérifier qu'un utilisateur peut modifier les propriétés d'un sujet
+   * @param personne
+   * @param sujet
+   * @return
+   */
+  boolean utilisateurPeutModifierPropriete(Personne personne, Sujet sujet) {
+    return personne == sujet.proprietaire
+  }
 }
 
 

@@ -40,270 +40,270 @@ import org.springframework.transaction.annotation.Transactional
 
 class SujetService {
 
-  static transactional = false
+    static transactional = false
 
-  QuestionService questionService
-  ArtefactAutorisationService artefactAutorisationService
-  CopieService copieService
-  ReponseService reponseService
-  SessionFactory sessionFactory
+    QuestionService questionService
+    ArtefactAutorisationService artefactAutorisationService
+    CopieService copieService
+    ReponseService reponseService
+    SessionFactory sessionFactory
 
-  /**
-   * Créé un sujet
-   * @param proprietaire le proprietaire du sujet
-   * @param titre le titre du sujet
-   * @return le sujet créé
-   */
-  @Transactional
-  Sujet createSujet(Personne proprietaire, String titre) {
-    Sujet sujet = new Sujet(proprietaire: proprietaire,
-        titre: titre,
-        titreNormalise: StringUtils.normalise(titre),
-        accesPublic: false,
-        accesSequentiel: false,
-        ordreQuestionsAleatoire: false,
-        publie: false,
-        versionSujet: 1,
-        copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
-        sujetType: SujetTypeEnum.Sujet.sujetType)
+    /**
+     * Créé un sujet
+     * @param proprietaire le proprietaire du sujet
+     * @param titre le titre du sujet
+     * @return le sujet créé
+     */
+    @Transactional
+    Sujet createSujet(Personne proprietaire, String titre) {
+        Sujet sujet = new Sujet(proprietaire: proprietaire,
+                titre: titre,
+                titreNormalise: StringUtils.normalise(titre),
+                accesPublic: false,
+                accesSequentiel: false,
+                ordreQuestionsAleatoire: false,
+                publie: false,
+                versionSujet: 1,
+                copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
+                sujetType: SujetTypeEnum.Sujet.sujetType)
 
-    addPaterniteItem(proprietaire, sujet)
+        addPaterniteItem(proprietaire, sujet)
 
-    sujet.save(flush: true)
-    return sujet
-  }
-
-  /**
-   * Recopie un sujet
-   * @param sujet le sujet à recopier
-   * @param proprietaire le proprietaire
-   * @return la copie du sujet
-   */
-  @Transactional
-  Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
-    // verification securité
-    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, sujet))
-
-    Sujet sujetCopie = new Sujet(proprietaire: proprietaire,
-        titre: sujet.titre + " (Copie)",
-        titreNormalise: sujet.titreNormalise,
-        presentation: sujet.presentation,
-        presentationNormalise: sujet.presentationNormalise,
-        accesPublic: false,
-        accesSequentiel: sujet.accesSequentiel,
-        ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
-        publie: false,
-        copyrightsType: sujet.copyrightsType,
-        sujetType: sujet.sujetType)
-    sujetCopie.save()
-    // recopie de la séquence de questions (ce n'est pas une copie en profondeur)
-    sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
-      SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(question: sujetQuestion.question,
-          sujet: sujetCopie,
-          noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite)
-      sujetCopie.addToQuestionsSequences(copieSujetSequence)
-      copieSujetSequence.save()
-    }
-    // repertorie l'ateriorité
-    sujetCopie.paternite = sujet.paternite
-
-    if(!isDernierAuteur(sujetCopie, proprietaire)) {
-      addPaterniteItem(proprietaire, sujetCopie)
+        sujet.save(flush: true)
+        return sujet
     }
 
-    sujetCopie.save()
-    if (sujetCopie.estUnExercice()) {
-      createQuestionCompositeForExercice(sujetCopie, proprietaire)
-    }
-    return sujetCopie
-  }
+    /**
+     * Recopie un sujet
+     * @param sujet le sujet à recopier
+     * @param proprietaire le proprietaire
+     * @return la copie du sujet
+     */
+    @Transactional
+    Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
+        // verification securité
+        assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, sujet))
 
-  /**
-   * Change le titre du sujet
-   * @param sujet le sujet à modifier
-   * @param nouveauTitre le titre
-   * @return le sujet
-   */
-  Sujet updateTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
-    // verif securite
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
-
-    if (!isDernierAuteur(sujet, proprietaire)) {
-      addPaterniteItem(proprietaire, sujet)
-    }
-
-    sujet.titre = nouveauTitre
-    sujet.titreNormalise = StringUtils.normalise(nouveauTitre)
-    sujet.save()
-    if (sujet.estUnExercice()) {
-      def question = sujet.questionComposite
-      updateTitreQuestionComposite(nouveauTitre, question)
-    }
-    return sujet
-  }
-
-  /**
-   * Modifie les proprietes du sujet passé en paramètre
-   * @param sujet le sujet
-   * @param proprietes les nouvelles proprietes
-   * @param proprietaire le proprietaire
-   * @return le sujet
-   */
-  @Transactional
-  Sujet updateProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
-    // verif securite
-    if (sujet.id != null) { // sujet existant
-      assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
-    } else { // sujet venant d'être créé
-      sujet.proprietaire = proprietaire
-      sujet.copyrightsType = CopyrightsType.getDefault()
-    }
-
-    if (!isDernierAuteur(sujet, proprietaire)) {
-      addPaterniteItem(proprietaire, sujet)
-    }
-
-    if (proprietes.titre && sujet.titre != proprietes.titre) {
-      sujet.titreNormalise = StringUtils.normalise(proprietes.titre)
-    }
-    if (proprietes.presentation && sujet.presentation != proprietes.presentation) {
-      sujet.presentationNormalise = StringUtils.normalise(proprietes.presentation)
-    }
-    sujet.properties = proprietes
-    if (sujet.save(flush: true)) {
-
-      // traitement de la question associee au sujet si le sujet est un exercice
-      def question = sujet.questionComposite
-      if (sujet.estUnExercice()) {
-        if (!question) {
-          createQuestionCompositeForExercice(sujet, proprietaire)
-        } else {
-          // il faut mettre a jour le titre de la question
-          updateTitreQuestionComposite(sujet.titre, question)
+        Sujet sujetCopie = new Sujet(proprietaire: proprietaire,
+                titre: sujet.titre + " (Copie)",
+                titreNormalise: sujet.titreNormalise,
+                presentation: sujet.presentation,
+                presentationNormalise: sujet.presentationNormalise,
+                accesPublic: false,
+                accesSequentiel: sujet.accesSequentiel,
+                ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
+                publie: false,
+                copyrightsType: sujet.copyrightsType,
+                sujetType: sujet.sujetType)
+        sujetCopie.save()
+        // recopie de la séquence de questions (ce n'est pas une copie en profondeur)
+        sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
+            SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(question: sujetQuestion.question,
+                    sujet: sujetCopie,
+                    noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite)
+            sujetCopie.addToQuestionsSequences(copieSujetSequence)
+            copieSujetSequence.save()
         }
-      } else {
-        // si le sujet était un exercice mais ne l'est plus, suppression de
-        // la question associée
+        // repertorie l'ateriorité
+        sujetCopie.paternite = sujet.paternite
+
+        if (!isDernierAuteur(sujetCopie, proprietaire)) {
+            addPaterniteItem(proprietaire, sujetCopie)
+        }
+
+        sujetCopie.save()
+        if (sujetCopie.estUnExercice()) {
+            createQuestionCompositeForExercice(sujetCopie, proprietaire)
+        }
+        return sujetCopie
+    }
+
+    /**
+     * Change le titre du sujet
+     * @param sujet le sujet à modifier
+     * @param nouveauTitre le titre
+     * @return le sujet
+     */
+    Sujet updateTitreSujet(Sujet sujet, String nouveauTitre, Personne proprietaire) {
+        // verif securite
+        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
+
+        if (!isDernierAuteur(sujet, proprietaire)) {
+            addPaterniteItem(proprietaire, sujet)
+        }
+
+        sujet.titre = nouveauTitre
+        sujet.titreNormalise = StringUtils.normalise(nouveauTitre)
+        sujet.save()
+        if (sujet.estUnExercice()) {
+            def question = sujet.questionComposite
+            updateTitreQuestionComposite(nouveauTitre, question)
+        }
+        return sujet
+    }
+
+    /**
+     * Modifie les proprietes du sujet passé en paramètre
+     * @param sujet le sujet
+     * @param proprietes les nouvelles proprietes
+     * @param proprietaire le proprietaire
+     * @return le sujet
+     */
+    @Transactional
+    Sujet updateProprietes(Sujet sujet, Map proprietes, Personne proprietaire) {
+        // verif securite
+        if (sujet.id != null) { // sujet existant
+            assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
+        } else { // sujet venant d'être créé
+            sujet.proprietaire = proprietaire
+            sujet.copyrightsType = CopyrightsType.getDefault()
+        }
+
+        if (!isDernierAuteur(sujet, proprietaire)) {
+            addPaterniteItem(proprietaire, sujet)
+        }
+
+        if (proprietes.titre && sujet.titre != proprietes.titre) {
+            sujet.titreNormalise = StringUtils.normalise(proprietes.titre)
+        }
+        if (proprietes.presentation && sujet.presentation != proprietes.presentation) {
+            sujet.presentationNormalise = StringUtils.normalise(proprietes.presentation)
+        }
+        sujet.properties = proprietes
+        if (sujet.save(flush: true)) {
+
+            // traitement de la question associee au sujet si le sujet est un exercice
+            def question = sujet.questionComposite
+            if (sujet.estUnExercice()) {
+                if (!question) {
+                    createQuestionCompositeForExercice(sujet, proprietaire)
+                } else {
+                    // il faut mettre a jour le titre de la question
+                    updateTitreQuestionComposite(sujet.titre, question)
+                }
+            } else {
+                // si le sujet était un exercice mais ne l'est plus, suppression de
+                // la question associée
+                if (question) {
+                    supprimeQuestionComposite(question, proprietaire)
+                }
+            }
+        }
+        return sujet
+    }
+
+    /**
+     * Supprime un sujet
+     * @param sujet la question à supprimer
+     * @param supprimeur la personne tentant la suppression
+     */
+    @Transactional
+    def supprimeSujet(Sujet sujet, Personne supprimeur) {
+        assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(supprimeur, sujet))
+
+        // si le sujet est un exercice, suppression de la question associée
+        def question = sujet.questionComposite
         if (question) {
-          supprimeQuestionComposite(question, proprietaire)
+            supprimeQuestionComposite(question, supprimeur)
         }
-      }
-    }
-    return sujet
-  }
+        // suppression des copies jetables attachees au sujet
+        copieService.supprimeCopiesJetablesForSujet(sujet)
 
-  /**
-   * Supprime un sujet
-   * @param sujet la question à supprimer
-   * @param supprimeur la personne tentant la suppression
-   */
-  @Transactional
-  def supprimeSujet(Sujet leSujet, Personne supprimeur) {
-    assert (artefactAutorisationService.utilisateurPeutSupprimerArtefact(supprimeur, leSujet))
+        // suppression des sujetQuestions
+        def sujetQuests = SujetSequenceQuestions.where {
+            sujet == sujet
+        }
+        sujetQuests.deleteAll()
 
-    // si le sujet est un exercice, suppression de la question associée
-    def question = leSujet.questionComposite
-    if (question) {
-      supprimeQuestionComposite(question, supprimeur)
+        // suppression de la publication si necessaire
+        if (sujet.estPartage()) {
+            sujet.publication.delete()
+        }
+        // on supprime enfin le sujet
+        sujet.delete()
     }
-    // suppression des copies jetables attachees au sujet
-    copieService.supprimeCopiesJetablesForSujet(leSujet)
-
-    // suppression des sujetQuestions
-    def sujetQuests = SujetSequenceQuestions.where {
-      sujet == leSujet
-    }
-    sujetQuests.deleteAll()
-
-    // suppression de la publication si necessaire
-    if (leSujet.estPartage()) {
-      leSujet.publication.delete()
-    }
-    // on supprime enfin le sujet
-    leSujet.delete()
-  }
 
 /**
  *  Partage un sujet
  * @param sujet le sujet à partager
  * @param partageur la personne souhaitant partager
  */
-  @Transactional
-  def partageSujet(Sujet sujet, Personne partageur) {
-    assert (artefactAutorisationService.utilisateurPeutPartageArtefact(partageur, sujet))
-    CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
-    Publication publication = new Publication(dateDebut: new Date(),
-        copyrightsType: ct)
-    publication.save()
-    sujet.copyrightsType = ct
-    sujet.publication = publication
-    sujet.publie = true
-    // il faut partager les questions qui ne sont pas partagées
-    sujet.questionsSequences.each {
-      def question = it.question
-      if (question.estComposite() && !question.exercice.estPartage() ) {
-        partageSujet(question.exercice, partageur)
-      } else {
-        if (!question.estPartage()) {
-          questionService.partageQuestion(question, partageur)
+    @Transactional
+    def partageSujet(Sujet sujet, Personne partageur) {
+        assert (artefactAutorisationService.utilisateurPeutPartageArtefact(partageur, sujet))
+        CopyrightsType ct = CopyrightsTypeEnum.CC_BY_NC.copyrightsType
+        Publication publication = new Publication(dateDebut: new Date(),
+                copyrightsType: ct)
+        publication.save()
+        sujet.copyrightsType = ct
+        sujet.publication = publication
+        sujet.publie = true
+        // il faut partager les questions qui ne sont pas partagées
+        sujet.questionsSequences.each {
+            def question = it.question
+            if (question.estComposite() && !question.exercice.estPartage()) {
+                partageSujet(question.exercice, partageur)
+            } else {
+                if (!question.estPartage()) {
+                    questionService.partageQuestion(question, partageur)
+                }
+            }
         }
-      }
+
+        addPaterniteItem(
+                partageur,
+                sujet,
+                publication.dateDebut
+        )
+
+        // si le sujet est un exercice, partage de la question associee
+        def question = sujet.questionComposite
+        if (question) {
+            partageQuestionComposite(question)
+        }
+
+        return sujet
     }
 
-    addPaterniteItem(
-        partageur,
-        sujet,
-        publication.dateDebut
-    )
+    void addPaterniteItem(Personne partageur,
+                          Sujet sujet,
+                          Date datePublication = null) {
+        CopyrightsType ct = sujet.copyrightsType
 
-    // si le sujet est un exercice, partage de la question associee
-    def question = sujet.questionComposite
-    if (question) {
-      partageQuestionComposite(question)
+        // mise à jour de la paternite
+        PaterniteItem paterniteItem = new PaterniteItem(
+                auteur: "${partageur.nomAffichage}",
+                copyrightDescription: "${ct.presentation}",
+                copyrighLien: "${ct.lien}",
+                logoLien: ct.logo,
+                datePublication: datePublication,
+                oeuvreEnCours: true
+        )
+        Paternite paternite = new Paternite(sujet.paternite)
+        paternite.paterniteItems.each {
+            it.oeuvreEnCours = false
+        }
+        paternite.addPaterniteItem(paterniteItem)
+        sujet.paternite = paternite.toString()
+        sujet.save()
     }
 
-    return sujet
-  }
+    /**
+     * Teste si un utilisateur est le dernier auteur d'un sujet (i.e. le dernier à
+     * avoir modifié le sujet)
+     * @param sujet
+     * @param utilisateur
+     * @return
+     */
+    boolean isDernierAuteur(Sujet sujet, Personne utilisateur) {
+        Paternite paternite = new Paternite(sujet.paternite)
 
-  void addPaterniteItem(Personne partageur,
-                        Sujet sujet,
-                        Date datePublication = null) {
-    CopyrightsType ct = sujet.copyrightsType
+        if (!paternite.paterniteItems) {
+            return false
+        }
 
-    // mise à jour de la paternite
-    PaterniteItem paterniteItem = new PaterniteItem(
-        auteur: "${partageur.nomAffichage}",
-        copyrightDescription: "${ct.presentation}",
-        copyrighLien: "${ct.lien}",
-        logoLien: ct.logo,
-        datePublication: datePublication,
-        oeuvreEnCours: true
-    )
-    Paternite paternite = new Paternite(sujet.paternite)
-    paternite.paterniteItems.each {
-      it.oeuvreEnCours = false
+        return paternite.paterniteItems.last()?.auteur == utilisateur.nomAffichage
     }
-    paternite.addPaterniteItem(paterniteItem)
-    sujet.paternite = paternite.toString()
-    sujet.save()
-  }
-
-  /**
-   * Teste si un utilisateur est le dernier auteur d'un sujet (i.e. le dernier à
-   * avoir modifié le sujet)
-   * @param sujet
-   * @param utilisateur
-   * @return
-   */
-  boolean isDernierAuteur(Sujet sujet, Personne utilisateur) {
-    Paternite paternite = new Paternite(sujet.paternite)
-
-    if (!paternite.paterniteItems) {
-      return false
-    }
-
-    return paternite.paterniteItems.last()?.auteur == utilisateur.nomAffichage
-  }
 
 /**
  * Recherche de sujets
@@ -319,69 +319,69 @@ class SujetService {
  * que sur les sujets du chercheur
  * @return la liste des sujets
  */
-  List<Sujet> findSujets(Personne chercheur,
-                         String patternTitre,
-                         String patternAuteur,
-                         String patternPresentation,
-                         ReferentielEliot referentielEliot,
-                         SujetType sujetType,
-                         Boolean uniquementSujetsChercheur = false,
-                         Map paginationAndSortingSpec = null) {
-    if (!chercheur) {
-      throw new IllegalArgumentException("sujet.recherche.chercheur.null")
-    }
-    if (paginationAndSortingSpec == null) {
-      paginationAndSortingSpec = [:]
-    }
-
-    def criteria = Sujet.createCriteria()
-    List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
-      if (referentielEliot?.matiereBcn) {
-        eq "matiereBcn", referentielEliot?.matiereBcn
-      }
-      if (referentielEliot?.niveau) {
-        eq "niveau", referentielEliot?.niveau
-      }
-      if (sujetType) {
-        eq "sujetType", sujetType
-      }
-      if (uniquementSujetsChercheur) {
-        eq 'proprietaire', chercheur
-      } else {
-        or {
-          eq 'proprietaire', chercheur
-          eq 'publie', true
+    List<Sujet> findSujets(Personne chercheur,
+                           String patternTitre,
+                           String patternAuteur,
+                           String patternPresentation,
+                           ReferentielEliot referentielEliot,
+                           SujetType sujetType,
+                           Boolean uniquementSujetsChercheur = false,
+                           Map paginationAndSortingSpec = null) {
+        if (!chercheur) {
+            throw new IllegalArgumentException("sujet.recherche.chercheur.null")
         }
-        if (patternAuteur) {
-          String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
-          proprietaire {
-            or {
-              like "nomNormalise", patternAuteurNormalise
-              like "prenomNormalise", patternAuteurNormalise
+        if (paginationAndSortingSpec == null) {
+            paginationAndSortingSpec = [:]
+        }
+
+        def criteria = Sujet.createCriteria()
+        List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
+            if (referentielEliot?.matiereBcn) {
+                eq "matiereBcn", referentielEliot?.matiereBcn
             }
-          }
+            if (referentielEliot?.niveau) {
+                eq "niveau", referentielEliot?.niveau
+            }
+            if (sujetType) {
+                eq "sujetType", sujetType
+            }
+            if (uniquementSujetsChercheur) {
+                eq 'proprietaire', chercheur
+            } else {
+                or {
+                    eq 'proprietaire', chercheur
+                    eq 'publie', true
+                }
+                if (patternAuteur) {
+                    String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
+                    proprietaire {
+                        or {
+                            like "nomNormalise", patternAuteurNormalise
+                            like "prenomNormalise", patternAuteurNormalise
+                        }
+                    }
+                }
+            }
+
+            if (patternTitre) {
+                like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
+            }
+            if (patternPresentation) {
+                like "presentationNormalise", "%${StringUtils.normalise(patternPresentation)}%"
+            }
+
+
+            if (paginationAndSortingSpec) {
+                def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
+                def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+                if (sortArg) {
+                    order "${sortArg}", orderArg
+                }
+
+            }
         }
-      }
-
-      if (patternTitre) {
-        like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
-      }
-      if (patternPresentation) {
-        like "presentationNormalise", "%${StringUtils.normalise(patternPresentation)}%"
-      }
-
-
-      if (paginationAndSortingSpec) {
-        def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
-        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-        if (sortArg) {
-          order "${sortArg}", orderArg
-        }
-
-      }
+        return sujets
     }
-    return sujets
-  }
 
 /**
  * Recherche de tous les sujet pour un proprietaire donné
@@ -390,37 +390,37 @@ class SujetService {
  * la pagination
  * @return la liste des sujets
  */
-  List<Sujet> findSujetsForProprietaire(Personne proprietaire,
-                                        Map paginationAndSortingSpec = null) {
-    if (!proprietaire) {
-      throw new IllegalArgumentException("sujet.recherche.chercheur.null")
-    }
-    if (paginationAndSortingSpec == null) {
-      paginationAndSortingSpec = [:]
-    }
-
-    def criteria = Sujet.createCriteria()
-    List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
-      eq 'proprietaire', proprietaire
-      if (paginationAndSortingSpec) {
-        def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
-        def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
-        if (sortArg) {
-          order "${sortArg}", orderArg
+    List<Sujet> findSujetsForProprietaire(Personne proprietaire,
+                                          Map paginationAndSortingSpec = null) {
+        if (!proprietaire) {
+            throw new IllegalArgumentException("sujet.recherche.chercheur.null")
+        }
+        if (paginationAndSortingSpec == null) {
+            paginationAndSortingSpec = [:]
         }
 
-      }
+        def criteria = Sujet.createCriteria()
+        List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
+            eq 'proprietaire', proprietaire
+            if (paginationAndSortingSpec) {
+                def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
+                def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
+                if (sortArg) {
+                    order "${sortArg}", orderArg
+                }
+
+            }
+        }
+        return sujets
     }
-    return sujets
-  }
 
 /**
  *
  * @return la liste de tous les types de sujet
  */
-  List<SujetType> getAllSujetTypes() {
-    return SujetType.getAll()
-  }
+    List<SujetType> getAllSujetTypes() {
+        return SujetType.getAll()
+    }
 
 /**
  * Insert une question dans un sujet sujet
@@ -430,66 +430,66 @@ class SujetService {
  * @param rang le rang d'insertion
  * @return le sujet modifié
  */
-  @Transactional
-  Sujet insertQuestionInSujet(Question question,
-                              Sujet sujet,
-                              Personne proprietaire,
-                              ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions = null) {
+    @Transactional
+    Sujet insertQuestionInSujet(Question question,
+                                Sujet sujet,
+                                Personne proprietaire,
+                                ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions = null) {
 
-    // verif securite
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
-    assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(proprietaire, question))
-    assert (!insertionQuestionCompositeInExercice(question, sujet))
+        // verif securite
+        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
+        assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(proprietaire, question))
+        assert (!insertionQuestionCompositeInExercice(question, sujet))
 
-    if (!isDernierAuteur(sujet, proprietaire)) {
-      addPaterniteItem(proprietaire, sujet)
-    }
+        if (!isDernierAuteur(sujet, proprietaire)) {
+            addPaterniteItem(proprietaire, sujet)
+        }
 
-    if (!question.estPartage() && sujet.estPartage()) {
-      questionService.partageQuestion(question, proprietaire)
-    }
+        if (!question.estPartage() && sujet.estPartage()) {
+            questionService.partageQuestion(question, proprietaire)
+        }
 
-    def sequence = new SujetSequenceQuestions(
-        question: question,
-        sujet: sujet,
-        rang: sujet.questionsSequences?.size()
-    )
-    if (referentielSujetSequenceQuestions?.noteSeuilPoursuite != null) {
-      sequence.noteSeuilPoursuite = referentielSujetSequenceQuestions?.noteSeuilPoursuite
-    }
-    if (referentielSujetSequenceQuestions?.points != null) {
-      sequence.points = referentielSujetSequenceQuestions?.points
-    }
-    sujet.addToQuestionsSequences(sequence)
-    sequence.save()
-    if (sequence.hasErrors()) {
-      sequence.errors.allErrors.each {
-        sujet.errors.reject(it.code, it.arguments, it.defaultMessage)
-      }
-      sujet.removeFromQuestionsSequences(sequence)
-      return sujet
-    }
+        def sequence = new SujetSequenceQuestions(
+                question: question,
+                sujet: sujet,
+                rang: sujet.questionsSequences?.size()
+        )
+        if (referentielSujetSequenceQuestions?.noteSeuilPoursuite != null) {
+            sequence.noteSeuilPoursuite = referentielSujetSequenceQuestions?.noteSeuilPoursuite
+        }
+        if (referentielSujetSequenceQuestions?.points != null) {
+            sequence.points = referentielSujetSequenceQuestions?.points
+        }
+        sujet.addToQuestionsSequences(sequence)
+        sequence.save()
+        if (sequence.hasErrors()) {
+            sequence.errors.allErrors.each {
+                sujet.errors.reject(it.code, it.arguments, it.defaultMessage)
+            }
+            sujet.removeFromQuestionsSequences(sequence)
+            return sujet
+        }
 
-    sujet.lastUpdated = new Date()
+        sujet.lastUpdated = new Date()
 
-    sujet.save(flush: true)
-    Integer rang = referentielSujetSequenceQuestions?.rang
-    if (rang != null && rang < sujet.questionsSequences.size() - 1) {
-      // il faut insérer au rang correct
-      def idxSujQuest = sujet.questionsSequences.size() - 1
-      while (idxSujQuest != rang) {
-        def idxSujQuestPrec = idxSujQuest - 1
-        def sujQuest = sujet.questionsSequences[idxSujQuest]
-        def sujQuestPrec = sujet.questionsSequences[idxSujQuestPrec]
-        sujet.questionsSequences[idxSujQuest] = sujQuestPrec
-        sujet.questionsSequences[idxSujQuestPrec] = sujQuest
-        idxSujQuest = idxSujQuestPrec
-      }
-      sujet.save(flush: true)
+        sujet.save(flush: true)
+        Integer rang = referentielSujetSequenceQuestions?.rang
+        if (rang != null && rang < sujet.questionsSequences.size() - 1) {
+            // il faut insérer au rang correct
+            def idxSujQuest = sujet.questionsSequences.size() - 1
+            while (idxSujQuest != rang) {
+                def idxSujQuestPrec = idxSujQuest - 1
+                def sujQuest = sujet.questionsSequences[idxSujQuest]
+                def sujQuestPrec = sujet.questionsSequences[idxSujQuestPrec]
+                sujet.questionsSequences[idxSujQuest] = sujQuestPrec
+                sujet.questionsSequences[idxSujQuestPrec] = sujQuest
+                idxSujQuest = idxSujQuestPrec
+            }
+            sujet.save(flush: true)
+        }
+        sujet.refresh()
+        return sujet
     }
-    sujet.refresh()
-    return sujet
-  }
 
 /**
  * Inverse une question avec sa précédente dans un sujet
@@ -497,36 +497,36 @@ class SujetService {
  * @param proprietaire le proprietaire du sujet
  * @return le sujet modifié
  */
-  @Transactional
-  Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
-                                        Personne proprietaire) {
+    @Transactional
+    Sujet inverseQuestionAvecLaPrecedente(SujetSequenceQuestions sujetQuestion,
+                                          Personne proprietaire) {
 
-    Sujet sujet = sujetQuestion.sujet
-    // verif securite
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
+        Sujet sujet = sujetQuestion.sujet
+        // verif securite
+        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
-    if (!isDernierAuteur(sujet, proprietaire)) {
-      addPaterniteItem(proprietaire, sujet)
+        if (!isDernierAuteur(sujet, proprietaire)) {
+            addPaterniteItem(proprietaire, sujet)
+        }
+
+        sujetQuestion.refresh()
+        def idx = sujetQuestion.rang
+        if (idx == 0) { // on ne fait rien
+            return sujetQuestion.sujet
+        }
+        def idxPrec = sujetQuestion.rang - 1
+
+        def squestPrec = sujet.questionsSequences[idxPrec]
+        def squest = sujet.questionsSequences[idx]
+        sujet.lastUpdated = new Date()
+        sujet.questionsSequences[idx] = squestPrec
+        sujet.questionsSequences[idxPrec] = squest
+        sujet.save(flush: true)
+        // refresh sinon la collection n'est pas raffraichie : raison possible
+        // pour suppression modelisation to many
+        sujet.refresh()
+        return sujet
     }
-
-    sujetQuestion.refresh()
-    def idx = sujetQuestion.rang
-    if (idx == 0) { // on ne fait rien
-      return sujetQuestion.sujet
-    }
-    def idxPrec = sujetQuestion.rang - 1
-
-    def squestPrec = sujet.questionsSequences[idxPrec]
-    def squest = sujet.questionsSequences[idx]
-    sujet.lastUpdated = new Date()
-    sujet.questionsSequences[idx] = squestPrec
-    sujet.questionsSequences[idxPrec] = squest
-    sujet.save(flush: true)
-    // refresh sinon la collection n'est pas raffraichie : raison possible
-    // pour suppression modelisation to many
-    sujet.refresh()
-    return sujet
-  }
 
 /**
  * Inverse une question avec sa suivante dans un sujet
@@ -534,32 +534,32 @@ class SujetService {
  * @param proprietaire le proprietaire du sujet
  * @return le sujet modifié
  */
-  @Transactional
-  Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
-                                      Personne proprietaire) {
-    Sujet sujet = sujetQuestion.sujet
-    // verif securite
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
+    @Transactional
+    Sujet inverseQuestionAvecLaSuivante(SujetSequenceQuestions sujetQuestion,
+                                        Personne proprietaire) {
+        Sujet sujet = sujetQuestion.sujet
+        // verif securite
+        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
-    if (!isDernierAuteur(sujet, proprietaire)) {
-      addPaterniteItem(proprietaire, sujet)
-    }
+        if (!isDernierAuteur(sujet, proprietaire)) {
+            addPaterniteItem(proprietaire, sujet)
+        }
 
-    sujetQuestion.refresh()
-    def idx = sujetQuestion.rang
-    if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) { // on ne fait rien
-      return sujetQuestion.sujet
+        sujetQuestion.refresh()
+        def idx = sujetQuestion.rang
+        if (idx == sujetQuestion.sujet.questionsSequences.size() - 1) { // on ne fait rien
+            return sujetQuestion.sujet
+        }
+        def idxSuiv = sujetQuestion.rang + 1
+        def squestSuiv = sujet.questionsSequences[idxSuiv]
+        def squest = sujet.questionsSequences[idx]
+        sujet.questionsSequences[idx] = squestSuiv
+        sujet.questionsSequences[idxSuiv] = squest
+        sujet.lastUpdated = new Date()
+        sujet.save(flush: true)
+        sujet.refresh()
+        return sujet
     }
-    def idxSuiv = sujetQuestion.rang + 1
-    def squestSuiv = sujet.questionsSequences[idxSuiv]
-    def squest = sujet.questionsSequences[idx]
-    sujet.questionsSequences[idx] = squestSuiv
-    sujet.questionsSequences[idxSuiv] = squest
-    sujet.lastUpdated = new Date()
-    sujet.save(flush: true)
-    sujet.refresh()
-    return sujet
-  }
 
 /**
  * Supprime une question d'un sujet
@@ -567,43 +567,43 @@ class SujetService {
  * @param proprietaire le propriétaire
  * @return le sujet modifié
  */
-  @Transactional
-  Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
-                                  Personne proprietaire) {
-    // verif securite
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujetQuestion.sujet))
+    @Transactional
+    Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
+                                    Personne proprietaire) {
+        // verif securite
+        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujetQuestion.sujet))
 
-    Sujet sujet = sujetQuestion.sujet
+        Sujet sujet = sujetQuestion.sujet
 
-    if (!isDernierAuteur(sujet, proprietaire)) {
-      addPaterniteItem(proprietaire, sujet)
-    }
-
-    sujet.removeFromQuestionsSequences(sujetQuestion)
-    def reponses = Reponse.findAllBySujetQuestion(sujetQuestion)
-    reponses.each {
-      reponseService.supprimeReponse(it, proprietaire)
-    }
-    def question = sujetQuestion.question
-    if (question.estComposite()) {
-      def exercice = question.exercice
-      def questSujts = []
-      questSujts.addAll(exercice.questionsSequences)
-      questSujts.each {
-        exercice.removeFromQuestionsSequences(it)
-        def reponsesEx = Reponse.findAllBySujetQuestion(it)
-        reponsesEx.each {
-          reponseService.supprimeReponse(it, proprietaire)
+        if (!isDernierAuteur(sujet, proprietaire)) {
+            addPaterniteItem(proprietaire, sujet)
         }
-      }
-    }
 
-    sujetQuestion.delete()
-    sujet.lastUpdated = new Date()
-    sujet.save(flush: true)
-    sujet.refresh()
-    return sujet
-  }
+        sujet.removeFromQuestionsSequences(sujetQuestion)
+        def reponses = Reponse.findAllBySujetQuestion(sujetQuestion)
+        reponses.each {
+            reponseService.supprimeReponse(it, proprietaire)
+        }
+        def question = sujetQuestion.question
+        if (question.estComposite()) {
+            def exercice = question.exercice
+            def questSujts = []
+            questSujts.addAll(exercice.questionsSequences)
+            questSujts.each {
+                exercice.removeFromQuestionsSequences(it)
+                def reponsesEx = Reponse.findAllBySujetQuestion(it)
+                reponsesEx.each {
+                    reponseService.supprimeReponse(it, proprietaire)
+                }
+            }
+        }
+
+        sujetQuestion.delete()
+        sujet.lastUpdated = new Date()
+        sujet.save(flush: true)
+        sujet.refresh()
+        return sujet
+    }
 
 /**
  * Modifie le nombre de points associé à une question dans un sujet
@@ -611,40 +611,40 @@ class SujetService {
  * @param proprietaire le propriétaire
  * @return le sujet modifié
  */
-  @Transactional
-  SujetSequenceQuestions updatePointsForQuestion(Float newPoints,
-                                                 SujetSequenceQuestions sujetQuestion,
-                                                 Personne proprietaire) {
-    Sujet sujet = sujetQuestion.sujet
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
+    @Transactional
+    SujetSequenceQuestions updatePointsForQuestion(Float newPoints,
+                                                   SujetSequenceQuestions sujetQuestion,
+                                                   Personne proprietaire) {
+        Sujet sujet = sujetQuestion.sujet
+        assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
-    if (!isDernierAuteur(sujet, proprietaire)) {
-      addPaterniteItem(proprietaire, sujet)
+        if (!isDernierAuteur(sujet, proprietaire)) {
+            addPaterniteItem(proprietaire, sujet)
+        }
+
+        sujetQuestion.points = newPoints
+        if (sujetQuestion.save()) {
+            def leSujet = sujetQuestion.sujet
+            leSujet.lastUpdated = new Date()
+            leSujet.save()
+        }
+        if (sujetQuestion.hasErrors()) {
+            log.error(sujetQuestion.errors.allErrors.toListString())
+        }
+        return sujetQuestion
     }
 
-    sujetQuestion.points = newPoints
-    if (sujetQuestion.save()) {
-      def leSujet = sujetQuestion.sujet
-      leSujet.lastUpdated = new Date()
-      leSujet.save()
-    }
-    if (sujetQuestion.hasErrors()) {
-      log.error(sujetQuestion.errors.allErrors.toListString())
-    }
-    return sujetQuestion
-  }
-
-  /**
-   * Recherche les attachements disponibles dans un sujet
-   * @param sujet le sujet
-   * @param personne la personne accedant aux attachements
-   * @return la liste des attachements disponibles dans le sujet
-   */
-  Set<Attachement> findAttachementsDisponiblesForSujet(Sujet sujet, Personne personne) {
-    assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(personne, sujet))
-    Session session = sessionFactory.currentSession
-    def res = [] as Set
-    def query1 = session.createSQLQuery("\
+    /**
+     * Recherche les attachements disponibles dans un sujet
+     * @param sujet le sujet
+     * @param personne la personne accedant aux attachements
+     * @return la liste des attachements disponibles dans le sujet
+     */
+    Set<Attachement> findAttachementsDisponiblesForSujet(Sujet sujet, Personne personne) {
+        assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(personne, sujet))
+        Session session = sessionFactory.currentSession
+        def res = [] as Set
+        def query1 = session.createSQLQuery("\
         select attach.* from \
         tice.attachement attach, \
         td.question quest,\
@@ -654,9 +654,9 @@ class SujetService {
         quest.id = sujetQuest.question_id and\
         sujetQuest.sujet_id = ?").addEntity("attach", Attachement.class)
 
-    res.addAll(query1.setLong(0, sujet.id).list())
+        res.addAll(query1.setLong(0, sujet.id).list())
 
-    def query2 = session.createSQLQuery("\
+        def query2 = session.createSQLQuery("\
     select attach.* from \
     tice.attachement attach, \
     td.question_attachement questAttach, \
@@ -665,104 +665,113 @@ class SujetService {
     attach.id = questAttach.attachement_id and\
     questAttach.question_id = sujetQuest.question_id and\
     sujetQuest.sujet_id = ?").addEntity("attach", Attachement.class)
-    res.addAll(query2.setLong(0, sujet.id).list())
+        res.addAll(query2.setLong(0, sujet.id).list())
 
-    res
+        res
 
-  }
-
-  /**
-   * Créé une question composite correspondant à un exercice
-   * @param sujet l'exercice
-   * @param proprietaire le proprietaire
-   * @return la question créée
-   */
-  @Transactional
-  private Question createQuestionCompositeForExercice(Sujet exercice, Personne proprietaire) {
-    Question question = new Question(proprietaire: proprietaire,
-        titreNormalise: exercice.titreNormalise,
-        publie: false,
-        versionQuestion: 1,
-        copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
-        specification: "{}")
-    question.properties = exercice.properties
-    question.type = QuestionTypeEnum.Composite.questionType
-    question.exercice = exercice
-    question.save(flush: true)
-    return question
-  }
-
-  /**
-   * Supprime une question composite
-   * @param question la question à supprimer
-   * @param supprimeur la personne tentant la suppression
-   */
-  @Transactional
-  private def supprimeQuestionComposite(Question laQuestion, Personne supprimeur) {
-    assert (laQuestion.estComposite())
-
-    // supression des réponses et des sujetQuestions
-    def sujetQuestions = SujetSequenceQuestions.findAllByQuestion(laQuestion)
-    sujetQuestions.each {
-      supprimeQuestionFromSujet(it, supprimeur)
-    }
-    // on ne supprime pas les attachements (il n'y en a pas)
-    // on ne supprime pas la publication, elle est attachée au sujet si
-    // il y en une
-
-    laQuestion.delete()
-  }
-
-  /**
-   *  Partage une question
-   * @param laQuestion la question à partager
-   * @param partageur la personne souhaitant partager
-   */
-  @Transactional
-  private def partageQuestionComposite(Question laQuestion) {
-    assert (laQuestion.estComposite())
-    def exercice = laQuestion.exercice
-    laQuestion.copyrightsType = exercice.copyrightsType
-    laQuestion.publication = exercice.publication
-    laQuestion.publie = true
-    laQuestion.paternite = exercice.paternite
-    laQuestion.save()
-  }
-
-  /**
-   * Modifie les proprietes de la question passée en paramètre
-   * @param question la question
-   * @param proprietes les nouvelles proprietes
-   * @param specificationObject l'objet specification
-   * @param proprietaire le proprietaire
-   * @return la question
-   */
-  @Transactional
-  private Question updateTitreQuestionComposite(String nvtitre, Question laQuestion) {
-
-    assert (laQuestion.estComposite())
-
-    if (nvtitre && laQuestion.titre != nvtitre) {
-      laQuestion.titreNormalise = StringUtils.normalise(nvtitre)
-      laQuestion.titre = nvtitre
     }
 
-    laQuestion.save(flush: true)
-    return laQuestion
-  }
+    /**
+     * Créé une question composite correspondant à un exercice
+     * @param sujet l'exercice
+     * @param proprietaire le proprietaire
+     * @return la question créée
+     */
+    @Transactional
+    private Question createQuestionCompositeForExercice(Sujet exercice,
+                                                        Personne proprietaire) {
+        Question question = new Question(
+                proprietaire: proprietaire,
+                titreNormalise: exercice.titreNormalise,
+                titre: exercice.titre,
+                publie: false,
+                versionQuestion: 1,
+                copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
+                specification: "{}",
+                matiereBcn: exercice.matiereBcn,
+                etablissement: exercice.etablissement,
+                paternite: exercice.paternite,
+                niveau: exercice.niveau,
+                publication: exercice.publication
+        )
 
-  /**
-   * Indique si la question à insérer dans le sujet est une question composite
-   * à insérer dans un sujet de type  exercice
-   * @param question la question à insérer
-   * @param sujet le sujet
-   * @return true si la question est composite et le sujet est un exercice
-   */
-  private boolean insertionQuestionCompositeInExercice(Question question, Sujet sujet) {
-    if (question.estComposite() && sujet.estUnExercice()) {
-      return true
+        question.type = QuestionTypeEnum.Composite.questionType
+        question.exercice = exercice
+        question.save(flush: true, failOnError: true)
+        return question
     }
-    return false
-  }
+
+    /**
+     * Supprime une question composite
+     * @param question la question à supprimer
+     * @param supprimeur la personne tentant la suppression
+     */
+    @Transactional
+    private def supprimeQuestionComposite(Question laQuestion, Personne supprimeur) {
+        assert (laQuestion.estComposite())
+
+        // supression des réponses et des sujetQuestions
+        def sujetQuestions = SujetSequenceQuestions.findAllByQuestion(laQuestion)
+        sujetQuestions.each {
+            supprimeQuestionFromSujet(it, supprimeur)
+        }
+        // on ne supprime pas les attachements (il n'y en a pas)
+        // on ne supprime pas la publication, elle est attachée au sujet si
+        // il y en une
+
+        laQuestion.delete()
+    }
+
+    /**
+     *  Partage une question
+     * @param laQuestion la question à partager
+     * @param partageur la personne souhaitant partager
+     */
+    @Transactional
+    private def partageQuestionComposite(Question laQuestion) {
+        assert (laQuestion.estComposite())
+        def exercice = laQuestion.exercice
+        laQuestion.copyrightsType = exercice.copyrightsType
+        laQuestion.publication = exercice.publication
+        laQuestion.publie = true
+        laQuestion.paternite = exercice.paternite
+        laQuestion.save()
+    }
+
+    /**
+     * Modifie les proprietes de la question passée en paramètre
+     * @param question la question
+     * @param proprietes les nouvelles proprietes
+     * @param specificationObject l'objet specification
+     * @param proprietaire le proprietaire
+     * @return la question
+     */
+    @Transactional
+    private Question updateTitreQuestionComposite(String nvtitre, Question laQuestion) {
+
+        assert (laQuestion.estComposite())
+
+        if (nvtitre && laQuestion.titre != nvtitre) {
+            laQuestion.titreNormalise = StringUtils.normalise(nvtitre)
+            laQuestion.titre = nvtitre
+        }
+
+        laQuestion.save(flush: true)
+        return laQuestion
+    }
+
+    /**
+     * Indique si la question à insérer dans le sujet est une question composite
+     * à insérer dans un sujet de type  exercice
+     * @param question la question à insérer
+     * @param sujet le sujet
+     * @return true si la question est composite et le sujet est un exercice
+     */
+    private boolean insertionQuestionCompositeInExercice(Question question, Sujet sujet) {
+        if (question.estComposite() && sujet.estUnExercice()) {
+            return true
+        }
+        return false
+    }
 
 }

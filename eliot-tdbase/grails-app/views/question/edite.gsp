@@ -149,7 +149,7 @@
         </li>
       </g:if>
       <g:else>
-        Exporter
+        <li>Exporter</li>
       </g:else>
 
       <li><hr/></li>

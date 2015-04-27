@@ -55,6 +55,12 @@ public interface Artefact {
   boolean estPartage()
 
   /**
+   * Teste si un artefact est collaboratif
+   * @return
+   */
+  boolean estCollaboratif()
+
+  /**
    * Un artefact est distribué lorsqu'il est mis à disposition pour une
    * interaction pédagogique. Par exemple un sujet est distribué quand il est
    * associé à une séance. Un item est distribué quand il est attaché à un

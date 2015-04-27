@@ -140,12 +140,12 @@ class SujetController {
                                                 artefactHelper: artefactAutorisationService,
                                                 matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
                                                 matiereBcns   : [],
-                                                etablissements     : securiteSessionServiceProxy.etablissementList,
+                                                etablissements: securiteSessionServiceProxy.etablissementList,
                                                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
     }
 
     def matiereBcns() {
-      String recherche = '%' + params.recherche + '%'
+        String recherche = '%' + params.recherche + '%'
 
         def matiereBcns = MatiereBcn.withCriteria {
             or {
@@ -155,7 +155,7 @@ class SujetController {
             order('libelleLong', 'asc')
         }
 
-      render matiereBcns as JSON
+        render matiereBcns as JSON
     }
 
     /**
@@ -166,14 +166,22 @@ class SujetController {
         breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.editeproprietes.titre"))
         Sujet sujet = Sujet.get(params.id)
         Personne proprietaire = authenticatedPersonne
-        render(view: "editeProprietes", model: [liens         : breadcrumpsServiceProxy.liens,
-                                                sujet         : sujet,
-                                                artefactHelper: artefactAutorisationService,
-                                                typesSujet    : sujetService.getAllSujetTypes(),
-                                                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
-                                                matiereBcns   : sujet.matiereBcn != null ? [sujet.matiereBcn] : [],
-                                                etablissements     : securiteSessionServiceProxy.etablissementList,
-                                                niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
+
+        assert artefactAutorisationService.utilisateurPeutModifierPropriete(proprietaire, sujet)
+
+        render(
+                view: "editeProprietes",
+                model: [
+                        liens         : breadcrumpsServiceProxy.liens,
+                        sujet         : sujet,
+                        artefactHelper: artefactAutorisationService,
+                        typesSujet    : sujetService.getAllSujetTypes(),
+                        matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
+                        matiereBcns   : sujet.matiereBcn != null ? [sujet.matiereBcn] : [],
+                        etablissements: securiteSessionServiceProxy.etablissementList,
+                        niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)
+                ]
+        )
     }
 
     /**
@@ -210,9 +218,9 @@ class SujetController {
             redirect(action: 'detailProprietes', id: sujet.id)
             return
         }
-        render(view: "editeProprietes", model: [liens     : breadcrumpsServiceProxy.liens,
-                                                sujet     : sujet,
-                                                typesSujet: sujetService.getAllSujetTypes(),
+        render(view: "editeProprietes", model: [liens         : breadcrumpsServiceProxy.liens,
+                                                sujet         : sujet,
+                                                typesSujet    : sujetService.getAllSujetTypes(),
                                                 etablissements: securiteSessionServiceProxy.etablissementList,
                                                 artefactHelper: artefactAutorisationService,
                                                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
@@ -335,12 +343,16 @@ class SujetController {
                 eleve)
         request.messageCode = "copie.remise.succes"
 
-        render(view: '/sujet/teste', model: [liens            : breadcrumpsServiceProxy.liens,
-                                             copie            : copie,
-                                             afficheCorrection: true,
-                                             sujet            : copie.sujet,
-                                             artefactHelper   : artefactAutorisationService,
-                                             utilisateur      : eleve])
+        render(view: '/sujet/teste',
+                model: [
+                        liens            : breadcrumpsServiceProxy.liens,
+                        copie            : copie,
+                        afficheCorrection: true,
+                        sujet            : copie.sujet,
+                        artefactHelper   : artefactAutorisationService,
+                        utilisateur      : eleve
+                ]
+        )
     }
 
     /**
@@ -444,12 +456,18 @@ class SujetController {
             }
         }
         breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.ajouteelement.titre"), props)
+
+        Personne utilisateur = authenticatedPersonne
         Sujet sujet = Sujet.get(params.id)
 
-        [sujet                             : sujet,
-         liens                             : breadcrumpsServiceProxy.liens,
-         typesQuestionSupportes            : questionService.typesQuestionsInteractionSupportes,
-         typesQuestionSupportesPourCreation: questionService.typesQuestionsInteractionSupportesPourCreation]
+        assert artefactAutorisationService.utilisateurPeutAjouterItem(utilisateur, sujet)
+
+        [
+                sujet                             : sujet,
+                liens                             : breadcrumpsServiceProxy.liens,
+                typesQuestionSupportes            : questionService.typesQuestionsInteractionSupportes,
+                typesQuestionSupportesPourCreation: questionService.typesQuestionsInteractionSupportesPourCreation
+        ]
     }
 
     /**
@@ -464,6 +482,9 @@ class SujetController {
 
         Personne personne = authenticatedPersonne
         Sujet sujet = Sujet.get(params.id)
+
+        assert (artefactAutorisationService.utilisateurPeutCreerSeance(personne, sujet))
+
         def modaliteActivite = new ModaliteActivite(
                 enseignant: personne,
                 sujet: sujet
@@ -533,6 +554,9 @@ class SujetController {
      */
     def exporter(String format) {
         Sujet sujet = Sujet.get(params.id)
+        Personne personne = authenticatedPersonne
+        Format parsedFormat = Format.valueOf(format)
+        assert (artefactAutorisationService.utilisateurPeutExporterArtefact(personne, sujet, parsedFormat))
 
         if (!sujet) {
             throw new IllegalStateException(
@@ -540,8 +564,8 @@ class SujetController {
             )
         }
 
-        switch (format) {
-            case Format.NATIF_JSON.name():
+        switch (parsedFormat) {
+            case Format.NATIF_JSON:
                 JSON json = getSujetAsJson(sujet)
                 response.setHeader("Content-disposition", "attachment; filename=${ExportHelper.getFileName(sujet, Format.NATIF_JSON)}")
 
@@ -551,7 +575,7 @@ class SujetController {
                 json.render(new OutputStreamWriter(zipOutputStream, 'UTF-8'))
                 break
 
-            case Format.MOODLE_XML.name():
+            case Format.MOODLE_XML:
                 def xml = moodleQuizExporterService.toMoodleQuiz(sujet)
                 response.setHeader("Content-disposition", "attachment; filename=export.xml")
                 render(text: xml, contentType: "text/xml", encoding: "UTF-8")
@@ -559,7 +583,7 @@ class SujetController {
 
             default:
                 throw new IllegalArgumentException(
-                        "Le format '$format' est inconnu."
+                        "Le format '$format' n'est pas supporté."
                 )
         }
     }
@@ -733,7 +757,7 @@ class SujetController {
         Personne proprietaire = authenticatedPersonne
         [
                 liens         : breadcrumpsServiceProxy.liens,
-                etablissements     : securiteSessionServiceProxy.etablissementList,
+                etablissements: securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
                         grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10

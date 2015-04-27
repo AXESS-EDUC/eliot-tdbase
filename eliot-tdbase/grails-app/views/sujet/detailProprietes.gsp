@@ -29,15 +29,15 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="eliot-tdbase-ui"/>
-  <r:script>
-    $(document).ready(function () {
-      $('#menu-item-sujets').addClass('actif');
-      initButtons();
-    });
-  </r:script>
-  <title><g:message code="sujet.editeProprietes.head.title"/></title>
+    <meta name="layout" content="eliot-tdbase"/>
+    <r:require modules="eliot-tdbase-ui"/>
+    <r:script>
+        $(document).ready(function () {
+            $('#menu-item-sujets').addClass('actif');
+            initButtons();
+        });
+    </r:script>
+    <title><g:message code="sujet.editeProprietes.head.title"/></title>
 </head>
 
 <body>
@@ -45,159 +45,168 @@
           model="[liens: liens]"/>
 
 <div class="portal-tabs">
-  <span class="portal-tabs-famille-liens">
-    <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujet)}">
-      <g:link action="edite" controller="sujet" class="modify"
-              id="${sujet.id}"
-              params="[bcInit: true]">Modifier le sujet</g:link> |
-      <g:link action="editeProprietes" controller="sujet" class="modify"
-              id="${sujet.id}"
-              params="[bcInit: true]">Modifier les propriétés du sujet</g:link>
-    </g:if>
-    <g:else>
-      <span class="add">Modifier le sujet</span> |
-      <span class="modify">Modifier les propriétés du sujet</span>
-    </g:else>
-  </span>
-  <span class="portal-tabs-famille-liens">
-    <button id="toolbar_${sujet.id}">Actions</button>
-    <ul id="menu_actions_toolbar_${sujet.id}"
-        class="tdbase-menu-actions">
-      <li><g:link action="ajouteSeance" id="${sujet.id}">
-        Nouvelle&nbsp;séance
-      </g:link>
-      </li>
-      <li><hr/></li>
-      <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
-        <li><g:link action="duplique"
-                    id="${sujet.id}">Dupliquer</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Dupliquer</li>
-      </g:else>
-      <li><hr/></li>
-    <g:if test="${artefactHelper.partageArtefactCCActive}">
-      <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
-        <%
-          def docLoc = g.createLink(action: 'partage', id: sujet.id)
-          def message = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
-        %>
-        <li><g:link action="partage"
+    <span class="portal-tabs-famille-liens">
+        <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujet)}">
+            <g:link action="edite" controller="sujet" class="modify"
                     id="${sujet.id}"
-                    onclick="afficheDialogue('${message}', '${docLoc}');retur false;">Partager</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Partager</li>
-      </g:else>
-    </g:if>
-      <g:set var="peutExporterNatifJson"
-             value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.NATIF_JSON)}"/>
-      <g:set var="peutExporterMoodleXml"
-             value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.MOODLE_XML)}"/>
+                    params="[bcInit: true]">Modifier le sujet</g:link> |
+            <g:link action="editeProprietes" controller="sujet" class="modify"
+                    id="${sujet.id}"
+                    params="[bcInit: true]">Modifier les propriétés du sujet</g:link>
+        </g:if>
+        <g:else>
+            <span class="add">Modifier le sujet</span> |
+            <span class="modify">Modifier les propriétés du sujet</span>
+        </g:else>
+    </span>
+    <span class="portal-tabs-famille-liens">
+        <button id="toolbar_${sujet.id}">Actions</button>
+        <ul id="menu_actions_toolbar_${sujet.id}"
+            class="tdbase-menu-actions">
+            <g:if test="${artefactHelper.utilisateurPeutCreerSeance(utilisateur, sujet)}">
+                <li>
+                    <g:link action="ajouteSeance" id="${sujet.id}">
+                        Nouvelle&nbsp;séance
+                    </g:link>
+                </li>
+            </g:if>
+            <g:else>
+                <li>Nouvelle&nbsp;séance</li>
+            </g:else>
+            <li><hr/></li>
+            <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
+                <li><g:link action="duplique"
+                            id="${sujet.id}">Dupliquer</g:link></li>
+            </g:if>
+            <g:else>
+                <li>Dupliquer</li>
+            </g:else>
+            <li><hr/></li>
+            <g:if test="${artefactHelper.partageArtefactCCActive}">
+                <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
+                    <%
+                        def docLoc = g.createLink(action: 'partage', id: sujet.id)
+                        def message = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
+                    %>
+                    <li><g:link action="partage"
+                                id="${sujet.id}"
+                                onclick="afficheDialogue('${message}', '${docLoc}');retur false;">Partager</g:link></li>
+                </g:if>
+                <g:else>
+                    <li>Partager</li>
+                </g:else>
+            </g:if>
+            <g:set var="peutExporterNatifJson"
+                   value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.NATIF_JSON)}"/>
+            <g:set var="peutExporterMoodleXml"
+                   value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.MOODLE_XML)}"/>
 
-      <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
-        <li>
-          <g:set var="urlFormatNatifJson" value="${createLink(action: 'exporter', id: sujet.id, params: [format: Format.NATIF_JSON.name()])}"/>
-          <g:set var="urlFormatMoodleXml" value="${createLink(action: 'exporter', id: sujet.id, params: [format: Format.MOODLE_XML.name()])}"/>
-          <a href="#" onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
-        </li>
-      </g:if>
-      <g:else>
-        Exporter
-      </g:else>
+            <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
+                <li>
+                    <g:set var="urlFormatNatifJson"
+                           value="${createLink(action: 'exporter', id: sujet.id, params: [format: Format.NATIF_JSON.name()])}"/>
+                    <g:set var="urlFormatMoodleXml"
+                           value="${createLink(action: 'exporter', id: sujet.id, params: [format: Format.MOODLE_XML.name()])}"/>
+                    <a href="#"
+                       onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
+                </li>
+            </g:if>
+            <g:else>
+                <li>Exporter</li>
+            </g:else>
 
-      <li><hr/></li>
+            <li><hr/></li>
 
-      <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
-        <li><g:link action="supprime"
-                    id="${sujet.id}">Supprimer</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Supprimer</li>
-      </g:else>
-    </ul>
-  </span>
+            <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
+                <li><g:link action="supprime"
+                            id="${sujet.id}">Supprimer</g:link></li>
+            </g:if>
+            <g:else>
+                <li>Supprimer</li>
+            </g:else>
+        </ul>
+    </span>
 </div>
 <g:if test="${flash.messageCode}">
-  <div class="portal-messages">
-    <li class="success"><g:message code="${flash.messageCode}"
-                                   class="portal-messages success"/></li>
-  </div>
+    <div class="portal-messages">
+        <li class="success"><g:message code="${flash.messageCode}"
+                                       class="portal-messages success"/></li>
+    </div>
 </g:if>
 
 <div class="portal-form_container edite">
-  <table>
-    <tr>
-      <td class="label title">Titre&nbsp;:</td>
-      <td>
-        ${sujet.titre}
-      </td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td class="label">Type&nbsp;:</td>
-      <td>
-        ${sujet.sujetType.nom}
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Mati&egrave;re&nbsp;:</td>
-      <td>
-        ${sujet.matiereBcn?.libelleEdition}
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Niveau&nbsp;:</td>
-      <td>
-        ${sujet.niveau?.libelleLong}
-      </td>
-    </tr>
-    <tr>
-      <td class="label">Dur&eacute;e&nbsp;:</td>
-      <td>
-        ${sujet.dureeMinutes}
-        (en minutes)
-      </td>
-    </tr>
+    <table>
+        <tr>
+            <td class="label title">Titre&nbsp;:</td>
+            <td>
+                ${sujet.titre}
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="label">Type&nbsp;:</td>
+            <td>
+                ${sujet.sujetType.nom}
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Mati&egrave;re&nbsp;:</td>
+            <td>
+                ${sujet.matiereBcn?.libelleEdition}
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Niveau&nbsp;:</td>
+            <td>
+                ${sujet.niveau?.libelleLong}
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Dur&eacute;e&nbsp;:</td>
+            <td>
+                ${sujet.dureeMinutes}
+                (en minutes)
+            </td>
+        </tr>
 
-    <tr>
-      <td class="label">Ordre&nbsp;questions&nbsp;:</td>
-      <td>
-        <g:checkBox name="ordreQuestionsAleatoire"
-                    checked="${sujet.ordreQuestionsAleatoire}" disabled="true"/>
-        Al&eacute;atoire</td>
-    </tr>
+        <tr>
+            <td class="label">Ordre&nbsp;questions&nbsp;:</td>
+            <td>
+                <g:checkBox name="ordreQuestionsAleatoire"
+                            checked="${sujet.ordreQuestionsAleatoire}" disabled="true"/>
+                Al&eacute;atoire</td>
+        </tr>
 
-    <tr>
-      <td class="label">Description&nbsp;:</td>
-      <td>
-        ${sujet.presentation}
-      </td>
-    </tr>
-  <g:if test="${artefactHelper.partageArtefactCCActive}">
-    <tr>
-      <td class="label">Partage :</td>
-      <td>
-        <g:if test="${sujet.estPartage()}">
-          <a href="${sujet.copyrightsType.lien}"
-             target="_blank"><img src="${sujet.copyrightsType.logo}"
-                                  title="${sujet.copyrightsType.presentation}"/>
-          </a>
+        <tr>
+            <td class="label">Description&nbsp;:</td>
+            <td>
+                ${sujet.presentation}
+            </td>
+        </tr>
+        <g:if test="${artefactHelper.partageArtefactCCActive}">
+            <tr>
+                <td class="label">Partage :</td>
+                <td>
+                    <g:if test="${sujet.estPartage()}">
+                        <a href="${sujet.copyrightsType.lien}"
+                           target="_blank"><img src="${sujet.copyrightsType.logo}"
+                                                title="${sujet.copyrightsType.presentation}"/>
+                        </a>
+                    </g:if>
+                    <g:else>
+                        ce sujet n'est pas partagé
+                    </g:else>
+                </td>
+            </tr>
+            <g:if test="${sujet.paternite}">
+                <g:render template="/artefact/paternite"
+                          model="[paternite: sujet.paternite]"/>
+            </g:if>
         </g:if>
-        <g:else>
-          ce sujet n'est pas partagé
-        </g:else>
-      </td>
-    </tr>
-    <g:if test="${sujet.paternite}">
-      <g:render template="/artefact/paternite"
-                model="[paternite: sujet.paternite]"/>
-    </g:if>
-   </g:if>
-  </table>
+    </table>
 </div>
 
 <g:render template="../importexport/export_dialog"/>
