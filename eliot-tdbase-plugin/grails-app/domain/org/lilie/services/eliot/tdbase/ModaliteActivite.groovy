@@ -157,7 +157,14 @@ class ModaliteActivite {
         if (etablissement != null) {
             return etablissement
         }
-        groupeScolarite.etablissement ?: groupeScolarite.structureEnseignement?.etablissement
+        if(groupeScolarite) {
+            return groupeScolarite.etablissement ?: groupeScolarite.structureEnseignement?.etablissement
+        }
+        else if(groupeEnt) {
+            return groupeEnt.etablissement
+        }
+
+        return null
     }
 
     /**
