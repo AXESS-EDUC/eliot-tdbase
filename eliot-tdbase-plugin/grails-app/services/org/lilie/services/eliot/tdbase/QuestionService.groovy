@@ -113,14 +113,15 @@ class QuestionService implements ApplicationContextAware {
      * question qui est, soit non-collaborative, soit collaborative mais liée à un
      * sujet différent
      * @param personne l'utilisateur qui crée la nouvelle question collaborative
-     * @param questionSource la question à recopier
+     * @param questionOriginale la question à recopier
      * @param sujet le sujet collaboratif pour lequel la question collaborative est créée
      * @return la question créée
      */
     @Transactional
     Question createQuestionCollaborativeFrom(Personne personne,
-                                             Question questionSource,
+                                             Question questionOriginale,
                                              Sujet sujet) {
+
         assert sujet.estCollaboratif()
         assert artefactAutorisationService.utilisateurPeutModifierArtefact(
                 personne,
@@ -128,15 +129,25 @@ class QuestionService implements ApplicationContextAware {
         )
         assert artefactAutorisationService.utilisateurPeutDupliquerArtefact(
                 personne,
-                questionSource
+                questionOriginale
         )
-        assert (questionSource.sujetLie?.id != sujet.id)
+        assert (questionOriginale.sujetLie?.id != sujet.id)
+
+        // Cas particulier de la question composite
+        if(questionOriginale.estComposite()) {
+            Sujet exerciceCollaboratif = sujetService.createSujetCollaboratifFrom(
+                    personne,
+                    questionOriginale.exercice,
+                    sujet.contributeurs
+            )
+            return exerciceCollaboratif.questionComposite
+        }
 
         // Recopie de la question
         Question questionCollaborative = recopieQuestion(
-                questionSource,
-                questionSource.proprietaire, // Lorsqu'on duplique une question pour la rendre collaborative, on laisse inchangé le propriétaire original
-                questionSource.titre
+                questionOriginale,
+                questionOriginale.proprietaire, // Lorsqu'on duplique une question pour la rendre collaborative, on laisse inchangé le propriétaire original
+                questionOriginale.titre
         )
 
         // Rend la question collaborative pour le sujet
@@ -144,8 +155,6 @@ class QuestionService implements ApplicationContextAware {
         questionCollaborative.contributeurs = sujet.contributeurs
 
         questionCollaborative.save()
-
-        // TODO *** Cas de la question composite : il faut rendre l'exercice collaboratif
 
         return questionCollaborative
     }

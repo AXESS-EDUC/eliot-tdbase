@@ -73,20 +73,93 @@ class SujetService {
         return sujet
     }
 
+    @Transactional
+    Sujet createSujetCollaboratifFrom(Personne personne,
+                                      Sujet sujetOriginal,
+                                      Set<Personne> contributeurList) {
+        assert (
+                artefactAutorisationService.utilisateurPeutDupliquerArtefact(
+                        personne,
+                        sujetOriginal
+                )
+        )
+
+        // Recopie le sujet original
+        Sujet sujetCollaboratif = new Sujet(
+                proprietaire: personne,
+                titre: sujetOriginal.titre,
+                titreNormalise: sujetOriginal.titreNormalise,
+                presentation: sujetOriginal.presentation,
+                presentationNormalise: sujetOriginal.presentationNormalise,
+                accesPublic: false,
+                accesSequentiel: sujetOriginal.accesSequentiel,
+                ordreQuestionsAleatoire: sujetOriginal.ordreQuestionsAleatoire,
+                publie: false,
+                copyrightsType: sujetOriginal.copyrightsType,
+                sujetType: sujetOriginal.sujetType,
+                paternite: sujetOriginal.paternite
+        )
+        sujetCollaboratif.save()
+
+        // Rend le sujet collaboratif
+        sujetCollaboratif.collaboratif = true
+        sujetCollaboratif.termine = false
+        contributeurList.each {
+            sujetCollaboratif.addToContributeurs(it)
+        }
+        sujetCollaboratif.save()
+
+        // recopie de la séquence de questions (copie en profondeur pour rendre les questions collaboratives pour le sujet)
+        sujetOriginal.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
+            SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
+                    question: questionService.createQuestionCollaborativeFrom(
+                            personne,
+                            sujetQuestion.question,
+                            sujetCollaboratif
+                    ),
+                    sujet: sujetCollaboratif,
+                    noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
+            )
+            sujetCollaboratif.addToQuestionsSequences(copieSujetSequence)
+            copieSujetSequence.save()
+        }
+
+        sujetOriginal.save()
+        if (sujetCollaboratif.estUnExercice()) {
+            createQuestionCompositeForExercice(sujetCollaboratif, personne)
+        }
+
+        return sujetCollaboratif
+    }
+
     /**
      * Recopie un sujet
      * @param sujet le sujet à recopier
      * @param proprietaire le proprietaire
+     * @param nouveauTitre le titre du sujet créé, si null le titre du sujet original
+     * sera suffixé par " (Copie)"
      * @return la copie du sujet
      */
     @Transactional
-    Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
+    Sujet recopieSujet(Sujet sujet,
+                       Personne proprietaire,
+                       String nouveauTitre = null) {
         // verification securité
-        assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, sujet))
+        assert (
+                artefactAutorisationService.utilisateurPeutDupliquerArtefact(
+                        proprietaire,
+                        sujet
+                )
+        )
 
-        Sujet sujetCopie = new Sujet(proprietaire: proprietaire,
-                titre: sujet.titre + " (Copie)",
-                titreNormalise: sujet.titreNormalise,
+        if(!nouveauTitre) {
+            nouveauTitre = sujet.titre + " (Copie)"
+        }
+
+        Sujet sujetCopie = new Sujet(
+                proprietaire: proprietaire,
+                titre: nouveauTitre,
+                titreNormalise: StringUtils.normalise(nouveauTitre),
                 presentation: sujet.presentation,
                 presentationNormalise: sujet.presentationNormalise,
                 accesPublic: false,
@@ -94,21 +167,19 @@ class SujetService {
                 ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
                 publie: false,
                 copyrightsType: sujet.copyrightsType,
-                sujetType: sujet.sujetType)
+                sujetType: sujet.sujetType,
+                paternite: sujet.paternite
+        )
         sujetCopie.save()
         // recopie de la séquence de questions (ce n'est pas une copie en profondeur)
         sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
-            SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(question: sujetQuestion.question,
+            SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
+                    question: sujetQuestion.question,
                     sujet: sujetCopie,
-                    noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite)
+                    noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
+            )
             sujetCopie.addToQuestionsSequences(copieSujetSequence)
             copieSujetSequence.save()
-        }
-        // repertorie l'ateriorité
-        sujetCopie.paternite = sujet.paternite
-
-        if (!isDernierAuteur(sujetCopie, proprietaire)) {
-            addPaterniteItem(proprietaire, sujetCopie)
         }
 
         sujetCopie.save()
@@ -694,6 +765,11 @@ class SujetService {
                 niveau: exercice.niveau,
                 publication: exercice.publication
         )
+
+        if(exercice.estCollaboratif()) {
+            question.collaboratif = true
+            question.contributeurs = exercice.contributeurs
+        }
 
         question.type = QuestionTypeEnum.Composite.questionType
         question.exercice = exercice
