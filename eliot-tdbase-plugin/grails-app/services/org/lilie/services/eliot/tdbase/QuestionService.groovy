@@ -98,7 +98,7 @@ class QuestionService implements ApplicationContextAware {
 
         // La paternité n'est initialisée que si elle n'est pas fournie dans les propriétés de création
         if (!proprietes.containsKey('paternite')) {
-            addPaterniteItem(proprietaire, question)
+            question.addPaterniteItem(proprietaire)
         }
 
         List<Competence> competenceList = parseCompetenceListFromParams(proprietes)
@@ -139,6 +139,11 @@ class QuestionService implements ApplicationContextAware {
                 questionOriginale.proprietaire, // Lorsqu'on duplique une question pour la rendre collaborative, on laisse inchangé le propriétaire original
                 questionOriginale.titre
         )
+        questionCollaborative.addPaterniteItem(
+                personne,
+                null,
+                sujet.contributeurs.collect { it.nomAffichage }
+        )
 
         // Rend la question collaborative pour le sujet
         questionCollaborative.collaboratif = true
@@ -175,7 +180,7 @@ class QuestionService implements ApplicationContextAware {
         Question questionCopie = recopieQuestion(question, proprietaire)
 
         if (!sujetService.isDernierAuteur(sujet, proprietaire)) {
-            sujetService.addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujetQuestion.question = questionCopie
@@ -223,7 +228,6 @@ class QuestionService implements ApplicationContextAware {
                 principalAttachement: question.principalAttachement,
                 paternite: question.paternite
         )
-        // TODO *** Ajoute un item de paternité
         questionCopie.save()
 
         // recopie les attachements (on ne duplique pas les attachements)
@@ -290,7 +294,7 @@ class QuestionService implements ApplicationContextAware {
         assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, question))
 
         if (!isDernierAuteur(question, proprietaire)) {
-            addPaterniteItem(proprietaire, question)
+            question.addPaterniteItem(proprietaire)
         }
 
         if (proprietes.titre && question.titre != proprietes.titre) {
@@ -421,27 +425,7 @@ class QuestionService implements ApplicationContextAware {
         question.publie = true
 
         // mise à jour de la paternite
-        addPaterniteItem(partageur, question, publication.dateDebut)
-    }
-
-    private void addPaterniteItem(Personne partageur,
-                                  Question question,
-                                  Date datePublication = null) {
-        CopyrightsType ct = question.copyrightsType
-
-        PaterniteItem paterniteItem = new PaterniteItem(auteur: "${partageur.nomAffichage}",
-                copyrightDescription: "${ct.presentation}",
-                copyrighLien: "${ct.lien}",
-                logoLien: ct.logo,
-                datePublication: datePublication,
-                oeuvreEnCours: true)
-        Paternite paternite = new Paternite(question.paternite)
-        paternite.paterniteItems.each {
-            it.oeuvreEnCours = false
-        }
-        paternite.addPaterniteItem(paterniteItem)
-        question.paternite = paternite.toString()
-        question.save()
+        question.addPaterniteItem(partageur, publication.dateDebut)
     }
 
     /**

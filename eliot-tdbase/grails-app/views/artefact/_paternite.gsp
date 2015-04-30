@@ -40,8 +40,10 @@ $(document).ready(function () {
     var paterniteHtml = ""
     var strOeuvrePubliee = " a publié cette oeuvre le "
     var strOeuvreModifiee = " a contribué à cette oeuvre"
+    var strOeuvreAjoutContributeurs = " a ajouté les contributeurs suivants à cette oeuvre : "
     var strOeuvreReutiliseePubliee = " a publié l'oeuvre réutilisée par la présente le  "
     var strOeuvreReutiliseeModifiee = " a contribué à l'oeuvre réutilisée par la présente"
+    var strOeuvreReutiliseeAjoutContributeurs = " a ajouté les contributeurs suivants à l'oeuvre réutilisée par la présente : "
     for (i = 0 ; i < nbItems ; i++) {
        var paterniteItem = paterniteObj.paterniteItems[i];
        paterniteHtml += paterniteItem.auteur;
@@ -53,6 +55,14 @@ $(document).ready(function () {
          else {
             paterniteHtml += strOeuvreReutiliseePubliee + dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0] + "<br/>";
          }
+       }
+       else if(paterniteItem.contributeurs) {
+          if(paterniteItem.oeuvreEnCours == true) {
+            paterniteHtml += strOeuvreAjoutContributeurs + paterniteItem.contributeurs.join(', ') + "<br/>"
+          }
+          else {
+            paterniteHtml += strOeuvreReutiliseeAjoutContributeurs + paterniteItem.contributeurs.join(', ') + "<br/>"
+          }
        }
        else {
         if(paterniteItem.oeuvreEnCours == true) {

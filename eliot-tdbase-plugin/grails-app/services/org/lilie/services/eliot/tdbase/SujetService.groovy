@@ -67,7 +67,7 @@ class SujetService {
                 copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
                 sujetType: SujetTypeEnum.Sujet.sujetType)
 
-        addPaterniteItem(proprietaire, sujet)
+        sujet.addPaterniteItem(proprietaire)
 
         sujet.save(flush: true)
         return sujet
@@ -76,7 +76,7 @@ class SujetService {
     @Transactional
     Sujet createSujetCollaboratifFrom(Personne personne,
                                       Sujet sujetOriginal,
-                                      Set<Personne> contributeurList) {
+                                      Set<Personne> contributeurSet) {
         assert (
                 artefactAutorisationService.utilisateurPeutDupliquerArtefact(
                         personne,
@@ -99,13 +99,17 @@ class SujetService {
                 sujetType: sujetOriginal.sujetType,
                 paternite: sujetOriginal.paternite
         )
-        // TODO *** Ajoute un item de paternité
+        sujetCollaboratif.addPaterniteItem(
+                personne,
+                null,
+                contributeurSet.collect { it.nomAffichage }
+        )
         sujetCollaboratif.save()
 
         // Rend le sujet collaboratif
         sujetCollaboratif.collaboratif = true
         sujetCollaboratif.termine = false
-        contributeurList.each {
+        contributeurSet.each {
             sujetCollaboratif.addToContributeurs(it)
         }
         sujetCollaboratif.save()
@@ -124,7 +128,7 @@ class SujetService {
                 questionCollaborative = createSujetCollaboratifFrom(
                         personne,
                         sujetQuestion.question.exercice,
-                        contributeurList
+                        contributeurSet
                 ).questionComposite
             }
             else {
@@ -215,7 +219,7 @@ class SujetService {
         assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujet.titre = nouveauTitre
@@ -246,7 +250,7 @@ class SujetService {
         }
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         if (proprietes.titre && sujet.titre != proprietes.titre) {
@@ -336,9 +340,8 @@ class SujetService {
             }
         }
 
-        addPaterniteItem(
+        sujet.addPaterniteItem(
                 partageur,
-                sujet,
                 publication.dateDebut
         )
 
@@ -349,29 +352,6 @@ class SujetService {
         }
 
         return sujet
-    }
-
-    void addPaterniteItem(Personne partageur,
-                          Sujet sujet,
-                          Date datePublication = null) {
-        CopyrightsType ct = sujet.copyrightsType
-
-        // mise à jour de la paternite
-        PaterniteItem paterniteItem = new PaterniteItem(
-                auteur: "${partageur.nomAffichage}",
-                copyrightDescription: "${ct.presentation}",
-                copyrighLien: "${ct.lien}",
-                logoLien: ct.logo,
-                datePublication: datePublication,
-                oeuvreEnCours: true
-        )
-        Paternite paternite = new Paternite(sujet.paternite)
-        paternite.paterniteItems.each {
-            it.oeuvreEnCours = false
-        }
-        paternite.addPaterniteItem(paterniteItem)
-        sujet.paternite = paternite.toString()
-        sujet.save()
     }
 
     /**
@@ -528,7 +508,7 @@ class SujetService {
         assert (!insertionQuestionCompositeInExercice(question, sujet))
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         if (!question.estPartage() && sujet.estPartage()) {
@@ -592,7 +572,7 @@ class SujetService {
         assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujetQuestion.refresh()
@@ -628,7 +608,7 @@ class SujetService {
         assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujetQuestion.refresh()
@@ -662,7 +642,7 @@ class SujetService {
         Sujet sujet = sujetQuestion.sujet
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujet.removeFromQuestionsSequences(sujetQuestion)
@@ -705,7 +685,7 @@ class SujetService {
         assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujetQuestion.points = newPoints

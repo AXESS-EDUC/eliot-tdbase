@@ -48,6 +48,10 @@ class Paternite {
   }
 
   def addPaterniteItem(PaterniteItem paterniteItem) {
+    paterniteItems.each {
+      it.oeuvreEnCours = false
+    }
+    paterniteItem.oeuvreEnCours = true
     paterniteItems << paterniteItem
   }
 
@@ -60,6 +64,7 @@ class Paternite {
 
 class PaterniteItem {
   String auteur
+  List<String> contributeurs
   String copyrightDescription
   String copyrighLien
   String logoLien

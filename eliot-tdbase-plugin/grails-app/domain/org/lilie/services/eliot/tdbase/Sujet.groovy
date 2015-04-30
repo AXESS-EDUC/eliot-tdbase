@@ -308,4 +308,25 @@ class Sujet implements Artefact {
 
     return nbQuestionAvecCompetence + nbExerciceAvecCompetence > 0
   }
+
+  void addPaterniteItem(Personne partageur,
+                        Date datePublication = null,
+                        List<String> contributeurs = null) {
+    CopyrightsType ct = copyrightsType
+
+    // mise à jour de la paternite
+    PaterniteItem paterniteItem = new PaterniteItem(
+            auteur: "${partageur.nomAffichage}",
+            copyrightDescription: "${ct.presentation}",
+            copyrighLien: "${ct.lien}",
+            logoLien: ct.logo,
+            datePublication: datePublication,
+            oeuvreEnCours: true,
+            contributeurs: contributeurs
+    )
+    Paternite paterniteObjet = new Paternite(paternite)
+    paterniteObjet.addPaterniteItem(paterniteItem)
+    paternite = paterniteObjet.toString()
+    this.save()
+  }
 }
