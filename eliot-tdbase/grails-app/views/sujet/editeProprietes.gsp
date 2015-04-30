@@ -70,6 +70,14 @@
 
       });
 
+      $("#search-contributeur-form").dialog({
+           autoOpen: false,
+           title: "Rechercher formateur",
+           height: 600,
+           width: 420,
+           modal: true
+      });
+
     });
     </r:script>
     <title><g:message code="sujet.editeProprietes.head.title"/></title>
@@ -145,7 +153,7 @@
                     <g:else>
                         Aucun formateur ajouté<br/>
                     </g:else>
-                    <button class="button">Ajouter</button>
+                    <input type="button" class="button" onclick="$('#search-contributeur-form').dialog('open');" value="Ajouter" />
                 </td>
             </tr>
             <tr>
@@ -201,6 +209,10 @@
                         title="Enregistrer" tabindex="7"/>
     </div>
 </form>
+
+<div id="search-contributeur-form" style="background-color: #ffffff">
+    <g:render template="/sujet/selectContributeur"/>
+</div>
 
 </body>
 </html>
