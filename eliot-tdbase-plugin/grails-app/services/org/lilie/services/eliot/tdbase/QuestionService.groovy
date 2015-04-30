@@ -133,16 +133,6 @@ class QuestionService implements ApplicationContextAware {
         )
         assert (questionOriginale.sujetLie?.id != sujet.id)
 
-        // Cas particulier de la question composite
-        if(questionOriginale.estComposite()) {
-            Sujet exerciceCollaboratif = sujetService.createSujetCollaboratifFrom(
-                    personne,
-                    questionOriginale.exercice,
-                    sujet.contributeurs
-            )
-            return exerciceCollaboratif.questionComposite
-        }
-
         // Recopie de la question
         Question questionCollaborative = recopieQuestion(
                 questionOriginale,
@@ -152,9 +142,12 @@ class QuestionService implements ApplicationContextAware {
 
         // Rend la question collaborative pour le sujet
         questionCollaborative.collaboratif = true
-        questionCollaborative.contributeurs = sujet.contributeurs
+        sujet.contributeurs.each {
+            questionCollaborative.addToContributeurs(it)
+        }
+        questionCollaborative.sujetLie = sujet
 
-        questionCollaborative.save()
+        questionCollaborative.save(flush: true, failOnError: true)
 
         return questionCollaborative
     }
@@ -230,6 +223,7 @@ class QuestionService implements ApplicationContextAware {
                 principalAttachement: question.principalAttachement,
                 paternite: question.paternite
         )
+        // TODO *** Ajoute un item de paternité
         questionCopie.save()
 
         // recopie les attachements (on ne duplique pas les attachements)

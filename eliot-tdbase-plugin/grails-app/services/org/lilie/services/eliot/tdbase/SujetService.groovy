@@ -99,6 +99,7 @@ class SujetService {
                 sujetType: sujetOriginal.sujetType,
                 paternite: sujetOriginal.paternite
         )
+        // TODO *** Ajoute un item de paternité
         sujetCollaboratif.save()
 
         // Rend le sujet collaboratif
@@ -109,24 +110,38 @@ class SujetService {
         }
         sujetCollaboratif.save()
 
+        sujetCollaboratif.save(flush: true, failOnError: true)
+
+        // Si le sujet est un exercice, on crée la questionComposite associée
+        if (sujetCollaboratif.estUnExercice()) {
+            createQuestionCompositeForExercice(sujetCollaboratif, personne)
+        }
+
         // recopie de la séquence de questions (copie en profondeur pour rendre les questions collaboratives pour le sujet)
         sujetOriginal.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
+            Question questionCollaborative
+            if(sujetQuestion.question.estComposite()) {
+                questionCollaborative = createSujetCollaboratifFrom(
+                        personne,
+                        sujetQuestion.question.exercice,
+                        contributeurList
+                ).questionComposite
+            }
+            else {
+                questionCollaborative = questionService.createQuestionCollaborativeFrom(
+                        personne,
+                        sujetQuestion.question,
+                        sujetCollaboratif
+                )
+            }
+
             SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
-                    question: questionService.createQuestionCollaborativeFrom(
-                            personne,
-                            sujetQuestion.question,
-                            sujetCollaboratif
-                    ),
+                    question: questionCollaborative,
                     sujet: sujetCollaboratif,
                     noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
             )
             sujetCollaboratif.addToQuestionsSequences(copieSujetSequence)
-            copieSujetSequence.save()
-        }
-
-        sujetOriginal.save()
-        if (sujetCollaboratif.estUnExercice()) {
-            createQuestionCompositeForExercice(sujetCollaboratif, personne)
+            copieSujetSequence.save(flush: true, failOnError: true)
         }
 
         return sujetCollaboratif
@@ -768,7 +783,10 @@ class SujetService {
 
         if(exercice.estCollaboratif()) {
             question.collaboratif = true
-            question.contributeurs = exercice.contributeurs
+            exercice.contributeurs.each {
+                question.addToContributeurs(it)
+            }
+            question.sujetLie = exercice
         }
 
         question.type = QuestionTypeEnum.Composite.questionType
