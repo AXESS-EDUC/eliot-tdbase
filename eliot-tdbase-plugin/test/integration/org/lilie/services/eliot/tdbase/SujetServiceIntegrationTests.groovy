@@ -100,6 +100,145 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
         assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, sujet.copyrightsType)
     }
 
+    void testCreateSujetCollaboratifFrom() {
+        given: "Un sujet vide non collaboratif"
+        Sujet sujetInitial = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertNotNull(sujetInitial)
+        assertNotNull(sujetInitial.id)
+
+        when: "Crée un sujet collaboratif à partir du sujet précédent"
+        Sujet sujetCollaboratif = sujetService.createSujetCollaboratifFrom(
+                personne1,
+                sujetInitial,
+                [personne2] as Set
+        )
+
+        then:
+        assertNotNull(sujetCollaboratif)
+        assertNotNull(sujetCollaboratif.id)
+        assertTrue(sujetCollaboratif.id != sujetInitial.id)
+        assertTrue(sujetCollaboratif.estCollaboratif())
+        assertEquals(
+                [personne2] as Set,
+                sujetCollaboratif.contributeurs
+        )
+        assertFalse(sujetCollaboratif.termine)
+        assertEquals(sujetInitial.titre, sujetCollaboratif.titre)
+        assertEquals(sujetInitial.titreNormalise, sujetCollaboratif.titreNormalise)
+
+        given: "On ajoute 2 questions au sujet initial"
+        Question question1 = questionService.createQuestion(
+                [
+                        titre      : "Question 1",
+                        type       : QuestionTypeEnum.Decimal.questionType,
+                        estAutonome: true
+                ],
+                new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+                personne1
+        )
+        sujetService.insertQuestionInSujet(
+                question1,
+                sujetInitial,
+                personne1
+        )
+        Question question2 = questionService.createQuestion(
+                [
+                        titre      : "Question 2",
+                        type       : QuestionTypeEnum.Decimal.questionType,
+                        estAutonome: true
+                ],
+                new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+                personne1
+        )
+        sujetService.insertQuestionInSujet(
+                question2,
+                sujetInitial,
+                personne1
+        )
+
+        when: "On crée un nouveau sujet collaboratif à partir du sujetInitial modifié"
+        sujetCollaboratif = sujetService.createSujetCollaboratifFrom(
+                personne1,
+                sujetInitial,
+                [personne2] as Set
+        )
+
+        then:
+        assertNotNull(sujetCollaboratif)
+        assertNotNull(sujetCollaboratif.id)
+        assertTrue(sujetInitial.id != sujetCollaboratif.id)
+        assertTrue(sujetCollaboratif.estCollaboratif())
+        assertEquals(
+                2,
+                sujetCollaboratif.questions.size()
+        )
+        sujetCollaboratif.questions*.each {
+            assertTrue(it.estCollaboratif())
+            assertEquals(
+                    [personne2] as Set,
+                    it.contributeurs
+            )
+        }
+
+        given: "Transforme le sujet initial en exercice"
+        Sujet exercice = sujetService.updateProprietes(
+                sujetInitial,
+                [sujetType: SujetTypeEnum.Exercice.sujetType],
+                personne1
+        )
+        assertTrue(exercice.estUnExercice())
+
+        and: "Crée un nouveau sujet et y ajoute l'exercice"
+        Sujet sujetAvecExercice = sujetService.createSujet(
+                personne1,
+                'Sujet avec exercice'
+        )
+        assertNotNull(sujetAvecExercice)
+        assertNotNull(sujetAvecExercice.id)
+        sujetService.insertQuestionInSujet(
+                exercice.questionComposite,
+                sujetAvecExercice,
+                personne1
+        )
+
+        when: "Crée un sujet collaboratif à partir du sujet contenant un exercice"
+        sujetCollaboratif = sujetService.createSujetCollaboratifFrom(
+                personne1,
+                sujetAvecExercice,
+                [personne2] as Set
+        )
+
+        then:
+        assertNotNull(sujetCollaboratif)
+        assertNotNull(sujetCollaboratif.id)
+        assertTrue(sujetCollaboratif.estCollaboratif())
+        assertEquals(
+                1,
+                sujetCollaboratif.questions.size()
+        )
+        Question questionCompositeCollaborative = sujetCollaboratif.questions.get(0)
+        assertTrue(questionCompositeCollaborative.estComposite())
+        assertTrue(questionCompositeCollaborative.estCollaboratif())
+        Sujet exerciceCollaboratif = questionCompositeCollaborative.exercice
+        assertTrue(exerciceCollaboratif.estCollaboratif())
+        assertTrue(exerciceCollaboratif.id != exercice.id)
+        assertEquals(
+                [personne2] as Set,
+                exerciceCollaboratif.contributeurs
+        )
+        assertEquals(
+                [personne2] as Set,
+                questionCompositeCollaborative.contributeurs
+        )
+        exerciceCollaboratif.questions.each {
+            assertTrue(it.estCollaboratif())
+            assertEquals(
+                    [personne2] as Set,
+                    it.contributeurs
+            )
+        }
+    }
+
     void testFindSujetsForProprietaire() {
         Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
         assertFalse(sujet1.hasErrors())

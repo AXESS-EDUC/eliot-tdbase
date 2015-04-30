@@ -67,26 +67,118 @@ class SujetService {
                 copyrightsType: CopyrightsTypeEnum.TousDroitsReserves.copyrightsType,
                 sujetType: SujetTypeEnum.Sujet.sujetType)
 
-        addPaterniteItem(proprietaire, sujet)
+        sujet.addPaterniteItem(proprietaire)
 
         sujet.save(flush: true)
         return sujet
+    }
+
+    @Transactional
+    Sujet createSujetCollaboratifFrom(Personne personne,
+                                      Sujet sujetOriginal,
+                                      Set<Personne> contributeurSet) {
+        assert (
+                artefactAutorisationService.utilisateurPeutDupliquerArtefact(
+                        personne,
+                        sujetOriginal
+                )
+        )
+
+        // Recopie le sujet original
+        Sujet sujetCollaboratif = new Sujet(
+                proprietaire: personne,
+                titre: sujetOriginal.titre,
+                titreNormalise: sujetOriginal.titreNormalise,
+                presentation: sujetOriginal.presentation,
+                presentationNormalise: sujetOriginal.presentationNormalise,
+                accesPublic: false,
+                accesSequentiel: sujetOriginal.accesSequentiel,
+                ordreQuestionsAleatoire: sujetOriginal.ordreQuestionsAleatoire,
+                publie: false,
+                copyrightsType: sujetOriginal.copyrightsType,
+                sujetType: sujetOriginal.sujetType,
+                paternite: sujetOriginal.paternite
+        )
+        sujetCollaboratif.addPaterniteItem(
+                personne,
+                null,
+                contributeurSet.collect { it.nomAffichage }
+        )
+        sujetCollaboratif.save()
+
+        // Rend le sujet collaboratif
+        sujetCollaboratif.collaboratif = true
+        sujetCollaboratif.termine = false
+        contributeurSet.each {
+            sujetCollaboratif.addToContributeurs(it)
+        }
+        sujetCollaboratif.save()
+
+        sujetCollaboratif.save(flush: true, failOnError: true)
+
+        // Si le sujet est un exercice, on crée la questionComposite associée
+        if (sujetCollaboratif.estUnExercice()) {
+            createQuestionCompositeForExercice(sujetCollaboratif, personne)
+        }
+
+        // recopie de la séquence de questions (copie en profondeur pour rendre les questions collaboratives pour le sujet)
+        sujetOriginal.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
+            Question questionCollaborative
+            if(sujetQuestion.question.estComposite()) {
+                questionCollaborative = createSujetCollaboratifFrom(
+                        personne,
+                        sujetQuestion.question.exercice,
+                        contributeurSet
+                ).questionComposite
+            }
+            else {
+                questionCollaborative = questionService.createQuestionCollaborativeFrom(
+                        personne,
+                        sujetQuestion.question,
+                        sujetCollaboratif
+                )
+            }
+
+            SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
+                    question: questionCollaborative,
+                    sujet: sujetCollaboratif,
+                    noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
+            )
+            sujetCollaboratif.addToQuestionsSequences(copieSujetSequence)
+            copieSujetSequence.save(flush: true, failOnError: true)
+        }
+
+        return sujetCollaboratif
     }
 
     /**
      * Recopie un sujet
      * @param sujet le sujet à recopier
      * @param proprietaire le proprietaire
+     * @param nouveauTitre le titre du sujet créé, si null le titre du sujet original
+     * sera suffixé par " (Copie)"
      * @return la copie du sujet
      */
     @Transactional
-    Sujet recopieSujet(Sujet sujet, Personne proprietaire) {
+    Sujet recopieSujet(Sujet sujet,
+                       Personne proprietaire,
+                       String nouveauTitre = null) {
         // verification securité
-        assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, sujet))
+        assert (
+                artefactAutorisationService.utilisateurPeutDupliquerArtefact(
+                        proprietaire,
+                        sujet
+                )
+        )
 
-        Sujet sujetCopie = new Sujet(proprietaire: proprietaire,
-                titre: sujet.titre + " (Copie)",
-                titreNormalise: sujet.titreNormalise,
+        if(!nouveauTitre) {
+            nouveauTitre = sujet.titre + " (Copie)"
+        }
+
+        Sujet sujetCopie = new Sujet(
+                proprietaire: proprietaire,
+                titre: nouveauTitre,
+                titreNormalise: StringUtils.normalise(nouveauTitre),
                 presentation: sujet.presentation,
                 presentationNormalise: sujet.presentationNormalise,
                 accesPublic: false,
@@ -94,21 +186,19 @@ class SujetService {
                 ordreQuestionsAleatoire: sujet.ordreQuestionsAleatoire,
                 publie: false,
                 copyrightsType: sujet.copyrightsType,
-                sujetType: sujet.sujetType)
+                sujetType: sujet.sujetType,
+                paternite: sujet.paternite
+        )
         sujetCopie.save()
         // recopie de la séquence de questions (ce n'est pas une copie en profondeur)
         sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
-            SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(question: sujetQuestion.question,
+            SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
+                    question: sujetQuestion.question,
                     sujet: sujetCopie,
-                    noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite)
+                    noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
+            )
             sujetCopie.addToQuestionsSequences(copieSujetSequence)
             copieSujetSequence.save()
-        }
-        // repertorie l'ateriorité
-        sujetCopie.paternite = sujet.paternite
-
-        if (!isDernierAuteur(sujetCopie, proprietaire)) {
-            addPaterniteItem(proprietaire, sujetCopie)
         }
 
         sujetCopie.save()
@@ -129,7 +219,7 @@ class SujetService {
         assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujet.titre = nouveauTitre
@@ -160,7 +250,7 @@ class SujetService {
         }
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         if (proprietes.titre && sujet.titre != proprietes.titre) {
@@ -250,9 +340,8 @@ class SujetService {
             }
         }
 
-        addPaterniteItem(
+        sujet.addPaterniteItem(
                 partageur,
-                sujet,
                 publication.dateDebut
         )
 
@@ -263,29 +352,6 @@ class SujetService {
         }
 
         return sujet
-    }
-
-    void addPaterniteItem(Personne partageur,
-                          Sujet sujet,
-                          Date datePublication = null) {
-        CopyrightsType ct = sujet.copyrightsType
-
-        // mise à jour de la paternite
-        PaterniteItem paterniteItem = new PaterniteItem(
-                auteur: "${partageur.nomAffichage}",
-                copyrightDescription: "${ct.presentation}",
-                copyrighLien: "${ct.lien}",
-                logoLien: ct.logo,
-                datePublication: datePublication,
-                oeuvreEnCours: true
-        )
-        Paternite paternite = new Paternite(sujet.paternite)
-        paternite.paterniteItems.each {
-            it.oeuvreEnCours = false
-        }
-        paternite.addPaterniteItem(paterniteItem)
-        sujet.paternite = paternite.toString()
-        sujet.save()
     }
 
     /**
@@ -442,7 +508,7 @@ class SujetService {
         assert (!insertionQuestionCompositeInExercice(question, sujet))
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         if (!question.estPartage() && sujet.estPartage()) {
@@ -506,7 +572,7 @@ class SujetService {
         assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujetQuestion.refresh()
@@ -542,7 +608,7 @@ class SujetService {
         assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujetQuestion.refresh()
@@ -576,7 +642,7 @@ class SujetService {
         Sujet sujet = sujetQuestion.sujet
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujet.removeFromQuestionsSequences(sujetQuestion)
@@ -619,7 +685,7 @@ class SujetService {
         assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
         if (!isDernierAuteur(sujet, proprietaire)) {
-            addPaterniteItem(proprietaire, sujet)
+            sujet.addPaterniteItem(proprietaire)
         }
 
         sujetQuestion.points = newPoints
@@ -694,6 +760,14 @@ class SujetService {
                 niveau: exercice.niveau,
                 publication: exercice.publication
         )
+
+        if(exercice.estCollaboratif()) {
+            question.collaboratif = true
+            exercice.contributeurs.each {
+                question.addToContributeurs(it)
+            }
+            question.sujetLie = exercice
+        }
 
         question.type = QuestionTypeEnum.Composite.questionType
         question.exercice = exercice
