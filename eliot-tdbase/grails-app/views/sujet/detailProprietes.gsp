@@ -165,6 +165,21 @@
             </td>
         </tr>
         <tr>
+            <td class="label">Travail collaboratif&nbsp;:</td>
+            <td>
+                <g:if test="${sujet.contributeurs}">
+                    <ul>
+                        <g:each in="${sujet.contributeurs}" var="contributeur">
+                            <li>${contributeur.nomAffichage}</li>
+                        </g:each>
+                    </ul>
+                </g:if>
+                <g:else>
+                    Aucun formateur ajouté<br/>
+                </g:else>
+            </td>
+        </tr>
+        <tr>
             <td class="label">Dur&eacute;e&nbsp;:</td>
             <td>
                 ${sujet.dureeMinutes}
