@@ -26,6 +26,7 @@ import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.RecherchePersonneResultat
+import org.lilie.services.eliot.tice.util.Pagination
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.springframework.web.multipart.MultipartFile
@@ -196,7 +197,6 @@ class SujetController {
     if (command.etablissementId) {
       etablissement = Etablissement.get(command.etablissementId)
     } else {
-      // TODO Faut-il vérifier si l'établissement courant correspond bien à un établissement pour lequel l'utilisateur est formateur
       etablissement = securiteSessionServiceProxy.currentEtablissement
       command.etablissementId = etablissement.id
     }
@@ -219,14 +219,14 @@ class SujetController {
         profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
             etablissement,
             [fonction],
-            command.patternCode
-        ) // TODO Ajouter la pagination
+            command.patternCode,
+            command.pagination
+        )
 
     render(
         view: "/sujet/_selectContributeur",
         model: [
             rechercheContributeurCommand: command,
-            // TODO : Il faut filtrer sur la liste des établissements sur lequel l'utilisateur est formateur
             etablissements              : securiteSessionServiceProxy.etablissementList,
             fonctionList                : fonctionList,
             resultat                    : resultat
@@ -908,6 +908,17 @@ class RechercheContributeurCommand {
 
   Long offset
   Long max
+
+  Pagination getPagination() {
+    if(!offset && !max) {
+      return null
+    }
+
+    return new Pagination(
+        max: max,
+        offset: offset
+    )
+  }
 }
 
 class RechercheContributeurResultat {
