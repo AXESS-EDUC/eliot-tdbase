@@ -28,8 +28,7 @@
 
 <g:form action="rechercheContributeur" controller="sujet">
   <div class="portal-form_container recherche" style="width: 100%">
-    <table
-    >
+    <table>
       <tr>
         <td class="label">
           Rechercher
@@ -70,6 +69,16 @@
                       controller="sujet"
                       title="Lancer la recherche"
                       class="button"
-                      update="search-collaborateur-form"/>
+                      update="search-contributeur-form"/>
   </div>
+
+  <g:if test="${resultat?.total}">
+    <g:each in="${resultat.formateurList}" var="formateur">
+    %{-- TODO: Mise en forme des résultats --}%
+      <p>${formateur.nomAffichage}</p>
+    </g:each>
+  </g:if>
+
 </g:form>
+
+

@@ -201,13 +201,25 @@ class SujetController {
         command.etablissementId = etablissement.id
       }
 
-      render(view: "/sujet/_selectContributeur",
+      RechercheContributeurResultat rechercheContributeurResultat =
+          new RechercheContributeurResultat(
+              total: 2,
+              formateurList: [
+                  Personne.findAll()[0],
+                  Personne.findAll()[1]
+              ]
+          ) // TODO
+
+      render(
+          view: "/sujet/_selectContributeur",
           model: [
               rechercheContributeurCommand: command,
               etablissements        : securiteSessionServiceProxy.etablissementList,
+                  // TODO : Il faut filtrer par les fonctions "formateurs" (en fonction de l'établissement)
               fonctionList          : preferenceEtablissementService.getFonctionsForEtablissement(
                   etablissement
-              )
+              ),
+              resultat: rechercheContributeurResultat
           ]
       )
     }
@@ -883,4 +895,10 @@ class RechercheContributeurCommand {
   String patternCode
   Long etablissementId
   Long fonctionId
+}
+
+class RechercheContributeurResultat {
+  Long total = 0
+  Long offset = 0
+  List<Personne> formateurList = []
 }
