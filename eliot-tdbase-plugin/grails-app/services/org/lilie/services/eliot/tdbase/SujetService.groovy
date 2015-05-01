@@ -73,6 +73,72 @@ class SujetService {
         return sujet
     }
 
+  /**
+   * Transforme un sujet non collaboratif en sujet collaboratif
+   * @param personne
+   * @param sujet
+   * @param contributeurSet
+   * @return
+   */
+  @Transactional
+  Sujet rendSujetCollaboratif(Personne personne,
+                              Sujet sujet,
+                              Set<Personne> contributeurSet) {
+    assert(
+      artefactAutorisationService.utilisateurPeutModifierArtefact(
+          personne,
+          sujet
+      )
+    )
+
+    assert(!sujet.estCollaboratif())
+
+    // Rend le sujet collaboratif
+    sujet.collaboratif = true
+    sujet.termine = false
+    contributeurSet.each {
+      sujet.addToContributeurs(it)
+    }
+    sujet.addPaterniteItem(
+        personne,
+        null,
+        contributeurSet.collect { it.nomAffichage }
+    )
+    sujet.save(flush: true, failOnError: true)
+
+    if(sujet.estUnExercice()) {
+      Question questionComposite = sujet.questionComposite
+      questionComposite.collaboratif = true
+      contributeurSet.each {
+        questionComposite.addToContributeurs(it)
+      }
+      questionComposite.sujetLie = sujet
+      questionComposite.save()
+    }
+
+    // recopie de la séquence de questions (copie en profondeur pour rendre les questions collaboratives pour le sujet)
+    sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
+      if(sujetQuestion.question.estComposite()) {
+        sujetQuestion.question = createSujetCollaboratifFrom(
+            personne,
+            sujetQuestion.question.exercice,
+            contributeurSet
+        ).questionComposite
+      }
+      else {
+        sujetQuestion.question = questionService.createQuestionCollaborativeFrom(
+            personne,
+            sujetQuestion.question,
+            sujet
+        )
+      }
+
+      sujetQuestion.save()
+    }
+
+    return sujet
+  }
+
     @Transactional
     Sujet createSujetCollaboratifFrom(Personne personne,
                                       Sujet sujetOriginal,
@@ -99,11 +165,6 @@ class SujetService {
                 sujetType: sujetOriginal.sujetType,
                 paternite: sujetOriginal.paternite
         )
-        sujetCollaboratif.addPaterniteItem(
-                personne,
-                null,
-                contributeurSet.collect { it.nomAffichage }
-        )
         sujetCollaboratif.save()
 
         // Rend le sujet collaboratif
@@ -112,8 +173,11 @@ class SujetService {
         contributeurSet.each {
             sujetCollaboratif.addToContributeurs(it)
         }
-        sujetCollaboratif.save()
-
+        sujetCollaboratif.addPaterniteItem(
+            personne,
+            null,
+            contributeurSet.collect { it.nomAffichage }
+        )
         sujetCollaboratif.save(flush: true, failOnError: true)
 
         // Si le sujet est un exercice, on crée la questionComposite associée
