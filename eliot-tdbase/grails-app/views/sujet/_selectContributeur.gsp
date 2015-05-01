@@ -70,6 +70,6 @@
                       controller="sujet"
                       title="Lancer la recherche"
                       class="button"
-                      update="search-group-form"/>
+                      update="search-collaborateur-form"/>
   </div>
 </g:form>

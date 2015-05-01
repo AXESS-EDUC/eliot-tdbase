@@ -185,9 +185,31 @@ class SujetController {
                         currentEtablissement  : currentEtablissement,
                         fonctionList          : preferenceEtablissementService.getFonctionsForEtablissement(
                             currentEtablissement
-                        ),
+                        )
                 ]
         )
+    }
+
+    def rechercheContributeur(RechercheContributeurCommand command) {
+
+      Etablissement etablissement
+      if (command.etablissementId) {
+        etablissement = Etablissement.get(command.etablissementId)
+      }
+      else {
+        etablissement = securiteSessionServiceProxy.currentEtablissement
+        command.etablissementId = etablissement.id
+      }
+
+      render(view: "/sujet/_selectContributeur",
+          model: [
+              rechercheContributeurCommand: command,
+              etablissements        : securiteSessionServiceProxy.etablissementList,
+              fonctionList          : preferenceEtablissementService.getFonctionsForEtablissement(
+                  etablissement
+              )
+          ]
+      )
     }
 
     /**
