@@ -19,6 +19,7 @@ import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.annuaire.groupe.GroupeType
 import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.scolarite.FonctionEnum
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Matiere
@@ -190,7 +191,7 @@ class SujetController {
   }
 
   def rechercheContributeur(RechercheContributeurCommand command) {
-
+    Personne personne = authenticatedPersonne
     Etablissement etablissement
     if (command.etablissementId) {
       etablissement = Etablissement.get(command.etablissementId)
@@ -200,16 +201,24 @@ class SujetController {
       command.etablissementId = etablissement.id
     }
 
-    // TODO : Il faut filtrer par les fonctions "formateurs" (en fonction de l'établissement)
     List<Fonction> fonctionList =
-        preferenceEtablissementService.getFonctionsForEtablissement(
+        preferenceEtablissementService.getFonctionListForRoleFormateur(
+            personne,
             etablissement
         )
+
+    Fonction fonction
+    if(command.fonctionId) {
+      fonction = Fonction.get(command.fonctionId)
+    }
+    else {
+      fonction = FonctionEnum.ENS.fonction
+    }
 
     RecherchePersonneResultat resultat =
         profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
             etablissement,
-            fonctionList,
+            [fonction],
             command.patternCode
         ) // TODO Ajouter la pagination
 
