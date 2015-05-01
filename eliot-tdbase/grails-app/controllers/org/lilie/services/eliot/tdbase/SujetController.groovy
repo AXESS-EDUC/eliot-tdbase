@@ -18,6 +18,7 @@ import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.annuaire.groupe.GroupeType
+import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
@@ -166,20 +167,25 @@ class SujetController {
         breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.editeproprietes.titre"))
         Sujet sujet = Sujet.get(params.id)
         Personne proprietaire = authenticatedPersonne
+        Etablissement currentEtablissement = securiteSessionServiceProxy.currentEtablissement
 
         assert artefactAutorisationService.utilisateurPeutModifierPropriete(proprietaire, sujet)
 
         render(
                 view: "editeProprietes",
                 model: [
-                        liens         : breadcrumpsServiceProxy.liens,
-                        sujet         : sujet,
-                        artefactHelper: artefactAutorisationService,
-                        typesSujet    : sujetService.getAllSujetTypes(),
-                        matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
-                        matiereBcns   : sujet.matiereBcn != null ? [sujet.matiereBcn] : [],
-                        etablissements: securiteSessionServiceProxy.etablissementList,
-                        niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)
+                        liens                 : breadcrumpsServiceProxy.liens,
+                        sujet                 : sujet,
+                        artefactHelper        : artefactAutorisationService,
+                        typesSujet            : sujetService.getAllSujetTypes(),
+                        matieres              : profilScolariteService.findMatieresForPersonne(proprietaire),
+                        matiereBcns           : sujet.matiereBcn != null ? [sujet.matiereBcn] : [],
+                        etablissements        : securiteSessionServiceProxy.etablissementList,
+                        niveaux               : profilScolariteService.findNiveauxForPersonne(proprietaire),
+                        currentEtablissement  : currentEtablissement,
+                        fonctionList          : preferenceEtablissementService.getFonctionsForEtablissement(
+                            currentEtablissement
+                        ),
                 ]
         )
     }
@@ -849,4 +855,10 @@ class RechercheSujetCommand {
          niveauId           : niveauId]
     }
 
+}
+
+class RechercheContributeurCommand {
+  String patternCode
+  Long etablissementId
+  Long fonctionId
 }

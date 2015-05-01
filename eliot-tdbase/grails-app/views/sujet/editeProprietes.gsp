@@ -1,4 +1,4 @@
-<%@ page import="org.lilie.services.eliot.tdbase.SujetType" %>
+<%@ page import="org.lilie.services.eliot.tice.scolarite.FonctionEnum; org.lilie.services.eliot.tice.scolarite.Fonction; org.lilie.services.eliot.tdbase.RechercheContributeurCommand; org.lilie.services.eliot.tdbase.SujetType" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   - This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -30,7 +30,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="layout" content="eliot-tdbase"/>
-    <r:require modules="jquery, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
+    <r:require modules="eliot-tdbase-ui, jquery, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
     <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
@@ -211,7 +211,11 @@
 </form>
 
 <div id="search-contributeur-form" style="background-color: #ffffff">
-    <g:render template="/sujet/selectContributeur"/>
+    <g:render template="/sujet/selectContributeur" model="[
+        etablissements        : etablissements,
+        fonctionList          : fonctionList,
+        rechercheContributeurCommand: new RechercheContributeurCommand(etablissementId: currentEtablissement.id, fonctionId: FonctionEnum.ENS.id)
+    ]"/>
 </div>
 
 </body>

@@ -26,4 +26,50 @@
   -   <http://www.cecill.info/licences.fr.html>.
   --}%
 
-TODO Formulaire de recherche des contributeurs
+<g:form action="rechercheContributeur" controller="sujet">
+  <div class="portal-form_container recherche" style="width: 100%">
+    <table
+    >
+      <tr>
+        <td class="label">
+          Rechercher
+        </td>
+        <td>
+          <g:textField name="patternCode" title="code"
+                       value="${rechercheContributeurCommand.patternCode}"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">dans&nbsp;
+        </td>
+        <td>
+          <g:select name="etablissementId"
+                    value="${rechercheContributeurCommand.etablissementId}"
+                    from="${etablissements}"
+                    optionKey="id"
+                    optionValue="nomAffichage"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">Profil&nbsp;
+        </td>
+        <td id="selectFonctionList">
+          <g:render template="/seance/selectFonction"
+                    model="[fonctionId: rechercheContributeurCommand.fonctionId, fonctionList: fonctionList]"/>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+
+  <div class="form_actions recherche" style="width: 100%">
+    <g:submitToRemote value="Rechercher"
+                      action="rechercheContributeur"
+                      controller="sujet"
+                      title="Lancer la recherche"
+                      class="button"
+                      update="search-group-form"/>
+  </div>
+</g:form>
