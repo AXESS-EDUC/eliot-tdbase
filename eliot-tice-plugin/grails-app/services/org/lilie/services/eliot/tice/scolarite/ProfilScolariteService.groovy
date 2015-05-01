@@ -29,6 +29,7 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
+import org.hibernate.Hibernate
 import org.hibernate.SQLQuery
 import org.hibernate.Session
 import org.hibernate.SessionFactory
@@ -439,7 +440,7 @@ public class ProfilScolariteService {
      * @param fonctionList
      * @return
      */
-    List<Personne> rechercheAllPersonneForEtablissementAndFonctionIn(Etablissement etablissement,
+    RecherchePersonneResultat rechercheAllPersonneForEtablissementAndFonctionIn(Etablissement etablissement,
                                                                      List<Fonction> fonctionList,
                                                                      String motCle = "",
                                                                      Pagination pagination = null) {
@@ -548,6 +549,13 @@ public class ProfilScolariteService {
             ORDER BY nom_normalise, prenom_normalise
 """
 
+        // Récupération du nombre total de résultat
+        sql = """
+          WITH p AS ( $sql )
+          SELECT {p.*}, count(*) over() as nombreTotal FROM p
+          ORDER BY p.nom_normalise, p.prenom_normalise
+        """
+
         if (pagination) {
             sql += """
             LIMIT ${pagination.max} OFFSET ${pagination.offset}
@@ -561,7 +569,14 @@ public class ProfilScolariteService {
         if (fonctionList.contains(FonctionEnum.AL.fonction)) {
             sqlQuery.setLong('porteur_ent_id', etablissement.porteurEntId)
         }
-        sqlQuery.addEntity(Personne)
-        return sqlQuery.list()
+        sqlQuery.addEntity('p', Personne)
+        sqlQuery.addScalar('nombreTotal', Hibernate.INTEGER)
+
+
+        List list = sqlQuery.list()
+        return new RecherchePersonneResultat(
+            personneList: list.collect { it[0] },
+            nombreTotal: list.isEmpty() ? 0 : (Integer) list[0][1]
+        )
     }
 }
