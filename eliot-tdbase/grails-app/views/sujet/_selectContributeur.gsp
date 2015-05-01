@@ -72,8 +72,8 @@
                       update="search-contributeur-form"/>
   </div>
 
-  <g:if test="${resultat?.total}">
-    <g:each in="${resultat.formateurList}" var="formateur">
+  <g:if test="${resultat?.nombreTotal}">
+    <g:each in="${resultat.personneList}" var="formateur">
     %{-- TODO: Mise en forme des résultats --}%
       <p>${formateur.nomAffichage}</p>
     </g:each>

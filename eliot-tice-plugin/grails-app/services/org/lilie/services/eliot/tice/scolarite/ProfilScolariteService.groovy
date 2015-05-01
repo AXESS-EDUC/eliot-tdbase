@@ -518,7 +518,7 @@ public class ProfilScolariteService {
           UNION ALL
 
             SELECT  p.*
-            FROM ent.personne p ON rgp.personne_id = p.id
+            FROM ent.personne p
             INNER JOIN ent.personne_propriete_scolarite pps ON (pps.personne_id = p.id AND pps.est_active IS TRUE)
             INNER JOIN ent.propriete_scolarite ps ON (pps.propriete_scolarite_id = ps.id)
             INNER JOIN ent.fonction f ON ps.fonction_id = f.id
