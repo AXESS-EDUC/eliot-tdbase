@@ -25,8 +25,11 @@
   -   <http://www.gnu.org/licenses/> and
   -   <http://www.cecill.info/licences.fr.html>.
   --}%
-
 <g:form action="rechercheContributeur" controller="sujet">
+
+  <g:hiddenField name="max" value="${rechercheContributeurCommand.max}"></g:hiddenField>
+  <g:hiddenField name="offset" value="0"></g:hiddenField>
+
   <div class="portal-form_container recherche" style="width: 100%">
     <table>
       <tr>
@@ -69,16 +72,53 @@
                       controller="sujet"
                       title="Lancer la recherche"
                       class="button"
-                      update="search-contributeur-form"/>
+                      update="search-contributeur-form"
+                      onSuccess="searchContributeurOnLoad();"
+                      id="search-contributeur-button"/>
   </div>
 
   <g:if test="${resultat?.nombreTotal}">
-    <g:each in="${resultat.personneList}" var="formateur">
-    %{-- TODO: Mise en forme des résultats --}%
-      <p>${formateur.nomAffichage}</p>
-    </g:each>
+
+    <div class="portal_pagination">
+      <p class="nb_result">
+        ${resultat.nombreTotal} résultat(s)
+
+        <input type="button" class="button" style="text-transform: none; position: relative; float: right;"
+               value="Ajouter le / les formateurs sélectionnés" onclick="ajouterFormateursSelectionnes(); return false;">
+      </p>
+    </div>
+
+    <div class="portal-default_results-list">
+      <g:each in="${resultat.personneList}" status="i" var="formateur">
+        <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0;text-align: left">
+          <input type="checkbox" id="formateur-checkbox${formateur.id}" class="formateur-checkbox" data-id="${formateur.id}" data-nomaffichage="${formateur.nomAffichage}"/>
+          ${formateur.nomAffichage}
+        </div>
+      </g:each>
+    </div>
+
+    <div id="search-contributeur-pagination" class="portal_pagination">
+      <g:paginate total="${resultat?.nombreTotal}"
+                  max="rechercheContributeurCommand.max"
+                  offset="rechercheContributeurCommand.offset"/>
+    </div>
+
   </g:if>
 
 </g:form>
 
+<script>
+  $("#patternCode").keypress(function (event) {
+    if (event.which == 13) {
+      event.preventDefault();
+    }
+  });
 
+  $("#etablissementId").change(function () {
+    $.get("${createLink(action: 'updateFonctionList', controller: 'sujet')}",
+        {etablissementId: $(this).val()},
+        function (data) {
+          $('#selectFonctionList').html(data)
+        });
+  })
+</script>

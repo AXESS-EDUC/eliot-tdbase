@@ -234,6 +234,29 @@ class SujetController {
     )
   }
 
+  def updateFonctionList() {
+    Personne personne = authenticatedPersonne
+    Etablissement etablissement = Etablissement.load(params.etablissementId)
+
+    List<Fonction> fonctionList =
+        preferenceEtablissementService.getFonctionListForRoleFormateur(
+            personne,
+            etablissement
+        )
+
+    Fonction fonction = fonctionList.contains(fonctionService.fonctionEleve()) ?
+        fonctionService.fonctionEleve() :
+        fonctionList.first()
+
+    render(
+        view: "/seance/_selectFonction",
+        model: [
+            fonctionList: fonctionList,
+            fonctionId  : fonction.id
+        ]
+    )
+  }
+
   /**
    *
    * Action "edite"

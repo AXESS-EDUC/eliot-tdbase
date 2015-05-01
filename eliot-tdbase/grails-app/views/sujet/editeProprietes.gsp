@@ -39,77 +39,15 @@
             <input type="text" value="{{= nomAffichage}}" disabled="disabled"/>
         </td>
         <td>
-            {{if !persistant}} <input type="button" class="button" value="Supprimer"/> {{/if}}
+            {{if !persistant}} <input type="button" class="button" value="Supprimer" onclick="supprimerContributeur({{= id}}); return false;"/> {{/if}}
         </td>
     </tr>
     </script>
 
     <r:script>
-    $(document).ready(function () {
-      $('#menu-item-sujets').addClass('actif');
-      $('input[name="titre"]').focus();
-
-
-      initComboboxAutoComplete({
-        combobox: '#matiereBcn\\.id',
-
-        recherche: function(recherche, callback) {
-          if (recherche == null || recherche.length < 3) {
-            callback([]);
-          }
-          else {
-            $.ajax({
-              url: '${g.createLink(absolute: true, uri: "/sujet/matiereBcns")}',
-
-              data: {
-                recherche: recherche
-              },
-
-              success: function(matiereBcns) {
-                var options = [];
-
-                for(var i = 0; i < matiereBcns.length; i++) {
-                  options.push({
-                    id: matiereBcns[i].id,
-                    value:  matiereBcns[i].libelleEdition + ' [' + matiereBcns[i].libelleCourt + ']'
-                  });
-                }
-
-                callback(options);
-              }
-            });
-          }
-        }
-
-      });
-
-      $("#search-contributeur-form").dialog({
-           autoOpen: false,
-           title: "Rechercher formateurs",
-           height: 600,
-           width: 420,
-           modal: true
-      });
-
       // Tableau contenant tous les contributeurs (ceux qui sont persistants + ceux qui viennent d'être ajoutés)
       var contributeurList = [];
-        <g:each in="${sujet.contributeurs}" var="contributeur">
-            contributeurList.push({
-              id: ${contributeur.id},
-              nomAffichage: '${contributeur.nomAffichage.encodeAsJavaScript()}',
-              persistant: true
-          });
-        </g:each>
-
-        // TODO *** For test
-        //contributeurList.push({
-        //    nomAffichage : 'John Doe',
-        //    persistant: true
-        //});
-        //contributeurList.push({
-        //    nomAffichage : 'Laura Ingall',
-        //    persistant: false
-        //});
+      var tempContributeurList = [];
 
       function renderContributeurList() {
         var divContributeurList = $('#contributeurList');
@@ -128,8 +66,165 @@
         }
       }
 
-      renderContributeurList();
-    });
+      function supprimerContributeur(id) {
+        for (var i = 0; i < contributeurList.length; i++) {
+          if (contributeurList[i].id == id) {
+            contributeurList.splice(i, 1);
+            break;
+          }
+        }
+
+        renderContributeurList();
+      }
+
+      function searchContributeurOnLoad() {
+        $('#search-contributeur-pagination a').each(function() {
+          var a = $(this);
+          var href = a.prop('href');
+          a.prop('href', '#');
+          var params = getUrlParams(href);
+          a.click(function() {
+            $('#offset').val(params.offset);
+            $('#search-contributeur-button').click();
+          });
+        });
+
+        initCheckboxes();
+      }
+
+      function ouvreContrubuteurPopup() {
+        tempContributeurList = [];
+
+        contributeurList.forEach(function(formateur) {
+          tempContributeurList.push(formateur);
+        });
+
+        initCheckboxes();
+        $('#search-contributeur-form').dialog('open');
+      }
+
+      function initCheckboxes() {
+        var checkboxes = $('.formateur-checkbox')
+        checkboxes.unbind('change');
+        checkboxes.prop('checked', false);
+        checkboxes.prop('disabled', false);
+
+        tempContributeurList.forEach(function(formateur) {
+          var checkbox = $('#formateur-checkbox' + formateur.id);
+          checkbox.prop('checked', true);
+          if (formateur.persistant) {
+            checkbox.prop('disabled', true);
+          }
+        });
+
+        checkboxes.change(function() {
+          if(this.checked) {
+            tempContributeurList.push({
+              id: $(this).data('id'),
+              nomAffichage: $(this).data('nomaffichage'),
+              persistant: false
+            });
+          }
+          else {
+            var id = $(this).data('id');
+
+            for (var i = 0; i < tempContributeurList.length; i++) {
+              if (tempContributeurList[i].id == id) {
+                tempContributeurList.splice(i, 1);
+                break;
+              }
+            }
+          }
+        });
+      }
+
+      function getUrlParams(url) {
+        var params = {};
+        var paramsStrings = url.split('?')[1].split('&');
+
+        for (var i = 0; i < paramsStrings.length; i++) {
+          var paramStrings = paramsStrings[i].split('=');
+          params[paramStrings[0]] = paramStrings[1];
+        }
+        return params;
+      }
+
+      function ajouterFormateursSelectionnes() {
+        $("#search-contributeur-form").dialog("close");
+        contributeurList = [];
+
+        tempContributeurList.forEach(function(formateur) {
+          contributeurList.push(formateur);
+        });
+
+        renderContributeurList();
+      }
+
+      $(document).ready(function () {
+        $('#menu-item-sujets').addClass('actif');
+        $('input[name="titre"]').focus();
+
+        initComboboxAutoComplete({
+          combobox: '#matiereBcn\\.id',
+
+          recherche: function(recherche, callback) {
+            if (recherche == null || recherche.length < 3) {
+              callback([]);
+            }
+            else {
+              $.ajax({
+                url: '${g.createLink(absolute: true, uri: "/sujet/matiereBcns")}',
+
+                data: {
+                  recherche: recherche
+                },
+
+                success: function(matiereBcns) {
+                  var options = [];
+
+                  for(var i = 0; i < matiereBcns.length; i++) {
+                    options.push({
+                      id: matiereBcns[i].id,
+                      value:  matiereBcns[i].libelleEdition + ' [' + matiereBcns[i].libelleCourt + ']'
+                    });
+                  }
+
+                  callback(options);
+                }
+              });
+            }
+          }
+
+        });
+
+        $("#search-contributeur-form").dialog({
+             autoOpen: false,
+             title: "Rechercher formateurs",
+             height: 600,
+             width: 420,
+             modal: true
+        });
+
+        <g:each in="${sujet.contributeurs}" var="contributeur">
+            contributeurList.push({
+              id: ${contributeur.id},
+              nomAffichage: '${contributeur.nomAffichage.encodeAsJavaScript()}',
+              persistant: true
+          });
+        </g:each>
+
+        // TODO *** For test
+        //contributeurList.push({
+        //    nomAffichage : 'John Doe',
+        //    persistant: true
+        //});
+        //contributeurList.push({
+        //    nomAffichage : 'Laura Ingall',
+        //    persistant: false
+        //});
+
+        renderContributeurList();
+      });
     </r:script>
     <title><g:message code="sujet.editeProprietes.head.title"/></title>
 
@@ -217,7 +312,7 @@
                     <div id="contributeurList"></div>
                     <input type="button"
                            class="button"
-                           onclick="$('#search-contributeur-form').dialog('open');"
+                           onclick="ouvreContrubuteurPopup();"
                            value="Ajouter des contributeurs"/>
                     <br/>&nbsp;
                 </td>
@@ -280,7 +375,9 @@
     <g:render template="/sujet/selectContributeur" model="[
             etablissements              : etablissements,
             fonctionList                : fonctionList,
-            rechercheContributeurCommand: new RechercheContributeurCommand(etablissementId: currentEtablissement.id, fonctionId: FonctionEnum.ENS.id)
+            rechercheContributeurCommand: new RechercheContributeurCommand( etablissementId: currentEtablissement.id,
+                                                                            fonctionId: FonctionEnum.ENS.id,
+                                                                            max: 3)
     ]"/>
 </div>
 
