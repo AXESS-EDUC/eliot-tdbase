@@ -30,7 +30,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="layout" content="eliot-tdbase"/>
-    <r:require modules="eliot-tdbase-ui, jquery, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
+    <r:require modules="eliot-tdbase-ui, jquery, jquery-ui, jquery-template, eliot-tdbase-combobox-autocomplete"/>
+
+    <script id="contributeurTemplate" type="text/html">
+    <tr>
+        <td>
+            <input type="hidden" name="contributeurId" value="{{= id}}" />
+            <input type="text" value="{{= nomAffichage}}" disabled="disabled"/>
+        </td>
+        <td>
+            {{if !persistant}} <input type="button" class="button" value="Supprimer"/> {{/if}}
+        </td>
+    </tr>
+    </script>
+
     <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
@@ -72,15 +85,73 @@
 
       $("#search-contributeur-form").dialog({
            autoOpen: false,
-           title: "Rechercher formateur",
+           title: "Rechercher formateurs",
            height: 600,
            width: 420,
            modal: true
       });
 
+      // Tableau contenant tous les contributeurs (ceux qui sont persistants + ceux qui viennent d'être ajoutés)
+      var contributeurList = [];
+        <g:each in="${sujet.contributeurs}" var="contributeur">
+            contributeurList.push({
+              id: ${contributeur.id},
+              nomAffichage: '${contributeur.nomAffichage.encodeAsJavaScript()}',
+              persistant: true
+          });
+        </g:each>
+
+        // TODO *** For test
+        //contributeurList.push({
+        //    nomAffichage : 'John Doe',
+        //    persistant: true
+        //});
+        //contributeurList.push({
+        //    nomAffichage : 'Laura Ingall',
+        //    persistant: false
+        //});
+
+      function renderContributeurList() {
+        var divContributeurList = $('#contributeurList');
+
+        divContributeurList.html('');
+
+        if(contributeurList.length === 0) {
+            divContributeurList.append('Aucun contributeur');
+        }
+        else {
+            divContributeurList.append('<table>');
+            $.each(contributeurList, function(index, contributeur) {
+                $('#contributeurTemplate').tmpl(contributeur).appendTo(divContributeurList);
+            });
+            divContributeurList.append('</table>');
+        }
+      }
+
+      renderContributeurList();
     });
     </r:script>
     <title><g:message code="sujet.editeProprietes.head.title"/></title>
+
+    <style>
+    #contributeurList table {
+        width: auto;
+        margin-left: 0;
+    }
+
+    #contributeurList td {
+        text-align: left;
+    }
+
+    #contributeurList td input {
+        width: 19em;
+    }
+
+    #contributeurList td input.button {
+        margin-top: -2px;
+        width: auto;
+    }
+    </style>
 </head>
 
 <body>
@@ -143,17 +214,12 @@
             <tr>
                 <td class="label">Travail collaboratif&nbsp;:</td>
                 <td>
-                    <g:if test="${sujet.contributeurs}">
-                        <ul>
-                            <g:each in="${sujet.contributeurs}" var="contributeur">
-                                <li>${contributeur.nomAffichage}</li>
-                            </g:each>
-                        </ul>
-                    </g:if>
-                    <g:else>
-                        Aucun formateur ajouté<br/>
-                    </g:else>
-                    <input type="button" class="button" onclick="$('#search-contributeur-form').dialog('open');" value="Ajouter" />
+                    <div id="contributeurList"></div>
+                    <input type="button"
+                           class="button"
+                           onclick="$('#search-contributeur-form').dialog('open');"
+                           value="Ajouter des contributeurs"/>
+                    <br/>&nbsp;
                 </td>
             </tr>
             <tr>
@@ -212,9 +278,9 @@
 
 <div id="search-contributeur-form" style="background-color: #ffffff">
     <g:render template="/sujet/selectContributeur" model="[
-        etablissements        : etablissements,
-        fonctionList          : fonctionList,
-        rechercheContributeurCommand: new RechercheContributeurCommand(etablissementId: currentEtablissement.id, fonctionId: FonctionEnum.ENS.id)
+            etablissements              : etablissements,
+            fonctionList                : fonctionList,
+            rechercheContributeurCommand: new RechercheContributeurCommand(etablissementId: currentEtablissement.id, fonctionId: FonctionEnum.ENS.id)
     ]"/>
 </div>
 
