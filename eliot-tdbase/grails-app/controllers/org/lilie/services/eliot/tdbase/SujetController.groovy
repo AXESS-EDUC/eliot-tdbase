@@ -184,7 +184,8 @@ class SujetController {
             etablissements      : securiteSessionServiceProxy.etablissementList,
             niveaux             : profilScolariteService.findNiveauxForPersonne(proprietaire),
             currentEtablissement: currentEtablissement,
-            fonctionList        : preferenceEtablissementService.getFonctionsForEtablissement(
+            fonctionList        : preferenceEtablissementService.getFonctionListForRoleFormateur(
+                proprietaire,
                 currentEtablissement
             )
         ]

@@ -1,3 +1,4 @@
+<%@ page import="org.lilie.services.eliot.tice.scolarite.FonctionEnum" %>
 %{--
   - Copyright © FYLAB and the Conseil Régional d'Île-de-France, 2009
   -  This file is part of L'Interface Libre et Interactive de l'Enseignement (Lilie).
@@ -123,7 +124,24 @@
     $.get("${createLink(action: 'updateFonctionList', controller: 'sujet')}",
         {etablissementId: $(this).val()},
         function (data) {
-          $('#selectFonctionList').html(data)
+          $('#selectFonctionList').html(data);
+
+          if(fonctionSelectionneeId != null) {
+            $('#fonctionId').val(fonctionSelectionneeId);
+          }
+          else {
+            $('#fonctionId').val(${FonctionEnum.ENS.id});
+          }
+
+          $('#fonctionId').change(function() {
+            fonctionSelectionneeId = $(this).val();
+          });
+
         });
-  })
+  });
+
+  $('#fonctionId').change(function() {
+    fonctionSelectionneeId = $(this).val();
+  });
+
 </script>

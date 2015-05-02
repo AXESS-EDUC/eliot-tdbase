@@ -48,6 +48,7 @@
       // Tableau contenant tous les contributeurs (ceux qui sont persistants + ceux qui viennent d'être ajoutés)
       var contributeurList = [];
       var tempContributeurList = [];
+      var fonctionSelectionneeId = null;
 
       function renderContributeurList() {
         var divContributeurList = $('#contributeurList');
