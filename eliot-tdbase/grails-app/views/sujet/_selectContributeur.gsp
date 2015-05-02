@@ -104,6 +104,11 @@
     </div>
 
   </g:if>
+  <g:if test="${resultat?.nombreTotal == 0}">
+    <div class="portal_pagination">
+      <p class="nb_result">Aucun résultat</p>
+    </div>
+  </g:if>
 
 </g:form>
 
