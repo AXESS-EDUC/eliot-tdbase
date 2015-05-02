@@ -378,7 +378,7 @@
             fonctionList                : fonctionList,
             rechercheContributeurCommand: new RechercheContributeurCommand( etablissementId: currentEtablissement.id,
                                                                             fonctionId: FonctionEnum.ENS.id,
-                                                                            max: 3)
+                                                                            max: grailsApplication.config.eliot.listes.contributeurs.maxrecherche)
     ]"/>
 </div>
 
