@@ -344,10 +344,20 @@ class SujetService {
             }
         }
 
-        Collection contributeurIds = proprietes.list("contributeurId")
-        if (contributeurIds.size() > 0) {
-          Set<Personne> contributeurs = Personne.getAll(contributeurIds)
-          fusionneSujetContributeurs(proprietaire, sujet, contributeurs)
+        if (proprietes.containsKey("contributeurId")) {
+          Collection contributeurIds
+
+          if (proprietes["contributeurId"]?.class.isArray()) {
+            contributeurIds = Arrays.asList(proprietes["contributeurId"])
+          }
+          else {
+            contributeurIds = [proprietes["contributeurId"]]
+          }
+
+          if (contributeurIds.size() > 0) {
+            Set<Personne> contributeurs = Personne.getAll(contributeurIds)
+            fusionneSujetContributeurs(proprietaire, sujet, contributeurs)
+          }
         }
 
         return sujet

@@ -363,6 +363,85 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
         }
     }
 
+    void testUpdateProprietesSujetCollaboratif() {
+      Sujet sujetInitial = sujetService.createSujet(personne1, SUJET_1_TITRE)
+      Sujet sujet = sujetService.updateProprietes(sujetInitial, [contributeurId: personne2.id], personne1)
+      assertNotNull(sujet)
+      if (sujet.hasErrors()) {
+        log.error(sujet.errors.allErrors.toListString())
+      }
+      assertFalse(sujet.hasErrors())
+
+      assertEquals(personne1, sujet.proprietaire)
+      assertTrue(sujet.collaboratif)
+      assertEquals(sujet.contributeurs.size(), 1)
+
+      Boolean personne2Trouvee = false
+
+      sujet.contributeurs.each {
+        if (it.id == personne2.id) personne2Trouvee = true
+      }
+
+      assertTrue(personne2Trouvee)
+    }
+
+    void testUpdateProprietesSujetCollaboratifAvecQuestion() {
+
+      Sujet sujetInitial = sujetService.createSujet(personne1, SUJET_1_TITRE)
+      assertNotNull(sujetInitial)
+      assertNotNull(sujetInitial.id)
+
+      Question question1 = questionService.createQuestion(
+          [
+              titre      : "Question 1",
+              type       : QuestionTypeEnum.Decimal.questionType,
+              estAutonome: true
+          ],
+          new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+          personne1
+      )
+
+      sujetService.insertQuestionInSujet(
+          question1,
+          sujetInitial,
+          personne1
+      )
+
+
+      Sujet sujet = sujetService.updateProprietes(sujetInitial, [contributeurId: personne2.id], personne1)
+      assertNotNull(sujet)
+      if (sujet.hasErrors()) {
+        log.error(sujet.errors.allErrors.toListString())
+      }
+      assertFalse(sujet.hasErrors())
+
+      assertEquals(personne1, sujet.proprietaire)
+      assertTrue(sujet.collaboratif)
+      assertEquals(sujet.contributeurs.size(), 1)
+
+      Boolean personne2Trouvee = false
+
+      sujet.contributeurs.each {
+        if (it.id == personne2.id) personne2Trouvee = true
+      }
+
+      assertTrue(personne2Trouvee)
+
+      assertEquals(sujet.questions.size(), 1)
+      Question question = sujet.questions[0]
+
+      assertTrue(question.collaboratif)
+      assertEquals(question.contributeurs.size(), 1)
+
+      personne2Trouvee = false
+
+      question.contributeurs.each {
+        if (it.id == personne2.id) personne2Trouvee = true
+      }
+
+      assertTrue(personne2Trouvee)
+    }
+
     void testFindSujetsForProprietaire() {
         Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
         assertFalse(sujet1.hasErrors())
