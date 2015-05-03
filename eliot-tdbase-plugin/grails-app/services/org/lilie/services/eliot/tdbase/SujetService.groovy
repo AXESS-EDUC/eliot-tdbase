@@ -343,10 +343,56 @@ class SujetService {
                 }
             }
         }
+
+        Collection contributeurIds = proprietes.list("contributeurId")
+        if (contributeurIds.size() > 0) {
+          Set<Personne> contributeurs = Personne.getAll(contributeurIds)
+          fusionneSujetContributeurs(proprietaire, sujet, contributeurs)
+        }
+
         return sujet
     }
 
-    /**
+  private void fusionneSujetContributeurs(Personne proprietaire, Sujet sujet, Set<Personne> contributeurs) {
+    if (contributeurs.size() > 0) {
+      if (!sujet.collaboratif) {
+        rendSujetCollaboratif(proprietaire, sujet, contributeurs)
+      }
+      else {
+        fusionneSujetCollaboratifContributeurs(sujet, contributeurs)
+      }
+    }
+  }
+
+  private void fusionneSujetCollaboratifContributeurs(Sujet sujet, Set<Personne> contributeurs) {
+    contributeurs.each {
+      sujet.addToContributeurs(it)
+    }
+    sujet.save(flush: true, failOnError: true)
+
+    if(sujet.estUnExercice()) {
+      Question questionComposite = sujet.questionComposite
+      contributeurs.each {
+        questionComposite.addToContributeurs(it)
+      }
+      questionComposite.save()
+    }
+
+    sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
+      if (sujetQuestion.question.estComposite()) {
+        // TODO A vérifier. Est-ce que le cas Question composite / Sujet exercice est bien géré ?
+        fusionneSujetContributeurs(sujetQuestion.question.exercice, contributeurs)
+      }
+      else {
+        contributeurs.each {
+          sujetQuestion.addToContributeurs(it)
+        }
+        sujetQuestion.save()
+      }
+    }
+  }
+
+  /**
      * Supprime un sujet
      * @param sujet la question à supprimer
      * @param supprimeur la personne tentant la suppression

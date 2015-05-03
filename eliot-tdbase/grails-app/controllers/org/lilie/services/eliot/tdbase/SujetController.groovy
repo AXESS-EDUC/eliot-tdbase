@@ -136,14 +136,20 @@ class SujetController {
   def nouveau() {
     breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
     Personne proprietaire = authenticatedPersonne
-    render(view: "editeProprietes", model: [liens         : breadcrumpsServiceProxy.liens,
-                                            sujet         : new Sujet(),
-                                            typesSujet    : sujetService.getAllSujetTypes(),
-                                            artefactHelper: artefactAutorisationService,
-                                            matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
-                                            matiereBcns   : [],
-                                            etablissements: securiteSessionServiceProxy.etablissementList,
-                                            niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
+    Etablissement currentEtablissement = securiteSessionServiceProxy.currentEtablissement
+    render(view: "editeProprietes", model: [liens                 : breadcrumpsServiceProxy.liens,
+                                            sujet                 : new Sujet(),
+                                            typesSujet            : sujetService.getAllSujetTypes(),
+                                            artefactHelper        : artefactAutorisationService,
+                                            matieres              : profilScolariteService.findMatieresForPersonne(proprietaire),
+                                            matiereBcns           : [],
+                                            etablissements        : securiteSessionServiceProxy.etablissementList,
+                                            niveaux               : profilScolariteService.findNiveauxForPersonne(proprietaire),
+                                            currentEtablissement  : currentEtablissement,
+                                            fonctionList          : preferenceEtablissementService.getFonctionListForRoleFormateur(
+                                                proprietaire,
+                                                currentEtablissement
+                                            )])
   }
 
   def matiereBcns() {
@@ -286,18 +292,24 @@ class SujetController {
       sujet = new Sujet()
     }
     Personne proprietaire = authenticatedPersonne
+    Etablissement currentEtablissement = securiteSessionServiceProxy.currentEtablissement
     sujet = sujetService.updateProprietes(sujet, params, proprietaire)
     if (!sujet.hasErrors()) {
       flash.messageCode = "sujet.enregistre.succes"
       redirect(action: 'detailProprietes', id: sujet.id)
       return
     }
-    render(view: "editeProprietes", model: [liens         : breadcrumpsServiceProxy.liens,
-                                            sujet         : sujet,
-                                            typesSujet    : sujetService.getAllSujetTypes(),
-                                            etablissements: securiteSessionServiceProxy.etablissementList,
-                                            artefactHelper: artefactAutorisationService,
-                                            niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
+    render(view: "editeProprietes", model: [liens                 : breadcrumpsServiceProxy.liens,
+                                            sujet                 : sujet,
+                                            typesSujet            : sujetService.getAllSujetTypes(),
+                                            etablissements        : securiteSessionServiceProxy.etablissementList,
+                                            artefactHelper        : artefactAutorisationService,
+                                            niveaux               : profilScolariteService.findNiveauxForPersonne(proprietaire),
+                                            currentEtablissement  : currentEtablissement,
+                                            fonctionList          : preferenceEtablissementService.getFonctionListForRoleFormateur(
+                                                proprietaire,
+                                                currentEtablissement
+                                            )])
   }
 
   /**
