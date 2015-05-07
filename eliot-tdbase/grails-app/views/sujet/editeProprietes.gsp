@@ -311,10 +311,14 @@
                 <td class="label">Travail collaboratif&nbsp;:</td>
                 <td>
                     <div id="contributeurList"></div>
-                    <input type="button"
-                           class="button"
-                           onclick="ouvreContrubuteurPopup();"
-                           value="Ajouter des contributeurs"/>
+
+                    <g:if test="${peutAjouterContributeur}">
+                      <input type="button"
+                             class="button"
+                             onclick="ouvreContrubuteurPopup();"
+                             value="Ajouter des contributeurs"/>
+                    </g:if>
+
                     <br/>&nbsp;
                 </td>
             </tr>

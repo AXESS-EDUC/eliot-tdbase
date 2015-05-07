@@ -137,19 +137,25 @@ class SujetController {
     breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.nouveau.titre"))
     Personne proprietaire = authenticatedPersonne
     Etablissement currentEtablissement = securiteSessionServiceProxy.currentEtablissement
-    render(view: "editeProprietes", model: [liens                 : breadcrumpsServiceProxy.liens,
-                                            sujet                 : new Sujet(),
-                                            typesSujet            : sujetService.getAllSujetTypes(),
-                                            artefactHelper        : artefactAutorisationService,
-                                            matieres              : profilScolariteService.findMatieresForPersonne(proprietaire),
-                                            matiereBcns           : [],
-                                            etablissements        : securiteSessionServiceProxy.etablissementList,
-                                            niveaux               : profilScolariteService.findNiveauxForPersonne(proprietaire),
-                                            currentEtablissement  : currentEtablissement,
-                                            fonctionList          : preferenceEtablissementService.getFonctionListForRoleFormateur(
-                                                proprietaire,
-                                                currentEtablissement
-                                            )])
+
+    render(
+        view: "editeProprietes",
+        model: [
+            liens               : breadcrumpsServiceProxy.liens,
+            sujet               : new Sujet(),
+            typesSujet          : sujetService.getAllSujetTypes(),
+            artefactHelper      : artefactAutorisationService,
+            matieres            : profilScolariteService.findMatieresForPersonne(proprietaire),
+            matiereBcns         : [],
+            etablissements      : securiteSessionServiceProxy.etablissementList,
+            niveaux             : profilScolariteService.findNiveauxForPersonne(proprietaire),
+            currentEtablissement: currentEtablissement,
+            fonctionList        : preferenceEtablissementService.getFonctionListForRoleFormateur(
+                proprietaire,
+                currentEtablissement
+            )
+        ]
+    )
   }
 
   def matiereBcns() {
@@ -178,13 +184,24 @@ class SujetController {
 
     assert artefactAutorisationService.utilisateurPeutModifierPropriete(proprietaire, sujet)
 
+    // Note : on ne doit pas pouvoir transformer un exercice collaboratif en sujet
+    boolean peutAjouterContributeur = true
+    List<SujetType> sujetTypeList
+    if(sujet.estCollaboratif() && sujet.estUnExercice()) {
+      sujetTypeList = [SujetTypeEnum.Exercice.sujetType]
+      peutAjouterContributeur = false
+    }
+    else {
+      sujetTypeList = sujetService.getAllSujetTypes()
+    }
+
     render(
         view: "editeProprietes",
         model: [
             liens               : breadcrumpsServiceProxy.liens,
             sujet               : sujet,
             artefactHelper      : artefactAutorisationService,
-            typesSujet          : sujetService.getAllSujetTypes(),
+            typesSujet          : sujetTypeList,
             matieres            : profilScolariteService.findMatieresForPersonne(proprietaire),
             matiereBcns         : sujet.matiereBcn != null ? [sujet.matiereBcn] : [],
             etablissements      : securiteSessionServiceProxy.etablissementList,
@@ -193,7 +210,8 @@ class SujetController {
             fonctionList        : preferenceEtablissementService.getFonctionListForRoleFormateur(
                 proprietaire,
                 currentEtablissement
-            )
+            ),
+            peutAjouterContributeur: peutAjouterContributeur
         ]
     )
   }
@@ -299,17 +317,22 @@ class SujetController {
       redirect(action: 'detailProprietes', id: sujet.id)
       return
     }
-    render(view: "editeProprietes", model: [liens                 : breadcrumpsServiceProxy.liens,
-                                            sujet                 : sujet,
-                                            typesSujet            : sujetService.getAllSujetTypes(),
-                                            etablissements        : securiteSessionServiceProxy.etablissementList,
-                                            artefactHelper        : artefactAutorisationService,
-                                            niveaux               : profilScolariteService.findNiveauxForPersonne(proprietaire),
-                                            currentEtablissement  : currentEtablissement,
-                                            fonctionList          : preferenceEtablissementService.getFonctionListForRoleFormateur(
-                                                proprietaire,
-                                                currentEtablissement
-                                            )])
+    render(
+        view: "editeProprietes",
+        model: [
+            liens               : breadcrumpsServiceProxy.liens,
+            sujet               : sujet,
+            typesSujet          : sujetService.getAllSujetTypes(),
+            etablissements      : securiteSessionServiceProxy.etablissementList,
+            artefactHelper      : artefactAutorisationService,
+            niveaux             : profilScolariteService.findNiveauxForPersonne(proprietaire),
+            currentEtablissement: currentEtablissement,
+            fonctionList        : preferenceEtablissementService.getFonctionListForRoleFormateur(
+                proprietaire,
+                currentEtablissement
+            )
+        ]
+    )
   }
 
   /**
