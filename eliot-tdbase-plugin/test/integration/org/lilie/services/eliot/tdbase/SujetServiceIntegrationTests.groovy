@@ -241,7 +241,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
 
     void testUpdateProprietesSujetCollaboratif() {
       Sujet sujetInitial = sujetService.createSujet(personne1, SUJET_1_TITRE)
-      Sujet sujet = sujetService.updateProprietes(sujetInitial, [contributeurId: personne2.id], personne1)
+      Sujet sujet = sujetService.updateProprietes(sujetInitial, [contributeurIds: [personne2.id]], personne1)
       assertNotNull(sujet)
       if (sujet.hasErrors()) {
         log.error(sujet.errors.allErrors.toListString())
@@ -284,7 +284,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
       )
 
 
-      Sujet sujet = sujetService.updateProprietes(sujetInitial, [contributeurId: personne2.id], personne1)
+      Sujet sujet = sujetService.updateProprietes(sujetInitial, [contributeurIds: [personne2.id]], personne1)
       assertNotNull(sujet)
       if (sujet.hasErrors()) {
         log.error(sujet.errors.allErrors.toListString())

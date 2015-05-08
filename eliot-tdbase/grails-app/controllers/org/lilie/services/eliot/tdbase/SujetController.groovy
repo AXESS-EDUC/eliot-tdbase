@@ -312,6 +312,9 @@ class SujetController {
     }
     Personne proprietaire = authenticatedPersonne
     Etablissement currentEtablissement = securiteSessionServiceProxy.currentEtablissement
+
+    params["contributeurIds"] = params.list("contributeurId")?.collect { Long.parseLong(it) }
+
     sujet = sujetService.updateProprietes(sujet, params, proprietaire)
     if (!sujet.hasErrors()) {
       flash.messageCode = "sujet.enregistre.succes"

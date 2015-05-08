@@ -248,16 +248,8 @@ class SujetService {
       sujet.copyrightsType = CopyrightsType.getDefault()
     }
 
-    // TODO *** Pourquoi ne peut-on pas utiliser proprietes.list("contributeurId")
-    if (proprietes.containsKey("contributeurId")) {
-      Collection contributeurIds
-
-      if (proprietes["contributeurId"]?.class.isArray()) {
-        contributeurIds = Arrays.asList(proprietes["contributeurId"])
-      } else {
-        contributeurIds = [proprietes["contributeurId"]]
-      }
-      contributeurIds = contributeurIds.collect { Long.parseLong(it) }
+    if (proprietes.containsKey("contributeurIds")) {
+      Collection contributeurIds = proprietes["contributeurIds"]
 
       // Vérification que tous les contributeurs actuels sont bien dans la liste des contributeurs fournis
       sujet.contributeurs?.each {
