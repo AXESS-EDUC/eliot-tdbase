@@ -105,7 +105,7 @@
       }
 
       function initCheckboxes() {
-        var checkboxes = $('.formateur-checkbox')
+        var checkboxes = $('.formateur-checkbox');
         checkboxes.unbind('change');
         checkboxes.prop('checked', false);
         checkboxes.prop('disabled', false);
@@ -116,6 +116,22 @@
           if (formateur.persistant) {
             checkbox.prop('disabled', true);
           }
+        });
+
+        var spans = $('.formateur-span');
+        spans.unbind('click');
+
+        spans.each(function() {
+            var span = $(this);
+            var formateur = span.data('formateur');
+            var checkbox = $('#formateur-checkbox' + formateur);
+            if (checkbox.length > 0 && !checkbox.prop('disabled')) {
+                span.click(function() {
+                    checkbox.click();
+                    //var checked = checkbox.prop('checked');
+                    //checkbox.prop('checked', !checked);
+                });
+            }
         });
 
         checkboxes.change(function() {

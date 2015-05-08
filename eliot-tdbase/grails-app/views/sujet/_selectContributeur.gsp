@@ -92,8 +92,8 @@
     <div class="portal-default_results-list">
       <g:each in="${resultat.personneList}" status="i" var="formateur">
         <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0;text-align: left">
-          <input type="checkbox" id="formateur-checkbox${formateur.id}" class="formateur-checkbox" data-id="${formateur.id}" data-nomaffichage="${formateur.nomAffichage}"/>
-          ${formateur.nomAffichage}
+          <input type="checkbox" id="formateur-checkbox${formateur.id}" data-formateur="${formateur.id}" class="formateur-checkbox" data-id="${formateur.id}" data-nomaffichage="${formateur.nomAffichage}"/>
+          <span class="formateur-span" data-formateur="${formateur.id}">${formateur.nomAffichage}</span>
         </div>
       </g:each>
     </div>
