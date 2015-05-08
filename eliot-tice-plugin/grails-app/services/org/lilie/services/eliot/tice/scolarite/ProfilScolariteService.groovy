@@ -440,10 +440,11 @@ public class ProfilScolariteService {
      * @param fonctionList
      * @return
      */
-    RecherchePersonneResultat rechercheAllPersonneForEtablissementAndFonctionIn(Etablissement etablissement,
-                                                                     List<Fonction> fonctionList,
-                                                                     String motCle = "",
-                                                                     Pagination pagination = null) {
+    RecherchePersonneResultat rechercheAllPersonneForEtablissementAndFonctionIn(Personne chercheur,
+                                                                                Etablissement etablissement,
+                                                                                List<Fonction> fonctionList,
+                                                                                String motCle = "",
+                                                                                Pagination pagination = null) {
 
         String motCleNormalise = motCle ? StringUtils.normalise(motCle) : null
 
@@ -453,7 +454,7 @@ public class ProfilScolariteService {
             INNER JOIN ent.personne_propriete_scolarite pps ON (pps.personne_id = p.id AND pps.est_active IS TRUE)
             INNER JOIN ent.propriete_scolarite ps ON (pps.propriete_scolarite_id = ps.id)
             INNER JOIN ent.fonction f ON ps.fonction_id = f.id
-            WHERE f.id IN (:fonctionIdList) AND (ps.etablissement_id = :etablissementId)
+            WHERE f.id IN (:fonctionIdList) AND (ps.etablissement_id = :etablissementId) AND p.id != :chercheurId
 """
         if (motCleNormalise) {
             sqlGeneral += """
@@ -474,7 +475,7 @@ public class ProfilScolariteService {
             INNER JOIN ent.propriete_scolarite ps ON (pps.propriete_scolarite_id = ps.id)
             INNER JOIN ent.structure_enseignement se ON ps.structure_enseignement_id = se.id
             INNER JOIN ent.fonction f ON ps.fonction_id = f.id
-            WHERE f.id IN (:fonctionIdList) AND (se.etablissement_id = :etablissementId)
+            WHERE f.id IN (:fonctionIdList) AND (se.etablissement_id = :etablissementId) AND p.id != :chercheurId
 """
         if (motCleNormalise) {
             sqlGeneral += """
@@ -501,7 +502,7 @@ public class ProfilScolariteService {
               INNER JOIN ent.responsable_eleve resp ON pps_eleve.personne_id = resp.eleve_id
               WHERE resp.personne_id = p.id AND se.etablissement_id = :etablissementId
               LIMIT 1
-            )
+            ) AND p.id != :chercheurId
 """
         if (motCleNormalise) {
             sqlComplementParent += """
@@ -522,7 +523,7 @@ public class ProfilScolariteService {
             INNER JOIN ent.personne_propriete_scolarite pps ON (pps.personne_id = p.id AND pps.est_active IS TRUE)
             INNER JOIN ent.propriete_scolarite ps ON (pps.propriete_scolarite_id = ps.id)
             INNER JOIN ent.fonction f ON ps.fonction_id = f.id
-            WHERE f.code = 'AL' AND ps.porteur_ent_id = :porteur_ent_id
+            WHERE f.code = 'AL' AND ps.porteur_ent_id = :porteur_ent_id AND p.id != :chercheurId
 """
         if (motCleNormalise) {
             sqlComplementAdminLocal += """
@@ -566,6 +567,7 @@ public class ProfilScolariteService {
         SQLQuery sqlQuery = session.createSQLQuery(sql)
         sqlQuery.setLong('etablissementId', etablissement.id)
         sqlQuery.setParameterList('fonctionIdList', fonctionList*.id)
+        sqlQuery.setLong('chercheurId', chercheur.id)
         if (fonctionList.contains(FonctionEnum.AL.fonction)) {
             sqlQuery.setLong('porteur_ent_id', etablissement.porteurEntId)
         }

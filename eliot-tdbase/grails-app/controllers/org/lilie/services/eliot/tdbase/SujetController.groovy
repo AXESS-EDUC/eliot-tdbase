@@ -242,6 +242,7 @@ class SujetController {
 
     RecherchePersonneResultat resultat =
         profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+            personne,
             etablissement,
             [fonction],
             command.patternCode,
