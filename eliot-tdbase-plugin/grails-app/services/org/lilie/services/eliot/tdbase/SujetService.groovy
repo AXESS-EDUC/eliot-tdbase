@@ -255,9 +255,9 @@ class SujetService {
       sujet.contributeurs?.each {
         if(!contributeurIds.contains(it.id)) {
           throw new IllegalStateException(
-              "On ne peut pas retirer un contributeur d'un sujet collaboratif " +
+              "On ne peut pas retirer un contributeur d'un sujet collaboratif. " +
                   "Les contributeurs actuels sont : ${sujet.contributeurs*.id}, " +
-                  "Les contributeurs fournis sont : $contributeurIds"
+                  "Les contributeurs fournis sont : $contributeurIds."
           )
         }
       }

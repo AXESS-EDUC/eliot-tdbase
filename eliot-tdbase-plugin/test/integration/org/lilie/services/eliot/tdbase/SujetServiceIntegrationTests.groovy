@@ -46,6 +46,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
 
     Personne personne1
     Personne personne2
+    Personne personne3
     StructureEnseignement struct1ere
 
     BootstrapService bootstrapService
@@ -61,6 +62,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
         bootstrapService.bootstrapForIntegrationTest()
         personne1 = bootstrapService.enseignant1
         personne2 = bootstrapService.enseignant2
+        personne3 = bootstrapService.persDirection1
         struct1ere = bootstrapService.classe1ere
     }
 
@@ -240,29 +242,55 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     }
 
     void testUpdateProprietesSujetCollaboratif() {
+      given: "Un sujet non collaboratif"
       Sujet sujetInitial = sujetService.createSujet(personne1, SUJET_1_TITRE)
-      Sujet sujet = sujetService.updateProprietes(sujetInitial, [contributeurIds: [personne2.id]], personne1)
+
+      when: "On rend le sujet collaboratif en ajoutant un contributeur"
+      Sujet sujet = sujetService.updateProprietes(
+          sujetInitial,
+          [contributeurIds: [personne2.id]],
+          personne1
+      )
       assertNotNull(sujet)
       if (sujet.hasErrors()) {
         log.error(sujet.errors.allErrors.toListString())
       }
       assertFalse(sujet.hasErrors())
 
+      then: "On obtient un sujet collaboratif par duplication du sujet initial"
       assertEquals(personne1, sujet.proprietaire)
       assertTrue(sujet.collaboratif)
       assertEquals(sujet.contributeurs.size(), 1)
+      assertTrue(sujetInitial.id != sujet.id)
 
-      Boolean personne2Trouvee = false
+      assertEquals(
+          [personne2.id] as Set,
+          sujet.contributeurs*.id as Set
+      )
 
-      sujet.contributeurs.each {
-        if (it.id == personne2.id) personne2Trouvee = true
-      }
+      given: "On ajoute un nouveau contributeur au sujet collaboratif"
+      Sujet sujet2 = sujetService.updateProprietes(
+          sujet,
+          [
+              contributeurIds: [
+                  personne2.id,
+                  personne3.id
+              ]
+          ],
+          personne1
+      )
 
-      assertTrue(personne2Trouvee)
+      then: "Le nouveau contributeur est ajouté au sujet (sans duplication)"
+      assertEquals(
+          [personne2.id, personne3.id] as Set,
+          sujet2.contributeurs*.id as Set
+      )
+      assertEquals(sujet.id, sujet2.id)
     }
 
     void testUpdateProprietesSujetCollaboratifAvecQuestion() {
 
+      given: "Un sujet comprenant une question"
       Sujet sujetInitial = sujetService.createSujet(personne1, SUJET_1_TITRE)
       assertNotNull(sujetInitial)
       assertNotNull(sujetInitial.id)
@@ -283,40 +311,213 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
           personne1
       )
 
-
-      Sujet sujet = sujetService.updateProprietes(sujetInitial, [contributeurIds: [personne2.id]], personne1)
+      when: "On rend le sujet collaboratif en ajoutant un contributeur"
+      Sujet sujet = sujetService.updateProprietes(
+          sujetInitial,
+          [contributeurIds: [personne2.id]],
+          personne1
+      )
       assertNotNull(sujet)
       if (sujet.hasErrors()) {
         log.error(sujet.errors.allErrors.toListString())
       }
       assertFalse(sujet.hasErrors())
 
+      then: "On obtient un sujet collaboratif par duplication"
       assertEquals(personne1, sujet.proprietaire)
       assertTrue(sujet.collaboratif)
-      assertEquals(sujet.contributeurs.size(), 1)
+      assertTrue(sujetInitial.id != sujet.id)
 
-      Boolean personne2Trouvee = false
+      assertEquals(
+          [personne2.id] as Set,
+          sujet.contributeurs*.id as Set
+      )
 
-      sujet.contributeurs.each {
-        if (it.id == personne2.id) personne2Trouvee = true
-      }
-
-      assertTrue(personne2Trouvee)
-
+      and: "La question du sujet collaboratif est une question collaborative obtenue par duplication de la question initiale"
       assertEquals(sujet.questions.size(), 1)
-      Question question = sujet.questions[0]
+      Question questionCollaborative = sujet.questions[0]
 
-      assertTrue(question.collaboratif)
-      assertEquals(question.contributeurs.size(), 1)
-
-      personne2Trouvee = false
-
-      question.contributeurs.each {
-        if (it.id == personne2.id) personne2Trouvee = true
-      }
-
-      assertTrue(personne2Trouvee)
+      assertTrue(questionCollaborative.collaboratif)
+      assertTrue(questionCollaborative.id != question1.id)
+      assertEquals(
+          [personne2.id] as Set,
+          questionCollaborative.contributeurs*.id as Set
+      )
+      assertEquals(question1.titre, questionCollaborative.titre)
+      assertEquals(question1.specification, questionCollaborative.specification)
     }
+
+  void testUpdateProprietesSujetCollaboratifAvecExercice() {
+    given: "Une question"
+    Question question1 = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1
+    )
+    assertNotNull(question1)
+    assertNotNull(question1.id)
+
+
+    and: "Un exercice intégrant la question"
+    Sujet exercice = sujetService.createSujet(personne1, 'Exercice')
+    assertNotNull(exercice)
+    assertNotNull(exercice.id)
+    sujetService.updateProprietes(
+        exercice,
+        [
+            sujetType: SujetTypeEnum.Exercice.sujetType
+        ],
+        personne1
+    )
+    sujetService.insertQuestionInSujet(
+        question1,
+        exercice,
+        personne1
+    )
+
+    and: "Un sujet intégrant l'exercice"
+    Sujet sujet = sujetService.createSujet(personne1, 'Sujet')
+    assertNotNull(sujet)
+    assertNotNull(sujet.id)
+    sujetService.insertQuestionInSujet(
+        exercice.questionComposite,
+        sujet,
+        personne1
+    )
+
+    when: "On ajoute un contributeur au sujet pour le rendre collaboratif"
+    Sujet sujetCollaboratif = sujetService.updateProprietes(
+        sujet,
+        [contributeurIds: [personne2.id]],
+        personne1
+    )
+
+
+    then: "On obtient un sujet collaboratif par duplication"
+    assertNotNull(sujetCollaboratif)
+    assertFalse(sujetCollaboratif.hasErrors())
+    assertTrue(sujetCollaboratif.id != sujet.id)
+    assertTrue(sujetCollaboratif.estCollaboratif())
+    assertEquals(
+        [personne2.id] as Set,
+        sujetCollaboratif.contributeurs*.id as Set
+    )
+
+    and: "L'exercice du sujet collaboratif est collaboratif, et c'est une duplication de l'exercice initial"
+    Sujet exerciceCollaboratif = sujetCollaboratif.questions[0].exercice
+    assertTrue(exerciceCollaboratif.estCollaboratif())
+    assertTrue(exercice.id != exerciceCollaboratif.id)
+    assertTrue(exerciceCollaboratif.questionComposite.estCollaboratif())
+    assertEquals(
+        sujetCollaboratif.id,
+        exerciceCollaboratif.questionComposite.sujetLieId
+    )
+    assertEquals(
+        [personne2.id] as Set,
+        exerciceCollaboratif.contributeurs*.id as Set
+    )
+    assertEquals(
+        [personne2.id] as Set,
+        exerciceCollaboratif.questionComposite.contributeurs*.id as Set
+    )
+
+    and: "La question de l'exercice collaboratif est collaborative"
+    Question questionCollaborative = exerciceCollaboratif.questions[0]
+    assertTrue(questionCollaborative.estCollaboratif())
+    assertTrue(question1.id != questionCollaborative.id)
+    assertEquals(
+        [personne2.id] as Set,
+        questionCollaborative.contributeurs*.id as Set
+    )
+    assertEquals(
+        exerciceCollaboratif.id,
+        questionCollaborative.sujetLieId
+    )
+    assertEquals(
+        question1.titre,
+        questionCollaborative.titre
+    )
+    assertEquals(
+        question1.specification,
+        questionCollaborative.specification
+    )
+  }
+
+  void testUpdateProprietesExerciceCollaboratif() {
+    given: "Une question"
+    Question question1 = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1
+    )
+    assertNotNull(question1)
+    assertNotNull(question1.id)
+
+
+    and: "Un exercice intégrant la question"
+    Sujet exercice = sujetService.createSujet(personne1, 'Exercice')
+    assertNotNull(exercice)
+    assertNotNull(exercice.id)
+    sujetService.updateProprietes(
+        exercice,
+        [
+            sujetType: SujetTypeEnum.Exercice.sujetType
+        ],
+        personne1
+    )
+    sujetService.insertQuestionInSujet(
+        question1,
+        exercice,
+        personne1
+    )
+
+    when: "On rend l'exercice collaboratif"
+    Sujet exerciceCollaboratif = sujetService.updateProprietes(
+        exercice,
+        [contributeurIds: [personne2.id]],
+        personne1
+    )
+
+    then: "L'exercice collaboratif est une duplication de l'exercice original"
+    assertNotNull(exerciceCollaboratif)
+    assertNotNull(exerciceCollaboratif.id)
+    assertTrue(exercice.id != exerciceCollaboratif.id)
+    assertTrue(exerciceCollaboratif.estCollaboratif())
+    assertEquals(
+        [personne2.id] as Set,
+        exerciceCollaboratif.contributeurs*.id as Set
+    )
+
+    and: "La question composite de l'exercice collaboratif est collaborative, est n'est liée à aucun sujet"
+    assertTrue(exerciceCollaboratif.questionComposite.estCollaboratif())
+    assertNull(exerciceCollaboratif.questionComposite.sujetLie)
+    assertEquals(
+        [personne2.id] as Set,
+        exerciceCollaboratif.questionComposite.contributeurs*.id as Set
+    )
+
+    and: "On ne peut pas ajouter de nouveaux contributeurs à l'exercice collaboratif"
+    try {
+      sujetService.updateProprietes(
+          exerciceCollaboratif,
+          [contributeurIds: [personne2.id, personne3.id]],
+          personne1
+      )
+
+      assertFalse(true) // Une exception doit être levée
+    }
+    catch(IllegalStateException ignore) {
+      // Résultat attendu
+    }
+  }
 
     void testFindSujetsForProprietaire() {
         Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
