@@ -256,9 +256,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
                         bootstrapService.eleve4
                 ]*.nomAffichage.sort(),
                 profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
                         etablissement,
                         fonctionList
-                )*.nomAffichage.sort()
+                ).personneList*.nomAffichage.sort()
         )
 
         given:
@@ -273,9 +274,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
                         bootstrapService.eleve3
                 ]*.nomAffichage.sort(),
                 profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
                         etablissement,
                         fonctionList
-                )*.nomAffichage.sort()
+                ).personneList*.nomAffichage.sort()
         )
 
         given:
@@ -291,13 +293,13 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
                         bootstrapService.eleve1,
                         bootstrapService.eleve2,
                         bootstrapService.eleve3,
-                        bootstrapService.enseignant1,
                         bootstrapService.enseignant2
                 ]*.nomAffichage.sort(),
                 profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
                         etablissement,
                         fonctionList
-                )*.nomAffichage.sort()
+                ).personneList*.nomAffichage.sort()
         )
 
         given:
@@ -313,13 +315,13 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
                         bootstrapService.eleve1,
                         bootstrapService.eleve2,
                         bootstrapService.eleve4,
-                        bootstrapService.enseignant1,
                         bootstrapService.enseignant2
                 ]*.nomAffichage.sort(),
                 profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
                         etablissement,
                         fonctionList
-                )*.nomAffichage.sort()
+                ).personneList*.nomAffichage.sort()
         )
 
         given:
@@ -338,9 +340,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
                         bootstrapService.parent1
                 ]*.nomAffichage.sort(),
                 profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
                         etablissement,
                         fonctionList
-                )*.nomAffichage.sort()
+                ).personneList*.nomAffichage.sort()
         )
 
         given:
@@ -353,14 +356,14 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         expect:
         assertEquals(
                 [
-                        bootstrapService.enseignant1,
                         bootstrapService.enseignant2
                 ]*.nomAffichage.sort(),
                 profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
                         etablissement,
                         fonctionList,
                         'dup'
-                )*.nomAffichage.sort()
+                ).personneList*.nomAffichage.sort()
         )
 
         given:
@@ -376,11 +379,12 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
                         bootstrapService.enseignant1
                 ]*.nomAffichage.sort(),
                 profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant2,
                         etablissement,
                         fonctionList,
                         'MARY',
                         new Pagination(max: 10, offset: 0)
-                )*.nomAffichage.sort()
+                ).personneList*.nomAffichage.sort()
         )
 
         given:
@@ -400,18 +404,31 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
                 ]*.nomAffichage.sort(),
                 (
                         profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                                bootstrapService.enseignant1,
                                 etablissement,
                                 fonctionList,
                                 null,
                                 new Pagination(max: 2, offset: 0)
-                        ) +
+                        ).personneList +
                                 profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                                        bootstrapService.enseignant1,
                                         etablissement,
                                         fonctionList,
                                         null,
                                         new Pagination(max: 2, offset: 2)
-                                )
+                                ).personneList
                 )*.nomAffichage.sort()
         )
+        assertEquals(
+            4,
+            profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                bootstrapService.enseignant1,
+                etablissement,
+                fonctionList,
+                null,
+                new Pagination(max: 2, offset: 0)
+            ).nombreTotal
+        )
+
     }
 }

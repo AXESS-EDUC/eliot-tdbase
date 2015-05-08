@@ -91,6 +91,21 @@
           ${question.niveau?.libelleLong}
         </td>
       </tr>
+      <tr>
+        <td class="label">Travail collaboratif&nbsp;:</td>
+        <td>
+          <g:if test="${question.contributeurs}">
+            <ul>
+              <g:each in="${question.contributeurs}" var="contributeur">
+                <li>${contributeur.nomAffichage}</li>
+              </g:each>
+            </ul>
+          </g:if>
+          <g:else>
+            Aucun formateur ajouté<br/>
+          </g:else>
+        </td>
+      </tr>
    <g:if test="${artefactHelper.partageArtefactCCActive}">
       <tr>
         <td class="label">Partage&nbsp;:</td>

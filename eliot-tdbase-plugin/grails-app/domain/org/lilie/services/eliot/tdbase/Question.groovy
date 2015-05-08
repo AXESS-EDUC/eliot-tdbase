@@ -135,15 +135,7 @@ class Question implements Artefact {
         return ['invalid.contributeurpourquestionnoncollaboratif']
       }
     })
-    sujetLie(nullable: true, validator: { val, obj ->
-      if (!obj.collaboratif && val != null) {
-        return ['invalid.sujetliepourquestionnoncollaboratif']
-      }
-
-      if (obj.collaboratif && (val == null || !val.collaboratif)) {
-        return ['invalid.passujetliepourquestioncollaboratif']
-      }
-    })
+    sujetLie(nullable: true)
   }
 
   static mapping = {

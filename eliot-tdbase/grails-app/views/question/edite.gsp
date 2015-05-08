@@ -275,6 +275,22 @@
         </tr>
       </g:else>
       <tr>
+        <td class="label">Travail collaboratif&nbsp;:</td>
+        <td>
+          <g:set var="contributeurs" value="${question?.contributeurs ?: sujet?.contributeurs}" />
+          <g:if test="${contributeurs}">
+            <ul>
+              <g:each in="${contributeurs}" var="contributeur">
+                <li>${contributeur.nomAffichage}</li>
+              </g:each>
+            </ul>
+          </g:if>
+          <g:else>
+            Aucun formateur ajouté<br/>
+          </g:else>
+        </td>
+      </tr>
+      <tr>
         <td class="label"><g:message
             code="question.propriete.principalAttachement"/>&nbsp;:</td>
         <td id="question_fichier">
