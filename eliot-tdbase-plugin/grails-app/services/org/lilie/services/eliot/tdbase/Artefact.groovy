@@ -63,6 +63,12 @@ public interface Artefact {
   Set<Personne> getContributeurs()
 
   /**
+   * Teste si un autre utilisateur a posé un verrou sur cet artefact
+   * @return
+   */
+  boolean estVerrouilleParAutrui(Personne personne)
+
+  /**
    * Un artefact est distribué lorsqu'il est mis à disposition pour une
    * interaction pédagogique. Par exemple un sujet est distribué quand il est
    * associé à une séance. Un item est distribué quand il est attaché à un

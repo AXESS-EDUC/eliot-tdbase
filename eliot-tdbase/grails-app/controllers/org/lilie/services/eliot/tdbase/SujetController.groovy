@@ -926,6 +926,18 @@ class SujetController {
       redirect(action: 'editeImportSujetNatifTdBase')
     }
   }
+
+  def creeVerrou(Long id) {
+    Sujet sujet = Sujet.get(id)
+    sujetService.creeVerrou(sujet, authenticatedPersonne)
+    render sujet as JSON
+  }
+
+  def supprimeVerrou(Long id) {
+    Sujet sujet = Sujet.get(id)
+    sujetService.supprimeVerrou(sujet, authenticatedPersonne)
+    render sujet as JSON
+  }
 }
 
 class ImportDansSujetCommand {

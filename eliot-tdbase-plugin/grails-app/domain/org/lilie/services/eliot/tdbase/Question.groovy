@@ -28,6 +28,8 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.time.TimeCategory
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.Publication
@@ -44,6 +46,8 @@ import org.springframework.web.multipart.MultipartFile
  * @author franck Silvestre
  */
 class Question implements Artefact {
+
+  GrailsApplication grailsApplication
 
   QuestionService questionService
 
@@ -81,6 +85,9 @@ class Question implements Artefact {
   Boolean collaboratif = false
   Boolean termine
   Sujet sujetLie
+
+  Date dateVerrou
+  Personne auteurVerrou
 
   static hasMany = [
       questionAttachements: QuestionAttachement,
@@ -136,6 +143,8 @@ class Question implements Artefact {
       }
     })
     sujetLie(nullable: true)
+    dateVerrou(nullable: true)
+    auteurVerrou(nullable: true)
   }
 
   static mapping = {
@@ -147,6 +156,8 @@ class Question implements Artefact {
     questionAttachements(lazy: false, indexColumn: [name: 'rang', type: Integer])
     allQuestionCompetence(lazy: false, cascade: 'all-delete-orphan')
     contributeurs(joinTable: [name: 'td.question_contributeur', key: 'question_id', column: 'personne_id'])
+    dateVerrou(column: 'date_verrou')
+    auteurVerrou(column: 'auteur_verrou')
   }
 
   static transients = [
@@ -156,7 +167,8 @@ class Question implements Artefact {
       'estInvariant',
       'principalAttachementFichier',
       'doitSupprimerPrincipalAttachement',
-      'principalAttachementId'
+      'principalAttachementId',
+      'grailsApplication'
   ]
 
   // transients
@@ -319,6 +331,18 @@ class Question implements Artefact {
     paterniteObjet.addPaterniteItem(paterniteItem)
     paternite = paterniteObjet.toString()
     this.save()
+  }
+
+  @Override
+  boolean estVerrouilleParAutrui(Personne personne) {
+    Integer dureeMinute = grailsApplication.config.eliot.verrou.contributeurs.dureeMinute
+
+    Date dateLimitVerrou = new Date()
+    use(TimeCategory) {
+      dateLimitVerrou = dateLimitVerrou - dureeMinute.minutes
+    }
+
+    return auteurVerrou && auteurVerrou != personne && dateVerrou > dateLimitVerrou
   }
 }
 

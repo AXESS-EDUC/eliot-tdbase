@@ -28,6 +28,8 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.time.TimeCategory
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.competence.Competence
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.Publication
@@ -42,6 +44,8 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
  * @author franck Silvestre
  */
 class Sujet implements Artefact {
+
+  GrailsApplication grailsApplication
 
   String titre
   String titreNormalise
@@ -82,6 +86,9 @@ class Sujet implements Artefact {
   Boolean termine
   //List<Personne> contributeurs
 
+  Date dateVerrou
+  Personne auteurVerrou
+
   static hasMany = [
       questionsSequences: SujetSequenceQuestions,
       contributeurs: Personne
@@ -94,7 +101,8 @@ class Sujet implements Artefact {
       'rangInsertion',
       'estUnExercice',
       'questionComposite',
-      'estInvariant'
+      'estInvariant',
+      'grailsApplication'
   ]
 
   static constraints = {
@@ -120,6 +128,8 @@ class Sujet implements Artefact {
     paternite(nullable: true)
     collaboratif(nullable: false)
     termine(nullable: true)
+    dateVerrou(nullable: true)
+    auteurVerrou(nullable: true)
     contributeurs(validator: { val, obj ->
       if (!obj.collaboratif && val?.size() > 0) {
         return ['invalid.contributeurpoursujetnoncollaboratif']
@@ -134,6 +144,8 @@ class Sujet implements Artefact {
     questionsSequences(cascade: 'refresh')
     contributeurs(joinTable: [name: 'td.sujet_contributeur', key: 'sujet_id', column: 'personne_id'])
     sujetType(fetch: 'join')
+    dateVerrou(column: 'date_verrou')
+    auteurVerrou(column: 'auteur_verrou')
     cache(true)
   }
 
@@ -328,5 +340,17 @@ class Sujet implements Artefact {
     paterniteObjet.addPaterniteItem(paterniteItem)
     paternite = paterniteObjet.toString()
     this.save()
+  }
+
+  @Override
+  boolean estVerrouilleParAutrui(Personne personne) {
+    Integer dureeMinute = grailsApplication.config.eliot.verrou.contributeurs.dureeMinute
+
+    Date dateLimitVerrou = new Date()
+    use(TimeCategory) {
+      dateLimitVerrou = dateLimitVerrou - dureeMinute.minutes
+    }
+
+    return auteurVerrou && auteurVerrou != personne && dateVerrou > dateLimitVerrou
   }
 }

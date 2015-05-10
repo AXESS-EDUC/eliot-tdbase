@@ -28,8 +28,11 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.time.TimeCategory
+import org.hibernate.LockMode
 import org.hibernate.Session
 import org.hibernate.SessionFactory
+import org.hibernate.impl.SessionImpl
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
@@ -47,6 +50,8 @@ class SujetService {
   CopieService copieService
   ReponseService reponseService
   SessionFactory sessionFactory
+
+  def grailsApplication
 
   /**
    * Créé un sujet
@@ -253,7 +258,7 @@ class SujetService {
 
       // Vérification que tous les contributeurs actuels sont bien dans la liste des contributeurs fournis
       sujet.contributeurs?.each {
-        if(!contributeurIds.contains(it.id)) {
+        if (!contributeurIds.contains(it.id)) {
           throw new IllegalStateException(
               "On ne peut pas retirer un contributeur d'un sujet collaboratif. " +
                   "Les contributeurs actuels sont : ${sujet.contributeurs*.id}, " +
@@ -265,7 +270,7 @@ class SujetService {
       int nbContributeurActuel = sujet.contributeurs ? sujet.contributeurs.size() : 0
       if (contributeurIds.size() > nbContributeurActuel) {
 
-        if(sujet.estUnExercice() && sujet.estCollaboratif()) {
+        if (sujet.estUnExercice() && sujet.estCollaboratif()) {
           throw new IllegalStateException(
               "Il n'est pas possible de modifier les contributeurs d'un exercice collaboratif"
           )
@@ -273,10 +278,10 @@ class SujetService {
 
         Set<Personne> contributeurs = Personne.getAll(contributeurIds)
 
-        if(sujet.id) {
-          sujet = fusionneSujetContributeurs(proprietaire, sujet, contributeurs) // Le sujet initial sera dupliqué s'il n'est pas collaboratif
-        }
-        else {
+        if (sujet.id) {
+          sujet = fusionneSujetContributeurs(proprietaire, sujet, contributeurs)
+          // Le sujet initial sera dupliqué s'il n'est pas collaboratif
+        } else {
           // Rend le nouveau sujet collaboratif
           sujet.collaboratif = true
           sujet.termine = false
@@ -624,8 +629,7 @@ class SujetService {
           question,
           sujet
       )
-    }
-    else if (!sujet.estCollaboratif() && question.estCollaboratif()) {
+    } else if (!sujet.estCollaboratif() && question.estCollaboratif()) {
       question = questionService.createQuestionNonCollaborativeFrom(
           proprietaire,
           question
@@ -970,6 +974,88 @@ class SujetService {
       return true
     }
     return false
+  }
+
+  public Boolean creeVerrou(Sujet sujet, Personne auteur) {
+    assert sujet.estCollaboratif()
+    Integer dureeMinute = grailsApplication.config.eliot.verrou.contributeurs.dureeMinute
+
+    Date dateLimitVerrou = new Date()
+    use(TimeCategory) {
+      dateLimitVerrou = dateLimitVerrou - dureeMinute.minutes
+    }
+
+    boolean lockObtained = false
+    Sujet.withNewSession {
+      Sujet.withNewTransaction {
+
+        lockObtained = Sujet.executeUpdate("""
+        UPDATE Sujet s
+        SET auteurVerrou=:auteur,
+          dateVerrou=:dateVerrou
+        WHERE s.id = :sujetId AND (
+          s.auteurVerrou IS NULL OR
+          s.auteurVerrou=:auteur OR
+          s.dateVerrou < :dateLimiteVerrou
+        )
+      """,
+            [
+                auteur          : auteur,
+                sujetId         : sujet.id,
+                dateVerrou      : new Date(),
+                dateLimiteVerrou: dateLimitVerrou
+            ]
+        ) as boolean
+      }
+    }
+
+    sujet.refresh() // On rafraichit le sujet dans la session courante
+    return lockObtained
+  }
+
+  public void supprimeVerrou(Sujet sujet, Personne auteur) {
+
+    Integer dureeMinute = grailsApplication.config.eliot.verrou.contributeurs.dureeMinute
+
+    Date dateLimitVerrou = new Date()
+    use(TimeCategory) {
+      dateLimitVerrou = dateLimitVerrou - dureeMinute.minutes
+    }
+
+    boolean lockReleased = false
+    Sujet.withNewSession {
+      Sujet.withNewTransaction {
+        lockReleased = Sujet.executeUpdate("""
+        UPDATE Sujet s
+        SET auteurVerrou=NULL,
+          dateVerrou=NULL
+        WHERE s.id = :sujetId AND (
+          s.auteurVerrou IS NULL OR
+          s.auteurVerrou=:auteur OR
+          s.dateVerrou < :dateLimiteVerrou
+        )
+      """,
+            [
+                auteur          : auteur,
+                sujetId         : sujet.id,
+                dateLimiteVerrou: dateLimitVerrou
+            ]
+        ) as boolean
+      }
+    }
+
+    sujet.refresh()
+
+    if(!lockReleased) {
+      log.error(
+          "Le verrou n'a pas pu être libéré (" +
+              "auteurVerrou: ${sujet.auteurVerrou}, " +
+              "dateVerrou: ${sujet.dateVerrou}" +
+              ")"
+      )
+    }
+
+
   }
 
 }

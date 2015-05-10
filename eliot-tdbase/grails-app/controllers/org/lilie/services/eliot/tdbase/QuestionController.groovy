@@ -619,6 +619,18 @@ class QuestionController {
     }
   }
 
+  def creeVerrou(Long id) {
+    Question question = Question.get(id)
+    questionService.creeVerrou(question, authenticatedPersonne)
+    render question as JSON
+  }
+
+  def supprimeVerrou(Long id) {
+    Question question = Question.get(id)
+    questionService.supprimeVerrou(question, authenticatedPersonne)
+    render question as JSON
+  }
+
   private JSON getQuestionAsJson(Question question) {
     question = questionExporterService.getQuestionPourExport(question, authenticatedPersonne)
     ExportMarshallerFactory exportMarshallerFactory = new ExportMarshallerFactory()

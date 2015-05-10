@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.time.TimeCategory
 import org.lilie.services.eliot.competence.Competence
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
@@ -54,6 +55,8 @@ class QuestionService implements ApplicationContextAware {
   QuestionAttachementService questionAttachementService
   QuestionCompetenceService questionCompetenceService
   ArtefactAutorisationService artefactAutorisationService
+
+  def grailsApplication
 
   /**
    * Récupère le service de gestion de spécification de question correspondant
@@ -698,5 +701,87 @@ class QuestionService implements ApplicationContextAware {
     competenceList.each { assert it != null }
 
     return competenceList
+  }
+
+  public Boolean creeVerrou(Question question, Personne auteur) {
+    assert question.estCollaboratif()
+    Integer dureeMinute = grailsApplication.config.eliot.verrou.contributeurs.dureeMinute
+
+    Date dateLimitVerrou = new Date()
+    use(TimeCategory) {
+      dateLimitVerrou = dateLimitVerrou - dureeMinute.minutes
+    }
+
+    boolean lockObtained = false
+    Question.withNewSession {
+      Question.withNewTransaction {
+
+        lockObtained = Question.executeUpdate("""
+        UPDATE Question q
+        SET auteurVerrou=:auteur,
+          dateVerrou=:dateVerrou
+        WHERE q.id = :questionId AND (
+          q.auteurVerrou IS NULL OR
+          q.auteurVerrou=:auteur OR
+          q.dateVerrou < :dateLimiteVerrou
+        )
+      """,
+            [
+                auteur          : auteur,
+                questionId      : question.id,
+                dateVerrou      : new Date(),
+                dateLimiteVerrou: dateLimitVerrou
+            ]
+        ) as boolean
+      }
+    }
+
+    question.refresh() // On rafraichit la question dans la session courante
+    return lockObtained
+  }
+
+  public void supprimeVerrou(Question question, Personne auteur) {
+
+    Integer dureeMinute = grailsApplication.config.eliot.verrou.contributeurs.dureeMinute
+
+    Date dateLimitVerrou = new Date()
+    use(TimeCategory) {
+      dateLimitVerrou = dateLimitVerrou - dureeMinute.minutes
+    }
+
+    boolean lockReleased = false
+    Question.withNewSession {
+      Question.withNewTransaction {
+        lockReleased = Sujet.executeUpdate("""
+        UPDATE Question q
+        SET auteurVerrou=NULL,
+          dateVerrou=NULL
+        WHERE q.id = :questionId AND (
+          q.auteurVerrou IS NULL OR
+          q.auteurVerrou=:auteur OR
+          q.dateVerrou < :dateLimiteVerrou
+        )
+      """,
+            [
+                auteur          : auteur,
+                questionId      : question.id,
+                dateLimiteVerrou: dateLimitVerrou
+            ]
+        ) as boolean
+      }
+    }
+
+    question.refresh()
+
+    if(!lockReleased) {
+      log.error(
+          "Le verrou n'a pas pu être libéré (" +
+              "auteurVerrou: ${question.auteurVerrou}, " +
+              "dateVerrou: ${question.dateVerrou}" +
+              ")"
+      )
+    }
+
+
   }
 }
