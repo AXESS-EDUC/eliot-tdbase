@@ -481,6 +481,12 @@ class SujetService {
       paginationAndSortingSpec = [:]
     }
 
+    def contributionIds = Sujet.createCriteria().list({
+      contributeurs {
+        eq 'id', chercheur.id
+      }
+    })*.id
+
     def criteria = Sujet.createCriteria()
     List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
       if (referentielEliot?.matiereBcn) {
@@ -493,11 +499,19 @@ class SujetService {
         eq "sujetType", sujetType
       }
       if (uniquementSujetsChercheur) {
-        eq 'proprietaire', chercheur
+        or {
+          eq 'proprietaire', chercheur
+          if (!contributionIds.isEmpty()) {
+            inList 'id', contributionIds
+          }
+        }
       } else {
         or {
           eq 'proprietaire', chercheur
           eq 'publie', true
+          if (!contributionIds.isEmpty()) {
+            inList 'id', contributionIds
+          }
         }
         if (patternAuteur) {
           String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
@@ -546,9 +560,22 @@ class SujetService {
       paginationAndSortingSpec = [:]
     }
 
+    def contributionIds = Sujet.createCriteria().list({
+      contributeurs {
+        eq 'id', proprietaire.id
+      }
+    })*.id
+
     def criteria = Sujet.createCriteria()
     List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
-      eq 'proprietaire', proprietaire
+
+      or {
+        eq 'proprietaire', proprietaire
+        if (!contributionIds.isEmpty()) {
+          inList 'id', contributionIds
+        }
+      }
+
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
         def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
