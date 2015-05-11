@@ -728,4 +728,200 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
         assertFalse(artefactAutorisationService.utilisateurPeutPartageArtefact(personne1, sujet1))
     }
 
+  void "testInsertQuestionInSujet - Insérer une question non collaborative dans un sujet collaboratif"() {
+    given: "Un sujet collaboratif"
+    Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertNotNull(sujet.id)
+    sujet = sujetService.updateProprietes(
+        sujet,
+        [contributeurIds: [personne2.id]],
+        personne1
+    )
+    assertTrue(sujet.estCollaboratif())
+
+    and: "Une question non collaborative"
+    Question question = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1
+    )
+    assertNotNull(question.id)
+
+    when: "On insère la question dans le sujet"
+    sujetService.insertQuestionInSujet(
+        question,
+        sujet,
+        personne1
+    )
+
+    then: "La question insérée est une duplication collaborative de la question originale"
+    Question questionCollaborative = sujet.questions[0]
+    assertTrue(questionCollaborative.estCollaboratif())
+    assertEquals(sujet.id, questionCollaborative.sujetLieId)
+    assertEquals(
+        [personne2.id] as Set,
+        questionCollaborative.contributeurs*.id as Set
+    )
+    assertTrue(questionCollaborative.id != question.id)
+    assertEquals(question.titre, questionCollaborative.titre)
+    assertEquals(question.specification, questionCollaborative.specification)
+  }
+
+  void "testInsertQuestionInSujet - Insérer une question collaborative dans un sujet collaboratif auquel elle est liée"() {
+    given: "Un sujet collaboratif"
+    Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertNotNull(sujet.id)
+    sujet = sujetService.updateProprietes(
+        sujet,
+        [contributeurIds: [personne2.id]],
+        personne1
+    )
+    assertTrue(sujet.estCollaboratif())
+
+    and: "Une question non collaborative"
+    Question question = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1
+    )
+    assertNotNull(question.id)
+
+    and: "On insère la question dans le sujet"
+    sujetService.insertQuestionInSujet(
+        question,
+        sujet,
+        personne1
+    )
+    Question questionCollaborative = sujet.questions[0]
+
+    and: "On retire la question du sujet"
+    sujet = sujetService.supprimeQuestionFromSujet(
+        sujet.questionsSequences[0],
+        personne1
+    )
+    assertEquals(0, sujet.questions.size())
+
+    when: "On insère à nouveau la question collaborative dans son sujet"
+    sujetService.insertQuestionInSujet(
+        questionCollaborative,
+        sujet,
+        personne1
+    )
+
+    then: "La question collaborative est directement insérée (sans duplication)"
+    Question questionInseree = sujet.questions[0]
+    assertEquals(questionCollaborative.id, questionInseree.id)
+    assertEquals(2, Question.findAll().size())
+  }
+
+  void "testInsertQuestionInSujet - Insérer une question collaborative dans un sujet collaboratif auquel elle n'est pas liée"() {
+    given: "Un sujet collaboratif comprenant une question"
+    Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertNotNull(sujet.id)
+    sujet = sujetService.updateProprietes(
+        sujet,
+        [contributeurIds: [personne2.id]],
+        personne1
+    )
+    assertTrue(sujet.estCollaboratif())
+
+    Question question = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1
+    )
+    assertNotNull(question.id)
+
+    sujetService.insertQuestionInSujet(
+        question,
+        sujet,
+        personne1
+    )
+    Question questionCollaborative = sujet.questions[0]
+
+    and: "Un autre sujet collaboratif"
+    Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertNotNull(sujet2.id)
+    sujet2 = sujetService.updateProprietes(
+        sujet2,
+        [contributeurIds: [personne3.id]],
+        personne1
+    )
+    assertTrue(sujet2.estCollaboratif())
+
+    when: "On insère la question collaborative dans le 2eme sujet"
+    sujetService.insertQuestionInSujet(
+        questionCollaborative,
+        sujet2,
+        personne1
+    )
+
+    then: "La question collaborative insérée est une duplication de la question originale"
+    Question questionInseree = sujet2.questions[0]
+    assertTrue(questionInseree.estCollaboratif())
+    assertTrue(questionCollaborative.id != questionInseree.id)
+    assertEquals(sujet2.id, questionInseree.sujetLieId)
+    assertEquals(questionCollaborative.titre, questionInseree.titre)
+    assertEquals(questionCollaborative.specification, questionInseree.specification)
+    assertEquals(3, Question.findAll().size())
+  }
+
+  void "testInsertQuestionInSujet - Insérer une question collaborative dans un sujet non collaboratif"() {
+    given: "Un sujet collaboratif comprenant une question"
+    Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertNotNull(sujet.id)
+    sujet = sujetService.updateProprietes(
+        sujet,
+        [contributeurIds: [personne2.id]],
+        personne1
+    )
+    assertTrue(sujet.estCollaboratif())
+
+    Question question = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1
+    )
+    assertNotNull(question.id)
+
+    sujetService.insertQuestionInSujet(
+        question,
+        sujet,
+        personne1
+    )
+    Question questionCollaborative = sujet.questions[0]
+
+    and: "Un autre sujet, non collaboratif"
+    Sujet sujetNonCollaboratif = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertNotNull(sujetNonCollaboratif.id)
+
+    when: "On insère la question collaborative dans le sujet non-collaboratif"
+    sujetService.insertQuestionInSujet(
+        questionCollaborative,
+        sujetNonCollaboratif,
+        personne1
+    )
+
+    then: "La question insérée est une duplication de la question collaborative"
+    Question questionInseree = sujetNonCollaboratif.questions[0]
+    assertFalse(questionInseree.estCollaboratif())
+    assertTrue(questionInseree.id != questionCollaborative.id)
+    assertEquals(3, Question.findAll().size()) // On a la question originale, la duplication collaborative, et la duplication non-collaborative
+  }
 }

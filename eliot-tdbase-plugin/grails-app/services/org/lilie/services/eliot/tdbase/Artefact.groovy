@@ -60,6 +60,8 @@ public interface Artefact {
    */
   boolean estCollaboratif()
 
+  Set<Personne> getContributeurs()
+
   /**
    * Un artefact est distribué lorsqu'il est mis à disposition pour une
    * interaction pédagogique. Par exemple un sujet est distribué quand il est

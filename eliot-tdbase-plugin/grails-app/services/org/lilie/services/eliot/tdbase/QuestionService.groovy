@@ -157,6 +157,35 @@ class QuestionService implements ApplicationContextAware {
     return questionCollaborative
   }
 
+  /**
+   * Crée une question non collaborative à partir d'une question collaborative
+   * Cette opération est réalisée automatiquement lorsqu'un utilisateur insère dans
+   * un sujet non collaboratif une question collaborative. La question est alors
+   * dupliquée à la volée.
+   * @param personne
+   * @param questionOriginale
+   * @return
+   */
+  @Transactional
+  Question createQuestionNonCollaborativeFrom(Personne personne,
+                                              Question questionOriginale) {
+    assert questionOriginale.estCollaboratif()
+    assert artefactAutorisationService.utilisateurPeutDupliquerArtefact(
+        personne,
+        questionOriginale
+    )
+
+    // Recopie la question
+    Question question = recopieQuestion(
+        questionOriginale,
+        personne,
+        questionOriginale.titre
+    )
+
+    question.save(flush: true, failOnError: true)
+    return question
+  }
+
   void updateQuestionSpecificationForObject(Question question, QuestionSpecification specificationObject) {
     def specService = questionSpecificationServiceForQuestionType(question.type)
     specService.updateQuestionSpecificationForObject(question, specificationObject)
@@ -360,8 +389,18 @@ class QuestionService implements ApplicationContextAware {
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
     Question question = createQuestion(proprietesQuestion, specificationObject, proprietaire)
+
+    if (sujet.estCollaboratif()) {
+      question.collaboratif = true
+      question.sujetLie = sujet
+      sujet.contributeurs.each {
+        question.addToContributeurs(it)
+      }
+      question.save()
+    }
+
     if (!question.hasErrors()) {
-      sujetService.insertQuestionInSujet(
+      question = sujetService.insertQuestionInSujet(
           question,
           sujet,
           proprietaire,

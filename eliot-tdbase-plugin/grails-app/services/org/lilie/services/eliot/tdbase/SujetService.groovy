@@ -597,23 +597,40 @@ class SujetService {
   }
 
 /**
- * Insert une question dans un sujet sujet
+ * Insère une question dans un sujet sujet
+ * Note 1 : dans le cas de l'insertion dans un sujet collaboratif, la question peut être dupliquée
+ * Note 2 : si une erreur empêche l'insertion dans le sujet, la méthode retournera null, et les erreurs seront stockées
+ * sur le sujet
  * @param question la question
  * @param sujet le sujet
  * @param proprietaire le propriétaire
  * @param rang le rang d'insertion
- * @return le sujet modifié
+ * @return la question insérée
  */
   @Transactional
-  Sujet insertQuestionInSujet(Question question,
-                              Sujet sujet,
-                              Personne proprietaire,
-                              ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions = null) {
+  Question insertQuestionInSujet(Question question,
+                                 Sujet sujet,
+                                 Personne proprietaire,
+                                 ReferentielSujetSequenceQuestions referentielSujetSequenceQuestions = null) {
 
     // verif securite
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
     assert (artefactAutorisationService.utilisateurPeutReutiliserArtefact(proprietaire, question))
     assert (!insertionQuestionCompositeInExercice(question, sujet))
+
+    if (sujet.estCollaboratif() && question.sujetLieId != sujet.id) {
+      question = questionService.createQuestionCollaborativeFrom(
+          proprietaire,
+          question,
+          sujet
+      )
+    }
+    else if (!sujet.estCollaboratif() && question.estCollaboratif()) {
+      question = questionService.createQuestionNonCollaborativeFrom(
+          proprietaire,
+          question
+      )
+    }
 
     if (!isDernierAuteur(sujet, proprietaire)) {
       sujet.addPaterniteItem(proprietaire)
@@ -641,7 +658,7 @@ class SujetService {
         sujet.errors.reject(it.code, it.arguments, it.defaultMessage)
       }
       sujet.removeFromQuestionsSequences(sequence)
-      return sujet
+      return null
     }
 
     sujet.lastUpdated = new Date()
@@ -662,7 +679,7 @@ class SujetService {
       sujet.save(flush: true)
     }
     sujet.refresh()
-    return sujet
+    return question
   }
 
 /**

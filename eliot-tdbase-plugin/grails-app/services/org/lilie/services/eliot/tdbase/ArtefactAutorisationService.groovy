@@ -98,7 +98,7 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutDupliquerArtefact(Personne utilisateur, Artefact artefact) {
-    if (artefact.estInvariant() || artefact.estCollaboratif()) {
+    if (artefact.estInvariant()) {
       return false
     }
     return utilisateurPeutReutiliserArtefact(utilisateur, artefact)
@@ -131,11 +131,11 @@ class ArtefactAutorisationService {
    */
   boolean utilisateurPeutReutiliserArtefact(Personne utilisateur,
                                             Artefact artefact) {
-    if(artefact.estCollaboratif()) {
-      return false
-    }
     if (utilisateur == artefact.proprietaire) {
       return true
+    }
+    if(artefact.estCollaboratif()) {
+      return artefact.contributeurs*.id.contains(utilisateur.id)
     }
     return artefact.estPartage()
   }
@@ -177,7 +177,10 @@ class ArtefactAutorisationService {
    * @return
    */
   boolean utilisateurPeutAjouterItem(Personne personne, Sujet sujet) {
-    return !sujet.estCollaboratif() && personne == sujet.proprietaire
+    return !sujet.termine && (
+        personne == sujet.proprietaire ||
+            sujet.contributeurs*.id.contains(personne.id)
+    )
   }
 
   /**
