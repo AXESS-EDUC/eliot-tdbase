@@ -9,7 +9,6 @@ import org.lilie.services.eliot.tdbase.importexport.SujetImporterService
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.ExportMarshaller
 import org.lilie.services.eliot.tdbase.importexport.natif.marshaller.factory.ExportMarshallerFactory
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
-import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tdbase.xml.MoodleQuizImportReport
@@ -21,10 +20,8 @@ import org.lilie.services.eliot.tice.annuaire.groupe.GroupeType
 import org.lilie.services.eliot.tice.scolarite.Fonction
 import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
-import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
-import org.lilie.services.eliot.tice.scolarite.ScolariteService
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 import org.springframework.web.multipart.MultipartFile
@@ -138,7 +135,6 @@ class SujetController {
                                                 sujet         : new Sujet(),
                                                 typesSujet    : sujetService.getAllSujetTypes(),
                                                 artefactHelper: artefactAutorisationService,
-                                                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
                                                 matiereBcns   : [],
                                                 etablissements     : securiteSessionServiceProxy.etablissementList,
                                                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
@@ -170,7 +166,6 @@ class SujetController {
                                                 sujet         : sujet,
                                                 artefactHelper: artefactAutorisationService,
                                                 typesSujet    : sujetService.getAllSujetTypes(),
-                                                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
                                                 matiereBcns   : sujet.matiereBcn != null ? [sujet.matiereBcn] : [],
                                                 etablissements     : securiteSessionServiceProxy.etablissementList,
                                                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire)])
@@ -587,7 +582,6 @@ class SujetController {
         [
                 liens         : breadcrumpsServiceProxy.liens,
                 sujet         : sujet,
-                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
                 etablissements: securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
@@ -601,7 +595,7 @@ class SujetController {
      */
     def importMoodleXML(ImportDansSujetCommand importCommand) {
         Sujet sujet = Sujet.get(importCommand.sujetId)
-        Matiere matiere = Matiere.get(importCommand.matiereId)
+        MatiereBcn matiere = MatiereBcn.get(importCommand.matiereId)
         Niveau niveau = Niveau.get(importCommand.niveauId)
         Personne proprietaire = authenticatedPersonne
         MultipartFile fichier = request.getFile("fichierImport")
@@ -625,7 +619,7 @@ class SujetController {
                         fichier.bytes,
                         sujet,
                         new ReferentielEliot(
-                                matiere: matiere,
+                                matiereBcn: matiere,
                                 niveau: niveau
                         ),
                         proprietaire
@@ -662,7 +656,6 @@ class SujetController {
         [
                 liens         : breadcrumpsServiceProxy.liens,
                 sujet         : sujet,
-                matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
                 etablissements: securiteSessionServiceProxy.etablissementList,
                 niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
                 fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
@@ -706,7 +699,7 @@ class SujetController {
                         sujet,
                         proprietaire,
                         new ReferentielEliot(
-                                matiere: Matiere.load(importCommand.matiereId),
+                                matiereBcn: MatiereBcn.load(importCommand.matiereId),
                                 niveau: Niveau.load(importCommand.niveauId)
                         )
                 )
