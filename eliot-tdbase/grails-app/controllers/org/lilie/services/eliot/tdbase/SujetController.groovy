@@ -145,7 +145,6 @@ class SujetController {
             sujet               : new Sujet(),
             typesSujet          : sujetService.getAllSujetTypes(),
             artefactHelper      : artefactAutorisationService,
-            matieres            : profilScolariteService.findMatieresForPersonne(proprietaire),
             matiereBcns         : [],
             etablissements      : securiteSessionServiceProxy.etablissementList,
             niveaux             : profilScolariteService.findNiveauxForPersonne(proprietaire),
@@ -202,7 +201,6 @@ class SujetController {
             sujet               : sujet,
             artefactHelper      : artefactAutorisationService,
             typesSujet          : sujetTypeList,
-            matieres            : profilScolariteService.findMatieresForPersonne(proprietaire),
             matiereBcns         : sujet.matiereBcn != null ? [sujet.matiereBcn] : [],
             etablissements      : securiteSessionServiceProxy.etablissementList,
             niveaux             : profilScolariteService.findNiveauxForPersonne(proprietaire),
@@ -724,7 +722,6 @@ class SujetController {
     [
         liens         : breadcrumpsServiceProxy.liens,
         sujet         : sujet,
-        matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
         etablissements: securiteSessionServiceProxy.etablissementList,
         niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
@@ -738,7 +735,7 @@ class SujetController {
    */
   def importMoodleXML(ImportDansSujetCommand importCommand) {
     Sujet sujet = Sujet.get(importCommand.sujetId)
-    Matiere matiere = Matiere.get(importCommand.matiereId)
+    MatiereBcn matiere = MatiereBcn.get(importCommand.matiereId)
     Niveau niveau = Niveau.get(importCommand.niveauId)
     Personne proprietaire = authenticatedPersonne
     MultipartFile fichier = request.getFile("fichierImport")
@@ -762,7 +759,7 @@ class SujetController {
             fichier.bytes,
             sujet,
             new ReferentielEliot(
-                matiere: matiere,
+                matiereBcn: matiere,
                 niveau: niveau
             ),
             proprietaire
@@ -799,7 +796,6 @@ class SujetController {
     [
         liens         : breadcrumpsServiceProxy.liens,
         sujet         : sujet,
-        matieres      : profilScolariteService.findMatieresForPersonne(proprietaire),
         etablissements: securiteSessionServiceProxy.etablissementList,
         niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
@@ -843,7 +839,7 @@ class SujetController {
             sujet,
             proprietaire,
             new ReferentielEliot(
-                matiere: Matiere.load(importCommand.matiereId),
+                matiereBcn: MatiereBcn.load(importCommand.matiereId),
                 niveau: Niveau.load(importCommand.niveauId)
             )
         )
