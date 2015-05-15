@@ -31,7 +31,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
+  <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete, jquery"/>
   <r:script>
 
     $(document).ready(function () {
@@ -71,11 +71,40 @@
 
       });
     });
+
+    function masqueQuestion(question) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/question/masque/")}' + question,
+
+        success: function() {
+          $("div.question[data-question='" + question + "']").addClass('masque');
+          $("li.masqueQuestion[data-question='" + question + "']").hide();
+          $("li.annuleMasqueQuestion[data-question='" + question + "']").show();
+        }
+      });
+    }
+
+    function annuleMasqueQuestion(question) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/question/annuleMasque/")}' + question,
+
+        success: function() {
+          $("div.question[data-question='" + question + "']").removeClass('masque');
+          $("li.masqueQuestion[data-question='" + question + "']").show();
+          $("li.annuleMasqueQuestion[data-question='" + question + "']").hide();
+        }
+      });
+    }
+
   </r:script>
   <style>
-  .custom-combobox-input {
-    width: 15em;
-  }
+    .custom-combobox-input {
+      width: 15em;
+    }
+
+    div.portal-default_results-list.question > div.masque {
+      background: url("images/eliot/picto-question-masque.png") no-repeat 10px 10px;
+    }
   </style>
   <title>
     <g:if test="${afficheFormulaire}">
@@ -163,6 +192,12 @@
                       optionValue="libelleLong"/>
           </td>
         </tr>
+        <tr>
+          <td colspan="2">
+            <g:checkBox name="afficheQuestionMasquee" value="${afficheQuestionMasquee}"/>
+            Afficher les items masqués
+          </td>
+        </tr>
 
       </table>
     </div>
@@ -193,7 +228,8 @@
       def messageDialogue = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
     %>
     <g:each in="${questions}" status="i" var="questionInstance">
-      <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
+      <g:set var="masque" value="${questionsMasqueesIds.contains(questionInstance.id)}"/>
+      <div class="${(i % 2) == 0 ? 'even' : 'odd'} question ${masque ? 'masque' : ''}" data-question="${questionInstance.id}" style="z-index: 0">
         <h1>${fieldValue(bean: questionInstance, field: "titre")}</h1>
 
         <button id="${questionInstance.id}">Actions</button>
@@ -283,6 +319,20 @@
           <g:else>
             <li>Supprimer</li>
           </g:else>
+
+          <g:if test="${artefactHelper.utilisateurPeutMasquerArtefact(utilisateur, questionInstance)}">
+            <li><hr/></li>
+
+            <li style="${!masque ? '' : 'display: none;'}" class="masqueQuestion" data-question="${questionInstance.id}">
+              <a href="#" onclick="masqueQuestion('${questionInstance.id}')">Masquer l'item</a>
+            </li>
+
+            <li style="${masque ? '' : 'display: none;'}" class="annuleMasqueQuestion" data-question="${questionInstance.id}">
+              <a href="#" onclick="annuleMasqueQuestion('${questionInstance.id}')">Ne plus masquer l'item</a>
+            </li>
+
+          </g:if>
+
         </ul>
 
         <p class="date">Mise à jour le ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>

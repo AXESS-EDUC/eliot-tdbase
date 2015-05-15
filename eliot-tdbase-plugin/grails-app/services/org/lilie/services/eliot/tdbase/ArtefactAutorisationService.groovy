@@ -102,7 +102,8 @@ class ArtefactAutorisationService {
     if (artefact.estInvariant()) {
       return false
     }
-    return utilisateur == artefact.proprietaire
+
+    return (utilisateur == artefact.proprietaire) || (artefact.contributeurs*.id.contains(utilisateur.id))
   }
 
   /**

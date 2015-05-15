@@ -114,3 +114,18 @@
 <g:else>
   <li>Supprimer</li>
 </g:else>
+
+<g:if test="${modeRecherche}">
+  <g:if test="${artefactHelper.utilisateurPeutMasquerArtefact(utilisateur, sujet)}">
+    <li><hr/></li>
+
+    <li style="${!masque ? '' : 'display: none;'}" class="masqueSujet" data-sujet="${sujet.id}">
+      <a href="#" onclick="masqueSujet('${sujet.id}')">Masquer le sujet</a>
+    </li>
+
+    <li style="${masque ? '' : 'display: none;'}" class="annuleMasqueSujet" data-sujet="${sujet.id}">
+      <a href="#" onclick="annuleMasqueSujet('${sujet.id}')">Ne plus masquer le sujet</a>
+    </li>
+
+  </g:if>
+</g:if>

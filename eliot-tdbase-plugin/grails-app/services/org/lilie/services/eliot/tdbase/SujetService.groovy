@@ -455,6 +455,24 @@ class SujetService {
     return paternite.paterniteItems.last()?.auteur == utilisateur.nomAffichage
   }
 
+  /**
+   * Récupère la liste des ids de tous les sujets masqués d'une
+   * personne, ou seulement un sous ensemble dans la liste des
+   * sujets fournis en paramètre
+   * @param personne
+   * @param sujets sous ensemble de sujets dans lesquels cherche
+   * @return liste d'ids de sujets
+   */
+  Set<Long> listIdsSujetsMasques(Personne personne, List<Sujet> sujets = null) {
+
+    if (sujets == null) {
+      return SujetMasque.findAllByPersonne(personne)*.sujetId
+    }
+    else {
+      return SujetMasque.findAllByPersonneAndSujetInList(personne, sujets)*.sujetId
+    }
+  }
+
 /**
  * Recherche de sujets
  * @param chercheur la personne effectuant la recherche
@@ -476,7 +494,8 @@ class SujetService {
                          ReferentielEliot referentielEliot,
                          SujetType sujetType,
                          Boolean uniquementSujetsChercheur = false,
-                         Map paginationAndSortingSpec = null) {
+                         Map paginationAndSortingSpec = null,
+                         Boolean afficheSujetMasque = false) {
     if (!chercheur) {
       throw new IllegalArgumentException("sujet.recherche.chercheur.null")
     }
@@ -489,6 +508,8 @@ class SujetService {
         eq 'id', chercheur.id
       }
     })*.id
+
+    Set<Long> sujetsMasquesIds = afficheSujetMasque ? [] : listIdsSujetsMasques(chercheur)
 
     def criteria = Sujet.createCriteria()
     List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
@@ -524,6 +545,12 @@ class SujetService {
               like "prenomNormalise", patternAuteurNormalise
             }
           }
+        }
+      }
+
+      if (!afficheSujetMasque && !sujetsMasquesIds.isEmpty()) {
+        not {
+          inList 'id', sujetsMasquesIds
         }
       }
 
@@ -569,6 +596,8 @@ class SujetService {
       }
     })*.id
 
+    Set<Long> sujetsMasquesIds = listIdsSujetsMasques(proprietaire)
+
     def criteria = Sujet.createCriteria()
     List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
 
@@ -576,6 +605,12 @@ class SujetService {
         eq 'proprietaire', proprietaire
         if (!contributionIds.isEmpty()) {
           inList 'id', contributionIds
+        }
+      }
+
+      if (!sujetsMasquesIds.isEmpty()) {
+        not {
+          inList 'id', sujetsMasquesIds
         }
       }
 
@@ -1066,6 +1101,30 @@ class SujetService {
     }
 
 
+  }
+
+  SujetMasque masque(Personne personne, Sujet sujet) {
+
+    def sujetMasques = SujetMasque.findAllByPersonneAndSujet(personne, sujet)
+    SujetMasque sujetMasque = sujetMasques.isEmpty() ? null : sujetMasques[0]
+
+    if (sujetMasque == null) {
+      sujetMasque = new SujetMasque(
+          sujet: sujet,
+          personne: personne
+      )
+      sujetMasque.save(flush: true, failOnError: true)
+    }
+
+    return sujetMasque
+  }
+
+  void annuleMasque(Personne personne, Sujet sujet) {
+    def sujetMasques = SujetMasque.findAllByPersonneAndSujet(personne, sujet)
+
+    sujetMasques.each { SujetMasque sujetMasque ->
+      sujetMasque.delete()
+    }
   }
 
 }
