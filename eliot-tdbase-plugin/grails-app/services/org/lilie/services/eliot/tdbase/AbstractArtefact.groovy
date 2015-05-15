@@ -58,4 +58,10 @@ abstract class AbstractArtefact implements Artefact {
   boolean estVerrouilleParMoi(Personne personne) {
     return estVerrouille() && auteurVerrou == personne
   }
+
+  @Override
+  String getContributeursAffichage() {
+    List<Personne> personnes = [proprietaire] + contributeurs
+    return personnes*.nomAffichage.sort().join(', ')
+  }
 }
