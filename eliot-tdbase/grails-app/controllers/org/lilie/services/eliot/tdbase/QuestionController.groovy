@@ -102,6 +102,19 @@ class QuestionController {
       question = Question.get(params.id)
       questionEnEdition = true
     }
+
+    if(question.estCollaboratif()) {
+      boolean locked = questionService.creeVerrou(question, personne)
+      if(!locked) {
+        flash.errorMessage = 'question.enregistre.echec.verrou'
+        redirect(
+            action: 'detail',
+            id: question.id
+        )
+        return
+      }
+    }
+
     def attachementsSujets = null
     Sujet sujet = null
     if (params.sujetId) {
@@ -241,6 +254,12 @@ class QuestionController {
     def specifObject = getSpecificationObjectFromParams(params)
     boolean questionEnEdition = true
     Question question = Question.get(params.id)
+
+    if(question.estCollaboratif() && question.estVerrouilleParAutrui(personne)) {
+      flash.errorMessage = "question.enregistre.echec.verrou"
+      redirect(action: 'detail', id: question.id)
+      return
+    }
 
     try {
       if (question) {
@@ -656,7 +675,7 @@ class QuestionController {
   def supprimeVerrou(Long id) {
     Question question = Question.get(id)
     questionService.supprimeVerrou(question, authenticatedPersonne)
-    render question as JSON
+    redirect(action: 'detail', id: id)
   }
 
   private JSON getQuestionAsJson(Question question) {

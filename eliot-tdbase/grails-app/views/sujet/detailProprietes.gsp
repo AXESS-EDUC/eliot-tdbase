@@ -67,10 +67,10 @@
     </ul>
   </span>
 </div>
-<g:if test="${flash.erreurMessageCode}">
+<g:if test="${flash.erreurMessage}">
   <div class="portal-messages">
     <li class="error"><g:message
-        code="${flash.erreurMessageCode}"
+        code="${flash.erreurMessage}"
         class="portal-messages error"/></li>
   </div>
 </g:if>

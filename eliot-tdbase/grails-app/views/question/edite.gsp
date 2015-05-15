@@ -69,7 +69,7 @@
           }
           else {
             $.ajax({
-              url: '${g.createLink(absolute:true, uri:"/sujet/matiereBcns")}',
+              url: '${g.createLink(absolute: true, uri: "/sujet/matiereBcns")}',
 
               data: {
                 recherche: recherche
@@ -143,9 +143,12 @@
 
       <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
         <li>
-          <g:set var="urlFormatNatifJson" value="${createLink(action: 'exporter', id: question.id, params: [format: Format.NATIF_JSON.name()])}"/>
-          <g:set var="urlFormatMoodleXml" value="${createLink(action: 'exporter', id: question.id, params: [format: Format.MOODLE_XML.name()])}"/>
-          <a href="#" onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
+          <g:set var="urlFormatNatifJson"
+                 value="${createLink(action: 'exporter', id: question.id, params: [format: Format.NATIF_JSON.name()])}"/>
+          <g:set var="urlFormatMoodleXml"
+                 value="${createLink(action: 'exporter', id: question.id, params: [format: Format.MOODLE_XML.name()])}"/>
+          <a href="#"
+             onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
         </li>
       </g:if>
       <g:else>
@@ -169,21 +172,20 @@
 <g:else>
   <div class="portal-tabs">
     <span class="portal-tabs-famille-liens">
-                <span class="share">Partager l'item</span>&nbsp;| &nbsp;
-            </span>
-            </span>
-            <span class="portal-tabs-famille-liens">
-              <button id="${question.id}">Actions</button>
-  <ul id="menu_actions_${question.id}"
-      class="tdbase-menu-actions">
-    <li>Aperçu</li>
-    <li><hr/></li>
-    <li>Dupliquer</li>
-    <li>Exporter</li>
-    <li><hr/></li>
-    <li>Supprimer</li>
-  </ul>
-  </span>
+      <span class="share">Partager l'item</span>&nbsp;| &nbsp;
+    </span>
+    <span class="portal-tabs-famille-liens">
+      <button id="${question.id}">Actions</button>
+      <ul id="menu_actions_${question.id}"
+          class="tdbase-menu-actions">
+        <li>Aperçu</li>
+        <li><hr/></li>
+        <li>Dupliquer</li>
+        <li>Exporter</li>
+        <li><hr/></li>
+        <li>Supprimer</li>
+      </ul>
+    </span>
   </div>
 </g:else>
 <g:hasErrors bean="${question}">
@@ -277,7 +279,7 @@
       <tr>
         <td class="label">Travail collaboratif&nbsp;:</td>
         <td>
-          <g:set var="contributeurs" value="${question?.contributeurs ?: sujet?.contributeurs}" />
+          <g:set var="contributeurs" value="${question?.contributeurs ?: sujet?.contributeurs}"/>
           <g:if test="${contributeurs}">
             <ul>
               <g:each in="${contributeurs}" var="contributeur">
@@ -302,32 +304,31 @@
       <g:render
           template="/question/${question.type.code}/${question.type.code}Edition"
           model="[question: question]"/>
-    <g:if test="${artefactHelper.partageArtefactCCActive}">
-      <tr>
-        <td class="label">Partage :</td>
-        <td>
-          <g:if test="${question.estPartage()}">
-            <a href="${question.copyrightsType.lien}"
-               target="_blank"><img src="${question.copyrightsType.logo}" style="float: left;margin-right: 10px;"
-                                    title="${question.copyrightsType.code}"/> ${question.copyrightsType.presentation}
-            </a>
-          </g:if>
-          <g:else>
-            cet item n'est pas partagé
-          </g:else>
-        </td>
-      </tr>
-      <g:if test="${question.paternite}">
-        <g:render template="/artefact/paternite"
-                  model="[paternite: question.paternite]"/>
+      <g:if test="${artefactHelper.partageArtefactCCActive}">
+        <tr>
+          <td class="label">Partage :</td>
+          <td>
+            <g:if test="${question.estPartage()}">
+              <a href="${question.copyrightsType.lien}"
+                 target="_blank"><img src="${question.copyrightsType.logo}" style="float: left;margin-right: 10px;"
+                                      title="${question.copyrightsType.code}"/> ${question.copyrightsType.presentation}
+              </a>
+            </g:if>
+            <g:else>
+              cet item n'est pas partagé
+            </g:else>
+          </td>
+        </tr>
+        <g:if test="${question.paternite}">
+          <g:render template="/artefact/paternite"
+                    model="[paternite: question.paternite]"/>
+        </g:if>
       </g:if>
-    </g:if>
       <g:if test="${isAssociableACompetence && referentielCompetence}">
-      <g:render
-          template="/question/edite_competences"
-          model="[referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList]" />
+        <g:render
+            template="/question/edite_competences"
+            model="[referentielCompetence: referentielCompetence, competenceAssocieeList: competenceAssocieeList]"/>
       </g:if>
-
 
     </table>
   </div>

@@ -342,7 +342,7 @@ class SujetController {
     params["contributeurIds"] = params.list("contributeurId")?.collect { Long.parseLong(it) }
 
     if(sujet.estCollaboratif() && sujet.estVerrouilleParAutrui(proprietaire)) {
-      flash.erreurMessageCode = "sujet.enregistre.echec.verrou"
+      flash.erreurMessage = "sujet.enregistre.echec.verrou"
       redirect(action: 'detailProprietes', id: sujet.id)
       return
     }

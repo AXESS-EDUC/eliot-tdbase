@@ -47,7 +47,7 @@
           }
           else {
             $.ajax({
-              url: '${g.createLink(absolute:true, uri:"/sujet/matiereBcns")}',
+              url: '${g.createLink(absolute: true, uri: "/sujet/matiereBcns")}',
 
               data: {
                 recherche: recherche
@@ -73,9 +73,9 @@
     });
   </r:script>
   <style>
-    .custom-combobox-input {
-      width: 15em;
-    }
+  .custom-combobox-input {
+    width: 15em;
+  }
   </style>
   <title>
     <g:if test="${afficheFormulaire}">
@@ -137,21 +137,21 @@
           </td>
         </tr>
         <tr>
-            <g:if test="${artefactHelper.partageArtefactCCActive}">
-                <td class="label">Auteur :
-                </td>
-                <td>
-                    <g:textField name="patternAuteur" title="auteur"
-                                 value="${rechercheCommand.patternAuteur}"/>
-                </td>
-            </g:if>
-            <g:else>
-                <td class="label">&nbsp;
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-            </g:else>
+          <g:if test="${artefactHelper.partageArtefactCCActive}">
+            <td class="label">Auteur :
+            </td>
+            <td>
+              <g:textField name="patternAuteur" title="auteur"
+                           value="${rechercheCommand.patternAuteur}"/>
+            </td>
+          </g:if>
+          <g:else>
+            <td class="label">&nbsp;
+            </td>
+            <td>
+              &nbsp;
+            </td>
+          </g:else>
 
           <td class="label">Niveau :
           </td>
@@ -222,7 +222,12 @@
                         id="${questionInstance.id}">Modifier</g:link></li>
           </g:if>
           <g:else>
-            <li>Modifier</li>
+            <g:if test="${questionInstance.estVerrouille()}">
+              <li>En cours de modification</li>
+            </g:if>
+            <g:else>
+              <li>Modifier</li>
+            </g:else>
           </g:else>
           <g:if
               test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
@@ -234,21 +239,21 @@
             <li>Dupliquer</li>
           </g:else>
           <li><hr/></li>
-        <g:if test="${artefactHelper.partageArtefactCCActive}">
-          <g:if
-              test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
-            <%
-              def docLoc = g.createLink(action: 'partage', controller: "question${questionInstance.type.code}", id: questionInstance.id)
-            %>
-            <li><g:link action="partage"
-                        controller="question${questionInstance.type.code}"
-                        id="${questionInstance.id}"
-                        onclick="afficheDialogue('${messageDialogue}','${docLoc}');return false;">Partager</g:link></li>
+          <g:if test="${artefactHelper.partageArtefactCCActive}">
+            <g:if
+                test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+              <%
+                def docLoc = g.createLink(action: 'partage', controller: "question${questionInstance.type.code}", id: questionInstance.id)
+              %>
+              <li><g:link action="partage"
+                          controller="question${questionInstance.type.code}"
+                          id="${questionInstance.id}"
+                          onclick="afficheDialogue('${messageDialogue}','${docLoc}');return false;">Partager</g:link></li>
+            </g:if>
+            <g:else>
+              <li>Partager</li>
+            </g:else>
           </g:if>
-          <g:else>
-            <li>Partager</li>
-          </g:else>
-        </g:if>
           <g:set var="peutExporterNatifJson"
                  value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, questionInstance, Format.NATIF_JSON)}"/>
           <g:set var="peutExporterMoodleXml"
@@ -256,9 +261,12 @@
 
           <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
             <li>
-              <g:set var="urlFormatNatifJson" value="${createLink(action: 'exporter', id: questionInstance.id, params: [format: Format.NATIF_JSON.name()])}"/>
-              <g:set var="urlFormatMoodleXml" value="${createLink(action: 'exporter', id: questionInstance.id, params: [format: Format.MOODLE_XML.name()])}"/>
-              <a href="#" onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
+              <g:set var="urlFormatNatifJson"
+                     value="${createLink(action: 'exporter', id: questionInstance.id, params: [format: Format.NATIF_JSON.name()])}"/>
+              <g:set var="urlFormatMoodleXml"
+                     value="${createLink(action: 'exporter', id: questionInstance.id, params: [format: Format.MOODLE_XML.name()])}"/>
+              <a href="#"
+                 onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
             </li>
           </g:if>
           <g:else>
@@ -285,9 +293,9 @@
           <g:if
               test="${questionInstance.matiereBcn?.libelleEdition}"><strong>» Matière :</strong> ${questionInstance.matiereBcn?.libelleEdition}</g:if>
           <strong>» Type :</strong>  ${questionInstance.type.nom}
-         <g:if test="${artefactHelper.partageArtefactCCActive}">
-          <strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
-         </g:if>
+          <g:if test="${artefactHelper.partageArtefactCCActive}">
+            <strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
+          </g:if>
         </p>
 
       </div>
