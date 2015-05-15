@@ -41,11 +41,11 @@ class ArtefactAutorisationService {
 
   static transactional = false
 
-    /**
-     * Flag indiquant si le partage des artefacts en CC est active.
-     * Ce flag peut-être configuré à l'aide du paramètre de configuration :
-     * eliot.artefact.partage_CC_autorise
-     */
+  /**
+   * Flag indiquant si le partage des artefacts en CC est active.
+   * Ce flag peut-être configuré à l'aide du paramètre de configuration :
+   * eliot.artefact.partage_CC_autorise
+   */
   boolean partageArtefactCCActive
 
   /**
@@ -72,10 +72,24 @@ class ArtefactAutorisationService {
     if (artefact.estInvariant()) {
       return false
     }
-    if (utilisateur != artefact.proprietaire) {
+
+    if (artefact.estDistribue()) {
       return false
     }
-    return !artefact.estDistribue()
+
+    if (!artefact.estCollaboratif() && utilisateur == artefact.proprietaire) {
+      return true
+    }
+
+    if (artefact.estCollaboratif()) {
+      return (
+          artefact.proprietaire == utilisateur ||
+              artefact.contributeurs.contains(utilisateur)
+      ) &&
+          !artefact.estVerrouilleParAutrui(utilisateur)
+    }
+
+    return false
   }
 
   /**
@@ -112,7 +126,7 @@ class ArtefactAutorisationService {
    */
   boolean utilisateurPeutPartageArtefact(Personne utilisateur, Artefact artefact) {
     if (!partageArtefactCCActive) {
-        return false
+      return false
     }
     if (artefact.estInvariant() || artefact.estCollaboratif()) {
       return false
@@ -134,7 +148,7 @@ class ArtefactAutorisationService {
     if (utilisateur == artefact.proprietaire) {
       return true
     }
-    if(artefact.estCollaboratif()) {
+    if (artefact.estCollaboratif()) {
       return artefact.contributeurs*.id.contains(utilisateur.id)
     }
     return artefact.estPartage()
@@ -149,10 +163,10 @@ class ArtefactAutorisationService {
   boolean utilisateurPeutExporterArtefact(Personne utilisateur,
                                           Artefact artefact,
                                           Format format) {
-    if(artefact.estCollaboratif()) {
+    if (artefact.estCollaboratif()) {
       return false
     }
-    if(format == Format.MOODLE_XML && !artefact.estPresentableEnMoodleXML()) {
+    if (format == Format.MOODLE_XML && !artefact.estPresentableEnMoodleXML()) {
       return false
     }
 
@@ -180,7 +194,7 @@ class ArtefactAutorisationService {
     return !sujet.termine && (
         personne == sujet.proprietaire ||
             sujet.contributeurs*.id.contains(personne.id)
-    )
+    ) && !sujet.estVerrouilleParAutrui(personne)
   }
 
   /**
@@ -190,6 +204,11 @@ class ArtefactAutorisationService {
    * @return
    */
   boolean utilisateurPeutModifierPropriete(Personne personne, Sujet sujet) {
+    if(sujet.estCollaboratif()) {
+      return personne == sujet.proprietaire &&
+          !sujet.estVerrouilleParAutrui(personne)
+    }
+
     return personne == sujet.proprietaire
   }
 }

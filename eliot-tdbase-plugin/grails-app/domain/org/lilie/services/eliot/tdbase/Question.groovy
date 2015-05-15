@@ -28,7 +28,6 @@
 
 package org.lilie.services.eliot.tdbase
 
-import groovy.time.TimeCategory
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
@@ -45,7 +44,7 @@ import org.springframework.web.multipart.MultipartFile
  * Classe représentant une question
  * @author franck Silvestre
  */
-class Question implements Artefact {
+class Question extends AbstractArtefact {
 
   GrailsApplication grailsApplication
 
@@ -164,11 +163,19 @@ class Question implements Artefact {
       'questionService',
       'specificationObject',
       'estEnNotationManuelle',
-      'estInvariant',
       'principalAttachementFichier',
       'doitSupprimerPrincipalAttachement',
       'principalAttachementId',
-      'grailsApplication'
+      'grailsApplication',
+      'estSupprimableQuandArtefactEstModifiable',
+      'estPresentableEnMoodleXML',
+      'estInvariant',
+      'estDistribue',
+      'estVerrouilleParMoi',
+      'estVerrouilleParAutrui',
+      'estVerrouille',
+      'estCollaboratif',
+      'estPartage'
   ]
 
   // transients
@@ -331,18 +338,6 @@ class Question implements Artefact {
     paterniteObjet.addPaterniteItem(paterniteItem)
     paternite = paterniteObjet.toString()
     this.save()
-  }
-
-  @Override
-  boolean estVerrouilleParAutrui(Personne personne) {
-    Integer dureeMinute = grailsApplication.config.eliot.verrou.contributeurs.dureeMinute
-
-    Date dateLimitVerrou = new Date()
-    use(TimeCategory) {
-      dateLimitVerrou = dateLimitVerrou - dureeMinute.minutes
-    }
-
-    return auteurVerrou && auteurVerrou != personne && dateVerrou > dateLimitVerrou
   }
 }
 

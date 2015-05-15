@@ -29,10 +29,8 @@
 package org.lilie.services.eliot.tdbase
 
 import groovy.time.TimeCategory
-import org.hibernate.LockMode
 import org.hibernate.Session
 import org.hibernate.SessionFactory
-import org.hibernate.impl.SessionImpl
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
@@ -1007,6 +1005,18 @@ class SujetService {
             ]
         ) as boolean
       }
+    }
+
+    if(lockObtained) {
+      // Supprime tous les verrous détenus par cet utilisateurs sur les autres sujets
+      Sujet.executeUpdate("""
+        UPDATE Sujet s
+        SET auteurVerrou=NULL,
+          dateVerrou=NULL
+        WHERE s.id != :sujetId and s.auteurVerrou=:auteur
+      """,
+          [sujetId: sujet.id, auteur: auteur]
+      )
     }
 
     sujet.refresh() // On rafraichit le sujet dans la session courante

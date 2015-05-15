@@ -46,90 +46,33 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <div class="portal-tabs">
-    <span class="portal-tabs-famille-liens">
-        <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujet)}">
-            <g:link action="edite" controller="sujet" class="modify"
-                    id="${sujet.id}">Modifier le sujet</g:link> |
-            <g:link action="editeProprietes" controller="sujet" class="modify"
-                    id="${sujet.id}">Modifier les propriétés du sujet</g:link>
-        </g:if>
-        <g:else>
-            <span class="modify">Modifier le sujet</span> |
-            <span class="modify">Modifier les propriétés du sujet</span>
-        </g:else>
-    </span>
-    <span class="portal-tabs-famille-liens">
-        <button id="toolbar_${sujet.id}">Actions</button>
-        <ul id="menu_actions_toolbar_${sujet.id}"
-            class="tdbase-menu-actions">
-            <li><g:link action="reinitialiseCopieTest" id="${copie.id}">
-                Réinitialiser la copie
-            </g:link>
-            </li>
-            <g:if test="${artefactHelper.utilisateurPeutCreerSeance(utilisateur, sujet)}">
-                <li>
-                    <g:link action="ajouteSeance" id="${sujet.id}">
-                        Nouvelle&nbsp;séance
-                    </g:link>
-                </li>
-            </g:if>
-            <g:else>
-                <li>Nouvelle&nbsp;séance</li>
-            </g:else>
-            <li><hr/></li>
-            <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
-                <li><g:link action="duplique"
-                            id="${sujet.id}">Dupliquer</g:link></li>
-            </g:if>
-            <g:else>
-                <li>Dupliquer</li>
-            </g:else>
-            <li><hr/></li>
-            <g:if test="${artefactHelper.partageArtefactCCActive}">
-                <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
-                    <%
-                        def docLoc = g.createLink(action: 'partage', id: sujet.id)
-                        def message = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
-                    %>
-                    <li><g:link action="partage"
-                                id="${sujet.id}"
-                                onclick="afficheDialogue('${message}', '${docLoc}');return false;">Partager</g:link></li>
-                </g:if>
-                <g:else>
-                    <li>Partager</li>
-                </g:else>
-            </g:if>
-            <g:set var="peutExporterNatifJson"
-                   value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.NATIF_JSON)}"/>
-            <g:set var="peutExporterMoodleXml"
-                   value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.MOODLE_XML)}"/>
-
-            <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
-                <li>
-                    <g:set var="urlFormatNatifJson"
-                           value="${createLink(action: 'exporter', id: sujet.id, params: [format: Format.NATIF_JSON.name()])}"/>
-                    <g:set var="urlFormatMoodleXml"
-                           value="${createLink(action: 'exporter', id: sujet.id, params: [format: Format.MOODLE_XML.name()])}"/>
-                    <a href="#"
-                       onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
-                </li>
-            </g:if>
-            <g:else>
-                <li>Exporter</li>
-            </g:else>
+  <g:render template="menuSujet"
+            model="${[
+                artefactHelper: artefactHelper,
+                utilisateur: utilisateur,
+                sujet : sujet,
+                modeEdition: false
+            ]}"/>
 
 
-            <li><hr/></li>
-            <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
-                <li><g:link action="supprime"
-                            id="${sujet.id}">Supprimer</g:link></li>
-            </g:if>
-            <g:else>
-                <li>Supprimer</li>
-            </g:else>
-        </ul>
-    </span>
+  <span class="portal-tabs-famille-liens">
+    <button id="toolbar_${sujet.id}">Actions</button>
+    <ul id="menu_actions_toolbar_${sujet.id}" class="tdbase-menu-actions">
+      <g:render template="menuActions"
+                model="${[
+                    artefactHelper: artefactHelper,
+                    sujet         : sujet,
+                    utilisateur   : utilisateur,
+                    copie         : copie
+                ]}"/>
+    </ul>
+  </span>
 </div>
+<g:if test="${flash.errorMessage}">
+  <div class="portal-messages">
+    <li class="error"><g:message code="${flash.errorMessage}"/></li>
+  </div>
+</g:if>
 <g:hasErrors bean="${copie}">
     <div class="portal-messages">
         <g:eachError>

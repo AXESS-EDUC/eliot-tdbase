@@ -359,6 +359,17 @@ class QuestionController {
     Sujet sujet = Sujet.get(sujetId)
     Integer rang = breadcrumpsServiceProxy.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
     boolean questionEnEdition = false
+
+    if(sujet.estCollaboratif() && sujet.estVerrouilleParAutrui(personne)) {
+      flash.errorMessage = 'sujet.enregistre.echec.verrou'
+      redirect(
+          controller: 'sujet',
+          action: 'teste',
+          id: sujet.id
+      )
+      return
+    }
+
     Question question = questionService.createQuestionAndInsertInSujet(
         params,
         specifObject,
@@ -370,19 +381,25 @@ class QuestionController {
     )
 
     if (question.hasErrors()) {
-      render(view: '/question/edite', model: [liens            : breadcrumpsServiceProxy.liens,
-                                              question         : question,
-                                              sujet            : sujet,
-                                              matiereBcns      : question.matiereBcn != null ? [question.matiereBcn] : [],
-                                              etablissements   : securiteSessionServiceProxy.etablissementList,
-                                              niveaux          : profilScolariteService.findNiveauxForPersonne(personne),
-                                              sujet            : sujet,
-                                              artefactHelper   : artefactAutorisationService,
-                                              questionEnEdition: questionEnEdition,
-                                              utilisateur      : personne])
+      render(
+          view: '/question/edite',
+          model: [
+              liens            : breadcrumpsServiceProxy.liens,
+              question         : question,
+              sujet            : sujet,
+              matiereBcns      : question.matiereBcn != null ? [question.matiereBcn] : [],
+              etablissements   : securiteSessionServiceProxy.etablissementList,
+              niveaux          : profilScolariteService.findNiveauxForPersonne(personne),
+              artefactHelper   : artefactAutorisationService,
+              questionEnEdition: questionEnEdition,
+              utilisateur      : personne
+          ]
+      )
+      return
     } else {
       flash.messageCode = "question.enregistre.succes"
       breadcrumpsServiceProxy.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
+
       redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
     }
 
@@ -398,6 +415,17 @@ class QuestionController {
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
     Question question = Question.get(params.id)
+
+    if(sujet.estCollaboratif() && sujet.estVerrouilleParAutrui(personne)) {
+      flash.errorMessage = 'sujet.enregistre.echec.verrou'
+      redirect(
+          controller: 'sujet',
+          action: 'teste',
+          id: sujet.id
+      )
+      return
+    }
+
     Integer rang = breadcrumpsServiceProxy.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
     question = sujetService.insertQuestionInSujet(
         question,

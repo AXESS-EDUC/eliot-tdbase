@@ -736,6 +736,18 @@ class QuestionService implements ApplicationContextAware {
       }
     }
 
+    if(lockObtained) {
+      // Supprime tous les verrous détenus par cet utilisateurs sur les autres questions
+      Question.executeUpdate("""
+        UPDATE Question q
+        SET auteurVerrou=NULL,
+          dateVerrou=NULL
+        WHERE q.id != :questionId and q.auteurVerrou=:auteur
+      """,
+          [questionId: question.id, auteur: auteur]
+      )
+    }
+
     question.refresh() // On rafraichit la question dans la session courante
     return lockObtained
   }

@@ -181,98 +181,35 @@
         <%
             def messageDialogue = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
         %>
-        <g:each in="${sujets}" status="i" var="sujetInstance">
+        <g:each in="${sujets}" status="i" var="sujet">
             <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
 
-                <h1>${fieldValue(bean: sujetInstance, field: "titre")}</h1>
+                <h1>${fieldValue(bean: sujet, field: "titre")}</h1>
 
-                <button id="${sujetInstance.id}">Actions</button>
-                <ul id="menu_actions_${sujetInstance.id}" class="tdbase-menu-actions">
-                    <li><g:link action="teste" id="${sujetInstance.id}">
-                        Tester
-                    </g:link>
-                    </li>
-                    <g:if test="${artefactHelper.utilisateurPeutCreerSeance(utilisateur, sujetInstance)}">
-                        <li>
-                            <g:link action="ajouteSeance" id="${sujetInstance.id}">
-                                Nouvelle&nbsp;séance
-                            </g:link>
-                        </li>
-                    </g:if>
-                    <g:else>
-                        <li>Nouvelle&nbsp;séance</li>
-                    </g:else>
-                    <li><hr/></li>
-                    <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetInstance)}">
-                        <li><g:link action="edite"
-                                    id="${sujetInstance.id}">Modifier</g:link></li>
-                    </g:if>
-                    <g:else>
-                        <li>Modifier</li>
-                    </g:else>
-                    <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetInstance)}">
-                        <li><g:link action="duplique"
-                                    id="${sujetInstance.id}">Dupliquer</g:link></li>
-                    </g:if>
-                    <g:else>
-                        <li>Dupliquer</li>
-                    </g:else>
-                    <li><hr/></li>
-                    <g:if test="${artefactHelper.partageArtefactCCActive}">
-                        <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujetInstance)}">
-                            <%
-                                def docLoc = g.createLink(action: 'partage', id: sujetInstance.id)
-                            %>
-                            <li><g:link action="partage"
-                                        id="${sujetInstance.id}"
-                                        onclick="afficheDialogue('${messageDialogue}', '${docLoc}');return false;">Partager</g:link></li>
-                        </g:if>
-                        <g:else>
-                            <li>Partager</li>
-                        </g:else>
-                    </g:if>
-                    <g:set var="peutExporterNatifJson"
-                           value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, Format.NATIF_JSON)}"/>
-                    <g:set var="peutExporterMoodleXml"
-                           value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, Format.MOODLE_XML)}"/>
-
-                    <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
-                        <li>
-                            <g:set var="urlFormatNatifJson"
-                                   value="${createLink(action: 'exporter', id: sujetInstance.id, params: [format: Format.NATIF_JSON.name()])}"/>
-                            <g:set var="urlFormatMoodleXml"
-                                   value="${createLink(action: 'exporter', id: sujetInstance.id, params: [format: Format.MOODLE_XML.name()])}"/>
-                            <a href="#"
-                               onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
-                        </li>
-                    </g:if>
-                    <g:else>
-                        <li>Exporter</li>
-                    </g:else>
-
-                    <li><hr/></li>
-                    <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujetInstance)}">
-                        <li><g:link action="supprime" id="${sujetInstance.id}">Supprimer</g:link></li>
-                    </g:if>
-                    <g:else>
-                        <li>Supprimer</li>
-                    </g:else>
+                <button id="${sujet.id}">Actions</button>
+                <ul id="menu_actions_${sujet.id}" class="tdbase-menu-actions">
+                  <g:render template="menuActions"
+                            model="${[
+                                artefactHelper: artefactHelper,
+                                sujet         : sujet,
+                                utilisateur   : utilisateur
+                            ]}"/>
                 </ul>
 
-                <p class="date">Mise à jour le ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
+                <p class="date">Mise à jour le ${sujet.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
 
                 <p>
                     <g:if
-                            test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${sujetInstance.niveau?.libelleLong}</g:if>
+                            test="${sujet.niveau?.libelleLong}"><strong>» Niveau :</strong> ${sujet.niveau?.libelleLong}</g:if>
                     <g:if
-                            test="${sujetInstance.matiereBcn?.libelleEdition}"><strong>» Matière :</strong> ${sujetInstance.matiereBcn?.libelleEdition}</g:if>
+                            test="${sujet.matiereBcn?.libelleEdition}"><strong>» Matière :</strong> ${sujet.matiereBcn?.libelleEdition}</g:if>
                     <g:if
-                            test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</g:if>
+                            test="${fieldValue(bean: sujet, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujet, field: "dureeMinutes")}</g:if>
                     <g:if test="${artefactHelper.partageArtefactCCActive && afficheFormulaire}">
-                        <strong>» Auteur :</strong> ${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}
+                        <strong>» Auteur :</strong> ${sujet.proprietaire.prenom} ${sujet.proprietaire.nom}
                     </g:if>
                     <g:if test="${artefactHelper.partageArtefactCCActive}">
-                        <strong>» Partagé :</strong> ${sujetInstance.estPartage() ? 'oui' : 'non'}
+                        <strong>» Partagé :</strong> ${sujet.estPartage() ? 'oui' : 'non'}
                     </g:if>
                 </p>
 

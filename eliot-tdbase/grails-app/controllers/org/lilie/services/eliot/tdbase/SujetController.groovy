@@ -181,6 +181,18 @@ class SujetController {
     Personne proprietaire = authenticatedPersonne
     Etablissement currentEtablissement = securiteSessionServiceProxy.currentEtablissement
 
+    if(sujet.estCollaboratif()) {
+      // Pose un verrou avant de permettre la modification du sujet
+      boolean locked = sujetService.creeVerrou(sujet, authenticatedPersonne)
+      if(!locked) {
+        redirect(
+            action: 'teste',
+            id: sujet.id
+        )
+        return
+      }
+    }
+
     assert artefactAutorisationService.utilisateurPeutModifierPropriete(proprietaire, sujet)
 
     // Note : on ne doit pas pouvoir transformer un exercice collaboratif en sujet
@@ -289,14 +301,30 @@ class SujetController {
     breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.edite.titre"))
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
-    [liens             : breadcrumpsServiceProxy.liens,
-     titreSujet        : sujet.titre,
-     sujet             : sujet,
-     sujetEnEdition    : true,
-     peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-     peutPartagerSujet : artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
-     artefactHelper    : artefactAutorisationService,
-     utilisateur       : personne]
+
+    if(sujet.estCollaboratif()) {
+      // Pose un verrou avant de permettre la modification du sujet
+      boolean locked = sujetService.creeVerrou(sujet, authenticatedPersonne)
+      if(!locked) {
+        flash.errorMessage = 'sujet.enregistre.echec.verrou'
+        redirect(
+            action: 'teste',
+            id: sujet.id
+        )
+        return
+      }
+    }
+
+    [
+        liens             : breadcrumpsServiceProxy.liens,
+        titreSujet        : sujet.titre,
+        sujet             : sujet,
+        sujetEnEdition    : true,
+        peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
+        peutPartagerSujet : artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+        artefactHelper    : artefactAutorisationService,
+        utilisateur       : personne
+    ]
   }
 
   /**
@@ -313,7 +341,14 @@ class SujetController {
 
     params["contributeurIds"] = params.list("contributeurId")?.collect { Long.parseLong(it) }
 
+    if(sujet.estCollaboratif() && sujet.estVerrouilleParAutrui(proprietaire)) {
+      flash.erreurMessageCode = "sujet.enregistre.echec.verrou"
+      redirect(action: 'detailProprietes', id: sujet.id)
+      return
+    }
+
     sujet = sujetService.updateProprietes(sujet, params, proprietaire)
+
     if (!sujet.hasErrors()) {
       flash.messageCode = "sujet.enregistre.succes"
       redirect(action: 'detailProprietes', id: sujet.id)
@@ -509,8 +544,20 @@ class SujetController {
    */
   def supprimeFromSujet() {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
+    Sujet sujet = sujetQuestion.sujet
     Personne proprietaire = authenticatedPersonne
-    Sujet sujet = sujetService.supprimeQuestionFromSujet(sujetQuestion, proprietaire)
+
+    if(sujet.estCollaboratif() && sujet.estVerrouilleParAutrui(proprietaire)) {
+      flash.errorMessage = 'sujet.enregistre.echec.verrou'
+      redirect(
+          controller: 'sujet',
+          action: 'teste',
+          id: sujet.id
+      )
+      return
+    }
+
+    sujet = sujetService.supprimeQuestionFromSujet(sujetQuestion, proprietaire)
     render(view: '/sujet/edite', model: [sujet         : sujet,
                                          titreSujet    : sujet.titre,
                                          sujetEnEdition: true,
@@ -525,8 +572,20 @@ class SujetController {
  */
   def remonteElement() {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
+    Sujet sujet = sujetQuestion.sujet
     Personne proprietaire = authenticatedPersonne
-    Sujet sujet = sujetService.inverseQuestionAvecLaPrecedente(sujetQuestion, proprietaire)
+
+    if(sujet.estCollaboratif() && sujet.estVerrouilleParAutrui(proprietaire)) {
+      flash.errorMessage = 'sujet.enregistre.echec.verrou'
+      redirect(
+          controller: 'sujet',
+          action: 'teste',
+          id: sujet.id
+      )
+      return
+    }
+
+    sujet = sujetService.inverseQuestionAvecLaPrecedente(sujetQuestion, proprietaire)
     render(view: '/sujet/edite', model: [sujet         : sujet,
                                          titreSujet    : sujet.titre,
                                          sujetEnEdition: true,
@@ -541,14 +600,30 @@ class SujetController {
    */
   def descendElement() {
     SujetSequenceQuestions sujetQuestion = SujetSequenceQuestions.get(params.id)
+    Sujet sujet = sujetQuestion.sujet
     Personne proprietaire = authenticatedPersonne
-    Sujet sujet = sujetService.inverseQuestionAvecLaSuivante(sujetQuestion, proprietaire)
-    render(view: '/sujet/edite', model: [sujet         : sujet,
-                                         titreSujet    : sujet.titre,
-                                         sujetEnEdition: true,
-                                         liens         : breadcrumpsServiceProxy.liens,
-                                         artefactHelper: artefactAutorisationService,
-                                         utilisateur   : proprietaire])
+
+    if(sujet.estCollaboratif() && sujet.estVerrouilleParAutrui(proprietaire)) {
+      flash.errorMessage = 'sujet.enregistre.echec.verrou'
+      redirect(
+          controller: 'sujet',
+          action: 'teste',
+          id: sujet.id
+      )
+      return
+    }
+
+    sujet = sujetService.inverseQuestionAvecLaSuivante(sujetQuestion, proprietaire)
+    render(view: '/sujet/edite',
+        model: [
+            sujet         : sujet,
+            titreSujet    : sujet.titre,
+            sujetEnEdition: true,
+            liens         : breadcrumpsServiceProxy.liens,
+            artefactHelper: artefactAutorisationService,
+            utilisateur   : proprietaire
+        ]
+    )
   }
 
   /**
@@ -570,6 +645,21 @@ class SujetController {
 
     Personne utilisateur = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
+
+    if(sujet.estCollaboratif()) {
+      // Pose un verrou avant de permettre la modification du sujet
+      boolean locked = sujetService.creeVerrou(sujet, authenticatedPersonne)
+      flash.errorMessage = 'sujet.enregistre.echec.verrou'
+      if(!locked) {
+        redirect(
+            action: 'teste',
+            id: sujet.id
+        )
+        return
+      }
+    }
+
+
 
     assert artefactAutorisationService.utilisateurPeutAjouterItem(utilisateur, sujet)
 
@@ -646,12 +736,26 @@ class SujetController {
       // deduit l'id de l'objet SujetSequenceQuestions à modifier
       def id = pointsCommand.element_id - "SujetSequenceQuestions-" as Long
       def sujetQuestion = SujetSequenceQuestions.get(id)
+      Sujet sujet = sujetQuestion.sujet
+
+      if(sujet.estCollaboratif() && sujet.estVerrouilleParAutrui(authenticatedPersonne)) {
+        flash.errorMessage = 'sujet.enregistre.echec.verrou'
+        redirect(
+            controller: 'sujet',
+            action: 'teste',
+            id: sujet.id
+        )
+        return
+      }
+
       // récupère la nouvelle valeur
       def points = pointsCommand.update_value
       // met à jour
-      sujetService.updatePointsForQuestion(points,
+      sujetService.updatePointsForQuestion(
+          points,
           sujetQuestion,
-          authenticatedPersonne)
+          authenticatedPersonne
+      )
       render NumberUtils.formatFloat(points)
     } catch (Exception e) {
       log.info(e.message)
@@ -936,7 +1040,7 @@ class SujetController {
   def supprimeVerrou(Long id) {
     Sujet sujet = Sujet.get(id)
     sujetService.supprimeVerrou(sujet, authenticatedPersonne)
-    render sujet as JSON
+    redirect(action: 'teste', id: id)
   }
 }
 

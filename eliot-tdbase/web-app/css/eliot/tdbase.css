@@ -709,6 +709,17 @@ Style for the edition of a document or category (ToolBar)
     background: url("../../images/eliot/edit.png") no-repeat 0 2px;
 }
 
+.portal-tabs .locked {
+    padding: 4px 4px 4px 22px;
+    background: url("../../images/eliot/locked.png") no-repeat 0 2px;
+}
+
+.portal-tabs .unlock {
+    padding: 4px 4px 4px 22px;
+    background: url("../../images/eliot/unlock.png") no-repeat 0 2px;
+}
+
+
 .portal-tabs a.share {
     padding: 4px 4px 4px 20px;
     background: url("../../images/eliot/picto-share.png") no-repeat 0 4px;
