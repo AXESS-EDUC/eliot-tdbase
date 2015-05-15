@@ -69,6 +69,11 @@ public interface Artefact {
   Set<Personne> getContributeurs()
 
   /**
+   * @return Une chaîne représentant la liste des contributeurs, triés par ordre alphabétique, et incluant le propriétaire
+   */
+  String getContributeursAffichage()
+
+  /**
    * Teste si un utilisateur quelconque possède un verrou actif sur cet
    * artefact
    * @return
