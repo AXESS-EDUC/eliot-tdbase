@@ -1061,6 +1061,22 @@ class SujetController {
     render sujet as JSON
   }
 
+
+  def finalise(Long id) {
+    Sujet sujet = Sujet.get(id)
+    sujetService.finalise(sujet, new Date(params.long('lastUpdated')), authenticatedPersonne)
+
+    if (sujet.termine) {
+      sujetService.supprimeVerrou(sujet, authenticatedPersonne)
+      redirect(action: 'teste', id: id)
+    }
+    else {
+      flash.errorMessageCode = "Le sujet n'a pas pu être finalisé car celui-ci vient d'être modifié."
+      redirect(action: 'edite', id: id)
+    }
+
+  }
+
 }
 
 class ImportDansSujetCommand {

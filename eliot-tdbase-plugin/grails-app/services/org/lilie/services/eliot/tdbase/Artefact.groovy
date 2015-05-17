@@ -97,6 +97,8 @@ public interface Artefact {
    */
   boolean estDistribue()
 
+  boolean estTermine()
+
   /**
    * Un artefact est invariant lorsqu'un utilisateur ne peut pas le modifier ou
    * le supprimer ou le creer directement.

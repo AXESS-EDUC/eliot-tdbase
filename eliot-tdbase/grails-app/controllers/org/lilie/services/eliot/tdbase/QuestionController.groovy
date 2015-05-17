@@ -115,6 +115,12 @@ class QuestionController {
       }
     }
 
+    if(question.termine) {
+      flash.errorMessage = "question.enregistre.echec.termine"
+      redirect(action: 'detail', id: question.id)
+      return
+    }
+
     def attachementsSujets = null
     Sujet sujet = null
     if (params.sujetId) {
@@ -257,6 +263,12 @@ class QuestionController {
 
     if(question.estCollaboratif() && question.estVerrouilleParAutrui(personne)) {
       flash.errorMessage = "question.enregistre.echec.verrou"
+      redirect(action: 'detail', id: question.id)
+      return
+    }
+
+    if(question.termine) {
+      flash.errorMessage = "question.enregistre.echec.termine"
       redirect(action: 'detail', id: question.id)
       return
     }

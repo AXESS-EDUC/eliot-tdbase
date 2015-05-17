@@ -77,6 +77,10 @@ class ArtefactAutorisationService {
       return false
     }
 
+    if(artefact.estTermine()) {
+      return false
+    }
+
     if (!artefact.estCollaboratif() && utilisateur == artefact.proprietaire) {
       return true
     }
@@ -178,7 +182,7 @@ class ArtefactAutorisationService {
    */
   boolean utilisateurPeutCreerSeance(Personne utilisateur,
                                      Sujet sujet) {
-    return !sujet.estCollaboratif()
+    return !sujet.estCollaboratif() || sujet.estTermine()
   }
 
   /**
@@ -188,7 +192,7 @@ class ArtefactAutorisationService {
    * @return
    */
   boolean utilisateurPeutAjouterItem(Personne personne, Sujet sujet) {
-    return !sujet.termine && (
+    return !sujet.estTermine() && (
         personne == sujet.proprietaire ||
             sujet.contributeurs*.id.contains(personne.id)
     ) && !sujet.estVerrouilleParAutrui(personne)
@@ -201,6 +205,10 @@ class ArtefactAutorisationService {
    * @return
    */
   boolean utilisateurPeutModifierPropriete(Personne personne, Sujet sujet) {
+    if(sujet.estTermine()) {
+      return false
+    }
+
     if(sujet.estCollaboratif()) {
       return personne == sujet.proprietaire &&
           !sujet.estVerrouilleParAutrui(personne)

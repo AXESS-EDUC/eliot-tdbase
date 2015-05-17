@@ -82,6 +82,12 @@
         </g:eachError>
     </div>
 </g:hasErrors>
+<g:if test="${flash.errorMessageCode}">
+  <div class="portal-messages">
+    <li class="error"><g:message code="${flash.errorMessageCode}"
+                                 class="portal-messages error"/></li>
+  </div>
+</g:if>
 <g:if test="${flash.messageCode}">
     <div class="portal-messages">
         <li class="success"><g:message code="${flash.messageCode}"

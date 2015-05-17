@@ -59,4 +59,18 @@
   </g:else>
 
   <g:render template="infoVerrou" model="${[sujet: sujet, utilisateur: utilisateur]}"/>
+
+  <g:if test="${sujet.collaboratif}">
+    <g:if test="${modeEdition && !sujet.termine && sujet.proprietaireId == utilisateur.id}">
+      | <g:link action="finalise"
+                controller="sujet"
+                id="${sujet.id}"
+                params="[lastUpdated: sujet.lastUpdated.time]"
+                class="finalized">Finaliser le sujet</g:link>
+    </g:if>
+    <g:elseif test="${sujet.termine}">
+      | <span class="finalized">Sujet finalisé</span>
+    </g:elseif>
+  </g:if>
+
 </span>

@@ -370,6 +370,12 @@ class QuestionService implements ApplicationContextAware {
     questionCompetenceService.updateQuestionCompetenceList(question, competenceList)
 
     question.save(flush: true)
+
+    // Actualise la date de dernière modification du sujet lié
+    if (question.sujetLie != null) {
+      sujetService.actualiseLastUpdate(question.sujetLie)
+    }
+
     return question
   }
 

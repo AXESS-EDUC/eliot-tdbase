@@ -1127,4 +1127,45 @@ class SujetService {
     }
   }
 
+  @Transactional
+  public void finalise(Sujet sujet, Date lastUpdated, Personne auteur) {
+    Integer success = Sujet.executeUpdate("""
+      UPDATE Sujet s
+      SET termine = true
+      WHERE s.id = :sujetId
+        AND s.lastUpdated = :lastUpdated
+        AND s.proprietaire = :proprietaire
+    """,
+    [
+        sujetId: sujet.id,
+        lastUpdated: lastUpdated,
+        proprietaire: auteur
+    ])
+
+    if(success) { // Si le sujet à pu être marqué comme terminé, on fait de même pour toutes les questions du sujet
+      Question.executeUpdate("""
+        UPDATE Question q
+        SET termine = true
+        WHERE q.sujetLie = :sujet
+      """,
+          [
+              sujet: sujet
+          ]
+      )
+      sujet.refresh()
+
+    }
+  }
+
+  public void actualiseLastUpdate(Sujet sujet) {
+    Sujet.executeUpdate("""
+      UPDATE Sujet s
+      SET lastUpdated = :lastUpdated
+      WHERE s.id = :sujetId
+    """,
+        [
+            sujetId: sujet.id,
+            lastUpdated: new Date()
+        ])
+  }
 }

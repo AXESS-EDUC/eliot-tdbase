@@ -727,6 +727,11 @@ Style for the edition of a document or category (ToolBar)
     background: url("../../images/eliot/unlock.png") no-repeat 0 2px;
 }
 
+.portal-tabs .finalized {
+    padding: 4px 4px 4px 22px;
+    background: url("../../images/eliot/finalise.png") no-repeat 0 2px;
+}
+
 
 .portal-tabs a.share {
     padding: 4px 4px 4px 20px;

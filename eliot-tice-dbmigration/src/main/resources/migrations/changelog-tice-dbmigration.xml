@@ -78,4 +78,5 @@
     <include file="migrations/schema.tdbase/changelog-20150423-TDB-215.xml"/>
     <include file="migrations/schema.tdbase/changelog-20150510-TDB-223.xml"/>
     <include file="migrations/schema.tdbase/changelog-20150515-TDB-226.xml"/>
+
 </databaseChangeLog>
