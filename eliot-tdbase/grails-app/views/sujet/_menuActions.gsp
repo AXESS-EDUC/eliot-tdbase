@@ -120,11 +120,11 @@
     <li><hr/></li>
 
     <li style="${!masque ? '' : 'display: none;'}" class="masqueSujet" data-sujet="${sujet.id}">
-      <a href="#" onclick="masqueSujet('${sujet.id}')">Masquer le sujet</a>
+      <a href="#" onclick="masqueSujet('${sujet.id}')">Masquer</a>
     </li>
 
     <li style="${masque ? '' : 'display: none;'}" class="annuleMasqueSujet" data-sujet="${sujet.id}">
-      <a href="#" onclick="annuleMasqueSujet('${sujet.id}')">Ne plus masquer le sujet</a>
+      <a href="#" onclick="annuleMasqueSujet('${sujet.id}')">Ne plus masquer</a>
     </li>
 
   </g:if>

@@ -320,11 +320,11 @@
             <li><hr/></li>
 
             <li style="${!masque ? '' : 'display: none;'}" class="masqueQuestion" data-question="${questionInstance.id}">
-              <a href="#" onclick="masqueQuestion('${questionInstance.id}')">Masquer l'item</a>
+              <a href="#" onclick="masqueQuestion('${questionInstance.id}')">Masquer</a>
             </li>
 
             <li style="${masque ? '' : 'display: none;'}" class="annuleMasqueQuestion" data-question="${questionInstance.id}">
-              <a href="#" onclick="annuleMasqueQuestion('${questionInstance.id}')">Ne plus masquer l'item</a>
+              <a href="#" onclick="annuleMasqueQuestion('${questionInstance.id}')">Ne plus masquer</a>
             </li>
 
           </g:if>
