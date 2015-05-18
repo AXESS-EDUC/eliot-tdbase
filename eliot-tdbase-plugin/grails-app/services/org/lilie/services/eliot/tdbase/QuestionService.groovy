@@ -488,6 +488,24 @@ class QuestionService implements ApplicationContextAware {
   }
 
   /**
+   * Récupère la liste des ids de tous les sujets masqués d'une
+   * personne, ou seulement un sous ensemble dans la liste des
+   * sujets fournis en paramètre
+   * @param personne
+   * @param sujets sous ensemble de sujets dans lesquels cherche
+   * @return liste d'ids de sujets
+   */
+  Set<Long> listIdsQuestionsMasquees(Personne personne, List<Question> questions = null) {
+
+    if (questions == null) {
+      return QuestionMasquee.findAllByPersonne(personne)*.questionId
+    }
+    else {
+      return QuestionMasquee.findAllByPersonneAndQuestionInList(personne, questions)*.questionId
+    }
+  }
+
+  /**
    * Recherche de questions
    * @param chercheur la personne effectuant la recherche
    * @param patternTitre le pattern saisi pour le titre
@@ -509,7 +527,8 @@ class QuestionService implements ApplicationContextAware {
                                QuestionType questionType,
                                Boolean exclusComposites = false,
                                Boolean uniquementQuestionsChercheur = false,
-                               Map paginationAndSortingSpec = null) {
+                               Map paginationAndSortingSpec = null,
+                               Boolean afficheQuestionMasquee = false) {
     if (!chercheur) {
       throw new IllegalArgumentException("question.recherche.chercheur.null")
     }
@@ -522,6 +541,8 @@ class QuestionService implements ApplicationContextAware {
         eq 'id', chercheur.id
       }
     })*.id
+
+    def questionsMasqueesIds = afficheQuestionMasquee ? [] : listIdsQuestionsMasquees(chercheur)
 
     def criteria = Question.createCriteria()
     List<Question> questions = criteria.list(paginationAndSortingSpec) {
@@ -559,6 +580,12 @@ class QuestionService implements ApplicationContextAware {
               like "prenomNormalise", patternAuteurNormalise
             }
           }
+        }
+      }
+
+      if (!afficheQuestionMasquee && !questionsMasqueesIds.isEmpty()) {
+        not {
+          inList 'id', questionsMasqueesIds
         }
       }
 
@@ -604,6 +631,8 @@ class QuestionService implements ApplicationContextAware {
       }
     })*.id
 
+    def questionsMasqueesIds = listIdsQuestionsMasquees(proprietaire)
+
     def criteria = Question.createCriteria()
     List<Question> questions = criteria.list(paginationAndSortingSpec) {
       or {
@@ -612,6 +641,13 @@ class QuestionService implements ApplicationContextAware {
           inList 'id', contributionIds
         }
       }
+
+      if (!questionsMasqueesIds.isEmpty()) {
+        not {
+          inList 'id', questionsMasqueesIds
+        }
+      }
+
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
         def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
@@ -796,4 +832,29 @@ class QuestionService implements ApplicationContextAware {
 
 
   }
+
+  QuestionMasquee masque(Personne personne, Question question) {
+
+    def questionMasquees =  QuestionMasquee.findAllByPersonneAndQuestion(personne, question)
+    QuestionMasquee questionMasquee = questionMasquees.isEmpty() ? null : questionMasquees[0]
+
+    if (questionMasquee == null) {
+      questionMasquee = new QuestionMasquee(
+          question: question,
+          personne: personne
+      )
+      questionMasquee.save(flush: true, failOnError: true)
+    }
+
+    return questionMasquee
+  }
+
+  void annuleMasque(Personne personne, Question question) {
+    def questionMasquees = QuestionMasquee.findAllByPersonneAndQuestion(personne, question)
+
+    questionMasquees.each { QuestionMasquee questionMasquee ->
+      questionMasquee.delete()
+    }
+  }
+
 }

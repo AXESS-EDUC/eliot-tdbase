@@ -505,6 +505,7 @@ class QuestionController {
     boolean affichePager = false
 
     MatiereBcn matiereBcn = MatiereBcn.get(rechCmd.matiereId)
+    Boolean afficheQuestionMasquee = rechCmd.afficheQuestionMasquee != null ? rechCmd.afficheQuestionMasquee : false
 
     def questions = questionService.findQuestions(personne,
         rechCmd.patternTitre,
@@ -517,23 +518,26 @@ class QuestionController {
         QuestionType.get(rechCmd.typeId),
         exclusComposite,
         rechercheUniquementQuestionsChercheur,
-        params)
+        params,
+        afficheQuestionMasquee)
 
     if (questions.totalCount > maxItems) {
       affichePager = true
     }
-    [liens               : breadcrumpsServiceProxy.liens,
-     afficheFormulaire   : true,
-     typesQuestion       : typesQuestions,
-     matiereBcns         : matiereBcn != null ? [matiereBcn] : [],
-     niveaux             : profilScolariteService.findNiveauxForPersonne(personne),
-     questions           : questions,
-     rechercheCommand    : rechCmd,
-     sujet               : sujet,
-     afficheLiensModifier: afficheLiensModifier,
-     afficherPager       : affichePager,
-     artefactHelper      : artefactAutorisationService,
-     utilisateur         : personne]
+    [liens                  : breadcrumpsServiceProxy.liens,
+     afficheFormulaire      : true,
+     typesQuestion          : typesQuestions,
+     matiereBcns            : matiereBcn != null ? [matiereBcn] : [],
+     niveaux                : profilScolariteService.findNiveauxForPersonne(personne),
+     questions              : questions,
+     rechercheCommand       : rechCmd,
+     sujet                  : sujet,
+     afficheLiensModifier   : afficheLiensModifier,
+     afficherPager          : affichePager,
+     artefactHelper         : artefactAutorisationService,
+     utilisateur            : personne,
+     questionsMasqueesIds   : afficheQuestionMasquee ? questionService.listIdsQuestionsMasquees(personne, questions) : [],
+     afficheQuestionMasquee: afficheQuestionMasquee]
   }
 
   def mesItems() {
@@ -678,6 +682,20 @@ class QuestionController {
     redirect(action: 'detail', id: id)
   }
 
+  def masque(Long id) {
+    Question question = Question.get(id)
+    Personne personne = authenticatedPersonne
+    QuestionMasquee questionMasquee = questionService.masque(personne, question)
+    render questionMasquee as JSON
+  }
+
+  def annuleMasque(Long id) {
+    Question question = Question.get(id)
+    Personne personne = authenticatedPersonne
+    questionService.annuleMasque(personne, question)
+    render question as JSON
+  }
+
   private JSON getQuestionAsJson(Question question) {
     question = questionExporterService.getQuestionPourExport(question, authenticatedPersonne)
     ExportMarshallerFactory exportMarshallerFactory = new ExportMarshallerFactory()
@@ -722,15 +740,18 @@ class RechercheQuestionCommand {
   Long niveauId
   Long sujetId
 
+  Boolean afficheQuestionMasquee
+
   Map toParams() {
     [
-        patternAuteur      : patternAuteur,
-        patternTitre       : patternTitre,
-        patternPresentation: patternSpecification,
-        matiereId          : matiereId,
-        typeId             : typeId,
-        niveauId           : niveauId,
-        sujetId            : sujetId
+        patternAuteur         : patternAuteur,
+        patternTitre          : patternTitre,
+        patternPresentation   : patternSpecification,
+        matiereId             : matiereId,
+        typeId                : typeId,
+        niveauId              : niveauId,
+        sujetId               : sujetId,
+        afficheQuestionMasquee: afficheQuestionMasquee
     ]
   }
 

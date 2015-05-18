@@ -77,6 +77,7 @@ class SujetController {
     }
 
     MatiereBcn matiereBcn = MatiereBcn.get(rechCmd.matiereId)
+    Boolean afficheSujetMasque = rechCmd.afficheSujetMasque != null ? rechCmd.afficheSujetMasque : false
 
     def sujets = sujetService.findSujets(personne,
         rechCmd.patternTitre,
@@ -88,22 +89,25 @@ class SujetController {
         ),
         SujetType.get(rechCmd.typeId),
         rechercheUniquementSujetsChercheur,
-        params)
+        params,
+        afficheSujetMasque)
     boolean affichePager = false
     if (sujets.totalCount > maxItems) {
       affichePager = true
     }
 
-    [liens            : breadcrumpsServiceProxy.liens,
-     afficheFormulaire: true,
-     affichePager     : affichePager,
-     typesSujet       : sujetService.getAllSujetTypes(),
-     matiereBcns      : matiereBcn != null ? [matiereBcn] : [],
-     niveaux          : profilScolariteService.findNiveauxForPersonne(personne),
-     sujets           : sujets,
-     rechercheCommand : rechCmd,
-     artefactHelper   : artefactAutorisationService,
-     utilisateur      : personne]
+    [liens              : breadcrumpsServiceProxy.liens,
+     afficheFormulaire  : true,
+     affichePager       : affichePager,
+     typesSujet         : sujetService.getAllSujetTypes(),
+     matiereBcns        : matiereBcn != null ? [matiereBcn] : [],
+     niveaux            : profilScolariteService.findNiveauxForPersonne(personne),
+     sujets             : sujets,
+     rechercheCommand   : rechCmd,
+     artefactHelper     : artefactAutorisationService,
+     utilisateur        : personne,
+     sujetsMasquesIds   : afficheSujetMasque ? sujetService.listIdsSujetsMasques(personne, sujets) : [],
+     afficheSujetMasque : afficheSujetMasque]
   }
 
   /**
@@ -1042,6 +1046,21 @@ class SujetController {
     sujetService.supprimeVerrou(sujet, authenticatedPersonne)
     redirect(action: 'teste', id: id)
   }
+
+  def masque(Long id) {
+    Sujet sujet = Sujet.get(id)
+    Personne personne = authenticatedPersonne
+    SujetMasque sujetMasque = sujetService.masque(personne, sujet)
+    render sujetMasque as JSON
+  }
+
+  def annuleMasque(Long id) {
+    Sujet sujet = Sujet.get(id)
+    Personne personne = authenticatedPersonne
+    sujetService.annuleMasque(personne, sujet)
+    render sujet as JSON
+  }
+
 }
 
 class ImportDansSujetCommand {
@@ -1065,13 +1084,16 @@ class RechercheSujetCommand {
   Long typeId
   Long niveauId
 
+  Boolean afficheSujetMasque
+
   Map toParams() {
     [patternTitre       : patternTitre,
      patternAuteur      : patternAuteur,
      patternPresentation: patternPresentation,
      matiereId          : matiereId,
      typeId             : typeId,
-     niveauId           : niveauId]
+     niveauId           : niveauId,
+     afficheSujetMasque : afficheSujetMasque]
   }
 
 }

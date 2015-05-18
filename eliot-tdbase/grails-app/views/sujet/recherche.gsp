@@ -29,7 +29,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="layout" content="eliot-tdbase"/>
-    <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
+    <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete, jquery"/>
     <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
@@ -68,6 +68,31 @@
 
       });
     });
+
+    function masqueSujet(sujet) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/sujet/masque/")}' + sujet,
+
+        success: function() {
+          $("div.sujet[data-sujet='" + sujet + "']").addClass('masque');
+          $("li.masqueSujet[data-sujet='" + sujet + "']").hide();
+          $("li.annuleMasqueSujet[data-sujet='" + sujet + "']").show();
+        }
+      });
+    }
+
+    function annuleMasqueSujet(sujet) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/sujet/annuleMasque/")}' + sujet,
+
+        success: function() {
+          $("div.sujet[data-sujet='" + sujet + "']").removeClass('masque');
+          $("li.masqueSujet[data-sujet='" + sujet + "']").show();
+          $("li.annuleMasqueSujet[data-sujet='" + sujet + "']").hide();
+        }
+      });
+    }
+
   </r:script>
   <style>
     .custom-combobox-input {
@@ -155,6 +180,12 @@
                                   optionValue="libelleLong"/>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="2">
+                        <g:checkBox name="afficheSujetMasque" value="${afficheSujetMasque}"/>
+                        Afficher les sujets masqués
+                    </td>
+                </tr>
 
             </table>
         </div>
@@ -182,7 +213,8 @@
             def messageDialogue = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
         %>
         <g:each in="${sujets}" status="i" var="sujet">
-            <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
+            <g:set var="masque" value="${sujetsMasquesIds.contains(sujet.id)}"/>
+            <div class="${(i % 2) == 0 ? 'even' : 'odd'} sujet ${masque ? 'masque' : ''}" data-sujet="${sujet.id}" style="z-index: 0">
 
                 <h1>${fieldValue(bean: sujet, field: "titre")}</h1>
 
@@ -190,9 +222,11 @@
                 <ul id="menu_actions_${sujet.id}" class="tdbase-menu-actions">
                   <g:render template="menuActions"
                             model="${[
-                                artefactHelper: artefactHelper,
-                                sujet         : sujet,
-                                utilisateur   : utilisateur
+                                artefactHelper    : artefactHelper,
+                                sujet             : sujet,
+                                utilisateur       : utilisateur,
+                                modeRecherche     : true,
+                                masque            : masque
                             ]}"/>
                 </ul>
 

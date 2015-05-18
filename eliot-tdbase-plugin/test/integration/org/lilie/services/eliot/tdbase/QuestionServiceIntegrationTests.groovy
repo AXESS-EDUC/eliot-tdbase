@@ -214,4 +214,43 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
 
     }
 
+  void testFindQuestionsMasquees() {
+    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    Question quest1 = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
+    assertFalse(quest1.hasErrors())
+
+    def res
+
+    res = questionService.findQuestions(personne1, null, null, null, null, null, null, null, null)
+    assertEquals(1, res.size())
+
+    questionService.masque(personne1, quest1)
+
+    res = questionService.findQuestions(personne1, null, null, null, null, null, null, null, null)
+    assertEquals(0, res.size())
+
+    res = questionService.findQuestions(personne1, null, null, null, null, null, null, null, null, true)
+    assertEquals(1, res.size())
+
+    res = questionService.findQuestions(personne2, null, null, null, null, null, null, null, null)
+    assertEquals(0, res.size())
+
+    questionService.annuleMasque(personne1, quest1)
+
+    res = questionService.findQuestions(personne1, null, null, null, null, null, null, null, null)
+    assertEquals(1, res.size())
+
+    res = questionService.findQuestions(personne1, null, null, null, null, null, null, null, null, true)
+    assertEquals(1, res.size())
+
+  }
+
 }
