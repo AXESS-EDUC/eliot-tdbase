@@ -98,10 +98,6 @@
     .custom-combobox-input {
       width: 15em;
     }
-
-    div.portal-default_results-list.sujet > div.masque {
-      background: url("images/eliot/picto-sujet-masque.png") no-repeat 10px 10px;
-    }
   </style>
   <title>
     <g:if test="${afficheFormulaire}">

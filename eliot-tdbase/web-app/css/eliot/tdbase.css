@@ -585,8 +585,16 @@ div.portal-default_results-list.sujet>div {
     background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;
 }
 
+div.portal-default_results-list.sujet > div.masque {
+    background: url("../../images/eliot/picto-sujet-masque.png") no-repeat 10px 10px;
+}
+
 div.portal-default_results-list.question>div {
     background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;
+}
+
+div.portal-default_results-list.question>div.masque {
+    background: url("../../images/eliot/picto-question-masque.png") no-repeat 10px 10px; !important
 }
 
 div.portal-default_results-list.sceance>div {
