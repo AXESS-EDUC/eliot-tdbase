@@ -653,8 +653,8 @@ class SujetController {
     if(sujet.estCollaboratif()) {
       // Pose un verrou avant de permettre la modification du sujet
       boolean locked = sujetService.creeVerrou(sujet, authenticatedPersonne)
-      flash.errorMessage = 'sujet.enregistre.echec.verrou'
       if(!locked) {
+        flash.errorMessage = 'sujet.enregistre.echec.verrou'
         redirect(
             action: 'teste',
             id: sujet.id

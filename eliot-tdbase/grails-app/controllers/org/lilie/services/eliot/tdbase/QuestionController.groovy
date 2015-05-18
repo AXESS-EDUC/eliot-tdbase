@@ -103,7 +103,7 @@ class QuestionController {
       questionEnEdition = true
     }
 
-    if(question.estCollaboratif()) {
+    if(question.id && question.estCollaboratif()) {
       boolean locked = questionService.creeVerrou(question, personne)
       if(!locked) {
         flash.errorMessage = 'question.enregistre.echec.verrou'
