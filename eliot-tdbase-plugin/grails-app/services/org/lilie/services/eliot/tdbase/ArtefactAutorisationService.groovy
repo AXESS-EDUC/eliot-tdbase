@@ -99,10 +99,6 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutMasquerArtefact(Personne utilisateur, Artefact artefact) {
-    if (artefact.estInvariant()) {
-      return false
-    }
-
     return (utilisateur == artefact.proprietaire) || (artefact.contributeurs*.id.contains(utilisateur.id))
   }
 
