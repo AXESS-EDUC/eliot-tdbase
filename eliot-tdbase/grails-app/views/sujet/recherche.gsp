@@ -213,7 +213,7 @@
             def messageDialogue = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
         %>
         <g:each in="${sujets}" status="i" var="sujet">
-            <g:set var="masque" value="${sujetsMasquesIds.contains(sujet.id)}"/>
+            <g:set var="masque" value="${sujetsMasquesIds?.contains(sujet.id)}"/>
             <div class="${(i % 2) == 0 ? 'even' : 'odd'} sujet ${masque ? 'masque' : ''}" data-sujet="${sujet.id}" style="z-index: 0">
 
                 <h1>${fieldValue(bean: sujet, field: "titre")}</h1>
