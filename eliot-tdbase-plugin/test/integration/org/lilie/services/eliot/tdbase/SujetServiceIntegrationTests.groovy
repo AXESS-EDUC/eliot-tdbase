@@ -622,6 +622,54 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
 
     }
 
+    void testFindSujetsMasques() {
+      Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+      assertFalse(sujet1.hasErrors())
+
+      def res = sujetService.findSujets(personne1, null, null, null, null, null, null)
+      assertEquals(1, res.size())
+
+      sujetService.masque(personne1, sujet1)
+      res = sujetService.findSujets(personne1, null, null, null, null, null, null)
+      assertEquals(0, res.size())
+      res = sujetService.findSujets(personne1, null, null, null, null, null, null, null, true)
+      assertEquals(1, res.size())
+
+      sujetService.annuleMasque(personne1, sujet1)
+      res = sujetService.findSujets(personne1, null, null, null, null, null, null)
+      assertEquals(1, res.size())
+      res = sujetService.findSujets(personne1, null, null, null, null, null, null, null, true)
+      assertEquals(1, res.size())
+
+      res = sujetService.findSujets(personne2, null, null, null, null, null, null)
+      assertEquals(0, res.size())
+
+      sujetService.updateProprietes(sujet1, [contributeurIds: [personne2.id]], personne1)
+
+      res = sujetService.findSujets(personne2, null, null, null, null, null, null)
+      assertEquals(1, res.size())
+      Sujet sujetCollaboratif = res[0]
+
+      sujetService.masque(personne2, sujetCollaboratif)
+      res = sujetService.findSujets(personne2, null, null, null, null, null, null)
+      assertEquals(0, res.size())
+      res = sujetService.findSujets(personne2, null, null, null, null, null, null, null, true)
+      assertEquals(1, res.size())
+
+      res = sujetService.findSujets(personne1, null, null, null, null, null, null)
+      assertEquals(2, res.size())
+
+      sujetService.annuleMasque(personne2, sujetCollaboratif)
+      res = sujetService.findSujets(personne2, null, null, null, null, null, null)
+      assertEquals(1, res.size())
+      res = sujetService.findSujets(personne2, null, null, null, null, null, null, null, true)
+      assertEquals(1, res.size())
+
+      res = sujetService.findSujets(personne1, null, null, null, null, null, null)
+      assertEquals(2, res.size())
+
+    }
+
     void testSujetEstDistribue() {
         Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
         assertFalse(sujet1.hasErrors())
