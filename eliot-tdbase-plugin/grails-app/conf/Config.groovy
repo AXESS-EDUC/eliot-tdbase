@@ -52,7 +52,10 @@ environments {
         eliot.not_an_application.nomApplication = "TdbasePlugin"
         eliot.urlResolution.mode = UrlServeurResolutionEnum.ANNUAIRE_PORTEUR.name()
 
-        eliot.interfacage.strongCheck = false
+      // Durée maximale du verrou posé sur les sujets et items collaboratifs
+      eliot.verrou.contributeurs.dureeMinute = 30
+
+      eliot.interfacage.strongCheck = false
         // rest client config for textes
         eliot.webservices.rest.client.textes.user = "api"
         eliot.webservices.rest.client.textes.password = "api"

@@ -219,7 +219,7 @@ eliot.listes.groupes.maxrecherche = 200
 // Nombre de contributeur à afficher dans la recherche
 eliot.listes.contributeurs.maxrecherche = 5
 
-// Durée maximale du verrou posé sur les sujets collaboratifs
+// Durée maximale du verrou posé sur les sujets & items collaboratifs
 eliot.verrou.contributeurs.dureeMinute = 30
 
 // les dimensions de div continer à prendre en compte si nécessaire
