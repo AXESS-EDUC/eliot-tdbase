@@ -230,6 +230,34 @@ class SujetController {
     )
   }
 
+  /**
+   *
+   * Visualise les prorpiétés d'un sujet
+   */
+  def proprietes() {
+    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "sujet.proprietes.titre"))
+    Sujet sujet = Sujet.get(params.id)
+    Personne proprietaire = authenticatedPersonne
+    Etablissement currentEtablissement = securiteSessionServiceProxy.currentEtablissement
+
+    assert artefactAutorisationService.utilisateurPeutAfficherPropriete(proprietaire, sujet)
+
+    render(
+        view: "proprietes",
+        model: [
+            liens               : breadcrumpsServiceProxy.liens,
+            sujet               : sujet,
+            artefactHelper      : artefactAutorisationService,
+            etablissements      : securiteSessionServiceProxy.etablissementList,
+            currentEtablissement: currentEtablissement,
+            fonctionList        : preferenceEtablissementService.getFonctionListForRoleFormateur(
+                proprietaire,
+                currentEtablissement
+            )
+        ]
+    )
+  }
+
   def rechercheContributeur(RechercheContributeurCommand command) {
     Personne personne = authenticatedPersonne
     Etablissement etablissement

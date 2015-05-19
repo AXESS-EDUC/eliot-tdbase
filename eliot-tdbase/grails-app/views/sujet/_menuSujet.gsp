@@ -55,7 +55,8 @@
             id="${sujet.id}">Modifier les propriétés du sujet</g:link>
   </g:if>
   <g:else>
-    <span class="modify">Modifier les propriétés du sujet</span>
+    <g:link action="proprietes" controller="sujet"
+            id="${sujet.id}">Voir les propriétés du sujet</g:link>
   </g:else>
 
   <g:render template="infoVerrou" model="${[sujet: sujet, utilisateur: utilisateur]}"/>

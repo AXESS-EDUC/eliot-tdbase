@@ -216,6 +216,17 @@ class ArtefactAutorisationService {
 
     return personne == sujet.proprietaire
   }
+
+  /**
+   * Vérifier qu'un utilisateur peut afficher les propriétés d'un sujet
+   * @param personne
+   * @param sujet
+   * @return
+   */
+  boolean utilisateurPeutAfficherPropriete(Personne personne, Sujet sujet) {
+    return sujet.proprietaire ||
+        sujet.contributeurs*.id.contains(personne.id)
+  }
 }
 
 
