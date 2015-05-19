@@ -1157,6 +1157,24 @@ class SujetService {
     }
   }
 
+  @Transactional
+  public void annuleFinalise(Sujet sujet, Personne auteur) {
+    if (sujet.termine && sujet.proprietaireId == auteur.id && !sujet.estDistribue()) {
+      sujet.termine = false;
+      sujet.save(flush: true, failOnError: true)
+
+      Question.executeUpdate("""
+        UPDATE Question q
+        SET termine = false
+        WHERE q.sujetLie = :sujet
+      """,
+          [
+              sujet: sujet
+          ]
+      )
+    }
+  }
+
   public void actualiseLastUpdate(Sujet sujet) {
     Sujet.executeUpdate("""
       UPDATE Sujet s

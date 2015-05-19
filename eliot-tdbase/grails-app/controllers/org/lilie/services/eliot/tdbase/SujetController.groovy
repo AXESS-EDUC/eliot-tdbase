@@ -1105,6 +1105,16 @@ class SujetController {
 
   }
 
+  def annuleFinalisation(Long id) {
+    Sujet sujet = Sujet.get(id)
+    sujetService.annuleFinalise(sujet, authenticatedPersonne)
+
+    if (sujet.termine) {
+      flash.errorMessageCode = "La finalisation du sujet n'a pas pu être annulée."
+    }
+    redirect(action: 'teste', id: id)
+  }
+
 }
 
 class ImportDansSujetCommand {

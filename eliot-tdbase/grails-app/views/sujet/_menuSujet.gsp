@@ -70,7 +70,13 @@
                 class="finalized">Finaliser le sujet</g:link>
     </g:if>
     <g:elseif test="${sujet.termine}">
-      | <span class="finalized">Sujet finalisé</span>
+      | <span class="finalized">Sujet finalisé
+          <g:if test="${sujet.proprietaireId == utilisateur.id && !sujet.estDistribue()}">
+            (<g:link action="annuleFinalisation"
+                    controller="sujet"
+                    id="${sujet.id}">annuler</g:link>)
+          </g:if>
+        </span>
     </g:elseif>
   </g:if>
 
