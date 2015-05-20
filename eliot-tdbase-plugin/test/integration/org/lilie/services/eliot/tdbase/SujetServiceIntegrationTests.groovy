@@ -670,6 +670,19 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
 
     }
 
+    void testFindSujetsContributeur() {
+      Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+      assertFalse(sujet1.hasErrors())
+
+      def res = sujetService.findSujets(personne1, null, personne2.prenom, null, null, null, null)
+      assertEquals(0, res.size())
+
+      sujetService.updateProprietes(sujet1, [contributeurIds: [personne2.id]], personne1)
+
+      res = sujetService.findSujets(personne1, null, personne2.prenom, null, null, null, null)
+      assertEquals(1, res.size())
+    }
+
     void testSujetEstDistribue() {
         Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
         assertFalse(sujet1.hasErrors())

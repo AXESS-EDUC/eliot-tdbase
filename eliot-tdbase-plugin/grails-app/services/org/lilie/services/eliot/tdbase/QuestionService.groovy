@@ -29,6 +29,9 @@
 package org.lilie.services.eliot.tdbase
 
 import groovy.time.TimeCategory
+import org.hibernate.SQLQuery
+import org.hibernate.Session
+import org.hibernate.SessionFactory
 import org.lilie.services.eliot.competence.Competence
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
@@ -55,6 +58,7 @@ class QuestionService implements ApplicationContextAware {
   QuestionAttachementService questionAttachementService
   QuestionCompetenceService questionCompetenceService
   ArtefactAutorisationService artefactAutorisationService
+  SessionFactory sessionFactory
 
   def grailsApplication
 
@@ -545,66 +549,110 @@ class QuestionService implements ApplicationContextAware {
       paginationAndSortingSpec = [:]
     }
 
-    def contributionIds = Question.createCriteria().list({
-      contributeurs {
-        eq 'id', chercheur.id
-      }
-    })*.id
+    Map parametres = [
+        "proprietaire_id": chercheur.id
+    ]
 
-    def questionsMasqueesIds = afficheQuestionMasquee ? [] : listIdsQuestionsMasquees(chercheur)
+    String sql = """
+      select question.id
+      from td.question question,
+        ent.personne proprietaire
+      where question.proprietaire_id = proprietaire.id
+
+        and (
+          question.proprietaire_id = :proprietaire_id
+          or exists (
+            select 1 from td.question_contributeur question_contributeur
+            where question_contributeur.question_id = question.id
+            and question_contributeur.personne_id = :proprietaire_id)"""
+
+    if (!uniquementQuestionsChercheur) {
+      sql += """
+          or question.publie = true"""
+    }
+
+    sql += ")"
+
+    if (patternAuteur) {
+      parametres.put("pattern_auteur_normalise", "%${StringUtils.normalise(patternAuteur)}%".toString())
+
+      sql += """
+        and (
+          proprietaire.nom_normalise like :pattern_auteur_normalise
+          or proprietaire.prenom_normalise like :pattern_auteur_normalise
+          or exists (
+              select 1
+              from td.question_contributeur question_contributeur,
+                ent.personne contributeur
+              where question_contributeur.question_id = question.id
+                and question_contributeur.personne_id = contributeur.id
+                and (
+                  contributeur.nom_normalise like :pattern_auteur_normalise
+                  or contributeur.prenom_normalise like :pattern_auteur_normalise)))"""
+    }
+
+    if (!afficheQuestionMasquee) {
+      sql += """
+        and not exists (
+          select 1
+          from td.question_masquee question_masquee
+          where question_masquee.question_id = question.id
+            and question_masquee.personne_id = :proprietaire_id)"""
+    }
+
+    if (referentielEliot?.matiereBcn) {
+      parametres.put("matiere_bcn_id", referentielEliot.matiereBcn.id)
+      sql += """
+        and question.matiere_bcn_id = :matiere_bcn_id"""
+    }
+
+    if (referentielEliot?.niveau) {
+      parametres.put("niveau_id", referentielEliot.niveau.id)
+      sql += """
+        and question.niveau_id = :niveau_id"""
+    }
+
+
+    if (questionType) {
+      parametres.put("type_id", questionType.id)
+      sql += """
+        and question.type_id = :type_id"""
+    } else if (exclusComposites) {
+      parametres.put("type_id", QuestionTypeEnum.Composite.questionType)
+      sql += """
+        and question.type_id <> :type_id"""
+    }
+
+    if (patternTitre) {
+      parametres.put("titre_normalise", "%${StringUtils.normalise(patternTitre)}%".toString())
+      sql += """
+        and question.titre_normalise like :titre_normalise"""
+    }
+
+    if (patternSpecification) {
+      parametres.put("specification_normalise", "%${StringUtils.normalise(patternSpecification)}%".toString())
+      sql += """
+        and question.specification_normalise like :specification_normalise"""
+    }
+
+    Session session = sessionFactory.getCurrentSession()
+    SQLQuery sqlQuery = session.createSQLQuery(sql)
+
+    parametres.each { k, v ->
+      sqlQuery.setParameter(k, v)
+    }
+
+    List questionIds = sqlQuery.list().collect { it.longValue() }
 
     def criteria = Question.createCriteria()
     List<Question> questions = criteria.list(paginationAndSortingSpec) {
-      if (referentielEliot?.matiereBcn) {
-        eq "matiereBcn", referentielEliot?.matiereBcn
-      }
-      if (referentielEliot?.niveau) {
-        eq "niveau", referentielEliot?.niveau
-      }
-      if (questionType) {
-        eq "type", questionType
-      } else if (exclusComposites) {
-        ne "type", QuestionTypeEnum.Composite.questionType
-      }
-      if (uniquementQuestionsChercheur) {
-        or {
-          eq 'proprietaire', chercheur
-          if (!contributionIds.isEmpty()) {
-            inList 'id', contributionIds
-          }
-        }
-      } else {
-        or {
-          eq 'proprietaire', chercheur
-          eq 'publie', true
-          if (!contributionIds.isEmpty()) {
-            inList 'id', contributionIds
-          }
-        }
-        if (patternAuteur) {
-          String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
-          proprietaire {
-            or {
-              like "nomNormalise", patternAuteurNormalise
-              like "prenomNormalise", patternAuteurNormalise
-            }
-          }
-        }
-      }
 
-      if (!afficheQuestionMasquee && !questionsMasqueesIds.isEmpty()) {
-        not {
-          inList 'id', questionsMasqueesIds
-        }
+      if (questionIds.isEmpty()) {
+        isNull 'id'
       }
-
-      if (patternTitre) {
-        like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
+      else {
+        inList 'id', questionIds
       }
-      if (patternSpecification) {
-        like "specificationNormalise", "%${StringUtils.normalise(patternSpecification)}%"
-      }
-
 
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'

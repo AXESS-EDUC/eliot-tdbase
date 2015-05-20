@@ -404,4 +404,27 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
   }
 
 
+  void testFindQuestionsContributeur() {
+    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    Question quest1 = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
+    assertFalse(quest1.hasErrors())
+
+    def res = questionService.findQuestions(personne1, null, personne2.prenom, null, null, null, null, null, null)
+    assertEquals(0, res.size())
+
+    Sujet sujet2 = sujetService.createSujetCollaboratifFrom(personne1, sujet1, [personne2] as Set)
+    Question question2 = questionService.createQuestionCollaborativeFrom(personne1, quest1, sujet2)
+
+    res = questionService.findQuestions(personne1, null, personne2.prenom, null, null, null, null, null, null)
+    assertEquals(1, res.size())
+  }
+
 }

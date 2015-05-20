@@ -29,6 +29,7 @@
 package org.lilie.services.eliot.tdbase
 
 import groovy.time.TimeCategory
+import org.hibernate.SQLQuery
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.lilie.services.eliot.tice.Attachement
@@ -496,71 +497,114 @@ class SujetService {
                          Boolean uniquementSujetsChercheur = false,
                          Map paginationAndSortingSpec = null,
                          Boolean afficheSujetMasque = false) {
+
     if (!chercheur) {
       throw new IllegalArgumentException("sujet.recherche.chercheur.null")
     }
+
     if (paginationAndSortingSpec == null) {
       paginationAndSortingSpec = [:]
     }
 
-    def contributionIds = Sujet.createCriteria().list({
-      contributeurs {
-        eq 'id', chercheur.id
-      }
-    })*.id
+    Map parametres = [
+        "proprietaire_id": chercheur.id
+    ]
 
-    Set<Long> sujetsMasquesIds = afficheSujetMasque ? [] : listIdsSujetsMasques(chercheur)
+    String sql = """
+      select sujet.id
+      from td.sujet sujet,
+        ent.personne proprietaire
+      where sujet.proprietaire_id = proprietaire.id
+
+        and (
+          sujet.proprietaire_id = :proprietaire_id
+          or exists (
+            select 1 from td.sujet_contributeur sujet_contributeur
+            where sujet_contributeur.sujet_id = sujet.id
+            and sujet_contributeur.personne_id = :proprietaire_id)"""
+
+    if (!uniquementSujetsChercheur) {
+      sql += """
+          or sujet.publie = true"""
+    }
+
+    sql += ")"
+
+    if (patternAuteur) {
+      parametres.put("pattern_auteur_normalise", "%${StringUtils.normalise(patternAuteur)}%".toString())
+
+      sql += """
+        and (
+          proprietaire.nom_normalise like :pattern_auteur_normalise
+          or proprietaire.prenom_normalise like :pattern_auteur_normalise
+          or exists (
+              select 1
+              from td.sujet_contributeur sujet_contributeur,
+                ent.personne contributeur
+              where sujet_contributeur.sujet_id = sujet.id
+                and sujet_contributeur.personne_id = contributeur.id
+                and (
+                  contributeur.nom_normalise like :pattern_auteur_normalise
+                  or contributeur.prenom_normalise like :pattern_auteur_normalise)))"""
+    }
+
+    if (!afficheSujetMasque) {
+      sql += """
+        and not exists (
+          select 1
+          from td.sujet_masque sujet_masque
+          where sujet_masque.sujet_id = sujet.id
+            and sujet_masque.personne_id = :proprietaire_id)"""
+    }
+
+    if (referentielEliot?.matiereBcn) {
+      parametres.put("matiere_bcn_id", referentielEliot.matiereBcn.id)
+      sql += """
+        and sujet.matiere_bcn_id = :matiere_bcn_id"""
+    }
+
+    if (referentielEliot?.niveau) {
+      parametres.put("niveau_id", referentielEliot.niveau.id)
+      sql += """
+        and sujet.niveau_id = :niveau_id"""
+    }
+
+    if (sujetType) {
+      parametres.put("sujet_type_id", sujetType.id)
+      sql += """
+        and sujet.sujet_type_id = :sujet_type_id"""
+    }
+
+    if (patternTitre) {
+      parametres.put("titre_normalise", "%${StringUtils.normalise(patternTitre)}%".toString())
+      sql += """
+        and sujet.titre_normalise like :titre_normalise"""
+    }
+
+    if (patternPresentation) {
+      parametres.put("presentation_normalise", "%${StringUtils.normalise(patternPresentation)}%".toString())
+      sql += """
+        and sujet.presentation_normalise like :presentation_normalise"""
+    }
+
+    Session session = sessionFactory.getCurrentSession()
+    SQLQuery sqlQuery = session.createSQLQuery(sql)
+
+    parametres.each { k, v ->
+      sqlQuery.setParameter(k, v)
+    }
+
+    List sujetIds = sqlQuery.list().collect { it.longValue() }
 
     def criteria = Sujet.createCriteria()
     List<Sujet> sujets = criteria.list(paginationAndSortingSpec) {
-      if (referentielEliot?.matiereBcn) {
-        eq "matiereBcn", referentielEliot?.matiereBcn
-      }
-      if (referentielEliot?.niveau) {
-        eq "niveau", referentielEliot?.niveau
-      }
-      if (sujetType) {
-        eq "sujetType", sujetType
-      }
-      if (uniquementSujetsChercheur) {
-        or {
-          eq 'proprietaire', chercheur
-          if (!contributionIds.isEmpty()) {
-            inList 'id', contributionIds
-          }
-        }
-      } else {
-        or {
-          eq 'proprietaire', chercheur
-          eq 'publie', true
-          if (!contributionIds.isEmpty()) {
-            inList 'id', contributionIds
-          }
-        }
-        if (patternAuteur) {
-          String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
-          proprietaire {
-            or {
-              like "nomNormalise", patternAuteurNormalise
-              like "prenomNormalise", patternAuteurNormalise
-            }
-          }
-        }
-      }
 
-      if (!afficheSujetMasque && !sujetsMasquesIds.isEmpty()) {
-        not {
-          inList 'id', sujetsMasquesIds
-        }
+      if (sujetIds.isEmpty()) {
+        isNull 'id'
       }
-
-      if (patternTitre) {
-        like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
+      else {
+        inList 'id', sujetIds
       }
-      if (patternPresentation) {
-        like "presentationNormalise", "%${StringUtils.normalise(patternPresentation)}%"
-      }
-
 
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
@@ -571,6 +615,7 @@ class SujetService {
 
       }
     }
+
     return sujets
   }
 
