@@ -1123,7 +1123,7 @@ class SujetService {
     def sujetMasques = SujetMasque.findAllByPersonneAndSujet(personne, sujet)
 
     sujetMasques.each { SujetMasque sujetMasque ->
-      sujetMasque.delete()
+      sujetMasque.delete(flush: true)
     }
   }
 

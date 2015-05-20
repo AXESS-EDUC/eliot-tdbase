@@ -853,7 +853,7 @@ class QuestionService implements ApplicationContextAware {
     def questionMasquees = QuestionMasquee.findAllByPersonneAndQuestion(personne, question)
 
     questionMasquees.each { QuestionMasquee questionMasquee ->
-      questionMasquee.delete()
+      questionMasquee.delete(flush: true)
     }
   }
 
