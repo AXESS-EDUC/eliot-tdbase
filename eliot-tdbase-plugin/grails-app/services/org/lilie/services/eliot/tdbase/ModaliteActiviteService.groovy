@@ -173,7 +173,9 @@ class ModaliteActiviteService {
             seances = criteria.list(paginationAndSortingSpec) {
                 or {
                     inList 'groupeScolarite', groupeScolariteList
-                    inList 'groupeEnt', groupeEntList
+                    if(groupeEntList) {
+                        inList 'groupeEnt', groupeEntList
+                    }
                 }
                 le 'dateDebut', now
                 ge 'dateFin', now
