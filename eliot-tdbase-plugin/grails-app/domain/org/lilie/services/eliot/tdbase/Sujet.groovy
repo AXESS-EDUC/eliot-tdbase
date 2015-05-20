@@ -109,7 +109,8 @@ class Sujet extends AbstractArtefact {
       'estVerrouilleParAutrui',
       'estVerrouille',
       'estCollaboratif',
-      'estPartage'
+      'estPartage',
+      'estTermine'
   ]
 
   static constraints = {
@@ -245,6 +246,11 @@ class Sujet extends AbstractArtefact {
   @Override
   boolean estInvariant() {
     false
+  }
+
+  @Override
+  boolean estTermine() {
+    return termine
   }
 
   @Override

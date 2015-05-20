@@ -175,7 +175,8 @@ class Question extends AbstractArtefact {
       'estVerrouilleParAutrui',
       'estVerrouille',
       'estCollaboratif',
-      'estPartage'
+      'estPartage',
+      'estTermine'
   ]
 
   // transients
@@ -276,7 +277,11 @@ class Question extends AbstractArtefact {
     return nbSeances > 0
   }
 
-  /**
+  @Override
+  boolean estTermine() {
+    return termine
+  }
+/**
    *
    * @return true si la question est partagée
    * @see Artefact
