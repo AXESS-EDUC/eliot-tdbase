@@ -758,6 +758,11 @@ class EmaEvalService {
    * @return
    */
   private static List<Long> getCompetenceIdEmaEvalList(List<Competence> competenceList) {
+
+    if (competenceList.isEmpty()) {
+      return []
+    }
+
     List<CompetenceIdExterne> competenceIdExterneList = CompetenceIdExterne.withCriteria {
       inList('competence', competenceList)
       eq('sourceReferentiel', SourceReferentiel.EMA_EVAL)
