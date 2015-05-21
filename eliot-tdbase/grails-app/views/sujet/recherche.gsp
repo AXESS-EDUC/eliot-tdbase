@@ -216,7 +216,15 @@
             <g:set var="masque" value="${sujetsMasquesIds?.contains(sujet.id)}"/>
             <div class="${(i % 2) == 0 ? 'even' : 'odd'} sujet ${masque ? 'masque' : ''}" data-sujet="${sujet.id}" style="z-index: 0">
 
-                <h1>${fieldValue(bean: sujet, field: "titre")}</h1>
+                <h1>
+                  ${fieldValue(bean: sujet, field: "titre")}
+                  <g:if test="${sujet.estCollaboratif()}">
+                    <g:img dir="images/eliot" file="collaborative.png" title="Contributeurs: ${sujet.getContributeursAffichage()}" />
+                  </g:if>
+                  <g:if test="${sujet.estTermine() || sujet.estDistribue()}">
+                    <g:img dir="images/eliot" file="termine.png" title="Non modifiable" />
+                  </g:if>
+                </h1>
 
                 <button id="${sujet.id}">Actions</button>
                 <ul id="menu_actions_${sujet.id}" class="tdbase-menu-actions">

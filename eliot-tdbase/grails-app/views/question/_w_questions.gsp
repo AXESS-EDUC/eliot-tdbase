@@ -44,6 +44,9 @@
           <g:if test="${item.estCollaboratif()}">
             <g:img dir="images/eliot" file="collaborative.png" title="Contributeurs: ${item.getContributeursAffichage()}" />
           </g:if>
+          <g:if test="${item.estTermine() || item.estDistribue()}">
+            <g:img dir="images/eliot" file="termine.png" title="Non modifiable" />
+          </g:if>
           <br/>
 	      	<em>(${item.type.nom})</em><br/>
 	        <g:if test="${item.niveau?.libelleLong}"><strong>» Niveau : </strong>${item.niveau?.libelleLong} </g:if>

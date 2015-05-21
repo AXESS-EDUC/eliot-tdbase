@@ -43,6 +43,9 @@
           <g:if test="${sujetInstance.estCollaboratif()}">
             <g:img dir="images/eliot" file="collaborative.png" title="Contributeurs: ${sujetInstance.getContributeursAffichage()}" />
           </g:if>
+          <g:if test="${sujetInstance.estTermine() || sujetInstance.estDistribue()}">
+            <g:img dir="images/eliot" file="termine.png" title="Non modifiable" />
+          </g:if>
           <br/>
 	        <g:if test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau : </strong>${sujetInstance.niveau?.libelleLong} </g:if>
 	        <g:if test="${sujetInstance.matiereBcn?.libelleEdition}"><strong>» Matière : </strong>${sujetInstance.matiereBcn?.libelleEdition} </g:if>

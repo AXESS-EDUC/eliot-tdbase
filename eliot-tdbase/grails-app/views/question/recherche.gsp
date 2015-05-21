@@ -226,7 +226,15 @@
     <g:each in="${questions}" status="i" var="questionInstance">
       <g:set var="masque" value="${questionsMasqueesIds?.contains(questionInstance.id)}"/>
       <div class="${(i % 2) == 0 ? 'even' : 'odd'} question ${masque ? 'masque' : ''}" data-question="${questionInstance.id}" style="z-index: 0">
-        <h1>${fieldValue(bean: questionInstance, field: "titre")}</h1>
+        <h1>
+          ${fieldValue(bean: questionInstance, field: "titre")}
+          <g:if test="${questionInstance.estCollaboratif()}">
+            <g:img dir="images/eliot" file="collaborative.png" title="Contributeurs: ${questionInstance.getContributeursAffichage()}" />
+          </g:if>
+          <g:if test="${questionInstance.estTermine() || questionInstance.estDistribue()}">
+            <g:img dir="images/eliot" file="termine.png" title="Non modifiable" />
+          </g:if>
+        </h1>
 
         <button id="${questionInstance.id}">Actions</button>
         <ul id="menu_actions_${questionInstance.id}"
