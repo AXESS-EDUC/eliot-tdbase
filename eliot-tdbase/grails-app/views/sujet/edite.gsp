@@ -130,14 +130,16 @@
                     <g:else>
                         <li>Modifier</li>
                     </g:else>
-                    <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetQuestion.question)}">
-                        <li><g:link action="dupliqueDansSujet"
-                                    controller="question${sujetQuestion.question.type.code}"
-                                    id="${sujetQuestion.id}">Dupliquer&nbsp;et&nbsp;modifier</g:link></li>
+                    <g:if test="${!sujet.estCollaboratif()}">
+                      <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetQuestion.question)}">
+                          <li><g:link action="dupliqueDansSujet"
+                                      controller="question${sujetQuestion.question.type.code}"
+                                      id="${sujetQuestion.id}">Dupliquer&nbsp;et&nbsp;modifier</g:link></li>
+                      </g:if>
+                      <g:else>
+                          <li>Dupliquer&nbsp;et&nbsp;modifier</li>
+                      </g:else>
                     </g:if>
-                    <g:else>
-                        <li>Dupliquer&nbsp;et&nbsp;modifier</li>
-                    </g:else>
                     <li><hr/></li>
                     <li>
                         <g:if test="${rang > 0}">
