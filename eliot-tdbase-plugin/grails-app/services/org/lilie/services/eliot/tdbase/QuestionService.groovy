@@ -361,9 +361,12 @@ class QuestionService implements ApplicationContextAware {
     // Supprime les attachements qui ne sont plus utilisés
     Set<Long> attachementIdExistantSet = question.questionAttachements*.id as Set
     Set<Long> attachementIdUtiliseSet = specificationObject.allQuestionAttachementId as Set
-    Set<Long> attachementIdASupprimerSet = attachementIdExistantSet - attachementIdUtiliseSet
-    attachementIdASupprimerSet.each {
-      questionAttachementService.deleteQuestionAttachement(QuestionAttachement.load(it))
+
+    if (attachementIdExistantSet != null && attachementIdUtiliseSet != null) {
+      Set<Long> attachementIdASupprimerSet = attachementIdExistantSet - attachementIdUtiliseSet
+      attachementIdASupprimerSet.each {
+        questionAttachementService.deleteQuestionAttachement(QuestionAttachement.load(it))
+      }
     }
 
     List<Competence> competenceList = parseCompetenceListFromParams(proprietes)

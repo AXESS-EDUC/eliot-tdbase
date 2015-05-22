@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.time.TimeCategory
 import org.hibernate.SessionFactory
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
@@ -252,5 +253,155 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
     assertEquals(1, res.size())
 
   }
+
+  void testLastUpdatedSujet() {
+    Sujet sujet = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE), [contributeurIds: [personne2.id]], personne1)
+
+    Question quest1 = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
+    quest1 = sujetService.insertQuestionInSujet(quest1, sujet, personne1)
+
+    use (TimeCategory) {
+      sujet.lastUpdated = sujet.lastUpdated - 1.minutes
+      sujet.save(flush: true, failOnError: true)
+    }
+    Date date = sujet.lastUpdated
+
+    questionService.updateProprietes(
+        quest1,
+        [
+            titre      : "Question 1 bis",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
+
+    sujet.refresh()
+
+    assertTrue(sujet.lastUpdated > date)
+
+  }
+
+  void testCreateQuestionNonCollaborativeFrom() {
+    Sujet sujet = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE),
+        [contributeurIds: [personne2.id]],
+        personne1)
+
+    Question quest1 = sujetService.insertQuestionInSujet(
+        questionService.createQuestion(
+            [
+                titre      : "Question 1",
+                type       : QuestionTypeEnum.Decimal.questionType,
+                estAutonome: true
+            ],
+            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+            personne1,
+        ),
+        sujet,
+        personne1)
+
+    Question quest2 = questionService.createQuestionNonCollaborativeFrom(personne1, quest1)
+
+    assertFalse(quest2.collaboratif)
+    assertEquals(quest1.proprietaireId, quest2.proprietaireId)
+    assertEquals(quest1.titre, quest2.titre)
+  }
+
+  void testCreateQuestionAndInsertInSujet() {
+    Sujet sujet = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE),
+        [contributeurIds: [personne2.id]],
+        personne1)
+
+    Question quest1 = questionService.createQuestionAndInsertInSujet(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        sujet,
+        personne1,
+        new ReferentielSujetSequenceQuestions(rang: 1)
+    )
+
+    assertTrue(quest1.estCollaboratif())
+    assertEquals(quest1.sujetLieId, sujet.id)
+    assertEquals(quest1.contributeurs.size(), sujet.contributeurs.size())
+  }
+
+  void testInsertQuestionInSujetCollaboratif() {
+    Sujet sujet = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE),
+        [contributeurIds: [personne2.id]],
+        personne1)
+
+    Question quest1 = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
+
+    Question quest2 = sujetService.insertQuestionInSujet(
+        quest1,
+        sujet,
+        personne1)
+
+    assertNotSame(quest1.id, quest2.id)
+    assertFalse(quest1.estCollaboratif())
+    assertNull(quest1.sujetLie)
+
+    assertTrue(quest2.estCollaboratif())
+    assertEquals(quest2.sujetLieId, sujet.id)
+    assertEquals(quest2.contributeurs.size(), sujet.contributeurs.size())
+  }
+
+  void testInsertQuestionInSujetNonCollaboratif() {
+    Sujet sujet1 = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE),
+        [contributeurIds: [personne2.id]],
+        personne1)
+
+    Question quest1 = sujetService.insertQuestionInSujet(
+        questionService.createQuestion(
+            [
+                titre      : "Question 1",
+                type       : QuestionTypeEnum.Decimal.questionType,
+                estAutonome: true
+            ],
+            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+            personne1,
+        ),
+        sujet1,
+        personne1)
+
+    Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+
+    Question quest2 = sujetService.insertQuestionInSujet(quest1, sujet2, personne1)
+
+    assertNotSame(quest1.id, quest2.id)
+    assertTrue(quest1.estCollaboratif())
+    assertEquals(quest1.sujetLieId, sujet1.id)
+    assertEquals(quest1.contributeurs.size(), sujet1.contributeurs.size())
+
+    assertFalse(quest2.estCollaboratif())
+    assertNull(quest2.sujetLie)
+  }
+
 
 }

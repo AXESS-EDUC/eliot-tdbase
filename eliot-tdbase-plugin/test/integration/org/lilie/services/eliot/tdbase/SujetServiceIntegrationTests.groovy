@@ -972,4 +972,91 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
     assertTrue(questionInseree.id != questionCollaborative.id)
     assertEquals(3, Question.findAll().size()) // On a la question originale, la duplication collaborative, et la duplication non-collaborative
   }
+
+  void testFinaliseSujet() {
+    Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    assertTrue(artefactAutorisationService.utilisateurPeutModifierArtefact(personne1, sujet))
+    assertTrue(artefactAutorisationService.utilisateurPeutCreerSeance(personne1, sujet))
+    assertTrue(artefactAutorisationService.utilisateurPeutAjouterItem(personne1, sujet))
+
+    sujet = sujetService.updateProprietes(sujet, [contributeurIds: [personne2.id]], personne1)
+    assertTrue(artefactAutorisationService.utilisateurPeutModifierArtefact(personne1, sujet))
+    assertFalse(artefactAutorisationService.utilisateurPeutCreerSeance(personne1, sujet))
+    assertTrue(artefactAutorisationService.utilisateurPeutAjouterItem(personne1, sujet))
+
+    sujetService.finalise(sujet, sujet.lastUpdated, personne1)
+    assertFalse(artefactAutorisationService.utilisateurPeutModifierArtefact(personne1, sujet))
+    assertTrue(artefactAutorisationService.utilisateurPeutCreerSeance(personne1, sujet))
+    assertFalse(artefactAutorisationService.utilisateurPeutAjouterItem(personne1, sujet))
+
+    sujetService.annuleFinalise(sujet, personne1)
+    assertTrue(artefactAutorisationService.utilisateurPeutModifierArtefact(personne1, sujet))
+    assertFalse(artefactAutorisationService.utilisateurPeutCreerSeance(personne1, sujet))
+    assertTrue(artefactAutorisationService.utilisateurPeutAjouterItem(personne1, sujet))
+  }
+
+  void testCreateQuestionCompositeForExercice() {
+    Sujet sujet = sujetService.createSujet(personne1, SUJET_1_TITRE)
+
+    Question question = sujetService.createQuestionCompositeForExercice(sujet, personne1)
+
+    assertEquals(question.proprietaireId, sujet.proprietaireId)
+    assertEquals(question.titre, sujet.titre)
+    assertEquals(question.type, QuestionTypeEnum.Composite.questionType)
+    assertEquals(question.exerciceId, sujet.id)
+  }
+
+  void testCreateQuestionCompositeForExerciceCollaboratif() {
+    Sujet sujet = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE),
+        [contributeurIds: [personne2.id]],
+        personne1
+    )
+
+    Question question = sujetService.createQuestionCompositeForExercice(sujet, personne1)
+
+    assertEquals(question.proprietaireId, sujet.proprietaireId)
+    assertEquals(question.titre, sujet.titre)
+    assertEquals(question.type, QuestionTypeEnum.Composite.questionType)
+    assertEquals(question.exerciceId, sujet.id)
+    assertTrue(question.collaboratif)
+    assertEquals(question.contributeurs.size(), sujet.contributeurs.size())
+  }
+
+  void testRecopieSujet() {
+    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+
+    sujetService.insertQuestionInSujet(
+        questionService.createQuestion(
+            [
+                titre      : "Question 1",
+                type       : QuestionTypeEnum.Decimal.questionType,
+                estAutonome: true
+            ],
+            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+            personne1,
+        ),
+        sujet1,
+        personne1)
+
+    sujetService.insertQuestionInSujet(
+        questionService.createQuestion(
+            [
+                titre      : "Question 2",
+                type       : QuestionTypeEnum.Decimal.questionType,
+                estAutonome: true
+            ],
+            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+            personne1,
+        ),
+        sujet1,
+        personne1)
+
+    Sujet sujet2 = sujetService.recopieSujet(sujet1, personne1)
+
+    assertEquals(sujet2.proprietaireId, personne1.id)
+    assertEquals(sujet1.titre + " (Copie)", sujet2.titre)
+    assertEquals(sujet1.questionsSequences.size(), sujet2.questionsSequences.size())
+  }
+
 }
