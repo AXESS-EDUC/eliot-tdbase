@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.competence.Competence
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.Publication
@@ -41,7 +42,9 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
  * Classe représentant un sujet
  * @author franck Silvestre
  */
-class Sujet implements Artefact {
+class Sujet extends AbstractArtefact {
+
+  GrailsApplication grailsApplication
 
   String titre
   String titreNormalise
@@ -77,15 +80,37 @@ class Sujet implements Artefact {
   CopyrightsType copyrightsType
 
   List<SujetSequenceQuestions> questionsSequences
-  static hasMany = [questionsSequences: SujetSequenceQuestions]
+
+  Boolean collaboratif = false
+  Boolean termine
+  //List<Personne> contributeurs
+
+  Date dateVerrou
+  Personne auteurVerrou
+
+  static hasMany = [
+      questionsSequences: SujetSequenceQuestions,
+      contributeurs: Personne
+  ]
 
   Integer rangInsertion
+
 
   static transients = [
       'rangInsertion',
       'estUnExercice',
       'questionComposite',
-      'estInvariant'
+      'grailsApplication',
+      'estSupprimableQuandArtefactEstModifiable',
+      'estPresentableEnMoodleXML',
+      'estInvariant',
+      'estDistribue',
+      'estVerrouilleParMoi',
+      'estVerrouilleParAutrui',
+      'estVerrouille',
+      'estCollaboratif',
+      'estPartage',
+      'estTermine'
   ]
 
   static constraints = {
@@ -109,6 +134,15 @@ class Sujet implements Artefact {
     noteAutoMax(nullable: true)
     noteEnseignantMax(nullable: true)
     paternite(nullable: true)
+    collaboratif(nullable: false)
+    termine(nullable: true)
+    dateVerrou(nullable: true)
+    auteurVerrou(nullable: true)
+    contributeurs(validator: { val, obj ->
+      if (!obj.collaboratif && val?.size() > 0) {
+        return ['invalid.contributeurpoursujetnoncollaboratif']
+      }
+    })
   }
 
   static mapping = {
@@ -116,7 +150,10 @@ class Sujet implements Artefact {
     version(false)
     id(column: 'id', generator: 'sequence', params: [sequence: 'td.sujet_id_seq'])
     questionsSequences(cascade: 'refresh')
+    contributeurs(joinTable: [name: 'td.sujet_contributeur', key: 'sujet_id', column: 'personne_id'])
     sujetType(fetch: 'join')
+    dateVerrou(column: 'date_verrou')
+    auteurVerrou(column: 'auteur_verrou')
     cache(true)
   }
 
@@ -202,8 +239,18 @@ class Sujet implements Artefact {
   }
 
   @Override
+  boolean estCollaboratif() {
+    return collaboratif
+  }
+
+  @Override
   boolean estInvariant() {
     false
+  }
+
+  @Override
+  boolean estTermine() {
+    return termine
   }
 
   @Override
@@ -285,5 +332,26 @@ class Sujet implements Artefact {
     }
 
     return nbQuestionAvecCompetence + nbExerciceAvecCompetence > 0
+  }
+
+  void addPaterniteItem(Personne partageur,
+                        Date datePublication = null,
+                        List<String> contributeurs = null) {
+    CopyrightsType ct = copyrightsType
+
+    // mise à jour de la paternite
+    PaterniteItem paterniteItem = new PaterniteItem(
+            auteur: "${partageur.nomAffichage}",
+            copyrightDescription: "${ct.presentation}",
+            copyrighLien: "${ct.lien}",
+            logoLien: ct.logo,
+            datePublication: datePublication,
+            oeuvreEnCours: true,
+            contributeurs: contributeurs
+    )
+    Paternite paterniteObjet = new Paternite(paternite)
+    paterniteObjet.addPaterniteItem(paterniteItem)
+    paternite = paterniteObjet.toString()
+    this.save()
   }
 }

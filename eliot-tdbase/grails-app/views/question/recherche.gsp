@@ -31,7 +31,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
+  <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete, jquery"/>
   <r:script>
 
     $(document).ready(function () {
@@ -47,7 +47,7 @@
           }
           else {
             $.ajax({
-              url: '${g.createLink(absolute:true, uri:"/sujet/matiereBcns")}',
+              url: '${g.createLink(absolute: true, uri: "/sujet/matiereBcns")}',
 
               data: {
                 recherche: recherche
@@ -71,6 +71,31 @@
 
       });
     });
+
+    function masqueQuestion(question) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/question/masque/")}' + question,
+
+        success: function() {
+          $("div.question[data-question='" + question + "']").addClass('masque');
+          $("li.masqueQuestion[data-question='" + question + "']").hide();
+          $("li.annuleMasqueQuestion[data-question='" + question + "']").show();
+        }
+      });
+    }
+
+    function annuleMasqueQuestion(question) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/question/annuleMasque/")}' + question,
+
+        success: function() {
+          $("div.question[data-question='" + question + "']").removeClass('masque');
+          $("li.masqueQuestion[data-question='" + question + "']").show();
+          $("li.annuleMasqueQuestion[data-question='" + question + "']").hide();
+        }
+      });
+    }
+
   </r:script>
   <style>
     .custom-combobox-input {
@@ -137,21 +162,21 @@
           </td>
         </tr>
         <tr>
-            <g:if test="${artefactHelper.partageArtefactCCActive}">
-                <td class="label">Auteur :
-                </td>
-                <td>
-                    <g:textField name="patternAuteur" title="auteur"
-                                 value="${rechercheCommand.patternAuteur}"/>
-                </td>
-            </g:if>
-            <g:else>
-                <td class="label">&nbsp;
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-            </g:else>
+          <g:if test="${artefactHelper.partageArtefactCCActive}">
+            <td class="label">Auteur :
+            </td>
+            <td>
+              <g:textField name="patternAuteur" title="auteur"
+                           value="${rechercheCommand.patternAuteur}"/>
+            </td>
+          </g:if>
+          <g:else>
+            <td class="label">&nbsp;
+            </td>
+            <td>
+              &nbsp;
+            </td>
+          </g:else>
 
           <td class="label">Niveau :
           </td>
@@ -161,6 +186,12 @@
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <g:checkBox name="afficheQuestionMasquee" value="${afficheQuestionMasquee}"/>
+            Afficher les items masqués
           </td>
         </tr>
 
@@ -193,8 +224,17 @@
       def messageDialogue = g.message(code: "question.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
     %>
     <g:each in="${questions}" status="i" var="questionInstance">
-      <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
-        <h1>${fieldValue(bean: questionInstance, field: "titre")}</h1>
+      <g:set var="masque" value="${questionsMasqueesIds?.contains(questionInstance.id)}"/>
+      <div class="${(i % 2) == 0 ? 'even' : 'odd'} question ${masque ? 'masque' : ''}" data-question="${questionInstance.id}" style="z-index: 0">
+        <h1>
+          ${fieldValue(bean: questionInstance, field: "titre")}
+          <g:if test="${questionInstance.estCollaboratif()}">
+            <g:img dir="images/eliot" file="collaborative.png" title="Contributeurs: ${questionInstance.getContributeursAffichage()}" />
+          </g:if>
+          <g:if test="${questionInstance.estTermine() || questionInstance.estDistribue()}">
+            <g:img dir="images/eliot" file="termine.png" title="Non modifiable" />
+          </g:if>
+        </h1>
 
         <button id="${questionInstance.id}">Actions</button>
         <ul id="menu_actions_${questionInstance.id}"
@@ -222,7 +262,12 @@
                         id="${questionInstance.id}">Modifier</g:link></li>
           </g:if>
           <g:else>
-            <li>Modifier</li>
+            <g:if test="${questionInstance.estVerrouille()}">
+              <li>En cours de modification</li>
+            </g:if>
+            <g:else>
+              <li>Modifier</li>
+            </g:else>
           </g:else>
           <g:if
               test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
@@ -234,21 +279,21 @@
             <li>Dupliquer</li>
           </g:else>
           <li><hr/></li>
-        <g:if test="${artefactHelper.partageArtefactCCActive}">
-          <g:if
-              test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
-            <%
-              def docLoc = g.createLink(action: 'partage', controller: "question${questionInstance.type.code}", id: questionInstance.id)
-            %>
-            <li><g:link action="partage"
-                        controller="question${questionInstance.type.code}"
-                        id="${questionInstance.id}"
-                        onclick="afficheDialogue('${messageDialogue}','${docLoc}');return false;">Partager</g:link></li>
+          <g:if test="${artefactHelper.partageArtefactCCActive}">
+            <g:if
+                test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
+              <%
+                def docLoc = g.createLink(action: 'partage', controller: "question${questionInstance.type.code}", id: questionInstance.id)
+              %>
+              <li><g:link action="partage"
+                          controller="question${questionInstance.type.code}"
+                          id="${questionInstance.id}"
+                          onclick="afficheDialogue('${messageDialogue}','${docLoc}');return false;">Partager</g:link></li>
+            </g:if>
+            <g:else>
+              <li>Partager</li>
+            </g:else>
           </g:if>
-          <g:else>
-            <li>Partager</li>
-          </g:else>
-        </g:if>
           <g:set var="peutExporterNatifJson"
                  value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, questionInstance, Format.NATIF_JSON)}"/>
           <g:set var="peutExporterMoodleXml"
@@ -256,13 +301,16 @@
 
           <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
             <li>
-              <g:set var="urlFormatNatifJson" value="${createLink(action: 'exporter', id: questionInstance.id, params: [format: Format.NATIF_JSON.name()])}"/>
-              <g:set var="urlFormatMoodleXml" value="${createLink(action: 'exporter', id: questionInstance.id, params: [format: Format.MOODLE_XML.name()])}"/>
-              <a href="#" onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
+              <g:set var="urlFormatNatifJson"
+                     value="${createLink(action: 'exporter', id: questionInstance.id, params: [format: Format.NATIF_JSON.name()])}"/>
+              <g:set var="urlFormatMoodleXml"
+                     value="${createLink(action: 'exporter', id: questionInstance.id, params: [format: Format.MOODLE_XML.name()])}"/>
+              <a href="#"
+                 onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
             </li>
           </g:if>
           <g:else>
-            Exporter
+            <li>Exporter</li>
           </g:else>
 
           <li><hr/></li>
@@ -275,6 +323,20 @@
           <g:else>
             <li>Supprimer</li>
           </g:else>
+
+          <g:if test="${artefactHelper.utilisateurPeutMasquerArtefact(utilisateur, questionInstance)}">
+            <li><hr/></li>
+
+            <li style="${!masque ? '' : 'display: none;'}" class="masqueQuestion" data-question="${questionInstance.id}">
+              <a href="#" onclick="masqueQuestion('${questionInstance.id}')">Masquer</a>
+            </li>
+
+            <li style="${masque ? '' : 'display: none;'}" class="annuleMasqueQuestion" data-question="${questionInstance.id}">
+              <a href="#" onclick="annuleMasqueQuestion('${questionInstance.id}')">Ne plus masquer</a>
+            </li>
+
+          </g:if>
+
         </ul>
 
         <p class="date">Mise à jour le ${questionInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
@@ -285,9 +347,9 @@
           <g:if
               test="${questionInstance.matiereBcn?.libelleEdition}"><strong>» Matière :</strong> ${questionInstance.matiereBcn?.libelleEdition}</g:if>
           <strong>» Type :</strong>  ${questionInstance.type.nom}
-         <g:if test="${artefactHelper.partageArtefactCCActive}">
-          <strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
-         </g:if>
+          <g:if test="${artefactHelper.partageArtefactCCActive}">
+            <strong>» Partagé :</strong>  ${questionInstance.estPartage() ? 'oui' : 'non'}
+          </g:if>
         </p>
 
       </div>

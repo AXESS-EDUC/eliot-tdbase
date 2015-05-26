@@ -28,6 +28,10 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.time.TimeCategory
+import org.hibernate.SQLQuery
+import org.hibernate.Session
+import org.hibernate.SessionFactory
 import org.lilie.services.eliot.competence.Competence
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
@@ -54,6 +58,9 @@ class QuestionService implements ApplicationContextAware {
   QuestionAttachementService questionAttachementService
   QuestionCompetenceService questionCompetenceService
   ArtefactAutorisationService artefactAutorisationService
+  SessionFactory sessionFactory
+
+  def grailsApplication
 
   /**
    * Récupère le service de gestion de spécification de question correspondant
@@ -98,13 +105,91 @@ class QuestionService implements ApplicationContextAware {
 
     // La paternité n'est initialisée que si elle n'est pas fournie dans les propriétés de création
     if (!proprietes.containsKey('paternite')) {
-      addPaterniteItem(proprietaire, question)
+      question.addPaterniteItem(proprietaire)
     }
 
     List<Competence> competenceList = parseCompetenceListFromParams(proprietes)
     questionCompetenceService.updateQuestionCompetenceList(question, competenceList)
 
     question.save(flush: true)
+    return question
+  }
+
+  /**
+   * Crée une question collaborative (pour un sujet collaboratif) à partir d'une
+   * question qui est, soit non-collaborative, soit collaborative mais liée à un
+   * sujet différent
+   * @param personne l'utilisateur qui crée la nouvelle question collaborative
+   * @param questionOriginale la question à recopier
+   * @param sujet le sujet collaboratif pour lequel la question collaborative est créée
+   * @return la question créée
+   */
+  @Transactional
+  Question createQuestionCollaborativeFrom(Personne personne,
+                                           Question questionOriginale,
+                                           Sujet sujet) {
+
+    assert sujet.estCollaboratif()
+    assert artefactAutorisationService.utilisateurPeutModifierArtefact(
+        personne,
+        sujet
+    )
+    assert artefactAutorisationService.utilisateurPeutDupliquerArtefact(
+        personne,
+        questionOriginale
+    )
+    assert (questionOriginale.sujetLie?.id != sujet.id)
+
+    // Recopie de la question
+    Question questionCollaborative = recopieQuestion(
+        questionOriginale,
+        questionOriginale.proprietaire, // Lorsqu'on duplique une question pour la rendre collaborative, on laisse inchangé le propriétaire original
+        questionOriginale.titre
+    )
+    questionCollaborative.addPaterniteItem(
+        personne,
+        null,
+        sujet.contributeurs.collect { it.nomAffichage }
+    )
+
+    // Rend la question collaborative pour le sujet
+    questionCollaborative.collaboratif = true
+    sujet.contributeurs.each {
+      questionCollaborative.addToContributeurs(it)
+    }
+    questionCollaborative.sujetLie = sujet
+
+    questionCollaborative.save(flush: true, failOnError: true)
+
+    return questionCollaborative
+  }
+
+  /**
+   * Crée une question non collaborative à partir d'une question collaborative
+   * Cette opération est réalisée automatiquement lorsqu'un utilisateur insère dans
+   * un sujet non collaboratif une question collaborative. La question est alors
+   * dupliquée à la volée.
+   * @param personne
+   * @param questionOriginale
+   * @return
+   */
+  @Transactional
+  Question createQuestionNonCollaborativeFrom(Personne personne,
+                                              Question questionOriginale) {
+    assert questionOriginale.estCollaboratif()
+    assert artefactAutorisationService.utilisateurPeutDupliquerArtefact(
+        personne,
+        questionOriginale
+    )
+
+    // Recopie la question
+    Question question = recopieQuestion(
+        questionOriginale,
+        personne,
+        questionOriginale.titre
+    )
+
+    question.save(flush: true, failOnError: true)
     return question
   }
 
@@ -131,7 +216,7 @@ class QuestionService implements ApplicationContextAware {
     Question questionCopie = recopieQuestion(question, proprietaire)
 
     if (!sujetService.isDernierAuteur(sujet, proprietaire)) {
-      sujetService.addPaterniteItem(proprietaire, sujet)
+      sujet.addPaterniteItem(proprietaire)
     }
 
     sujetQuestion.question = questionCopie
@@ -144,16 +229,30 @@ class QuestionService implements ApplicationContextAware {
    * Recopie une question
    * @param question la question à recopier
    * @param proprietaire le proprietaire
+   * @param nouveauTitre le titre la copie, si null la valeur par défaut sera
+   * le titre de l'original suivi du suffixe " (Copie)"
    * @return la copie de la question
    */
   @Transactional
-  Question recopieQuestion(Question question, Personne proprietaire) {
+  Question recopieQuestion(Question question,
+                           Personne proprietaire,
+                           String nouveauTitre = null) {
 
-    assert (artefactAutorisationService.utilisateurPeutDupliquerArtefact(proprietaire, question))
+    assert (
+        artefactAutorisationService.utilisateurPeutDupliquerArtefact(
+            proprietaire,
+            question
+        )
+    )
 
-    Question questionCopie = new Question(proprietaire: proprietaire,
-        titre: question.titre + " (Copie)",
-        titreNormalise: question.titreNormalise,
+    if (!nouveauTitre) {
+      nouveauTitre = question.titre + " (Copie)"
+    }
+
+    Question questionCopie = new Question(
+        proprietaire: proprietaire,
+        titre: nouveauTitre,
+        titreNormalise: StringUtils.normalise(nouveauTitre),
         specification: question.specification,
         specificationNormalise: question.specificationNormalise,
         publie: false,
@@ -167,32 +266,23 @@ class QuestionService implements ApplicationContextAware {
     )
     questionCopie.save()
 
-    if (!isDernierAuteur(questionCopie, proprietaire)) {
-      addPaterniteItem(proprietaire, questionCopie)
-    }
-
-    QuestionSpecification questionSpecificationCopie = questionCopie.specificationObject
-
     // recopie les attachements (on ne duplique pas les attachements)
+    QuestionSpecification questionSpecificationCopie = questionCopie.specificationObject
     question.questionAttachements.each { QuestionAttachement questionAttachement ->
       QuestionAttachement questionAttachementCopie =
-        recopieQuestionAttachement(questionCopie, questionAttachement)
+          recopieQuestionAttachement(questionCopie, questionAttachement)
 
       questionSpecificationCopie.remplaceQuestionAttachementId(
           questionAttachement.id,
           questionAttachementCopie.id
       )
     }
+    updateQuestionSpecificationForObject(questionCopie, questionSpecificationCopie)
 
     // Recopie les QuestionCompetence
     question.allQuestionCompetence.each { QuestionCompetence questionCompetence ->
       recopieQuestionCompetence(questionCopie, questionCompetence)
     }
-
-    updateQuestionSpecificationForObject(questionCopie, questionSpecificationCopie)
-
-    // repertorie l'anteriorite
-    questionCopie.paternite = question.paternite
 
     questionCopie.save()
     return questionCopie
@@ -240,7 +330,7 @@ class QuestionService implements ApplicationContextAware {
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, question))
 
     if (!isDernierAuteur(question, proprietaire)) {
-      addPaterniteItem(proprietaire, question)
+      question.addPaterniteItem(proprietaire)
     }
 
     if (proprietes.titre && question.titre != proprietes.titre) {
@@ -275,15 +365,24 @@ class QuestionService implements ApplicationContextAware {
     // Supprime les attachements qui ne sont plus utilisés
     Set<Long> attachementIdExistantSet = question.questionAttachements*.id as Set
     Set<Long> attachementIdUtiliseSet = specificationObject.allQuestionAttachementId as Set
-    Set<Long> attachementIdASupprimerSet = attachementIdExistantSet - attachementIdUtiliseSet
-    attachementIdASupprimerSet.each {
-      questionAttachementService.deleteQuestionAttachement(QuestionAttachement.load(it))
+
+    if (attachementIdExistantSet != null && attachementIdUtiliseSet != null) {
+      Set<Long> attachementIdASupprimerSet = attachementIdExistantSet - attachementIdUtiliseSet
+      attachementIdASupprimerSet.each {
+        questionAttachementService.deleteQuestionAttachement(QuestionAttachement.load(it))
+      }
     }
 
     List<Competence> competenceList = parseCompetenceListFromParams(proprietes)
     questionCompetenceService.updateQuestionCompetenceList(question, competenceList)
 
     question.save(flush: true)
+
+    // Actualise la date de dernière modification du sujet lié
+    if (question.sujetLie != null) {
+      sujetService.actualiseLastUpdate(question.sujetLie)
+    }
+
     return question
   }
 
@@ -306,8 +405,18 @@ class QuestionService implements ApplicationContextAware {
     assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujet))
 
     Question question = createQuestion(proprietesQuestion, specificationObject, proprietaire)
+
+    if (sujet.estCollaboratif()) {
+      question.collaboratif = true
+      question.sujetLie = sujet
+      sujet.contributeurs.each {
+        question.addToContributeurs(it)
+      }
+      question.save()
+    }
+
     if (!question.hasErrors()) {
-      sujetService.insertQuestionInSujet(
+      question = sujetService.insertQuestionInSujet(
           question,
           sujet,
           proprietaire,
@@ -371,27 +480,7 @@ class QuestionService implements ApplicationContextAware {
     question.publie = true
 
     // mise à jour de la paternite
-    addPaterniteItem(partageur, question, publication.dateDebut)
-  }
-
-  private void addPaterniteItem(Personne partageur,
-                                Question question,
-                                Date datePublication = null) {
-    CopyrightsType ct = question.copyrightsType
-
-    PaterniteItem paterniteItem = new PaterniteItem(auteur: "${partageur.nomAffichage}",
-        copyrightDescription: "${ct.presentation}",
-        copyrighLien: "${ct.lien}",
-        logoLien: ct.logo,
-        datePublication: datePublication,
-        oeuvreEnCours: true)
-    Paternite paternite = new Paternite(question.paternite)
-    paternite.paterniteItems.each {
-      it.oeuvreEnCours = false
-    }
-    paternite.addPaterniteItem(paterniteItem)
-    question.paternite = paternite.toString()
-    question.save()
+    question.addPaterniteItem(partageur, publication.dateDebut)
   }
 
   /**
@@ -409,6 +498,24 @@ class QuestionService implements ApplicationContextAware {
     }
 
     return paternite.paterniteItems.last()?.auteur == utilisateur.nomAffichage
+  }
+
+  /**
+   * Récupère la liste des ids de tous les sujets masqués d'une
+   * personne, ou seulement un sous ensemble dans la liste des
+   * sujets fournis en paramètre
+   * @param personne
+   * @param sujets sous ensemble de sujets dans lesquels cherche
+   * @return liste d'ids de sujets
+   */
+  Set<Long> listIdsQuestionsMasquees(Personne personne, List<Question> questions = null) {
+
+    if (questions == null) {
+      return QuestionMasquee.findAllByPersonne(personne)*.questionId
+    }
+    else {
+      return QuestionMasquee.findAllByPersonneAndQuestionInList(personne, questions)*.questionId
+    }
   }
 
   /**
@@ -433,7 +540,8 @@ class QuestionService implements ApplicationContextAware {
                                QuestionType questionType,
                                Boolean exclusComposites = false,
                                Boolean uniquementQuestionsChercheur = false,
-                               Map paginationAndSortingSpec = null) {
+                               Map paginationAndSortingSpec = null,
+                               Boolean afficheQuestionMasquee = false) {
     if (!chercheur) {
       throw new IllegalArgumentException("question.recherche.chercheur.null")
     }
@@ -441,44 +549,110 @@ class QuestionService implements ApplicationContextAware {
       paginationAndSortingSpec = [:]
     }
 
+    Map parametres = [
+        "proprietaire_id": chercheur.id
+    ]
+
+    String sql = """
+      select question.id
+      from td.question question,
+        ent.personne proprietaire
+      where question.proprietaire_id = proprietaire.id
+
+        and (
+          question.proprietaire_id = :proprietaire_id
+          or exists (
+            select 1 from td.question_contributeur question_contributeur
+            where question_contributeur.question_id = question.id
+            and question_contributeur.personne_id = :proprietaire_id)"""
+
+    if (!uniquementQuestionsChercheur) {
+      sql += """
+          or question.publie = true"""
+    }
+
+    sql += ")"
+
+    if (patternAuteur) {
+      parametres.put("pattern_auteur_normalise", "%${StringUtils.normalise(patternAuteur)}%".toString())
+
+      sql += """
+        and (
+          proprietaire.nom_normalise like :pattern_auteur_normalise
+          or proprietaire.prenom_normalise like :pattern_auteur_normalise
+          or exists (
+              select 1
+              from td.question_contributeur question_contributeur,
+                ent.personne contributeur
+              where question_contributeur.question_id = question.id
+                and question_contributeur.personne_id = contributeur.id
+                and (
+                  contributeur.nom_normalise like :pattern_auteur_normalise
+                  or contributeur.prenom_normalise like :pattern_auteur_normalise)))"""
+    }
+
+    if (!afficheQuestionMasquee) {
+      sql += """
+        and not exists (
+          select 1
+          from td.question_masquee question_masquee
+          where question_masquee.question_id = question.id
+            and question_masquee.personne_id = :proprietaire_id)"""
+    }
+
+    if (referentielEliot?.matiereBcn) {
+      parametres.put("matiere_bcn_id", referentielEliot.matiereBcn.id)
+      sql += """
+        and question.matiere_bcn_id = :matiere_bcn_id"""
+    }
+
+    if (referentielEliot?.niveau) {
+      parametres.put("niveau_id", referentielEliot.niveau.id)
+      sql += """
+        and question.niveau_id = :niveau_id"""
+    }
+
+
+    if (questionType) {
+      parametres.put("type_id", questionType.id)
+      sql += """
+        and question.type_id = :type_id"""
+    } else if (exclusComposites) {
+      parametres.put("type_id", QuestionTypeEnum.Composite.questionType)
+      sql += """
+        and question.type_id <> :type_id"""
+    }
+
+    if (patternTitre) {
+      parametres.put("titre_normalise", "%${StringUtils.normalise(patternTitre)}%".toString())
+      sql += """
+        and question.titre_normalise like :titre_normalise"""
+    }
+
+    if (patternSpecification) {
+      parametres.put("specification_normalise", "%${StringUtils.normalise(patternSpecification)}%".toString())
+      sql += """
+        and question.specification_normalise like :specification_normalise"""
+    }
+
+    Session session = sessionFactory.getCurrentSession()
+    SQLQuery sqlQuery = session.createSQLQuery(sql)
+
+    parametres.each { k, v ->
+      sqlQuery.setParameter(k, v)
+    }
+
+    List questionIds = sqlQuery.list().collect { it.longValue() }
+
     def criteria = Question.createCriteria()
     List<Question> questions = criteria.list(paginationAndSortingSpec) {
-      if (referentielEliot?.matiereBcn) {
-        eq "matiereBcn", referentielEliot?.matiereBcn
-      }
-      if (referentielEliot?.niveau) {
-        eq "niveau", referentielEliot?.niveau
-      }
-      if (questionType) {
-        eq "type", questionType
-      } else if (exclusComposites) {
-        ne "type", QuestionTypeEnum.Composite.questionType
-      }
-      if (uniquementQuestionsChercheur) {
-        eq 'proprietaire', chercheur
-      } else {
-        or {
-          eq 'proprietaire', chercheur
-          eq 'publie', true
-        }
-        if (patternAuteur) {
-          String patternAuteurNormalise = "%${StringUtils.normalise(patternAuteur)}%"
-          proprietaire {
-            or {
-              like "nomNormalise", patternAuteurNormalise
-              like "prenomNormalise", patternAuteurNormalise
-            }
-          }
-        }
-      }
 
-      if (patternTitre) {
-        like "titreNormalise", "%${StringUtils.normalise(patternTitre)}%"
+      if (questionIds.isEmpty()) {
+        isNull 'id'
       }
-      if (patternSpecification) {
-        like "specificationNormalise", "%${StringUtils.normalise(patternSpecification)}%"
+      else {
+        inList 'id', questionIds
       }
-
 
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
@@ -508,9 +682,29 @@ class QuestionService implements ApplicationContextAware {
       paginationAndSortingSpec = [:]
     }
 
+    def contributionIds = Question.createCriteria().list({
+      contributeurs {
+        eq 'id', proprietaire.id
+      }
+    })*.id
+
+    def questionsMasqueesIds = listIdsQuestionsMasquees(proprietaire)
+
     def criteria = Question.createCriteria()
     List<Question> questions = criteria.list(paginationAndSortingSpec) {
-      eq 'proprietaire', proprietaire
+      or {
+        eq 'proprietaire', proprietaire
+        if (!contributionIds.isEmpty()) {
+          inList 'id', contributionIds
+        }
+      }
+
+      if (!questionsMasqueesIds.isEmpty()) {
+        not {
+          inList 'id', questionsMasqueesIds
+        }
+      }
+
       if (paginationAndSortingSpec) {
         def sortArg = paginationAndSortingSpec['sort'] ?: 'lastUpdated'
         def orderArg = paginationAndSortingSpec['order'] ?: 'desc'
@@ -537,19 +731,19 @@ class QuestionService implements ApplicationContextAware {
    */
   List<QuestionType> getTypesQuestionsInteractionSupportes() {
     [MultipleChoice.questionType,
-        ExclusiveChoice.questionType,
-        QuestionTypeEnum.Integer.questionType,
-        Decimal.questionType,
-        Slider.questionType,
-        FillGap.questionType,
-        Associate.questionType,
-        Order.questionType,
-        FillGraphics.questionType,
-        GraphicMatch.questionType,
-        Open.questionType,
-        FileUpload.questionType,
-        BooleanMatch.questionType,
-        Composite.questionType]
+     ExclusiveChoice.questionType,
+     QuestionTypeEnum.Integer.questionType,
+     Decimal.questionType,
+     Slider.questionType,
+     FillGap.questionType,
+     Associate.questionType,
+     Order.questionType,
+     FillGraphics.questionType,
+     GraphicMatch.questionType,
+     Open.questionType,
+     FileUpload.questionType,
+     BooleanMatch.questionType,
+     Composite.questionType]
   }
 
   /**
@@ -559,7 +753,7 @@ class QuestionService implements ApplicationContextAware {
   List<QuestionType> getTypesQuestionsSupportes() {
     typesQuestionsInteractionSupportes +
         [Document.questionType,
-            Statement.questionType,]
+         Statement.questionType,]
   }
 
   /**
@@ -587,8 +781,8 @@ class QuestionService implements ApplicationContextAware {
 
     // Grails injecte une valeur atomique ou un tableau selon si le paramètre est multi-valué ou non
     List competenceAssocieeIdList = params.competenceAssocieeIdList instanceof String[] ?
-      params.competenceAssocieeIdList :
-      [params.competenceAssocieeIdList]
+        params.competenceAssocieeIdList :
+        [params.competenceAssocieeIdList]
 
     List competenceList = Competence.getAll(
         competenceAssocieeIdList.collect {
@@ -601,4 +795,123 @@ class QuestionService implements ApplicationContextAware {
 
     return competenceList
   }
+
+  public Boolean creeVerrou(Question question, Personne auteur) {
+    assert question.estCollaboratif()
+    Integer dureeMinute = grailsApplication.config.eliot.verrou.contributeurs.dureeMinute
+
+    Date dateLimitVerrou = new Date()
+    use(TimeCategory) {
+      dateLimitVerrou = dateLimitVerrou - dureeMinute.minutes
+    }
+
+    boolean lockObtained = false
+    Question.withNewSession {
+      Question.withNewTransaction {
+
+        lockObtained = Question.executeUpdate("""
+        UPDATE Question q
+        SET auteurVerrou=:auteur,
+          dateVerrou=:dateVerrou
+        WHERE q.id = :questionId AND (
+          q.auteurVerrou IS NULL OR
+          q.auteurVerrou=:auteur OR
+          q.dateVerrou < :dateLimiteVerrou
+        )
+      """,
+            [
+                auteur          : auteur,
+                questionId      : question.id,
+                dateVerrou      : new Date(),
+                dateLimiteVerrou: dateLimitVerrou
+            ]
+        ) as boolean
+      }
+    }
+
+    if(lockObtained) {
+      // Supprime tous les verrous détenus par cet utilisateurs sur les autres questions
+      Question.executeUpdate("""
+        UPDATE Question q
+        SET auteurVerrou=NULL,
+          dateVerrou=NULL
+        WHERE q.id != :questionId and q.auteurVerrou=:auteur
+      """,
+          [questionId: question.id, auteur: auteur]
+      )
+    }
+
+    question.refresh() // On rafraichit la question dans la session courante
+    return lockObtained
+  }
+
+  public void supprimeVerrou(Question question, Personne auteur) {
+
+    Integer dureeMinute = grailsApplication.config.eliot.verrou.contributeurs.dureeMinute
+
+    Date dateLimitVerrou = new Date()
+    use(TimeCategory) {
+      dateLimitVerrou = dateLimitVerrou - dureeMinute.minutes
+    }
+
+    boolean lockReleased = false
+    Question.withNewSession {
+      Question.withNewTransaction {
+        lockReleased = Sujet.executeUpdate("""
+        UPDATE Question q
+        SET auteurVerrou=NULL,
+          dateVerrou=NULL
+        WHERE q.id = :questionId AND (
+          q.auteurVerrou IS NULL OR
+          q.auteurVerrou=:auteur OR
+          q.dateVerrou < :dateLimiteVerrou
+        )
+      """,
+            [
+                auteur          : auteur,
+                questionId      : question.id,
+                dateLimiteVerrou: dateLimitVerrou
+            ]
+        ) as boolean
+      }
+    }
+
+    question.refresh()
+
+    if(!lockReleased) {
+      log.error(
+          "Le verrou n'a pas pu être libéré (" +
+              "auteurVerrou: ${question.auteurVerrou}, " +
+              "dateVerrou: ${question.dateVerrou}" +
+              ")"
+      )
+    }
+
+
+  }
+
+  QuestionMasquee masque(Personne personne, Question question) {
+
+    def questionMasquees =  QuestionMasquee.findAllByPersonneAndQuestion(personne, question)
+    QuestionMasquee questionMasquee = questionMasquees.isEmpty() ? null : questionMasquees[0]
+
+    if (questionMasquee == null) {
+      questionMasquee = new QuestionMasquee(
+          question: question,
+          personne: personne
+      )
+      questionMasquee.save(flush: true, failOnError: true)
+    }
+
+    return questionMasquee
+  }
+
+  void annuleMasque(Personne personne, Question question) {
+    def questionMasquees = QuestionMasquee.findAllByPersonneAndQuestion(personne, question)
+
+    questionMasquees.each { QuestionMasquee questionMasquee ->
+      questionMasquee.delete(flush: true)
+    }
+  }
+
 }

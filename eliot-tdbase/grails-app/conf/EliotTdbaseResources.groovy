@@ -45,6 +45,10 @@ modules = {
       resource url: [dir: 'js/lib', file: 'moment-with-locales.js'], disposition: 'head'
   }
 
+  'jquery-template' {
+    dependsOn 'jquery'
+    resource url: [dir: 'js/lib', file: 'jquery.tmpl.js']
+  }
 
   'eliot-tdbase-combobox-autocomplete' {
     resource url: [dir: 'css/eliot', file: 'eliot-tdbase-combobox-autocomplete.css']

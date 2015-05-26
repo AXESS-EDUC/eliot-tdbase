@@ -216,6 +216,12 @@ eliot.listes.max = 7
 // le nombre d'éléments max à affichier dans une liste de structure
 eliot.listes.groupes.maxrecherche = 200
 
+// Nombre de contributeur à afficher dans la recherche
+eliot.listes.contributeurs.maxrecherche = 5
+
+// Durée maximale du verrou posé sur les sujets & items collaboratifs
+eliot.verrou.contributeurs.dureeMinute = 30
+
 // les dimensions de div continer à prendre en compte si nécessaire
 eliot.pages.container.forceDimensions = false
 // hauteur en pixel : ne s'applique que si forceDimensions est à true

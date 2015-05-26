@@ -585,8 +585,16 @@ div.portal-default_results-list.sujet>div {
     background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;
 }
 
+div.portal-default_results-list.sujet > div.masque {
+    background: url("../../images/eliot/picto-sujet-masque.png") no-repeat 10px 10px;
+}
+
 div.portal-default_results-list.question>div {
     background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;
+}
+
+div.portal-default_results-list.question>div.masque {
+    background: url("../../images/eliot/picto-question-masque.png") no-repeat 10px 10px; !important
 }
 
 div.portal-default_results-list.sceance>div {
@@ -708,6 +716,22 @@ Style for the edition of a document or category (ToolBar)
     padding: 4px 4px 4px 22px;
     background: url("../../images/eliot/edit.png") no-repeat 0 2px;
 }
+
+.portal-tabs .locked {
+    padding: 4px 4px 4px 22px;
+    background: url("../../images/eliot/locked.png") no-repeat 0 2px;
+}
+
+.portal-tabs .unlock {
+    padding: 4px 4px 4px 22px;
+    background: url("../../images/eliot/unlock.png") no-repeat 0 2px;
+}
+
+.portal-tabs .finalized {
+    padding: 4px 4px 4px 22px;
+    background: url("../../images/eliot/finalise.png") no-repeat 0 2px;
+}
+
 
 .portal-tabs a.share {
     padding: 4px 4px 4px 20px;

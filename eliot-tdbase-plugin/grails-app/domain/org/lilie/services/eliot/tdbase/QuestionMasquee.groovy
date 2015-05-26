@@ -28,47 +28,27 @@
 
 package org.lilie.services.eliot.tdbase
 
-import groovy.json.JsonSlurper
-import groovy.json.JsonBuilder
+import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
- * Classe représentant la description de la paternité d'une question ou d'un sujet
- * @author franck Silvestre
+ * Liaison permettant de liste des sujets masqués d'une personne
+ * @author Olivier Nicollet
  */
+class QuestionMasquee {
 
-class Paternite {
+  Question question
+  Personne personne
 
-  def paterniteItems = []
-
-  Paternite(String jsonString = null) {
-    if (jsonString) {
-      def res = new JsonSlurper().parseText(jsonString)
-      paterniteItems = res.paterniteItems
-    }
+  static constraints = {
+    question nullable: false
+    personne nullable: false
   }
 
-  def addPaterniteItem(PaterniteItem paterniteItem) {
-    paterniteItems.each {
-      it.oeuvreEnCours = false
-    }
-    paterniteItem.oeuvreEnCours = true
-    paterniteItems << paterniteItem
+  static mapping = {
+    table 'td.question_masquee'
+    version false
+    id column: 'id', generator: 'sequence', params: [sequence: 'td.question_masquee_id_seq']
+    cache true
   }
-
-  String toString() {
-    new JsonBuilder(this).toString()
-  }
-
 
 }
-
-class PaterniteItem {
-  String auteur
-  List<String> contributeurs
-  String copyrightDescription
-  String copyrighLien
-  String logoLien
-  Date datePublication
-  Boolean oeuvreEnCours
-}
-

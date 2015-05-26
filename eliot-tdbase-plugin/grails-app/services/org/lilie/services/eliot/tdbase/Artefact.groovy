@@ -28,6 +28,7 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.tice.annuaire.Personne
 
 /**
@@ -35,6 +36,11 @@ import org.lilie.services.eliot.tice.annuaire.Personne
  * @author franck Silvestre
  */
 public interface Artefact {
+
+
+  GrailsApplication getGrailsApplication()
+  Date getDateVerrou()
+  Personne getAuteurVerrou()
 
   /**
    * Le propriétaire d'un artefact est l'utilisateur qui a créé l'emprunte
@@ -55,6 +61,39 @@ public interface Artefact {
   boolean estPartage()
 
   /**
+   * Teste si un artefact est collaboratif
+   * @return
+   */
+  boolean estCollaboratif()
+
+  Set<Personne> getContributeurs()
+
+  /**
+   * @return Une chaîne représentant la liste des contributeurs, triés par ordre alphabétique, et incluant le propriétaire
+   */
+  String getContributeursAffichage()
+
+  /**
+   * Teste si un utilisateur quelconque possède un verrou actif sur cet
+   * artefact
+   * @return
+   */
+  boolean estVerrouille()
+
+  /**
+   * Teste si un autre utilisateur possède un verrou actif sur cet artefact
+   * @return
+   */
+  boolean estVerrouilleParAutrui(Personne personne)
+
+  /**
+   * Tester si la personne possède un verrou actif sur cet artefact
+   * @param personne
+   * @return
+   */
+  boolean estVerrouilleParMoi(Personne personne)
+
+  /**
    * Un artefact est distribué lorsqu'il est mis à disposition pour une
    * interaction pédagogique. Par exemple un sujet est distribué quand il est
    * associé à une séance. Un item est distribué quand il est attaché à un
@@ -62,6 +101,8 @@ public interface Artefact {
    * @return true si l'artefact est distribué
    */
   boolean estDistribue()
+
+  boolean estTermine()
 
   /**
    * Un artefact est invariant lorsqu'un utilisateur ne peut pas le modifier ou

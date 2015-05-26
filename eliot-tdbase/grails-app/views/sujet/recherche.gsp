@@ -28,9 +28,9 @@
   --}%
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
-  <r:script>
+    <meta name="layout" content="eliot-tdbase"/>
+    <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete, jquery"/>
+    <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
       initButtons();
@@ -44,7 +44,7 @@
           }
           else {
             $.ajax({
-              url: '${g.createLink(absolute:true, uri:"/sujet/matiereBcns")}',
+              url: '${g.createLink(absolute: true, uri: "/sujet/matiereBcns")}',
 
               data: {
                 recherche: recherche
@@ -68,6 +68,31 @@
 
       });
     });
+
+    function masqueSujet(sujet) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/sujet/masque/")}' + sujet,
+
+        success: function() {
+          $("div.sujet[data-sujet='" + sujet + "']").addClass('masque');
+          $("li.masqueSujet[data-sujet='" + sujet + "']").hide();
+          $("li.annuleMasqueSujet[data-sujet='" + sujet + "']").show();
+        }
+      });
+    }
+
+    function annuleMasqueSujet(sujet) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/sujet/annuleMasque/")}' + sujet,
+
+        success: function() {
+          $("div.sujet[data-sujet='" + sujet + "']").removeClass('masque');
+          $("li.masqueSujet[data-sujet='" + sujet + "']").show();
+          $("li.annuleMasqueSujet[data-sujet='" + sujet + "']").hide();
+        }
+      });
+    }
+
   </r:script>
   <style>
     .custom-combobox-input {
@@ -88,194 +113,157 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <g:if test="${afficheFormulaire}">
-  <form>
-    <div class="portal-form_container recherche">
-      <table>
-        <tr>
-          <td class="label">
-            Titre :
-          </td>
-          <td>
-            <g:textField name="patternTitre" title="titre"
-                         value="${rechercheCommand.patternTitre}"/>
-          </td>
-          <td width="20"/>
-          <td class="label">Type :
-          </td>
-          <td>
-            <g:select name="typeId" value="${rechercheCommand.typeId}"
-                      noSelection="${['null': 'Tous']}"
-                      from="${typesSujet}"
-                      optionKey="id"
-                      optionValue="nom"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">
-            Description :
-          </td>
-          <td>
-            <g:textField name="patternPresentation" title="description"
-                         value="${rechercheCommand.patternPresentation}"/>
-          </td>
-          <td width="20"/>
-          <td class="label">Matière :
-          </td>
-          <td>
-            <g:select name="matiereId" value="${rechercheCommand.matiereId}"
-                      from="${matiereBcns}"
-                      optionKey="id"
-                      optionValue="libelleEdition"/>
-          </td>
-        </tr>
-        <tr>
-        <g:if test="${artefactHelper.partageArtefactCCActive}">
-          <td class="label">Auteur :
-          </td>
-          <td>
-            <g:textField name="patternAuteur" title="auteur"
-                         value="${rechercheCommand.patternAuteur}"/>
-          </td>
-         </g:if>
-         <g:else>
-             <td class="label">&nbsp;
-             </td>
-             <td>
-                 &nbsp;
-             </td>
-         </g:else>
-          <td width="20"/>
-          <td class="label">Niveau :
-          </td>
-          <td>
-            <g:select name="niveauId" value="${rechercheCommand.niveauId}"
-                      noSelection="${['null': 'Tous']}"
-                      from="${niveaux}"
-                      optionKey="id"
-                      optionValue="libelleLong"/>
-          </td>
-        </tr>
+    <form>
+        <div class="portal-form_container recherche">
+            <table>
+                <tr>
+                    <td class="label">
+                        Titre :
+                    </td>
+                    <td>
+                        <g:textField name="patternTitre" title="titre"
+                                     value="${rechercheCommand.patternTitre}"/>
+                    </td>
+                    <td width="20"/>
+                    <td class="label">Type :
+                    </td>
+                    <td>
+                        <g:select name="typeId" value="${rechercheCommand.typeId}"
+                                  noSelection="${['null': 'Tous']}"
+                                  from="${typesSujet}"
+                                  optionKey="id"
+                                  optionValue="nom"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        Description :
+                    </td>
+                    <td>
+                        <g:textField name="patternPresentation" title="description"
+                                     value="${rechercheCommand.patternPresentation}"/>
+                    </td>
+                    <td width="20"/>
+                    <td class="label">Matière :
+                    </td>
+                    <td>
+                        <g:select name="matiereId" value="${rechercheCommand.matiereId}"
+                                  from="${matiereBcns}"
+                                  optionKey="id"
+                                  optionValue="libelleEdition"/>
+                    </td>
+                </tr>
+                <tr>
+                    <g:if test="${artefactHelper.partageArtefactCCActive}">
+                        <td class="label">Auteur :
+                        </td>
+                        <td>
+                            <g:textField name="patternAuteur" title="auteur"
+                                         value="${rechercheCommand.patternAuteur}"/>
+                        </td>
+                    </g:if>
+                    <g:else>
+                        <td class="label">&nbsp;
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </g:else>
+                    <td width="20"/>
+                    <td class="label">Niveau :
+                    </td>
+                    <td>
+                        <g:select name="niveauId" value="${rechercheCommand.niveauId}"
+                                  noSelection="${['null': 'Tous']}"
+                                  from="${niveaux}"
+                                  optionKey="id"
+                                  optionValue="libelleLong"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <g:checkBox name="afficheSujetMasque" value="${afficheSujetMasque}"/>
+                        Afficher les sujets masqués
+                    </td>
+                </tr>
 
-      </table>
-    </div>
+            </table>
+        </div>
 
-    <div class="form_actions recherche">
-      <g:actionSubmit value="Rechercher" action="recherche" class="button"
-                      title="Lancer la recherche"/>
-    </div>
-  </form>
+        <div class="form_actions recherche">
+            <g:actionSubmit value="Rechercher" action="recherche" class="button"
+                            title="Lancer la recherche"/>
+        </div>
+    </form>
 </g:if>
 
 <g:if test="${sujets}">
 
-  <div class="portal_pagination">
-    <p class="nb_result">${sujets.totalCount} résultat(s)</p>
+    <div class="portal_pagination">
+        <p class="nb_result">${sujets.totalCount} résultat(s)</p>
 
-    <g:if test="${affichePager}">
-      <div class="pager">Page(s) : <g:paginate total="${sujets.totalCount}"
-                                               params="${rechercheCommand?.toParams()}"></g:paginate></div>
-    </g:if>
-  </div>
-
-  <div class="portal-default_results-list sujet">
-    <%
-      def messageDialogue = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
-    %>
-    <g:each in="${sujets}" status="i" var="sujetInstance">
-      <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
-
-        <h1>${fieldValue(bean: sujetInstance, field: "titre")}</h1>
-
-        <button id="${sujetInstance.id}">Actions</button>
-        <ul id="menu_actions_${sujetInstance.id}" class="tdbase-menu-actions">
-          <li><g:link action="teste" id="${sujetInstance.id}">
-            Tester
-          </g:link>
-          </li>
-          <li><g:link action="ajouteSeance" id="${sujetInstance.id}">
-            Nouvelle&nbsp;séance
-          </g:link>
-          </li>
-          <li><hr/></li>
-          <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetInstance)}">
-            <li><g:link action="edite"
-                        id="${sujetInstance.id}">Modifier</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Modifier</li>
-          </g:else>
-          <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetInstance)}">
-            <li><g:link action="duplique"
-                        id="${sujetInstance.id}">Dupliquer</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Dupliquer</li>
-          </g:else>
-          <li><hr/></li>
-        <g:if test="${artefactHelper.partageArtefactCCActive}">
-          <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujetInstance)}">
-            <%
-              def docLoc = g.createLink(action: 'partage', id: sujetInstance.id)
-            %>
-            <li><g:link action="partage"
-                        id="${sujetInstance.id}"
-                        onclick="afficheDialogue('${messageDialogue}', '${docLoc}');return false;">Partager</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Partager</li>
-          </g:else>
+        <g:if test="${affichePager}">
+            <div class="pager">Page(s) : <g:paginate total="${sujets.totalCount}"
+                                                     params="${rechercheCommand?.toParams()}"></g:paginate></div>
         </g:if>
-          <g:set var="peutExporterNatifJson"
-                 value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, Format.NATIF_JSON)}"/>
-          <g:set var="peutExporterMoodleXml"
-                 value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, Format.MOODLE_XML)}"/>
+    </div>
 
-          <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
-            <li>
-              <g:set var="urlFormatNatifJson" value="${createLink(action: 'exporter', id: sujetInstance.id, params: [format: Format.NATIF_JSON.name()])}"/>
-              <g:set var="urlFormatMoodleXml" value="${createLink(action: 'exporter', id: sujetInstance.id, params: [format: Format.MOODLE_XML.name()])}"/>
-              <a href="#" onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
-            </li>
-          </g:if>
-          <g:else>
-            Exporter
-          </g:else>
+    <div class="portal-default_results-list sujet">
+        <%
+            def messageDialogue = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
+        %>
+        <g:each in="${sujets}" status="i" var="sujet">
+            <g:set var="masque" value="${sujetsMasquesIds?.contains(sujet.id)}"/>
+            <div class="${(i % 2) == 0 ? 'even' : 'odd'} sujet ${masque ? 'masque' : ''}" data-sujet="${sujet.id}" style="z-index: 0">
 
-          <li><hr/></li>
-          <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujetInstance)}">
-            <li><g:link action="supprime" id="${sujetInstance.id}">Supprimer</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Supprimer</li>
-          </g:else>
-        </ul>
+                <h1>
+                  ${fieldValue(bean: sujet, field: "titre")}
+                  <g:if test="${sujet.estCollaboratif()}">
+                    <g:img dir="images/eliot" file="collaborative.png" title="Contributeurs: ${sujet.getContributeursAffichage()}" />
+                  </g:if>
+                  <g:if test="${sujet.estTermine() || sujet.estDistribue()}">
+                    <g:img dir="images/eliot" file="termine.png" title="Non modifiable" />
+                  </g:if>
+                </h1>
 
-        <p class="date">Mise à jour le ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
+                <button id="${sujet.id}">Actions</button>
+                <ul id="menu_actions_${sujet.id}" class="tdbase-menu-actions">
+                  <g:render template="menuActions"
+                            model="${[
+                                artefactHelper    : artefactHelper,
+                                sujet             : sujet,
+                                utilisateur       : utilisateur,
+                                modeRecherche     : true,
+                                masque            : masque
+                            ]}"/>
+                </ul>
 
-        <p>
-          <g:if
-              test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${sujetInstance.niveau?.libelleLong}</g:if>
-          <g:if
-              test="${sujetInstance.matiereBcn?.libelleEdition}"><strong>» Matière :</strong> ${sujetInstance.matiereBcn?.libelleEdition}</g:if>
-          <g:if
-              test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</g:if>
-          <g:if test="${artefactHelper.partageArtefactCCActive && afficheFormulaire}">
-            <strong>» Auteur :</strong> ${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}
-          </g:if>
-          <g:if test="${artefactHelper.partageArtefactCCActive}">
-          <strong>» Partagé :</strong> ${sujetInstance.estPartage() ? 'oui' : 'non'}
-          </g:if>
-        </p>
+                <p class="date">Mise à jour le ${sujet.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
 
-      </div>
-    </g:each>
-  </div>
+                <p>
+                    <g:if
+                            test="${sujet.niveau?.libelleLong}"><strong>» Niveau :</strong> ${sujet.niveau?.libelleLong}</g:if>
+                    <g:if
+                            test="${sujet.matiereBcn?.libelleEdition}"><strong>» Matière :</strong> ${sujet.matiereBcn?.libelleEdition}</g:if>
+                    <g:if
+                            test="${fieldValue(bean: sujet, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujet, field: "dureeMinutes")}</g:if>
+                    <g:if test="${artefactHelper.partageArtefactCCActive && afficheFormulaire}">
+                        <strong>» Auteur :</strong> ${sujet.proprietaire.prenom} ${sujet.proprietaire.nom}
+                    </g:if>
+                    <g:if test="${artefactHelper.partageArtefactCCActive}">
+                        <strong>» Partagé :</strong> ${sujet.estPartage() ? 'oui' : 'non'}
+                    </g:if>
+                </p>
+
+            </div>
+        </g:each>
+    </div>
 
 </g:if>
 <g:else>
-  <div class="portal_pagination">
-    <p class="nb_result">Aucun résultat</p>
-  </div>
+    <div class="portal_pagination">
+        <p class="nb_result">Aucun résultat</p>
+    </div>
 </g:else>
 
 <g:render template="../importexport/export_dialog"/>

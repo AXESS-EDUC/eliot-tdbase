@@ -30,15 +30,15 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="layout" content="eliot-tdbase"/>
-  <g:if test="${copie.estModifiable()}">
-    <r:require module="copieEdite_CopieModifiableEnTest"/>
-  </g:if>
-  <g:else>
-    <r:require module="copieEdite_CopieNonModifiableEnTest"/>
-  </g:else>
+    <meta name="layout" content="eliot-tdbase"/>
+    <g:if test="${copie.estModifiable()}">
+        <r:require module="copieEdite_CopieModifiableEnTest"/>
+    </g:if>
+    <g:else>
+        <r:require module="copieEdite_CopieNonModifiableEnTest"/>
+    </g:else>
 
-  <title><g:message code="sujet.teste.head.title"/></title>
+    <title><g:message code="sujet.teste.head.title"/></title>
 </head>
 
 <body>
@@ -46,114 +46,66 @@
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
 <div class="portal-tabs">
-  <span class="portal-tabs-famille-liens">
-    <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujet)}">
-      <g:link action="edite" controller="sujet" class="modify"
-              id="${sujet.id}">Modifier le sujet</g:link> |
-      <g:link action="editeProprietes" controller="sujet" class="modify"
-              id="${sujet.id}">Modifier les propriétés du sujet</g:link>
-    </g:if>
-    <g:else>
-      <span class="modify">Modifier le sujet</span> |
-      <span class="modify">Modifier les propriétés du sujet</span>
-    </g:else>
-  </span>
+  <g:render template="menuSujet"
+            model="${[
+                artefactHelper: artefactHelper,
+                utilisateur: utilisateur,
+                sujet : sujet,
+                modeEdition: false
+            ]}"/>
+
+
   <span class="portal-tabs-famille-liens">
     <button id="toolbar_${sujet.id}">Actions</button>
-    <ul id="menu_actions_toolbar_${sujet.id}"
-        class="tdbase-menu-actions">
-      <li><g:link action="reinitialiseCopieTest" id="${copie.id}">
-        Réinitialiser la copie
-      </g:link>
-      </li>
-      <li><g:link action="ajouteSeance" id="${sujet.id}">
-        Nouvelle&nbsp;séance
-      </g:link>
-      </li>
-      <li><hr/></li>
-      <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujet)}">
-        <li><g:link action="duplique"
-                    id="${sujet.id}">Dupliquer</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Dupliquer</li>
-      </g:else>
-      <li><hr/></li>
-    <g:if test="${artefactHelper.partageArtefactCCActive}">
-      <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujet)}">
-        <%
-          def docLoc = g.createLink(action: 'partage', id: sujet.id)
-          def message = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
-        %>
-        <li><g:link action="partage"
-                    id="${sujet.id}"
-                    onclick="afficheDialogue('${message}', '${docLoc}');return false;">Partager</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Partager</li>
-      </g:else>
-    </g:if>
-      <g:set var="peutExporterNatifJson"
-             value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.NATIF_JSON)}"/>
-      <g:set var="peutExporterMoodleXml"
-             value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujet, Format.MOODLE_XML)}"/>
-
-      <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
-        <li>
-          <g:set var="urlFormatNatifJson" value="${createLink(action: 'exporter', id: sujet.id, params: [format: Format.NATIF_JSON.name()])}"/>
-          <g:set var="urlFormatMoodleXml" value="${createLink(action: 'exporter', id: sujet.id, params: [format: Format.MOODLE_XML.name()])}"/>
-          <a href="#" onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
-        </li>
-      </g:if>
-      <g:else>
-        Exporter
-      </g:else>
-
-
-      <li><hr/></li>
-      <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
-        <li><g:link action="supprime"
-                    id="${sujet.id}">Supprimer</g:link></li>
-      </g:if>
-      <g:else>
-        <li>Supprimer</li>
-      </g:else>
+    <ul id="menu_actions_toolbar_${sujet.id}" class="tdbase-menu-actions">
+      <g:render template="menuActions"
+                model="${[
+                    artefactHelper: artefactHelper,
+                    sujet         : sujet,
+                    utilisateur   : utilisateur,
+                    copie         : copie
+                ]}"/>
     </ul>
   </span>
 </div>
-<g:hasErrors bean="${copie}">
+<g:if test="${flash.errorMessage}">
   <div class="portal-messages">
-    <g:eachError>
-      <li class="error"><g:message error="${it}"/></li>
-    </g:eachError>
+    <li class="error"><g:message code="${flash.errorMessage}"/></li>
   </div>
+</g:if>
+<g:hasErrors bean="${copie}">
+    <div class="portal-messages">
+        <g:eachError>
+            <li class="error"><g:message error="${it}"/></li>
+        </g:eachError>
+    </div>
 </g:hasErrors>
 <g:if test="${request.messageCode}">
-  <div class="portal-messages">
-    <li class="success"><g:message code="${request.messageCode}"
-                                   class="portal-messages success"/></li>
-  </div>
+    <div class="portal-messages">
+        <li class="success"><g:message code="${request.messageCode}"
+                                       class="portal-messages success"/></li>
+    </div>
 </g:if>
 
 <g:if test="${flash.messageCode}">
-  <div class="portal-messages">
-    <li class="notice"><g:message code="${flash.messageCode}"/></li>
-  </div>
+    <div class="portal-messages">
+        <li class="notice"><g:message code="${flash.messageCode}"/></li>
+    </div>
 </g:if>
 
 <div class="portal-messages">
-  <li class="notice">
-    Date dernier enregistrement : <span
-      id="date_enregistrement">${copie.dateEnregistrement?.format(message(code: 'default.date.format'))}</span>
-    <g:if test="${copie.dateRemise}">
-      &nbsp;&nbsp;   &nbsp;&nbsp;
-   Note (correction automatique) :
-      <g:formatNumber number="${copie.correctionNoteAutomatique}"
-                      format="##0.00"/>
-      / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
-      &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
-    </g:if>
-  </li>
+    <li class="notice">
+        Date dernier enregistrement : <span
+            id="date_enregistrement">${copie.dateEnregistrement?.format(message(code: 'default.date.format'))}</span>
+        <g:if test="${copie.dateRemise}">
+            &nbsp;&nbsp;   &nbsp;&nbsp;
+         Note (correction automatique) :
+            <g:formatNumber number="${copie.correctionNoteAutomatique}"
+                            format="##0.00"/>
+            / <g:formatNumber number="${copie.maxPoints}" format="##0.00"/>
+            &nbsp;&nbsp;(copie remise le ${copie.dateRemise.format('dd/MM/yy  à HH:mm')})
+        </g:if>
+    </li>
 </div>
 
 

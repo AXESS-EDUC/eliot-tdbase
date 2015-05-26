@@ -246,7 +246,7 @@ class QuestionImporterServiceSpec extends Specification {
 
     QuestionSpecification questionSpecification = Mock(QuestionSpecification)
     Question question = Mock(Question)
-    question.getSpecificationObject() >> questionSpecification
+    question.getProperty('specificationObject') >> questionSpecification
 
     QuestionSpecification multipleChoiceSpecification = [:] as QuestionSpecification
 
@@ -372,7 +372,7 @@ class QuestionImporterServiceSpec extends Specification {
     SujetDto exerciceDto = new SujetDto()
     Question questionComposite = new Question()
     Sujet exercice = Mock(Sujet)
-    exercice.getQuestionComposite() >> questionComposite
+    exercice.getProperty('questionComposite') >> questionComposite
     QuestionCompositeDto questionCompositeDto = new QuestionCompositeDto(
         exercice: exerciceDto
     )
