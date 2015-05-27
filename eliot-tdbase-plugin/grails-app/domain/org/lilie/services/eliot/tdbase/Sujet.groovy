@@ -227,7 +227,6 @@ class Sujet extends AbstractArtefact {
     def now = new Date()
     def nbSeances = crit.count {
       le 'dateDebut', now
-      ge 'dateFin', now
       eq 'sujet', this
     }
     return nbSeances > 0

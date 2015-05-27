@@ -262,12 +262,11 @@ class Question extends AbstractArtefact {
     if (nbCopies > 0) {
       return true
     }
-    // sinon verifie qu'une séance ouverte n'est pas attaché à la question
+    // sinon verifie qu'une séance n'est pas attaché à la question
     def now = new Date()
     def crit = ModaliteActivite.createCriteria()
     def nbSeances = crit.count {
       le 'dateDebut', now
-      ge 'dateFin', now
       sujet {
         questionsSequences {
           eq 'question', this
