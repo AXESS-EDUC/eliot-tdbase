@@ -97,6 +97,17 @@ class ArtefactAutorisationService {
   }
 
   /**
+   * Vérifier qu'un utilisateur peut modifier les propriétés d'un sujet
+   * @param personne
+   * @param sujet
+   * @return
+   */
+  boolean utilisateurPeutModifierPropriete(Personne personne, Sujet sujet) {
+    return personne == sujet.proprietaire &&
+            utilisateurPeutModifierArtefact(personne, sujet)
+  }
+
+  /**
    * Vérifie qu'un utilisateur peut masquer un artefact
    * @param utilisateur l'utilisateur sur lequel on vérifie l'autorisation
    * @param artefact l'artefact sur lequel on vérifie l'autorisation
@@ -196,25 +207,6 @@ class ArtefactAutorisationService {
         personne == sujet.proprietaire ||
             sujet.contributeurs*.id.contains(personne.id)
     ) && !sujet.estVerrouilleParAutrui(personne)
-  }
-
-  /**
-   * Vérifier qu'un utilisateur peut modifier les propriétés d'un sujet
-   * @param personne
-   * @param sujet
-   * @return
-   */
-  boolean utilisateurPeutModifierPropriete(Personne personne, Sujet sujet) {
-    if(sujet.estTermine()) {
-      return false
-    }
-
-    if(sujet.estCollaboratif()) {
-      return personne == sujet.proprietaire &&
-          !sujet.estVerrouilleParAutrui(personne)
-    }
-
-    return personne == sujet.proprietaire
   }
 
   /**
