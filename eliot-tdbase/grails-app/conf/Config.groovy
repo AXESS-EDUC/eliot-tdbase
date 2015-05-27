@@ -663,7 +663,7 @@ eliot.artefact.partage_CC_autorise = true
  * rôle applicatif ADMINISTRATEUR
  */
 def mappingFonctionRoleDefaut = [
-        "ENSEIGNANT"          : ["ENS", "CD"],
+        "ENSEIGNANT"          : ["ENS", "DOC"],
         "ELEVE"               : ["ELEVE"],
         "PARENT"              : ["PERS_REL_ELEVE"],
         "ADMINISTRATEUR"      : ["DIR", "AL"],
