@@ -708,7 +708,7 @@ class SujetServiceIntegrationTests extends GroovyTestCase {
         }
         assertTrue(sujet1.estDistribue())
         modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
-        assertFalse(sujet1.estDistribue())
+        assertTrue(sujet1.estDistribue())
     }
 
     void testSupprimeSujet() {

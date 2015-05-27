@@ -113,7 +113,7 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
         assertFalse(seance1.hasErrors())
         assertTrue(quest1.estDistribue())
         modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
-        assertFalse(quest1.estDistribue())
+        assertTrue(quest1.estDistribue())
     }
 
     void testSupprimeQuestion() {
