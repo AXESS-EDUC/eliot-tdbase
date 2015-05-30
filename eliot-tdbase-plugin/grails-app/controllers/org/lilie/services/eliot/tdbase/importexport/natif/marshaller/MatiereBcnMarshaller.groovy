@@ -30,6 +30,7 @@ class MatiereBcnMarshaller {
   }
 
   static MatiereBcnDto parse(JSONElement jsonElement) {
+    if (jsonElement == null) return null
     MarshallerHelper.checkClass(ExportClass.MATIERE_BCN, jsonElement)
     return new MatiereBcnDto(
         identifiant: MarshallerHelper.jsonObjectToObject(jsonElement.identifiant),
