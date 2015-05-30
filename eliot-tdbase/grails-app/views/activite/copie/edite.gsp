@@ -71,7 +71,7 @@
           model="[liens: liens]"/>
 
 <div id="page">
-<g:if test="copie.modaliteActivite.decompteTemps">
+<g:if test="${copie.modaliteActivite.decompteTemps && copie.modaliteActivite.estOuverte() && copie.estModifiable()}">
   <div class="chronometre" style="display: none;"></div>
   <script>
     moment.locale('fr');
