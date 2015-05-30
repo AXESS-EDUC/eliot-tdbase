@@ -229,6 +229,9 @@ eliot.pages.container.height = 629
 // largeur en pixel : ne s'applique que si forceDimensions est à true
 eliot.pages.container.width = 931
 
+// Position du chronometre lors des séances avec décomte de temps
+eliot.seance.chronometre.position = [top: "147px", left: "13px"]
+
 // l'url des fichiers de documentation par fonction
 eliot.manuels.documents.urlMap = [
         "${RoleApplicatif.ENSEIGNANT.name()}": "http://ticetime.github.com/eliot-tdbase/aide/webhelp/Manuel_Utilisateur_TDBase_Enseignant/content/index.html",

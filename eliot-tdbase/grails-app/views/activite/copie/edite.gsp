@@ -51,6 +51,16 @@
       padding-left: 12px;
       padding-right: 12px;
       border-radius: 3px;
+      position: fixed;
+
+      <g:if test="${grailsApplication.config.eliot.seance.chronometre.position}">
+        top: ${grailsApplication.config.eliot.seance.chronometre.position.top};
+        left: ${grailsApplication.config.eliot.seance.chronometre.position.left};
+      </g:if>
+      <g:else>
+        top: 147px;
+        left: 13px;
+      </g:else>
     }
   </style>
 </head>
@@ -62,31 +72,27 @@
 
 <div id="page">
 <g:if test="copie.modaliteActivite.decompteTemps">
-  <div id="datetime"></div>
+  <div class="chronometre" style="display: none;"></div>
   <script>
     moment.locale('fr');
-    var datetime = null;
+    var chronometre = null;
     var date = ${copie.dateDebut != null ? "moment('" + copie.dateDebut + "')" : "null"};
 
     var update = function () {
       var ms = date.diff(moment(new Date())) + ${copie.modaliteActivite.dureeMinutes} * 60 * 1000;
 
       if (ms > 0) {
-        datetime.html(moment.utc(ms).format('HH:mm:ss'));
+        chronometre.html('Temps restant = ' + moment.utc(ms).format('HH:mm:ss'));
       }
       else {
-        datetime.html('Terminé');
+        chronometre.html('Terminé');
       }
     };
 
     $(document).ready(function(){
-
       if (date != null) {
-        datetime = $('#datetime');
-        datetime.css('position', 'fixed');
-        datetime.css('top', '6px');
-        datetime.css('left', '440px');
-        datetime.addClass('chronometre');
+        chronometre = $('.chronometre');
+        chronometre.show();
         update();
         setInterval(update, 1000);
       }
