@@ -145,18 +145,19 @@ class SujetController {
     render(
         view: "editeProprietes",
         model: [
-            liens               : breadcrumpsServiceProxy.liens,
-            sujet               : new Sujet(),
-            typesSujet          : sujetService.getAllSujetTypes(),
-            artefactHelper      : artefactAutorisationService,
-            matiereBcns         : [],
-            etablissements      : securiteSessionServiceProxy.etablissementList,
-            niveaux             : profilScolariteService.findNiveauxForPersonne(proprietaire),
-            currentEtablissement: currentEtablissement,
-            fonctionList        : preferenceEtablissementService.getFonctionListForRoleFormateur(
+            liens                   : breadcrumpsServiceProxy.liens,
+            sujet                   : new Sujet(),
+            typesSujet              : sujetService.getAllSujetTypes(),
+            artefactHelper          : artefactAutorisationService,
+            matiereBcns             : [],
+            etablissements          : securiteSessionServiceProxy.etablissementList,
+            niveaux                 : profilScolariteService.findNiveauxForPersonne(proprietaire),
+            currentEtablissement    : currentEtablissement,
+            fonctionList            : preferenceEtablissementService.getFonctionListForRoleFormateur(
                 proprietaire,
                 currentEtablissement
-            )
+            ),
+            peutAjouterContributeur : true
         ]
     )
   }

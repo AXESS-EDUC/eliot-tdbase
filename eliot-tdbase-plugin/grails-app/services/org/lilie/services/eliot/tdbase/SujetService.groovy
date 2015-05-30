@@ -78,6 +78,26 @@ class SujetService {
   }
 
   @Transactional
+  Sujet rendNouveauSujetCollaboratif(Personne personne,
+                                    Sujet sujet,
+                                    Set<Personne> contributeurs) {
+    assert (sujet.id == null)
+
+    // Rend le sujet collaboratif
+    sujet.collaboratif = true
+    sujet.termine = false
+
+
+    if (sujet.estUnExercice()) {
+      Question questionComposite = sujet.questionComposite
+      questionComposite.collaboratif = true
+      questionComposite.save()
+    }
+
+    return fusionneSujetCollaboratifContributeurs(sujet, contributeurs)
+  }
+
+  @Transactional
   Sujet createSujetCollaboratifFrom(Personne personne,
                                     Sujet sujetOriginal,
                                     Set<Personne> contributeurSet) {
@@ -331,7 +351,9 @@ class SujetService {
       throw new IllegalArgumentException("La liste de contributeur est vide")
     }
 
-    if (!sujet.collaboratif) {
+    if (sujet.id == null) {
+      return rendNouveauSujetCollaboratif(proprietaire, sujet, contributeurs)
+    } else if (!sujet.collaboratif) {
       return createSujetCollaboratifFrom(proprietaire, sujet, contributeurs)
     } else {
       return fusionneSujetCollaboratifContributeurs(sujet, contributeurs)
