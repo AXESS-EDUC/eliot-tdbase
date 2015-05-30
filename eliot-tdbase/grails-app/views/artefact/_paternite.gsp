@@ -40,10 +40,10 @@ $(document).ready(function () {
     var paterniteHtml = ""
     var strOeuvrePubliee = " a publié cette oeuvre le "
     var strOeuvreModifiee = " a contribué à cette oeuvre"
-    var strOeuvreAjoutContributeurs = " a ajouté les contributeurs suivants à cette oeuvre : "
+    var strOeuvreAjoutContributeurs = " a ajouté les formateurs suivants à cette oeuvre : "
     var strOeuvreReutiliseePubliee = " a publié l'oeuvre réutilisée par la présente le  "
     var strOeuvreReutiliseeModifiee = " a contribué à l'oeuvre réutilisée par la présente"
-    var strOeuvreReutiliseeAjoutContributeurs = " a ajouté les contributeurs suivants à l'oeuvre réutilisée par la présente : "
+    var strOeuvreReutiliseeAjoutContributeurs = " a ajouté les formateurs suivants à l'oeuvre réutilisée par la présente : "
     for (i = 0 ; i < nbItems ; i++) {
        var paterniteItem = paterniteObj.paterniteItems[i];
        paterniteHtml += paterniteItem.auteur;

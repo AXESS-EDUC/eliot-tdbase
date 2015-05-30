@@ -34,7 +34,7 @@
     <g:link action="supprimeVerrou"
             controller="sujet"
             class="unlock"
-            title="Pendant que vous modifiez un sujet, les autres contributeurs ne peuvent pas le modifier."
+            title="Pendant que vous modifiez un sujet, les autres formateurs ne peuvent pas le modifier."
             id="${sujet.id}">Terminer la session de modifications</g:link>
   </g:if>
   <g:else>

@@ -41,7 +41,7 @@
 	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}">
           <g:link controller="sujet" title="${sujetInstance.titre}" action="teste" id="${sujetInstance.id}">${sujetInstance.titre}</g:link>
           <g:if test="${sujetInstance.estCollaboratif()}">
-            <g:img dir="images/eliot" file="collaborative.png" title="Contributeurs: ${sujetInstance.getContributeursAffichage()}" />
+            <g:img dir="images/eliot" file="collaborative.png" title="Formateurs: ${sujetInstance.getContributeursAffichage()}" />
           </g:if>
           <g:if test="${sujetInstance.estTermine() || sujetInstance.estDistribue()}">
             <g:img dir="images/eliot" file="termine.png" title="Non modifiable" />

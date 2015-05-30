@@ -247,18 +247,18 @@
             <tr>
                 <td class="label"></td>
                 <td>
-                    <g:checkBox name="notifierMaintenant" title="Notifier maintenant les participants à la séance"
+                    <g:checkBox name="notifierMaintenant" title="Notifier maintenant les apprenants de la séance"
                                 checked="${modaliteActivite.notifierMaintenant}"/> <span
-                        class="label">Notifier maintenant les participants à la séance</span>
+                        class="label">Notifier maintenant les apprenants de la séance</span>
                 </td>
             </tr>
             <tr>
                 <td class="label"></td>
                 <td>
                     <g:checkBox name="notifierAvantOuverture"
-                                title="Notifier les participants avant l'ouverture de la séance"
+                                title="Notifier les apprenants avant l'ouverture de la séance"
                                 checked="${modaliteActivite.notifierAvantOuverture}"/> <span
-                        class="label">Notifier les participants <g:textField name="notifierNJoursAvant"
+                        class="label">Notifier les apprenants <g:textField name="notifierNJoursAvant"
                                                                              value="${modaliteActivite.notifierNJoursAvant}"
                                                                              style="width: 20px"></g:textField> jour(s) avant</span>
                 </td>
