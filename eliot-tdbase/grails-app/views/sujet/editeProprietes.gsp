@@ -33,15 +33,13 @@
     <r:require modules="eliot-tdbase-ui, jquery, jquery-ui, jquery-template, eliot-tdbase-combobox-autocomplete"/>
 
     <script id="contributeurTemplate" type="text/html">
-    <tr>
         <td>
             <input type="hidden" name="contributeurId" value="{{= id}}" />
             <input type="text" value="{{= nomAffichage}}" disabled="disabled"/>
         </td>
         <td>
-            {{if !persistant}} <input type="button" class="button" value="Supprimer" onclick="supprimerContributeur({{= id}}); return false;"/> {{/if}}
+            {{if !persistant}} <input type="button" class="button" value="SUPPR" onclick="supprimerContributeur({{= id}}); return false;"/> {{/if}}
         </td>
-    </tr>
     </script>
 
     <r:script>
@@ -51,20 +49,41 @@
       var fonctionSelectionneeId = null;
 
       function renderContributeurList() {
+      // TODO
         var divContributeurList = $('#contributeurList');
 
         divContributeurList.html('');
 
         if(contributeurList.length === 0) {
-            divContributeurList.append('Aucun contributeur');
+            divContributeurList.append(getAjouterContributeurHtml());
+            divContributeurList.append(' (Aucun formateur ajouté)');
         }
         else {
             divContributeurList.append('<table>');
             $.each(contributeurList, function(index, contributeur) {
+                divContributeurList.append('<tr>');
                 $('#contributeurTemplate').tmpl(contributeur).appendTo(divContributeurList);
+
+                if (index == contributeurList.length - 1) {
+                    var boutonAjouter = getAjouterContributeurHtml();
+                    if (boutonAjouter != '') {
+                        divContributeurList.append('<td>' + boutonAjouter + '</td>');
+                    }
+                }
+
+                divContributeurList.append('</tr>');
             });
             divContributeurList.append('</table>');
         }
+      }
+
+      function getAjouterContributeurHtml() {
+        <g:if test="${peutAjouterContributeur}">
+          return '<input type="button" class="button" onclick="ouvreContrubuteurPopup();" value="AJOUTER"/>';
+        </g:if>
+        <g:else>
+          return '';
+        </g:else>
       }
 
       function supprimerContributeur(id) {
@@ -327,15 +346,6 @@
                 <td class="label">Travail collaboratif&nbsp;:</td>
                 <td>
                     <div id="contributeurList"></div>
-
-                    <g:if test="${peutAjouterContributeur}">
-                      <input type="button"
-                             class="button"
-                             onclick="ouvreContrubuteurPopup();"
-                             value="Ajouter des contributeurs"/>
-                    </g:if>
-
-                    <br/>&nbsp;
                 </td>
             </tr>
             <tr>
