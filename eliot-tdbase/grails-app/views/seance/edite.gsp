@@ -94,11 +94,11 @@
                 $("#dureeMinutes").val(${modaliteActivite.sujet?.dureeMinutes});
             }
 
-            $("#dureeMinutesTr").show();
+            $("#dureeMinutesContainer").show();
         }
         else {
             $("#dureeMinutes").val('');
-            $("#dureeMinutesTr").hide();
+            $("#dureeMinutesContainer").hide();
         }
     }
 
@@ -222,18 +222,17 @@
                 <td class="label"></td>
                 <td>
                     <g:checkBox name="decompteTemps" title="décompte du temps"
-                                checked="${modaliteActivite.decompteTemps}"/> <span
-                        class="label">Décompte&nbsp;du&nbsp;temps</span>
-                </td>
-            </tr>
-        
-            <tr id="dureeMinutesTr">
-                <td class="label">Dur&eacute;e&nbsp;:</td>
-                <td>
-                    <input id="dureeMinutes" type="text" name="dureeMinutes"
-                           value="${modaliteActivite.dureeMinutes}" class="micro"
-                           tabindex="5"/>
-                    (en minutes)
+                                checked="${modaliteActivite.decompteTemps}"/>
+                    <span class="label">
+                        Décompte&nbsp;du&nbsp;temps
+                        <span id="dureeMinutesContainer">
+                            -
+                            <input id="dureeMinutes" type="text" name="dureeMinutes"
+                                   value="${modaliteActivite.dureeMinutes}" class="micro"
+                                   tabindex="5"/>
+                            (en minutes)
+                        </span>
+                    </span>
                 </td>
             </tr>
     
