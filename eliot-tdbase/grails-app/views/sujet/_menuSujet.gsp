@@ -59,7 +59,7 @@
             id="${sujet.id}">Voir les propriétés du sujet</g:link>
   </g:else>
 
-  <g:render template="infoVerrou" model="${[sujet: sujet, utilisateur: utilisateur]}"/>
+  <g:render template="/sujet/infoVerrou" model="${[sujet: sujet, utilisateur: utilisateur]}"/>
 
   <g:if test="${sujet.collaboratif}">
     <g:if test="${modeEdition && !sujet.termine && sujet.proprietaireId == utilisateur.id}">

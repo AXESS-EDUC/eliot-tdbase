@@ -53,7 +53,7 @@
           model="[liens: liens]"/>
 
 <div class="portal-tabs">
-    <g:render template="menuSujet"
+    <g:render template="/sujet/menuSujet"
               model="${[
                   artefactHelper: artefactHelper,
                   utilisateur: utilisateur,
@@ -64,7 +64,7 @@
   <span class="portal-tabs-famille-liens">
     <button id="toolbar_${sujet.id}">Actions</button>
     <ul id="menu_actions_toolbar_${sujet.id}" class="tdbase-menu-actions">
-      <g:render template="menuActions"
+      <g:render template="/sujet/menuActions"
                 model="${[
                     artefactHelper: artefactHelper,
                     sujet         : sujet,
