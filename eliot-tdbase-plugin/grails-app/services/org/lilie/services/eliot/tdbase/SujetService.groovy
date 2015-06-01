@@ -866,7 +866,12 @@ class SujetService {
   Sujet supprimeQuestionFromSujet(SujetSequenceQuestions sujetQuestion,
                                   Personne proprietaire) {
     // verif securite
-    assert (artefactAutorisationService.utilisateurPeutModifierArtefact(proprietaire, sujetQuestion.sujet))
+    assert (
+        artefactAutorisationService.utilisateurPeutModifierArtefact(
+            proprietaire,
+            sujetQuestion.sujet
+        )
+    )
 
     Sujet sujet = sujetQuestion.sujet
 

@@ -77,7 +77,7 @@ class ArtefactAutorisationService {
       return false
     }
 
-    if(artefact.estTermine()) {
+    if (artefact.estTermine()) {
       return false
     }
 
@@ -87,8 +87,8 @@ class ArtefactAutorisationService {
 
     if (artefact.estCollaboratif()) {
       return (
-          artefact.proprietaire == utilisateur ||
-              artefact.contributeurs.contains(utilisateur)
+          artefact.proprietaire.id == utilisateur.id ||
+              artefact.contributeurs*.id.contains(utilisateur.id)
       ) &&
           !artefact.estVerrouilleParAutrui(utilisateur)
     }
@@ -104,7 +104,7 @@ class ArtefactAutorisationService {
    */
   boolean utilisateurPeutModifierPropriete(Personne personne, Sujet sujet) {
     return personne == sujet.proprietaire &&
-            utilisateurPeutModifierArtefact(personne, sujet)
+        utilisateurPeutModifierArtefact(personne, sujet)
   }
 
   /**
@@ -114,7 +114,8 @@ class ArtefactAutorisationService {
    * @return true si l'autorisation est vérifiée
    */
   boolean utilisateurPeutMasquerArtefact(Personne utilisateur, Artefact artefact) {
-    return (utilisateur == artefact.proprietaire) || (artefact.contributeurs*.id.contains(utilisateur.id))
+    return (utilisateur.id == artefact.proprietaire.id) ||
+        (artefact.contributeurs*.id.contains(utilisateur.id))
   }
 
   /**
@@ -146,7 +147,7 @@ class ArtefactAutorisationService {
     if (artefact.estPartage()) {
       return false
     }
-    return utilisateur == artefact.proprietaire
+    return utilisateur.id == artefact.proprietaire.id
   }
 
   /**
@@ -157,7 +158,7 @@ class ArtefactAutorisationService {
    */
   boolean utilisateurPeutReutiliserArtefact(Personne utilisateur,
                                             Artefact artefact) {
-    if (utilisateur == artefact.proprietaire) {
+    if (utilisateur.id == artefact.proprietaire.id) {
       return true
     }
     if (artefact.estCollaboratif()) {
@@ -204,7 +205,7 @@ class ArtefactAutorisationService {
    */
   boolean utilisateurPeutAjouterItem(Personne personne, Sujet sujet) {
     return !sujet.estTermine() && (
-        personne == sujet.proprietaire ||
+        personne.id == sujet.proprietaire.id ||
             sujet.contributeurs*.id.contains(personne.id)
     ) && !sujet.estVerrouilleParAutrui(personne)
   }
