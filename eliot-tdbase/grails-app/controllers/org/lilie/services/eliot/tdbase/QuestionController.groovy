@@ -261,13 +261,13 @@ class QuestionController {
     boolean questionEnEdition = true
     Question question = Question.get(params.id)
 
-    if(question.estCollaboratif() && question.estVerrouilleParAutrui(personne)) {
+    if(question && question.estCollaboratif() && question.estVerrouilleParAutrui(personne)) {
       flash.errorMessage = "question.enregistre.echec.verrou"
       redirect(action: 'detail', id: question.id)
       return
     }
 
-    if(question.termine) {
+    if(question && question.termine) {
       flash.errorMessage = "question.enregistre.echec.termine"
       redirect(action: 'detail', id: question.id)
       return
