@@ -40,7 +40,7 @@ import org.lilie.services.eliot.tice.webservices.rest.client.RestClient
 class RechercheGroupeRestService {
 
     static transactional = false
-    RestClient restClientForNotification
+    RestClient restClientForScolarite
     GrailsApplication grailsApplication
 
     /**
@@ -66,7 +66,7 @@ class RechercheGroupeRestService {
                 max                  : grailsApplication.config.eliot.listes.groupes.maxrecherche
         ]
 
-        restClientForNotification.invokeOperation(
+      restClientForScolarite.invokeOperation(
                 'rechercheGroupeList',
                 null,
                 httpParameters
