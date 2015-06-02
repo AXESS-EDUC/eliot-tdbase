@@ -151,7 +151,7 @@ class SeanceController {
                 profilScolariteService.findProprietesScolariteWithStructureForPersonne(
                         personne,
                         etablissements
-                )*.structureEnseignement
+                )*.structureEnseignement.sort { it.nomAffichage }
 
         List<GroupeType> groupeTypeList =
                 groupeService.hasGroupeEnt(securiteSessionServiceProxy.currentEtablissement) ?
