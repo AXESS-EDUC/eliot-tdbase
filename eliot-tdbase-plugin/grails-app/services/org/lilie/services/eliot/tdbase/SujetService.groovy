@@ -416,6 +416,13 @@ class SujetService {
     if (sujet.estPartage()) {
       sujet.publication.delete()
     }
+
+    // Gestion des sujets masqués
+    List<SujetMasque> sujetMasques = SujetMasque.findAllBySujet(sujet)
+    if (!sujetMasques?.empty) {
+      SujetMasque.deleteAll(sujetMasques)
+    }
+
     // on supprime enfin le sujet
     sujet.delete()
   }

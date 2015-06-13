@@ -459,6 +459,12 @@ class QuestionService implements ApplicationContextAware {
       laQuestion.publication.delete()
     }
 
+    // Gestion des questions masquées
+    List<QuestionMasquee> questionMasquees = QuestionMasquee.findAllByQuestion(laQuestion)
+    if (!questionMasquees?.empty) {
+      QuestionMasquee.deleteAll(questionMasquees)
+    }
+
     laQuestion.delete()
   }
 
