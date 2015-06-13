@@ -728,7 +728,7 @@ class SujetController {
         profilScolariteService.findProprietesScolariteWithStructureForPersonne(
             personne,
             etablissements
-        )*.structureEnseignement
+        )*.structureEnseignement.unique {a, b -> a.id <=> b.id }.sort { it.nomAffichage }
 
     List<Fonction> fonctionList =
         preferenceEtablissementService.getFonctionListForRoleApprenant(
