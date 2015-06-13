@@ -163,6 +163,20 @@ class QuestionController {
    * Action "detail"
    */
   def detail() {
+
+    // Supprime les liens edite et detail
+    def liens = breadcrumpsServiceProxy.liens
+    while (!liens.empty) {
+      def lien = liens.last()
+      if (lien.controller?.startsWith("question") &&
+          (lien.action?.equals("edite") || lien.action?.equals("detail"))) {
+        liens.remove(lien)
+      }
+      else {
+        break;
+      }
+    }
+
     breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "question.detail.titre"))
     Question question
     question = Question.get(params.id)
