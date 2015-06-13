@@ -26,7 +26,7 @@
   -   <http://www.cecill.info/licences.fr.html>.
   --}%
 
-<g:if test="${sujet.estVerrouille()}">
+<g:if test="${sujet.estVerrouille() && !sujet.termine}">
 
   |
 
