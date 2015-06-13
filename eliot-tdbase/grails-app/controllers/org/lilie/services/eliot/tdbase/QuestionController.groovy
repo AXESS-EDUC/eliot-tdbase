@@ -192,9 +192,14 @@ class QuestionController {
     Personne personne = authenticatedPersonne
     Question question = Question.get(params.id)
     questionService.supprimeQuestion(question, personne)
-    redirect(action: "mesItems", controller: "question",
-        params: [bcInit: true])
 
+    if (params.ajax) {
+      render ([success: true]) as JSON
+    }
+    else {
+      redirect(action: "mesItems", controller: "question",
+          params: [bcInit: true])
+    }
   }
 
   /**

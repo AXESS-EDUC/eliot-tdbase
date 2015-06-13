@@ -93,6 +93,16 @@
       });
     }
 
+    function supprimeSujet(sujet) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/sujet/supprime/")}' + sujet + '?ajax=true',
+
+        success: function() {
+          location.reload();
+        }
+      });
+    }
+
   </r:script>
   <style>
     .custom-combobox-input {
@@ -234,7 +244,8 @@
                                 sujet             : sujet,
                                 utilisateur       : utilisateur,
                                 modeRecherche     : true,
-                                masque            : masque
+                                masque            : masque,
+                                jsSupprimeSujet   : 'supprimeSujet'
                             ]}"/>
                 </ul>
 

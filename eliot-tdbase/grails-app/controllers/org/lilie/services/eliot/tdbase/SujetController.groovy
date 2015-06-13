@@ -466,9 +466,14 @@ class SujetController {
     Personne personne = authenticatedPersonne
     Sujet sujet = Sujet.get(params.id)
     sujetService.supprimeSujet(sujet, personne)
-    redirect(action: "mesSujets",
-        params: [bcInit: true])
 
+    if (params.ajax) {
+      render ([success: true]) as JSON
+    }
+    else {
+      redirect(action: "mesSujets",
+          params: [bcInit: true])
+    }
   }
 
   /**

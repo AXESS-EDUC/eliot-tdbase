@@ -108,8 +108,15 @@
 
 <li><hr/></li>
 <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujet)}">
-  <li><g:link action="supprime"
-              id="${sujet.id}">Supprimer</g:link></li>
+  <g:if test="${jsSupprimeSujet != null}">
+    <li>
+      <a href="#" onclick="${jsSupprimeSujet}(${sujet.id}); return false;">Supprimer</a>
+    </li>
+  </g:if>
+  <g:else>
+    <li><g:link action="supprime"
+                id="${sujet.id}">Supprimer</g:link></li>
+  </g:else>
 </g:if>
 <g:else>
   <li>Supprimer</li>

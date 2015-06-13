@@ -96,6 +96,16 @@
       });
     }
 
+    function supprimeQuestion(question, type) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/question")}' + type + '/supprime/' + question + '?ajax=true',
+
+        success: function() {
+          location.reload();
+        }
+      });
+    }
+
   </r:script>
   <style>
     .custom-combobox-input {
@@ -316,9 +326,9 @@
           <li><hr/></li>
           <g:if
               test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
-            <li><g:link action="supprime"
-                        controller="question${questionInstance.type.code}"
-                        id="${questionInstance.id}">Supprimer</g:link></li>
+            <li>
+              <a href="#" onclick="supprimeQuestion(${questionInstance.id}, '${questionInstance.type.code}'); return false;">Supprimer</a>
+            </li>
           </g:if>
           <g:else>
             <li>Supprimer</li>
