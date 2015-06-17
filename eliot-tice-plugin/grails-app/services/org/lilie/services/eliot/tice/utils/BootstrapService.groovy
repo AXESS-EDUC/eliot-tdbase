@@ -152,6 +152,23 @@ class BootstrapService {
         initialiseGroupeEntWithParent()
     }
 
+  def bootstrapJeuDeTestAxess() {
+    initialiseEtablissementAxess()
+    initialiseMatieresAxess()
+    initialiseNiveauxAxess()
+    initialiseStructuresEnseignementsAxess()
+
+    initialiseEnseignantsAxess()
+
+    initialiseProprietesScolaritesEleveAxess()
+    initialiseEleve1Axess()
+    initialiseProfilsScolaritesEleve1Axess()
+
+    initialiseRespEleve1Axess()
+
+    initialisePersDirection1Axess()
+  }
+
     /**
      * Initialise les données pour des tests d'intégration
      */
@@ -224,6 +241,7 @@ class BootstrapService {
         }
     }
 
+
     StructureEnseignement classe1ere
     StructureEnseignement classe6eme
     StructureEnseignement grpe1ere
@@ -280,6 +298,49 @@ class BootstrapService {
         }
     }
 
+  StructureEnseignement classeAxess
+  StructureEnseignement groupeAxess
+
+  private def initialiseStructuresEnseignementsAxess() {
+    String codeClasse = "3EME2"
+    String codeGroupe = "LATIN option Groupe 1"
+
+    if (!StructureEnseignement.findAllByCode(codeClasse)) {
+      classeAxess = new StructureEnseignement(
+          etablissement: etablissementAxess,
+          anneeScolaire: anneeScolaire,
+          code: codeClasse,
+          idExterne: "${etablissementAxess.uai}.${codeClasse}",
+          type: StructureEnseignement.TYPE_CLASSE,
+          niveau: niveauAxess3eme,
+          groupeEnt: false,
+          actif: true
+      ).save(failOnError: true, flush: true)
+    }
+    else {
+      classeAxess = StructureEnseignement.findByCode(codeClasse)
+    }
+
+    if (!StructureEnseignement.findAllByCode(codeGroupe)) {
+      groupeAxess = new StructureEnseignement(
+          etablissement: etablissementAxess,
+          anneeScolaire: anneeScolaire,
+          code: codeGroupe,
+          idExterne: "${etablissementAxess.uai}.${codeGroupe}",
+          type: StructureEnseignement.TYPE_GROUPE,
+          groupeEnt: false,
+          actif: true
+      ).save(failOnError: true, flush: true)
+
+      groupeAxess.addToClasses(classeAxess)
+      groupeAxess.save(failOnError: true, flush: true)
+
+    }
+    else {
+      groupeAxess = StructureEnseignement.findByCode(codeGroupe)
+    }
+  }
+
     Etablissement etablissementLycee
     Etablissement etablissementCollege
 
@@ -298,6 +359,20 @@ class BootstrapService {
             etablissementCollege = Etablissement.findByUai(UAI_COLLEGE)
         }
     }
+
+  Etablissement etablissementAxess
+  private def initialiseEtablissementAxess() {
+    String UAI = "3100000A"
+    if (!Etablissement.findByUai(UAI)) {
+      etablissementAxess = new Etablissement(
+          uai: UAI,
+          nomAffichage: "Collège Voltaire",
+          idExterne: "310000000000001"
+      ).save(failOnError: true)
+    } else {
+      etablissementAxess = Etablissement.findByUai(UAI)
+    }
+  }
 
     AnneeScolaire anneeScolaire
 
@@ -377,6 +452,39 @@ class BootstrapService {
         }
     }
 
+  Matiere matiereAxessHistoireGeo
+  Matiere matiereAxessFrancais
+  private def initialiseMatieresAxess() {
+    String codeHistoireGeo = "AXESS_HG"
+    String codeFrancais = "AXESS_F"
+
+    if (!Matiere.findByCodeGestion(codeHistoireGeo)) {
+
+      matiereAxessHistoireGeo = new Matiere(
+          codeGestion: codeHistoireGeo,
+          etablissement: etablissementAxess,
+          libelleEdition: "HISTOIRE GEOGRAPHIE",
+          libelleCourt: "HISTOIRE GEOGRAPHIE",
+          libelleLong: "HISTOIRE GEOGRAPHIE",
+          anneeScolaire: anneeScolaire).save(failOnError: true)
+    } else {
+      matiereAxessHistoireGeo = Matiere.findByCodeGestion(codeHistoireGeo)
+    }
+
+    if (!Matiere.findByCodeGestion(codeFrancais)) {
+
+      matiereAxessFrancais = new Matiere(
+          codeGestion: codeFrancais,
+          etablissement: etablissementAxess,
+          libelleEdition: "FRANCAIS",
+          libelleCourt: "FRANCAIS",
+          libelleLong: "FRANCAIS",
+          anneeScolaire: anneeScolaire).save(failOnError: true)
+    } else {
+      matiereAxessFrancais = Matiere.findByCodeGestion(codeHistoireGeo)
+    }
+  }
+
     Niveau nivPremiere
     Niveau nivTerminale
     Niveau nivSixieme
@@ -404,6 +512,21 @@ class BootstrapService {
             nivSixieme = Niveau.findByLibelleCourt("${CODE_MEFSTAT4_PREFIXE}_5")
         }
     }
+
+  Niveau niveauAxess3eme
+  private def initialiseNiveauxAxess() {
+    String code = "3EME"
+
+    if (!Niveau.findByLibelleCourt(code)) {
+      niveauAxess3eme = new Niveau(
+          libelleCourt: code,
+          libelleLong: code
+      ).save(failOnError: true)
+
+    } else {
+      niveauAxess3eme = Niveau.findByLibelleCourt(code)
+    }
+  }
 
 
     private def initialiseProprietesScolaritesEnseignantEnvDevelopmentTest() {
@@ -497,6 +620,118 @@ class BootstrapService {
 
     }
 
+  String LOGIN_ENS1_AXESS = "bforry"
+  String LOGIN_ENS2_AXESS = "mgiraud"
+  private void initialiseEnseignantsAxess() {
+
+    Fonction fonctionEnseignant = fonctionService.fonctionEnseignant()
+
+    ProprietesScolarite psEnseignantClasse =
+        ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
+            classeAxess,
+            fonctionEnseignant,
+            anneeScolaire
+        )
+
+    if(!psEnseignantClasse) {
+      psEnseignantClasse = new ProprietesScolarite(
+          anneeScolaire: anneeScolaire,
+          fonction: fonctionEnseignant,
+          structureEnseignement: classeAxess
+      ).save(failOnError: true, flush: true)
+    }
+
+    ProprietesScolarite psEnseignantGroupe =
+        ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
+            groupeAxess,
+            fonctionEnseignant,
+            anneeScolaire
+        )
+    if(!psEnseignantGroupe) {
+      psEnseignantGroupe = new ProprietesScolarite(
+          anneeScolaire: anneeScolaire,
+          fonction: fonctionEnseignant,
+          structureEnseignement: groupeAxess
+      ).save(failOnError: true, flush: true)
+    }
+
+    ProprietesScolarite psEnseignantFrancais =
+      ProprietesScolarite.findByEtablissementAndFonctionAndAnneeScolaireAndMatiere(
+          etablissementAxess,
+          fonctionEnseignant,
+          anneeScolaire,
+          matiereAxessFrancais
+      )
+
+    if(!psEnseignantFrancais) {
+      psEnseignantFrancais = new ProprietesScolarite(
+          anneeScolaire: anneeScolaire,
+          fonction: fonctionEnseignant,
+          etablissement: etablissementAxess,
+          matiere: matiereAxessFrancais
+      ).save(failOnError: true, flush: true)
+    }
+
+    ProprietesScolarite psEnseignantHistoireGeo =
+        ProprietesScolarite.findByEtablissementAndFonctionAndAnneeScolaireAndMatiere(
+            etablissementAxess,
+            fonctionEnseignant,
+            anneeScolaire,
+            matiereAxessHistoireGeo
+        )
+
+    if(!psEnseignantHistoireGeo) {
+      psEnseignantHistoireGeo = new ProprietesScolarite(
+          anneeScolaire: anneeScolaire,
+          fonction: fonctionEnseignant,
+          etablissement: etablissementAxess,
+          matiere: matiereAxessHistoireGeo
+      ).save(failOnError: true, flush: true)
+    }
+
+    if (!utilisateurService.findUtilisateur(LOGIN_ENS1_AXESS)) {
+      utilisateurService.createUtilisateur(
+          LOGIN_ENS1_AXESS,
+          LOGIN_ENS1_AXESS,
+          "Forry",
+          "Bertrand"
+      )
+    }
+    Utilisateur ens1 = utilisateurService.findUtilisateur(LOGIN_ENS1_AXESS)
+    Personne enseignant1 = Personne.get(ens1.personneId)
+
+    if (!profilScolariteService.findProprietesScolaritesForPersonne(enseignant1)) {
+      addProprietesScolariteToPersonne(
+          [
+              psEnseignantClasse,
+              psEnseignantHistoireGeo
+          ],
+          enseignant1
+      )
+    }
+
+    if (!utilisateurService.findUtilisateur(LOGIN_ENS2_AXESS)) {
+      utilisateurService.createUtilisateur(
+          LOGIN_ENS2_AXESS,
+          LOGIN_ENS2_AXESS,
+          "Giraud",
+          "Michel"
+      )
+    }
+    Utilisateur ens2 = utilisateurService.findUtilisateur(LOGIN_ENS2_AXESS)
+    Personne enseignant2 = Personne.get(ens2.personneId)
+    if (!profilScolariteService.findProprietesScolaritesForPersonne(enseignant2)) {
+      addProprietesScolariteToPersonne(
+          [
+              psEnseignantClasse,
+              psEnseignantGroupe,
+              psEnseignantFrancais
+          ],
+          enseignant2
+      )
+    }
+  }
+
     Personne enseignant1
     Personne enseignant2
 
@@ -512,6 +747,7 @@ class BootstrapService {
             addProprietesScolariteToPersonne(props, enseignant1)
         }
     }
+
 
     private def initialiseProfilsScolaritesEnseignant2EnvDevelopment() {
         Utilisateur ens2 = utilisateurService.findUtilisateur(UTILISATEUR_2_LOGIN)
@@ -530,6 +766,20 @@ class BootstrapService {
                     ELEVE_1_PRENOM)
         }
     }
+
+  String LOGIN_ELEVE_1_AXESS = "mbihoue"
+  Personne eleve1Axess
+  private def initialiseEleve1Axess() {
+    if (!utilisateurService.findUtilisateur(LOGIN_ELEVE_1_AXESS)) {
+      utilisateurService.createUtilisateur(
+          LOGIN_ELEVE_1_AXESS,
+          LOGIN_ELEVE_1_AXESS,
+          "Bihoue",
+          "Marie"
+      )
+    }
+    eleve1Axess = utilisateurService.findUtilisateur(LOGIN_ELEVE_1_AXESS).personne
+  }
 
     private def initialiseProprietesScolaritesEleveEnvDevelopmentTest() {
 
@@ -577,6 +827,35 @@ class BootstrapService {
 
     }
 
+  private def initialiseProprietesScolaritesEleveAxess() {
+
+    Fonction fonctionEleve = fonctionService.fonctionEleve()
+
+    if (!ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
+        classeAxess,
+        fonctionEleve,
+        anneeScolaire
+    )) {
+      new ProprietesScolarite(
+          anneeScolaire: anneeScolaire,
+          fonction: fonctionEleve,
+          structureEnseignement: classeAxess
+      ).save(failOnError: true)
+    }
+
+    if (!ProprietesScolarite.findByStructureEnseignementAndFonctionAndAnneeScolaire(
+        groupeAxess,
+        fonctionEleve,
+        anneeScolaire
+    )) {
+      new ProprietesScolarite(
+          anneeScolaire: anneeScolaire,
+          fonction: fonctionEleve,
+          structureEnseignement: groupeAxess
+      ).save(failOnError: true)
+    }
+  }
+
 
     Personne eleve1
     Personne eleve2
@@ -592,6 +871,19 @@ class BootstrapService {
             addProprietesScolariteToPersonne(props, eleve1)
         }
     }
+
+  private def initialiseProfilsScolaritesEleve1Axess() {
+    Utilisateur elv1 = utilisateurService.findUtilisateur(LOGIN_ELEVE_1_AXESS)
+    eleve1 = Personne.get(elv1.personneId)
+
+    if (!profilScolariteService.findProprietesScolaritesForPersonne(eleve1)) {
+      def props = ProprietesScolarite.findAllByFonctionAndStructureEnseignementInList(
+          fonctionService.fonctionEleve(),
+          [classeAxess, groupeAxess]
+      )
+      addProprietesScolariteToPersonne(props, eleve1)
+    }
+  }
 
     private def initialiseEleve2EnvDevelopment() {
         Utilisateur elv2 = utilisateurService.findUtilisateur(ELEVE_2_LOGIN)
@@ -685,6 +977,27 @@ class BootstrapService {
         }
     }
 
+  String LOGIN_RESP1_AXESS = "jbihoue"
+  Personne resp1Axess
+  private def initialiseRespEleve1Axess() {
+    Utilisateur resp1 = utilisateurService.findUtilisateur(LOGIN_RESP1_AXESS)
+    if (!resp1) {
+      utilisateurService.createUtilisateur(
+          LOGIN_RESP1_AXESS,
+          LOGIN_RESP1_AXESS,
+          "Bihoue",
+          " Juliette "
+      )
+      resp1 = utilisateurService.findUtilisateur(LOGIN_RESP1_AXESS)
+      resp1Axess = Personne.get(resp1.personneId)
+      createResponsableEleve(resp1Axess, eleve1Axess)
+
+    }
+    else {
+      resp1Axess = Personne.get(resp1.personneId)
+    }
+  }
+
     private def initialisePorteurEnt() {
         PorteurEnt porteurEnt = PorteurEnt.findByCode(DEFAULT_CODE_PORTEUR_ENT)
         if (!porteurEnt) {
@@ -735,6 +1048,36 @@ class BootstrapService {
 
         persDirection1 = utilisateurDir.personne
     }
+
+  String LOGIN_DIR1_AXESS = "rnacci"
+  Personne persDirection1Axess
+  private def initialisePersDirection1Axess() {
+    def utilisateurDir = utilisateurService.findUtilisateur(LOGIN_DIR1_AXESS)
+    if (!utilisateurDir) {
+      utilisateurDir = utilisateurService.createUtilisateur(
+          LOGIN_DIR1_AXESS,
+          LOGIN_DIR1_AXESS,
+          "Nacci",
+          "Richard"
+      )
+      Fonction fonctionDir = fonctionService.fonctionDirection()
+      def ps = ProprietesScolarite.findAllByEtablissementAndFonctionAndAnneeScolaire(
+          etablissementAxess,
+          fonctionDir,
+          anneeScolaire
+      )
+      if (!ps) {
+        ps = new ProprietesScolarite(
+            anneeScolaire: anneeScolaire,
+            fonction: fonctionDir,
+            etablissement: etablissementAxess
+        ).save(failOnError: true)
+      }
+      addProprietesScolariteToPersonne([ps], utilisateurDir.personne)
+    }
+
+    persDirection1Axess = utilisateurDir.personne
+  }
 
     Personne superAdmin1
 

@@ -58,6 +58,10 @@ class BootStrap {
       bootstrapService.bootstrapJeuDeTestDevDemo()
     }
 
+    if (config.eliot.bootstrap.jeudetestAxess) {
+      bootstrapService.bootstrapJeuDeTestAxess()
+    }
+
     try {
       portailTagLibService.addManuelDocumentUrls(config.eliot.manuels.documents.urlMap)
     } catch (Exception e) {
