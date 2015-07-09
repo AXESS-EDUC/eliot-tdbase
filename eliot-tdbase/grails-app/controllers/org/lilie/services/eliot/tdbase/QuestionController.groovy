@@ -46,6 +46,7 @@ import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.utils.Breadcrumps
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.springframework.web.multipart.MultipartFile
 
@@ -164,20 +165,15 @@ class QuestionController {
    */
   def detail() {
 
-    // Supprime les liens edite et detail
-    def liens = breadcrumpsServiceProxy.liens
-    while (!liens.empty) {
-      def lien = liens.last()
-      if (lien.controller?.startsWith("question") &&
-          (lien.action?.equals("edite") || lien.action?.equals("detail"))) {
-        liens.remove(lien)
-      }
-      else {
-        break;
-      }
+    // Note JT : bricolage pour éviter d'avoir Détail > Modif > Détail
+    if(breadcrumpsServiceProxy.liens.last().libelle != message(code: "question.detail.titre")) {
+      breadcrumpsServiceProxy.manageBreadcrumps(
+          params,
+          message(code: "question.detail.titre")
+
+      )
     }
 
-    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "question.detail.titre"))
     Question question
     question = Question.get(params.id)
     Personne personne = authenticatedPersonne
@@ -344,6 +340,10 @@ class QuestionController {
       if (sujet) {
         params.sujetId = sujet.id
       }
+
+      // Retire le dernier élément du breadcrumbs
+      breadcrumpsServiceProxy.removeLastLien()
+
       redirect(action: 'detail', id: question.id, params: params)
     }
 

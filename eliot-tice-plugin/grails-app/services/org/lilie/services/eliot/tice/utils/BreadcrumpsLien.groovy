@@ -134,6 +134,10 @@ class Breadcrumps implements Serializable {
     return liens.get(indexLien)
   }
 
+  synchronized BreadcrumpsLien removeLastLien() {
+    depileLiens(liens.size() - 2)
+  }
+
   /**
    * Retourne la valeur d'une propriete
    * @param nom le nom de la propriete
