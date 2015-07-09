@@ -176,9 +176,6 @@ class ArtefactAutorisationService {
   boolean utilisateurPeutExporterArtefact(Personne utilisateur,
                                           Artefact artefact,
                                           Format format) {
-    if (artefact.estCollaboratif()) {
-      return false
-    }
     if (format == Format.MOODLE_XML && !artefact.estPresentableEnMoodleXML()) {
       return false
     }

@@ -307,6 +307,11 @@ class SujetService {
           contributeurs.each {
             sujet.addToContributeurs(it)
           }
+          sujet.addPaterniteItem(
+              proprietaire,
+              null,
+              contributeurs.collect { it.nomAffichage }
+          )
         }
       }
     }
