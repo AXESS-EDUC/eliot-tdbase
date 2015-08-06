@@ -1,4 +1,4 @@
-<plugin name='eliot-notes-plugin' version='2.4.4-eliot-3.4.2-RC1' grailsVersion='2.1.1 &gt; *'>
+<plugin name='eliot-notes-plugin' version='2.4.4-eliot-3.5.0-RC1' grailsVersion='2.1.1 &gt; *'>
   <author>Franck Silvestre - Fylab</author>
   <title>Eliot Notes  Plugin</title>
   <description>Plugin contenant les services métiers relatifs à la gestion des notes"
