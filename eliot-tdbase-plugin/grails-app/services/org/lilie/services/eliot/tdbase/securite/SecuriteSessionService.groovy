@@ -136,16 +136,28 @@ class SecuriteSessionService {
                     }
                 }
             }
-            updatePerimetreForEachPerimetreRoleApplicatif(etablissementsAndFonctionsByEtablissement.size())
-            defaultRoleApplicatif = updateDefaultRoleApplicatif(allFonctionsHavingRole, rolesApplicatifsAndPerimetreByRoleApplicatif)
+
+            if(allFonctionsHavingRole) {
+                updatePerimetreForEachPerimetreRoleApplicatif(etablissementsAndFonctionsByEtablissement.size())
+                defaultRoleApplicatif = updateDefaultRoleApplicatif(allFonctionsHavingRole, rolesApplicatifsAndPerimetreByRoleApplicatif)
+            }
+            else {
+                handleUserWithNoRole()
+            }
+
         } else {
-            rolesApplicatifsAndPerimetreByRoleApplicatif.put(RoleApplicatif.NO_ROLE,
-                    new PerimetreRoleApplicatif(perimetre: PerimetreRoleApplicatifEnum.NO_PERIMETRE))
-            defaultRoleApplicatif = RoleApplicatif.NO_ROLE
+            defaultRoleApplicatif = handleUserWithNoRole()
         }
         if (updateCurrentRole) {
             onChangeRoleApplicatif(personne, defaultRoleApplicatif)
         }
+    }
+
+    private RoleApplicatif handleUserWithNoRole() {
+        rolesApplicatifsAndPerimetreByRoleApplicatif.put(RoleApplicatif.NO_ROLE,
+                new PerimetreRoleApplicatif(perimetre: PerimetreRoleApplicatifEnum.NO_PERIMETRE))
+        defaultRoleApplicatif = RoleApplicatif.NO_ROLE
+        defaultRoleApplicatif
     }
 
     /**
