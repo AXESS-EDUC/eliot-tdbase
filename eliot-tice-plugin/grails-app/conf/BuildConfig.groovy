@@ -33,7 +33,7 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 
-versionTDBase = "2.4.2-SNAPSHOT"
+versionTDBase = "2.4.5-eliot-3.7.1-RC1"
 
 grails.plugin.location.'eliot-competence-plugin' = "../eliot-competence-plugin"
 
