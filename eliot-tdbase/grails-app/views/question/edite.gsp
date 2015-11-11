@@ -92,6 +92,39 @@
         }
 
       });
+
+      initComboboxAutoComplete({
+          combobox: '#niveau\\.id',
+
+          recherche: function(recherche, callback) {
+            if (recherche == null || recherche.length < 3) {
+              callback([]);
+            }
+            else {
+              $.ajax({
+                url: '${g.createLink(absolute: true, uri: "/sujet/niveaux")}',
+
+                data: {
+                  recherche: recherche
+                },
+
+                success: function(niveaux) {
+                  var options = [];
+
+                  for(var i = 0; i < niveaux.length; i++) {
+                    options.push({
+                      id: niveaux[i].id,
+                      value:  niveaux[i].libelleLong
+                    });
+                  }
+
+                  callback(options);
+                }
+              });
+            }
+          }
+
+        });
     });
   </r:script>
   <title><g:message code="question.edite.head.title"/></title>
@@ -237,7 +270,7 @@
       <g:if test="${!question.id && sujet}">
         <tr>
           <td class="label">Mati&egrave;re :</td>
-          <td>
+          <td class="matiere">
             <g:select name="matiereBcn.id" value="${sujet.matiereBcn?.id}"
                       from="${matiereBcns}"
                       optionKey="id"
@@ -246,9 +279,8 @@
         </tr>
         <tr>
           <td class="label">Niveau :</td>
-          <td>
+          <td class="niveau">
             <g:select name="niveau.id" value="${sujet.niveauId}"
-                      noSelection="${['null': g.message(code: "default.select.null")]}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>
@@ -258,7 +290,7 @@
       <g:else>
         <tr>
           <td class="label">Mati&egrave;re :</td>
-          <td>
+          <td class="matiere">
             <g:select name="matiereBcn.id" value="${question.matiereBcn?.id}"
                       from="${matiereBcns}"
                       optionKey="id"
@@ -267,9 +299,8 @@
         </tr>
         <tr>
           <td class="label">Niveau :</td>
-          <td>
+          <td class="niveau">
             <g:select name="niveau.id" value="${question.niveauId}"
-                      noSelection="${['null': g.message(code: "default.select.null")]}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>

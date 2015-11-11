@@ -77,6 +77,7 @@ class SujetController {
     }
 
     MatiereBcn matiereBcn = MatiereBcn.get(rechCmd.matiereId)
+    Niveau niveau = Niveau.get(rechCmd.niveauId)
     Boolean afficheSujetMasque = rechCmd.afficheSujetMasque != null ? rechCmd.afficheSujetMasque : false
 
     def sujets = sujetService.findSujets(personne,
@@ -101,7 +102,7 @@ class SujetController {
      affichePager       : affichePager,
      typesSujet         : sujetService.getAllSujetTypes(),
      matiereBcns        : matiereBcn != null ? [matiereBcn] : [],
-     niveaux            : profilScolariteService.findNiveauxForPersonne(personne),
+     niveaux            : niveau != null ? [niveau] : [],
      sujets             : sujets,
      rechercheCommand   : rechCmd,
      artefactHelper     : artefactAutorisationService,
@@ -151,7 +152,7 @@ class SujetController {
             artefactHelper          : artefactAutorisationService,
             matiereBcns             : [],
             etablissements          : securiteSessionServiceProxy.etablissementList,
-            niveaux                 : profilScolariteService.findNiveauxForPersonne(proprietaire),
+            niveaux                 : [],
             currentEtablissement    : currentEtablissement,
             fonctionList            : preferenceEtablissementService.getFonctionListForRoleFormateur(
                 proprietaire,
@@ -174,6 +175,21 @@ class SujetController {
     }
 
     render matiereBcns as JSON
+  }
+
+  def niveaux() {
+    String recherche = '%' + params.recherche + '%'
+
+    def niveaux = Niveau.withCriteria {
+      or {
+        ilike('libelleCourt', recherche)
+        ilike('libelleEdition', recherche)
+        ilike('libelleLong', recherche)
+      }
+      order('libelleLong', 'asc')
+    }
+
+    render niveaux as JSON
   }
 
   /**
@@ -220,7 +236,7 @@ class SujetController {
             typesSujet          : sujetTypeList,
             matiereBcns         : sujet.matiereBcn != null ? [sujet.matiereBcn] : [],
             etablissements      : securiteSessionServiceProxy.etablissementList,
-            niveaux             : profilScolariteService.findNiveauxForPersonne(proprietaire),
+            niveaux             : sujet.niveau != null ? [sujet.niveau] : [],
             currentEtablissement: currentEtablissement,
             fonctionList        : preferenceEtablissementService.getFonctionListForRoleFormateur(
                 proprietaire,
@@ -395,7 +411,6 @@ class SujetController {
             typesSujet          : sujetService.getAllSujetTypes(),
             etablissements      : securiteSessionServiceProxy.etablissementList,
             artefactHelper      : artefactAutorisationService,
-            niveaux             : profilScolariteService.findNiveauxForPersonne(proprietaire),
             currentEtablissement: currentEtablissement,
             fonctionList        : preferenceEtablissementService.getFonctionListForRoleFormateur(
                 proprietaire,
@@ -865,7 +880,6 @@ class SujetController {
         liens         : breadcrumpsServiceProxy.liens,
         sujet         : sujet,
         etablissements: securiteSessionServiceProxy.etablissementList,
-        niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
             grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     ]
@@ -939,7 +953,6 @@ class SujetController {
         liens         : breadcrumpsServiceProxy.liens,
         sujet         : sujet,
         etablissements: securiteSessionServiceProxy.etablissementList,
-        niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
             grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     ]
@@ -1009,7 +1022,6 @@ class SujetController {
     [
         liens         : breadcrumpsServiceProxy.liens,
         etablissements: securiteSessionServiceProxy.etablissementList,
-        niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
             grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     ]

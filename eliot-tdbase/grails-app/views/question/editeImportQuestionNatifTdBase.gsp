@@ -67,6 +67,39 @@
         }
 
       });
+
+      initComboboxAutoComplete({
+          combobox: '#niveauId',
+
+          recherche: function(recherche, callback) {
+            if (recherche == null || recherche.length < 3) {
+              callback([]);
+            }
+            else {
+              $.ajax({
+                url: '${g.createLink(absolute: true, uri: "/sujet/niveaux")}',
+
+                data: {
+                  recherche: recherche
+                },
+
+                success: function(niveaux) {
+                  var options = [];
+
+                  for(var i = 0; i < niveaux.length; i++) {
+                    options.push({
+                      id: niveaux[i].id,
+                      value:  niveaux[i].libelleLong
+                    });
+                  }
+
+                  callback(options);
+                }
+              });
+            }
+          }
+
+        });
     });
   </r:script>
   <title><g:message code="question.editeImportQuestionNatifTdBase.head.title"/></title>
@@ -92,7 +125,7 @@
       </tr>
       <tr>
         <td class="label">Mati&egrave;re&nbsp;:</td>
-        <td>
+        <td class="matiere">
           <g:select name="matiereId"
                     from="${matiereBcns}"
                     optionKey="id"
@@ -101,9 +134,8 @@
       </tr>
       <tr>
         <td class="label">Niveau&nbsp;:</td>
-        <td>
+        <td class="niveau">
           <g:select name="niveauId"
-                    noSelection="${['null': g.message(code: "default.select.null")]}"
                     from="${niveaux}"
                     optionKey="id"
                     optionValue="libelleLong"/>

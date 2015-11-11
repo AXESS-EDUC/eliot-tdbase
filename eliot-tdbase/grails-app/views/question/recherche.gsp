@@ -70,6 +70,39 @@
         }
 
       });
+
+      initComboboxAutoComplete({
+          combobox: '#niveauId',
+
+          recherche: function(recherche, callback) {
+            if (recherche == null || recherche.length < 3) {
+              callback([]);
+            }
+            else {
+              $.ajax({
+                url: '${g.createLink(absolute: true, uri: "/sujet/niveaux")}',
+
+                data: {
+                  recherche: recherche
+                },
+
+                success: function(niveaux) {
+                  var options = [];
+
+                  for(var i = 0; i < niveaux.length; i++) {
+                    options.push({
+                      id: niveaux[i].id,
+                      value:  niveaux[i].libelleLong
+                    });
+                  }
+
+                  callback(options);
+                }
+              });
+            }
+          }
+
+        });
     });
 
     function masqueQuestion(question) {
@@ -164,7 +197,7 @@
           </td>
           <td class="label">Matière :
           </td>
-          <td>
+          <td class="matiere">
             <g:select name="matiereId" value="${rechercheCommand.matiereId}"
                       from="${matiereBcns}"
                       optionKey="id"
@@ -175,7 +208,7 @@
           <g:if test="${artefactHelper.partageArtefactCCActive}">
             <td class="label">Auteur :
             </td>
-            <td>
+            <td class="niveau">
               <g:textField name="patternAuteur" title="auteur"
                            value="${rechercheCommand.patternAuteur}"/>
             </td>
@@ -192,7 +225,6 @@
           </td>
           <td>
             <g:select name="niveauId" value="${rechercheCommand.niveauId}"
-                      noSelection="${['null': 'Tous']}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>

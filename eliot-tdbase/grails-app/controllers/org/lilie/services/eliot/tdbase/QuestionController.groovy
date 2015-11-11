@@ -145,7 +145,7 @@ class QuestionController {
             question               : question,
             matiereBcns            : question.matiereBcn != null ? [question.matiereBcn] : [],
             etablissements         : securiteSessionServiceProxy.etablissementList,
-            niveaux                : profilScolariteService.findNiveauxForPersonne(personne),
+            niveaux                : question.niveau != null ? [question.niveau] : [],
             sujet                  : sujet,
             artefactHelper         : artefactAutorisationService,
             utilisateur            : personne,
@@ -327,7 +327,7 @@ class QuestionController {
               question         : question,
               matiereBcns      : question.matiereBcn != null ? [question.matiereBcn] : [],
               etablissements   : securiteSessionServiceProxy.etablissementList,
-              niveaux          : profilScolariteService.findNiveauxForPersonne(personne),
+              niveaux          : question.niveau != null ? [question.niveau] : [],
               sujet            : sujet,
               questionEnEdition: questionEnEdition,
               artefactHelper   : artefactAutorisationService,
@@ -389,7 +389,7 @@ class QuestionController {
             question         : question,
             matiereBcns      : question.matiereBcn != null ? [question.matiereBcn] : [],
             etablissements   : securiteSessionServiceProxy.etablissementList,
-            niveaux          : profilScolariteService.findNiveauxForPersonne(personne),
+            niveaux          : question.niveau != null ? [question.niveau] : [],
             sujet            : sujet,
             questionEnEdition: questionEnEdition,
             artefactHelper   : artefactAutorisationService,
@@ -439,7 +439,7 @@ class QuestionController {
               sujet            : sujet,
               matiereBcns      : question.matiereBcn != null ? [question.matiereBcn] : [],
               etablissements   : securiteSessionServiceProxy.etablissementList,
-              niveaux          : profilScolariteService.findNiveauxForPersonne(personne),
+              niveaux          : question.niveau != null ? [question.niveau] : [],
               artefactHelper   : artefactAutorisationService,
               questionEnEdition: questionEnEdition,
               utilisateur      : personne
@@ -536,6 +536,7 @@ class QuestionController {
     boolean affichePager = false
 
     MatiereBcn matiereBcn = MatiereBcn.get(rechCmd.matiereId)
+    Niveau niveau = Niveau.get(rechCmd.niveauId)
     Boolean afficheQuestionMasquee = rechCmd.afficheQuestionMasquee != null ? rechCmd.afficheQuestionMasquee : false
 
     def questions = questionService.findQuestions(personne,
@@ -559,7 +560,7 @@ class QuestionController {
      afficheFormulaire      : true,
      typesQuestion          : typesQuestions,
      matiereBcns            : matiereBcn != null ? [matiereBcn] : [],
-     niveaux                : profilScolariteService.findNiveauxForPersonne(personne),
+     niveaux                : niveau != null ? [niveau] : [],
      questions              : questions,
      rechercheCommand       : rechCmd,
      sujet                  : sujet,
@@ -640,7 +641,6 @@ class QuestionController {
     [
         liens         : breadcrumpsServiceProxy.liens,
         etablissements: securiteSessionServiceProxy.etablissementList,
-        niveaux       : profilScolariteService.findNiveauxForPersonne(proprietaire),
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
             grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     ]
