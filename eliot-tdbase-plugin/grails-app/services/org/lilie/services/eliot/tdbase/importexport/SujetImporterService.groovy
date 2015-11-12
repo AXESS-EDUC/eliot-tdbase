@@ -49,7 +49,9 @@ class SujetImporterService {
             accesSequentiel: sujetDto.accesSequentiel,
             ordreQuestionsAleatoire: sujetDto.ordreQuestionsAleatoire,
             paternite: sujetDto.paternite,
-            copyrightsType: copyrightsType
+            copyrightsType: copyrightsType,
+            matiereBcn: referentielEliot?.matiereBcn,
+            niveau: referentielEliot?.niveau
         ],
         importeur
     )
