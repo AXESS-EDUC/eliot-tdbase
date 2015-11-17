@@ -272,6 +272,10 @@ class SujetService {
       sujet.copyrightsType = CopyrightsType.getDefault()
     }
 
+    if (!isDernierAuteur(sujet, proprietaire)) {
+      sujet.addPaterniteItem(proprietaire)
+    }
+
     if (proprietes.containsKey("contributeurIds")) {
       Collection contributeurIds = proprietes["contributeurIds"]
 
@@ -316,10 +320,6 @@ class SujetService {
       }
     }
 
-    if (!isDernierAuteur(sujet, proprietaire)) {
-      sujet.addPaterniteItem(proprietaire)
-    }
-
     if (proprietes.titre && sujet.titre != proprietes.titre) {
       sujet.titreNormalise = StringUtils.normalise(proprietes.titre)
     }
@@ -350,7 +350,6 @@ class SujetService {
     return sujet
   }
 
-  // TODO *** Doc + rename (ajouteContributeurSetToSujet)
   private Sujet fusionneSujetContributeurs(Personne proprietaire, Sujet sujet, Set<Personne> contributeurs) {
     if (!contributeurs) {
       throw new IllegalArgumentException("La liste de contributeur est vide")
@@ -366,9 +365,20 @@ class SujetService {
   }
 
   private Sujet fusionneSujetCollaboratifContributeurs(Sujet sujet, Set<Personne> contributeurs) {
+    Set<Personne> nouveauContributeurSet = []
+
     contributeurs.each {
-      sujet.addToContributeurs(it)
+      if(!sujet.contributeurs*.id.contains(it.id)) {
+        sujet.addToContributeurs(it)
+        nouveauContributeurSet << it
+      }
+
     }
+    sujet.addPaterniteItem(
+        sujet.proprietaire,
+        null,
+        nouveauContributeurSet.collect { it.nomAffichage }
+    )
     sujet.save(flush: true, failOnError: true)
 
     if (sujet.estUnExercice()) {
@@ -388,7 +398,6 @@ class SujetService {
         sujetQuestion.question.addToContributeurs(it)
       }
       sujetQuestion.save()
-
     }
 
     return sujet
@@ -736,16 +745,32 @@ class SujetService {
     assert (!insertionQuestionCompositeInExercice(question, sujet))
 
     if (sujet.estCollaboratif() && question.sujetLieId != sujet.id) {
-      question = questionService.createQuestionCollaborativeFrom(
-          proprietaire,
-          question,
-          sujet
-      )
+      if(question.estComposite()) {
+        Sujet exercice = createSujetCollaboratifFrom(
+            proprietaire,
+            question.exercice,
+            sujet.contributeurs
+        )
+        exercice.questionComposite.sujetLie = sujet
+        question = exercice.questionComposite
+      }
+      else {
+        question = questionService.createQuestionCollaborativeFrom(
+            proprietaire,
+            question,
+            sujet
+        )
+      }
     } else if (!sujet.estCollaboratif() && question.estCollaboratif()) {
-      question = questionService.createQuestionNonCollaborativeFrom(
-          proprietaire,
-          question
-      )
+      if(question.estComposite()) {
+        // TODO ***
+      }
+      else {
+        question = questionService.createQuestionNonCollaborativeFrom(
+            proprietaire,
+            question
+        )
+      }
     }
 
     if (!isDernierAuteur(sujet, proprietaire)) {

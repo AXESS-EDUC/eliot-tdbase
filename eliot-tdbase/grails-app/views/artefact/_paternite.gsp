@@ -40,10 +40,11 @@ $(document).ready(function () {
     var paterniteHtml = ""
     var strOeuvrePubliee = " a publié cette oeuvre le "
     var strOeuvreModifiee = " a contribué à cette oeuvre"
-    var strOeuvreAjoutContributeurs = " a ajouté les formateurs suivants à cette oeuvre : "
+    var strOeuvreAjoutContributeurs = " a ajouté le(s) formateur(s) suivant(s) à cette oeuvre : "
     var strOeuvreReutiliseePubliee = " a publié l'oeuvre réutilisée par la présente le  "
     var strOeuvreReutiliseeModifiee = " a contribué à l'oeuvre réutilisée par la présente"
-    var strOeuvreReutiliseeAjoutContributeurs = " a ajouté les formateurs suivants à l'oeuvre réutilisée par la présente : "
+    var strOeuvreReutiliseeAjoutContributeurs = " a ajouté le(s) formateur(s) suivant(s) à l'oeuvre réutilisée par la présente : "
+    var strNbAjoutContributeurs = function(nb) { return "("+nb+") formateur(s) ajouté(s)." }
     for (i = 0 ; i < nbItems ; i++) {
        var paterniteItem = paterniteObj.paterniteItems[i];
        paterniteHtml += paterniteItem.auteur;
@@ -58,10 +59,10 @@ $(document).ready(function () {
        }
        else if(paterniteItem.contributeurs) {
           if(paterniteItem.oeuvreEnCours == true) {
-            paterniteHtml += strOeuvreAjoutContributeurs + paterniteItem.contributeurs.join(', ') + "<br/>"
+            paterniteHtml += strOeuvreAjoutContributeurs + paterniteItem.contributeurs.join(', ') + " ; " + strNbAjoutContributeurs(paterniteItem.contributeurs.length) + "<br/>"
           }
           else {
-            paterniteHtml += strOeuvreReutiliseeAjoutContributeurs + paterniteItem.contributeurs.join(', ') + "<br/>"
+            paterniteHtml += strOeuvreReutiliseeAjoutContributeurs + paterniteItem.contributeurs.join(', ') + " ; " + strNbAjoutContributeurs(paterniteItem.contributeurs.length) + "<br/>"
           }
        }
        else {

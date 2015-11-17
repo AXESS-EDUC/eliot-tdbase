@@ -412,6 +412,13 @@ class QuestionService implements ApplicationContextAware {
       sujet.contributeurs.each {
         question.addToContributeurs(it)
       }
+
+      question.addPaterniteItem(
+          proprietaire,
+          null,
+          contributeurSet.collect { it.nomAffichage }
+      )
+
       question.save()
     }
 
