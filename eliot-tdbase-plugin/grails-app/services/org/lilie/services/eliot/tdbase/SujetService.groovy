@@ -788,7 +788,9 @@ class SujetService {
       }
     } else if (!sujet.estCollaboratif() && question.estCollaboratif()) {
       if(question.estComposite()) {
-        // TODO ***
+        // On duplique l'exercice collaboratif en non collaboratif
+        Sujet exercice = recopieSujet(question.exercice, proprietaire)
+        question = exercice.questionComposite
       }
       else {
         question = questionService.createQuestionNonCollaborativeFrom(
