@@ -213,10 +213,35 @@ class SujetService {
         paternite: sujet.paternite
     )
     sujetCopie.save()
-    // recopie de la séquence de questions (ce n'est pas une copie en profondeur)
+
+
+    // recopie de la séquence de questions (dans le cas d'un sujet non collaboratif, ce n'est pas une copie en profondeur ; pour un sujet collaboratif les questions sont dupliquées en version non collaboratives)
     sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
+
+      Question questionOriginale = sujetQuestion.question
+      Question question
+
+      if(sujet.estCollaboratif()) {
+        if(questionOriginale.estComposite()) {
+          Sujet exerciceRecopie = recopieSujet(
+              questionOriginale.exercice,
+              proprietaire
+          )
+          question = exerciceRecopie.questionComposite
+        }
+        else {
+          question = questionService.recopieQuestion(
+              questionOriginale,
+              proprietaire
+          )
+        }
+      }
+      else {
+        question = questionOriginale
+      }
+
       SujetSequenceQuestions copieSujetSequence = new SujetSequenceQuestions(
-          question: sujetQuestion.question,
+          question: question,
           sujet: sujetCopie,
           noteSeuilPoursuite: sujetQuestion.noteSeuilPoursuite
       )
