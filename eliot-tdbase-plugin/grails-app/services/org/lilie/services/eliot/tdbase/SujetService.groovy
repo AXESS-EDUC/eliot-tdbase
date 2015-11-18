@@ -408,7 +408,7 @@ class SujetService {
 
     if (sujet.estUnExercice()) {
       Question questionComposite = sujet.questionComposite
-      contributeurs.each {
+      nouveauContributeurSet.each {
         questionComposite.addToContributeurs(it)
       }
       questionComposite.save()
@@ -416,12 +416,18 @@ class SujetService {
 
     sujet.questionsSequences.each { SujetSequenceQuestions sujetQuestion ->
       if (sujetQuestion.question.estComposite()) {
-        fusionneSujetCollaboratifContributeurs(sujetQuestion.question.exercice, contributeurs)
+        fusionneSujetCollaboratifContributeurs(sujetQuestion.question.exercice, nouveauContributeurSet)
       }
 
-      contributeurs.each {
+      nouveauContributeurSet.each {
         sujetQuestion.question.addToContributeurs(it)
       }
+      sujetQuestion.question.addPaterniteItem(
+          sujet.proprietaire,
+          null,
+          nouveauContributeurSet.collect { it.nomAffichage }
+      )
+
       sujetQuestion.save()
     }
 
