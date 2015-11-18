@@ -67,7 +67,7 @@
                 controller="sujet"
                 id="${sujet.id}"
                 params="[lastUpdated: sujet.lastUpdated.time]"
-                class="finalized">Finaliser le sujet</g:link>
+                class="finalized">Clore le sujet</g:link>
     </g:if>
     <g:elseif test="${sujet.termine}">
       | <span class="finalized">Sujet finalisé
