@@ -146,15 +146,22 @@ class QuestionService implements ApplicationContextAware {
         questionOriginale.proprietaire, // Lorsqu'on duplique une question pour la rendre collaborative, on laisse inchangé le propriétaire original
         questionOriginale.titre
     )
+
+    Set<Personne> contributeurSet = new HashSet<Personne>(sujet.contributeurs)
+    contributeurSet.remove(personne)
+    if(sujet.proprietaire.id != personne.id) {
+      contributeurSet.add(sujet.proprietaire)
+    }
+
     questionCollaborative.addPaterniteItem(
         personne,
         null,
-        sujet.contributeurs.collect { it.nomAffichage }
+        contributeurSet.collect { it.nomAffichage }
     )
 
     // Rend la question collaborative pour le sujet
     questionCollaborative.collaboratif = true
-    sujet.contributeurs.each {
+    contributeurSet.each {
       questionCollaborative.addToContributeurs(it)
     }
     questionCollaborative.sujetLie = sujet
@@ -409,7 +416,14 @@ class QuestionService implements ApplicationContextAware {
     if (sujet.estCollaboratif()) {
       question.collaboratif = true
       question.sujetLie = sujet
-      sujet.contributeurs.each {
+
+      Set<Personne> contributeurSet = new HashSet<Personne>(sujet.contributeurs)
+      contributeurSet.remove(proprietaire)
+      if(sujet.proprietaire.id != proprietaire.id) {
+        contributeurSet.add(sujet.proprietaire)
+      }
+
+      contributeurSet.each {
         question.addToContributeurs(it)
       }
 
