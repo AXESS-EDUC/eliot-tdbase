@@ -30,7 +30,7 @@ class EliotTextesPluginGrailsPlugin {
   // the group id
   def groupId = "org.lilie.services.eliot"
   // the plugin version
-  def version = "2.4.5-eliot-3.7.4-RC1"
+  def version = "2.4.5-eliot-3.8.0-RC2"
   // the version or versions of Grails the plugin is designed for
   def grailsVersion = "2.0.1 > *"
   // the other plugins this plugin depends on
