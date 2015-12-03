@@ -47,6 +47,9 @@
           <g:if test="${item.estTermine() || item.estDistribue()}">
             <g:img dir="images/eliot" file="termine.png" title="Non modifiable" />
           </g:if>
+        <g:else>
+          <g:img dir="images/eliot" file="non-termine.png" title="Modifiable" />
+        </g:else>
           <br/>
 	      	<em>(${item.type.nom})</em><br/>
 	        <g:if test="${item.niveau?.libelleLong}"><strong>» Niveau : </strong>${item.niveau?.libelleLong} </g:if>

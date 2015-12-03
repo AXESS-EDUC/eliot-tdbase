@@ -276,6 +276,9 @@
           <g:if test="${questionInstance.estTermine() || questionInstance.estDistribue()}">
             <g:img dir="images/eliot" file="termine.png" title="Non modifiable" />
           </g:if>
+          <g:else>
+            <g:img dir="images/eliot" file="non-termine.png" title="Modifiable" />
+          </g:else>
         </h1>
 
         <button id="${questionInstance.id}">Actions</button>
