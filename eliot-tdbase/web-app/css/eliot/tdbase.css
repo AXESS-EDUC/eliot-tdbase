@@ -327,7 +327,8 @@ Style custom eliot-tdbase
     padding: 5px 0 7px;
     border-bottom: 1px solid #3F61A0;
     color: #3F61A0;
-    background: url("../../images/eliot/picto-sujet.png") no-repeat 100% 0;
+    background: url("../../images/eliot/sujet_actif.png") no-repeat 100% 0;
+    background-size: 20px;
 
     -moz-box-shadow: 0px 1px 0px #fff;
     -webkit-box-shadow: 0px 1px 0px #fff;
@@ -340,7 +341,8 @@ Style custom eliot-tdbase
 }
 
 .tdbase-sujet-liste-elements li {
-    background: url("../../images/eliot/picto-question.png") no-repeat 0 50%;
+    background: url("../../images/eliot/item_actif.png") no-repeat 0 50%;
+    background-size: 20px;
     padding: 8px 0 8px 28px;
     margin-top: 4px;
     margin-left: 0;
@@ -582,23 +584,28 @@ div.portal-default_results-list h1 {
 }
 
 div.portal-default_results-list.sujet>div {
-    background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;
+    background: url("../../images/eliot/sujet_actif.png") no-repeat 10px 10px;
+    background-size: 20px;
 }
 
 div.portal-default_results-list.sujet > div.masque {
-    background: url("../../images/eliot/picto-sujet-masque.png") no-repeat 10px 10px;
+    background: url("../../images/eliot/sujet_inactif.png") no-repeat 10px 10px;
+    background-size: 20px;
 }
 
 div.portal-default_results-list.question>div {
-    background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;
+    background: url("../../images/eliot/item_actif.png") no-repeat 10px 10px;
+    background-size: 20px;
 }
 
 div.portal-default_results-list.question>div.masque {
-    background: url("../../images/eliot/picto-question-masque.png") no-repeat 10px 10px; !important
+    background-size: 20px;
+    background-image: url("../../images/eliot/item_inactif.png"); !important
 }
 
 div.portal-default_results-list.sceance>div {
-    background: url("../../images/eliot/picto-sceance.png") no-repeat 10px 8px;
+    background: url("../../images/eliot/seance_actif.png") no-repeat 10px 8px;
+    background-size: 20px;
 }
 
 div.portal-default_results-list.sceance em {
@@ -709,22 +716,26 @@ Style for the edition of a document or category (ToolBar)
 
 .portal-tabs .add {
     padding: 4px 4px 4px 22px;
-    background: url("../../images/eliot/add16x16.gif") no-repeat 0 2px;
+    background: url("../../images/eliot/ajout_actif.png") no-repeat 0 2px;
+    background-size: 16px;
 }
 
 .portal-tabs .modify {
     padding: 4px 4px 4px 22px;
-    background: url("../../images/eliot/edit.png") no-repeat 0 2px;
+    background: url("../../images/eliot/modification_actif.png") no-repeat 0 2px;
+    background-size: 16px;
 }
 
 .portal-tabs .locked {
     padding: 4px 4px 4px 22px;
-    background: url("../../images/eliot/locked.png") no-repeat 0 2px;
+    background: url("../../images/eliot/cadenas_ferme_actif.png") no-repeat 0 2px;
+    background-size: 16px;
 }
 
 .portal-tabs .unlock {
     padding: 4px 4px 4px 22px;
-    background: url("../../images/eliot/unlock.png") no-repeat 0 2px;
+    background: url("../../images/eliot/cadenas_ouvert_actif.png") no-repeat 0 2px;
+    background-size: 16px;
 }
 
 .portal-tabs .finalized {
@@ -743,11 +754,12 @@ Style for the edition of a document or category (ToolBar)
 .portal-tabs a.delete {
     padding: 4px 4px 4px 20px;
     background: url("../../images/eliot/picto-delete.png") no-repeat 0 4px;
+    background-size: 16px;
 }
 
-.portal-tabs a.delete:hover {
-    background-position: 0 -23px;
-}
+/*.portal-tabs a.delete:hover {*/
+    /*background-position: 0 -23px;*/
+/*}*/
 
 /*******************************************************************************
 
@@ -810,7 +822,8 @@ Style for the edition of a document or category (Content)
     font-size: 1.6em;
     margin-right: 10px;
     padding: 0 0 4px 30px;
-    background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;
+    background: url("../../images/eliot/sujet_actif.png") no-repeat 0 0;
+    background-size: 20px;
     font-weight: bold;
     color: #3F61A0;
 }
@@ -833,7 +846,8 @@ Style for the edition of a document or category (Content)
 }
 
 .question .portal-form_container .title {
-    background: url("../../images/eliot/picto-question.png") no-repeat 0 0;
+    background: url("../../images/eliot/item_actif.png") no-repeat 0 0;
+  background-size: 20px;
 }
 
 .question .portal-form_container td {
@@ -893,7 +907,7 @@ button.ui-button-icons-only{width: 3.2em;}
 .ui-button-icon-primary,
 .ui-icon ui-icon-gear{left: .3em!important;}
 
-.ui-button-icon-secondary, 
+.ui-button-icon-secondary,
 .ui-icon ui-icon-triangle-1-s{right: .3em!important;}
 
 .ui-button:hover, .button:hover, .ui-button.active {
@@ -912,7 +926,8 @@ button.ui-button-icons-only{width: 3.2em;}
     padding: 0 10px 10px;
     margin: 0 10px 10px;
     border: none;
-    background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 8px;
+    background: #f8f8f8 url("../../images/eliot/item_actif.png") no-repeat 8px 8px;
+  background-size: 20px;
 }
 
 .tdbase-sujet-edition-question h1 {
@@ -1012,7 +1027,7 @@ button.ui-button-icons-only{width: 3.2em;}
     display: block;
 }
 	.edite.form_actions{margin: 20px 10px;padding-right: 15px;}
-	
+
 .teste .form_actions .button {
     margin-right: 20px;
 }
@@ -1026,7 +1041,8 @@ button.ui-button-icons-only{width: 3.2em;}
 .edite .tdbase-sujet-titre {
     text-align: left;
     padding: 10px 0 4px 30px;
-    background: url("../../images/eliot/picto-sujet.png") no-repeat 0 10px;
+    background: url("../../images/eliot/sujet_actif.png") no-repeat 0 10px;
+    background-size: 20px;
 }
 
 .teste h2 {
@@ -1082,18 +1098,18 @@ button.ui-button-icons-only{width: 3.2em;}
     padding-bottom: 20px;
     background-color: white;
 }
-	
+
 .edite.apercu.portal-form_container {background-color: whitesmoke;}
 
 	/* Style for item table detail */
 	.edite.apercu.portal-form_container  td.label{padding-right: 5px;}
-	
+
 	td.detail{
 		clear: both;
 		background-color: #fff;
 		padding: 10px!important;
 		margin-left: 10px;
-		
+
 		-moz-box-shadow: 10px 10px 5px #999;
 		-webkit-box-shadow: 10px 10px 5px #999;
 		box-shadow: 4px 4px 4px #d5d5d5;
@@ -1105,13 +1121,14 @@ button.ui-button-icons-only{width: 3.2em;}
 			padding: 10px 0;
 			margin: 10px 0;
 		}
-		
+
 .edite.portal-form_container table td {padding: 2px 10px 2px 0;}
 
 .edite.portal-form_container h1 {
     padding-left: 50px;
     padding-bottom: 10px;
-    background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
+    background: url("../../images/eliot/item_actif.png") no-repeat 10px 0;
+  background-size: 20px;
     border-bottom: 1px dotted #ccc;
 }
 
@@ -1129,7 +1146,8 @@ button.ui-button-icons-only{width: 3.2em;}
 .visualise h1.tdbase-sujet-titre {
     text-align: left;
     padding: 10px 0 4px 30px;
-    background: url("../../images/eliot/picto-sceance.png") no-repeat 0 10px;
+    background: url("../../images/eliot/seance_actif.png") no-repeat 0 10px;
+    background-size: 20px;
 }
 
 .visualise ul {
@@ -1178,7 +1196,8 @@ button.ui-button-icons-only{width: 3.2em;}
 .add-item h1 {
     padding-left: 50px;
     padding-bottom: 8px;
-    background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
+    background: url("../../images/eliot/item_actif.png") no-repeat 10px 0;
+  background-size: 20px;
     border-bottom: 1px dotted #ccc;
     margin-bottom: 10px;
 }
@@ -1195,7 +1214,7 @@ Style for frontpage Widget
 ********************************************************************************/
 #widgets{
 	overflow: hidden;
-	padding: 20px 0 100px;	
+	padding: 20px 0 100px;
 }
 	#widgets>p{margin: 0 200px 25px 20px;line-height: 130%;}
 	#widgets>p>strong{font-size: 130%;margin-bottom:10px;display: block;}
@@ -1214,11 +1233,20 @@ Style for frontpage Widget
 		background-color:whitesmoke ;/*#f0f2f2*/
 		padding: 10px 5px 2px 15px;
 	}
-		.widget.sceances h1{background:whitesmoke url("../../images/eliot/picto-sceance.png") no-repeat 95% 12px;}
-		.widget.sujets h1{background:whitesmoke url("../../images/eliot/picto-sujet.png") no-repeat 95% 10px;}
-		.widget.items h1{background:whitesmoke url("../../images/eliot/picto-question.png") no-repeat 95% 10px;}
+		.widget.sceances h1{
+        background:whitesmoke url("../../images/eliot/seance_actif.png") no-repeat 95% 12px;
+        background-size: 20px;
+    }
+		.widget.sujets h1{
+        background:whitesmoke url("../../images/eliot/sujet_actif.png") no-repeat 95% 10px;
+        background-size: 20px;
+    }
+		.widget.items h1{
+      background:whitesmoke url("../../images/eliot/item_actif.png") no-repeat 95% 10px;
+      background-size: 20px;
+    }
 		.widget.resultats h1{background:whitesmoke url("../../images/eliot/picto-result.png") no-repeat 95% 12px;}
-		
+
 	.widget .nb_result{
 		display: block;
 		padding-bottom: 8px;
@@ -1275,7 +1303,7 @@ Style for frontpage Widget
 	border-bottom-left-radius: 6px;
     /*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
-	
+
 /*******************************************************************************
 
 Style for result table
@@ -1304,7 +1332,8 @@ Style for result table
 	padding: 0 10px 10px;
     margin: 0 10px 10px;
     border: none;
-    background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 12px;
+    background: #f8f8f8 url("../../images/eliot/item_actif.png") no-repeat 8px 12px;
+    background-size: 20px;
 }
 .exercice h1{
 	padding: 13px 0 13px 30px;
@@ -1337,7 +1366,7 @@ Style for result table
 	font-size: 1.2em;
 	margin: 2px 0;
 	padding-left: 45px;
-	color: #444;	
+	color: #444;
 }
 
 .portal-default_results-list.sceance.resultats .note{color: #ec8e0c;}

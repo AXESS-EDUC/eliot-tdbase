@@ -274,10 +274,10 @@
             <g:img dir="images/eliot" file="collaborative.png" title="Formateurs: ${questionInstance.getContributeursAffichage()} - Sujet: ${questionInstance.sujetLie?.titre ?: 'aucun'}" />
           </g:if>
           <g:if test="${questionInstance.estTermine() || questionInstance.estDistribue()}">
-            <g:img dir="images/eliot" file="termine.png" title="Non modifiable" />
+            <g:img dir="images/eliot" file="modification_inactif.png" title="Non modifiable" width="16" />
           </g:if>
           <g:else>
-            <g:img dir="images/eliot" file="non-termine.png" title="Modifiable" />
+            <g:img dir="images/eliot" file="modification_actif.png" title="Modifiable" width="16" />
           </g:else>
         </h1>
 
