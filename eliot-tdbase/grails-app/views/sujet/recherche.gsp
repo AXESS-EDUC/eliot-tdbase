@@ -261,10 +261,10 @@
                 <h1>
                   ${fieldValue(bean: sujet, field: "titre")}
                   <g:if test="${sujet.estCollaboratif()}">
-                    <g:img dir="images/eliot" file="collaborative.png" title="Formateurs: ${sujet.getContributeursAffichage()}" />
+                    <g:img dir="images/eliot" file="sujet_collaboratif.png" title="Formateurs: ${sujet.getContributeursAffichage()}" />
                   </g:if>
                   <g:if test="${sujet.estTermine() || sujet.estDistribue()}">
-                    <g:img dir="images/eliot" file="termine.png" title="Non modifiable" width="16" />
+                    <g:img dir="images/eliot" file="modification_inactif.png" title="Non modifiable" width="16" />
                   </g:if>
                   <g:else>
                     <g:img dir="images/eliot" file="modification_actif.png" title="Modifiable" width="16" />

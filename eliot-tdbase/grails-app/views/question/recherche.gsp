@@ -271,7 +271,7 @@
         <h1>
           ${fieldValue(bean: questionInstance, field: "titre")}
           <g:if test="${questionInstance.estCollaboratif()}">
-            <g:img dir="images/eliot" file="collaborative.png" title="Formateurs: ${questionInstance.getContributeursAffichage()} - Sujet: ${questionInstance.sujetLie?.titre ?: 'aucun'}" />
+            <g:img dir="images/eliot" file="item_collaboratif.png" title="Formateurs: ${questionInstance.getContributeursAffichage()} - Sujet: ${questionInstance.sujetLie?.titre ?: 'aucun'}" />
           </g:if>
           <g:if test="${questionInstance.estTermine() || questionInstance.estDistribue()}">
             <g:img dir="images/eliot" file="modification_inactif.png" title="Non modifiable" width="16" />

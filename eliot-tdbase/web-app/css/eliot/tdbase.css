@@ -753,7 +753,7 @@ Style for the edition of a document or category (ToolBar)
 
 .portal-tabs a.delete {
     padding: 4px 4px 4px 20px;
-    background: url("../../images/eliot/picto-delete.png") no-repeat 0 4px;
+    background: url("../../images/eliot/suppression.png") no-repeat 0 4px;
     background-size: 16px;
 }
 
@@ -1293,7 +1293,8 @@ Style for frontpage Widget
     text-align: left;
     margin: 1px 0 0px;
     padding: 6px 10px 8px 30px;
-    background:#f0f0f0 url("../../images/eliot/add16x16.gif") no-repeat 7px 5px;
+    background:#f0f0f0 url("../../images/eliot/ajout_actif.png") no-repeat 7px 5px;
+    background-size: 16px;
 
     -webkit-border-bottom-right-radius: 6px;
 	-webkit-border-bottom-left-radius: 6px;
