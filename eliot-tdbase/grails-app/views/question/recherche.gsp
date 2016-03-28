@@ -141,9 +141,9 @@
 
   </r:script>
   <style>
-    .custom-combobox-input {
-      width: 15em;
-    }
+  .custom-combobox-input {
+    width: 15em;
+  }
   </style>
   <title>
     <g:if test="${afficheFormulaire}">
@@ -267,17 +267,22 @@
     %>
     <g:each in="${questions}" status="i" var="questionInstance">
       <g:set var="masque" value="${questionsMasqueesIds?.contains(questionInstance.id)}"/>
-      <div class="${(i % 2) == 0 ? 'even' : 'odd'} question ${masque ? 'masque' : ''}" data-question="${questionInstance.id}" style="z-index: 0">
-        <h1>
+      <div
+          class="${(i % 2) == 0 ? 'even' : 'odd'} question ${masque ? 'masque' : ''} ${questionInstance.estCollaboratif() ? 'collaboratif' : ''} "
+          data-question="${questionInstance.id}" style="z-index: 0">
+        <g:if test="${questionInstance.estCollaboratif()}">
+          <h1 title="Formateurs: ${questionInstance.getContributeursAffichage()} - Sujet: ${questionInstance.sujetLie?.titre ?: 'aucun'}">
+        </g:if>
+        <g:else>
+          <h1>
+        </g:else>
           ${fieldValue(bean: questionInstance, field: "titre")}
-          <g:if test="${questionInstance.estCollaboratif()}">
-            <g:img dir="images/eliot" file="item_collaboratif.png" title="Formateurs: ${questionInstance.getContributeursAffichage()} - Sujet: ${questionInstance.sujetLie?.titre ?: 'aucun'}" />
-          </g:if>
+
           <g:if test="${questionInstance.estTermine() || questionInstance.estDistribue()}">
-            <g:img dir="images/eliot" file="modification_inactif.png" title="Non modifiable" width="16" />
+            <g:img dir="images/eliot" file="modification_inactif.png" title="Non modifiable" width="16"/>
           </g:if>
           <g:else>
-            <g:img dir="images/eliot" file="modification_actif.png" title="Modifiable" width="16" />
+            <g:img dir="images/eliot" file="modification_actif.png" title="Modifiable" width="16"/>
           </g:else>
         </h1>
 
@@ -362,7 +367,8 @@
           <g:if
               test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, questionInstance) && afficheLiensModifier}">
             <li>
-              <a href="#" onclick="supprimeQuestion(${questionInstance.id}, '${questionInstance.type.code}'); return false;">Supprimer</a>
+              <a href="#" onclick="supprimeQuestion(${questionInstance.id}, '${questionInstance.type.code}');
+              return false;">Supprimer</a>
             </li>
           </g:if>
           <g:else>
@@ -372,11 +378,13 @@
           <g:if test="${artefactHelper.utilisateurPeutMasquerArtefact(utilisateur, questionInstance)}">
             <li><hr/></li>
 
-            <li style="${!masque ? '' : 'display: none;'}" class="masqueQuestion" data-question="${questionInstance.id}">
+            <li style="${!masque ? '' : 'display: none;'}" class="masqueQuestion"
+                data-question="${questionInstance.id}">
               <a href="#" onclick="masqueQuestion('${questionInstance.id}')">Masquer</a>
             </li>
 
-            <li style="${masque ? '' : 'display: none;'}" class="annuleMasqueQuestion" data-question="${questionInstance.id}">
+            <li style="${masque ? '' : 'display: none;'}" class="annuleMasqueQuestion"
+                data-question="${questionInstance.id}">
               <a href="#" onclick="annuleMasqueQuestion('${questionInstance.id}')">Ne plus masquer</a>
             </li>
 

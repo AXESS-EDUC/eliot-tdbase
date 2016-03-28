@@ -38,11 +38,14 @@
   <div class="innertube">
 	  <ul>
 	    <g:each in="${sujets}" status="i" var="sujetInstance">
-	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}">
-          <g:link controller="sujet" title="${sujetInstance.titre}" action="teste" id="${sujetInstance.id}">${sujetInstance.titre}</g:link>
-          <g:if test="${sujetInstance.estCollaboratif()}">
-            <g:img dir="images/eliot" file="sujet_collaboratif.png" title="Formateurs: ${sujetInstance.getContributeursAffichage()}" />
-          </g:if>
+	      <li class="${(i % 2) == 0 ? 'even' : 'odd'} ${sujetInstance.estCollaboratif() ? 'collaboratif' : ''}">
+        <g:if test="${sujetInstance.estCollaboratif()}">
+          <g:link controller="sujet" action="teste" id="${sujetInstance.id}" title="Formateurs: ${sujetInstance.getContributeursAffichage()}">${sujetInstance.titre}</g:link>
+        </g:if>
+        <g:else>
+          <g:link controller="sujet" action="teste" id="${sujetInstance.id}">${sujetInstance.titre}</g:link>
+        </g:else>
+
           <g:if test="${sujetInstance.estTermine() || sujetInstance.estDistribue()}">
             <g:img dir="images/eliot" file="modification_inactif.png" title="Non modifiable" width="16" />
           </g:if>
