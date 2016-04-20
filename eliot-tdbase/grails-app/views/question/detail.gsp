@@ -51,16 +51,21 @@
   <div class="portal-tabs">
 
     <span class="portal-tabs-famille-liens">
-  <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, question)}">
-    <g:link action="edite" class="modify"
-            id="${question.id}">Modifier l'item</g:link>&nbsp; |
-  </g:if>
-  <g:else>
-    <span class="modify">Modifier l'item</span>&nbsp;| &nbsp;
-  </g:else>
-  </span>
-  </span>
-  <span class="portal-tabs-famille-liens">
+      <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, question)}">
+        <g:link action="edite" class="modify"
+                id="${question.id}">Modifier l'item</g:link>&nbsp;
+      </g:if>
+      <g:else>
+        <span class="modify">Modifier l'item</span>&nbsp;
+      </g:else>
+    </span>
+    <g:render template="/question/infoVerrou"
+              model="${[
+                  question: question,
+                  utilisateur: utilisateur
+              ]}"/>
+
+    <span class="portal-tabs-famille-liens">
     <button id="${question.id}">Actions</button>
     <ul id="menu_actions_${question.id}"
         class="tdbase-menu-actions">
@@ -111,7 +116,7 @@
         </li>
       </g:if>
       <g:else>
-        Exporter
+        <li>Exporter</li>
       </g:else>
 
       <li><hr/></li>
@@ -129,6 +134,11 @@
   </div>
 </g:if>
 
+<g:if test="${flash.errorMessage}">
+  <div class="portal-messages">
+    <li class="error"><g:message code="${flash.errorMessage}"/></li>
+  </div>
+</g:if>
 <g:if test="${flash.messageCode}">
   <div class="portal-messages">
     <li class="success"><g:message code="${flash.messageCode}"

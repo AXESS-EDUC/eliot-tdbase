@@ -51,7 +51,7 @@ class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase implements
         xmlInput,
         sujet,
         new ReferentielEliot(
-            matiere: sujet.matiere,
+            matiereBcn: sujet.matiereBcn,
             niveau: sujet.niveau
         ),
         personne1
@@ -72,7 +72,7 @@ class MoodleQuizExporterServiceIntegrationTest extends GroovyTestCase implements
         xmlOutput.bytes,
         sujet2,
         new ReferentielEliot(
-            matiere: sujet2.matiere,
+            matiereBcn: sujet2.matiereBcn,
             niveau: sujet2.niveau
         ),
         personne1

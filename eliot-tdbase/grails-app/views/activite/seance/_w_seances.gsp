@@ -39,11 +39,11 @@
 	  <ul>
 	    <g:each in="${seances}" status="i" var="seance">
 	      <li class="${(i % 2) == 0 ? 'even' : 'odd'}">
-	      <g:if test="{seance.matiere?.libelleLong} == ''">
+	      <g:if test="{seance.matiereBcn?.libelleEdition} == ''">
 	      	 
 	      </g:if>
 	      <g:else>
-	           ${seance.matiere?.libelleLong} -
+	           ${seance.matiereBcn?.libelleEdition} -
 	      </g:else>
 	      <g:link controller="activite" action="travailleCopie" id="${seance.id}">${seance.sujet.titre}</g:link><br/>
 	        <strong> » Fin : </strong>${seance.dateFin.format('dd/MM/yy HH:mm')}

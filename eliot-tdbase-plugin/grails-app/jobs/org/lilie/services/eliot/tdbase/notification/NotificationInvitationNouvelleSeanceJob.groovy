@@ -111,10 +111,6 @@ class NotificationInvitationNouvelleSeanceJob {
                 seance.dateDebut.format("HH:mm"),
                 seance.dateFin.format("dd/MM/yyyy"),
                 seance.dateFin.format("HH:mm"),
-                grailsLinkGenerator.link(controller: "accueil", action: "activite",
-                        id: seance.id,
-                        absolute: true,
-                        params: [sujetId: seance.sujetId]),
                 seance.enseignant.nomAffichageSansPrenom,
                 seance.findEtablissement().nomAffichage
         ].toArray()

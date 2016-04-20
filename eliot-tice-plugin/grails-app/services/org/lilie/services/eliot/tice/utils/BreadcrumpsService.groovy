@@ -66,6 +66,10 @@ class BreadcrumpsService implements Serializable {
     }
   }
 
+  def removeLastLien() {
+    breadcrumps.removeLastLien()
+  }
+
   /**
    * Renvoie le lien correspondant à un backtrack applicatif : à utiliser typiquement
    * pour mettre en place un lien annuler

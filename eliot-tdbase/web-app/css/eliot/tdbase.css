@@ -1,15 +1,20 @@
-body{background-color: #fff;}
-body>.container{border: none;}
+body {
+  background-color: #fff;
+}
+
+body > .container {
+  border: none;
+}
 
 h1 {
-    margin: 15px;
-    font-family: inherit;
+  margin: 15px;
+  font-family: inherit;
 }
 
 h2 {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-family: inherit;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: inherit;
 }
 
 h2.doc_title {
@@ -17,54 +22,54 @@ h2.doc_title {
 }
 
 p img {
-    float: none;
-    margin: 0px 0px 0px 0px;
+  float: none;
+  margin: 0px 0px 0px 0px;
 
 }
 
 textarea {
-    height: auto;
-    width: auto;
+  height: auto;
+  width: auto;
 }
 
 .label {
-    color: #3F61A0;
-    font-weight: bold;
-    font-size: 1em;
-    text-align: right;
-    vertical-align: top;
+  color: #3F61A0;
+  font-weight: bold;
+  font-size: 1em;
+  text-align: right;
+  vertical-align: top;
 }
 
 .obligatoire {
-    color: red;
+  color: red;
 }
 
 .portal-form_container table {
-    border: 0;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
+  border: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 .portal-form_container td {
-    border: 0;
+  border: 0;
 }
 
 table table, table table td {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .portal-form_container table table {
-    width: 100%;
+  width: 100%;
 }
 
 .portal-form_container select {
-    width: 20em;
+  width: 20em;
 }
 
-.portal-form_container  textarea {
-    border-color: #ccc;
+.portal-form_container textarea {
+  border-color: #ccc;
 }
 
 /*******************************************************************************
@@ -73,21 +78,21 @@ Custom logo and menu styles
 
 ********************************************************************************/
 #logo {
-    background-image: url("../../images/eliot/tdbase.png");
-    background-repeat: no-repeat;
-    padding-left: 62px;
-    font-size: 2.5em;
-    font-family: Georgia, Times, serif;
-    vertical-align: middle;
-    line-height: 54px;
-    height: 64px;
-    width: auto;
-    text-align: left;
-    color: #244A92;
+  background-image: url("../../images/eliot/tdbase.png");
+  background-repeat: no-repeat;
+  padding-left: 62px;
+  font-size: 2.5em;
+  font-family: Georgia, Times, serif;
+  vertical-align: middle;
+  line-height: 54px;
+  height: 64px;
+  width: auto;
+  text-align: left;
+  color: #244A92;
 }
 
 .portal-menu {
-    font-size: 1.1em;
+  font-size: 1.1em;
 }
 
 /*******************************************************************************
@@ -99,68 +104,69 @@ styles for TDBase tables
 /*border:0;*/
 /*padding-top:15px;	*/
 /*}*/
-.portal-default_table{
-	margin: 0 10px;
-	width: auto;
-	border: 0;
+.portal-default_table {
+  margin: 0 10px;
+  width: auto;
+  border: 0;
 }
+
 div.portal-default_table tr {
-    height: 10px;
+  height: 10px;
 }
 
 div.portal-default_table table {
-    color: #555;
-    border: 2px solid #728CBD;
-    border-collapse: collapse;
-    width: 100%;
-    margin: auto;
-    font-size: 11px;
+  color: #555;
+  border: 2px solid #728CBD;
+  border-collapse: collapse;
+  width: 100%;
+  margin: auto;
+  font-size: 11px;
 }
 
 div.tdbase_layout_table table {
-    border: 0;
-    padding: 2px;
-    margin: 2px;
+  border: 0;
+  padding: 2px;
+  margin: 2px;
 }
 
 div.tdbase_layout_table td {
-    border: 0;
+  border: 0;
 }
 
 td.insider_label {
-    text-align: right;
-    background-color: #F3F6FB;
-    color: #3F61A0;
-    width: 50px;
-    padding-bottom: 2px;
+  text-align: right;
+  background-color: #F3F6FB;
+  color: #3F61A0;
+  width: 50px;
+  padding-bottom: 2px;
 }
 
 td.inspect_field {
-    text-align: left;
-    background-color: #F3F6FB;
-    color: #3F61A0;
-    padding-bottom: 2px;
+  text-align: left;
+  background-color: #F3F6FB;
+  color: #3F61A0;
+  padding-bottom: 2px;
 }
 
 td.ERXMatrixTableCell {
-    border: none;
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-    width: 95%;
-    line-height: 1;
+  border: none;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  width: 95%;
+  line-height: 1;
 }
 
 table.ERXMatrixTable {
-    border: none;
-    margin: 0px;
-    width: 100%;
+  border: none;
+  margin: 0px;
+  width: 100%;
 }
 
 table.ERXMatrixTable tbody tr td {
-    border: none;
-    margin: 0px;
-    padding-bottom: 0px;
-    text-align: left;
+  border: none;
+  margin: 0px;
+  padding-bottom: 0px;
+  text-align: left;
 }
 
 /*******************************************************************************
@@ -170,16 +176,16 @@ styles for TDBase drag and drop operations
 ********************************************************************************/
 
 div.item_reordering_droparea {
-    clear: both;
-    border: 1px solid #728CBD;
-    background-color: white;
-    padding: 2px;
-    width: 780px;
-    margin-top: 10px
+  clear: both;
+  border: 1px solid #728CBD;
+  background-color: white;
+  padding: 2px;
+  width: 780px;
+  margin-top: 10px
 }
 
 div.item_reordering_droparea_active {
-    background-color: #728CBD;
+  background-color: #728CBD;
 }
 
 /*******************************************************************************
@@ -189,36 +195,36 @@ Style for the graphic match interaction :
 ********************************************************************************/
 
 div.gmactive {
-    background-color: #728CBD;
+  background-color: #728CBD;
 }
 
 div.gmdropArea {
-    background-color: #F3F6FB;
-    width: inherit;
-    height: inherit;
-    font-size: x-small;
+  background-color: #F3F6FB;
+  width: inherit;
+  height: inherit;
+  font-size: x-small;
 }
 
 span.gmdroppableItem {
-    background-color: white;
-    margin-right: 10px;
-    margin-left: 10px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 2px;
-    padding-right: 2px;
-    font-size: x-small;
+  background-color: white;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-size: x-small;
 }
 
 .reorderableItem {
-    background-color: white;
-    margin: 10px;
-    padding-bottom: 5px;
-    padding-top: 5px;
-    padding-left: 2px;
-    padding-right: 2px;
-    font-size: x-small;
-    cursor: move;
+  background-color: white;
+  margin: 10px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-size: x-small;
+  cursor: move;
 }
 
 /*******************************************************************************
@@ -228,35 +234,35 @@ Style for the association interaction :
 ********************************************************************************/
 
 div.association_droparea {
-    clear: both;
-    border: 1px solid #F3F6FB;
-    background-color: white;
-    height: 30px;
-    width: 200px;
-    margin-top: 5px;
-    text-align: center;
+  clear: both;
+  border: 1px solid #F3F6FB;
+  background-color: white;
+  height: 30px;
+  width: 200px;
+  margin-top: 5px;
+  text-align: center;
 }
 
 div.association_droparea_active {
-    background-color: #728CBD;
+  background-color: #728CBD;
 }
 
 div.filledArea {
-    clear: both;
-    border: 1px solid #E8A400;
-    background-color: white;
-    width: 200px;
-    margin-top: 5px;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    text-align: center;
+  clear: both;
+  border: 1px solid #E8A400;
+  background-color: white;
+  width: 200px;
+  margin-top: 5px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  text-align: center;
 }
 
 .portal-form_container_large {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid #728CBD;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #728CBD;
 }
 
 /*******************************************************************************
@@ -265,37 +271,37 @@ Style for main page :
 
 ********************************************************************************/
 .left-column {
-    background: rgb(203, 219, 234);
-    margin-top: 10px;
-    padding: 5px;
-    border: 1px solid #153E7E;
+  background: rgb(203, 219, 234);
+  margin-top: 10px;
+  padding: 5px;
+  border: 1px solid #153E7E;
 }
 
 .left-column ul li {
-    color: #153E7E;
+  color: #153E7E;
 }
 
 .center-column {
-    background: #f5fffa;
-    margin-top: 10px;
-    padding: 5px;
-    border: 1px solid #153E7E;
+  background: #f5fffa;
+  margin-top: 10px;
+  padding: 5px;
+  border: 1px solid #153E7E;
 }
 
 .right-column {
-    color: #153E7E;
-    background: rgb(203, 219, 234);
-    margin-top: 10px;
-    padding: 5px;
-    border: 1px solid #153E7E;
+  color: #153E7E;
+  background: rgb(203, 219, 234);
+  margin-top: 10px;
+  padding: 5px;
+  border: 1px solid #153E7E;
 }
 
 .app-name {
-    font-weight: bold;
-    color: #153E7E;
-    font-family: Arial, Sans-Serif;
-    font-size: xx-large;
-    font-style: italic;
+  font-weight: bold;
+  color: #153E7E;
+  font-family: Arial, Sans-Serif;
+  font-size: xx-large;
+  font-style: italic;
 }
 
 /*******************************************************************************
@@ -304,137 +310,138 @@ Style custom eliot-tdbase
 *******************************************************************************/
 
 .tdbase-sujet-liste-elements {
-    margin: 0 10px;
-    padding: 10px;
-    /*border: 1px solid #ec8e0c;*/
-    width: 24%;
-    float: right;
-    background-color: #F3F6FB;
+  margin: 0 10px;
+  padding: 10px;
+  /*border: 1px solid #ec8e0c;*/
+  width: 24%;
+  float: right;
+  background-color: #F3F6FB;
 
-    /*-moz-box-shadow:0px 0px 8px #bababa;
-     -webkit-box-shadow:0px 0px 8px #bababa;
-     box-shadow:0px 0px 8px #bababa;*/
-    /*IE DOES NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
+  /*-moz-box-shadow:0px 0px 8px #bababa;
+   -webkit-box-shadow:0px 0px 8px #bababa;
+   box-shadow:0px 0px 8px #bababa;*/
+  /*IE DOES NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
 
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    /*IE DOES NOT SUPPORT BORDER RADIUS*/
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  /*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
 
 .tdbase-sujet-liste-elements h4 {
-    margin: 0 10px;
-    padding: 5px 0 7px;
-    border-bottom: 1px solid #3F61A0;
-    color: #3F61A0;
-    background: url("../../images/eliot/picto-sujet.png") no-repeat 100% 0;
+  margin: 0 10px;
+  padding: 5px 0 7px;
+  border-bottom: 1px solid #3F61A0;
+  color: #3F61A0;
+  background: url("../../images/eliot/sujet_actif.png") no-repeat 100% 0;
+  background-size: 20px;
 
-    -moz-box-shadow: 0px 1px 0px #fff;
-    -webkit-box-shadow: 0px 1px 0px #fff;
-    box-shadow: 0px 1px 0px #fff;
-    /*IE DOES NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
+  -moz-box-shadow: 0px 1px 0px #fff;
+  -webkit-box-shadow: 0px 1px 0px #fff;
+  box-shadow: 0px 1px 0px #fff;
+  /*IE DOES NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
 }
 
 .tdbase-sujet-liste-elements ul {
-    padding: 10px;
+  padding: 10px;
 }
 
 .tdbase-sujet-liste-elements li {
-    background: url("../../images/eliot/picto-question.png") no-repeat 0 50%;
-    padding: 8px 0 8px 28px;
-    margin-top: 4px;
-    margin-left: 0;
-    list-style-type: none;
-    border-top: 1px dotted #ccc;
-    font-size: 1.05em;
+  background: url("../../images/eliot/item_actif.png") no-repeat 0 50%;
+  background-size: 20px;
+  padding: 8px 0 8px 28px;
+  margin-top: 4px;
+  margin-left: 0;
+  list-style-type: none;
+  border-top: 1px dotted #ccc;
+  font-size: 1.05em;
 }
 
 .tdbase-sujet-liste-elements li:first-child {
-    border: none;
+  border: none;
 }
 
 .tdbase-sujet-edition-question-boutons {
-    text-align: right;
-    margin-top: 3px;
+  text-align: right;
+  margin-top: 3px;
 }
 
 .tdbase-sujet-edition-question-points {
-    margin-top: 3px;
-    margin-right: auto;
-    margin-left: auto;
-    width: 0%;
+  margin-top: 3px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 0%;
 }
 
 .tdbase-sujet-edition-question-preview {
-    padding: 20px 0 10px 30px;
-    margin: 8px 0;
-    border-top: 1px dotted #ccc;
+  padding: 20px 0 10px 30px;
+  margin: 8px 0;
+  border-top: 1px dotted #ccc;
 }
 
 .tdbase-sujet-edition-question-interaction {
-    margin: 10px 0;
-    padding: 3px;
-    border-top: 1px dotted #ccc;
+  margin: 10px 0;
+  padding: 3px;
+  border-top: 1px dotted #ccc;
 
 }
 
 .tdbase-sujet-titre {
-    text-align: center;
-    padding: 20px;
+  text-align: center;
+  padding: 20px;
 }
 
 .tdbase-menu-actions {
-    display: none;
-    text-align: left;
-    position: absolute;
-    z-index: 100;
-    background-color: white;
-    padding: 10px;
-    border: 1px solid #3F61A0;
-    width: 120px;
+  display: none;
+  text-align: left;
+  position: absolute;
+  z-index: 100;
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #3F61A0;
+  width: 120px;
 }
 
-
 .tdbase-menu-actions li {
-    list-style: none;
-    margin-left: 0;
-    padding: 1px 0;
-    font-style: italic;
-    color: #ccc;
+  list-style: none;
+  margin-left: 0;
+  padding: 1px 0;
+  font-style: italic;
+  color: #ccc;
 }
 
 .tdbase-menu-actions li a {
-    font-weight: normal;
-    font-style: normal;
+  font-weight: normal;
+  font-style: normal;
 }
 
 .tdbase-menu-actions li a:hover {
-    color: #3F61A0;
+  color: #3F61A0;
 }
 
 .tdbase-menu-actions hr {
-    border: none;
-    border-top: 1px dotted #ccc;
+  border: none;
+  border-top: 1px dotted #ccc;
 }
 
 .editinplace {
-    float: left;
-    height: 23px;
-    line-height: 200%;
-    border: 1px dotted #ccc;
-    background-color: #fff;
-    width: 5em;
-    text-align: center;
-    color: #ec8e0c;
+  float: left;
+  height: 23px;
+  line-height: 200%;
+  border: 1px dotted #ccc;
+  background-color: #fff;
+  width: 5em;
+  text-align: center;
+  color: #ec8e0c;
 }
 
 .editinplace input {
-    width: 5em;
-    padding: 0;
-    padding: 0.3em 0;
-    line-height: 100%;
-    margin: 0;
-    border: none;
+  width: 5em;
+  padding: 0;
+  padding: 0.3em 0;
+  line-height: 100%;
+  margin: 0;
+  border: none;
 }
 
 /*******************************************************************************
@@ -443,185 +450,224 @@ styles for TDBase results list
 ********************************************************************************/
 /* breadcrumbs */
 .portal-breadcrumbs {
-    line-height: 20px;
-    background-color: #F3F6FB;
-    border: 1px solid #D0D0D0;
-    border-left: none;
-    border-right: none;
-    padding: 0;
-    padding-left: 1em;
-    margin-right: 0px;
-    margin-top: 0;
-    margin-bottom: 10px;
-    height: 20px;
-    font-weight: normal !important;
+  line-height: 20px;
+  background-color: #F3F6FB;
+  border: 1px solid #D0D0D0;
+  border-left: none;
+  border-right: none;
+  padding: 0;
+  padding-left: 1em;
+  margin-right: 0px;
+  margin-top: 0;
+  margin-bottom: 10px;
+  height: 20px;
+  font-weight: normal !important;
 }
 
 .portal-breadcrumbs a, .portal-breadcrumbs span {
-    float: left;
-    font-size: 1em;
+  float: left;
+  font-size: 1em;
 
 }
 
 .portal-breadcrumbs a:first-child {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .portal-bc-separator {
-    background: transparent url(../../images/eliot/bg-breadcrumb.png) no-repeat scroll 0;
-    float: left;
-    margin-left: 1em;
-    margin-right: 1em;
-    width: 10px;
-    text-indent: 10px;
-    overflow: hidden;
+  background: transparent url(../../images/eliot/bg-breadcrumb.png) no-repeat scroll 0;
+  float: left;
+  margin-left: 1em;
+  margin-right: 1em;
+  width: 10px;
+  text-indent: 10px;
+  overflow: hidden;
 }
 
 /* Pagination */
 .portal_pagination {
-    position: relative;
-    margin-bottom: 0;
-    margin-right: 10px;
-    text-align: right;
-    margin-top: 30px;
+  position: relative;
+  margin-bottom: 0;
+  margin-right: 10px;
+  text-align: right;
+  margin-top: 30px;
 }
 
 .portal_pagination span,
 .portal_pagination a {
-    top: 0;
-    position: relative;
-    padding: 2px 4px;
+  top: 0;
+  position: relative;
+  padding: 2px 4px;
 }
 
 .portal_pagination .pager {
-	margin-top: -30px;
-	margin-bottom: 15px;
+  margin-top: -30px;
+  margin-bottom: 15px;
 }
 
 .portal_pagination a:hover,
 .portal_pagination a:focus {
-    color: #ec8e0c;
-    background-color: #fbffd9;
-    border-color: #ec8e0c;
+  color: #ec8e0c;
+  background-color: #fbffd9;
+  border-color: #ec8e0c;
 }
 
 div.portal-default_results-list {
-    margin-bottom: 10px;
-    position: relative;
+  margin-bottom: 10px;
+  position: relative;
 }
 
-.portal_pagination.partiel{width: 70.5%;}
-div.portal-default_results-list.partiel {width: 71.5%;}
-
-div.portal-default_results-list>div {
-    position: relative;
-    padding: 5px 0 10px;
-    margin: 0 10px;
-    border-bottom: 1px dotted #e5e5e5;
+.portal_pagination.partiel {
+  width: 70.5%;
 }
 
-div.portal-default_results-list>div:hover {
-    background-color: #fdfdfd !important;
+div.portal-default_results-list.partiel {
+  width: 71.5%;
 }
 
-div.portal-default_results-list>div:first-child {
-    border-top: 1px solid #e5e5e5;
+div.portal-default_results-list > div {
+  position: relative;
+  padding: 5px 0 10px;
+  margin: 0 10px;
+  border-bottom: 1px dotted #e5e5e5;
 }
 
-div.portal-default_results-list>div button,
-div.portal-default_results-list>div .button {
-    top: -1px;
-    margin: 0 0 0 10px;
-    visibility: hidden;
+div.portal-default_results-list > div:hover {
+  background-color: #fdfdfd !important;
 }
 
-div.portal-default_results-list>div:hover button,
-div.portal-default_results-list>div:hover .button {
-    visibility: visible;
-    opacity: .6;
+div.portal-default_results-list > div:first-child {
+  border-top: 1px solid #e5e5e5;
 }
 
-div.portal-default_results-list>div:hover button:hover,
-div.portal-default_results-list>div:hover button.active,
-div.portal-default_results-list>div:hover .button:hover,
-div.portal-default_results-list>div:hover .button.active {
-    visibility: visible;
-    opacity: 1;
+div.portal-default_results-list > div button,
+div.portal-default_results-list > div .button {
+  top: -1px;
+  margin: 0 0 0 10px;
+  visibility: hidden;
 }
 
-div.portal-default_results-list.partiel>div button {
-    right: 0;
+div.portal-default_results-list > div:hover button,
+div.portal-default_results-list > div:hover .button {
+  visibility: visible;
+  opacity: .6;
 }
 
-div.portal-default_results-list .tdbase-menu-actions {
-    position: absolute;
-    /*margin-left: -97px;*/
+div.portal-default_results-list > div:hover button:hover,
+div.portal-default_results-list > div:hover button.active,
+div.portal-default_results-list > div:hover .button:hover,
+div.portal-default_results-list > div:hover .button.active {
+  visibility: visible;
+  opacity: 1;
 }
 
-div.portal-default_results-list>div .tdbase-menu-actions {
-    visibility: hidden;
-}
-
-div.portal-default_results-list>div:hover .tdbase-menu-actions {
-    visibility: visible;
+div.portal-default_results-list.partiel > div button {
+  right: 0;
 }
 
 div.portal-default_results-list .tdbase-menu-actions {
-    top: 29px;
+  position: absolute;
+  /*margin-left: -97px;*/
+}
+
+div.portal-default_results-list > div .tdbase-menu-actions {
+  visibility: hidden;
+}
+
+div.portal-default_results-list > div:hover .tdbase-menu-actions {
+  visibility: visible;
+}
+
+div.portal-default_results-list .tdbase-menu-actions {
+  top: 29px;
 }
 
 div.portal-default_results-list .tdbase-menu-actions.top {
-    top: 2px;
+  top: 2px;
 }
 
 div.portal-default_results-list h1 {
-    padding-left: 35px;
-    margin: 6px 10px 0px;
-    font-size: 1.5em;
-    display: inline;
+  padding-left: 35px;
+  margin: 6px 10px 0px;
+  font-size: 1.5em;
+  display: inline;
 }
 
-div.portal-default_results-list.sujet>div {
-    background: url("../../images/eliot/picto-sujet.png") no-repeat 10px 10px;
+div.portal-default_results-list.sujet > div {
+  background: url("../../images/eliot/sujet_actif.png") no-repeat 10px 10px;
+  background-size: 20px;
 }
 
-div.portal-default_results-list.question>div {
-    background: url("../../images/eliot/picto-question.png") no-repeat 10px 10px;
+div.portal-default_results-list.sujet > div.collaboratif {
+  background: url("../../images/eliot/sujet_collaboratif_actif.png") no-repeat 10px 10px;
+  background-size: 20px;
 }
 
-div.portal-default_results-list.sceance>div {
-    background: url("../../images/eliot/picto-sceance.png") no-repeat 10px 8px;
+div.portal-default_results-list.sujet > div.masque.collaboratif {
+  background: url("../../images/eliot/sujet_collaboratif_inactif.png") no-repeat 10px 10px !important;
+  background-size: 20px;
+}
+
+div.portal-default_results-list.sujet > div.masque {
+  background: url("../../images/eliot/sujet_inactif.png") no-repeat 10px 10px;
+  background-size: 20px;
+}
+
+div.portal-default_results-list.question > div {
+  background: url("../../images/eliot/item_actif.png") no-repeat 10px 10px;
+  background-size: 20px;
+}
+
+div.portal-default_results-list.question > div.collaboratif {
+  background: url("../../images/eliot/item_collaboratif_actif.png") no-repeat 10px 10px;
+  background-size: 20px;
+}
+
+div.portal-default_results-list.question > div.masque.collaboratif {
+  background: url("../../images/eliot/item_collaboratif_inactif.png") no-repeat 10px 10px;
+  background-size: 20px;
+}
+
+div.portal-default_results-list.question > div.masque {
+  background-size: 20px;
+  background-image: url("../../images/eliot/item_inactif.png");
+!important
+}
+
+div.portal-default_results-list.sceance > div {
+  background: url("../../images/eliot/seance_actif.png") no-repeat 10px 8px;
+  background-size: 20px;
 }
 
 div.portal-default_results-list.sceance em {
-    color: #999;
-    padding-top: 4px;
-    display: block;
+  color: #999;
+  padding-top: 4px;
+  display: block;
 }
 
 div.portal-default_results-list div.even2 {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 div.portal-default_results-list p {
-    padding-left: 45px;
-    margin: 1px 0;
+  padding-left: 45px;
+  margin: 1px 0;
 }
 
 div.portal-default_results-list p.date {
-    color: #999;
-    font-size: .9em;
-    margin: -2px 0 2px;
-    font-style: italic;
+  color: #999;
+  font-size: .9em;
+  margin: -2px 0 2px;
+  font-style: italic;
 }
 
 div.portal-default_results-list p strong {
-    color: #728CBD;
-    margin-left: 10px;
+  color: #728CBD;
+  margin-left: 10px;
 }
 
 div.portal-default_results-list p strong:first-child {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 /*******************************************************************************
@@ -631,101 +677,120 @@ Style for the edition of a document or category (ToolBar)
 ********************************************************************************/
 /* Surcharge "portal.css" */
 .portal-messages .success {
-    background-position: 5px 10px;
-    margin: 10px;
-    padding: 10px 25px;
+  background-position: 5px 10px;
+  margin: 10px;
+  padding: 10px 25px;
 }
 
 .portal-messages .notice {
-    background-color: #F3F6FB;
-    border: 1px solid #3F61A0;
-    background-position: 5px 10px;
-    color: #3F61A0;
-    margin: 10px;
-    padding: 10px 25px;
+  background-color: #F3F6FB;
+  border: 1px solid #3F61A0;
+  background-position: 5px 10px;
+  color: #3F61A0;
+  margin: 10px;
+  padding: 10px 25px;
 }
 
 .portal-messages .error {
-    background-position: 5px 10px;
-    margin: 10px;
-    padding: 10px 25px;
+  background-position: 5px 10px;
+  margin: 10px;
+  padding: 10px 25px;
 }
 
 /* Fin surcharge "portal.css" */
 
 .portal-tabs {
-    position: relative;
-    background-color: #f0f0f0;
-    color: #999999;
-    border: none;
-    text-align: left;
-    margin: 25px 10px 0px;
-    padding: 12px 0;
+  position: relative;
+  background-color: #f0f0f0;
+  color: #999999;
+  border: none;
+  text-align: left;
+  margin: 25px 10px 0px;
+  padding: 12px 0;
 
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    /*IE DOES NOT SUPPORT BORDER RADIUS*/
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  /*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
 
 .portal-tabs-famille-liens button {
-    position: absolute;
-    margin-top: -6px;
+  position: absolute;
+  margin-top: -6px;
 }
 
 .portal-tabs .tdbase-menu-actions {
-    top: 29px;
+  top: 29px;
 }
 
 .portal-tabs .tdbase-menu-actions.top {
-    top: 2px;
+  top: 2px;
 }
 
 .portal-tabs a,
 .portal-tabs span {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .portal-tabs a:first-child,
-.portal-tabs span:first-child{
-    margin-left: 0;
+.portal-tabs span:first-child {
+  margin-left: 0;
 }
 
 .portal-tabs .share {
-    padding: 4px 4px 4px 20px;
-    background: url("../../images/eliot/picto-share.png") no-repeat 0 4px;
+  padding: 4px 4px 4px 20px;
+  background: url("../../images/eliot/picto-share.png") no-repeat 0 4px;
 }
+
 .portal-tabs a.share:hover {
-    background-position: 0 -22px;
+  background-position: 0 -22px;
 }
 
 .portal-tabs .add {
-    padding: 4px 4px 4px 22px;
-    background: url("../../images/eliot/add16x16.gif") no-repeat 0 2px;
+  padding: 4px 4px 4px 22px;
+  background: url("../../images/eliot/ajout_actif.png") no-repeat 0 2px;
+  background-size: 16px;
 }
 
 .portal-tabs .modify {
-    padding: 4px 4px 4px 22px;
-    background: url("../../images/eliot/edit.png") no-repeat 0 2px;
+  padding: 4px 4px 4px 22px;
+  background: url("../../images/eliot/modification_actif.png") no-repeat 0 2px;
+  background-size: 16px;
+}
+
+.portal-tabs .locked {
+  padding: 4px 4px 4px 22px;
+  background: url("../../images/eliot/cadenas_ferme_actif.png") no-repeat 0 2px;
+  background-size: 16px;
+}
+
+.portal-tabs .unlock {
+  padding: 4px 4px 4px 22px;
+  background: url("../../images/eliot/cadenas_ouvert_actif.png") no-repeat 0 2px;
+  background-size: 16px;
+}
+
+.portal-tabs .finalized {
 }
 
 .portal-tabs a.share {
-    padding: 4px 4px 4px 20px;
-    background: url("../../images/eliot/picto-share.png") no-repeat 0 4px;
+  padding: 4px 4px 4px 20px;
+  background: url("../../images/eliot/picto-share.png") no-repeat 0 4px;
 }
 
 .portal-tabs a.share:hover {
-    background-position: 0 -23px;
+  background-position: 0 -23px;
 }
 
 .portal-tabs a.delete {
-    padding: 4px 4px 4px 20px;
-    background: url("../../images/eliot/picto-delete.png") no-repeat 0 4px;
+  padding: 4px 4px 4px 20px;
+  background: url("../../images/eliot/suppression.png") no-repeat 0 4px;
+  background-size: 16px;
 }
 
-.portal-tabs a.delete:hover {
-    background-position: 0 -23px;
-}
+/*.portal-tabs a.delete:hover {*/
+/*background-position: 0 -23px;*/
+/*}*/
 
 /*******************************************************************************
 
@@ -733,437 +798,475 @@ Style for the edition of a document or category (Content)
 
 ********************************************************************************/
 .edite.portal-form_container {
-    margin: 30px 20px;
-    border: none;
-    width: 100%;
+  margin: 30px 20px;
+  border: none;
+  width: 100%;
 }
 
-.recherche.portal-form_container {}
+.recherche.portal-form_container {
+}
 
-.recherche.portal-form_container>table {margin: 10px 0;}
+.recherche.portal-form_container > table {
+  margin: 10px 0;
+}
 
 .recherche.portal-form_container,
 .corrige.portal-form_container,
 .edite.portal-form_container,
 .result.portal-form_container {
-    padding: 5px 0;
-    width: 70%;
-    margin-left: 10px;
-    margin-right: auto;
+  padding: 5px 0;
+  width: 70%;
+  margin-left: 10px;
+  margin-right: auto;
 
-    background-color: #F3F6FB;
-    color: #999999;
-    border: none;
+  background-color: #F3F6FB;
+  color: #999999;
+  border: none;
 
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    /*IE DOES NOT SUPPORT BORDER RADIUS*/
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  /*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
 
 .recherche.form_actions,
 .corrige.form_actions,
 .edite.form_actions,
 .form_actions {
-    background: none;
-    border: none;
-    border-top-width: 0;
-    color: #3F61A0;
-    font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial, helvetica;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: -20px;
-    text-align: right;
-    width: 70%;
+  background: none;
+  border: none;
+  border-top-width: 0;
+  color: #3F61A0;
+  font-family: "Lucida Sans Unicode", "Lucida Sans", verdana, arial, helvetica;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: -20px;
+  text-align: right;
+  width: 70%;
 }
-	.portal-form_container.full{width: 100%;}
+
+.portal-form_container.full {
+  width: 100%;
+}
 
 .recherche.portal-form_container input[type=text] {
-    width: 200px;
+  width: 200px;
 }
 
 .portal-form_container .title {
-    font-size: 1.6em;
-    margin-right: 10px;
-    padding: 0 0 4px 30px;
-    background: url("../../images/eliot/picto-sujet.png") no-repeat 0 0;
-    font-weight: bold;
-    color: #3F61A0;
+  font-size: 1.6em;
+  margin-right: 10px;
+  padding: 0 0 4px 30px;
+  background: url("../../images/eliot/sujet_actif.png") no-repeat 0 0;
+  background-size: 20px;
+  font-weight: bold;
+  color: #3F61A0;
 }
 
 .question .form_actions,
 .sujet .form_actions {
-    border: none;
-    border-top: 1px dotted #ccc;
-    background-color: whiteSmoke;
-    margin-bottom: 20px;
+  border: none;
+  border-top: 1px dotted #ccc;
+  background-color: whiteSmoke;
+  margin-bottom: 20px;
 }
 
 .question .form_actions .button {
-    margin-right: 15px;
-    color: #ec8e0c;
+  margin-right: 15px;
+  color: #ec8e0c;
 }
 
 #specifobject_reponses .button {
-    color: #333;
+  color: #333;
 }
 
 .question .portal-form_container .title {
-    background: url("../../images/eliot/picto-question.png") no-repeat 0 0;
+  background: url("../../images/eliot/item_actif.png") no-repeat 0 0;
+  background-size: 20px;
 }
 
 .question .portal-form_container td {
-    border-bottom: 5px solid #fff;
+  border-bottom: 5px solid #fff;
 }
 
 .portal-form_container input[type=text] {
-    border: 1px solid #ccc;
-    padding: 5px 2px;
-    margin-top: -2px;
-    width: 400px;
+  border: 1px solid #ccc;
+  padding: 5px 2px;
+  margin-top: -2px;
+  width: 400px;
 }
 
 .portal-form_container input[type=text].short {
-    border: 1px solid #ccc;
-    padding: 5px 2px;
-    margin-top: -2px;
-    width: 270px;
+  border: 1px solid #ccc;
+  padding: 5px 2px;
+  margin-top: -2px;
+  width: 250px;
 }
 
 .portal-form_container input[type=text].veryshort {
-    border: 1px solid #ccc;
-    padding: 5px 2px;
-    margin-top: -2px;
-    width: 120px;
+  border: 1px solid #ccc;
+  padding: 5px 2px;
+  margin-top: -2px;
+  width: 120px;
 }
 
 .portal-form_container input[type=text].micro {
-    border: 1px solid #ccc;
-    padding: 5px 2px;
-    margin-top: -2px;
-    width: 60px;
+  border: 1px solid #ccc;
+  padding: 5px 2px;
+  margin-top: -2px;
+  width: 60px;
 }
 
 .portal-form_container input[type=submit] {
-    margin-top: -3px;
-    margin-left: 10px;
+  margin-top: -3px;
+  margin-left: 10px;
 }
 
 .button {
-    padding: 3px 7px 4px;
-    border: 1px solid #CCC;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    color: #244A92 !important;
-    background: whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
+  padding: 3px 7px 4px;
+  border: 1px solid #CCC;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  color: #244A92 !important;
+  background: whiteSmoke url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
 }
 
-.ui-button-text{
-	padding-top: 2px!important;
-	padding-bottom: 3px!important;
+.ui-button-text {
+  padding-top: 2px !important;
+  padding-bottom: 3px !important;
 }
-button.ui-button-icons-only{width: 3.2em;}
+
+button.ui-button-icons-only {
+  width: 3.2em;
+}
 
 .ui-button-icon-primary,
-.ui-icon ui-icon-gear{left: .3em!important;}
+.ui-icon ui-icon-gear {
+  left: .3em !important;
+}
 
-.ui-button-icon-secondary, 
-.ui-icon ui-icon-triangle-1-s{right: .3em!important;}
+.ui-button-icon-secondary,
+.ui-icon ui-icon-triangle-1-s {
+  right: .3em !important;
+}
 
 .ui-button:hover, .button:hover, .ui-button.active {
-    border: 1px solid #8f9cca;
-    background: #F3F6FB url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
-    color: #ec8e0c;
-    cursor: pointer;
+  border: 1px solid #8f9cca;
+  background: #F3F6FB url("../../images/eliot/gloss-w-bg.png") repeat-x 0 -28px;
+  color: #ec8e0c;
+  cursor: pointer;
 }
 
 .tdbase-sujet-edition {
-    margin-bottom: 50px;
+  margin-bottom: 50px;
 }
 
 .tdbase-sujet-edition-question {
-    position: relative;
-    padding: 0 10px 10px;
-    margin: 0 10px 10px;
-    border: none;
-    background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 8px;
+  position: relative;
+  padding: 0 10px 10px;
+  margin: 0 10px 10px;
+  border: none;
+  background: #f8f8f8 url("../../images/eliot/item_actif.png") no-repeat 8px 8px;
+  background-size: 20px;
 }
 
 .tdbase-sujet-edition-question h1 {
-    padding: 10px 0 0 15px;
+  padding: 10px 0 0 15px;
 }
 
 .tdbase-sujet-edition-question button {
-    position: absolute;
-    top: 8px;
-    margin: 0 10px 0 0;
-    right: 0;
+  position: absolute;
+  top: 8px;
+  margin: 0 10px 0 0;
+  right: 0;
 }
 
 .tdbase-sujet-edition-question .tdbase-menu-actions {
-    top: 29px;
-    margin-left: -97px;
+  top: 29px;
+  margin-left: -97px;
 }
 
 .tdbase-sujet-edition-question .tdbase-menu-actions.top {
-    top: 4px;
+  top: 4px;
 }
 
 .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points {
-    position: absolute;
-    margin-top: -38px;
-    right: 70px;
-    width: 130px;
+  position: absolute;
+  margin-top: -38px;
+  right: 70px;
+  width: 130px;
 }
-	.edite .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points {margin-top: -28px;}
+
+.edite .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points {
+  margin-top: -28px;
+}
 
 .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points .editinplace {
-    float: left;
+  float: left;
 }
 
 .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points .point {
-    font-weight: bold;
-    margin: 5px;
-    text-indent: 6px;
-    display: block;
-    color: #666;
+  font-weight: bold;
+  margin: 5px;
+  text-indent: 6px;
+  display: block;
+  color: #666;
 }
 
 .tdbase-sujet-edition-question .item {
-    margin-left: 0px;
+  margin-left: 0px;
 }
 
 .tdbase-sujet-edition-question .item .title {
-    color: #3F61A0;
-    font-size: 1.0em;
+  color: #3F61A0;
+  font-size: 1.0em;
 }
 
-.tdbase-sujet-edition-question .item input[type=text]{
-    border: 1px solid #ccc;
-    padding: 5px 2px;
-    margin-top: -2px;
+.tdbase-sujet-edition-question .item input[type=text] {
+  border: 1px solid #ccc;
+  padding: 5px 2px;
+  margin-top: -2px;
 }
 
 /***** Test sujet ****/
 .teste .bottom, .teste .top,
 .edite .bottom, .edite .top {
-    width: 98%;
-    padding: 0 1%;
+  width: 98%;
+  padding: 0 1%;
 }
 
 .edite .bottom .form_actions {
-    padding: 10px 10px 10px 0;
+  padding: 10px 10px 10px 0;
 }
 
 .teste .top {
-    padding: 0;
+  padding: 0;
 }
 
 .edite .top {
-    padding: 5px 0;
+  padding: 5px 0;
 }
 
 .teste .top .form_actions,
 .edite .top .form_actions {
-    margin: 0;
+  margin: 0;
 
-    text-align: left;
-    padding-left: 10px;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    /*IE DOES NOT SUPPORT BORDER RADIUS*/
+  text-align: left;
+  padding-left: 10px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  /*IE DOES NOT SUPPORT BORDER RADIUS*/
 }
 
 .teste .form_actions,
 .edite .form_actions,
 .edite.form_actions {
-    border: none;
-    border-top: 1px dotted #ccc;
-    background-color: #f0f0f0;
-    margin: 20px 0 20px;
-    width: auto;
-    display: block;
+  border: none;
+  border-top: 1px dotted #ccc;
+  background-color: #f0f0f0;
+  margin: 20px 0 20px;
+  width: auto;
+  display: block;
 }
-	.edite.form_actions{margin: 20px 10px;padding-right: 15px;}
-	
+
+.edite.form_actions {
+  margin: 20px 10px;
+  padding-right: 15px;
+}
+
 .teste .form_actions .button {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .teste .top .form_actions,
 .edite .top .form_actions {
-    border: none;
+  border: none;
 }
 
 .teste .tdbase-sujet-titre,
 .edite .tdbase-sujet-titre {
-    text-align: left;
-    padding: 10px 0 4px 30px;
-    background: url("../../images/eliot/picto-sujet.png") no-repeat 0 10px;
+  text-align: left;
+  padding: 10px 0 4px 30px;
+  background: url("../../images/eliot/sujet_actif.png") no-repeat 0 10px;
+  background-size: 20px;
 }
 
 .teste h2 {
-    font-size: 1.4em;
+  font-size: 1.4em;
 }
 
 .tdbase-sujet-edition-question-interaction h1 {
-    margin: 10px 0;
-    padding: 3px;
+  margin: 10px 0;
+  padding: 3px;
 }
 
 .tdbase-sujet-edition-question-interaction h2 {
-    border-bottom: 1px dotted #CCC;
-    font-size: 1.2em;
-    margin-top: 5px;
-    padding: 3px 0 12px 25px;
+  border-bottom: 1px dotted #CCC;
+  font-size: 1.2em;
+  margin-top: 5px;
+  padding: 3px 0 12px 25px;
 }
 
 .tdbase-sujet-edition-question-interaction .item {
-    margin: 10px 0 0 30px;
+  margin: 10px 0 0 30px;
 }
 
 .teste .tdbase-sujet-edition-question-points,
 .edite .tdbase-sujet-edition-question-points,
 .visualise .tdbase-sujet-edition-question-points {
-    text-align: right;
-    right: 15px;
+  text-align: right;
+  right: 15px;
 }
 
 .teste .tdbase-sujet-edition-question-points em,
 .edite .tdbase-sujet-edition-question-points em,
 .visualise .tdbase-sujet-edition-question-points em {
-    font-weight: normal;
-    font-style: normal;
-    color: #ec8e0c;
+  font-weight: normal;
+  font-style: normal;
+  color: #ec8e0c;
 }
 
 /***** Liste Sceance élève ****/
 .button.work:before {
-    content: url("../../images/eliot/picto-work-blue.png");
-    position: relative;
-    top: 2px;
+  content: url("../../images/eliot/picto-work-blue.png");
+  position: relative;
+  top: 2px;
 }
 
 .button.voir:before {
-    content: url("../../images/eliot/picto-voir-blue.png");
-    position: relative;
-    top: 2px;
+  content: url("../../images/eliot/picto-voir-blue.png");
+  position: relative;
+  top: 2px;
 }
 
 /***** Aperçu Question ****/
 .edite.portal-form_container {
-    padding-bottom: 20px;
-    background-color: white;
+  padding-bottom: 20px;
+  background-color: white;
 }
-	
-.edite.apercu.portal-form_container {background-color: whitesmoke;}
 
-	/* Style for item table detail */
-	.edite.apercu.portal-form_container  td.label{padding-right: 5px;}
-	
-	td.detail{
-		clear: both;
-		background-color: #fff;
-		padding: 10px!important;
-		margin-left: 10px;
-		
-		-moz-box-shadow: 10px 10px 5px #999;
-		-webkit-box-shadow: 10px 10px 5px #999;
-		box-shadow: 4px 4px 4px #d5d5d5;
-	}
-		td.detail>strong{font-size: 110%;color:#666;}
-		td.detail>div{
-			border-top: 1px dotted #ccc;
-			border-bottom: 1px dotted #ccc;
-			padding: 10px 0;
-			margin: 10px 0;
-		}
-		
-.edite.portal-form_container table td {padding: 2px 10px 2px 0;}
+.edite.apercu.portal-form_container {
+  background-color: whitesmoke;
+}
+
+/* Style for item table detail */
+.edite.apercu.portal-form_container td.label {
+  padding-right: 5px;
+}
+
+td.detail {
+  clear: both;
+  background-color: #fff;
+  padding: 10px !important;
+  margin-left: 10px;
+
+  -moz-box-shadow: 10px 10px 5px #999;
+  -webkit-box-shadow: 10px 10px 5px #999;
+  box-shadow: 4px 4px 4px #d5d5d5;
+}
+
+td.detail > strong {
+  font-size: 110%;
+  color: #666;
+}
+
+td.detail > div {
+  border-top: 1px dotted #ccc;
+  border-bottom: 1px dotted #ccc;
+  padding: 10px 0;
+  margin: 10px 0;
+}
+
+.edite.portal-form_container table td {
+  padding: 2px 10px 2px 0;
+}
 
 .edite.portal-form_container h1 {
-    padding-left: 50px;
-    padding-bottom: 10px;
-    background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
-    border-bottom: 1px dotted #ccc;
+  padding-left: 50px;
+  padding-bottom: 10px;
+  background: url("../../images/eliot/item_actif.png") no-repeat 10px 0;
+  background-size: 20px;
+  border-bottom: 1px dotted #ccc;
 }
 
 /* Copie visualise*/
 .visualise.portal-form_container {
-    padding: 10px 0;
-    margin-bottom: 25px;
+  padding: 10px 0;
+  margin-bottom: 25px;
 }
 
 .visualise.portal-form_container table {
-    width: 0;
-    margin-left: 20px;
+  width: 0;
+  margin-left: 20px;
 }
 
 .visualise h1.tdbase-sujet-titre {
-    text-align: left;
-    padding: 10px 0 4px 30px;
-    background: url("../../images/eliot/picto-sceance.png") no-repeat 0 10px;
+  text-align: left;
+  padding: 10px 0 4px 30px;
+  background: url("../../images/eliot/seance_actif.png") no-repeat 0 10px;
+  background-size: 20px;
 }
 
 .visualise ul {
-    margin-left: 35px;
+  margin-left: 35px;
 }
 
 .visualise li {
-    list-style-type: none;
-    overflow: hidden;
-    padding: 3px 0;
-    clear: both;
-    display: block;
-    margin-left: 0;
+  list-style-type: none;
+  overflow: hidden;
+  padding: 3px 0;
+  clear: both;
+  display: block;
+  margin-left: 0;
 }
 
 .visualise .name {
-    font-weight: bold;
-    color: #666;
-    font-size: 18px;
-    border-bottom: 1px dotted #ccc;
-    margin-bottom: .5em;
-    padding-bottom: 10px;
-    text-transform: capitalize;
+  font-weight: bold;
+  color: #666;
+  font-size: 18px;
+  border-bottom: 1px dotted #ccc;
+  margin-bottom: .5em;
+  padding-bottom: 10px;
+  text-transform: capitalize;
 }
 
 .visualise .label {
-    color: #666;
-    font-weight: bold;
-    width: 100px;
-    display: block;
-    float: left;
-    text-align: left;
+  color: #666;
+  font-weight: bold;
+  width: 100px;
+  display: block;
+  float: left;
+  text-align: left;
 }
 
 .visualise .note strong,
 .visualise .notice em {
-    color: #ec8e0c;
+  color: #ec8e0c;
 }
 
 /* Ajout item */
 .add-item {
-    margin: 20px 10px 100px;
-    width: 70%;
+  margin: 20px 10px 100px;
+  width: 70%;
 }
 
 .add-item h1 {
-    padding-left: 50px;
-    padding-bottom: 8px;
-    background: url("../../images/eliot/picto-question.png") no-repeat 10px 0;
-    border-bottom: 1px dotted #ccc;
-    margin-bottom: 10px;
+  padding-left: 50px;
+  padding-bottom: 8px;
+  background: url("../../images/eliot/item_actif.png") no-repeat 10px 0;
+  background-size: 20px;
+  border-bottom: 1px dotted #ccc;
+  margin-bottom: 10px;
 }
 
 .add-item ul {
-    margin: 0 0 45px 55px;
-    line-height: 170%;
+  margin: 0 0 45px 55px;
+  line-height: 170%;
 }
 
 /*******************************************************************************
@@ -1171,105 +1274,190 @@ button.ui-button-icons-only{width: 3.2em;}
 Style for frontpage Widget
 
 ********************************************************************************/
-#widgets{
-	overflow: hidden;
-	padding: 20px 0 100px;	
+#widgets {
+  overflow: hidden;
+  padding: 20px 0 100px;
 }
-	#widgets>p{margin: 0 200px 25px 20px;line-height: 130%;}
-	#widgets>p>strong{font-size: 130%;margin-bottom:10px;display: block;}
-.widget{
-	position: relative;
-	display: block;
-	border: 1px solid #ddd;
-	width: 286px;
-	/*min-height: 360px;*/
-	float: left;
-	margin-left: 14px;
-	margin-bottom: 10px;
-}
-	.widget h1{
-		margin: 0;
-		background-color:whitesmoke ;/*#f0f2f2*/
-		padding: 10px 5px 2px 15px;
-	}
-		.widget.sceances h1{background:whitesmoke url("../../images/eliot/picto-sceance.png") no-repeat 95% 12px;}
-		.widget.sujets h1{background:whitesmoke url("../../images/eliot/picto-sujet.png") no-repeat 95% 10px;}
-		.widget.items h1{background:whitesmoke url("../../images/eliot/picto-question.png") no-repeat 95% 10px;}
-		.widget.resultats h1{background:whitesmoke url("../../images/eliot/picto-result.png") no-repeat 95% 12px;}
-		
-	.widget .nb_result{
-		display: block;
-		padding-bottom: 8px;
-		text-indent: 15px;
-		margin: -2px 0 12px;
-		font-style: italic;
-		color: #666;
-		background-color: whitesmoke;
-		border-bottom: 1px solid #ddd;
-	}
-		.widget .nb_result a{opacity: .4;}
-			.widget .nb_result a:hover,
-			.widget .nb_result a:focus{opacity: .6;}
-	.widget .none{
-		padding: 8px 10px 8px 15px;
-		font-style: italic;
-		color: #999;
-	}
 
-.widget .innertube{
-	background-color: #fff;
-	padding: 0;
-	margin: 0;
+#widgets > p {
+  margin: 0 200px 25px 20px;
+  line-height: 130%;
 }
-	.widget ul{padding: 0;}
-		.widget ul li{
-			display: block;
-			list-style-type: none;
-			margin-left: 0;
-			border-top: 1px dotted #ddd;
-			padding: 8px 10px 8px 15px;
-			line-height: 130%;
-		}
-			.widget ul li.odd{background-color: #fcfcfc;}
-			.widget ul li:first-child{border: none;}
-			.widget ul li em{color: #999;font-size:90%;}
-			.widget.sceances ul li em{color: #999;font-size: 90%;font-style: normal;}
-			.widget ul li a{font-size: 110%;}
 
-.widget a.add{
-	position: absolute;
-    color: #3F61A0;
-    right: -1px;
-    text-align: left;
-    margin: 1px 0 0px;
-    padding: 6px 10px 8px 30px;
-    background:#f0f0f0 url("../../images/eliot/add16x16.gif") no-repeat 7px 5px;
-
-    -webkit-border-bottom-right-radius: 6px;
-	-webkit-border-bottom-left-radius: 6px;
-	-moz-border-radius-bottomright: 6px;
-	-moz-border-radius-bottomleft: 6px;
-	border-bottom-right-radius: 6px;
-	border-bottom-left-radius: 6px;
-    /*IE DOES NOT SUPPORT BORDER RADIUS*/
+#widgets > p > strong {
+  font-size: 130%;
+  margin-bottom: 10px;
+  display: block;
 }
-	
+
+.widget {
+  position: relative;
+  display: block;
+  border: 1px solid #ddd;
+  width: 286px;
+  /*min-height: 360px;*/
+  float: left;
+  margin-left: 14px;
+  margin-bottom: 10px;
+}
+
+.widget h1 {
+  margin: 0;
+  background-color: whitesmoke; /*#f0f2f2*/
+  padding: 10px 5px 2px 15px;
+}
+
+.widget.sceances h1 {
+  background: whitesmoke url("../../images/eliot/seance_actif.png") no-repeat 95% 12px;
+  background-size: 20px;
+}
+
+.widget.sujets h1 {
+  background: whitesmoke url("../../images/eliot/sujet_actif.png") no-repeat 95% 10px;
+  background-size: 20px;
+}
+
+.widget.items h1 {
+  background: whitesmoke url("../../images/eliot/item_actif.png") no-repeat 95% 10px;
+  background-size: 20px;
+}
+
+.widget.resultats h1 {
+  background: whitesmoke url("../../images/eliot/picto-result.png") no-repeat 95% 12px;
+}
+
+.widget .nb_result {
+  display: block;
+  padding-bottom: 8px;
+  text-indent: 15px;
+  margin: -2px 0 12px;
+  font-style: italic;
+  color: #666;
+  background-color: whitesmoke;
+  border-bottom: 1px solid #ddd;
+}
+
+.widget .nb_result a {
+  opacity: .4;
+}
+
+.widget .nb_result a:hover,
+.widget .nb_result a:focus {
+  opacity: .6;
+}
+
+.widget .none {
+  padding: 8px 10px 8px 15px;
+  font-style: italic;
+  color: #999;
+}
+
+.widget .innertube {
+  background-color: #fff;
+  padding: 0;
+  margin: 0;
+}
+
+.widget ul {
+  padding: 0;
+}
+
+.widget ul li {
+  display: block;
+  list-style-type: none;
+  margin-left: 0;
+  border-top: 1px dotted #ddd;
+  padding: 8px 10px 8px 40px;
+  line-height: 130%;
+}
+
+.widget.items li {
+  background: url("../../images/eliot/item_actif.png") no-repeat 10px 10px;
+  background-size: 20px;
+}
+
+.widget.items li.collaboratif {
+  background: url("../../images/eliot/item_collaboratif_actif.png") no-repeat 10px 10px;
+  background-size: 20px;
+}
+
+.widget.sujets li {
+  background: url("../../images/eliot/sujet_actif.png") no-repeat 10px 10px;
+  background-size: 20px;
+}
+
+.widget.sujets li.collaboratif {
+  background: url("../../images/eliot/sujet_collaboratif_actif.png") no-repeat 10px 10px;
+  background-size: 20px;
+}
+
+.widget.sceances li {
+  background: url("../../images/eliot/seance_actif.png") no-repeat 10px 10px;
+  background-size: 20px;
+}
+
+.widget ul li.odd {
+  background-color: #fcfcfc;
+}
+
+.widget ul li:first-child {
+  border: none;
+}
+
+.widget ul li em {
+  color: #999;
+  font-size: 90%;
+}
+
+.widget.sceances ul li em {
+  color: #999;
+  font-size: 90%;
+  font-style: normal;
+}
+
+.widget ul li a {
+  font-size: 110%;
+}
+
+.widget a.add {
+  position: absolute;
+  color: #3F61A0;
+  right: -1px;
+  text-align: left;
+  margin: 1px 0 0px;
+  padding: 6px 10px 8px 30px;
+  background: #f0f0f0 url("../../images/eliot/ajout_actif.png") no-repeat 7px 5px;
+  background-size: 16px;
+
+  -webkit-border-bottom-right-radius: 6px;
+  -webkit-border-bottom-left-radius: 6px;
+  -moz-border-radius-bottomright: 6px;
+  -moz-border-radius-bottomleft: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  /*IE DOES NOT SUPPORT BORDER RADIUS*/
+}
+
 /*******************************************************************************
 
 Style for result table
 
 ********************************************************************************/
-.portal-default_table .sanscopies td{
-	background-color: whitesmoke;
-	font-style: italic;
-	color: #999;
-	border: 1px dotted #cecece;
+.portal-default_table .sanscopies td {
+  background-color: whitesmoke;
+  font-style: italic;
+  color: #999;
+  border: 1px dotted #cecece;
 }
-	.portal-default_table .sanscopies .even td{background-color: #fff;}
-.portal-default_table a.button{
-	position: relative;
-	top: -2px;
-	padding: 4px 8px 4px;
+
+.portal-default_table .sanscopies .even td {
+  background-color: #fff;
+}
+
+.portal-default_table a.button {
+  position: relative;
+  top: -2px;
+  padding: 4px 8px 4px;
 }
 
 /*******************************************************************************
@@ -1277,55 +1465,83 @@ Style for result table
  Exercices & Item/sujet composé
 
 ********************************************************************************/
-.exercice{
-	position: relative;
-	padding: 0 10px 10px;
-    margin: 0 10px 10px;
-    border: none;
-    background: #f8f8f8 url("../../images/eliot/picto-question.png") no-repeat 8px 12px;
+.exercice {
+  position: relative;
+  padding: 0 10px 10px;
+  margin: 0 10px 10px;
+  border: none;
+  background: #f8f8f8 url("../../images/eliot/item_actif.png") no-repeat 8px 12px;
+  background-size: 20px;
 }
-.exercice h1{
-	padding: 13px 0 13px 30px;
-	margin: 0;
-	border-bottom: 1px dotted #CCC;
+
+.exercice h1 {
+  padding: 13px 0 13px 30px;
+  margin: 0;
+  border-bottom: 1px dotted #CCC;
 }
+
 .exercice .tdbase-sujet-edition-question {
-    background: none;
-    padding: 0;
-    margin: 30px 0 10px 30px;
+  background: none;
+  padding: 0;
+  margin: 30px 0 10px 30px;
 }
-.exercice .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points{margin-top: -20px;}
-.exercice h2{font-size: 125%;margin-bottom: 5px;}
-.exercice .tdbase-sujet-edition-question-interaction{margin-top: 0!important;border-color: #dbdddd;}
-.exercice .item{margin: 5px 0 0;}
-.exercice .item p.title{color: #333;}
+
+.exercice .tdbase-sujet-edition-question .tdbase-sujet-edition-question-points {
+  margin-top: -20px;
+}
+
+.exercice h2 {
+  font-size: 125%;
+  margin-bottom: 5px;
+}
+
+.exercice .tdbase-sujet-edition-question-interaction {
+  margin-top: 0 !important;
+  border-color: #dbdddd;
+}
+
+.exercice .item {
+  margin: 5px 0 0;
+}
+
+.exercice .item p.title {
+  color: #333;
+}
 
 /*******************************************************************************
 
  Résultats vue parents
 
 ********************************************************************************/
-.result.portal-form_container{padding: 15px 0 10px;}
-.result.portal-form_container select{margin-top: 0px;}
-.portal-default_results-list.sceance.resultats h1{
-	position: relative;
-	top: 3px;
-}
-.portal-default_results-list.sceance.resultats h2{
-	font-size: 1.2em;
-	margin: 2px 0;
-	padding-left: 45px;
-	color: #444;	
+.result.portal-form_container {
+  padding: 15px 0 10px;
 }
 
-.portal-default_results-list.sceance.resultats .note{color: #ec8e0c;}
-
-div.portal-default_results-list.sceance.resultats em{
-	color: #999;
-	padding: 0;
-	margin-bottom: 8px;
+.result.portal-form_container select {
+  margin-top: 0px;
 }
 
+.portal-default_results-list.sceance.resultats h1 {
+  position: relative;
+  top: 3px;
+}
+
+.portal-default_results-list.sceance.resultats h2 {
+  font-size: 1.2em;
+  margin: 2px 0;
+  padding-left: 45px;
+  color: #444;
+}
+
+.portal-default_results-list.sceance.resultats .note {
+  color: #ec8e0c;
+}
+
+div.portal-default_results-list.sceance.resultats em {
+  color: #999;
+  padding: 0;
+  margin-bottom: 8px;
+}
 
 /*******************************************************************************
 
@@ -1334,11 +1550,11 @@ div.portal-default_results-list.sceance.resultats em{
 ********************************************************************************/
 
 .preferences_utilisateurs table {
-    width: 80%;
-    color: #000000;
+  width: 80%;
+  color: #000000;
 }
 
 .preferences_utilisateurs td {
-    border:1px solid whitesmoke;
-    border-collapse: collapse;
+  border: 1px solid whitesmoke;
+  border-collapse: collapse;
 }

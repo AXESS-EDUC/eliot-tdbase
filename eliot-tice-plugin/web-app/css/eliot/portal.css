@@ -135,7 +135,8 @@ Portal Messages styles
     background-color: transparent;
     color: #817134;
     border: solid 1px #FFD324;
-    background-image: url('../../images/eliot/ico12/info.gif');
+    background-image: url('../../images/eliot/ico12/information_actif.png');
+    background-size: 12px;
     background-repeat: no-repeat;
     background-position: 5px 5px;
     padding: 5px 25px;
@@ -978,7 +979,8 @@ Styles relatives to manuel
 ********************************************************************************/
 
 a.portal-manuel {
-    background-image: url('../../images/eliot/aide/aideContextuelle.png');
+    background-image: url('../../images/eliot/aide/aide_actif.png');
+    background-size: 16px;
     background-repeat: no-repeat;
     background-position: left center;
     float: right;
@@ -994,7 +996,8 @@ a.portal-manuel:hover {
 }
 
 a.portal-help {
-    background-image: url('../../images/eliot/aide/aideContextuelle.png');
+    background-image: url('../../images/eliot/aide/aide_actif.png');
+    background-size: 16px;
     background-repeat: no-repeat;
     background-position: left center;
     text-align: center;

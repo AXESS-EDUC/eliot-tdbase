@@ -78,7 +78,7 @@ class MoodleQuizImporterServiceIntegrationTests extends GroovyTestCase implement
         input,
         sujet1,
         new ReferentielEliot(
-            matiere: sujet1.matiere,
+            matiereBcn: sujet1.matiereBcn,
             niveau: sujet1.niveau
         ),
         personne1

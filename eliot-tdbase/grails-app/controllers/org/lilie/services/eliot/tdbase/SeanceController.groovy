@@ -29,13 +29,21 @@
 package org.lilie.services.eliot.tdbase
 
 import groovy.json.JsonBuilder
+import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeType
+import org.lilie.services.eliot.tice.annuaire.groupe.RechercheGroupeCritere
+import org.lilie.services.eliot.tice.annuaire.groupe.RechercheGroupeResultat
 import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.Niveau
+import org.lilie.services.eliot.tice.scolarite.Fonction
+import org.lilie.services.eliot.tice.scolarite.FonctionService
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
 import org.lilie.services.eliot.tice.scolarite.ProprietesScolarite
 import org.lilie.services.eliot.tice.scolarite.ScolariteService
+import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.lilie.services.eliot.tice.utils.NumberUtils
 
@@ -53,8 +61,9 @@ class SeanceController {
     CahierTextesService cahierTextesService
     NotesService notesService
     SecuriteSessionService securiteSessionServiceProxy
-
-
+    GroupeService groupeService
+    FonctionService fonctionService
+    PreferenceEtablissementService preferenceEtablissementService
 /**
  *
  * Action "edite"
@@ -83,14 +92,17 @@ class SeanceController {
             )
 
             def strongCheck = grailsApplication.config.eliot.interfacage.strongCheck as Boolean
-            afficheLienCreationDevoir =
-                    modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(
-                            modaliteActivite,
-                            personne,
-                            strongCheck
-                    )
 
-            if (grailsApplication.config.eliot.interfacage.notes) {
+            if (modaliteActiviteService.canBindModaliteActiviteToDevoir(modaliteActivite, personne)) {
+
+                afficheLienCreationDevoir =
+                        modaliteActiviteService.canCreateNotesDevoirForModaliteActivite(
+                                modaliteActivite,
+                                personne,
+                                strongCheck
+                        )
+
+
                 if (!afficheLienCreationDevoir) {
                     afficheDevoirCree = modaliteActiviteService.modaliteActiviteHasNotesDevoir(modaliteActivite,
                             personne,
@@ -104,7 +116,7 @@ class SeanceController {
                 }
             }
 
-            if (grailsApplication.config.eliot.interfacage.textes) {
+            if (modaliteActiviteService.canBindModaliteActiviteToTextesActivite(modaliteActivite, personne)) {
                 afficheLienCreationActivite =
                         modaliteActiviteService.canCreateTextesActiviteForModaliteActivite(
                                 modaliteActivite,
@@ -135,24 +147,35 @@ class SeanceController {
         )
 
         def etablissements = securiteSessionServiceProxy.etablissementList
-        def proprietesScolarite =
-                profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne, etablissements)
+        def structureEnseignementList =
+                profilScolariteService.findProprietesScolariteWithStructureForPersonne(
+                        personne,
+                        etablissements
+                )*.structureEnseignement.unique {a, b -> a.id <=> b.id }.sort { it.nomAffichage }
 
-        def niveaux = scolariteService.findNiveauxForEtablissement(etablissements)
+        List<GroupeType> groupeTypeList =
+                groupeService.hasGroupeEnt(securiteSessionServiceProxy.currentEtablissement) ?
+                        [GroupeType.SCOLARITE, GroupeType.ENT] :
+                        [GroupeType.SCOLARITE]
 
         render(
                 view: '/seance/edite',
                 model: [
                         liens                      : breadcrumpsServiceProxy.liens,
+                        currentEtablissement       : securiteSessionServiceProxy.currentEtablissement,
                         etablissements             : etablissements,
-                        niveaux                    : niveaux,
+                        fonctionList               : preferenceEtablissementService.getFonctionListForRoleApprenant(
+                                personne,
+                                securiteSessionServiceProxy.currentEtablissement
+                        ),
+                        groupeTypeList             : groupeTypeList,
                         lienBookmarkable           : lienBookmarkable,
                         afficheLienCreationDevoir  : afficheLienCreationDevoir,
                         afficheLienCreationActivite: afficheLienCreationActivite,
                         afficheActiviteCreee       : afficheActiviteCreee,
                         afficheDevoirCree          : afficheDevoirCree,
                         modaliteActivite           : modaliteActivite,
-                        proprietesScolarite        : proprietesScolarite,
+                        structureEnseignementList  : structureEnseignementList,
                         cahiers                    : cahiers,
                         chapitres                  : chapitres,
                         services                   : services,
@@ -163,36 +186,64 @@ class SeanceController {
 
     /**
      *
-     * Action recherche structure
+     * Action recherche autre groupe
      */
-    def rechercheStructures(RechercheStructuresCommand command) {
+    def rechercheAutreGroupe(RechercheGroupeCommand command) {
         Personne personne = authenticatedPersonne
-        def allEtabs = securiteSessionServiceProxy.etablissementList
-        def etabs = allEtabs
+        Etablissement etablissement
         if (command.etablissementId) {
-            etabs = [Etablissement.get(command.etablissementId)]
+            etablissement = Etablissement.get(command.etablissementId)
+        } else {
+            etablissement = securiteSessionServiceProxy.currentEtablissement
+            command.etablissementId = etablissement.id
         }
+
+        List<Fonction> fonctionList =
+                preferenceEtablissementService.getFonctionListForRoleApprenant(
+                        personne,
+                        etablissement
+                )
+
+        assert command.fonctionId
+        Fonction fonction = Fonction.get(command.fonctionId)
+        assert fonction
+
         def codePattern = null
         if (command.patternCode) {
             codePattern = command.patternCode
         }
-        def niveau = null
-        if (command.niveauId) {
-            niveau = Niveau.get(command.niveauId)
-        }
-        def limit = grailsApplication.config.eliot.listes.structures.maxrecherche
-        def structures = scolariteService.findStructuresEnseignement(etabs, codePattern, niveau, limit)
-        render(view: "/seance/_selectStructureEnseignement", model: [
-                rechercheStructuresCommand: command,
-                etablissements            : allEtabs,
-                niveaux                   : scolariteService.findNiveauxForEtablissement(etabs),
-                structures                : structures
-        ])
+        def limit = grailsApplication.config.eliot.listes.groupes.maxrecherche
+        RechercheGroupeResultat rechercheGroupeResultat =
+                groupeService.rechercheGroupe(
+                        personne,
+                        new RechercheGroupeCritere(
+                                etablissement: etablissement,
+                                fonction: fonction,
+                                motCle: codePattern,
+                                limit: limit
+                        ),
+                        command.groupeType,
+                        codePorteur
+                )
+
+        List<GroupeType> groupeTypeList =
+                groupeService.hasGroupeEnt(etablissement) ?
+                        [GroupeType.SCOLARITE, GroupeType.ENT] :
+                        [GroupeType.SCOLARITE]
+
+        render(view: "/seance/_selectAutreGroupe",
+                model: [
+                        rechercheGroupeCommand: command,
+                        etablissements        : securiteSessionServiceProxy.etablissementList,
+                        fonctionId            : fonction.id,
+                        fonctionList          : fonctionList,
+                        groupeTypeList        : groupeTypeList,
+                        groupeList            : rechercheGroupeResultat.groupes,
+                        totalCount            : rechercheGroupeResultat.nombreTotal
+                ]
+        )
     }
 
-    /**
-     * Action updateChapitres
-     */
     def updateNiveaux() {
         Personne personne = authenticatedPersonne
         def etabId = params.etablissementId
@@ -204,6 +255,60 @@ class SeanceController {
         }
         def niveaux = scolariteService.findNiveauxForEtablissement(etabs)
         render(view: "/seance/_selectNiveaux", model: [niveaux: niveaux])
+    }
+
+    /**
+     * Action updateFonctionList
+     */
+    def updateFonctionList() {
+        Personne personne = authenticatedPersonne
+
+        Etablissement etablissement = Etablissement.load(params.etablissementId)
+        List<Fonction> fonctionList =
+                preferenceEtablissementService.getFonctionListForRoleApprenant(
+                        personne,
+                        etablissement
+                )
+
+        Fonction fonction = fonctionList.contains(fonctionService.fonctionEleve()) ?
+                fonctionService.fonctionEleve() :
+                fonctionList.first()
+
+        render(
+                view: "/seance/_selectFonction",
+                model: [
+                        fonctionList: fonctionList,
+                        fonctionId  : fonction.id
+                ]
+        )
+    }
+
+    /**
+     * Action updateGroupeTypeList
+     */
+    def updateGroupeTypeList() {
+        GroupeType groupeType = params.groupeType ?
+                GroupeType.valueOf(params.groupeType) :
+                null
+
+        Etablissement etablissement = Etablissement.load(params.etablissementId)
+
+        List<GroupeType> groupeTypeList =
+                groupeService.hasGroupeEnt(etablissement) ?
+                        [GroupeType.SCOLARITE, GroupeType.ENT] :
+                        [GroupeType.SCOLARITE]
+
+        if (!groupeType || !groupeTypeList.contains(groupeType)) {
+            groupeType = groupeTypeList.first()
+        }
+
+        render(
+                view: "/seance/_selectGroupeType",
+                model: [
+                        groupeTypeList: groupeTypeList,
+                        groupeType    : groupeType
+                ]
+        )
     }
 
     /**
@@ -233,22 +338,50 @@ class SeanceController {
         ModaliteActivite modaliteActivite
         Personne personne = authenticatedPersonne
 
-        def propsId = params.proprietesScolariteSelectionId
-        if (propsId && propsId != 'null') {
-            ProprietesScolarite props = ProprietesScolarite.get(
-                    params.proprietesScolariteSelectionId
-            )
-            params.'structureEnseignement.id' = props.structureEnseignement.id
+        def groupeId
+        GroupeType groupeType = null
+        def structureEnseignementId = params.structureEnseignementId
 
-            if (props.matiere) {
-                params.'matiere.id' = props.matiere.id
-            }
+        // Si une structure d'enseignement est fournie, on récupère le groupe scolarité élève correspondant
+        if (structureEnseignementId && structureEnseignementId != 'null') {
+            StructureEnseignement structureEnseignement =
+                    StructureEnseignement.load(structureEnseignementId)
+
+            groupeId = groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                    structureEnseignement
+            ).id
+            groupeType = GroupeType.SCOLARITE
+        } else if (params.groupeType && params.groupeType != 'null') {
+            groupeType = GroupeType.valueOf(params.groupeType)
+            groupeId = params.groupeId
         }
+
+        switch (groupeType) {
+            case GroupeType.SCOLARITE:
+                ProprietesScolarite props = ProprietesScolarite.get(
+                        groupeId
+                )
+                params.'groupeScolarite.id' = groupeId
+
+                if (props.matiere) {
+                    params.'matiere.id' = props.matiere.id
+                }
+
+                break
+
+            case GroupeType.ENT:
+                params.'groupeEnt.id' = groupeId
+                break
+        }
+
         if (params.id) {
             modaliteActivite = ModaliteActivite.get(params.id)
             modaliteActiviteService.updateProprietes(modaliteActivite, params, personne)
         } else {
-            modaliteActivite = modaliteActiviteService.createModaliteActivite(params, personne)
+            modaliteActivite = modaliteActiviteService.createModaliteActivite(
+                    params,
+                    personne
+            )
         }
 
         if (!modaliteActivite.hasErrors()) {
@@ -264,16 +397,31 @@ class SeanceController {
             redirect(action: "edite", id: modaliteActivite.id, params: [bcInit: true])
         } else {
             def etablissements = securiteSessionServiceProxy.etablissementList
-            def proprietesScolarite =
-                    profilScolariteService.findProprietesScolariteWithStructureForPersonne(personne, etablissements)
+            def structureEnseignementList =
+                    profilScolariteService.findProprietesScolariteWithStructureForPersonne(
+                            personne,
+                            etablissements
+                    )*.structureEnseignement.unique {a, b -> a.id <=> b.id }.sort { it.nomAffichage }
+
+            List<GroupeType> groupeTypeList =
+                    groupeService.hasGroupeEnt(securiteSessionServiceProxy.currentEtablissement) ?
+                            [GroupeType.SCOLARITE, GroupeType.ENT] :
+                            [GroupeType.SCOLARITE]
 
             render(
                     view: '/seance/edite',
                     model: [
-                            liens                : breadcrumpsServiceProxy.liens,
-                            modaliteActivite     : modaliteActivite,
-                            proprietesScolarite  : proprietesScolarite,
-                            competencesEvaluables: modaliteActivite.sujet.hasCompetence()
+                            liens                    : breadcrumpsServiceProxy.liens,
+                            currentEtablissement     : securiteSessionServiceProxy.currentEtablissement,
+                            etablissements           : etablissements,
+                            fonctionList             : preferenceEtablissementService.getFonctionListForRoleApprenant(
+                                    personne,
+                                    securiteSessionServiceProxy.currentEtablissement
+                            ),
+                            groupeTypeList           : groupeTypeList,
+                            modaliteActivite         : modaliteActivite,
+                            structureEnseignementList: structureEnseignementList,
+                            competencesEvaluables    : modaliteActivite.sujet.hasCompetence()
                     ]
             )
         }
@@ -336,11 +484,16 @@ class SeanceController {
         def elevesSansCopies = copieService.findElevesSansCopieForModaliteActivite(seance,
                 copies,
                 personne)
-        render(view: '/seance/listeResultats', model: [liens                   : breadcrumpsServiceProxy.liens,
-                                                       seance                  : seance,
-                                                       afficheLienMiseAjourNote: afficheLienMiseAjourNote,
-                                                       copies                  : copies,
-                                                       elevesSansCopies        : elevesSansCopies])
+        render(
+                view: '/seance/listeResultats',
+                model: [
+                        liens                   : breadcrumpsServiceProxy.liens,
+                        seance                  : seance,
+                        afficheLienMiseAjourNote: afficheLienMiseAjourNote,
+                        copies                  : copies,
+                        elevesSansCopies        : elevesSansCopies
+                ]
+        )
     }
 
     /**
@@ -526,8 +679,11 @@ class UpdateReponseNoteCommand {
     Float update_value
 }
 
-class RechercheStructuresCommand {
+class RechercheGroupeCommand {
     String patternCode
     Long etablissementId
-    Long niveauId
+    Long fonctionId
+    GroupeType groupeType
+
+
 }

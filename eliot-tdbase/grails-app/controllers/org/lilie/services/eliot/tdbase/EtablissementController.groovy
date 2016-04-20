@@ -27,6 +27,7 @@
  */
 package org.lilie.services.eliot.tdbase
 
+import org.lilie.services.eliot.tdbase.preferences.GestionnaireModificationLiaisonFonctionRole
 import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissement
 import org.lilie.services.eliot.tdbase.preferences.PreferenceEtablissementService
@@ -44,6 +45,7 @@ class EtablissementController {
     BreadcrumpsService breadcrumpsServiceProxy
     SecuriteSessionService securiteSessionServiceProxy
     PreferenceEtablissementService preferenceEtablissementService
+    GestionnaireModificationLiaisonFonctionRole gestionnaireModificationLiaisonFonctionRole
 
     /**
      * Accueil preferences
@@ -55,13 +57,16 @@ class EtablissementController {
                 message(code: "preferences.index.title"))
 
         Etablissement etab = securiteSessionServiceProxy.currentEtablissement
-        PreferenceEtablissement pref = securiteSessionServiceProxy.currentPreferenceEtablissement
+        PreferenceEtablissement pref =
+                securiteSessionServiceProxy.currentPreferenceEtablissement
 
         [liens                  : breadcrumpsServiceProxy.liens,
          etablissement          : etab,
          mappingFonctionRole    : pref.mappingFonctionRoleAsMap(),
-         fonctions              : preferenceEtablissementService.getFonctionsForEtablissement(etab),
-         preferenceEtablissement: pref
+         fonctions              :
+                 preferenceEtablissementService.getFonctionsForEtablissement(etab),
+         preferenceEtablissement: pref,
+         gestionnaireModificationLiaisonFonctionRole: gestionnaireModificationLiaisonFonctionRole
         ]
     }
 
@@ -82,15 +87,16 @@ class EtablissementController {
     }
 
     private MappingFonctionRole getMappingFromParamsForPreferenceEtablissement(
-            def params, PreferenceEtablissement prefEtab) {
+            def params,
+            PreferenceEtablissement prefEtab) {
         // start with the current mapping
         MappingFonctionRole mapping = prefEtab.mappingFonctionRoleAsMap()
         // apply changes
-        mapping.resetOnRoleEnseignantAndEleve()
+        mapping.resetOnRoleEnseignantAndEleve(gestionnaireModificationLiaisonFonctionRole)
         params.each { String key, value ->
             if (key.startsWith("fonction_")) {
                 def keyParts = key.split("__")
-                mapping.addRoleForFonction(RoleApplicatif.valueOf(keyParts[3]), FonctionEnum.valueOf(keyParts[1]))
+                mapping.addBinding(RoleApplicatif.valueOf(keyParts[3]), FonctionEnum.valueOf(keyParts[1]))
             }
         }
         mapping

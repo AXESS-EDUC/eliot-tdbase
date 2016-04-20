@@ -29,6 +29,7 @@
 
 import org.codehaus.groovy.grails.commons.ApplicationAttributes
 import org.lilie.services.eliot.tdbase.ArtefactAutorisationService
+import org.lilie.services.eliot.tdbase.preferences.GestionnaireModificationLiaisonFonctionRole
 import org.lilie.services.eliot.tdbase.preferences.MappingFonctionRole
 import org.lilie.services.eliot.tdbase.patch.PatchExecution
 import org.lilie.services.eliot.tdbase.patch.PatchTDB40
@@ -43,6 +44,7 @@ class BootStrap {
   DbMigrationService dbMigrationService
   PortailTagLibService portailTagLibService
   ArtefactAutorisationService artefactAutorisationService
+    GestionnaireModificationLiaisonFonctionRole gestionnaireModificationLiaisonFonctionRole
 
   def init = { servletContext ->
 
@@ -54,6 +56,10 @@ class BootStrap {
 
     if (config.eliot.bootstrap.jeudetest) {
       bootstrapService.bootstrapJeuDeTestDevDemo()
+    }
+
+    if (config.eliot.bootstrap.jeudetestAxess) {
+      bootstrapService.bootstrapJeuDeTestAxess()
     }
 
     try {
@@ -75,12 +81,15 @@ class BootStrap {
 
     artefactAutorisationService.partageArtefactCCActive = config.eliot.artefact.partage_CC_autorise
 
-    Map aMap = config.eliot.tdbase.mappingFonctionRole.defaut
-    if (!aMap) {
-        throw Exception("Parametre obligatoire eliot.tdbase.mappingFonctionRole.defaut n'est pas configure !")
+    Map mappingFonctionRoleDefaut = config.eliot.tdbase.mappingFonctionRole.defaut
+    if (!mappingFonctionRoleDefaut) {
+        throw new Exception("Parametre obligatoire eliot.tdbase.mappingFonctionRole.defaut n'est pas configure !")
     }
 
-    MappingFonctionRole.defaultMappingFonctionRole = new MappingFonctionRole(aMap)
+    MappingFonctionRole.defaultMappingFonctionRole = new MappingFonctionRole(
+            gestionnaireModificationLiaisonFonctionRole: gestionnaireModificationLiaisonFonctionRole
+    ).parseMapRepresentation(mappingFonctionRoleDefaut)
+
 
     executeAllPatch(servletContext)
   }

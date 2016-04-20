@@ -14,7 +14,7 @@ import org.lilie.services.eliot.tdbase.importexport.dto.SujetSequenceQuestionsDt
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import spock.lang.Specification
 
@@ -73,7 +73,7 @@ class SujetImporterServiceSpec extends Specification {
     given:
     Personne importeur = new Personne()
     ReferentielEliot referentielEliot = new ReferentielEliot(
-        matiere: new Matiere(),
+        matiereBcn: new MatiereBcn(),
         niveau: new Niveau()
     )
 

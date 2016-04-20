@@ -29,13 +29,119 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="eliot-tdbase-ui"/>
+  <r:require modules="eliot-tdbase-ui, jquery-ui, eliot-tdbase-combobox-autocomplete, jquery"/>
   <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
       initButtons();
+
+      initComboboxAutoComplete({
+        combobox: '#matiereId',
+
+        recherche: function(recherche, callback) {
+          if (recherche == null || recherche.length < 3) {
+            callback([]);
+          }
+          else {
+            $.ajax({
+              url: '${g.createLink(absolute: true, uri: "/sujet/matiereBcns")}',
+
+              data: {
+                recherche: recherche
+              },
+
+              success: function(matiereBcns) {
+                var options = [];
+
+                for(var i = 0; i < matiereBcns.length; i++) {
+                  options.push({
+                    id: matiereBcns[i].id,
+                    value: matiereBcns[i].libelleEdition + ' [' + matiereBcns[i].libelleCourt + ']'
+                  });
+                }
+
+                callback(options);
+              }
+            });
+          }
+        }
+
+      });
+
+      initComboboxAutoComplete({
+          combobox: '#niveauId',
+
+          recherche: function(recherche, callback) {
+            if (recherche == null || recherche.length < 3) {
+              callback([]);
+            }
+            else {
+              $.ajax({
+                url: '${g.createLink(absolute: true, uri: "/sujet/niveaux")}',
+
+                data: {
+                  recherche: recherche
+                },
+
+                success: function(niveaux) {
+                  var options = [];
+
+                  for(var i = 0; i < niveaux.length; i++) {
+                    options.push({
+                      id: niveaux[i].id,
+                      value:  niveaux[i].libelleLong
+                    });
+                  }
+
+                  callback(options);
+                }
+              });
+            }
+          }
+
+        });
     });
+
+    function masqueSujet(sujet) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/sujet/masque/")}' + sujet,
+
+        success: function() {
+          $("div.sujet[data-sujet='" + sujet + "']").addClass('masque');
+          $("li.masqueSujet[data-sujet='" + sujet + "']").hide();
+          $("li.annuleMasqueSujet[data-sujet='" + sujet + "']").show();
+        }
+      });
+    }
+
+    function annuleMasqueSujet(sujet) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/sujet/annuleMasque/")}' + sujet,
+
+        success: function() {
+          $("div.sujet[data-sujet='" + sujet + "']").removeClass('masque');
+          $("li.masqueSujet[data-sujet='" + sujet + "']").show();
+          $("li.annuleMasqueSujet[data-sujet='" + sujet + "']").hide();
+        }
+      });
+    }
+
+    function supprimeSujet(sujet) {
+      $.ajax({
+        url: '${g.createLink(absolute: true, uri: "/sujet/supprime/")}' + sujet + '?ajax=true',
+
+        success: function() {
+          location.reload();
+        }
+      });
+    }
+
   </r:script>
+  <style>
+  .custom-combobox-input {
+    width: 15em;
+  }
+  </style>
   <title>
     <g:if test="${afficheFormulaire}">
       <g:message code="sujet.recherche.head.title"/>
@@ -83,39 +189,43 @@
           <td width="20"/>
           <td class="label">Matière :
           </td>
-          <td>
+          <td class="matiere">
             <g:select name="matiereId" value="${rechercheCommand.matiereId}"
-                      noSelection="${['null': 'Toutes']}"
-                      from="${matieres}"
+                      from="${matiereBcns}"
                       optionKey="id"
-                      optionValue="libelleLong"/>
+                      optionValue="libelleEdition"/>
           </td>
         </tr>
         <tr>
-        <g:if test="${artefactHelper.partageArtefactCCActive}">
-          <td class="label">Auteur :
-          </td>
-          <td>
-            <g:textField name="patternAuteur" title="auteur"
-                         value="${rechercheCommand.patternAuteur}"/>
-          </td>
-         </g:if>
-         <g:else>
-             <td class="label">&nbsp;
-             </td>
-             <td>
-                 &nbsp;
-             </td>
-         </g:else>
+          <g:if test="${artefactHelper.partageArtefactCCActive}">
+            <td class="label">Auteur :
+            </td>
+            <td class="niveau">
+              <g:textField name="patternAuteur" title="auteur"
+                           value="${rechercheCommand.patternAuteur}"/>
+            </td>
+          </g:if>
+          <g:else>
+            <td class="label">&nbsp;
+            </td>
+            <td>
+              &nbsp;
+            </td>
+          </g:else>
           <td width="20"/>
           <td class="label">Niveau :
           </td>
           <td>
             <g:select name="niveauId" value="${rechercheCommand.niveauId}"
-                      noSelection="${['null': 'Tous']}"
                       from="${niveaux}"
                       optionKey="id"
                       optionValue="libelleLong"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <g:checkBox name="afficheSujetMasque" value="${afficheSujetMasque}"/>
+            Afficher les sujets masqués
           </td>
         </tr>
 
@@ -144,89 +254,56 @@
     <%
       def messageDialogue = g.message(code: "sujet.partage.dialogue", args: [CopyrightsType.getDefaultForPartage().logo, CopyrightsType.getDefaultForPartage().code, CopyrightsType.getDefaultForPartage().lien])
     %>
-    <g:each in="${sujets}" status="i" var="sujetInstance">
-      <div class="${(i % 2) == 0 ? 'even' : 'odd'}" style="z-index: 0">
+    <g:each in="${sujets}" status="i" var="sujet">
+      <g:set var="masque" value="${sujetsMasquesIds?.contains(sujet.id)}"/>
+      <div
+          class="${(i % 2) == 0 ? 'even' : 'odd'} sujet ${masque ? 'masque' : ''} ${sujet.estCollaboratif() ? 'collaboratif' : ''}"
+          data-sujet="${sujet.id}" style="z-index: 0">
 
-        <h1>${fieldValue(bean: sujetInstance, field: "titre")}</h1>
-
-        <button id="${sujetInstance.id}">Actions</button>
-        <ul id="menu_actions_${sujetInstance.id}" class="tdbase-menu-actions">
-          <li><g:link action="teste" id="${sujetInstance.id}">
-            Tester
-          </g:link>
-          </li>
-          <li><g:link action="ajouteSeance" id="${sujetInstance.id}">
-            Nouvelle&nbsp;séance
-          </g:link>
-          </li>
-          <li><hr/></li>
-          <g:if test="${artefactHelper.utilisateurPeutModifierArtefact(utilisateur, sujetInstance)}">
-            <li><g:link action="edite"
-                        id="${sujetInstance.id}">Modifier</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Modifier</li>
-          </g:else>
-          <g:if test="${artefactHelper.utilisateurPeutDupliquerArtefact(utilisateur, sujetInstance)}">
-            <li><g:link action="duplique"
-                        id="${sujetInstance.id}">Dupliquer</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Dupliquer</li>
-          </g:else>
-          <li><hr/></li>
-        <g:if test="${artefactHelper.partageArtefactCCActive}">
-          <g:if test="${artefactHelper.utilisateurPeutPartageArtefact(utilisateur, sujetInstance)}">
-            <%
-              def docLoc = g.createLink(action: 'partage', id: sujetInstance.id)
-            %>
-            <li><g:link action="partage"
-                        id="${sujetInstance.id}"
-                        onclick="afficheDialogue('${messageDialogue}', '${docLoc}');return false;">Partager</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Partager</li>
-          </g:else>
+        <g:if test="${sujet.estCollaboratif()}">
+          <h1 title="Formateurs: ${sujet.getContributeursAffichage()}">
         </g:if>
-          <g:set var="peutExporterNatifJson"
-                 value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, Format.NATIF_JSON)}"/>
-          <g:set var="peutExporterMoodleXml"
-                 value="${artefactHelper.utilisateurPeutExporterArtefact(utilisateur, sujetInstance, Format.MOODLE_XML)}"/>
+        <g:else>
+          <h1>
+        </g:else>
 
-          <g:if test="${peutExporterNatifJson || peutExporterMoodleXml}">
-            <li>
-              <g:set var="urlFormatNatifJson" value="${createLink(action: 'exporter', id: sujetInstance.id, params: [format: Format.NATIF_JSON.name()])}"/>
-              <g:set var="urlFormatMoodleXml" value="${createLink(action: 'exporter', id: sujetInstance.id, params: [format: Format.MOODLE_XML.name()])}"/>
-              <a href="#" onclick="actionExporter('${urlFormatNatifJson}', '${peutExporterMoodleXml ? urlFormatMoodleXml : null}')">Exporter</a>
-            </li>
+          ${fieldValue(bean: sujet, field: "titre")}
+
+          <g:if test="${sujet.estTermine() || sujet.estDistribue()}">
+            <g:img dir="images/eliot" file="modification_inactif.png" title="Non modifiable" width="16"/>
           </g:if>
           <g:else>
-            Exporter
+            <g:img dir="images/eliot" file="modification_actif.png" title="Modifiable" width="16"/>
           </g:else>
+        </h1>
 
-          <li><hr/></li>
-          <g:if test="${artefactHelper.utilisateurPeutSupprimerArtefact(utilisateur, sujetInstance)}">
-            <li><g:link action="supprime" id="${sujetInstance.id}">Supprimer</g:link></li>
-          </g:if>
-          <g:else>
-            <li>Supprimer</li>
-          </g:else>
+        <button id="${sujet.id}">Actions</button>
+        <ul id="menu_actions_${sujet.id}" class="tdbase-menu-actions">
+          <g:render template="menuActions"
+                    model="${[
+                        artefactHelper : artefactHelper,
+                        sujet          : sujet,
+                        utilisateur    : utilisateur,
+                        modeRecherche  : true,
+                        masque         : masque,
+                        jsSupprimeSujet: 'supprimeSujet'
+                    ]}"/>
         </ul>
 
-        <p class="date">Mise à jour le ${sujetInstance.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
+        <p class="date">Mise à jour le ${sujet.lastUpdated?.format('dd/MM/yy HH:mm')}</p>
 
         <p>
           <g:if
-              test="${sujetInstance.niveau?.libelleLong}"><strong>» Niveau :</strong> ${sujetInstance.niveau?.libelleLong}</g:if>
+              test="${sujet.niveau?.libelleLong}"><strong>» Niveau :</strong> ${sujet.niveau?.libelleLong}</g:if>
           <g:if
-              test="${sujetInstance.matiere?.libelleLong}"><strong>» Matière :</strong> ${sujetInstance.matiere?.libelleLong}</g:if>
+              test="${sujet.matiereBcn?.libelleEdition}"><strong>» Matière :</strong> ${sujet.matiereBcn?.libelleEdition}</g:if>
           <g:if
-              test="${fieldValue(bean: sujetInstance, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujetInstance, field: "dureeMinutes")}</g:if>
+              test="${fieldValue(bean: sujet, field: "dureeMinutes")}"><strong>» Durée :</strong> ${fieldValue(bean: sujet, field: "dureeMinutes")}</g:if>
           <g:if test="${artefactHelper.partageArtefactCCActive && afficheFormulaire}">
-            <strong>» Auteur :</strong> ${sujetInstance.proprietaire.prenom} ${sujetInstance.proprietaire.nom}
+            <strong>» Auteur :</strong> ${sujet.proprietaire.prenom} ${sujet.proprietaire.nom}
           </g:if>
           <g:if test="${artefactHelper.partageArtefactCCActive}">
-          <strong>» Partagé :</strong> ${sujetInstance.estPartage() ? 'oui' : 'non'}
+            <strong>» Partagé :</strong> ${sujet.estPartage() ? 'oui' : 'non'}
           </g:if>
         </p>
 

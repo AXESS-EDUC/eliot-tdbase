@@ -29,6 +29,7 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
+import org.lilie.services.eliot.tice.util.Pagination
 import org.lilie.services.eliot.tice.utils.BootstrapService
 
 /**
@@ -77,7 +78,7 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         assertEquals("pas le bon de nombre de props", 4, props.size())
 
         //when: la recherche des pps avec struture est lancée uniquement sur le collège
-        def lecollege = bootstrapService.leCollege
+        def lecollege = bootstrapService.etablissementCollege
         props = profilScolariteService.findProprietesScolariteWithStructureForPersonne(bootstrapService.enseignant1, [lecollege])
 
         //then: uniquement les pps du collège sont récupérées
@@ -99,20 +100,20 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         // test pour un enseignant
         def etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.enseignant1)
         assertEquals(2, etabs.size())
-        assertTrue("college pas trouvé", etabs.contains(bootstrapService.leCollege))
-        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.leLycee))
+        assertTrue("college pas trouvé", etabs.contains(bootstrapService.etablissementCollege))
+        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.etablissementLycee))
 
         // test sur un eleve
         etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.eleve1)
         assertEquals(2, etabs.size())
-        assertTrue("college pas trouvé", etabs.contains(bootstrapService.leCollege))
-        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.leLycee))
+        assertTrue("college pas trouvé", etabs.contains(bootstrapService.etablissementCollege))
+        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.etablissementLycee))
 
         // test sur un parent
         etabs = profilScolariteService.findEtablissementsForPersonne(bootstrapService.parent1)
         assertEquals(2, etabs.size())
-        assertTrue("college pas trouvé", etabs.contains(bootstrapService.leCollege))
-        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.leLycee))
+        assertTrue("college pas trouvé", etabs.contains(bootstrapService.etablissementCollege))
+        assertTrue("lycee pas trouvé", etabs.contains(bootstrapService.etablissementLycee))
     }
 
     void testPersonneEstResponsableEleve() {
@@ -128,19 +129,19 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
     void testPersonneEstPersonnelDirection() {
         assertTrue(profilScolariteService.personneEstPersonnelDirectionForEtablissement(bootstrapService.persDirection1,
-                bootstrapService.leCollege))
+                bootstrapService.etablissementCollege))
         assertTrue(profilScolariteService.personneEstPersonnelDirectionForEtablissement(bootstrapService.persDirection1,
-                bootstrapService.leLycee))
+                bootstrapService.etablissementLycee))
     }
 
     void testPersonneEstAdministrateurCentral() {
         assertTrue(profilScolariteService.personneEstAdministrateurCentral(bootstrapService.superAdmin1,
-                bootstrapService.leLycee.porteurEnt))
+                bootstrapService.etablissementLycee.porteurEnt))
     }
 
     void testFindFonctionsForPersonneAndEtablissement() {
         // given: un établissement
-        def etab = bootstrapService.leLycee
+        def etab = bootstrapService.etablissementLycee
 
         // and: un enseignant
         def ens1 = bootstrapService.enseignant1
@@ -164,10 +165,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
         // then: le résultats contient les établissements assicié à la fonction enseignant
         res.size() == 2
-        res.get(bootstrapService.leLycee).size() == 1
-        res.get(bootstrapService.leLycee).contains(FonctionEnum.ENS)
-        res.get(bootstrapService.leCollege).size() == 1
-        res.get(bootstrapService.leCollege).contains(FonctionEnum.ENS)
+        res.get(bootstrapService.etablissementLycee).size() == 1
+        res.get(bootstrapService.etablissementLycee).contains(FonctionEnum.ENS)
+        res.get(bootstrapService.etablissementCollege).size() == 1
+        res.get(bootstrapService.etablissementCollege).contains(FonctionEnum.ENS)
 
         // given: un parent
         def parent1 = bootstrapService.parent1
@@ -177,10 +178,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
         // then: le résultats contient les établissements assicié à la fonction enseignant
         res.size() == 2
-        res.get(bootstrapService.leLycee).size() == 1
-        res.get(bootstrapService.leLycee).contains(FonctionEnum.PERS_REL_ELEVE)
-        res.get(bootstrapService.leCollege).size() == 1
-        res.get(bootstrapService.leCollege).contains(FonctionEnum.PERS_REL_ELEVE)
+        res.get(bootstrapService.etablissementLycee).size() == 1
+        res.get(bootstrapService.etablissementLycee).contains(FonctionEnum.PERS_REL_ELEVE)
+        res.get(bootstrapService.etablissementCollege).size() == 1
+        res.get(bootstrapService.etablissementCollege).contains(FonctionEnum.PERS_REL_ELEVE)
 
         // given: un élève
         def elv1 = bootstrapService.eleve1
@@ -190,10 +191,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
         // then: le résultats contient les établissements assicié à la fonction enseignant
         res.size() == 2
-        res.get(bootstrapService.leLycee).size() == 1
-        res.get(bootstrapService.leLycee).contains(FonctionEnum.ELEVE)
-        res.get(bootstrapService.leCollege).size() == 1
-        res.get(bootstrapService.leCollege).contains(FonctionEnum.ELEVE)
+        res.get(bootstrapService.etablissementLycee).size() == 1
+        res.get(bootstrapService.etablissementLycee).contains(FonctionEnum.ELEVE)
+        res.get(bootstrapService.etablissementCollege).size() == 1
+        res.get(bootstrapService.etablissementCollege).contains(FonctionEnum.ELEVE)
 
         // given: un pers de direction
         def pers1 = bootstrapService.persDirection1
@@ -203,10 +204,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
 
         // then: le résultats contient les établissements assicié à la fonction enseignant
         res.size() == 2
-        res.get(bootstrapService.leLycee).size() == 1
-        res.get(bootstrapService.leLycee).contains(FonctionEnum.DIR)
-        res.get(bootstrapService.leCollege).size() == 1
-        res.get(bootstrapService.leCollege).contains(FonctionEnum.DIR)
+        res.get(bootstrapService.etablissementLycee).size() == 1
+        res.get(bootstrapService.etablissementLycee).contains(FonctionEnum.DIR)
+        res.get(bootstrapService.etablissementCollege).size() == 1
+        res.get(bootstrapService.etablissementCollege).contains(FonctionEnum.DIR)
     }
 
     void testFindEtablissementsAdministresForPersonne() {
@@ -216,10 +217,10 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         when: "la récupération des établissements qu'il administre est demandé"
         def res = profilScolariteService.findEtablissementsAdministresForPersonne(admin)
 
-        then:"Les établissements récupérés sont les administrés par la personne"
-        assertEquals("pas le bon nombre d'établissements",2,res.size())
-        assertTrue(res.contains(bootstrapService.leLycee))
-        assertTrue(res.contains(bootstrapService.leCollege))
+        then: "Les établissements récupérés sont les administrés par la personne"
+        assertEquals("pas le bon nombre d'établissements", 2, res.size())
+        assertTrue(res.contains(bootstrapService.etablissementLycee))
+        assertTrue(res.contains(bootstrapService.etablissementCollege))
 
         given: "un administrateur d'un seul établissement"
         def ens = bootstrapService.enseignant1
@@ -227,8 +228,8 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         when: "la récupération des établissements qu'il administre est demandé"
         res = profilScolariteService.findEtablissementsAdministresForPersonne(ens)
 
-        then:"un établissement n'est récupéré"
-        assertEquals("pas le bon nombre d'établissements",1,res.size())
+        then: "un établissement n'est récupéré"
+        assertEquals("pas le bon nombre d'établissements", 1, res.size())
 
         given: "un administrateur d'aucun établissement"
         ens = bootstrapService.enseignant2
@@ -236,9 +237,198 @@ class ProfilScolariteServiceIntegrationTests extends GroovyTestCase {
         when: "la récupération des établissements qu'il administre est demandé"
         res = profilScolariteService.findEtablissementsAdministresForPersonne(ens)
 
-        then:"un établissement n'est récupéré"
-        assertEquals("pas le bon nombre d'établissements",0,res.size())
+        then: "un établissement n'est récupéré"
+        assertEquals("pas le bon nombre d'établissements", 0, res.size())
 
     }
 
+
+    void testFindAllPersonneForEtablissementAndFonctionIn() {
+        given:
+        Etablissement etablissement = bootstrapService.etablissementCollege
+        List<Fonction> fonctionList = [FonctionEnum.ELEVE.fonction]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.eleve1,
+                        bootstrapService.eleve2,
+                        bootstrapService.eleve4
+                ]*.nomAffichage.sort(),
+                profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
+                        etablissement,
+                        fonctionList
+                ).personneList*.nomAffichage.sort()
+        )
+
+        given:
+        etablissement = bootstrapService.etablissementLycee
+        fonctionList = [FonctionEnum.ELEVE.fonction]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.eleve1,
+                        bootstrapService.eleve2,
+                        bootstrapService.eleve3
+                ]*.nomAffichage.sort(),
+                profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
+                        etablissement,
+                        fonctionList
+                ).personneList*.nomAffichage.sort()
+        )
+
+        given:
+        etablissement = bootstrapService.etablissementLycee
+        fonctionList = [
+                FonctionEnum.ELEVE.fonction,
+                FonctionEnum.ENS.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.eleve1,
+                        bootstrapService.eleve2,
+                        bootstrapService.eleve3,
+                        bootstrapService.enseignant2
+                ]*.nomAffichage.sort(),
+                profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
+                        etablissement,
+                        fonctionList
+                ).personneList*.nomAffichage.sort()
+        )
+
+        given:
+        etablissement = bootstrapService.etablissementCollege
+        fonctionList = [
+                FonctionEnum.ELEVE.fonction,
+                FonctionEnum.ENS.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.eleve1,
+                        bootstrapService.eleve2,
+                        bootstrapService.eleve4,
+                        bootstrapService.enseignant2
+                ]*.nomAffichage.sort(),
+                profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
+                        etablissement,
+                        fonctionList
+                ).personneList*.nomAffichage.sort()
+        )
+
+        given:
+        etablissement = bootstrapService.etablissementLycee
+        fonctionList = [
+                FonctionEnum.ELEVE.fonction,
+                FonctionEnum.PERS_REL_ELEVE.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.eleve1,
+                        bootstrapService.eleve2,
+                        bootstrapService.eleve3,
+                        bootstrapService.parent1
+                ]*.nomAffichage.sort(),
+                profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
+                        etablissement,
+                        fonctionList
+                ).personneList*.nomAffichage.sort()
+        )
+
+        given:
+        etablissement = bootstrapService.etablissementCollege
+        fonctionList = [
+                FonctionEnum.ELEVE.fonction,
+                FonctionEnum.ENS.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.enseignant2
+                ]*.nomAffichage.sort(),
+                profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant1,
+                        etablissement,
+                        fonctionList,
+                        'dup'
+                ).personneList*.nomAffichage.sort()
+        )
+
+        given:
+        etablissement = bootstrapService.etablissementCollege
+        fonctionList = [
+                FonctionEnum.ELEVE.fonction,
+                FonctionEnum.ENS.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.enseignant1
+                ]*.nomAffichage.sort(),
+                profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                        bootstrapService.enseignant2,
+                        etablissement,
+                        fonctionList,
+                        'MARY',
+                        new Pagination(max: 10, offset: 0)
+                ).personneList*.nomAffichage.sort()
+        )
+
+        given:
+        etablissement = bootstrapService.etablissementLycee
+        fonctionList = [
+                FonctionEnum.ELEVE.fonction,
+                FonctionEnum.PERS_REL_ELEVE.fonction
+        ]
+
+        expect:
+        assertEquals(
+                [
+                        bootstrapService.eleve1,
+                        bootstrapService.eleve2,
+                        bootstrapService.eleve3,
+                        bootstrapService.parent1
+                ]*.nomAffichage.sort(),
+                (
+                        profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                                bootstrapService.enseignant1,
+                                etablissement,
+                                fonctionList,
+                                null,
+                                new Pagination(max: 2, offset: 0)
+                        ).personneList +
+                                profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                                        bootstrapService.enseignant1,
+                                        etablissement,
+                                        fonctionList,
+                                        null,
+                                        new Pagination(max: 2, offset: 2)
+                                ).personneList
+                )*.nomAffichage.sort()
+        )
+        assertEquals(
+            4,
+            profilScolariteService.rechercheAllPersonneForEtablissementAndFonctionIn(
+                bootstrapService.enseignant1,
+                etablissement,
+                fonctionList,
+                null,
+                new Pagination(max: 2, offset: 0)
+            ).nombreTotal
+        )
+
+    }
 }

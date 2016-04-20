@@ -23,7 +23,7 @@ import org.lilie.services.eliot.tice.AttachementDto
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.utils.BootstrapService
 
@@ -45,7 +45,7 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
     bootstrapService.bootstrapForIntegrationTest()
     personne = bootstrapService.enseignant1
 
-    assert Matiere.first()
+    assert MatiereBcn.first()
     assert Niveau.first()
   }
 
@@ -91,7 +91,7 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
     questionImportee.specificationNormalise == question.specificationNormalise
     questionImportee.estAutonome == question.estAutonome
     questionImportee.versionQuestion == question.versionQuestion
-    questionImportee.matiere?.id == referentielEliot?.matiere?.id
+    questionImportee.matiereBcn?.id == referentielEliot?.matiereBcn?.id
     questionImportee.niveau?.id == referentielEliot?.niveau?.id
     questionImportee.publication == null
     questionImportee.etablissement == null
@@ -112,7 +112,7 @@ class QuestionImporterServiceIntegrationSpec extends IntegrationSpec {
         null,
         null,
         new ReferentielEliot(
-            matiere: Matiere.first(),
+            matiereBcn: MatiereBcn.first(),
             niveau: Niveau.first()
         )
     ]

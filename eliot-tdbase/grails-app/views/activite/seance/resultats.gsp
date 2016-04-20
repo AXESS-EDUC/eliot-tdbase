@@ -74,8 +74,8 @@
 		  		              / <g:formatNumber number="${copie.maxPointsCorrecteur}" format="##0.00" />
 		  	</p>
 		  	</g:if>
-		  	<g:if test="${seance.matiere?.libelleLong}">
-		  	<p><strong>» Matière : </strong>${seance.matiere?.libelleLong}</p>
+		  	<g:if test="${seance.matiereBcn?.libelleEdition}">
+		  	<p><strong>» Matière : </strong>${seance.matiereBcn?.libelleEdition}</p>
 		  	</g:if>
 		  	<p><em>(Séance du :  ${seance.dateDebut.format('dd/MM/yy HH:mm')}  au ${seance.dateFin.format('dd/MM/yy HH:mm')})</em></p>
 		  </div>

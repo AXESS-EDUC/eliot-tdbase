@@ -33,6 +33,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase-activite"/>
+  <r:require module="momentjs"/>
   <g:if test="${copie.estModifiable()}">
     <r:require module="copieEdite_CopieModifiable"/>
   </g:if>
@@ -41,12 +42,63 @@
   </g:else>
 
   <title><g:message code="activite.copie.edite.head.title"/></title>
+  <style>
+    .chronometre {
+      z-index: 10000;
+      background-color: lightcoral;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      padding-left: 12px;
+      padding-right: 12px;
+      border-radius: 3px;
+      position: fixed;
+
+      <g:if test="${grailsApplication.config.eliot.seance.chronometre.position}">
+        top: ${grailsApplication.config.eliot.seance.chronometre.position.top};
+        left: ${grailsApplication.config.eliot.seance.chronometre.position.left};
+      </g:if>
+      <g:else>
+        top: 147px;
+        left: 13px;
+      </g:else>
+    }
+  </style>
 </head>
 
 <body>
 
 <g:render template="/breadcrumps" plugin="eliot-tice-plugin"
           model="[liens: liens]"/>
+
+<div id="page">
+<g:if test="${copie.modaliteActivite.decompteTemps && copie.modaliteActivite.estOuverte() && copie.estModifiable()}">
+  <div class="chronometre" style="display: none;"></div>
+  <script>
+    moment.locale('fr');
+    var chronometre = null;
+    var date = ${copie.dateDebut != null ? "moment('" + copie.dateDebut + "')" : "null"};
+
+    var update = function () {
+      var ms = date.diff(moment(new Date())) + ${copie.modaliteActivite.dureeMinutes} * 60 * 1000;
+
+      if (ms > 0) {
+        chronometre.html('Temps restant = ' + moment.utc(ms).format('HH:mm:ss'));
+      }
+      else {
+        chronometre.html('Terminé');
+      }
+    };
+
+    $(document).ready(function(){
+      if (date != null) {
+        chronometre = $('.chronometre');
+        chronometre.show();
+        update();
+        setInterval(update, 1000);
+      }
+    });
+  </script>
+</g:if>
 
 <g:hasErrors bean="${copie}">
   <div class="portal-messages">
@@ -123,5 +175,6 @@
 <g:render template="/copie/edite"
           model="[copie: copie, afficheCorrection: copie.modaliteActivite.estPerimee()]"/>
 
+</div>
 </body>
 </html>

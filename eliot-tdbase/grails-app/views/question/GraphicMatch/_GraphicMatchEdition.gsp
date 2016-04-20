@@ -57,6 +57,12 @@
 
         <g:if test="${specifobject.attachmentId}">
 
+          <div class="portal-messages">
+          <p class="notice">
+            Les zones de dépôt ne doivent pas se chevaucher.
+          </p>
+          </div>
+
             <g:submitToRemote title="Ajouter une zone" value="Ajouter une zone"
                               action="ajouteHotspot"
                               controller="questionGraphicMatch"

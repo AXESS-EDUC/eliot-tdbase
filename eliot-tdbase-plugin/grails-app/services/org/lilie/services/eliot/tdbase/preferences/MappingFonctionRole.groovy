@@ -4,122 +4,279 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
 import org.lilie.services.eliot.tice.scolarite.FonctionEnum
-import org.lilie.services.eliot.tice.utils.contract.Contract
+import org.lilie.services.eliot.tice.utils.contract.PreConditionException
 
 /**
  * Created by franck on 08/09/2014.
+ *
+ * Modifications apportées par John le 27/03/2015 :
+ * Le format de stockage a été modifié pour ne stocker que les associations Role / Fonction.
+ * Le fait de savoir si une association est modifiable ou non est maintenant géré par configuration applicative (et
+ * plus par le paramétrage de chaque établissement).
+ *
+ * Un format simplifié JSON a été introduit. Celui-ci est dénommé "version 2".
+ * Le parsing du format JSON initial a été conservé pour ne pas effectuer de reprise de donner.
+ * Dès qu'un paramétrage établissement sera modifié, le nouveau paramétrage sera enregistré en version 2.
+ *
+ * @author Franck Silvestre
+ * @author John Tranier
  */
 class MappingFonctionRole {
 
     static MappingFonctionRole defaultMappingFonctionRole
 
+    GestionnaireModificationLiaisonFonctionRole gestionnaireModificationLiaisonFonctionRole
+
     public static final String KEY_ASSOCIE = 'associe'
-    public static final String KEY_MODIFIABLE = 'modifiable'
+    private static final Long JSON_REPRESENTATION_VERSION = 2
 
-    private Map mapping = [:]
-
-    /**
-     * Default constructeur
-     */
-    MappingFonctionRole() {}
+    private Map<RoleApplicatif, RoleApplicatifBinding> mappingRole = [:]
+    private Map<FonctionEnum, FonctionBinding> mappingFonction = [:]
 
     /**
-     * Crée et initialise le mapping à partir d'une map
-     * @param mapping le mapping d'initialisation
+     * Initialise ce mapping à partir d'une représentation JSON (version 1 ou 2)
+     * @param jsonString
+     * @return
      */
-    MappingFonctionRole(Map aMapping) {
-        if (aMapping) {
-            Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping),"requires_mapping_fonction_role_map_est_valide")
-            this.mapping = aMapping
+    MappingFonctionRole parseJsonRepresentation(String jsonString) {
+        assert mappingRole.isEmpty()
+
+        if (!jsonString) {
+            return this
+        }
+
+        def slurper = new JsonSlurper()
+        def representation = slurper.parseText(jsonString)
+        if (!representation) {
+            return this
+        }
+
+        if (!representation.version) {
+            return parseJsonRepresentationVersion1((Map)representation)
+        } else if (representation.version == JSON_REPRESENTATION_VERSION) {
+            return parseJsonRepresentationVersion2((Map)representation)
+        } else {
+            throw new IllegalArgumentException(
+                    "Version non supportée : ${representation.version}"
+            )
         }
     }
 
     /**
-     * Crée et initialise un mapping à partir d'un chaine de caractere au format JSON
-     * @param jsonString
+     * Initialise ce mapping à partir d'une représentation JSON (version 1)
+     * @param representation
+     * @return
      */
-    MappingFonctionRole(String jsonString) {
-        if (jsonString) {
-            def slurper = new JsonSlurper()
-            def aMapping = slurper.parseText(jsonString)
-            if (aMapping) {
-                Contract.requires(allKeysAndValuesAreFonctionCodesAndRoleCodes(aMapping),"requires_mapping_fonction_role_map_est_valide")
-                this.mapping = aMapping
+    private MappingFonctionRole parseJsonRepresentationVersion1(Map representation) {
+        representation.each { def fonctionCode, def roleMap ->
+            assert (fonctionCode instanceof String)
+            assert (roleMap instanceof Map)
+
+            roleMap.each { def roleCode, Map association ->
+                assert (roleCode instanceof String)
+                assert(association instanceof Map)
+
+                if(association[KEY_ASSOCIE]) {
+                    addBinding(
+                            RoleApplicatif.valueOf(roleCode),
+                            FonctionEnum.valueOf(fonctionCode),
+                            false
+                    )
+                }
             }
         }
+
+        return this
     }
 
     /**
-     * Récupère le mpping au format Json
+     * Initialise ce mapping à partir d'une représentation JSON (version 2)
+     * @param representation
+     * @return
+     */
+    private MappingFonctionRole parseJsonRepresentationVersion2(Map representation) {
+        assert representation.version == JSON_REPRESENTATION_VERSION
+        representation.data.each { String roleApplicatifCode, List<String> fonctionCodeList ->
+            RoleApplicatif roleApplicatif = RoleApplicatif.valueOf(roleApplicatifCode)
+
+            fonctionCodeList.each { String fonctionCode ->
+                FonctionEnum fonctionEnum = FonctionEnum.valueOf(fonctionCode)
+                addBinding(roleApplicatif, fonctionEnum, false)
+            }
+        }
+
+        return this
+    }
+
+    /**
+     * Initialise ce mapping à partir d'une représentation Map de la forme RoleApplicatif => List<FonctionEnum>)
+     * Les clés & valeurs de la Map peuvent être typées par RoleApplicatif et FonctionEnum, ou par des String correspondant
+     * au "name" de ces enums
+     * @param representation
+     * @return
+     */
+    MappingFonctionRole parseMapRepresentation(Map representation) {
+        assert mappingRole.isEmpty()
+
+        representation.each { def roleApplicatif, List fonctionEnumList ->
+            fonctionEnumList.each { def fonctionEnum ->
+                addBinding(
+                        parseRoleApplicatif(roleApplicatif),
+                        parseFonctionEnum(fonctionEnum),
+                        false
+                )
+            }
+        }
+
+        return this
+    }
+
+    private RoleApplicatif parseRoleApplicatif(def role) {
+        if(role instanceof String) {
+            return RoleApplicatif.valueOf(role)
+        }
+        else if(role instanceof RoleApplicatif) {
+            return role
+        }
+        else {
+            throw new IllegalArgumentException(
+                    "La classe du rôle n'est pas supportée : ${role.getClass()}"
+            )
+        }
+    }
+
+    private FonctionEnum parseFonctionEnum(def fonctionEnum) {
+        if(fonctionEnum instanceof String) {
+            return FonctionEnum.valueOf(fonctionEnum)
+        }
+        else if (fonctionEnum in FonctionEnum) {
+            return fonctionEnum
+        }
+        else {
+            throw new IllegalArgumentException(
+                    "La classe de cette fonction n'est pas supportée : ${fonctionEnum.getClass()}"
+            )
+        }
+    }
+
+    /**
+     * Associe un rôle applicatif à une fonction
+     * @param roleApplicatif
+     * @param fonctionEnum
+     * @param checkModifiable Si false, on ne vérifie pas si la liaison est modifiable (à ne pas utiliser pour
+     * enregistrer une modification utilisateur)
+     */
+    void addBinding(RoleApplicatif roleApplicatif,
+                    FonctionEnum fonctionEnum,
+                    boolean checkModifiable = true) {
+        if(checkModifiable && !gestionnaireModificationLiaisonFonctionRole.isLiaisonModifiable(roleApplicatif, fonctionEnum)) {
+            throw new PreConditionException("La liaison $roleApplicatif / $fonctionEnum n'est pas modifiable")
+        }
+
+        // Mise à jour mappingRole
+        RoleApplicatifBinding roleApplicatifBinding = mappingRole[roleApplicatif]
+        if (!roleApplicatifBinding) {
+            roleApplicatifBinding = new RoleApplicatifBinding(roleApplicatif: roleApplicatif)
+            mappingRole[roleApplicatif] = roleApplicatifBinding
+        }
+        roleApplicatifBinding.addFonction(fonctionEnum)
+
+        // Mise à jour mappingFonction
+        FonctionBinding fonctionBinding = mappingFonction[fonctionEnum]
+        if (!fonctionBinding) {
+            fonctionBinding = new FonctionBinding(fonctionEnum: fonctionEnum)
+            mappingFonction[fonctionEnum] = fonctionBinding
+        }
+        fonctionBinding.addRoleApplicatif(roleApplicatif)
+    }
+
+    /**
+     * Retire l'association entre un rôle applicatif à une fonction
+     * @param roleApplicatif
+     * @param fonctionEnum
+     * @param checkModifiable Si false, on ne vérifie pas si la liaison est modifiable (à ne pas utiliser pour
+     * enregistrer une modification utilisateur)
+     */
+    void removeBinding(RoleApplicatif roleApplicatif,
+                       FonctionEnum fonctionEnum,
+                       boolean checkModifiable = true) {
+        if(checkModifiable && !gestionnaireModificationLiaisonFonctionRole.isLiaisonModifiable(roleApplicatif, fonctionEnum)) {
+            throw new PreConditionException("La liaison $roleApplicatif / $fonctionEnum n'est pas modifiable")
+        }
+
+        // Mise à jour mappingRole
+        RoleApplicatifBinding roleApplicatifBinding = mappingRole[roleApplicatif]
+        if(!roleApplicatifBinding) {
+            return // Cette liaison n'existe pas
+        }
+        roleApplicatifBinding.removeFonction(fonctionEnum)
+
+        // Mise à jour mappingFonction
+        FonctionBinding fonctionBinding = mappingFonction[fonctionEnum]
+        fonctionBinding.removeRoleApplicatif(roleApplicatif)
+    }
+
+    /**
+     * Récupère le mapping au format Json
      * @return la chaine de caractere Json correspondant au mapping
      */
     String toJsonString() {
+        Map data = [:]
+        Map representation = [
+                version: JSON_REPRESENTATION_VERSION,
+                data   : data
+        ]
+
+        mappingRole.each {
+            RoleApplicatif roleApplicatif, RoleApplicatifBinding binding ->
+            data[roleApplicatif.name()] = binding.associatedFonctionSet*.name()
+        }
+
         def builder = new JsonBuilder()
-        builder.call(mapping)
+        builder.call(representation)
         builder.toString()
     }
 
     /**
-     * Récupère les rôles associés à une fonction
-     * @param fonction la fonction
+     * Récupère les rôles associés à une fonctionEnum
+     * @param fonction la fonctionEnum
      * @return les rôles associés
      */
     List<RoleApplicatif> getRolesForFonction(FonctionEnum fonction) {
-        def rolesAsMap = mapping.get(fonction.name())
-        def roles = []
-        if (rolesAsMap) {
-            rolesAsMap.each { String key, value ->
-                if (value.get(KEY_ASSOCIE) == true) {
-                    roles << RoleApplicatif.valueOf(key)
-                }
-            }
+        FonctionBinding fonctionBinding = mappingFonction[fonction]
+        if (!fonctionBinding) {
+            return []
         }
-        roles
-    }
-
-    AssociationFonctionRole hasRoleForFonction(RoleApplicatif role, FonctionEnum fonction) {
-        def res = new AssociationFonctionRole()
-        def roleAsMap = mapping.get(fonction.name())?.get(role.name())
-        if (roleAsMap) {
-           res = new AssociationFonctionRole(roleAsMap)
-        }
-        res
+        fonctionBinding.associatedRoleApplicatif.toList()
     }
 
     /**
-     * Ajoute une association fonction-role
-     * @param role le role
-     * @param fonction la fonction
+     * Retourne la liste des fonctions qui sont associées à un rôle
+     * @param role
+     * @return
      */
-    def addRoleForFonction(RoleApplicatif role, FonctionEnum fonction) {
-        Map rolesAsMap = mapping.get(fonction.name())
-        if (rolesAsMap == null) {
-            rolesAsMap = [:]
-            mapping.put(fonction.name(), rolesAsMap)
+    List<FonctionEnum> getFonctionEnumListForRole(RoleApplicatif role) {
+        RoleApplicatifBinding binding = mappingRole[role]
+        if (!binding) {
+            return []
         }
-        Map roleAsMap = rolesAsMap.get(role.name())
-        if (roleAsMap) {
-            Contract.requires(roleAsMap.get(KEY_MODIFIABLE) == true,"requires_role_associe_est_modifiable")
-            roleAsMap.put(KEY_ASSOCIE, true)
-        } else {
-            rolesAsMap.put(role.name(), [("$KEY_ASSOCIE".toString()):true,("$KEY_MODIFIABLE".toString()):true])
-        }
+        binding.associatedFonctionSet.toList()
     }
 
-    /**
-     * Supprime une association fonction role
-     * @param role le role
-     * @param fonction la fonction
-     */
-    def deleteRoleForFonction(RoleApplicatif role, FonctionEnum fonction) {
-        Map rolesAsMap = mapping.get(fonction.name())
-        if (rolesAsMap) {
-            Map roleAsMap = rolesAsMap.get(role.name())
-            if (roleAsMap) {
-                Contract.requires(roleAsMap.get(KEY_MODIFIABLE) == true, "requires_role_associe_est_modifiable")
-                roleAsMap.put(KEY_ASSOCIE,false)
-            }
-        }
+    AssociationFonctionRole getAssociationFonctionRole(RoleApplicatif role,
+                                                       FonctionEnum fonctionEnum) {
+
+        AssociationFonctionRole associationFonctionRole = new AssociationFonctionRole(
+                role: role,
+                fonction: fonctionEnum,
+                associe: mappingFonction[fonctionEnum]?.isAssociatedTo(role) as boolean,
+                modifiable: gestionnaireModificationLiaisonFonctionRole.isLiaisonModifiable(
+                        role,
+                        fonctionEnum
+                )
+        )
+
+        return associationFonctionRole
     }
 
     /**
@@ -127,57 +284,33 @@ class MappingFonctionRole {
      * @return true si le mapping est vide false sinon
      */
     boolean isEmpty() {
-        if (mapping.isEmpty()) {
-            return true
-        }
-        def isEmpty = true
-        mapping.each { key, value -> if (!value.isEmpty()) isEmpty = false }
-        isEmpty
+        mappingRole.isEmpty()
     }
 
     /**
      * Conserve les valeurs non modifiables et remet les autres valeurs à "non associe"
      */
-    def resetOnRoleEnseignantAndEleve() {
-        this.mapping.each { key, value ->
-            value.each { innerKey, innerValue ->
-                if(innerKey == RoleApplicatif.ELEVE.name() || innerKey == RoleApplicatif.ENSEIGNANT.name()) {
-                    if (innerValue.get(KEY_MODIFIABLE) == true) {
-                        innerValue.put(KEY_ASSOCIE, false)
-                    }
+    def resetOnRoleEnseignantAndEleve(GestionnaireModificationLiaisonFonctionRole gestionnaireModificationLiaisonFonctionRole) {
+
+        [RoleApplicatif.ELEVE, RoleApplicatif.ENSEIGNANT].each { RoleApplicatif roleApplicatif ->
+            List<FonctionEnum> fonctionEnumToRemove = []
+            mappingRole[roleApplicatif].associatedFonctionSet.each { FonctionEnum fonctionEnum ->
+                if(gestionnaireModificationLiaisonFonctionRole.isLiaisonModifiable(roleApplicatif, fonctionEnum)) {
+                    fonctionEnumToRemove << fonctionEnum
                 }
             }
-        }
 
-    }
-
-    private static boolean allKeysAndValuesAreFonctionCodesAndRoleCodes(Map aMapping) {
-        if (aMapping.isEmpty()) {
-            return true
-        }
-        boolean res = true
-        def goodKeys = (FonctionEnum.values())*.name()
-        def goodValues = (RoleApplicatif.values())*.name()
-        aMapping.each { String key, value ->
-            if (!(key in goodKeys)) {
-                res = false
-            }
-            if (!(value instanceof Map)) {
-                res = false
-            } else {
-                value.each { String innerKey, innerValue ->
-                    if (!(innerKey in goodValues)) {
-                        res = false
-                    }
-                }
+            fonctionEnumToRemove.each {
+                removeBinding(roleApplicatif, it, false)
             }
         }
-        res
     }
-
 }
 
 class AssociationFonctionRole {
-    boolean associe = false
-    boolean modifiable = true
+
+    RoleApplicatif role
+    FonctionEnum fonction
+    boolean associe
+    boolean modifiable
 }

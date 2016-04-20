@@ -40,7 +40,7 @@ class SujetMarshallerSpec extends Specification {
 
     Map personneRepresentation = [map: 'personne']
     Map etablissementRepresentation = [map: 'etablissement']
-    Map matiereRepresentation = [map: 'matiere']
+    Map matiereBcnRepresentation = [map: 'matiereBcn']
     Map niveauRepresentation = [map: 'niveau']
     Map copyrightsTypeRepresentation = [map: 'copyrightsType']
 
@@ -50,8 +50,8 @@ class SujetMarshallerSpec extends Specification {
     EtablissementMarshaller etablissementMarshaller = Mock(EtablissementMarshaller)
     etablissementMarshaller.marshall(_) >> etablissementRepresentation
 
-    MatiereMarshaller matiereMarshaller = Mock(MatiereMarshaller)
-    matiereMarshaller.marshall(_) >> matiereRepresentation
+    MatiereBcnMarshaller matiereBcnMarshaller = Mock(MatiereBcnMarshaller)
+    matiereBcnMarshaller.marshall(_) >> matiereBcnRepresentation
 
     NiveauMarshaller niveauMarshaller = Mock(NiveauMarshaller)
     niveauMarshaller.marshall(_) >> niveauRepresentation
@@ -72,7 +72,7 @@ class SujetMarshallerSpec extends Specification {
         personneMarshaller: personneMarshaller,
         copyrightsTypeMarshaller: copyrightsTypeMarshaller,
         etablissementMarshaller: etablissementMarshaller,
-        matiereMarshaller: matiereMarshaller,
+        matiereBcnMarshaller: matiereBcnMarshaller,
         niveauMarshaller: niveauMarshaller,
         sujetSequenceQuestionsMarshaller: sujetSequenceQuestionsMarshaller
     )
@@ -95,7 +95,7 @@ class SujetMarshallerSpec extends Specification {
     sujetRepresentation.metadonnees.copyrightsType == copyrightsTypeRepresentation
     sujetRepresentation.metadonnees.referentielEliot.size() == 3
     sujetRepresentation.metadonnees.referentielEliot.etablissement == etablissementRepresentation
-    sujetRepresentation.metadonnees.referentielEliot.matiere == matiereRepresentation
+    sujetRepresentation.metadonnees.referentielEliot.matiereBcn == matiereBcnRepresentation
     sujetRepresentation.metadonnees.referentielEliot.niveau == niveauRepresentation
     sujetRepresentation.specification.size() == 9
     sujetRepresentation.specification.presentation == sujet.presentation

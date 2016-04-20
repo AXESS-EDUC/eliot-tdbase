@@ -101,7 +101,7 @@ class QuestionImporterService implements ApplicationContextAware {
         [
             titre: questionDto.titre,
             type: questionType,
-            matiere: referentielEliot?.matiere,
+            matiereBcn: referentielEliot?.matiereBcn,
             niveau: referentielEliot?.niveau,
             estAutonome: questionDto.estAutonome,
             paternite: questionDto.paternite,
@@ -137,7 +137,7 @@ class QuestionImporterService implements ApplicationContextAware {
 
       def specification = question.specificationObject.actualiseAllQuestionAttachementId(tableCorrespondanceId)
       questionService.updateQuestionSpecificationForObject(question, specification)
-      question.save()
+      question.save(flush: true, failOnError: true)
     }
 
     return question

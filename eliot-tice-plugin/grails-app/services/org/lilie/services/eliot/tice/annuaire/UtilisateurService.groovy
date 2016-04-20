@@ -29,7 +29,6 @@
 package org.lilie.services.eliot.tice.annuaire
 
 import org.lilie.services.eliot.tice.annuaire.data.Utilisateur
-import org.springframework.security.core.GrantedAuthority
 
 /**
  *
@@ -37,7 +36,22 @@ import org.springframework.security.core.GrantedAuthority
  */
 public interface UtilisateurService {
 
-  /**
+    /**
+     * Creer un nouvel utilisateur
+     * @param login le login de l'utilisateur
+     * @param password le mot de passe de l'utilisateur
+     * @param nom le nom de l'utilisateur
+     * @param prenom le prenom de l'utilisateur
+     * @return le nouvel utilisateur
+     */
+    Utilisateur createUtilisateur(
+            String login,
+            String password,
+            String nom,
+            String prenom)
+
+
+    /**
    * Creer un nouvel utilisateur
    * @param login le login de l'utilisateur
    * @param password le mot de passe de l'utilisateur

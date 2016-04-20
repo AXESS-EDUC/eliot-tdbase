@@ -16,7 +16,7 @@ class SujetMarshaller {
   PersonneMarshaller personneMarshaller
   CopyrightsTypeMarshaller copyrightsTypeMarshaller
   EtablissementMarshaller etablissementMarshaller
-  MatiereMarshaller matiereMarshaller
+  MatiereBcnMarshaller matiereBcnMarshaller
   NiveauMarshaller niveauMarshaller
   SujetSequenceQuestionsMarshaller sujetSequenceQuestionsMarshaller
 
@@ -39,7 +39,7 @@ class SujetMarshaller {
             copyrightsType: copyrightsTypeMarshaller.marshall(sujet.copyrightsType),
             referentielEliot: [
                 etablissement: etablissementMarshaller.marshall(sujet.etablissement),
-                matiere: matiereMarshaller.marshall(sujet.matiere),
+                matiereBcn: matiereBcnMarshaller.marshall(sujet.matiereBcn),
                 niveau: niveauMarshaller.marshall(sujet.niveau)
             ]
         ],

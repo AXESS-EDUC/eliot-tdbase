@@ -28,10 +28,12 @@
 
 package org.lilie.services.eliot.tdbase
 
+import groovy.time.TimeCategory
 import org.hibernate.SessionFactory
 import org.lilie.services.eliot.tdbase.impl.decimal.DecimalSpecification
 import org.lilie.services.eliot.tice.CopyrightsTypeEnum
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.scolarite.StructureEnseignement
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.utils.BootstrapService
@@ -42,129 +44,132 @@ import org.lilie.services.eliot.tice.utils.BootstrapService
  */
 class QuestionServiceIntegrationTests extends GroovyTestCase {
 
-  private static final String SUJET_1_TITRE = "Sujet test 1"
+    private static final String SUJET_1_TITRE = "Sujet test 1"
 
-  Personne personne1
-  Personne personne2
-  StructureEnseignement struct1ere
-  SessionFactory sessionFactory
+    Personne personne1
+    Personne personne2
+    StructureEnseignement struct1ere
+    SessionFactory sessionFactory
 
-  BootstrapService bootstrapService
-  QuestionService questionService
-  SujetService sujetService
-  ModaliteActiviteService modaliteActiviteService
-  ArtefactAutorisationService artefactAutorisationService
-
-
-  protected void setUp() {
-    super.setUp()
-    bootstrapService.bootstrapForIntegrationTest()
-    personne1 = bootstrapService.enseignant1
-    personne2 = bootstrapService.enseignant2
-    struct1ere = bootstrapService.classe1ere
-  }
-
-  protected void tearDown() {
-    super.tearDown()
-  }
+    BootstrapService bootstrapService
+    QuestionService questionService
+    SujetService sujetService
+    ModaliteActiviteService modaliteActiviteService
+    ArtefactAutorisationService artefactAutorisationService
+    GroupeService groupeService
 
 
-
-  void testQuestionEstDistribue() {
-    Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    assertFalse(sujet2.hasErrors())
-    def sujet1 = Sujet.get(sujet2.id)
-    Question quest1 = questionService.createQuestion(
-            [
-                    titre: "Question 1",
-                    type: QuestionTypeEnum.Decimal.questionType,
-                    estAutonome: true
-            ],
-            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
-            personne1,
-            )
-    assertFalse(quest1.hasErrors())
-    sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
-
-    assertNotNull(sujet1.questionsSequences)
-
-    def now = new Date()
-    def dateDebut = now - 10
-    def dateFin = now + 10
-    def props = [
-            dateDebut: dateDebut,
-            dateFin: dateFin,
-            datePublicationResultats:dateFin+2,
-            sujet: sujet1,
-            structureEnseignement: struct1ere
-    ]
-    ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
-            props,
-            personne1
-    )
-    if (seance1.hasErrors()) {
-        println seance1.errors
+    protected void setUp() {
+        super.setUp()
+        bootstrapService.bootstrapForIntegrationTest()
+        personne1 = bootstrapService.enseignant1
+        personne2 = bootstrapService.enseignant2
+        struct1ere = bootstrapService.classe1ere
     }
-    assertFalse(seance1.hasErrors())
-    assertTrue(quest1.estDistribue())
-    modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
-    assertFalse(quest1.estDistribue())
-  }
 
-  void testSupprimeQuestion() {
+    protected void tearDown() {
+        super.tearDown()
+    }
 
-    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
-    Question quest1 = questionService.createQuestion(
-            [
-                    titre: "Question 1",
-                    type: QuestionTypeEnum.Decimal.questionType,
-                    estAutonome: true
-            ],
-            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
-            personne1,
-            )
-    assertFalse(quest1.hasErrors())
-    sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
 
-    assertNotNull(sujet1.questionsSequences)
-    def quest2 = Question.findById(quest1.id)
-    questionService.supprimeQuestion(quest2, personne1)
-    // flush necessaire sinon suppression non visible
-    sessionFactory.currentSession.flush()
-    def quest3 = Question.findById(quest1.id)
-    assertNull(quest3)
-    def sujetQuests = SujetSequenceQuestions.findAllBySujet(sujet1)
-    assertEquals(0, sujetQuests.size())
+    void testQuestionEstDistribue() {
+        Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        assertFalse(sujet2.hasErrors())
+        def sujet1 = Sujet.get(sujet2.id)
+        Question quest1 = questionService.createQuestion(
+                [
+                        titre      : "Question 1",
+                        type       : QuestionTypeEnum.Decimal.questionType,
+                        estAutonome: true
+                ],
+                new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+                personne1,
+        )
+        assertFalse(quest1.hasErrors())
+        sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
 
-  }
+        assertNotNull(sujet1.questionsSequences)
 
-  void testPartageQuestion() {
-    artefactAutorisationService.partageArtefactCCActive = true
-    Question quest1 = questionService.createQuestion(
-            [
-                    titre: "Question 1",
-                    type: QuestionTypeEnum.Decimal.questionType,
-                    estAutonome: true
-            ],
-            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
-            personne1,
-            )
-    assertFalse(quest1.hasErrors())
-    assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, quest1.copyrightsType)
-    assertNull(quest1.publication)
+        def now = new Date()
+        def dateDebut = now - 10
+        def dateFin = now + 10
+        def props = [
+                dateDebut               : dateDebut,
+                dateFin                 : dateFin,
+                datePublicationResultats: dateFin + 2,
+                sujet                   : sujet1,
+                groupeScolarite         :
+                        groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                struct1ere
+                        )
+        ]
+        ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
+                props,
+                personne1
+        )
+        if (seance1.hasErrors()) {
+            println seance1.errors
+        }
+        assertFalse(seance1.hasErrors())
+        assertTrue(quest1.estDistribue())
+        modaliteActiviteService.updateProprietes(seance1, [dateFin: now - 5], personne1)
+        assertTrue(quest1.estDistribue())
+    }
 
-    questionService.partageQuestion(quest1, personne1)
-    assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.copyrightsType)
-    assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.publication.copyrightsType)
-    assertNotNull(quest1.publication)
-  }
+    void testSupprimeQuestion() {
 
-  void testDesactivationPartageSurPartageQuestion() {
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        Question quest1 = questionService.createQuestion(
+                [
+                        titre      : "Question 1",
+                        type       : QuestionTypeEnum.Decimal.questionType,
+                        estAutonome: true
+                ],
+                new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+                personne1,
+        )
+        assertFalse(quest1.hasErrors())
+        sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+
+        assertNotNull(sujet1.questionsSequences)
+        def quest2 = Question.findById(quest1.id)
+        questionService.supprimeQuestion(quest2, personne1)
+        // flush necessaire sinon suppression non visible
+        sessionFactory.currentSession.flush()
+        def quest3 = Question.findById(quest1.id)
+        assertNull(quest3)
+        def sujetQuests = SujetSequenceQuestions.findAllBySujet(sujet1)
+        assertEquals(0, sujetQuests.size())
+
+    }
+
+    void testPartageQuestion() {
+        artefactAutorisationService.partageArtefactCCActive = true
+        Question quest1 = questionService.createQuestion(
+                [
+                        titre      : "Question 1",
+                        type       : QuestionTypeEnum.Decimal.questionType,
+                        estAutonome: true
+                ],
+                new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+                personne1,
+        )
+        assertFalse(quest1.hasErrors())
+        assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, quest1.copyrightsType)
+        assertNull(quest1.publication)
+
+        questionService.partageQuestion(quest1, personne1)
+        assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.copyrightsType)
+        assertEquals(CopyrightsTypeEnum.CC_BY_NC.copyrightsType, quest1.publication.copyrightsType)
+        assertNotNull(quest1.publication)
+    }
+
+    void testDesactivationPartageSurPartageQuestion() {
         artefactAutorisationService.partageArtefactCCActive = false
         Question quest1 = questionService.createQuestion(
                 [
-                        titre: "Question 1",
-                        type: QuestionTypeEnum.Decimal.questionType,
+                        titre      : "Question 1",
+                        type       : QuestionTypeEnum.Decimal.questionType,
                         estAutonome: true
                 ],
                 new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
@@ -174,40 +179,252 @@ class QuestionServiceIntegrationTests extends GroovyTestCase {
         assertEquals(CopyrightsTypeEnum.TousDroitsReserves.copyrightsType, quest1.copyrightsType)
         assertNull(quest1.publication)
         assertFalse(artefactAutorisationService.utilisateurPeutPartageArtefact(personne1, quest1))
-  }
+    }
 
-  void testSupprimeQuestionAvecPartage() {
-    artefactAutorisationService.partageArtefactCCActive = true
+    void testSupprimeQuestionAvecPartage() {
+        artefactAutorisationService.partageArtefactCCActive = true
+        Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+        Question quest1 = questionService.createQuestion(
+                [
+                        titre      : "Question 1",
+                        type       : QuestionTypeEnum.Decimal.questionType,
+                        estAutonome: true
+                ],
+                new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+                personne1,
+        )
+        assertFalse(quest1.hasErrors())
+        questionService.partageQuestion(quest1, personne1)
+        assertNotNull(quest1.publication)
+        sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
+
+        assertNotNull(sujet1.questionsSequences)
+        def quest2 = Question.findById(quest1.id)
+        def idPub = quest2.publication.id
+        questionService.supprimeQuestion(quest2, personne1)
+        // flush necessaire sinon suppression non visible
+        sessionFactory.currentSession.flush()
+        def quest3 = Question.findById(quest1.id)
+        assertNull(quest3)
+        def sujetQuests = SujetSequenceQuestions.findAllBySujet(sujet1)
+        assertEquals(0, sujetQuests.size())
+
+        def publi = Publication.findById(idPub)
+        assertNull(publi)
+
+
+    }
+
+  void testFindQuestionsMasquees() {
     Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
     Question quest1 = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
+    assertFalse(quest1.hasErrors())
+
+    def res
+
+    res = questionService.findQuestions(personne1, null, null, null, null, null, null, null, null)
+    assertEquals(1, res.size())
+
+    questionService.masque(personne1, quest1)
+
+    res = questionService.findQuestions(personne1, null, null, null, null, null, null, null, null)
+    assertEquals(0, res.size())
+
+    res = questionService.findQuestions(personne1, null, null, null, null, null, null, null, null, true)
+    assertEquals(1, res.size())
+
+    res = questionService.findQuestions(personne2, null, null, null, null, null, null, null, null)
+    assertEquals(0, res.size())
+
+    questionService.annuleMasque(personne1, quest1)
+
+    res = questionService.findQuestions(personne1, null, null, null, null, null, null, null, null)
+    assertEquals(1, res.size())
+
+    res = questionService.findQuestions(personne1, null, null, null, null, null, null, null, null, true)
+    assertEquals(1, res.size())
+
+  }
+
+  void testLastUpdatedSujet() {
+    Sujet sujet = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE), [contributeurIds: [personne2.id]], personne1)
+
+    Question quest1 = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
+    quest1 = sujetService.insertQuestionInSujet(quest1, sujet, personne1)
+
+    use (TimeCategory) {
+      sujet.lastUpdated = sujet.lastUpdated - 1.minutes
+      sujet.save(flush: true, failOnError: true)
+    }
+    Date date = sujet.lastUpdated
+
+    questionService.updateProprietes(
+        quest1,
+        [
+            titre      : "Question 1 bis",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
+
+    sujet.refresh()
+
+    assertTrue(sujet.lastUpdated > date)
+
+  }
+
+  void testCreateQuestionNonCollaborativeFrom() {
+    Sujet sujet = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE),
+        [contributeurIds: [personne2.id]],
+        personne1)
+
+    Question quest1 = sujetService.insertQuestionInSujet(
+        questionService.createQuestion(
             [
-                    titre: "Question 1",
-                    type: QuestionTypeEnum.Decimal.questionType,
-                    estAutonome: true
+                titre      : "Question 1",
+                type       : QuestionTypeEnum.Decimal.questionType,
+                estAutonome: true
             ],
             new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
             personne1,
-            )
+        ),
+        sujet,
+        personne1)
+
+    Question quest2 = questionService.createQuestionNonCollaborativeFrom(personne1, quest1)
+
+    assertFalse(quest2.collaboratif)
+    assertEquals(quest1.proprietaireId, quest2.proprietaireId)
+    assertEquals(quest1.titre, quest2.titre)
+  }
+
+  void testCreateQuestionAndInsertInSujet() {
+    Sujet sujet = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE),
+        [contributeurIds: [personne2.id]],
+        personne1)
+
+    Question quest1 = questionService.createQuestionAndInsertInSujet(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        sujet,
+        personne1,
+        new ReferentielSujetSequenceQuestions(rang: 1)
+    )
+
+    assertTrue(quest1.estCollaboratif())
+    assertEquals(quest1.sujetLieId, sujet.id)
+    assertEquals(quest1.contributeurs.size(), sujet.contributeurs.size())
+  }
+
+  void testInsertQuestionInSujetCollaboratif() {
+    Sujet sujet = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE),
+        [contributeurIds: [personne2.id]],
+        personne1)
+
+    Question quest1 = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
+
+    Question quest2 = sujetService.insertQuestionInSujet(
+        quest1,
+        sujet,
+        personne1)
+
+    assertNotSame(quest1.id, quest2.id)
+    assertFalse(quest1.estCollaboratif())
+    assertNull(quest1.sujetLie)
+
+    assertTrue(quest2.estCollaboratif())
+    assertEquals(quest2.sujetLieId, sujet.id)
+    assertEquals(quest2.contributeurs.size(), sujet.contributeurs.size())
+  }
+
+  void testInsertQuestionInSujetNonCollaboratif() {
+    Sujet sujet1 = sujetService.updateProprietes(
+        sujetService.createSujet(personne1, SUJET_1_TITRE),
+        [contributeurIds: [personne2.id]],
+        personne1)
+
+    Question quest1 = sujetService.insertQuestionInSujet(
+        questionService.createQuestion(
+            [
+                titre      : "Question 1",
+                type       : QuestionTypeEnum.Decimal.questionType,
+                estAutonome: true
+            ],
+            new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+            personne1,
+        ),
+        sujet1,
+        personne1)
+
+    Sujet sujet2 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+
+    Question quest2 = sujetService.insertQuestionInSujet(quest1, sujet2, personne1)
+
+    assertNotSame(quest1.id, quest2.id)
+    assertTrue(quest1.estCollaboratif())
+    assertEquals(quest1.sujetLieId, sujet1.id)
+    assertEquals(quest1.contributeurs.size(), sujet1.contributeurs.size())
+
+    assertFalse(quest2.estCollaboratif())
+    assertNull(quest2.sujetLie)
+  }
+
+
+  void testFindQuestionsContributeur() {
+    Sujet sujet1 = sujetService.createSujet(personne1, SUJET_1_TITRE)
+    Question quest1 = questionService.createQuestion(
+        [
+            titre      : "Question 1",
+            type       : QuestionTypeEnum.Decimal.questionType,
+            estAutonome: true
+        ],
+        new DecimalSpecification(libelle: "question", valeur: 15, precision: 0),
+        personne1,
+    )
     assertFalse(quest1.hasErrors())
-    questionService.partageQuestion(quest1, personne1)
-    assertNotNull(quest1.publication)
-    sujetService.insertQuestionInSujet(quest1, sujet1, personne1)
 
-    assertNotNull(sujet1.questionsSequences)
-    def quest2 = Question.findById(quest1.id)
-    def idPub = quest2.publication.id
-    questionService.supprimeQuestion(quest2, personne1)
-    // flush necessaire sinon suppression non visible
-    sessionFactory.currentSession.flush()
-    def quest3 = Question.findById(quest1.id)
-    assertNull(quest3)
-    def sujetQuests = SujetSequenceQuestions.findAllBySujet(sujet1)
-    assertEquals(0, sujetQuests.size())
+    def res = questionService.findQuestions(personne1, null, personne2.prenom, null, null, null, null, null, null)
+    assertEquals(0, res.size())
 
-    def publi = Publication.findById(idPub)
-    assertNull(publi)
+    Sujet sujet2 = sujetService.createSujetCollaboratifFrom(personne1, sujet1, [personne2] as Set)
+    Question question2 = questionService.createQuestionCollaborativeFrom(personne1, quest1, sujet2)
 
-
+    res = questionService.findQuestions(personne1, null, personne2.prenom, null, null, null, null, null, null)
+    assertEquals(1, res.size())
   }
 
 }

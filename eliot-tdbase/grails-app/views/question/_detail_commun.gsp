@@ -82,13 +82,28 @@
       <tr>
         <td class="label">Mati&egrave;re&nbsp;:</td>
         <td>
-          ${question.matiere?.libelleLong}
+          ${question.matiereBcn?.libelleEdition}
         </td>
       </tr>
       <tr>
         <td class="label">Niveau&nbsp;:</td>
         <td>
           ${question.niveau?.libelleLong}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Travail collaboratif&nbsp;:</td>
+        <td>
+          <g:if test="${question.contributeurs}">
+            <ul>
+              <g:each in="${question.contributeurs}" var="contributeur">
+                <li>${contributeur.nomAffichage}</li>
+              </g:each>
+            </ul>
+          </g:if>
+          <g:else>
+            Aucun formateur ajouté<br/>
+          </g:else>
         </td>
       </tr>
    <g:if test="${artefactHelper.partageArtefactCCActive}">

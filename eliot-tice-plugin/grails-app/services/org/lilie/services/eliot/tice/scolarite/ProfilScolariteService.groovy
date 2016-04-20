@@ -29,8 +29,14 @@
 
 package org.lilie.services.eliot.tice.scolarite
 
+import org.hibernate.Hibernate
+import org.hibernate.SQLQuery
+import org.hibernate.Session
+import org.hibernate.SessionFactory
 import org.lilie.services.eliot.tice.annuaire.Personne
 import org.lilie.services.eliot.tice.annuaire.PorteurEnt
+import org.lilie.services.eliot.tice.util.Pagination
+import org.lilie.services.eliot.tice.utils.StringUtils
 
 
 /**
@@ -40,6 +46,7 @@ import org.lilie.services.eliot.tice.annuaire.PorteurEnt
 public class ProfilScolariteService {
 
     ScolariteService scolariteService
+    SessionFactory sessionFactory
 
     static transactional = false
 
@@ -126,8 +133,10 @@ public class ProfilScolariteService {
      * @return la liste des niveaux
      */
     List<Niveau> findNiveauxForPersonne(Personne personne) {
-        List<StructureEnseignement> structs = findStructuresEnseignementForPersonne(personne)
+        List<StructureEnseignement> structs =
+                findStructuresEnseignementForPersonne(personne)
         List<Niveau> niveaux = []
+
         structs.each { struct ->
             def niveauxByStruct = scolariteService.findNiveauxForStructureEnseignement(struct)
             niveauxByStruct.each { niveau ->
@@ -220,13 +229,21 @@ public class ProfilScolariteService {
      * @param Personne la personne
      * @return la liste des structures d'enseignements
      */
-    List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne, Fonction withFonction = null) {
+    List<StructureEnseignement> findStructuresEnseignementForPersonne(Personne personne,
+                                                                      Fonction withFonction = null) {
         List<PersonneProprietesScolarite> profils =
-                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(
+                        personne,
+                        true,
+                        [cache: true]
+                )
+
         List<StructureEnseignement> structures = []
         profils.each {
             def keep = true
-            StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
+            StructureEnseignement structureEnseignement =
+                    it.proprietesScolarite.structureEnseignement
+
             if (!structureEnseignement) {
                 keep = false
             }
@@ -246,12 +263,20 @@ public class ProfilScolariteService {
      * @param personne la personne
      * @return la liste des propriétés de scolarité
      */
-    List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne, Collection<Etablissement> etablissements = null) {
+    List<ProprietesScolarite> findProprietesScolariteWithStructureForPersonne(Personne personne,
+                                                                              Collection<Etablissement> etablissements = null) {
         def props = new HashSet()
         List<PersonneProprietesScolarite> profils =
-                PersonneProprietesScolarite.findAllByPersonneAndEstActive(personne, true, [cache: true])
+                PersonneProprietesScolarite.findAllByPersonneAndEstActive(
+                        personne,
+                        true,
+                        [cache: true]
+                )
+
         profils.each {
-            StructureEnseignement structureEnseignement = it.proprietesScolarite.structureEnseignement
+            StructureEnseignement structureEnseignement =
+                    it.proprietesScolarite.structureEnseignement
+
             if (structureEnseignement) {
                 if (!etablissements || etablissements.contains(structureEnseignement.etablissement)) {
                     props << it.proprietesScolarite
@@ -407,5 +432,153 @@ public class ProfilScolariteService {
         }
         def etabs = pps.collect { it.proprietesScolarite.etablissement }
         etabs
+    }
+
+    /**
+     * Récupère la liste des personnes qui possèdent une des fonctions données sur l'établissement donné
+     * @param etablissement
+     * @param fonctionList
+     * @return
+     */
+    RecherchePersonneResultat rechercheAllPersonneForEtablissementAndFonctionIn(Personne chercheur,
+                                                                                Etablissement etablissement,
+                                                                                List<Fonction> fonctionList,
+                                                                                String motCle = "",
+                                                                                Pagination pagination = null) {
+
+        String motCleNormalise = motCle ? StringUtils.normalise(motCle) : null
+
+        String sqlGeneral = """
+          SELECT  p.*
+            FROM ent.personne p
+            INNER JOIN ent.personne_propriete_scolarite pps ON (pps.personne_id = p.id AND pps.est_active IS TRUE)
+            INNER JOIN ent.propriete_scolarite ps ON (pps.propriete_scolarite_id = ps.id)
+            INNER JOIN ent.fonction f ON ps.fonction_id = f.id
+            WHERE f.id IN (:fonctionIdList) AND (ps.etablissement_id = :etablissementId) AND p.id != :chercheurId
+"""
+        if (motCleNormalise) {
+            sqlGeneral += """
+            AND (
+                p.nom_normalise LIKE '%${motCleNormalise}%'
+                  OR
+                p.prenom_normalise LIKE '%${motCleNormalise}%'
+            )
+"""
+        }
+
+        sqlGeneral += """
+            UNION
+
+            SELECT  p.*
+            FROM ent.personne p
+            INNER JOIN ent.personne_propriete_scolarite pps ON (pps.personne_id = p.id AND pps.est_active IS TRUE)
+            INNER JOIN ent.propriete_scolarite ps ON (pps.propriete_scolarite_id = ps.id)
+            INNER JOIN ent.structure_enseignement se ON ps.structure_enseignement_id = se.id
+            INNER JOIN ent.fonction f ON ps.fonction_id = f.id
+            WHERE f.id IN (:fonctionIdList) AND (se.etablissement_id = :etablissementId) AND p.id != :chercheurId
+"""
+        if (motCleNormalise) {
+            sqlGeneral += """
+            AND (
+                p.nom_normalise LIKE '%${motCleNormalise}%'
+                  OR
+                p.prenom_normalise LIKE '%${motCleNormalise}%'
+            )
+"""
+        }
+
+
+        String sqlComplementParent = """
+          UNION ALL
+
+            SELECT p.*
+            FROM ent.personne p
+            WHERE EXISTS (
+              SELECT 1
+              FROM ent.personne_propriete_scolarite pps_eleve
+              INNER JOIN ent.personne p_eleve ON pps_eleve.personne_id = p_eleve.id
+              INNER JOIN ent.propriete_scolarite ps_eleve ON pps_eleve.propriete_scolarite_id = ps_eleve.id
+              INNER JOIN ent.structure_enseignement se ON ps_eleve.structure_enseignement_id = se.id
+              INNER JOIN ent.responsable_eleve resp ON pps_eleve.personne_id = resp.eleve_id
+              WHERE resp.personne_id = p.id AND se.etablissement_id = :etablissementId
+              LIMIT 1
+            ) AND p.id != :chercheurId
+"""
+        if (motCleNormalise) {
+            sqlComplementParent += """
+            AND (
+                p.nom_normalise LIKE '%${motCleNormalise}%'
+                  OR
+                p.prenom_normalise LIKE '%${motCleNormalise}%'
+            )
+"""
+        }
+
+
+        String sqlComplementAdminLocal = """
+          UNION ALL
+
+            SELECT  p.*
+            FROM ent.personne p
+            INNER JOIN ent.personne_propriete_scolarite pps ON (pps.personne_id = p.id AND pps.est_active IS TRUE)
+            INNER JOIN ent.propriete_scolarite ps ON (pps.propriete_scolarite_id = ps.id)
+            INNER JOIN ent.fonction f ON ps.fonction_id = f.id
+            WHERE f.code = 'AL' AND ps.porteur_ent_id = :porteur_ent_id AND p.id != :chercheurId
+"""
+        if (motCleNormalise) {
+            sqlComplementAdminLocal += """
+            AND (
+                p.nom_normalise LIKE '%${motCleNormalise}%'
+                  OR
+                p.prenom_normalise LIKE '%${motCleNormalise}%'
+            )
+"""
+        }
+
+
+
+        String sql = sqlGeneral
+        if (fonctionList.contains(FonctionEnum.PERS_REL_ELEVE.fonction)) {
+            sql += sqlComplementParent
+        }
+
+        if (fonctionList.contains(FonctionEnum.AL.fonction)) {
+            sql += sqlComplementAdminLocal
+        }
+
+        sql += """
+            ORDER BY nom_normalise, prenom_normalise
+"""
+
+        // Récupération du nombre total de résultat
+        sql = """
+          WITH p AS ( $sql )
+          SELECT {p.*}, count(*) over() as nombreTotal FROM p
+          ORDER BY p.nom_normalise, p.prenom_normalise
+        """
+
+        if (pagination) {
+            sql += """
+            LIMIT ${pagination.max} OFFSET ${pagination.offset}
+"""
+        }
+
+        Session session = sessionFactory.getCurrentSession()
+        SQLQuery sqlQuery = session.createSQLQuery(sql)
+        sqlQuery.setLong('etablissementId', etablissement.id)
+        sqlQuery.setParameterList('fonctionIdList', fonctionList*.id)
+        sqlQuery.setLong('chercheurId', chercheur.id)
+        if (fonctionList.contains(FonctionEnum.AL.fonction)) {
+            sqlQuery.setLong('porteur_ent_id', etablissement.porteurEntId)
+        }
+        sqlQuery.addEntity('p', Personne)
+        sqlQuery.addScalar('nombreTotal', Hibernate.INTEGER)
+
+
+        List list = sqlQuery.list()
+        return new RecherchePersonneResultat(
+            personneList: list.collect { it[0] },
+            nombreTotal: list.isEmpty() ? 0 : (Integer) list[0][1]
+        )
     }
 }

@@ -43,9 +43,10 @@ import org.lilie.services.eliot.tdbase.xml.MoodleQuizExporterService
 import org.lilie.services.eliot.tice.AttachementService
 import org.lilie.services.eliot.tice.AttachementUploadException
 import org.lilie.services.eliot.tice.annuaire.Personne
-import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.utils.Breadcrumps
 import org.lilie.services.eliot.tice.utils.BreadcrumpsService
 import org.springframework.web.multipart.MultipartFile
 
@@ -81,7 +82,7 @@ class QuestionController {
   def nouvelle() {
     breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "question.nouvelle.titre"))
     [
-        liens: breadcrumpsServiceProxy.liens,
+        liens                 : breadcrumpsServiceProxy.liens,
         typesQuestionSupportes: questionService.typesQuestionsInteractionSupportesPourCreation
     ]
   }
@@ -102,6 +103,25 @@ class QuestionController {
       question = Question.get(params.id)
       questionEnEdition = true
     }
+
+    if(question.id && question.estCollaboratif()) {
+      boolean locked = questionService.creeVerrou(question, personne)
+      if(!locked) {
+        flash.errorMessage = 'question.enregistre.echec.verrou'
+        redirect(
+            action: 'detail',
+            id: question.id
+        )
+        return
+      }
+    }
+
+    if(question.termine) {
+      flash.errorMessage = "question.enregistre.echec.termine"
+      redirect(action: 'detail', id: question.id)
+      return
+    }
+
     def attachementsSujets = null
     Sujet sujet = null
     if (params.sujetId) {
@@ -121,20 +141,20 @@ class QuestionController {
     render(
         view: '/question/edite',
         model: [
-            liens: breadcrumpsServiceProxy.liens,
-            question: question,
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
-            etablissements: securiteSessionServiceProxy.etablissementList,
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            sujet: sujet,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne,
-            questionEnEdition: questionEnEdition,
-            attachementsSujets: attachementsSujets,
-            annulationNonPossible: params.annulationNonPossible,
-            referentielCompetence: getRefentielCompetence(question),
+            liens                  : breadcrumpsServiceProxy.liens,
+            question               : question,
+            matiereBcns            : question.matiereBcn != null ? [question.matiereBcn] : [],
+            etablissements         : securiteSessionServiceProxy.etablissementList,
+            niveaux                : question.niveau != null ? [question.niveau] : [],
+            sujet                  : sujet,
+            artefactHelper         : artefactAutorisationService,
+            utilisateur            : personne,
+            questionEnEdition      : questionEnEdition,
+            attachementsSujets     : attachementsSujets,
+            annulationNonPossible  : params.annulationNonPossible,
+            referentielCompetence  : getRefentielCompetence(question),
             isAssociableACompetence: questionCompetenceService.isQuestionAssociableACompetence(question),
-            competenceAssocieeList: question.allQuestionCompetence*.competence ?: []
+            competenceAssocieeList : question.allQuestionCompetence*.competence ?: []
         ]
     )
   }
@@ -144,7 +164,16 @@ class QuestionController {
    * Action "detail"
    */
   def detail() {
-    breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "question.detail.titre"))
+
+    // Note JT : bricolage pour éviter d'avoir Détail > Modif > Détail
+    if(breadcrumpsServiceProxy.liens.last().libelle != message(code: "question.detail.titre")) {
+      breadcrumpsServiceProxy.manageBreadcrumps(
+          params,
+          message(code: "question.detail.titre")
+
+      )
+    }
+
     Question question
     question = Question.get(params.id)
     Personne personne = authenticatedPersonne
@@ -155,12 +184,12 @@ class QuestionController {
     render(
         view: '/question/detail',
         model: [
-            liens: breadcrumpsServiceProxy.liens,
-            question: question,
-            sujet: sujet,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne,
-            referentielCompetence: getRefentielCompetence(question),
+            liens                 : breadcrumpsServiceProxy.liens,
+            question              : question,
+            sujet                 : sujet,
+            artefactHelper        : artefactAutorisationService,
+            utilisateur           : personne,
+            referentielCompetence : getRefentielCompetence(question),
             competenceAssocieeList: question.allQuestionCompetence*.competence
         ]
     )
@@ -173,9 +202,14 @@ class QuestionController {
     Personne personne = authenticatedPersonne
     Question question = Question.get(params.id)
     questionService.supprimeQuestion(question, personne)
-    redirect(action: "mesItems", controller: "question",
-        params: [bcInit: true])
 
+    if (params.ajax) {
+      render ([success: true]) as JSON
+    }
+    else {
+      redirect(action: "mesItems", controller: "question",
+          params: [bcInit: true])
+    }
   }
 
   /**
@@ -242,6 +276,18 @@ class QuestionController {
     boolean questionEnEdition = true
     Question question = Question.get(params.id)
 
+    if(question && question.estCollaboratif() && question.estVerrouilleParAutrui(personne)) {
+      flash.errorMessage = "question.enregistre.echec.verrou"
+      redirect(action: 'detail', id: question.id)
+      return
+    }
+
+    if(question && question.termine) {
+      flash.errorMessage = "question.enregistre.echec.termine"
+      redirect(action: 'detail', id: question.id)
+      return
+    }
+
     try {
       if (question) {
         questionService.updateProprietes(question, params, specifObject, personne)
@@ -261,7 +307,7 @@ class QuestionController {
             controller: 'question',
             action: 'edite',
             params: [
-                creation: true,
+                creation      : true,
                 questionTypeId: params.type.id
             ]
         )
@@ -277,15 +323,15 @@ class QuestionController {
       render(
           view: '/question/edite',
           model: [
-              liens: breadcrumpsServiceProxy.liens,
-              question: question,
-              matieres: profilScolariteService.findMatieresForPersonne(personne),
-              etablissements: securiteSessionServiceProxy.etablissementList,
-              niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-              sujet: sujet,
+              liens            : breadcrumpsServiceProxy.liens,
+              question         : question,
+              matiereBcns      : question.matiereBcn != null ? [question.matiereBcn] : [],
+              etablissements   : securiteSessionServiceProxy.etablissementList,
+              niveaux          : question.niveau != null ? [question.niveau] : [],
+              sujet            : sujet,
               questionEnEdition: questionEnEdition,
-              artefactHelper: artefactAutorisationService,
-              utilisateur: personne
+              artefactHelper   : artefactAutorisationService,
+              utilisateur      : personne
           ]
       )
     } else {
@@ -294,6 +340,10 @@ class QuestionController {
       if (sujet) {
         params.sujetId = sujet.id
       }
+
+      // Retire le dernier élément du breadcrumbs
+      breadcrumpsServiceProxy.removeLastLien()
+
       redirect(action: 'detail', id: question.id, params: params)
     }
 
@@ -321,29 +371,29 @@ class QuestionController {
     if (sujet && question.id && !question.hasErrors()) {
       if (!breadcrumpsServiceProxy.getValeurPropriete(QUESTION_EST_DEJA_INSEREE)) {
         Integer rang = breadcrumpsServiceProxy.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
-        sujetService.insertQuestionInSujet(
+        question = sujetService.insertQuestionInSujet(
             question,
             sujet,
             personne,
             new ReferentielSujetSequenceQuestions(
                 rang: rang
             )
-        )
+        ) ?: question // Note si l'insertion n'a pu être effectuée, la méthode retourne null ... On conserve dans ce cas la question non insérée pour la suite des traitements
         breadcrumpsServiceProxy.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
       }
     }
     render(
         view: '/question/edite',
         model: [
-            liens: breadcrumpsServiceProxy.liens,
-            question: question,
-            matieres: profilScolariteService.findMatieresForPersonne(personne),
-            etablissements: securiteSessionServiceProxy.etablissementList,
-            niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-            sujet: sujet,
+            liens            : breadcrumpsServiceProxy.liens,
+            question         : question,
+            matiereBcns      : question.matiereBcn != null ? [question.matiereBcn] : [],
+            etablissements   : securiteSessionServiceProxy.etablissementList,
+            niveaux          : question.niveau != null ? [question.niveau] : [],
+            sujet            : sujet,
             questionEnEdition: questionEnEdition,
-            artefactHelper: artefactAutorisationService,
-            utilisateur: personne
+            artefactHelper   : artefactAutorisationService,
+            utilisateur      : personne
         ]
     )
   }
@@ -359,6 +409,17 @@ class QuestionController {
     Sujet sujet = Sujet.get(sujetId)
     Integer rang = breadcrumpsServiceProxy.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
     boolean questionEnEdition = false
+
+    if(sujet.estCollaboratif() && sujet.estVerrouilleParAutrui(personne)) {
+      flash.errorMessage = 'sujet.enregistre.echec.verrou'
+      redirect(
+          controller: 'sujet',
+          action: 'teste',
+          id: sujet.id
+      )
+      return
+    }
+
     Question question = questionService.createQuestionAndInsertInSujet(
         params,
         specifObject,
@@ -370,19 +431,25 @@ class QuestionController {
     )
 
     if (question.hasErrors()) {
-      render(view: '/question/edite', model: [liens: breadcrumpsServiceProxy.liens,
-          question: question,
-          sujet: sujet,
-          matieres: profilScolariteService.findMatieresForPersonne(personne),
-          etablissements: securiteSessionServiceProxy.etablissementList,
-          niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-          sujet: sujet,
-          artefactHelper: artefactAutorisationService,
-          questionEnEdition: questionEnEdition,
-          utilisateur: personne])
+      render(
+          view: '/question/edite',
+          model: [
+              liens            : breadcrumpsServiceProxy.liens,
+              question         : question,
+              sujet            : sujet,
+              matiereBcns      : question.matiereBcn != null ? [question.matiereBcn] : [],
+              etablissements   : securiteSessionServiceProxy.etablissementList,
+              niveaux          : question.niveau != null ? [question.niveau] : [],
+              artefactHelper   : artefactAutorisationService,
+              questionEnEdition: questionEnEdition,
+              utilisateur      : personne
+          ]
+      )
+      return
     } else {
       flash.messageCode = "question.enregistre.succes"
       breadcrumpsServiceProxy.setValeurPropriete(QUESTION_EST_DEJA_INSEREE, true)
+
       redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
     }
 
@@ -398,8 +465,19 @@ class QuestionController {
     Long sujetId = params.sujetId as Long
     Sujet sujet = Sujet.get(sujetId)
     Question question = Question.get(params.id)
+
+    if(sujet.estCollaboratif() && sujet.estVerrouilleParAutrui(personne)) {
+      flash.errorMessage = 'sujet.enregistre.echec.verrou'
+      redirect(
+          controller: 'sujet',
+          action: 'teste',
+          id: sujet.id
+      )
+      return
+    }
+
     Integer rang = breadcrumpsServiceProxy.getValeurPropriete(SujetController.PROP_RANG_INSERTION)
-    sujetService.insertQuestionInSujet(
+    question = sujetService.insertQuestionInSujet(
         question,
         sujet,
         personne,
@@ -407,15 +485,20 @@ class QuestionController {
             rang: rang
         )
     )
-    if (sujet.hasErrors()) {
-      render(view: '/sujet/edite', model: [liens: breadcrumpsServiceProxy.liens,
-          titreSujet: sujet.titre,
-          sujet: sujet,
-          sujetEnEdition: true,
-          peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
-          peutPartagerSujet: artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
-          artefactHelper: artefactAutorisationService,
-          utilisateur: personne])
+    if (sujet.hasErrors() || !question) {
+      render(
+          view: '/sujet/edite',
+          model: [
+              liens             : breadcrumpsServiceProxy.liens,
+              titreSujet        : sujet.titre,
+              sujet             : sujet,
+              sujetEnEdition    : true,
+              peutSupprimerSujet: artefactAutorisationService.utilisateurPeutSupprimerArtefact(personne, sujet),
+              peutPartagerSujet : artefactAutorisationService.utilisateurPeutPartageArtefact(personne, sujet),
+              artefactHelper    : artefactAutorisationService,
+              utilisateur       : personne
+          ]
+      )
     } else {
       flash.messageCode = "question.enregistreinsert.succes"
       redirect(action: 'detail', id: question.id, params: [sujetId: sujet.id])
@@ -451,34 +534,42 @@ class QuestionController {
       }
     }
     boolean affichePager = false
+
+    MatiereBcn matiereBcn = MatiereBcn.get(rechCmd.matiereId)
+    Niveau niveau = Niveau.get(rechCmd.niveauId)
+    Boolean afficheQuestionMasquee = rechCmd.afficheQuestionMasquee != null ? rechCmd.afficheQuestionMasquee : false
+
     def questions = questionService.findQuestions(personne,
         rechCmd.patternTitre,
         patternAuteur,
         rechCmd.patternSpecification,
         new ReferentielEliot(
-            matiere: Matiere.get(rechCmd.matiereId),
+            matiereBcn: matiereBcn,
             niveau: Niveau.get(rechCmd.niveauId)
         ),
         QuestionType.get(rechCmd.typeId),
         exclusComposite,
         rechercheUniquementQuestionsChercheur,
-        params)
+        params,
+        afficheQuestionMasquee)
 
     if (questions.totalCount > maxItems) {
       affichePager = true
     }
-    [liens: breadcrumpsServiceProxy.liens,
-        afficheFormulaire: true,
-        typesQuestion: typesQuestions,
-        matieres: profilScolariteService.findMatieresForPersonne(personne),
-        niveaux: profilScolariteService.findNiveauxForPersonne(personne),
-        questions: questions,
-        rechercheCommand: rechCmd,
-        sujet: sujet,
-        afficheLiensModifier: afficheLiensModifier,
-        afficherPager: affichePager,
-        artefactHelper: artefactAutorisationService,
-        utilisateur: personne]
+    [liens                  : breadcrumpsServiceProxy.liens,
+     afficheFormulaire      : true,
+     typesQuestion          : typesQuestions,
+     matiereBcns            : matiereBcn != null ? [matiereBcn] : [],
+     niveaux                : niveau != null ? [niveau] : [],
+     questions              : questions,
+     rechercheCommand       : rechCmd,
+     sujet                  : sujet,
+     afficheLiensModifier   : afficheLiensModifier,
+     afficherPager          : affichePager,
+     artefactHelper         : artefactAutorisationService,
+     utilisateur            : personne,
+     questionsMasqueesIds   : afficheQuestionMasquee ? questionService.listIdsQuestionsMasquees(personne, questions) : [],
+     afficheQuestionMasquee: afficheQuestionMasquee]
   }
 
   def mesItems() {
@@ -493,13 +584,13 @@ class QuestionController {
     if (questions.totalCount > maxItems) {
       affichePager = true
     }
-    def model = [liens: breadcrumpsServiceProxy.liens,
-        afficheFormulaire: false,
-        questions: questions,
-        afficheLiensModifier: afficheLiensModifier,
-        afficherPager: affichePager,
-        artefactHelper: artefactAutorisationService,
-        utilisateur: personne]
+    def model = [liens               : breadcrumpsServiceProxy.liens,
+                 afficheFormulaire   : false,
+                 questions           : questions,
+                 afficheLiensModifier: afficheLiensModifier,
+                 afficherPager       : affichePager,
+                 artefactHelper      : artefactAutorisationService,
+                 utilisateur         : personne]
     render(view: "recherche", model: model)
   }
 
@@ -548,12 +639,10 @@ class QuestionController {
     breadcrumpsServiceProxy.manageBreadcrumps(params, message(code: "importexport.NATIF_JSON.import.question.libelle"))
     Personne proprietaire = authenticatedPersonne
     [
-        liens: breadcrumpsServiceProxy.liens,
-        matieres: profilScolariteService.findMatieresForPersonne(proprietaire),
-        etablissements     : securiteSessionServiceProxy.etablissementList,
-        niveaux: profilScolariteService.findNiveauxForPersonne(proprietaire),
+        liens         : breadcrumpsServiceProxy.liens,
+        etablissements: securiteSessionServiceProxy.etablissementList,
         fichierMaxSize: grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
-          grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
+            grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
     ]
   }
 
@@ -564,7 +653,7 @@ class QuestionController {
     Personne proprietaire = authenticatedPersonne
     MultipartFile fichier = request.getFile("fichierImport")
     def maxSizeEnMega = grailsApplication.config.eliot.fichiers.importexport.maxsize.mega ?:
-      grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
+        grailsApplication.config.eliot.fichiers.maxsize.mega ?: 10
 
     boolean importSuccess = true
     if (!fichier || fichier.isEmpty()) {
@@ -593,7 +682,7 @@ class QuestionController {
             null,
             proprietaire,
             new ReferentielEliot(
-                matiere: Matiere.load(matiereId),
+                matiereBcn: MatiereBcn.load(matiereId),
                 niveau: Niveau.load(niveauId)
             )
         )
@@ -610,6 +699,32 @@ class QuestionController {
     } else {
       redirect(action: 'editeImportQuestionNatifTdBase')
     }
+  }
+
+  def creeVerrou(Long id) {
+    Question question = Question.get(id)
+    questionService.creeVerrou(question, authenticatedPersonne)
+    render question as JSON
+  }
+
+  def supprimeVerrou(Long id) {
+    Question question = Question.get(id)
+    questionService.supprimeVerrou(question, authenticatedPersonne)
+    redirect(action: 'detail', id: id)
+  }
+
+  def masque(Long id) {
+    Question question = Question.get(id)
+    Personne personne = authenticatedPersonne
+    QuestionMasquee questionMasquee = questionService.masque(personne, question)
+    render questionMasquee as JSON
+  }
+
+  def annuleMasque(Long id) {
+    Question question = Question.get(id)
+    Personne personne = authenticatedPersonne
+    questionService.annuleMasque(personne, question)
+    render question as JSON
   }
 
   private JSON getQuestionAsJson(Question question) {
@@ -632,11 +747,11 @@ class QuestionController {
   protected def getSpecificationObjectFromParams(Map params) {}
 
   private Referentiel getRefentielCompetence(Question question) {
-    if(!emaEvalService.isLiaisonReady()) {
+    if (!emaEvalService.isLiaisonReady()) {
       return null
     }
 
-    if(!questionCompetenceService.isQuestionAssociableACompetence(question)) {
+    if (!questionCompetenceService.isQuestionAssociableACompetence(question)) {
       return null
     }
 
@@ -656,15 +771,18 @@ class RechercheQuestionCommand {
   Long niveauId
   Long sujetId
 
+  Boolean afficheQuestionMasquee
+
   Map toParams() {
     [
-        patternAuteur: patternAuteur,
-        patternTitre: patternTitre,
-        patternPresentation: patternSpecification,
-        matiereId: matiereId,
-        typeId: typeId,
-        niveauId: niveauId,
-        sujetId: sujetId
+        patternAuteur         : patternAuteur,
+        patternTitre          : patternTitre,
+        patternPresentation   : patternSpecification,
+        matiereId             : matiereId,
+        typeId                : typeId,
+        niveauId              : niveauId,
+        sujetId               : sujetId,
+        afficheQuestionMasquee: afficheQuestionMasquee
     ]
   }
 

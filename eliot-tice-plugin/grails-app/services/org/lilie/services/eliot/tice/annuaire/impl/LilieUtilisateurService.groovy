@@ -62,8 +62,8 @@ class LilieUtilisateurService implements UtilisateurService {
           String password,
           String nom,
           String prenom,
-          String email,
-          Date dateNaissance) {
+          String email = null,
+          Date dateNaissance = null) {
     throw new UnsupportedOperationException("Eliot in Lilie : operation non supportee")
   }
 

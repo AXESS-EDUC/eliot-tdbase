@@ -9,6 +9,7 @@ import org.lilie.services.eliot.tdbase.SujetService
 import org.lilie.services.eliot.tdbase.preferences.PreferencePersonne
 import org.lilie.services.eliot.tdbase.preferences.PreferencePersonneService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.utils.BootstrapService
 
 /**
@@ -21,6 +22,7 @@ class NotificationSeanceDaoServiceSpec extends IntegrationSpec {
     NotificationSeanceDaoService notificationSeanceDaoService
     SujetService sujetService
     ModaliteActiviteService modaliteActiviteService
+    GroupeService groupeService
 
     def groovySql
 
@@ -44,8 +46,11 @@ class NotificationSeanceDaoServiceSpec extends IntegrationSpec {
         def struct = bootstrapService.classe1ere
 
         when: "on récupère les personnes à notifier par sms pour la publication de resultats"
-        def pers = notificationSeanceDaoService.findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(struct,
-                NotificationSupport.SMS, NotificationSeanceDaoService.PUBLICATION_RESULTATS)
+        def pers = notificationSeanceDaoService.findAllPersonnesToNotifierForGroupeScolariteAndSupportAndEvenement(
+                groupeService.findGroupeScolariteEleveForStructureEnseignement(struct),
+                NotificationSupport.SMS,
+                NotificationSeanceDaoService.PUBLICATION_RESULTATS
+        )
 
         then: "on récupère 2 personnes ayant une preference conforme"
         pers.size() == 2
@@ -58,8 +63,11 @@ class NotificationSeanceDaoServiceSpec extends IntegrationSpec {
         }
 
         when: "on récupère les personnes id externe à notifier par sms pour la publication de resultats"
-        def persIds = notificationSeanceDaoService.findAllPersonnesIdExterneToNotifierForStructurEnseignementAndSupportAndEvenement(struct,
-                NotificationSupport.SMS, NotificationSeanceDaoService.PUBLICATION_RESULTATS)
+        def persIds = notificationSeanceDaoService.findAllPersonnesIdExterneToNotifierForGroupeScolariteAndSupportAndEvenement(
+                groupeService.findGroupeScolariteEleveForStructureEnseignement(struct),
+                NotificationSupport.SMS,
+                NotificationSeanceDaoService.PUBLICATION_RESULTATS
+        )
 
         then: "on récupère les 2 id externes des personnes"
         persIds.size() == 2
@@ -67,8 +75,11 @@ class NotificationSeanceDaoServiceSpec extends IntegrationSpec {
         persIds.contains(bootstrapService.eleve2.autorite.identifiant)
 
         when: "on récupère les personnes à notifier par sms pour la publication de resultats"
-        pers = notificationSeanceDaoService.findAllPersonnesToNotifierForStructurEnseignementAndSupportAndEvenement(struct,
-                NotificationSupport.EMAIL, NotificationSeanceDaoService.CREATION_SEANCE)
+        pers = notificationSeanceDaoService.findAllPersonnesToNotifierForGroupeScolariteAndSupportAndEvenement(
+                groupeService.findGroupeScolariteEleveForStructureEnseignement(struct),
+                NotificationSupport.EMAIL,
+                NotificationSeanceDaoService.CREATION_SEANCE
+        )
 
         then: "on récupère 1 personne ayant une preference conforme"
         pers.size() == 1
@@ -88,32 +99,42 @@ class NotificationSeanceDaoServiceSpec extends IntegrationSpec {
 
         and: "une séance dont la date de publication n'est pas encore passée"
         Date now = new Date()
-        ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
-                [sujet                   : sujet,
-                 structureEnseignement   : bootstrapService.classe1ere,
-                 dateDebut               : now - 10,
-                 dateFin                 : now - 8,
-                 datePublicationResultats: now + 1
+        modaliteActiviteService.createModaliteActivite(
+                [
+                        sujet                   : sujet,
+                        groupeScolarite         : groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                bootstrapService.classe1ere
+                        ),
+                        dateDebut               : now - 10,
+                        dateFin                 : now - 8,
+                        datePublicationResultats: now + 1
                 ],
                 sujet.proprietaire
         )
         and: "une séance dont la date de publication est passée depuis 4 jours et qui n'a pas été encore notifiée"
         ModaliteActivite seance2 = modaliteActiviteService.createModaliteActivite(
                 [sujet                   : sujet,
-                 structureEnseignement   : bootstrapService.classeTerminale,
+                 groupeScolarite         :
+                         groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                 bootstrapService.classeTerminale
+                         ),
                  dateDebut               : now - 10,
                  dateFin                 : now - 8,
                  datePublicationResultats: now - 4],
                 sujet.proprietaire
         )
         and: "une séance dont la date de publication est passée depuis 3 jours et qui déjà été notifiée"
-        ModaliteActivite seance3 = modaliteActiviteService.createModaliteActivite(
-                [sujet                               : sujet,
-                 structureEnseignement               : bootstrapService.classeTerminale,
-                 dateDebut                           : now - 10,
-                 dateFin                             : now - 8,
-                 datePublicationResultats            : now - 4,
-                 dateNotificationPublicationResultats: now - 3
+        modaliteActiviteService.createModaliteActivite(
+                [
+                        sujet                               : sujet,
+                        groupeScolarite                     :
+                                groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                        bootstrapService.classeTerminale
+                                ),
+                        dateDebut                           : now - 10,
+                        dateFin                             : now - 8,
+                        datePublicationResultats            : now - 4,
+                        dateNotificationPublicationResultats: now - 3
                 ],
                 sujet.proprietaire
         )
@@ -134,32 +155,45 @@ class NotificationSeanceDaoServiceSpec extends IntegrationSpec {
         and: "une séance non encore ouvert à notifier"
         Date now = new Date()
         ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
-                [sujet                   : sujet,
-                 structureEnseignement   : bootstrapService.classe1ere,
-                 dateDebut               : now + 1,
-                 dateFin                 : now + 2,
-                 datePublicationResultats: now + 3
+                [
+                        sujet                   : sujet,
+                        groupeScolarite         :
+                                groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                        bootstrapService.classe1ere
+                                ),
+                        dateDebut               : now + 1,
+                        dateFin                 : now + 2,
+                        datePublicationResultats: now + 3
                 ],
                 sujet.proprietaire
         )
         and: "une séance fermée et donc à ne plsu notifier"
-        ModaliteActivite seance2 = modaliteActiviteService.createModaliteActivite(
-                [sujet                   : sujet,
-                 structureEnseignement   : bootstrapService.classeTerminale,
-                 dateDebut               : now - 10,
-                 dateFin                 : now - 8,
-                 datePublicationResultats: now - 4],
+        modaliteActiviteService.createModaliteActivite(
+                [
+                        sujet                   : sujet,
+                        groupeScolarite         :
+                                groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                        bootstrapService.classeTerminale
+                                ),
+                        dateDebut               : now - 10,
+                        dateFin                 : now - 8,
+                        datePublicationResultats: now - 4
+                ],
                 sujet.proprietaire
         )
         and: "une séance non encore ouverte mais deja notifiee"
-        ModaliteActivite seance3 = modaliteActiviteService.createModaliteActivite(
-                [sujet                               : sujet,
-                 structureEnseignement               : bootstrapService.classeTerminale,
-                 dateDebut                           : now + 1,
-                 dateFin                             : now + 2,
-                 datePublicationResultats            : now + 3,
-                 dateNotificationPublicationResultats: null,
-                 dateNotificationOuvertureSeance     : now - 2
+        modaliteActiviteService.createModaliteActivite(
+                [
+                        sujet                               : sujet,
+                        groupeScolarite                     :
+                                groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                        bootstrapService.classeTerminale
+                                ),
+                        dateDebut                           : now + 1,
+                        dateFin                             : now + 2,
+                        datePublicationResultats            : now + 3,
+                        dateNotificationPublicationResultats: null,
+                        dateNotificationOuvertureSeance     : now - 2
                 ],
                 sujet.proprietaire
         )
@@ -180,12 +214,16 @@ class NotificationSeanceDaoServiceSpec extends IntegrationSpec {
         and: "une séance non encore ouvert à notifier avec rappel"
         Date now = new Date()
         ModaliteActivite seance1 = modaliteActiviteService.createModaliteActivite(
-                [sujet                   : sujet,
-                 structureEnseignement   : bootstrapService.classe1ere,
-                 dateDebut               : now + 1,
-                 dateFin                 : now + 2,
-                 datePublicationResultats: now + 3,
-                 notifierNJoursAvant     : 2,
+                [
+                        sujet                   : sujet,
+                        groupeScolarite         :
+                                groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                        bootstrapService.classe1ere
+                                ),
+                        dateDebut               : now + 1,
+                        dateFin                 : now + 2,
+                        datePublicationResultats: now + 3,
+                        notifierNJoursAvant     : 2,
                 ],
                 sujet.proprietaire
         )
@@ -193,7 +231,10 @@ class NotificationSeanceDaoServiceSpec extends IntegrationSpec {
         and: "une séance non encore ouvert à notifier avec rappel"
         ModaliteActivite seance1bis = modaliteActiviteService.createModaliteActivite(
                 [sujet                          : sujet,
-                 structureEnseignement          : bootstrapService.classe6eme,
+                 groupeScolarite                :
+                         groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                 bootstrapService.classe6eme
+                         ),
                  dateDebut                      : now + 1,
                  dateFin                        : now + 2,
                  datePublicationResultats       : now + 3,
@@ -203,23 +244,31 @@ class NotificationSeanceDaoServiceSpec extends IntegrationSpec {
                 sujet.proprietaire
         )
         and: "une séance fermée et donc à ne plus notifier"
-        ModaliteActivite seance2 = modaliteActiviteService.createModaliteActivite(
-                [sujet                   : sujet,
-                 structureEnseignement   : bootstrapService.classeTerminale,
-                 dateDebut               : now - 10,
-                 dateFin                 : now - 8,
-                 datePublicationResultats: now - 4],
+        modaliteActiviteService.createModaliteActivite(
+                [
+                        sujet                   : sujet,
+                        groupeScolarite         :
+                                groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                        bootstrapService.classeTerminale
+                                ),
+                        dateDebut               : now - 10,
+                        dateFin                 : now - 8,
+                        datePublicationResultats: now - 4],
                 sujet.proprietaire
         )
         and: "une séance non encore ouverte mais deja notifiee"
-        ModaliteActivite seance3 = modaliteActiviteService.createModaliteActivite(
-                [sujet                                : sujet,
-                 structureEnseignement                : bootstrapService.classeTerminale,
-                 dateDebut                            : now + 1,
-                 dateFin                              : now + 2,
-                 datePublicationResultats             : now + 3,
-                 dateNotificationPublicationResultats : null,
-                 dateRappelNotificationOuvertureSeance: now - 1
+        modaliteActiviteService.createModaliteActivite(
+                [
+                        sujet                                : sujet,
+                        groupeScolarite                      :
+                                groupeService.findGroupeScolariteEleveForStructureEnseignement(
+                                        bootstrapService.classeTerminale
+                                ),
+                        dateDebut                            : now + 1,
+                        dateFin                              : now + 2,
+                        datePublicationResultats             : now + 3,
+                        dateNotificationPublicationResultats : null,
+                        dateRappelNotificationOuvertureSeance: now - 1
                 ],
                 sujet.proprietaire
         )

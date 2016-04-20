@@ -1,4 +1,4 @@
-<plugin name='eliot-tdbase-plugin' version='2.4.5-eliot-3.8.1-RC3' grailsVersion='2.1.1 &gt; *'>
+<plugin name='eliot-tdbase-plugin' version='3.0.0-eliot-3.9.0-S14' grailsVersion='2.1.1 &gt; *'>
   <author>Franck Silvestre - Ticetime</author>
   <title>Eliot Tdbase  Plugin</title>
   <description>  Plugin contenant les services métiers relatifs à la gestion des TD"
@@ -21,6 +21,7 @@
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerException</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MarshallerHelper</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereMarshaller</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.MatiereBcnMarshaller</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.NiveauMarshaller</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.PersonneMarshaller</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.natif.marshaller.QuestionCompositeMarshaller</resource>
@@ -122,6 +123,7 @@
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.EtablissementDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.ExportDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.MatiereDto</resource>
+    <resource>org.lilie.services.eliot.tdbase.importexport.dto.MatiereBcnDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.NiveauDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.PersonneDto</resource>
     <resource>org.lilie.services.eliot.tdbase.importexport.dto.PrincipalAttachementDto</resource>

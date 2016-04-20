@@ -48,7 +48,7 @@ class PreferenceEtablissementIntegrationSpec extends IntegrationSpec {
     def setup() {
         bootstrapService.bootstrapForIntegrationTest()
         personne1 = bootstrapService.enseignant1
-        etablissement = bootstrapService.leLycee
+        etablissement = bootstrapService.etablissementLycee
         MappingFonctionRole.defaultMappingFonctionRole =[:]
     }
 

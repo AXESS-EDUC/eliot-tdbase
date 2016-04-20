@@ -29,11 +29,14 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.tdbase.emaeval.CampagneProxyService
+import org.lilie.services.eliot.tdbase.securite.RoleApplicatif
+import org.lilie.services.eliot.tdbase.securite.SecuriteSessionService
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.annuaire.groupe.GroupeService
 import org.lilie.services.eliot.tice.notes.Evaluation
-import org.lilie.services.eliot.tice.scolarite.FonctionService
-import org.lilie.services.eliot.tice.scolarite.ProfilScolariteService
+import org.lilie.services.eliot.tice.scolarite.Etablissement
 import org.lilie.services.eliot.tice.textes.Activite
 import org.springframework.transaction.annotation.Transactional
 
@@ -44,10 +47,12 @@ import org.springframework.transaction.annotation.Transactional
 class ModaliteActiviteService {
 
     static transactional = false
-    ProfilScolariteService profilScolariteService
+
+    GrailsApplication grailsApplication
+    GroupeService groupeService
     CopieService copieService
     CampagneProxyService campagneProxyService
-    FonctionService fonctionService
+    SecuriteSessionService securiteSessionServiceProxy
 
     /**
      * Créé une séance (modaliteActivite)
@@ -132,7 +137,7 @@ class ModaliteActiviteService {
     }
 
     /**
-     * Recherche de séances pour profil élève
+     * Recherche de séances pour profil apprenant
      * @param chercheur la personne effectuant la recherche
      * @param paginationAndSortingSpec les specifications pour l'ordre et
      * la pagination
@@ -146,14 +151,32 @@ class ModaliteActiviteService {
         if (paginationAndSortingSpec == null) {
             paginationAndSortingSpec = [:]
         }
-        // TODO : quelle stratégie pour les non élèves qui ont le profil apprenant ?
+
         def seances = []
-        def structs = profilScolariteService.findStructuresEnseignementForPersonne(chercheur, fonctionService.fonctionEleve())
-        if (!structs.isEmpty()) {
+
+        def groupeScolariteList =
+                groupeService.findAllGroupeScolariteForPersonne(chercheur)
+
+        // Liste des établissements pour lesquels l'utilisateur est apprenant
+        List<Etablissement> etablissementList =
+                securiteSessionServiceProxy.rolesApplicatifsAndPerimetreByRoleApplicatif.get(
+                        RoleApplicatif.ELEVE
+                ).etablissements as List
+        def groupeEntList = groupeService.findAllGroupeEntInEtablissementListForPersonne(
+                chercheur,
+                etablissementList
+        )
+
+        if (!groupeScolariteList.isEmpty() || !groupeEntList.isEmpty()) {
             Date now = new Date()
             def criteria = ModaliteActivite.createCriteria()
             seances = criteria.list(paginationAndSortingSpec) {
-                inList 'structureEnseignement', structs
+                or {
+                    inList 'groupeScolarite', groupeScolariteList
+                    if(groupeEntList) {
+                        inList 'groupeEnt', groupeEntList
+                    }
+                }
                 le 'dateDebut', now
                 ge 'dateFin', now
                 if (paginationAndSortingSpec) {
@@ -165,6 +188,7 @@ class ModaliteActiviteService {
                 }
             }
         }
+
         seances
     }
 
@@ -186,6 +210,21 @@ class ModaliteActiviteService {
     }
 
     /**
+     * Teste si la séance peut être liée à une activité du cahier de textes
+     * @param modaliteActivite
+     * @param personne
+     * @return
+     */
+    boolean canBindModaliteActiviteToTextesActivite(ModaliteActivite modaliteActivite,
+                                                    Personne personne) {
+        assert (modaliteActivite?.enseignant == personne)
+
+        grailsApplication.config.eliot.interfacage.textes &&
+                modaliteActivite.groupeScolarite &&
+                groupeService.isGroupeScolariteEleve(modaliteActivite.groupeScolarite)
+    }
+
+    /**
      * Indique si il est possible de créer une activité dans le cahier de texte
      * @param modaliteActivite la modalite activité
      * @param personne la personne déclenchant l'opération
@@ -195,7 +234,10 @@ class ModaliteActiviteService {
                                                        Personne personne,
                                                        Boolean strongCheck = true) {
         assert (modaliteActivite?.enseignant == personne)
-        !modaliteActiviteHasTextesActivite(modaliteActivite, personne, strongCheck)
+
+        modaliteActivite.groupeScolarite &&
+                groupeService.isGroupeScolariteEleve(modaliteActivite.groupeScolarite) &&
+                !modaliteActiviteHasTextesActivite(modaliteActivite, personne, strongCheck)
     }
 
     /**
@@ -228,7 +270,24 @@ class ModaliteActiviteService {
     }
 
     /**
-     * verifie si il est possible de créer un devoir dans Notes
+     * Vérifie si cette séance peut être liée à un devoir
+     * @param modaliteActivite
+     * @param personne
+     * @return
+     */
+    boolean canBindModaliteActiviteToDevoir(ModaliteActivite modaliteActivite,
+                                            Personne personne) {
+
+        assert (modaliteActivite?.enseignant == personne)
+
+        return grailsApplication.config.eliot.interfacage.notes &&
+                modaliteActivite.groupeScolarite &&
+                groupeService.isGroupeScolariteEleve(modaliteActivite.groupeScolarite)
+    }
+
+    /**
+     * verifie si il est possible de créer un devoir dans Notes (suppose que
+     * la séance peut être liée à un devoir)
      * @param modaliteActivite la modalite activité
      * @param personne la personne déclenchant l'opération
      * @return true si il est possible de creer un devoir dans Notes
@@ -237,6 +296,7 @@ class ModaliteActiviteService {
                                                     Personne personne,
                                                     Boolean strongCheck = true) {
         assert (modaliteActivite?.enseignant == personne)
+
         !modaliteActiviteHasNotesDevoir(modaliteActivite, personne, strongCheck)
     }
 

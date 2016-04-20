@@ -28,12 +28,13 @@
 
 package org.lilie.services.eliot.tdbase
 
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.lilie.services.eliot.tice.Attachement
 import org.lilie.services.eliot.tice.CopyrightsType
 import org.lilie.services.eliot.tice.Publication
 import org.lilie.services.eliot.tice.annuaire.Personne
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Etablissement
-import org.lilie.services.eliot.tice.scolarite.Matiere
 import org.lilie.services.eliot.tice.scolarite.Niveau
 import org.springframework.validation.Errors
 import org.springframework.validation.ObjectError
@@ -43,7 +44,9 @@ import org.springframework.web.multipart.MultipartFile
  * Classe représentant une question
  * @author franck Silvestre
  */
-class Question implements Artefact {
+class Question extends AbstractArtefact {
+
+  GrailsApplication grailsApplication
 
   QuestionService questionService
 
@@ -66,7 +69,7 @@ class Question implements Artefact {
   Sujet exercice
 
   Etablissement etablissement
-  Matiere matiere
+  MatiereBcn matiereBcn
   Niveau niveau
   CopyrightsType copyrightsType
   Publication publication
@@ -78,9 +81,17 @@ class Question implements Artefact {
 
   private def specificationObject
 
+  Boolean collaboratif = false
+  Boolean termine
+  Sujet sujetLie
+
+  Date dateVerrou
+  Personne auteurVerrou
+
   static hasMany = [
       questionAttachements: QuestionAttachement,
-      allQuestionCompetence: QuestionCompetence
+      allQuestionCompetence: QuestionCompetence,
+      contributeurs: Personne
   ]
 
 
@@ -88,7 +99,7 @@ class Question implements Artefact {
     titre(blank: false)
     specificationNormalise(nullable: true)
     etablissement(nullable: true)
-    matiere(nullable: true)
+    matiereBcn(nullable: true)
     niveau(nullable: true)
     publication(nullable: true)
     paternite(nullable: true)
@@ -123,6 +134,16 @@ class Question implements Artefact {
       }
 
     })
+    collaboratif(nullable: false)
+    termine(nullable: true)
+    contributeurs(validator: { val, obj ->
+      if (!obj.collaboratif && val?.size() > 0) {
+        return ['invalid.contributeurpourquestionnoncollaboratif']
+      }
+    })
+    sujetLie(nullable: true)
+    dateVerrou(nullable: true)
+    auteurVerrou(nullable: true)
   }
 
   static mapping = {
@@ -133,16 +154,29 @@ class Question implements Artefact {
     principalAttachement(column: 'attachement_id', fetch: 'join')
     questionAttachements(lazy: false, indexColumn: [name: 'rang', type: Integer])
     allQuestionCompetence(lazy: false, cascade: 'all-delete-orphan')
+    contributeurs(joinTable: [name: 'td.question_contributeur', key: 'question_id', column: 'personne_id'])
+    dateVerrou(column: 'date_verrou')
+    auteurVerrou(column: 'auteur_verrou')
   }
 
   static transients = [
       'questionService',
       'specificationObject',
       'estEnNotationManuelle',
-      'estInvariant',
       'principalAttachementFichier',
       'doitSupprimerPrincipalAttachement',
-      'principalAttachementId'
+      'principalAttachementId',
+      'grailsApplication',
+      'estSupprimableQuandArtefactEstModifiable',
+      'estPresentableEnMoodleXML',
+      'estInvariant',
+      'estDistribue',
+      'estVerrouilleParMoi',
+      'estVerrouilleParAutrui',
+      'estVerrouille',
+      'estCollaboratif',
+      'estPartage',
+      'estTermine'
   ]
 
   // transients
@@ -228,12 +262,11 @@ class Question implements Artefact {
     if (nbCopies > 0) {
       return true
     }
-    // sinon verifie qu'une séance ouverte n'est pas attaché à la question
+    // sinon verifie qu'une séance n'est pas attaché à la question
     def now = new Date()
     def crit = ModaliteActivite.createCriteria()
     def nbSeances = crit.count {
       le 'dateDebut', now
-      ge 'dateFin', now
       sujet {
         questionsSequences {
           eq 'question', this
@@ -243,7 +276,11 @@ class Question implements Artefact {
     return nbSeances > 0
   }
 
-  /**
+  @Override
+  boolean estTermine() {
+    return termine
+  }
+/**
    *
    * @return true si la question est partagée
    * @see Artefact
@@ -252,7 +289,11 @@ class Question implements Artefact {
     return publication != null
   }
 
-  /**
+  @Override
+  boolean estCollaboratif() {
+    return collaboratif
+  }
+/**
    *
    * @return true si la question est invariante
    * @see Artefact
@@ -283,5 +324,24 @@ class Question implements Artefact {
     return true
   }
 
+  void addPaterniteItem(Personne partageur,
+                        Date datePublication = null,
+                        List<String> contributeurs = null) {
+    CopyrightsType ct = copyrightsType
+
+    PaterniteItem paterniteItem = new PaterniteItem(
+            auteur: "${partageur.nomAffichage}",
+            copyrightDescription: "${ct.presentation}",
+            copyrighLien: "${ct.lien}",
+            logoLien: ct.logo,
+            datePublication: datePublication,
+            oeuvreEnCours: true,
+            contributeurs: contributeurs
+    )
+    Paternite paterniteObjet = new Paternite(paternite)
+    paterniteObjet.addPaterniteItem(paterniteItem)
+    paternite = paterniteObjet.toString()
+    this.save()
+  }
 }
 

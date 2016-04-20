@@ -31,11 +31,77 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="layout" content="eliot-tdbase"/>
-  <r:require modules="jquery"/>
+  <r:require modules="jquery, jquery-ui, eliot-tdbase-combobox-autocomplete"/>
   <r:script>
     $(document).ready(function () {
       $('#menu-item-sujets').addClass('actif');
       $("form").attr('enctype', 'multipart/form-data');
+
+      initComboboxAutoComplete({
+        combobox: '#matiereId',
+
+        recherche: function(recherche, callback) {
+          if (recherche == null || recherche.length < 3) {
+            callback([]);
+          }
+          else {
+            $.ajax({
+              url: '${g.createLink(absolute:true, uri:"/sujet/matiereBcns")}',
+
+              data: {
+                recherche: recherche
+              },
+
+              success: function(matiereBcns) {
+                var options = [];
+
+                for(var i = 0; i < matiereBcns.length; i++) {
+                  options.push({
+                    id: matiereBcns[i].id,
+                    value: matiereBcns[i].libelleEdition + ' [' + matiereBcns[i].libelleCourt + ']'
+                  });
+                }
+
+                callback(options);
+              }
+            });
+          }
+        }
+
+      });
+
+      initComboboxAutoComplete({
+          combobox: '#niveauId',
+
+          recherche: function(recherche, callback) {
+            if (recherche == null || recherche.length < 3) {
+              callback([]);
+            }
+            else {
+              $.ajax({
+                url: '${g.createLink(absolute: true, uri: "/sujet/niveaux")}',
+
+                data: {
+                  recherche: recherche
+                },
+
+                success: function(niveaux) {
+                  var options = [];
+
+                  for(var i = 0; i < niveaux.length; i++) {
+                    options.push({
+                      id: niveaux[i].id,
+                      value:  niveaux[i].libelleLong
+                    });
+                  }
+
+                  callback(options);
+                }
+              });
+            }
+          }
+
+        });
     });
   </r:script>
   <title><g:message code="sujet.editeImportQuestionNatifTdBase.head.title"/></title>
@@ -61,19 +127,17 @@
       </tr>
       <tr>
         <td class="label">Mati&egrave;re&nbsp;:</td>
-        <td>
-          <g:select name="matiereId" value="${sujet.matiere?.id}"
-                    noSelection="${['null': g.message(code: "default.select.null")]}"
-                    from="${matieres}"
+        <td class="matiere">
+          <g:select name="matiereId"
+                    from="${matiereBcns}"
                     optionKey="id"
-                    optionValue="libelleLong"/>
+                    optionValue="libelleEdition"/>
         </td>
       </tr>
       <tr>
         <td class="label">Niveau&nbsp;:</td>
-        <td>
+        <td class="niveau">
           <g:select name="niveauId" value="${sujet.niveau?.id}"
-                    noSelection="${['null': g.message(code: "default.select.null")]}"
                     from="${niveaux}"
                     optionKey="id"
                     optionValue="libelleLong"/>

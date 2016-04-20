@@ -66,4 +66,17 @@
 
     <include file="migrations/schema.tdbase/changelog-20141215-TDB-132.xml"/>
 
+    <include file="migrations/schema.nomenclature/changelog-20150330-TDB-147.xml"/>
+    <include file="migrations/schema.tdbase/changelog-20150419-TDB-149.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20150323-TDB-183.xml"/>
+    <include file="migrations/schema.tdbase/changelog-20150419-TDB-184.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20150325-TDB-203.xml"/>
+    <include file="migrations/schema.tdbase/changelog-20150420-TDB-191.xml"/>
+
+    <include file="migrations/schema.tdbase/changelog-20150423-TDB-215.xml"/>
+    <include file="migrations/schema.tdbase/changelog-20150510-TDB-223.xml"/>
+    <include file="migrations/schema.tdbase/changelog-20150515-TDB-226.xml"/>
+
 </databaseChangeLog>

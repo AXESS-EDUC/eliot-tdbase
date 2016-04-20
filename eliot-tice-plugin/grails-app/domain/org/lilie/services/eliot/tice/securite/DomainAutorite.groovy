@@ -64,6 +64,7 @@ class DomainAutorite implements Autorite {
     nomEntiteCible nullable: true
     idEnregistrementCible nullable: true
     localisation nullable: true
+    identifiant nullable: true
   }
 
   static mapping = {

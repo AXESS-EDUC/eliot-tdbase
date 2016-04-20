@@ -1,6 +1,6 @@
 package org.lilie.services.eliot.tdbase
 
-import org.lilie.services.eliot.tice.scolarite.Matiere
+import org.lilie.services.eliot.tice.nomenclature.MatiereBcn
 import org.lilie.services.eliot.tice.scolarite.Niveau
 
 /**
@@ -8,6 +8,6 @@ import org.lilie.services.eliot.tice.scolarite.Niveau
  * @author John Tranier
  */
 class ReferentielEliot {
-  Matiere matiere
+  MatiereBcn matiereBcn
   Niveau niveau
 }
