@@ -1,4 +1,4 @@
-<plugin name='eliot-competence-plugin' version='1.0-SNAPSHOT' grailsVersion='2.1.1 &gt; *'>
+<plugin name='eliot-competence-plugin' version='1.0' grailsVersion='2.1.1 &gt; *'>
   <author>John Tranier</author>
   <authorEmail>john.tranier@ticetime.com</authorEmail>
   <title>eliot-competence-plugin</title>
