@@ -1,8 +1,8 @@
 project.group = "org.lilie.services.eliot"
 project.ext.artefactId = "eliot-tice-dbmigration-all"
-project.version = "3.0.0-RC1-eliot-4.3.3"
+project.version = "3.0.0-RC1-eliot-4.4.0"
 
-project.ext.versionSchemaEliot = "4.3.3"
+project.ext.versionSchemaEliot = "4.4.0"
 project.ext.versionSchemaCompetence = "1.0"
 // classifierSchemaEliot =
 
